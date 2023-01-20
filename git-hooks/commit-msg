@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if grep -z -E '^GPP-[0-9]+ .*$' "$1"; then
+    echo ""
+else
+  	echo >&2 "Inwalid commit message:"
+	echo >&2 "$(cat $1)"
+	echo >&2 ""
+	echo >&2 "Use this pattern:"
+	echo >&2 "GPP-<issue> - message"
+	exit 1
+fi

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+echo $@
+
+msg_regex="^GPP-[0-9]+ .*$"
+
+while read old new ref
+do
+    echo "ref: $ref"
+    echo "old: $old"
+    echo "new: $new"
+    if [[ $old == "0000000000000000000000000000000000000000" ]]; then
+        old_msg=""
+    else
+        old_msg=$(git log --pretty=format:%B -n 1 "$old")
+    fi
+    if [[ $new == "0000000000000000000000000000000000000000" ]]; then
+        new_msg="GPP-0000 Delete branch $ref"
+    else
+        new_msg=$(git log --pretty=format:%B -n 1 "$new")
+        new_msg=`echo $new_msg | sed 's/ *$//g'`
+    fi
+
+    echo "$old $old_msg"
+    echo "$new $new_msg"
+	
+	#git log --pretty=format:"%H %B" $old..$new
+
+    if [[ $new_msg =~ $msg_regex ]]; then
+        echo "Valid commit $new message:"
+        echo "$new_msg"
+    else
+        echo >&2 "Invalid commit $new message:"
+        echo >&2 "$new_msg"
+        echo >&2 ""
+        echo >&2 "Use this pattern:"
+        echo >&2 "GPP-<issue> message"
+        exit 1
+    fi
+done
