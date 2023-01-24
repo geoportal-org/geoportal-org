@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro
+		http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+>
+    <changeSet id="1" author="spring-security">
+        <comment>Spring Security - Users, Authorities</comment>
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="acc_locked" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="acc_expired" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creds_expired" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="authorities">
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_authorities_users" baseTableName="authorities"
+                baseColumnNames="username" referencedTableName="users" referencedColumnNames="username"/>
+        <createIndex tableName="authorities" indexName="ix_auth_username" unique="true">
+            <column name="username"/>
+            <column name="authority"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="2" author="spring-security">
+        <comment>Spring Security - Group Authorities</comment>
+        <createTable tableName="groups">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="group_name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="group_authorities">
+            <column name="group_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_group_authorities_group" baseTableName="group_authorities"
+                baseColumnNames="group_id" referencedTableName="groups" referencedColumnNames="id"/>
+        <createIndex tableName="group_authorities" indexName="ix_group_authority" unique="true">
+            <column name="group_id"/>
+            <column name="authority"/>
+        </createIndex>
+        <createTable tableName="group_members">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_group_members_user" baseTableName="group_members"
+                baseColumnNames="username" referencedTableName="users" referencedColumnNames="username"/>
+        <addForeignKeyConstraint constraintName="fk_group_members_group" baseTableName="group_members"
+                baseColumnNames="group_id" referencedTableName="groups" referencedColumnNames="id"/>
+        <addUniqueConstraint tableName="group_members" columnNames="username,group_id"
+                constraintName="ix_username_group"/>
+    </changeSet>
+    <changeSet id="3" author="spring-security">
+        <comment>Spring Security - Persistent Login (Remember-Me)</comment>
+        <createTable tableName="persistent_logins">
+            <column name="username" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="series" type="varchar(64)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="token" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_used" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

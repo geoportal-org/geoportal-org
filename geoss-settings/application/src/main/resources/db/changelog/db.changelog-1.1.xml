@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro
+		http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+>
+    <changeSet id="4" author="eversis">
+        <comment>Spring Security - Users</comment>
+        <addColumn tableName="users">
+            <column name="first_name" type="varchar(50)">
+            </column>
+            <column name="last_name" type="varchar(50)">
+            </column>
+            <column name="email" type="varchar(254)">
+                <constraints unique="true"/>
+            </column>
+            <column name="locale" type="varchar(24)">
+            </column>
+            <column name="time_zone" type="varchar(32)">
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
