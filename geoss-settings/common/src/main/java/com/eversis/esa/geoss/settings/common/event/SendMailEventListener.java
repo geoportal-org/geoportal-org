@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.event;
+package com.eversis.esa.geoss.settings.common.event;
 
 import com.eversis.esa.geoss.settings.common.configuration.EmailProperties;
 

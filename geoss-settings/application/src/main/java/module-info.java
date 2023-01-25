@@ -3,7 +3,6 @@ module geoss.settings.application {
 
     exports com.eversis.esa.geoss.settings.application.configuration to spring.beans, spring.boot, spring.context;
     exports com.eversis.esa.geoss.settings.application.controller to spring.beans, spring.web;
-    exports com.eversis.esa.geoss.settings.application.event to spring.beans, spring.context;
     exports com.eversis.esa.geoss.settings.application.exception to spring.beans;
 
     opens com.eversis.esa.geoss.settings.application to spring.core;
@@ -11,7 +10,6 @@ module geoss.settings.application {
 
     requires com.fasterxml.jackson.annotation;
     requires com.zaxxer.hikari;
-    requires geoss.settings.common;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.mail;
@@ -45,6 +43,4 @@ module geoss.settings.application {
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;
-    requires spring.context.support;
-    requires org.apache.tomcat.embed.core;
 }

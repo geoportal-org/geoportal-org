@@ -63,6 +63,7 @@ For administrator access, assign the role: ROLE_ADMIN
 To start the application run command
 ```shell
 cd middleware
+./gradlew clean assemble
 ./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
