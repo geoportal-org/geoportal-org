@@ -54,13 +54,21 @@ Authorization provider module.
 
 Graphic interface for geoss-elk module.
 
+# [GEOSS Nginx](geoss-nginx/README.md)
+
+Nginx module.
+
 ### [GEOSS Proxy](geoss-proxy/README.md)
 
-Proxy modlue. (Nginx)
+Proxy modlue.
 
 ### [GEOSS Settings](geoss-settings/README.md)
 
 Module for all portal instance settings. (Java / Spring)
+
+# [GEOSS Squid](geoss-squid/README.md)
+
+Squid request caching module.
 
 ### [GEOSS UI](geoss-ui/README.md)
 
