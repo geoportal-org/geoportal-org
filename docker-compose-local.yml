@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+
+    geoss-db:
+        container_name: geoss-db
+        build:
+            context: ./geoss-db
+            dockerfile: Dockerfile
+        environment:
+            MARIADB_ROOT_PASSWORD: qaz123
+            MARIADB_USER: admin
+            MARIADB_PASSWORD: qaz123
+            MARIADB_DATABASE: geoss_db
+        volumes:
+            - "geoss_db:/var/lib/mysql"
+        ports:
+            - "33060:3306"
+        networks:
+          - geoss_net
+
+    geoss-keycloak:
+        container_name: geoss-keycloak
+        build:
+            context: ./geoss-keycloak
+            dockerfile: Dockerfile
+            args:
+                KC_DB: mariadb
+        command: ["start-dev", "--import-realm"]
+        environment:
+            KC_DB: mariadb
+            KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+            KC_DB_USERNAME: admin
+            KC_DB_PASSWORD:  qaz123
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: qaz123
+            KC_HOSTNAME: localhost
+        ports:
+            - "8090:8080"
+        networks:
+            - geoss_net
+
+volumes:
+    geoss_db:
+
+networks:
+    geoss_net:
