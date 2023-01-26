@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  
+  #######################################
+  #          HELPER CONTAINERS          #
+  #######################################
+  # backup-mariadb:
+  #   image: nexus-docker.eversis.com:7443/common/backup_mariadb:1.0.0
+  #   hostname: geoss-backup-mariadb
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       max_replicas_per_node: 1
+  #       constraints:
+  #         - "node.labels.unique_tag==geoss-database-1"
+  #   environment:
+  #     MYSQL_HOST: "geoss-mariadb"
+  #     MYSQL_PORT: 3306
+  #     MYSQL_USER: geossuser
+  #     MYSQL_PASS: ${DB_ROOT_PASS}
+  #     CRON_TIME: "0 3 * * *"
+  #     GZIP_LEVEL: 9
+  #     MYSQLDUMP_OPTS: "--no-tablespaces"
+  #     TZ: "Europe/Warsaw"
+  #     http_proxy: ${SQUID_PROXY_URL}
+  #     https_proxy: ${SQUID_PROXY_URL}
+  #     no_proxy: 127.0.0.1,localhost
+  #   volumes:
+  #     - /opt/backup:/backup
+  #   networks:
+  #     - geossdmz
+
+networks:
+  geossdmz:

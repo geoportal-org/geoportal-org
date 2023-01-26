@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+
+########################
+###    DMZ IMAGES    ###
+########################
+  geoss-nginx:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_nginx:${DOCKER_IMAGE_TAG}
+    container_name: geoss-nginx
+    build:
+      context: ./geoss-nginx
+      dockerfile: Dockerfile
+
+  # geoss-squid:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-squid
+  #     dockerfile: Dockerfile
+
+  geoss-postfix-relay:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-postfix-relay
+      dockerfile: Dockerfile
+
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-proxy
+      dockerfile: Dockerfile
+
+########################
+###    LAN IMAGES    ###
+########################
+  geoss-admin:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
+    container_name: geoss-admin
+    build:
+      context: ./geoss-admin
+      dockerfile: Dockerfile
+
+  geoss-bookmarks:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_bookmarks:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-bookmarks
+      dockerfile: Dockerfile
+
+  geoss-contents:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-contents
+      dockerfile: Dockerfile
+
+  geoss-settings:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-settings
+      dockerfile: Dockerfile
+
+  geoss-ui:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-ui
+      dockerfile: Dockerfile
+
+  geoss-userdata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-userdata
+      dockerfile: Dockerfile
+
+  geoss-db:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-db
+      dockerfile: Dockerfile
+
+  # geoss-elk:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_elk:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-elk
+  #     dockerfile: Dockerfile
+
+  geoss-email:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_email:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-email
+      dockerfile: Dockerfile
+
+  geoss-keycloak:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-keycloak
+      dockerfile: Dockerfile
+
+  # geoss-kibana:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_kibana:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-kibana
+  #     dockerfile: Dockerfile
+
+  geoss-proxy-lan:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-proxy-lan
+      dockerfile: Dockerfile
+
+  # geoss-matomo-db:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_db:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-matomo-db
+  #     dockerfile: Dockerfile
+
+  # geoss-matomo:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-matomo
+  #     dockerfile: Dockerfile
