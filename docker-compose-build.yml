@@ -12,12 +12,6 @@ services:
       context: ./geoss-nginx
       dockerfile: Dockerfile
 
-  # geoss-squid:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-squid
-  #     dockerfile: Dockerfile
-
   geoss-postfix-relay:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
     build:

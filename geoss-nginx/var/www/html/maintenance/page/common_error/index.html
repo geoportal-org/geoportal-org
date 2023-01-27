@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - ESA Earth Observation Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img/favicon.ico"/>
+</head>
+<body>
+    <header id="esa-header">
+        <img id="esa-header--signature" src="img/ESA_Signature.svg" alt="European Space Agency Signature">
+        <a id="esa-header--logo-container" href="https://www.esa.int/">
+            <img id="esa-header--logo" src="img/esa-header-logo.svg" alt="European Space Agency Logo">
+        </a>
+    </header>
+
+    <section id="message">
+        <img src="img/satelia.png" alt="Satelite icon">
+
+        <h1>Maintenance</h1>
+
+        <p>
+            We are currently experiencing some issues, please try again in a few minutes.
+        </p>
+    </section>
+
+    <footer>
+        <small>&copy; <span class="copyright"></span></small>
+    </footer>
+
+    <script type='text/javascript'>
+        var d = new Date();
+
+        document.querySelector('.copyright').innerHTML = 'Copyright ' +  d.getFullYear() + ' European Space Agency';
+    </script>
+</body>
+</html>

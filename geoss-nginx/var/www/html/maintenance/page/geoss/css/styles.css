@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 2.5rem;
+}
+.header__eop-logo {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.header__esa-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.header__esa-logo span {
+  font-size: 1.1rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2.5rem;
+  background: url("../images/geoss_alternative_bgr.jpg") rgb(135, 210, 240);
+  background-blend-mode: multiply;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  min-height: 80vh;
+}
+.main__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.main__content h1 {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+.main__content p {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 16px;
+  flex-grow: 1;
+}/*# sourceMappingURL=styles.css.map */

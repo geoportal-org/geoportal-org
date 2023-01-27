@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>
+        Maintenance - Geoss website is under maintenance, please try again in a few
+        minutes.
+    </title>
+</head>
+<body>
+<header class="header">
+    <div class="header__eop-logo">
+        <span>Geoss</span>
+    </div>
+    <div class="header__esa-logo">
+        <span>powered by</span>
+        <a href="https://www.esa.int/" target="_blank">
+            <img src="images/ESA_Logo.svg" alt="ESA logo" />
+        </a>
+    </div>
+</header>
+<main class="main">
+    <div class="main__content">
+        <img src="images/maintenance-icon.svg" alt="Maintenance" />
+        <h1>Maintenance.</h1>
+        <p>Geoss website is under maintenance, please try again in a few minutes.</p>
+    </div>
+</main>
+<footer>
+    <p>&copy; <span class="copyright"></span></p>
+</footer>
+<script type='text/javascript'>
+    var d = new Date();
+
+    document.querySelector('.copyright').innerHTML = 'Copyright ' +  d.getFullYear() + ' European Space Agency';
+</script>
+</body>
+</html>
