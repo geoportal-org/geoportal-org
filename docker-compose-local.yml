@@ -15,7 +15,7 @@ services:
         volumes:
             - "geoss_db:/var/lib/mysql"
         ports:
-            - "33060:3306"
+            - "33066:3306"
         networks:
           - geoss_net
 
