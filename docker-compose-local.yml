@@ -34,11 +34,39 @@ services:
             KC_DB_PASSWORD:  qaz123
             KEYCLOAK_ADMIN: admin
             KEYCLOAK_ADMIN_PASSWORD: qaz123
-            KC_HOSTNAME: localhost
+            KC_HOSTNAME: geoss-keycloak
+            KC_HOSTNAME_STRICT: "false"
         ports:
-            - "8090:8080"
+            - "8080:8080"
         networks:
             - geoss_net
+
+    geoss-settings:
+        container_name: geoss-settings
+        build:
+            context: ./geoss-settings
+            dockerfile: Dockerfile-local
+        environment:
+            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+            SPRING_DATASOURCE_USERNAME: admin
+            SPRING_DATASOURCE_PASSWORD: qaz123
+            SPRING_SECURITY_USER_NAME: user
+            SPRING_SECURITY_USER_PASSWORD: '{noop}qaz123'
+            SPRING_SECURITY_USER_ROLES: USER,ADMIN
+            SPRING_SECURITY_USER_EMAIL: user@geoss-settings
+            SPRING_SECURITY_USER_FIRST_NAME: User
+            SPRING_SECURITY_USER_LAST_NAME: User
+            SPRING_PROFILES_ACTIVE: keycloak
+            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+            SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+        ports:
+            - "8088:8080"
+        networks:
+            - geoss_net
+        depends_on:
+            - geoss-db
+            - geoss-keycloak
 
 volumes:
     geoss_db:

@@ -78,7 +78,7 @@ gitProperties {
 
 springBoot {
     buildInfo()
-    mainClass = 'com.eversis.igik.inconada.application.InconadaApplication'
+    mainClass = 'com.eversis.esa.geoss.settings.application.Application'
 }
 
 tasks.named('test') {
@@ -93,10 +93,10 @@ tasks.named('asciidoctor') {
 
 tasks.named('bootJar') {
     archiveClassifier = 'boot'
-    exclude('application-local.properties')
+    exclude('application-local*.properties')
 }
 
 tasks.named('jar') {
     archiveClassifier = ''
-    exclude('application-local.properties')
+    exclude('application-local*.properties')
 }

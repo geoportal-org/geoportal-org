@@ -1,4 +1,18 @@
-FROM openjdk:17.0.2-jdk-slim
+FROM openjdk:17.0.2-jdk-slim-buster AS builder
+
+ENV TZ=UTC
+ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
+ENV GRADLE_USER_HOME=/opt/app/.gradle
+
+WORKDIR /opt/app
+
+COPY ./ ./
+
+RUN chmod u+x gradlew
+RUN ./gradlew --build-cache --no-daemon assemble
+
+
+FROM openjdk:17.0.2-jdk-slim AS runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -21,11 +35,10 @@ ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
 WORKDIR /opt/app
 
-ARG JAR_FILE=application/build/libs/application-*-boot.jar
-COPY ${JAR_FILE} ./application-boot.jar
+ARG JAR_FILE=/opt/app/application/build/libs/application-*-boot.jar
+COPY --from=builder ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
 
 EXPOSE 8080
-
 ENTRYPOINT exec java $JAVA_OPTS -jar ./application-boot.jar
