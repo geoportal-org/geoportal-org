@@ -53,7 +53,6 @@ dependencies {
     implementation "com.toedter:spring-hateoas-jsonapi:${springHateoasJsonapiVersion}"
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
-    implementation project(':common')
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'

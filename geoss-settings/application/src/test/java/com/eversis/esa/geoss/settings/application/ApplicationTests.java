@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * The type application tests.
  */
 @SpringBootTest
-class SettingsApplicationTests {
+class ApplicationTests {
 
     /**
      * Context loads.

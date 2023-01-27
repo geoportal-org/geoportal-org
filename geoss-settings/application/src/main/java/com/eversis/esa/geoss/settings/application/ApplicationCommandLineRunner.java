@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- * The type Inconada command line runner.
+ * The type Application command line runner.
  */
 @Log4j2
 @Component
-public class SettingsCommandLineRunner implements CommandLineRunner {
+public class ApplicationCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {

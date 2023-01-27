@@ -12,10 +12,11 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
 import org.springframework.hateoas.mediatype.hal.HalConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 /**
- * The type Application configuration.
+ * The type Hateoas configuration.
  */
 @Log4j2
 @RequiredArgsConstructor
@@ -44,9 +45,8 @@ public class HateoasConfiguration {
     @Primary
     @Bean
     HalConfiguration halConfiguration() {
-        // HalConfiguration applicationJsonHalConfiguration() {
         HalConfiguration halConfiguration = new HalConfiguration()
-                // .withMediaType(MediaType.APPLICATION_JSON)
+                .withMediaType(MediaType.APPLICATION_JSON)
                 .withMediaType(MediaTypes.HAL_JSON)
                 .withMediaType(MediaTypes.HAL_FORMS_JSON)
                 .withMediaType(MediaTypes.COLLECTION_JSON)

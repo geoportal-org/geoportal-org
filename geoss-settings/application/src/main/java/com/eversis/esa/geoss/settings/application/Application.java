@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The type Inconada application.
+ * The type Application.
  */
 @SpringBootApplication
-public class SettingsApplication {
+public class Application {
 
     static {
         // if you want to use log4j logger in this class then set this property from command line
@@ -20,6 +20,6 @@ public class SettingsApplication {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        SpringApplication.run(SettingsApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

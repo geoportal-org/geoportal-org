@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 /**
  * The type Open api configuration.
  */
-@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "InCoNaDa API"))
+@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Settings API"))
 @SecuritySchemes(
         value = {
                 @SecurityScheme(name = "Basic",
