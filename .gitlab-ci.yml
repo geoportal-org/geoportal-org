@@ -1,8 +1,97 @@
-stages:  # List of stages for jobs, and their order of execution
-  - simple_echo
+variables:
 
-simpleecho:
-  stage: simple_echo
+###########################
+#         STAGES          #
+###########################
+stages:  # List of stages for jobs, and their order of execution
+  - build
+  - build_images
+  - docker_stack_deploy
+
+###########################
+#          STEPS          #
+###########################
+
+########################################################################################################################
+#                                                     BUILD                                                            #
+########################################################################################################################
+build_apps:
+  stage: build
   script:
-    - echo "Test initial CI"
+    - echo "Starting apps build"
+  only:
+    - develop
+    - /^release-.*/
   when: manual
+
+########################################################################################################################
+#                                                 BUILD IMAGES                                                         #
+########################################################################################################################
+build_images:
+  stage: build_images
+  image: docker/compose:1.29.2
+  tags:
+    - gitlab-runner-3
+  cache: { }
+  before_script:
+    - chmod +x setup_tag.sh
+    #- echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-proxy/etc/haproxy/certs/dev/server.pem
+    #- echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./dmz-haproxy/etc/haproxy/certs/uat/server.pem
+    #- echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./dmz-haproxy/etc/haproxy/certs/prod/server.pem
+    #- echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
+    #- ls -lah ./geoss-proxy/etc/haproxy/certs/dev/
+    #- ls -lah ./geoss-nginx/etc/nginx/certs/dev/
+  script:
+    - echo "Docker image tag setup" && source setup_tag.sh
+    - echo "Building images" && docker-compose -f docker-compose-build.yml build
+    - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
+    #- echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
+    - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
+  only:
+    - develop
+    - /^release-.*/
+
+########################################################################################################################
+#                                                      DEV DEPLOY                                                      #
+########################################################################################################################
+dev_deploy_to_dmz:
+  stage: docker_stack_deploy
+  image: debian:11.4
+  tags:
+    - gitlab-runner-3
+  cache: { }
+  variables:
+    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
+    VAR_DOCKER_MANAGER_SERVER: $DEV_DMZ_DOCKER_MANAGER_SERVER
+    VAR_SSH_PORT: 22
+    VAR_DOCKER_COMPOSE_FILE: docker-compose-dev-dmz.yml
+    #VAR_NGINX_UPSTREAM_HOST: ${DEV_LAN_DOCKER_MANAGER_SERVER},${DEV_LAN_DOCKER_MANAGER_BACKUP_SERVER}
+    #VAR_NGINX_CMS_UPSTREAM_PORT: 8087
+    VAR_NGINX_MAINTENANCE_WHITELIST: $NGINX_MAINTENANCE_WHITELIST
+    VAR_SMTP_USER: $DEV_SMTP_USER
+    VAR_SMTP_PASS: $DEV_SMTP_PASS
+    VAR_SMTP_MAIL_DOMAIN: $DEV_SMTP_MAIL_DOMAIN
+    VAR_POSTFIX_PERMIT_NETWORKS: $DEV_POSTFIX_PERMIT_NETWORKS
+    # VAR_AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+    # VAR_AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+    # VAR_AWS_DEFAULT_REGION: $DEV_AWS_DEFAULT_REGION
+    VAR_SQUID_PROXY_PASSWORD: $SQUID_PROXY_PASSWORD
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+    - eval $(ssh-agent -s)
+    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Deploying environment";
+    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "export NGINX_MAINTENANCE_WHITELIST=$VAR_NGINX_MAINTENANCE_WHITELIST && export NGINX_CMS_UPSTREAM_PORT=$VAR_NGINX_CMS_UPSTREAM_PORT && export NGINX_UPSTREAM_HOST=$VAR_NGINX_UPSTREAM_HOST && export SMTP_MAIL_DOMAIN=$VAR_SMTP_MAIL_DOMAIN && export SMTP_USER=$VAR_SMTP_USER && export SMTP_PASS=$VAR_SMTP_PASS && export POSTFIX_PERMIT_NETWORKS=$VAR_POSTFIX_PERMIT_NETWORKS && export SQUID_PROXY_PASSWORD=$VAR_SQUID_PROXY_PASSWORD && cd /tmp && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE geoss"
+    - echo "Cleanup";
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
+    - echo "Cleanup - COMPLETED";
+  when: manual
+  only:
+    - develop
+    - /^release-.*/
