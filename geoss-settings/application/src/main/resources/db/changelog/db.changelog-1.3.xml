@@ -12,21 +12,24 @@
 		http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
 >
-    <changeSet id="5" author="Lukas">
-        <comment>Scheduled tasks locking</comment>
-        <createTable tableName="shedlock">
-            <column name="name" type="varchar(64)">
+    <changeSet id="6" author="Hibernate">
+        <comment>Hibernate envers</comment>
+        <createSequence sequenceName="revinfo_seq" incrementBy="50" />
+        <createTable tableName="revinfo">
+            <column name="rev" type="bigint" generationType="sequence">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="lock_until" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="locked_at" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="locked_by" type="varchar(255)">
+            <column name="revtstmp" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet id="7" author="Eversis">
+        <comment>Hibernate envers</comment>
+        <addColumn tableName="revinfo">
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

@@ -50,10 +50,11 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
     implementation 'org.liquibase:liquibase-core'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    implementation "com.toedter:spring-hateoas-jsonapi:${springHateoasJsonapiVersion}"
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
-	compileOnly 'org.projectlombok:lombok'
+    implementation project(':common')
+    implementation project(':system-settings')
+    compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
