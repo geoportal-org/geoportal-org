@@ -41,13 +41,13 @@ fi
 #  echo "MONITORING_UPSTREAM_HOST env variable is not set"
 #fi
 #
-if [ -n "${MONITORING_UPSTREAM_HOST}" ]; then
+# if [ -n "${MONITORING_UPSTREAM_HOST}" ]; then
 
- upstream_conf="server   ${MONITORING_UPSTREAM_HOST}:80;"
+#  upstream_conf="server   ${MONITORING_UPSTREAM_HOST}:80;"
 
- mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
- awk -v r="${upstream_conf}" '{gsub(/###MONITORING_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
- rm /etc/nginx/conf.d/cms.conf.old
-else
- echo "MONITORING_UPSTREAM_HOST env variable is not set"
-fi
+#  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
+#  awk -v r="${upstream_conf}" '{gsub(/###MONITORING_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
+#  rm /etc/nginx/conf.d/cms.conf.old
+# else
+#  echo "MONITORING_UPSTREAM_HOST env variable is not set"
+# fi
