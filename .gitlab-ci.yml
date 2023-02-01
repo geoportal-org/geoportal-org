@@ -17,6 +17,8 @@ stages:  # List of stages for jobs, and their order of execution
 ########################################################################################################################
 build_apps:
   stage: build
+  tags:
+    - gitlab-runner-3
   script:
     - echo "Starting apps build"
   only:
