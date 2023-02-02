@@ -58,7 +58,7 @@ build_images:
   script:
     - ls -alh geoss-settings
     - ls -alh geoss-settings/application
-    - ls -alh geoss-settings/application/libs
+    - ls -alh geoss-settings/application/build/libs
     - echo "Docker image tag setup" && source setup_tag.sh
     - echo "Building images" && docker-compose -f docker-compose-build.yml build
     - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
