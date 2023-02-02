@@ -15,4 +15,6 @@ public class SecurityOauth2Properties {
     private boolean enabled;
 
     private String baseUri;
+
+    private String postLogoutRedirectUri;
 }

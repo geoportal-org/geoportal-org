@@ -11,20 +11,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * The type Open api oauth2 configuration.
  */
 @SecuritySchemes(
-        value = {@SecurityScheme(
-                name = "Authorization",
-                type = SecuritySchemeType.OAUTH2,
-                flows = @OAuthFlows(
-                        authorizationCode = @OAuthFlow(
-                                authorizationUrl = "${springdoc.oauth2.oauth-flow.authorizationUrl}",
-                                tokenUrl = "${springdoc.oauth2.oauth-flow.tokenUrl}"
-                        ))
+        value = {
+                @SecurityScheme(
+                        name = "Authorization",
+                        type = SecuritySchemeType.OAUTH2,
+                        flows = @OAuthFlows(
+                                authorizationCode = @OAuthFlow(
+                                        authorizationUrl = "${springdoc.oauth2.oauth-flow.authorizationUrl}",
+                                        tokenUrl = "${springdoc.oauth2.oauth-flow.tokenUrl}"
+                                ))
                 )
         }
 )
@@ -101,5 +105,22 @@ public class SecurityOauth2Configuration {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
+    }
+
+    /**
+     * Oidc logout success handler logout success handler.
+     *
+     * @param clientRegistrationRepository the client registration repository
+     * @param securityOauth2Properties the security oauth 2 properties
+     * @return the logout success handler
+     */
+    @Bean
+    LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository,
+            SecurityOauth2Properties securityOauth2Properties) {
+        OidcClientInitiatedLogoutSuccessHandler oidcClientInitiatedLogoutSuccessHandler
+                = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        oidcClientInitiatedLogoutSuccessHandler.setPostLogoutRedirectUri(
+                securityOauth2Properties.getPostLogoutRedirectUri());
+        return oidcClientInitiatedLogoutSuccessHandler;
     }
 }

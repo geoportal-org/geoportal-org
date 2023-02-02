@@ -40,6 +40,7 @@ module geoss.settings.application {
     requires spring.security.config;
     requires spring.security.core;
     requires spring.security.crypto;
+    requires spring.security.oauth2.client;
     requires spring.security.oauth2.core;
     requires spring.security.oauth2.jose;
     requires spring.security.oauth2.resource.server;

@@ -3,10 +3,10 @@ package com.eversis.esa.geoss.settings.application.configuration;
 import com.eversis.esa.geoss.settings.application.configuration.oauth2.SecurityOauth2Properties;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import java.util.Optional;
@@ -134,17 +135,20 @@ public class WebSecurityConfiguration {
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
             PersistentTokenRepository persistentTokenRepository,
-            Optional<SecurityOauth2Properties> securityOauth2Properties) throws Exception {
+            Optional<SecurityOauth2Properties> securityOauth2Properties,
+            ObjectProvider<LogoutSuccessHandler> oidcLogoutSuccessHandler
+    ) throws Exception {
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.httpBasic();
         http.formLogin();
         if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2Login();
             http.oauth2Client();
+            http.logout().logoutSuccessHandler(oidcLogoutSuccessHandler.getIfAvailable());
         } else {
             http.rememberMe().tokenRepository(persistentTokenRepository);
+            http.logout();
         }
-        http.logout(); // TODO propagate logout to idp
         return http.build();
     }
 }
