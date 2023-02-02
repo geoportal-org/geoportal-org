@@ -30,7 +30,7 @@ build_apps:
     - echo "Build geoss-settings complete"
   cache:
     paths:
-      - application
+      - ./geoss-settings/application
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
@@ -39,7 +39,6 @@ build_apps:
   only:
     - develop
     - /^release-.*/
-  when: manual
 
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
@@ -67,7 +66,6 @@ build_images:
   only:
     - develop
     - /^release-.*/
-  when: manual
 
 ########################################################################################################################
 #                                                      DEV DEPLOY                                                      #
