@@ -29,11 +29,11 @@ build_apps:
     - echo "Build geoss-settings complete"
   cache:
     paths:
-      - ./application
+      - ./geoss-settings/application
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - application
+      - ./geoss-settings/application
     expire_in: 4 weeks
   only:
     - develop
