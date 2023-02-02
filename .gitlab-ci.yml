@@ -27,6 +27,8 @@ build_apps:
     - chmod u+x gradlew
     - ./gradlew clean assemble
     - echo "Build geoss-settings complete"
+  after_script:
+    - cd ..
   cache:
     paths:
       - ./application
@@ -34,8 +36,6 @@ build_apps:
   artifacts:
     paths:
       - application
-  after_script:
-      - cd ..
     expire_in: 4 weeks
   only:
     - develop
