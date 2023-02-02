@@ -12,11 +12,11 @@ services:
       context: ./geoss-nginx
       dockerfile: Dockerfile
 
-  geoss-postfix-relay:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-postfix-relay
-      dockerfile: Dockerfile
+  # geoss-postfix-relay:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-postfix-relay
+  #     dockerfile: Dockerfile
 
   geoss-proxy:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:${DOCKER_IMAGE_TAG}
@@ -27,24 +27,24 @@ services:
 ########################
 ###    LAN IMAGES    ###
 ########################
-  geoss-admin:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
-    container_name: geoss-admin
-    build:
-      context: ./geoss-admin
-      dockerfile: Dockerfile
+  # geoss-admin:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
+  #   container_name: geoss-admin
+  #   build:
+  #     context: ./geoss-admin
+  #     dockerfile: Dockerfile
 
-  geoss-bookmarks:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_bookmarks:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-bookmarks
-      dockerfile: Dockerfile
+  # geoss-bookmarks:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_bookmarks:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-bookmarks
+  #     dockerfile: Dockerfile
 
-  geoss-contents:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-contents
-      dockerfile: Dockerfile
+  # geoss-contents:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-contents
+  #     dockerfile: Dockerfile
 
   geoss-settings:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
@@ -52,17 +52,17 @@ services:
       context: ./geoss-settings
       dockerfile: Dockerfile
 
-  geoss-ui:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-ui
-      dockerfile: Dockerfile
+  # geoss-ui:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-ui
+  #     dockerfile: Dockerfile
 
-  geoss-userdata:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-userdata
-      dockerfile: Dockerfile
+  # geoss-userdata:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-userdata
+  #     dockerfile: Dockerfile
 
   geoss-db:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db:${DOCKER_IMAGE_TAG}
@@ -76,17 +76,20 @@ services:
   #     context: ./geoss-elk
   #     dockerfile: Dockerfile
 
-  geoss-email:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_email:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-email
-      dockerfile: Dockerfile
+  # geoss-email:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_email:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-email
+  #     dockerfile: Dockerfile
 
   geoss-keycloak:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}
     build:
       context: ./geoss-keycloak
       dockerfile: Dockerfile
+      args:
+        KC_DB: mariadb
+    command: ["start-dev", "--import-realm"]
 
   # geoss-kibana:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_kibana:${DOCKER_IMAGE_TAG}

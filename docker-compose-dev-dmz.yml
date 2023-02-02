@@ -1,61 +1,61 @@
 version: "3.8"
 
 services:
-  # haproxy:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:latest
-  #   hostname: geoss-dmz-haproxy
-  #   deploy:
-  #     replicas: 1
-  #     placement:
-  #       constraints:
-  #         - "node.labels.group_tag==geoss-proxy"
-  #   environment:
-  #     DEPLOY_ENV: dev
-  #     http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
-  #     https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
-  #     no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
-  #   sysctls:
-  #     - net.ipv4.tcp_max_syn_backlog=16384
-  #     - net.ipv4.tcp_syn_retries=2
-  #     - net.ipv4.tcp_synack_retries=1
-  #   ports:
-  #     - target: 443
-  #       published: 443
-  #       protocol: tcp
-  #       mode: host
-  #     - target: 80
-  #       published: 80
-  #       protocol: tcp
-  #       mode: host
-  #   networks:
-  #     - geossdmz
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:latest
+    hostname: geoss-dmz-haproxy
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.labels.group_tag==geoss-proxy"
+    environment:
+      DEPLOY_ENV: dev
+      http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
+      https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
+      no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
+    sysctls:
+      - net.ipv4.tcp_max_syn_backlog=16384
+      - net.ipv4.tcp_syn_retries=2
+      - net.ipv4.tcp_synack_retries=1
+    ports:
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    networks:
+      - geossdmz
 
-  # nginx:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_nginx:latest
-  #   hostname: geoss-dmz-nginx
-  #   deploy:
-  #     replicas: 1
-  #     placement:
-  #       constraints:
-  #         - "node.labels.group_tag==geoss-proxy"
-  #     update_config:
-  #       parallelism: 1
-  #       order: start-first
-  #   environment:
-  #     CMS_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
-  #     CMS_UPSTREAM_PORT: ${NGINX_CMS_UPSTREAM_PORT}
-  #     CMS_DOMAIN_NAME: 
-  #     MONITORING_UPSTREAM_HOST: ${NGINX_MONITORING_UPSTREAM_HOST}
-  #     CSP_DOMAINS: 
-  #     MAINTENANCE_WHITELIST: ${NGINX_MAINTENANCE_WHITELIST}
-  #     DEPLOY_ENV: dev
-  #     http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
-  #     https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
-  #     no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
-  #   volumes:
-  #     - /var/log/nginx:/var/log/nginx
-  #   networks:
-  #     - geossdmz
+  geoss-nginx:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_nginx:latest
+    hostname: geoss-dmz-nginx
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.labels.group_tag==geoss-proxy"
+      update_config:
+        parallelism: 1
+        order: start-first
+    environment:
+      CMS_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
+      CMS_UPSTREAM_PORT: ${NGINX_CMS_UPSTREAM_PORT}
+      CMS_DOMAIN_NAME: gpp.devel.esaportal.eu
+      #MONITORING_UPSTREAM_HOST: ${NGINX_MONITORING_UPSTREAM_HOST}
+      CSP_DOMAINS: 'gpp.devel.esaportal.eu, gpp-idp.devel.esaportal.eu'
+      MAINTENANCE_WHITELIST: ${NGINX_MAINTENANCE_WHITELIST}
+      DEPLOY_ENV: dev
+      http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
+      https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
+      no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+    networks:
+      - geossdmz
 
   # postfix:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:latest

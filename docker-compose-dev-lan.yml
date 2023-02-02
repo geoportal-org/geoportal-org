@@ -1,7 +1,106 @@
 version: "3.8"
 
 services:
-  
+  geoss-proxy-lan:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:latest
+    hostname: geoss-haproxy
+    deploy:
+      replicas: 1
+    environment:
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
+    ports:
+      - "8087:8087"
+    networks:
+      - geosslan
+
+  geoss-db:
+    image: nexus-docker.eversis.com:7443/soe-images/mariadb:latest
+    hostname: geoss-mariadb
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.unique_tag==geoss-db-1"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: ${DB_ROOT_PASS}
+      MARIADB_DATABASE: geoss_db
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+      - /var/log/mysql:/var/log/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - geosslan
+
+  geoss-keycloak:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:latest
+    hostname: geoss-keycloak
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.unique_tag==geoss-db-1"
+    environment:
+      KC_DB: mariadb
+      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD:  ${DB_ROOT_PASS}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
+      KC_HOSTNAME: geoss-keycloak
+      KC_HOSTNAME_STRICT: "false"
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
+    ports:
+      - "8080:8080"
+    networks:
+      - geosslan
+
+  geoss-settings:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:latest
+    hostname: geoss-settings
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+      SPRING_SECURITY_USER_NAME: user
+      SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
+      SPRING_SECURITY_USER_ROLES: USER,ADMIN
+      SPRING_SECURITY_USER_EMAIL: user@geoss-settings
+      SPRING_SECURITY_USER_FIRST_NAME: User
+      SPRING_SECURITY_USER_LAST_NAME: User
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: ${SPRINGDOCSECURITY_OA_CSECRET}
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
+    ports:
+      - "8088:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+
+
   #######################################
   #          HELPER CONTAINERS          #
   #######################################
@@ -29,7 +128,7 @@ services:
   #   volumes:
   #     - /opt/backup:/backup
   #   networks:
-  #     - geossdmz
+  #     - geosslan
 
 networks:
-  geossdmz:
+  geosslan:
