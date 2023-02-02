@@ -16,7 +16,7 @@ stages:  # List of stages for jobs, and their order of execution
 #                                                     BUILD                                                            #
 ########################################################################################################################
 build_apps:
-  image: eclipse-temurin:11-jdk-jammy
+  image: gradle:jdk17-jammy
   stage: build
   tags:
     - gitlab-runner-3
