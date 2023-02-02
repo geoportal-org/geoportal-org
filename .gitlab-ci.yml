@@ -5,7 +5,7 @@ variables:
 ###########################
 stages:  # List of stages for jobs, and their order of execution
   - build
-  - build_images
+  - build_docker_images
   - docker_stack_deploy
 
 ###########################
@@ -43,7 +43,7 @@ build_apps:
 #                                                 BUILD IMAGES                                                         #
 ########################################################################################################################
 build_images:
-  stage: build_images
+  stage: build_docker_images
   image: docker/compose:1.29.2
   tags:
     - gitlab-runner-3
@@ -62,8 +62,6 @@ build_images:
     - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
     - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
     - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
-  dependencies:
-    - build_apps
   only:
     - develop
     - /^release-.*/
