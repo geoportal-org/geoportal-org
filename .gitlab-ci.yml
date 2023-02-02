@@ -23,9 +23,8 @@ build_apps:
     - gitlab-runner-3
   script:
     - echo "Building geoss-settings app..."
-    - cd ./geoss-settings
-    - chmod u+x gradlew
-    - ./gradlew clean assemble
+    - chmod u+x ./geoss-settings/gradlew
+    - ./geoss-settings/gradlew clean assemble
     - echo "Build geoss-settings complete"
   cache:
     paths:

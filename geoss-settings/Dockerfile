@@ -21,7 +21,8 @@ ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
 WORKDIR /opt/app
 
-ARG JAR_FILE=application/build/libs/application-*-boot.jar
+echo $(ls $CI_PROJECT_DIR)
+ARG JAR_FILE=$CI_PROJECT_DIR/geoss-settings/application/build/libs/application-*-boot.jar
 COPY ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
