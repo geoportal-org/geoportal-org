@@ -88,12 +88,30 @@ Module for User data management. (Java / Spring)
 
 ## Setup local environment
 
-Add alias `geoss-keycloak` to localhost in host file
+### Add alias `geoss-keycloak` to localhost in host file
 ```
 127.0.0.1	localhost geoss-keycloak
 ```
 
-Run command to start
+### Run command to start
 ```
 docker compose -f docker-compose-local.yml -p geoss up -d
+```
+
+### Create user geoss in geoss realm
+Get access token
+```
+curl --location --request POST 'http:///geoss-keycloak:8080/realms/master/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=admin-cli' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'username=admin' \
+--data-urlencode 'password=qaz123'
+```
+Create user
+```
+curl --location --request POST 'http://geoss-keycloak:8080/admin/realms/geoss/users' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <access_token>' \
+--data-raw '{"firstName":"Geoss","lastName":"Geoss","username":"geoss","email":"geoss@localhost","enabled":"true","emailVerified":"true","credentials":[{"type":"password","value":"geoss","temporary":false}],"groups":["administrator"]}'
 ```
