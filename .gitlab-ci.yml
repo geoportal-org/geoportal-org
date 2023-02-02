@@ -21,12 +21,12 @@ build_apps:
   tags:
     - gitlab-runner-3
   script:
-    echo "Building geoss-settings app..."
-    cd ./geoss-settings
-    chmod u+x gradlew
-    ./gradlew clean assemble
-    cd..
-    echo "Build geoss-settings complete"
+    - echo "Building geoss-settings app..."
+    - cd ./geoss-settings
+    - chmod u+x gradlew
+    - ./gradlew clean assemble
+    - cd..
+    - echo "Build geoss-settings complete"
   # cache:
   #   paths:
   #     - .m2/repository
