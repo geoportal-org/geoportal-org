@@ -16,7 +16,7 @@ services:
       - geosslan
 
   geoss-db:
-    image: nexus-docker.eversis.com:7443/soe-images/mariadb:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db
     hostname: geoss-mariadb
     deploy:
       replicas: 1
