@@ -16,11 +16,21 @@ stages:  # List of stages for jobs, and their order of execution
 #                                                     BUILD                                                            #
 ########################################################################################################################
 build_apps:
+  image: eclipse-temurin:11-jdk-jammy
   stage: build
   tags:
     - gitlab-runner-3
   script:
-    - echo "Starting apps build"
+    echo "Building geoss-settings app..."
+    cd ./geoss-settings
+    chmod u+x gradlew
+    ./gradlew clean assemble
+    cd..
+    echo "Build geoss-settings complete"
+  # cache:
+  #   paths:
+  #     - .m2/repository
+  #   key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   only:
     - develop
     - /^release-.*/
