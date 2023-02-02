@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.configuration;
+package com.eversis.esa.geoss.settings.application.configuration.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;

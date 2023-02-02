@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.settings.application.configuration;
 
+import com.eversis.esa.geoss.settings.application.configuration.oauth2.SecurityOauth2Properties;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -16,11 +18,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import java.util.Optional;
+
 /**
  * The type Web security configuration.
  */
 @Log4j2
-@EnableConfigurationProperties(SecurityOauth2Properties.class)
+
 @Configuration(proxyBeanMethods = false)
 public class WebSecurityConfiguration {
 
@@ -88,16 +92,15 @@ public class WebSecurityConfiguration {
     @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
     SecurityFilterChain apiSecurityFilterChain(HttpSecurity http,
             RepositoryRestConfiguration repositoryRestConfiguration,
-            SecurityOauth2Properties securityOauth2Properties) throws Exception {
+            Optional<SecurityOauth2Properties> securityOauth2Properties) throws Exception {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests()
-                .requestMatchers(basePath + "/contact-forms/**").permitAll()
-                .requestMatchers(basePath + "/access-forms/**").permitAll()
+                .requestMatchers(basePath + "/portal-setup-wizard/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();
-        if (securityOauth2Properties.isEnabled()) {
+        if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         }
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -131,14 +134,15 @@ public class WebSecurityConfiguration {
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
             PersistentTokenRepository persistentTokenRepository,
-            SecurityOauth2Properties securityOauth2Properties) throws Exception {
+            Optional<SecurityOauth2Properties> securityOauth2Properties) throws Exception {
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.httpBasic();
         http.formLogin();
-        http.rememberMe().tokenRepository(persistentTokenRepository);
-        if (securityOauth2Properties.isEnabled()) {
+        if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2Login();
             http.oauth2Client();
+        } else {
+            http.rememberMe().tokenRepository(persistentTokenRepository);
         }
         http.logout(); // TODO propagate logout to idp
         return http.build();

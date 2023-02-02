@@ -2,11 +2,13 @@ module geoss.settings.application {
     exports com.eversis.esa.geoss.settings.application;
 
     exports com.eversis.esa.geoss.settings.application.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.settings.application.configuration.oauth2 to spring.beans, spring.boot;
     exports com.eversis.esa.geoss.settings.application.controller to spring.beans, spring.web;
     exports com.eversis.esa.geoss.settings.application.exception to spring.beans;
 
     opens com.eversis.esa.geoss.settings.application to spring.core;
     opens com.eversis.esa.geoss.settings.application.configuration to spring.core;
+    opens com.eversis.esa.geoss.settings.application.configuration.oauth2 to spring.core;
 
     requires com.fasterxml.jackson.annotation;
     requires com.zaxxer.hikari;
@@ -38,7 +40,9 @@ module geoss.settings.application {
     requires spring.security.config;
     requires spring.security.core;
     requires spring.security.crypto;
+    requires spring.security.oauth2.core;
     requires spring.security.oauth2.jose;
+    requires spring.security.oauth2.resource.server;
     requires spring.security.web;
     requires spring.tx;
     requires spring.web;
