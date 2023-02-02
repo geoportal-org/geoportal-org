@@ -10,9 +10,9 @@ Dockerfile*
 
 ### Gradle ###
 !.gradle
-build/
-**/build/
-**/build/*
+#build/
+#**/build/
+#**/build/*
 
 ### Maven ###
 target/

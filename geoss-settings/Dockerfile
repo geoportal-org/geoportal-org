@@ -19,14 +19,10 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 ENV JDK_JAVA_OPTIONS=""
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
-RUN echo $(pwd)
-RUN echo $(ls -al)
-RUN echo $(ls application/build/libs/application-*-boot.jar)
-
-ARG JAR_FILE=application/build/libs/application-*-boot.jar
-COPY ${JAR_FILE} /opt/app/application-boot.jar
-
 WORKDIR /opt/app
+
+ARG JAR_FILE=./application/build/libs/application-*-boot.jar
+COPY ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
 
