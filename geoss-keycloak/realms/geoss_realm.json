@@ -78,9 +78,27 @@
                 "attributes": {}
             },
             {
+                "id": "d99f1108-fd78-4aaf-b0fe-89633b673fca",
+                "name": "admin",
+                "description": "",
+                "composite": false,
+                "clientRole": false,
+                "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529",
+                "attributes": {}
+            },
+            {
                 "id": "26a85f47-4f59-4c50-861f-595743754d6a",
                 "name": "offline_access",
                 "description": "${role_offline-access}",
+                "composite": false,
+                "clientRole": false,
+                "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529",
+                "attributes": {}
+            },
+            {
+                "id": "3d84bfa0-f92c-4d20-be09-c852f13d81b1",
+                "name": "user",
+                "description": "",
                 "composite": false,
                 "clientRole": false,
                 "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529",
@@ -411,7 +429,20 @@
             "geoss-admin": []
         }
     },
-    "groups": [],
+    "groups": [
+        {
+            "id": "68353c40-3ae5-426e-b222-06b3f85a5985",
+            "name": "administrator",
+            "path": "/administrator",
+            "attributes": {},
+            "realmRoles": [
+                "admin",
+                "user"
+            ],
+            "clientRoles": {},
+            "subGroups": []
+        }
+    ],
     "defaultRole": {
         "id": "a65ba677-9d6b-4af9-9129-6ae19d865def",
         "name": "default-roles-geoss",
