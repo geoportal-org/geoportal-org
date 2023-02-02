@@ -19,12 +19,7 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 ENV JDK_JAVA_OPTIONS=""
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
-RUN echo $(pwd)
-RUN echo $(ls)
-
-COPY ./geoss-settings/application /opt/app/
 WORKDIR /opt/app
-RUN echo $(ls /opt/app)
 
 ARG JAR_FILE=application/build/libs/application-*-boot.jar
 COPY ${JAR_FILE} ./application-boot.jar

@@ -26,15 +26,16 @@ build_apps:
     - cd ./geoss-settings
     - chmod u+x gradlew
     - ./gradlew clean assemble
-    - cd ..
     - echo "Build geoss-settings complete"
   cache:
     paths:
-      - ./geoss-settings/application
+      - ./application
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - ./geoss-settings/application
+      - application
+  after_script:
+      - cd ..
     expire_in: 4 weeks
   only:
     - develop
