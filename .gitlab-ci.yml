@@ -24,7 +24,7 @@ build_apps:
   script:
     - echo "Building geoss-settings app..."
     - chmod u+x ./geoss-settings/gradlew
-    - ./geoss-settings/gradlew clean assemble
+    - ./geoss-settings/gradlew clean assemble -p ./geoss-settings
     - echo "Build geoss-settings complete"
   cache:
     paths:
