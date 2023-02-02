@@ -25,7 +25,7 @@ build_apps:
     - cd ./geoss-settings
     - chmod u+x gradlew
     - ./gradlew clean assemble
-    - cd..
+    - cd ..
     - echo "Build geoss-settings complete"
   # cache:
   #   paths:
