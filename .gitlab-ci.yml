@@ -24,7 +24,6 @@ build_apps:
   only:
     - develop
     - /^release-.*/
-    - GPP-355
   when: manual
 
 ########################################################################################################################
@@ -53,7 +52,7 @@ build_images:
   only:
     - develop
     - /^release-.*/
-    - GPP-355
+  when: manual
 
 ########################################################################################################################
 #                                                      DEV DEPLOY                                                      #
@@ -99,7 +98,6 @@ dev_deploy_to_dmz:
   only:
     - develop
     - /^release-.*/
-    - GPP-355
 
 dev_deploy_to_lan:
   stage: docker_stack_deploy
@@ -146,4 +144,3 @@ dev_deploy_to_lan:
   only:
     - develop
     - /^release-.*/
-    - GPP-355
