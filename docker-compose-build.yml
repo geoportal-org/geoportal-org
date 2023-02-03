@@ -18,11 +18,17 @@ services:
   #     context: ./geoss-postfix-relay
   #     dockerfile: Dockerfile
 
-  geoss-proxy:
+  geoss-haproxy:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:${DOCKER_IMAGE_TAG}
     build:
-      context: ./geoss-proxy
+      context: ./geoss-haproxy
       dockerfile: Dockerfile
+
+  # geoss-squid:
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
+  #   build:
+  #     context: ./geoss-squid
+  #     dockerfile: Dockerfile
 
 ########################
 ###    LAN IMAGES    ###
@@ -97,10 +103,10 @@ services:
   #     context: ./geoss-kibana
   #     dockerfile: Dockerfile
 
-  geoss-proxy-lan:
+  geoss-haproxy-lan:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
     build:
-      context: ./geoss-proxy-lan
+      context: ./geoss-haproxy-lan
       dockerfile: Dockerfile
 
   # geoss-matomo-db:
