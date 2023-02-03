@@ -27,6 +27,8 @@ services:
         published: 80
         protocol: tcp
         mode: host
+    volumes:
+      - /tmp/haproxy:/usr/local/etc/haproxy
     networks:
       - geossdmz
 
@@ -54,6 +56,7 @@ services:
       no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
     volumes:
       - /var/log/nginx:/var/log/nginx
+      - /tmp/nginx:/etc/nginx
     networks:
       - geossdmz
 
