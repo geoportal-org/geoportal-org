@@ -49,11 +49,11 @@ build_images:
   cache: { }
   before_script:
     - chmod +x setup_tag.sh
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-proxy/etc/haproxy/certs/dev/server.pem.key
-    # - echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-proxy/etc/haproxy/certs/uat/server.pem
-    # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./geoss-proxy/etc/haproxy/certs/prod/server.pem
+    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/dev/server.pem
+    # - echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/uat/server.pem
+    # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/prod/server.pem
     - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
-    - ls -lah ./geoss-proxy/etc/haproxy/certs/dev/
+    - ls -lah ./geoss-haproxy/etc/haproxy/certs/dev/
     - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
