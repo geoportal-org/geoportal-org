@@ -36,7 +36,7 @@ services:
       - /var/lib/mysql:/var/lib/mysql
       - /var/log/mysql:/var/log/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
     networks:
       - geosslan
 
