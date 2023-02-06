@@ -1,0 +1,21 @@
+export const colors = {
+    brand: {
+        accept: "rgba(63, 145, 69, 1)",
+        acceptSoft: "rgba(63, 145, 69, 0.15)",
+        acceptTransparent: "rgba(63, 145, 69, 0.9)",
+        background: "rgba(242, 242, 242, 1)",
+        backgroundSelected: "rgba(244, 248, 251, 1)",
+        cancel: "rgba(226, 94, 91, 1)",
+        cancelSoft: "rgba(226, 94, 91, 0.15)",
+        cancelTransparent: "rgba(226, 94, 91, 0.9)",
+        dark: "rgba(6, 97, 169, 1)",
+        darkSoft: "rgba(6, 97, 169, 0.15)",
+        darkTransparent: "rgba(6, 97, 169, 0.9)",
+        light: "rgba(43, 120, 181, 1)",
+        lightTransparent: "rgba(43, 120, 181, 0.9)",
+        mainDark: "rgba(0, 0, 0, 1)",
+        mainLight: "rgba(255, 255, 255, 1)",
+        warning: "rgba(225, 151, 17, 1)",
+        warningTransparent: "rgba(225, 151, 17, 0.9)",
+    },
+};
