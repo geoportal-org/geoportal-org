@@ -51,7 +51,7 @@ services:
           - "node.labels.unique_tag==geoss-db-1"
     environment:
       KC_DB: mariadb
-      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false&useSSL=false&allowPublicKeyRetrieval=true"
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD:  ${DB_ROOT_PASS}
       KEYCLOAK_ADMIN: admin
