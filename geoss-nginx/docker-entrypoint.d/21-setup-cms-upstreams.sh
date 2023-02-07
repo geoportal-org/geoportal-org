@@ -23,9 +23,9 @@ if [ -n "${CMS_UPSTREAM_HOST}" ] && [ -n "${CMS_UPSTREAM_PORT}" ]; then
   awk -v r="${upstream_conf}" '{gsub(/###UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
   rm /etc/nginx/conf.d/cms.conf.old
 
-  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  awk -v r="${kibana_upstream_conf}" '{gsub(/###KIBANA_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-  rm /etc/nginx/conf.d/cms.conf.old
+  # mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
+  # awk -v r="${kibana_upstream_conf}" '{gsub(/###KIBANA_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
+  # rm /etc/nginx/conf.d/cms.conf.old
 else
   echo "CMS_UPSTREAM_HOST or CMS_UPSTREAM_PORT env variable is not set"
 fi

@@ -4,13 +4,13 @@ upstream cms_upstream {
   ###UPSTREAM_CONFIG###
 }
 
-upstream kibana_upstream {
-  ###KIBANA_UPSTREAM_CONFIG###
-}
-
-upstream monitoring_upstream {
-  ###MONITORING_UPSTREAM_CONFIG###
-}
+#upstream kibana_upstream {
+#  ###KIBANA_UPSTREAM_CONFIG###
+#}
+#
+#upstream monitoring_upstream {
+#  ###MONITORING_UPSTREAM_CONFIG###
+#}
 
 ## Initial common setup of variables
 include conf.d/common/map_initial_setup.conf;
