@@ -95,7 +95,6 @@ services:
       dockerfile: Dockerfile
       args:
         KC_DB: mariadb
-    command: ["start-dev", "--import-realm"]
 
   # geoss-kibana:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_kibana:${DOCKER_IMAGE_TAG}
