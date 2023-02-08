@@ -15,7 +15,7 @@ if [ -n "${CMS_UPSTREAM_HOST}" ] && [ -n "${CMS_UPSTREAM_PORT}" ]; then
     		upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:${upstream_port}  backup max_fails=1 fail_timeout=30;"
     	else
     		upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:${upstream_port}  max_fails=2 fail_timeout=5;"
-    		kibana_upstream_conf="server   ${upstream_host}:5601;"
+    		#kibana_upstream_conf="server   ${upstream_host}:5601;"
   	fi
   done
 
@@ -30,19 +30,6 @@ else
   echo "CMS_UPSTREAM_HOST or CMS_UPSTREAM_PORT env variable is not set"
 fi
 
-#if [ -n "${MONITORING_UPSTREAM_HOST}" ]; then
-#
-#  upstream_conf="server   ${MONITORING_UPSTREAM_HOST}:5601;"
-#
-#  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-#  awk -v r="${upstream_conf}" '{gsub(/###MONITORING_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-#  rm /etc/nginx/conf.d/cms.conf.old
-#else
-#  echo "MONITORING_UPSTREAM_HOST env variable is not set"
-#fi
-#
-# if [ -n "${MONITORING_UPSTREAM_HOST}" ]; then
-
 #  upstream_conf="server   ${MONITORING_UPSTREAM_HOST}:80;"
 
 #  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
@@ -51,3 +38,14 @@ fi
 # else
 #  echo "MONITORING_UPSTREAM_HOST env variable is not set"
 # fi
+
+if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
+
+ upstream_conf="server   ${KEYCLOAK_UPSTREAM_HOST}:8443;"
+
+ mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
+ awk -v r="${upstream_conf}" '{gsub(/###KEYCLOAK_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
+ rm /etc/nginx/conf.d/cms.conf.old
+else
+ echo "KEYCLOAK_UPSTREAM_HOST env variable is not set"
+fi
