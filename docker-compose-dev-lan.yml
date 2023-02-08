@@ -12,6 +12,7 @@ services:
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
     ports:
       - "8087:8087"
+      - "8088:8088"
     networks:
       - geosslan
 
