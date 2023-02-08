@@ -41,6 +41,7 @@ fi
 
 if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
 
+  i=0
   upstream_conf=""
 
   for upstream_host in $(echo ${KEYCLOAK_UPSTREAM_HOST} | tr "," "\n")

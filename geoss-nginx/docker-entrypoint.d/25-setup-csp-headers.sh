@@ -15,3 +15,6 @@ headers="add_header Content-Security-Policy \"default-src 'self' 'unsafe-inline'
 mv /etc/nginx/conf.d/utils/proxy_response_headers.conf /etc/nginx/conf.d/utils/proxy_response_headers.conf.old
 awk -v r="${headers}" '{gsub(/###CSP_HEADERS###/,r)}1' /etc/nginx/conf.d/utils/proxy_response_headers.conf.old > /etc/nginx/conf.d/utils/proxy_response_headers.conf
 rm /etc/nginx/conf.d/utils/proxy_response_headers.conf.old
+
+echo "NEW cms.conf:"
+cat /etc/nginx/conf.d/cms.conf
