@@ -48,9 +48,9 @@ if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
     do
       i=$((i+1))
       if [ $i -gt 1 ]; then
-          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8443  backup max_fails=1 fail_timeout=30;"
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8087  backup max_fails=1 fail_timeout=30;"
         else
-          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8443  max_fails=2 fail_timeout=5;"
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8087  max_fails=2 fail_timeout=5;"
       fi
   done
 

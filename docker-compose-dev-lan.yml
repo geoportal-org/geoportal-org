@@ -43,6 +43,7 @@ services:
   geoss-keycloak:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:latest
     hostname: geoss-keycloak
+    command: 
     deploy:
       replicas: 1
       placement:
@@ -99,7 +100,6 @@ services:
     depends_on:
       - geoss-db
       - geoss-keycloak
-
 
   #######################################
   #          HELPER CONTAINERS          #
