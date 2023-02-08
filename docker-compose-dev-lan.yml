@@ -60,6 +60,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
       KC_HOSTNAME: geoss-keycloak
       KC_HOSTNAME_STRICT: "false"
+      KC_PROXY: edge
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings
