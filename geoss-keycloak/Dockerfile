@@ -28,6 +28,7 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 COPY realms/ /opt/keycloak/data/import/
 COPY themes/geoss/ /opt/keycloak/themes/geoss/
+COPY certs/ /etc/x509/https/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized", "--import-realm"]
