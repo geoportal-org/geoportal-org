@@ -58,7 +58,7 @@ services:
       KC_DB_PASSWORD:  ${DB_ROOT_PASS}
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
-      KC_HOSTNAME: geoss-keycloak
+      KC_HOSTNAME: gpp-idp.devel.esaportal.eu
       KC_HOSTNAME_STRICT: "false"
       KC_PROXY: edge
       PROXY_ADDRESS_FORWARDING: "true"
