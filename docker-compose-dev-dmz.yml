@@ -48,7 +48,7 @@ services:
       KEYCLOAK_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
       KEYCLOAK_DOMAIN_NAME: gpp-idp.devel.esaportal.eu
       #MONITORING_UPSTREAM_HOST: ${NGINX_MONITORING_UPSTREAM_HOST}
-      CSP_DOMAINS: 'gpp.devel.esaportal.eu,gpp-idp.devel.esaportal.eu,geoss-keycloak'
+      CSP_DOMAINS: 'gpp.devel.esaportal.eu,gpp-idp.devel.esaportal.eu'
       MAINTENANCE_WHITELIST: ${NGINX_MAINTENANCE_WHITELIST}
       DEPLOY_ENV: dev
       http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
