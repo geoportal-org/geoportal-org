@@ -60,3 +60,26 @@ if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
 else
  echo "KEYCLOAK_UPSTREAM_HOST env variable is not set"
 fi
+
+
+if [ -n "${ADMIN_UPSTREAM_HOST}" ]; then
+
+  i=0
+  upstream_conf=""
+
+  for upstream_host in $(echo ${ADMIN_UPSTREAM_HOST} | tr "," "\n")
+    do
+      i=$((i+1))
+      if [ $i -gt 1 ]; then
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8089  backup max_fails=1 fail_timeout=30;"
+        else
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:8089  max_fails=2 fail_timeout=5;"
+      fi
+  done
+
+  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
+  rm /etc/nginx/conf.d/cms.conf.old
+else
+ echo "ADMIN_UPSTREAM_HOST env variable is not set"
+fi

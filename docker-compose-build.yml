@@ -33,12 +33,11 @@ services:
 ########################
 ###    LAN IMAGES    ###
 ########################
-  # geoss-admin:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
-  #   container_name: geoss-admin
-  #   build:
-  #     context: ./geoss-admin
-  #     dockerfile: Dockerfile
+  geoss-admin:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-admin
+      dockerfile: Dockerfile
 
   # geoss-bookmarks:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_bookmarks:${DOCKER_IMAGE_TAG}
