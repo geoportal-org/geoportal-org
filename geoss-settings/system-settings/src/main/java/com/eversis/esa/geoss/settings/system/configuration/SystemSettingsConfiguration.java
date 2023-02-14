@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.settings.system.repository")
 @ComponentScan(
         basePackages = {
-                // "com.eversis.esa.geoss.settings.system.event"
+                "com.eversis.esa.geoss.settings.system.event"
         }
 )
 @Configuration(proxyBeanMethods = false)
@@ -39,7 +40,7 @@ public class SystemSettingsConfiguration {
             Set<String> securitySchemes = Optional.ofNullable(openApi.getComponents())
                     .map(Components::getSecuritySchemes)
                     .filter(Objects::nonNull)
-                    .map(securitySchemesMap -> securitySchemesMap.keySet())
+                    .map(Map::keySet)
                     .orElse(Collections.emptySet());
             List<SecurityRequirement> securityRequirements = securitySchemes.stream()
                     .map(s -> {
@@ -53,7 +54,7 @@ public class SystemSettingsConfiguration {
             operations.forEach(operation -> {
                 if (operation != null) {
                     String operationId = operation.getOperationId();
-                    if (operationId.contains("portalsetupwizard")) {
+                    if (operationId.contains("apisettings")) {
                         operation.setSecurity(securityRequirements);
                     }
                 }

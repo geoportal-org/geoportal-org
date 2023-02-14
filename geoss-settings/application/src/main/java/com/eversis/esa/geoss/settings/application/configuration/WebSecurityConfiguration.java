@@ -97,7 +97,7 @@ public class WebSecurityConfiguration {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests()
-                .requestMatchers(basePath + "/portal-setup-wizard/**").hasRole("ADMIN")
+                .requestMatchers(basePath + "/api-settings/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();

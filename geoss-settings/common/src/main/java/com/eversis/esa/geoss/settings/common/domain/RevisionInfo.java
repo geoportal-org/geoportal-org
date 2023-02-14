@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.settings.common.event.RevisionInfoRevisionListener;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Entity
 @Table(name = "revinfo")
 @AttributeOverrides({

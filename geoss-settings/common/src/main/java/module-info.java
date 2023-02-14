@@ -7,7 +7,6 @@ module geoss.settings.common {
     exports com.eversis.esa.geoss.settings.common.event to spring.beans, spring.context;
 
     opens com.eversis.esa.geoss.settings.common.hateoas to spring.core;
-    // exports com.eversis.esa.geoss.settings.common.domain to spring.beans, spring.context;
 
     requires com.fasterxml.jackson.annotation;
     requires jakarta.mail;
@@ -23,7 +22,6 @@ module geoss.settings.common {
     requires spring.context.support;
     requires spring.data.commons;
     requires spring.hateoas;
-    requires spring.security.core;
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;

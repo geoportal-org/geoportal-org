@@ -13,24 +13,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 /**
- * The type Portal setup wizard.
+ * The type Api settings.
  */
 @Data
 @Audited
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class PortalSetupWizard {
+public class ApiSettings {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +38,17 @@ public class PortalSetupWizard {
     private Long id;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String domain;
+    private ApiSettingsCategory category;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ApiSettingsName name;
+
+    @Column(name = "value_")
+    private String value;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @NotAudited

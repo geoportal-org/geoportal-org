@@ -13,19 +13,24 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
 >
     <changeSet id="8" author="Eversis">
-        <comment>Settings</comment>
-        <createTable tableName="portal_setup_wizard">
+        <comment>API Settings</comment>
+        <createTable tableName="api_settings">
             <column name="id" type="bigint" autoIncrement="true" startWith="1">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="domain" type="varchar(254)">
+            <column name="category" type="varchar(254)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(254)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="value_" type="varchar(254)">
             </column>
         </createTable>
     </changeSet>
     <changeSet id="9" author="Eversis">
-        <comment>Settings audit</comment>
-        <addColumn tableName="portal_setup_wizard">
+        <comment>API Settings audit</comment>
+        <addColumn tableName="api_settings">
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
@@ -41,8 +46,8 @@
         </addColumn>
     </changeSet>
     <changeSet id="10" author="Eversis">
-        <comment>Settings audit</comment>
-        <createTable tableName="portal_setup_wizard_aud">
+        <comment>API Settings audit</comment>
+        <createTable tableName="api_settings_aud">
             <column name="id" type="bigint">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -52,11 +57,15 @@
             <column name="revtype" type="tinyint">
                 <constraints nullable="false"/>
             </column>
-            <column name="domain" type="varchar(254)">
+            <column name="category" type="varchar(254)">
+            </column>
+            <column name="name" type="varchar(254)">
+            </column>
+            <column name="value_" type="varchar(254)">
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="fk_portal_setup_wizard_aud_rev_revinfo_rev"
-                baseTableName="portal_setup_wizard_aud" baseColumnNames="rev"
+        <addForeignKeyConstraint constraintName="fk_api_settings_aud_rev_revinfo_rev"
+                baseTableName="api_settings_aud" baseColumnNames="rev"
                 referencedTableName="revinfo" referencedColumnNames="rev"/>
     </changeSet>
 </databaseChangeLog>
