@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.settings.system.repository")
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.settings.system.controller",
                 "com.eversis.esa.geoss.settings.system.event"
         }
 )
@@ -54,7 +55,7 @@ public class SystemSettingsConfiguration {
             operations.forEach(operation -> {
                 if (operation != null) {
                     String operationId = operation.getOperationId();
-                    if (operationId.contains("apisettings")) {
+                    if (operationId.contains("apisettings") || operationId.contains("ApiSettings")) {
                         operation.setSecurity(securityRequirements);
                     }
                 }

@@ -22,6 +22,7 @@ module geoss.system.settings {
     requires spring.data.commons;
     requires spring.data.jpa;
     requires spring.data.rest.core;
+    requires spring.data.rest.webmvc;
     requires spring.hateoas;
     requires spring.tx;
     requires spring.web;
