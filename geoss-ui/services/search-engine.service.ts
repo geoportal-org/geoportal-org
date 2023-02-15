@@ -1,14 +1,14 @@
-import { SearchEngineGetters } from '@/stores/search-engine/search-engine-getters'
-import { MyWorkspaceGetters } from '@/stores/my-workspace/my-workspace-getters'
+import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters'
+import { MyWorkspaceGetters } from '@/store/my-workspace/my-workspace-getters'
 import { BaseUrl, AppVueObj, Liferay } from '@/data/global'
-import { GeneralFiltersGetters } from '@/stores/general-filters/general-filters-getters'
-import { FacetedFiltersGetters } from '@/stores/faceted-filters/faceted-filters-getters'
-import { GranulaFiltersGetters } from '@/stores/granula-filters/granula-filters-getters'
-import { IrisFiltersGetters } from '@/stores/iris-filters/iris-filters-getters'
-import { MapGetters } from '@/stores/map/map-getters'
-import { SearchGetters } from '@/stores/search/search-getters'
+import { GeneralFiltersGetters } from '@/store/general-filters/general-filters-getters'
+import { FacetedFiltersGetters } from '@/store/faceted-filters/faceted-filters-getters'
+import { GranulaFiltersGetters } from '@/store/granula-filters/granula-filters-getters'
+import { IrisFiltersGetters } from '@/store/iris-filters/iris-filters-getters'
+import { MapGetters } from '@/store/map/map-getters'
+import { SearchGetters } from '@/store/search/search-getters'
 import UtilsService from './utils.service'
-import { DataOrigin } from '../interfaces/DataSources'
+import { DataOrigin, DataSource } from '@/interfaces/DataSources'
 
 const SearchEngineService = {
     getDabOpenSearchUrl() {
@@ -79,7 +79,7 @@ const SearchEngineService = {
         return null
     },
 
-    getResourceUrl(resourceId, params) {
+    getResourceUrl(resourceId: string, params: any) {
         const prefix = BaseUrl()
         let friendlySiteUrl = 'guest'
         let urlLoc = BaseUrl() + '/home'
@@ -131,13 +131,13 @@ const SearchEngineService = {
         })
     },
 
-    getLegendAccessibilityUrl(url) {
+    getLegendAccessibilityUrl(url: string) {
         return SearchEngineService.getResourceUrl('LEGEND_ACCESSIBILITY', {
             url,
         })
     },
 
-    getSurveyUrl(form) {
+    getSurveyUrl(form: any) {
         return SearchEngineService.getResourceUrl('SURVEY', {
             impression: form.impression,
             did_found_what_looking_for: form.did_found_what_looking_for,
@@ -152,21 +152,21 @@ const SearchEngineService = {
         })
     },
 
-    getBookmarkedFeedUrl(targetIds) {
+    getBookmarkedFeedUrl(targetIds: string) {
         return SearchEngineService.getResourceUrl('BOOKMARKED_FEED', {
             targetIds,
         })
     },
 
-    getLinkStatusUrl(urlToCheck) {
+    getLinkStatusUrl(urlToCheck: string) {
         return SearchEngineService.getResourceUrl('LINK_STATUS', { urlToCheck })
     },
 
-    getMetaDataUrl(targetId) {
+    getMetaDataUrl(targetId: string) {
         return SearchEngineService.getResourceUrl('META_DATA', { targetId })
     },
 
-    getCheckLayerFileUrl(urlToCheck, type) {
+    getCheckLayerFileUrl(urlToCheck: string, type: string) {
         return SearchEngineService.getResourceUrl('CHECK_LAYER_FILE', {
             url: urlToCheck,
             type,
@@ -181,18 +181,23 @@ const SearchEngineService = {
         })
     },
 
-    getDhusProxyUrl(dhusResourceUrl) {
+    getDhusProxyUrl(dhusResourceUrl: string) {
         return SearchEngineService.getResourceUrl('DHUS_PROXY', {
             url: encodeURI(dhusResourceUrl),
         })
     },
 
     // targetIds - comma separated values
-    getGetRatingsUrl(targetIds) {
+    getGetRatingsUrl(targetIds: string) {
         return SearchEngineService.getResourceUrl('GET_RATINGS', { targetIds })
     },
 
-    getUpdateRatingUrl(targetId, name, score, comment) {
+    getUpdateRatingUrl(
+        targetId: string,
+        name: string,
+        score: string,
+        comment: string
+    ) {
         return SearchEngineService.getResourceUrl('UPDATE_RATING', {
             targetId,
             name,
@@ -201,7 +206,7 @@ const SearchEngineService = {
         })
     },
 
-    getGetCommentsUrl(targetId) {
+    getGetCommentsUrl(targetId: string) {
         return SearchEngineService.getResourceUrl('GET_COMMENTS', { targetId })
     },
 
@@ -232,7 +237,7 @@ const SearchEngineService = {
         return SearchEngineService.getResourceUrl('STATISTIC_AUTH', {})
     },
 
-    getShareUrl(targetId?: string, checkTargetIdUrlParam?: boolean) {
+    getShareUrl(targetId?: string | null, checkTargetIdUrlParam?: boolean) {
         const params = window.location.search
             .substr(1)
             .split('&')
@@ -295,7 +300,7 @@ const SearchEngineService = {
             if (srcEntry && srcEntry.id && srcEntry.dataSource) {
                 linkurl += `&crRelationSrcId=${encodeURIComponent(srcEntry.id)}`
                 linkurl += `&crRelationSrcDs=${encodeURIComponent(
-                    DataOrigin[srcEntry.dataSource]
+                    DataOrigin[srcEntry.dataSource as DataSource]
                 )}`
             }
         }

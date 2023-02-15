@@ -277,7 +277,7 @@ const actions = {
     setMode({ commit }: any, value: any) {
         commit('setStateProp', { prop: 'mode', value })
     },
-    extractDataSource(item: { dataSource: string }, result: { category: any }) {
+    extractDataSource(item: any, result: any) {
         let resourceType = item.dataSource || 'dab'
         if (result) {
             const resultCategories = result.category

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { AppVueObj } from '@/data/global'
-import { SearchActions } from '@/stores/search/search-actions'
+import { SearchActions } from '@/store/search/search-actions'
 
 const SpinnerService = {
     emitter: new Vue(),

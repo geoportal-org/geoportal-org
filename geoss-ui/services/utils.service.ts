@@ -1,12 +1,13 @@
 import { AppVueObj } from '@/data/global'
 import SearchEngineService from './search-engine.service'
-import { GeneralGetters } from '@/stores/general/general-getters'
-import { UserGetters } from '@/stores/user/user-getters'
+import { GeneralGetters } from '@/store/general/general-getters'
+import { UserGetters } from '@/store/user/user-getters'
 import SpinnerService from './spinner.service'
-import { GeneralFiltersActions } from '@/stores/general-filters/general-filters-actions'
+import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions'
 
 const requestAnimFrame =
     window.requestAnimationFrame ||
+    // @ts-ignore
     window.webkitRequestAnimationFrame ||
     ((callback) => {
         window.setTimeout(callback, 1000 / 60)
@@ -19,7 +20,7 @@ const UtilsService = {
         targetType?: string,
         multiple?: boolean
     ) {
-        let result = []
+        let result: any[] = []
         const getResult = (obj: any, propsPath: string) => {
             propsPath = propsPath.replace(/\[(\w+)\]/g, '.$1')
             propsPath = propsPath.replace(/^\./, '')
@@ -73,9 +74,9 @@ const UtilsService = {
         return result[0]
     },
 
-    getArrayByString(obj, propsPath) {
+    getArrayByString(obj: any, propsPath: string) {
         let result = []
-        const getResult = (obj, propsPath) => {
+        const getResult = (obj: any, propsPath: string) => {
             propsPath = propsPath.replace(/\[(\w+)\]/g, '.$1')
             propsPath = propsPath.replace(/^\./, '')
             const props = propsPath.split('.')
@@ -168,13 +169,13 @@ const UtilsService = {
         )
 
         const easingEquations = {
-            easeOutSine(pos) {
+            easeOutSine(pos: number) {
                 return Math.sin(pos * (Math.PI / 2))
             },
-            easeInOutSine(pos) {
+            easeInOutSine(pos: number) {
                 return -0.5 * (Math.cos(Math.PI * pos) - 1)
             },
-            easeInOutQuint(pos) {
+            easeInOutQuint(pos: number) {
                 pos /= 0.5
                 if (pos < 1) {
                     return 0.5 * Math.pow(pos, 5)
@@ -197,7 +198,7 @@ const UtilsService = {
                         scrollY + (scrollTargetY - scrollY) * t
                 } else {
                     scrollableContainer.scrollTop = scrollTargetY
-                    resolve()
+                    resolve
                 }
             }
 
@@ -211,9 +212,13 @@ const UtilsService = {
         )
     },
 
-    changeRememberState(path, value) {
+    changeRememberState(path: any, value: any) {
         const storeStateBackup = JSON.parse(AppVueObj.storeStateBackup)
-        const changeByPath = (storeStateBackup, path, value) => {
+        const changeByPath = (
+            storeStateBackup: any,
+            path: string,
+            value: any
+        ) => {
             const parts = path.split('/')
             let o = storeStateBackup
             if (parts.length > 1) {
@@ -240,7 +245,7 @@ const UtilsService = {
         return JSON.parse(JSON.stringify(storeStateBackup))
     },
 
-    setCurrentState(state) {
+    setCurrentState(state: any[]) {
         state.map = AppVueObj.app.$store.state.map
         AppVueObj.app.$store.replaceState(state)
         setTimeout(() => {
@@ -263,11 +268,7 @@ const UtilsService = {
                         1
                 )
             if (replace) {
-                window.history.replaceState(
-                    AppVueObj.storeStateBackup,
-                    null,
-                    url
-                )
+                window.history.replaceState(AppVueObj.storeStateBackup, '', url)
             }
             AppVueObj.app.$store.dispatch(
                 GeneralFiltersActions.setLastTriggerredState
@@ -313,7 +314,7 @@ const UtilsService = {
         return value
     },
 
-    getUrlParams(url: string = null): Array<{ name: string; value: any }> {
+    getUrlParams(url?: string): Array<{ name: string; value: any }> {
         let params
         if (url) {
             params = url
@@ -375,9 +376,9 @@ const UtilsService = {
 
     createAndOpenFile(data: any, filename: string, type: string) {
         const file = new Blob([data], { type })
-        if (window.navigator.msSaveOrOpenBlob) {
+        if ((window.navigator as any).msSaveOrOpenBlob) {
             // IE10+ case
-            window.navigator.msSaveOrOpenBlob(file, filename)
+            ;(window.navigator as any).msSaveOrOpenBlob(file, filename)
         } else {
             const a = document.createElement('a')
             const url = URL.createObjectURL(file)

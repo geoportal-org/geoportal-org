@@ -21,7 +21,9 @@
             "@nuxtjs/i18n",
             "@types/node",
             "cookie-universal-nuxt",
-            "node"
+            "node",
+            "ua-parser-js",
+            "elasticsearch"
         ]
     },
     "exclude": ["node_modules", ".nuxt", "dist"]

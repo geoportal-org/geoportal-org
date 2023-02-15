@@ -1,11 +1,7 @@
-import { PopupActions } from '@/stores/popup/popup-actions'
-import Vue from 'vue'
-import VueCookie from 'vue-cookie'
+import { PopupActions } from '@/store/popup/popup-actions'
 import { AppVueObj } from '@/data/global'
-import { GeneralGetters } from '@/stores/general/general-getters'
+import { GeneralGetters } from '@/store/general/general-getters'
 import Survey from '@/components/Survey.vue'
-
-Vue.use(VueCookie)
 
 const glio: any = {
     config: {
@@ -71,7 +67,7 @@ const glio: any = {
             }
         })
     },
-    trigger: (callback) => {
+    trigger: (callback: any) => {
         return callback
     },
     getWidthRightValue: () => {
@@ -104,13 +100,13 @@ const glio: any = {
 
         return bottomRightValue
     },
-    getDirection: (directionUser, direction) => {
+    getDirection: (directionUser: string, direction: string) => {
         if (directionUser === direction) {
             return true
         }
         return false
     },
-    callTopleft: (x, y, callback) => {
+    callTopleft: (x: string, y: string, callback: any) => {
         if (
             x <= glio.getScreenWidthFragment() &&
             y <= glio.config.heightTopLeft
@@ -119,13 +115,13 @@ const glio: any = {
             callback()
         }
     },
-    callTopRight: (x, y, callback) => {
+    callTopRight: (x: string, y: string, callback: any) => {
         if (x > glio.getWidthRightValue() && y <= glio.config.heightTopRight) {
             glio.statusTopRight = 'active'
             callback()
         }
     },
-    callBottomRight: (x, y, callback) => {
+    callBottomRight: (x: string, y: string, callback: any) => {
         if (
             x >= glio.getWidthRightValue() &&
             y >= glio.getBottomHeightValue()
@@ -134,7 +130,7 @@ const glio: any = {
             callback()
         }
     },
-    callBottomLeft: (x, y, callback) => {
+    callBottomLeft: (x: string, y: string, callback: any) => {
         if (
             x <= glio.getScreenWidthFragment() &&
             y >= glio.getBottomHeightValue()
@@ -144,7 +140,7 @@ const glio: any = {
         }
     },
     positionsTopY: [],
-    callTop: (x, y, callback) => {
+    callTop: (x: string, y: string, callback: any) => {
         if (y > glio.config.centerTopHeight + 1) {
             glio.positionsTopY.push(y)
         }

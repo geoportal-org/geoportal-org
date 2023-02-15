@@ -30,5 +30,5 @@ export const Cookies = window[cookiesStr]
 
 export const AppVueObj = {
     app: null as Vue,
-    storeStateBackup: null,
+    storeStateBackup: null as string,
 }

@@ -1,94 +1,114 @@
-import { makeRequest } from './general.api.service';
-let captchaID = null;
+import { makeRequest } from './general.api.service'
+let captchaID: string | null = null
 
-export const findLabelForEachInput = input => {
-	const inputName = input.name;
-	const labels = document.getElementsByTagName('label');
-	const labelsArr: any = Array.from(labels);
+export const findLabelForEachInput = (input: any) => {
+    const inputName = input.name
+    const labels = document.getElementsByTagName('label')
+    const labelsArr: any = Array.from(labels)
 
-	const filteredLabelsArr = labelsArr.filter(label => {
-		return label.htmlFor !== 'enhanced-form-submit';
-	});
+    const filteredLabelsArr = labelsArr.filter((label: any) => {
+        return label.htmlFor !== 'enhanced-form-submit'
+    })
 
-	for (const label of filteredLabelsArr) {
-		if (label.htmlFor === inputName) {
-			const inputLabels = label.innerText;
-			return inputLabels;
-		}
-	}
-};
+    for (const label of filteredLabelsArr) {
+        if (label.htmlFor === inputName) {
+            const inputLabels = label.innerText
+            return inputLabels
+        }
+    }
+}
 
 export const getFeedbackQuestionsAndAnswers = (feedbackData: any) => {
-	let description = '';
+    let description = ''
 
-	Object.entries(feedbackData).map(([key, value]) => {
-		description += `${key}\n${value}\n\n`;
-	});
+    Object.entries(feedbackData).map(([key, value]) => {
+        description += `${key}\n${value}\n\n`
+    })
 
-	return description;
-};
+    return description
+}
 
 export const createJiraIssue = (
-	issueTitle: string,
-	issueDescription: string
+    issueTitle: string,
+    issueDescription: string
 ) => {
-	const endpointUrl = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=JIRA_ISSUE`;
+    const endpointUrl = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=JIRA_ISSUE`
 
-	return makeRequest('post', endpointUrl, {
-		issueTitle,
-		issueDescription
-	}).catch(() => {
-		return false;
-	});
-};
+    return makeRequest('post', endpointUrl, {
+        issueTitle,
+        issueDescription,
+    }).catch(() => {
+        return false
+    })
+}
 
-export const generateCaptcha = (captchaIMGTagID, captchaLoaderSelector) => {
-	const captchaEndpoint = '/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=SERVE_CAPTCHA';
+export const generateCaptcha = (
+    captchaIMGTagID: string,
+    captchaLoaderSelector: string
+) => {
+    const captchaEndpoint =
+        '/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=SERVE_CAPTCHA'
 
-	return makeRequest('get', captchaEndpoint).then(res => {
-		const { captchaId, captchaImg } = res;
-		captchaID = captchaId;
-		const captchaLoader = document.querySelector(captchaLoaderSelector);
-		const captchaIMGTag: any = document.getElementById(captchaIMGTagID);
+    return makeRequest('get', captchaEndpoint)
+        .then((res: any) => {
+            const { captchaId, captchaImg } = res
+            captchaID = captchaId
+            const captchaLoader: HTMLElement | null = document.querySelector(
+                captchaLoaderSelector
+            )
+            const captchaIMGTag: any = document.getElementById(captchaIMGTagID)
 
-		if (captchaImg !== undefined) {
-			captchaIMGTag.src = `data:image/png;base64, ${captchaImg}`;
-			captchaLoader.classList.add('hidden');
-		}
-	}).catch(() => {
-		return false;
-	});
-};
+            if (captchaImg !== undefined) {
+                captchaIMGTag.src = `data:image/png;base64, ${captchaImg}`
+                captchaLoader!.classList.add('hidden')
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
 
-export const reloadCaptcha = captchaIMGTagID => {
-	const captchaReloadEndpoint = `https://geoss.devel.esaportal.eu/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=RELOAD_CAPTCHA&_geossresources_WAR_geossportlet_previousCaptchaId=${captchaID}`;
+export const reloadCaptcha = (captchaIMGTagID: string) => {
+    const captchaReloadEndpoint = `https://geoss.devel.esaportal.eu/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=RELOAD_CAPTCHA&_geossresources_WAR_geossportlet_previousCaptchaId=${captchaID}`
 
-	return makeRequest('get', captchaReloadEndpoint).then(res => {
-		const { captchaId, captchaImg } = res;
-		captchaID = captchaId;
-		const captchaIMGTag: any = document.getElementById(captchaIMGTagID);
-		captchaIMGTag.src = `data:image/png;base64, ${captchaImg}`;
-	}).catch(() => {
-		return false;
-	});
-};
+    return makeRequest('get', captchaReloadEndpoint)
+        .then((res: any) => {
+            const { captchaId, captchaImg } = res
+            captchaID = captchaId
+            const captchaIMGTag: any = document.getElementById(captchaIMGTagID)
+            captchaIMGTag.src = `data:image/png;base64, ${captchaImg}`
+        })
+        .catch(() => {
+            return false
+        })
+}
 
-export const verifyCaptcha = (captchaIMGTagID, captchaInputID, captchaErrorElement, submitFormFunction, captchaErrorClass, captchaErrorStyle) => {
-	const captchaInput: any = document.getElementById(captchaInputID);
-	const captchaInputValue = captchaInput.value;
-	const captchaErrorMsg: HTMLElement = document.querySelector(captchaErrorElement);
-	const captchaVerificationEndpoint = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=VERIFY_CAPTCHA&_geossresources_WAR_geossportlet_captchaId=${captchaID}&_geossresources_WAR_geossportlet_captchaAnswer=${captchaInputValue}`;
+export const verifyCaptcha = (
+    captchaIMGTagID: string,
+    captchaInputID: string,
+    captchaErrorElement: string,
+    submitFormFunction: any,
+    captchaErrorClass: string,
+    captchaErrorStyle: string
+) => {
+    const captchaInput: any = document.getElementById(captchaInputID)
+    const captchaInputValue = captchaInput.value
+    const captchaErrorMsg: HTMLElement | null =
+        document.querySelector(captchaErrorElement)
+    const captchaVerificationEndpoint = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=VERIFY_CAPTCHA&_geossresources_WAR_geossportlet_captchaId=${captchaID}&_geossresources_WAR_geossportlet_captchaAnswer=${captchaInputValue}`
 
-	makeRequest('get', captchaVerificationEndpoint).then(res => {
-		const { challange } = res;
-		if (challange === 'success') {
-			submitFormFunction();
-		} else {
-			reloadCaptcha(captchaIMGTagID);
-			captchaInput.classList.add(captchaErrorClass);
-			captchaErrorMsg.style.display = captchaErrorStyle;
-		}
-	}).catch(() => {
-		return false;
-	});
-};
+    makeRequest('get', captchaVerificationEndpoint)
+        .then((res: any) => {
+            const { challange } = res
+            if (challange === 'success') {
+                submitFormFunction()
+            } else {
+                reloadCaptcha(captchaIMGTagID)
+                captchaInput.classList.add(captchaErrorClass)
+                captchaErrorMsg!.style.display = captchaErrorStyle
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}

@@ -16,6 +16,7 @@ import { GeneralGetters } from '@/store/general/general-getters'
 import { SearchGetters } from '@/store/search/search-getters'
 import { SearchActions } from '@/store/search/search-actions'
 import {
+    DataSource,
     DataSources,
     DataPromiseId,
     DataSourcesMask,
@@ -312,8 +313,9 @@ const GeossSearchApiService = {
                     'sscScore',
                 ].includes(key)
             ) {
-                const datasource =
-                    AppVueObj.app.$store.getters[SearchGetters.dataSource]
+                const datasource = AppVueObj.app.$store.getters[
+                    SearchGetters.dataSource
+                ] as DataSource
                 requestsParams[datasource] += `${key}=${params[key]}`
             } else {
                 requestsParams.dab += `${key}=${params[key]}`
@@ -326,9 +328,11 @@ const GeossSearchApiService = {
             }
         }
 
-        for (const requestsParam of Object.keys(requestsParams)) {
+        for (const requestsParam of Object.keys(
+            requestsParams
+        ) as Array<DataSource>) {
             requestsParams[requestsParam] = requestsParams[
-                requestsParam
+                requestsParam as DataSource
             ].replace(/&+$/, '')
         }
 
@@ -355,7 +359,9 @@ const GeossSearchApiService = {
     isIdenticalToCacheParams(params: any) {
         const sourceParams = GeossSearchApiService.getDataSourcesParams(params)
         const phraseRegex = /&?reqID=[a-zA-Z1-9]*/
-        for (const dataSource of Object.keys(sourceParams)) {
+        for (const dataSource of Object.keys(
+            sourceParams
+        ) as Array<DataSource>) {
             let match = phraseRegex.exec(sourceParams[dataSource])
             if (match) {
                 sourceParams[dataSource] =
@@ -378,7 +384,9 @@ const GeossSearchApiService = {
     },
 
     clearCacheParams() {
-        for (const dataSource of Object.keys(cache.params)) {
+        for (const dataSource of Object.keys(
+            cache.params
+        ) as Array<DataSource>) {
             cache.params[dataSource] = ''
         }
     },
@@ -396,7 +404,7 @@ const GeossSearchApiService = {
         requestParams: any,
         workflow: any,
         theSameTab: boolean | undefined | null,
-        targetSource: any,
+        targetSource: DataSource,
         theSameSource: boolean | undefined | null
     ): Promise<
         | {
@@ -431,7 +439,7 @@ const GeossSearchApiService = {
                 typeof targetId === 'number' ||
                 !GeossSearchApiService.isJsonString(targetId)
             ) {
-                const dataSource =
+                const dataSource: Array<DataSource> =
                     UtilsService.getUrlParam('f:dataSource').split(',') ||
                     AppVueObj.app.$store.getters[
                         SearchGetters.dataSource
@@ -484,7 +492,7 @@ const GeossSearchApiService = {
                         promises.push(
                             GeossSearchApiService.getTargetById(
                                 targetIdObject[source].join(),
-                                source
+                                source as DataSource
                             ).then((data) => {
                                 if (!outputDataObject[`${source}Results`]) {
                                     outputDataObject[`${source}Results`] = {}
@@ -547,32 +555,42 @@ const GeossSearchApiService = {
                         (!targetSource || // no targetSource, so all requests
                             (!theSameSource &&
                                 (DataSourceGroup[targetSource] ===
-                                    DataOrigin[sourceName] || // get request for the same origin
+                                    DataOrigin[sourceName as DataSource] || // get request for the same origin
                                     DataSourceGroup[targetSource] ===
-                                        DataSourceGroup[sourceName])) || // get request for the same tab
+                                        DataSourceGroup[
+                                            sourceName as DataSource
+                                        ])) || // get request for the same tab
                             (theSameSource && targetSource === sourceName)) // get request only for the same dataSource
                     ) {
                         const requestWorkflow =
-                            DataPromiseId[sourceName] === 'cr_information' ||
-                            DataPromiseId[sourceName] === 'cr_services'
+                            DataPromiseId[sourceName as DataSource] ===
+                                'cr_information' ||
+                            DataPromiseId[sourceName as DataSource] ===
+                                'cr_services'
                                 ? workflow
                                 : false
                         promises.push({
-                            id: DataPromiseId[sourceName],
+                            id: DataPromiseId[sourceName as DataSource],
                             request: requestWorkflow
                                 ? null
                                 : makeRequest(
                                       'get',
                                       `${
                                           SearchEngineService.getSearchUrl()[
-                                              sourceName
+                                              sourceName as DataSource
                                           ]
-                                      }?${requestsParams[sourceName]}`,
+                                      }?${
+                                          requestsParams[
+                                              sourceName as DataSource
+                                          ]
+                                      }`,
                                       null,
                                       false,
                                       {
                                           requestId:
-                                              cancellableRequests[sourceName],
+                                              cancellableRequests[
+                                                  sourceName as DataSource
+                                              ],
                                           timeout: Timers.dabRequestMax,
                                           headers: { Accept: '*/*' },
                                       } as any,
@@ -581,13 +599,16 @@ const GeossSearchApiService = {
                         })
                     } else if (freezeSources.includes(sourceName)) {
                         for (const frozenSource of freezeSources) {
-                            const dataNameResults = `${frozenSource}Results`
                             promises.push({
-                                id: DataPromiseId[frozenSource],
+                                id: DataPromiseId[frozenSource as DataSource],
                                 request: new Promise((resolve) => {
                                     return resolve(
                                         AppVueObj.app.$store.getters[
-                                            SearchGetters[dataNameResults]
+                                            SearchGetters[
+                                                `${
+                                                    frozenSource as DataSource
+                                                }Results`
+                                            ]
                                         ]
                                     )
                                 }),
@@ -598,23 +619,23 @@ const GeossSearchApiService = {
 
                 // Load SeeAlso and Recommendations
                 LogService.getSeeAlsoWords(requestParams.st, 10, true)
-                    .catch((error) => error)
-                    .then((result) => {
+                    .catch((error: any) => error)
+                    .then((result: any) => {
                         AppVueObj.app.$store.dispatch(
                             SearchActions.setRecentSeeAlsoPhrases,
                             result
                         )
                     })
                 LogService.getSeeAlsoRecommendations(requestParams.st)
-                    .catch((error) => error)
-                    .then((result) => {
+                    .catch((error: any) => error)
+                    .then((result: any) => {
                         AppVueObj.app.$store.dispatch(
                             SearchActions.setRecentSeeAlsoRecommendations,
                             result
                         )
                     })
             } else {
-                const sourceName =
+                const sourceName: DataSource =
                     AppVueObj.app.$store.getters[SearchGetters.dataSource]
                 promises.push({
                     id: DataPromiseId[sourceName],
@@ -644,16 +665,21 @@ const GeossSearchApiService = {
                 allResultsPromises.push(
                     new Promise((resolve) => {
                         promise.request
-                            .then((data: string) => {
+                            .then((data: any) => {
                                 if (
                                     freezeSources.includes(
-                                        DataSourcesMask[promise.id]
+                                        (<any>DataSourcesMask)[promise.id]
                                     )
                                 ) {
-                                    let jsonData = data
+                                    let jsonData: {
+                                        dataSource: DataSource
+                                        entry: any[]
+                                        totalResults: number
+                                    } = data
                                     if (!jsonData) {
                                         jsonData = {
-                                            dataSource: promise.id,
+                                            dataSource:
+                                                promise.id as DataSource,
                                             entry: [],
                                             totalResults: 0,
                                         }
@@ -685,7 +711,9 @@ const GeossSearchApiService = {
                                         )
                                         const dataOrigin =
                                             DataOrigin[
-                                                DataSourcesMask[promise.id]
+                                                (<any>DataSourcesMask)[
+                                                    promise.id
+                                                ] as DataSource
                                             ]
                                         return Promise.all([
                                             GeossSearchApiService.getDabResultsRatings(
@@ -797,7 +825,9 @@ const GeossSearchApiService = {
                                             )
                                         const dataOrigin =
                                             DataOrigin[
-                                                DataSourcesMask[promise.id]
+                                                (<any>DataSourcesMask)[
+                                                    promise.id
+                                                ] as DataSource
                                             ]
                                         return Promise.all([
                                             GeossSearchApiService.getDabResultsRatings(
@@ -940,40 +970,40 @@ const GeossSearchApiService = {
                     }
                     return {
                         dabResults: results.filter(
-                            (res) => res.dataSource === 'dab'
+                            (res: any) => res.dataSource === 'dab'
                         )[0] || { dataSource: 'dab', error: 'no_results' },
                         dataResults: results.filter(
-                            (res) => res.dataSource === 'cr_data'
+                            (res: any) => res.dataSource === 'cr_data'
                         )[0] || { dataSource: 'data', error: 'no_results' },
                         amerigeossResults: results.filter(
-                            (res) => res.dataSource === 'amerigeoss_ckan'
+                            (res: any) => res.dataSource === 'amerigeoss_ckan'
                         )[0] || {
                             dataSource: 'amerigeoss',
                             error: 'no_results',
                         },
                         nextgeossResults: results.filter(
-                            (res) => res.dataSource === 'nextgeoss'
+                            (res: any) => res.dataSource === 'nextgeoss'
                         )[0] || {
                             dataSource: 'nextgeoss',
                             error: 'no_results',
                         },
                         informationResults: results.filter(
-                            (res) => res.dataSource === 'cr_information'
+                            (res: any) => res.dataSource === 'cr_information'
                         )[0] || {
                             dataSource: 'information',
                             error: 'no_results',
                         },
                         zenodoResults: results.filter(
-                            (res) => res.dataSource === 'zenodo'
+                            (res: any) => res.dataSource === 'zenodo'
                         )[0] || { dataSource: 'zenodo', error: 'no_results' },
                         wikipediaResults: results.filter(
-                            (res) => res.dataSource === 'wikipedia'
+                            (res: any) => res.dataSource === 'wikipedia'
                         )[0] || {
                             dataSource: 'wikipedia',
                             error: 'no_results',
                         },
                         servicesResults: results.filter(
-                            (res) => res.dataSource === 'cr_services'
+                            (res: any) => res.dataSource === 'cr_services'
                         )[0] || { dataSource: 'services', error: 'no_results' },
                     }
                 })
@@ -1079,7 +1109,7 @@ const GeossSearchApiService = {
     },
 
     checkAsyncDownloadStatus(file: DownloadFile) {
-        let resolvePromise: ((arg0: string) => void) | null = null
+        let resolvePromise: (arg0: string | any) => void
 
         const promise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -1090,7 +1120,7 @@ const GeossSearchApiService = {
             promise,
         }
 
-        const extentionMap = {
+        const extentionMap: { [key: string]: string } = {
             'application/gml+xml': 'xml',
             'application/gtopo30': 'gtopo30',
             'application/x-gzip': 'gz',
@@ -1122,7 +1152,7 @@ const GeossSearchApiService = {
                     console.warn(error)
                 })
         } else {
-            let method = 'get'
+            let method: 'post' | 'get' = 'get'
             let payload = null
             let config = {}
             if (file.checkStatusPayload) {
@@ -1207,6 +1237,7 @@ const GeossSearchApiService = {
 				<ows:Identifier>bulk-download</ows:Identifier>
 				<wps:DataInputs>`
 
+        // @ts-ignore
         jsonData = jsonData.forEach((item: { title: any; url: any }) => {
             requestBody += `
 					<wps:Input>
@@ -1504,7 +1535,7 @@ const GeossSearchApiService = {
             }
         )
             .then((data: any[]) => {
-                if (typeof data === 'object' && data.entries) {
+                if (typeof data === 'object' && data['entries']) {
                     return data
                 }
                 return false
@@ -1581,7 +1612,7 @@ const GeossSearchApiService = {
 
     getImagePathProxy(imagePath: string) {
         const url = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=IMAGES_PROXY`
-        return makeRequest('post', url, imagePath, null, {
+        return makeRequest('post', url, imagePath, false, {
             headers: { 'Content-Type': 'text/plain' },
         })
             .then((data: { uniqueId: any }) => {
@@ -1667,48 +1698,60 @@ const GeossSearchApiService = {
             groupId: Liferay.ThemeDisplay.getScopeGroupId(),
             start: startIndex,
             end: startIndex + resultsPerPage,
-        }).then(({ totalCount, items }) => {
-            return Promise.all(
-                items.map(
-                    (item: {
-                        status: string
-                        runId: string
-                        messageList: any
-                        result: any
-                        showLogs: boolean
-                        outputs: any
-                        showOutputs: boolean
-                    }) => {
-                        item.status = 'UNKNOWN'
-                        return GeossSearchApiService.getRunStatus(
-                            item.runId
-                        ).then(({ status, messageList, result }) => {
-                            item.status = status
-                            item.messageList = messageList
-                            item.result = result
-                            item.showLogs = false
-                            if (
-                                status === 'COMPLETED' ||
-                                status === 'SUCCESS'
-                            ) {
-                                return GeossSearchApiService.getRunOutputs(
-                                    item.runId
-                                ).then(({ outputs }) => {
-                                    item.outputs = outputs
-                                    item.showOutputs = false
-                                })
-                            }
-                        })
-                    }
+        }).then(
+            ({ totalCount, items }: { totalCount: number; items: any[] }) => {
+                return Promise.all(
+                    items.map(
+                        (item: {
+                            status: string
+                            runId: string
+                            messageList: any
+                            result: any
+                            showLogs: boolean
+                            outputs: any
+                            showOutputs: boolean
+                        }) => {
+                            item.status = 'UNKNOWN'
+                            return GeossSearchApiService.getRunStatus(
+                                item.runId
+                            ).then(
+                                ({
+                                    status,
+                                    messageList,
+                                    result,
+                                }: {
+                                    status: string
+                                    messageList: any
+                                    result: any
+                                }) => {
+                                    item.status = status
+                                    item.messageList = messageList
+                                    item.result = result
+                                    item.showLogs = false
+                                    if (
+                                        status === 'COMPLETED' ||
+                                        status === 'SUCCESS'
+                                    ) {
+                                        return GeossSearchApiService.getRunOutputs(
+                                            item.runId
+                                        ).then(({ outputs }: any) => {
+                                            item.outputs = outputs
+                                            item.showOutputs = false
+                                        })
+                                    }
+                                }
+                            )
+                        }
+                    )
                 )
-            )
-                .catch(() => {
-                    return { totalCount, items }
-                })
-                .then(() => {
-                    return { totalCount, items }
-                })
-        })
+                    .catch(() => {
+                        return { totalCount, items }
+                    })
+                    .then(() => {
+                        return { totalCount, items }
+                    })
+            }
+        )
     },
 
     getRunStatus(runId: string) {
@@ -1793,7 +1836,7 @@ const GeossSearchApiService = {
                                             .entry) {
                                             boxes.push(entry.box.split(' '))
                                         }
-                                        let coordinate =
+                                        let coordinate: any =
                                             MapCoordinatesUtils.mergeBoxes(
                                                 boxes
                                             )
@@ -1987,7 +2030,7 @@ const GeossSearchApiService = {
         })
     },
 
-    getTargetById(targetId: string, dataSource = 'dab') {
+    getTargetById(targetId: string, dataSource: DataSource = 'dab') {
         const dataOrigin = DataOrigin[dataSource] || dataSource
         if (dataOrigin === DataSources.ZENODO) {
             const targetIds = targetId.split(',')
@@ -2013,7 +2056,11 @@ const GeossSearchApiService = {
                 )
             }
             return Promise.all(promises).then((results) => {
-                const jsonData = {
+                const jsonData: {
+                    dataSource: DataSource
+                    entry: any[]
+                    totalResults: number
+                } = {
                     dataSource: DataSources.ZENODO,
                     entry: [],
                     totalResults: results.length,

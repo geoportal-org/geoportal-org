@@ -1,20 +1,19 @@
 import es from 'elasticsearch'
-import uuid from 'uuid'
 import { Liferay, AppVueObj, BaseUrl } from '@/data/global'
 import UAParser from 'ua-parser-js'
-import { GeneralFiltersGetters } from '@/stores/general-filters/general-filters-getters'
-import { GranulaFiltersGetters } from '@/stores/granula-filters/granula-filters-getters'
-import { IrisFiltersGetters } from '@/stores/iris-filters/iris-filters-getters'
-import { MyWorkspaceGetters } from '@/stores/my-workspace/my-workspace-getters'
-import { SearchGetters } from '@/stores/search/search-getters'
-import { FacetedFiltersGetters } from '@/stores/faceted-filters/faceted-filters-getters'
+import { GeneralFiltersGetters } from '@/store/general-filters/general-filters-getters'
+import { GranulaFiltersGetters } from '@/store/granula-filters/granula-filters-getters'
+import { IrisFiltersGetters } from '@/store/iris-filters/iris-filters-getters'
+import { MyWorkspaceGetters } from '@/store/my-workspace/my-workspace-getters'
+import { SearchGetters } from '@/store/search/search-getters'
+import { FacetedFiltersGetters } from '@/store/faceted-filters/faceted-filters-getters'
 import SearchEngineService from '@/services/search-engine.service'
 import UtilsService from '@/services/utils.service'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { makeRequest, GeneralApiService } from './general.api.service'
 
-const _PAQ = '_paq'
-const LogService = {
+const _PAQ: string = '_paq'
+const LogService: any = {
     /*------------------------------------*/
     /*----- elastic client init ----------*/
     /*------------------------------------*/
@@ -49,12 +48,12 @@ const LogService = {
     },
 
     logSearchResult(
-        pOperation,
-        id?,
-        className?,
-        entryIdVal?,
-        entryDbVal?,
-        uiActionVal?
+        pOperation: string,
+        id?: string,
+        className?: string,
+        entryIdVal?: string,
+        entryDbVal?: string,
+        uiActionVal?: string
     ) {
         return new Promise((resolve, reject) => {
             if (LogService.elasticsearch_live) {
@@ -81,6 +80,7 @@ const LogService = {
                     bbox = `${S} ${W} ${N} ${E}`
                 }
 
+                //@ts-ignore
                 LogService.client.bulk(
                     {
                         body: [
@@ -215,7 +215,7 @@ const LogService = {
                         ],
                         ...UtilsService.getAccessKeyObject(),
                     },
-                    (err, resp) => {
+                    (err: any, resp: any) => {
                         if (err) {
                             reject(err)
                         } else if (resp.items[0].create.status === 201) {
@@ -228,7 +228,7 @@ const LogService = {
             }
         }).finally(() => {
             if (!UtilsService.isWidget()) {
-                const paq = window[_PAQ]
+                const paq: Array<any> = (<any>window)[_PAQ]
                 if (paq) {
                     paq.push([
                         'trackEvent',
@@ -246,11 +246,11 @@ const LogService = {
     /*-----------------------------------------------*/
     logResourceError(
         attachUrl: boolean,
-        result,
-        pMessage,
-        pOperation,
-        pResult,
-        pResultDetails
+        result: any,
+        pMessage: string,
+        pOperation: string,
+        pResult: string,
+        pResultDetails: string
     ) {
         let linkUrlToShort = ''
         if (attachUrl) {
@@ -293,7 +293,7 @@ const LogService = {
         }
 
         GeneralApiService.shortenLink(linkUrlToShort).then(
-            (response) => {
+            (response: any) => {
                 if (response.data && response.data.id) {
                     bulkObject.body[1].short_url = response.data.id
                 }
@@ -303,7 +303,7 @@ const LogService = {
                             ...bulkObject,
                             ...UtilsService.getAccessKeyObject(),
                         },
-                        (err, resp) => {
+                        (err: any, resp: any) => {
                             if (err) {
                                 reject(err)
                             } else if (resp.items[0].create.status === 201) {
@@ -322,7 +322,7 @@ const LogService = {
                             ...bulkObject,
                             ...UtilsService.getAccessKeyObject(),
                         },
-                        (err, resp) => {
+                        (err: any, resp: any) => {
                             if (err) {
                                 reject(err)
                             } else if (resp.items[0].create.status === 201) {
@@ -341,15 +341,15 @@ const LogService = {
     /*--- log click action/event to elastic & MATOMO ----*/
     /*-----------------------------------------------*/
     logElementClick(
-        id,
-        className,
-        entryIdVal,
-        entryDbVal,
-        uiActionVal,
-        uiLabelVal,
-        uiOrganisationVal,
-        uiResourceNameVal,
-        pOperation?
+        id: string,
+        className: string,
+        entryIdVal: string,
+        entryDbVal: string,
+        uiActionVal: string,
+        uiLabelVal: string,
+        uiOrganisationVal: string,
+        uiResourceNameVal: string,
+        pOperation?: string
     ) {
         return new Promise((resolve, reject) => {
             if (LogService.elasticsearch_live) {
@@ -386,7 +386,7 @@ const LogService = {
                         ],
                         ...UtilsService.getAccessKeyObject(),
                     },
-                    (err, resp) => {
+                    (err: any, resp: any) => {
                         if (err) {
                             reject(err)
                         } else if (resp.items[0].create.status === 201) {
@@ -397,11 +397,11 @@ const LogService = {
                     }
                 )
             } else {
-                resolve()
+                resolve
             }
         }).finally(() => {
             if (!UtilsService.isWidget()) {
-                const paq = window[_PAQ]
+                const paq: Array<any> = (<any>window)[_PAQ]
                 if (paq) {
                     paq.push([
                         'trackEvent',
@@ -417,16 +417,20 @@ const LogService = {
     /*-----------------------------------------------*/
     /*--- log events for recommendations ------------*/
     /*-----------------------------------------------*/
-    logRecommendationData(eventCategory, eventAction, eventValue) {
+    logRecommendationData(
+        eventCategory: string,
+        eventAction: string,
+        eventValue: string
+    ) {
         if (!UtilsService.isWidget()) {
-            const paq = window[_PAQ]
+            const paq: Array<any> = (<any>window)[_PAQ]
             if (paq) {
                 paq.push(['trackEvent', eventCategory, eventAction, eventValue])
             }
         }
     },
 
-    otherFacetedParams(facetedFiltersObject) {
+    otherFacetedParams(facetedFiltersObject: any) {
         let otherFacetedParams = ''
         for (const param of ['format', 'protocol', 'score']) {
             if (facetedFiltersObject[param]) {
@@ -464,7 +468,7 @@ const LogService = {
                         ],
                         ...UtilsService.getAccessKeyObject(),
                     },
-                    (err, resp) => {
+                    (err: any, resp: any) => {
                         if (err) {
                             reject(err)
                         } else if (resp.items[0].create.status === 201) {
@@ -476,7 +480,7 @@ const LogService = {
                 )
                 AppVueObj.app.$cookies.remove('geoss_justSignedIn')
             } else {
-                resolve()
+                resolve
             }
         })
     },
@@ -513,7 +517,7 @@ const LogService = {
                         body: elasticesearchSearchQuery,
                         ...UtilsService.getAccessKeyObject(),
                     },
-                    (error, response) => {
+                    (error: any, response: any) => {
                         if (error) {
                             reject(error)
                         } else {
@@ -527,7 +531,7 @@ const LogService = {
         })
     },
 
-    getPopularWords: (queryString, limit) =>
+    getPopularWords: (queryString: string, limit: string | number) =>
         new Promise((resolve, reject) => {
             if (LogService.elasticsearch_live) {
                 const elasticesearchSearchQuery = {
@@ -559,7 +563,7 @@ const LogService = {
                         body: elasticesearchSearchQueryString,
                         ...UtilsService.getAccessKeyObject(),
                     },
-                    (error, response) => {
+                    (error: any, response: any) => {
                         if (error) {
                             reject(error)
                         } else {
@@ -576,12 +580,16 @@ const LogService = {
             }
         }),
 
-    getSeeAlsoWords: (queryString, limit, addMixedTerms) =>
+    getSeeAlsoWords: (
+        queryString: string,
+        limit: string | number,
+        addMixedTerms: boolean
+    ) =>
         new Promise((resolve, reject) => {
             if (limit) {
                 const relatedUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/concepts?st=${queryString}&ct=${limit}${UtilsService.getAccessKeyString()}`
                 makeRequest('get', relatedUrl, null, true, null, true)
-                    .then((data) => {
+                    .then((data: Array<any>) => {
                         if (addMixedTerms) {
                             let queryArray = queryString.split(' ')
                             const forbiddenWords = [
@@ -609,7 +617,7 @@ const LogService = {
                         }
                         resolve(data)
                     })
-                    .catch((error) => {
+                    .catch((error: any) => {
                         reject(error)
                     })
             } else {
@@ -617,25 +625,29 @@ const LogService = {
             }
         }),
 
-    getSeeAlsoRecommendations: (queryString) =>
+    getSeeAlsoRecommendations: (queryString: string) =>
         new Promise((resolve, reject) => {
             const recommendationsdUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/recommendations?st=${queryString}${UtilsService.getAccessKeyString()}`
             makeRequest('get', recommendationsdUrl, null, true, null, true)
-                .then((data) => {
+                .then((data: any) => {
                     resolve(data)
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     reject(error)
                 })
         }),
 
-    getAllSuggestions(queryString, lenList, lenRelated) {
+    getAllSuggestions(
+        queryString: string,
+        lenList: string | number,
+        lenRelated: string | number
+    ) {
         const promises = [
             LogService.getPopularWords(queryString, lenList).catch(
-                (error) => error
+                (error: any) => error
             ),
             LogService.getSeeAlsoWords(queryString, lenRelated, false).catch(
-                (error) => error
+                (error: any) => error
             ),
         ]
 
@@ -659,7 +671,7 @@ const LogService = {
         } else if (window.location.origin.includes('//localhost')) {
             // localhost development (standalone FE and Liferay version)
             logsearchHost = 'https://geoss.devel.esaportal.eu/logsearch'
-        } else if (process.env.VUE_APP_ELASTIC_SEARCH_URL.startsWith('/')) {
+        } else if (process.env.VUE_APP_ELASTIC_SEARCH_URL!.startsWith('/')) {
             // production packages (dev, uat, sit, prod)
             logsearchHost = `${window.location.origin}${process.env.VUE_APP_ELASTIC_SEARCH_URL}`
         }
@@ -676,9 +688,9 @@ const LogService = {
                     hello: 'elasticsearch',
                     ...UtilsService.getAccessKeyObject(),
                 },
-                (error) => {
+                (error: any) => {
                     LogService.elasticsearch_live = !error
-                    resolve()
+                    resolve
                 }
             )
         })
@@ -711,7 +723,7 @@ const LogService = {
         )
     },
 
-    addCommonProperties(document) {
+    addCommonProperties(document: any) {
         // session properties
         document.session_login =
             typeof Liferay !== 'undefined'

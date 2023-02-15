@@ -1,6 +1,6 @@
-import ol from '@/ol'
+import ol from '@/utils/ol'
 
-import { MapGetters } from '@/stores/map/map-getters'
+import { MapGetters } from '@/store/map/map-getters'
 import { AppVueObj } from '@/data/global'
 
 const LayerTilesService: { [key: string]: any } = {
@@ -128,7 +128,7 @@ const LayerTilesService: { [key: string]: any } = {
                     source: new ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer',
-                    }),
+                    } as any),
                 })
             return LayerTilesService.oceanBasemap.tileLayer
         },
@@ -146,7 +146,7 @@ const LayerTilesService: { [key: string]: any } = {
                     source: new ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer',
-                    }),
+                    } as any),
                 })
             return LayerTilesService.topographicBasemap.tileLayer
         },
@@ -164,13 +164,13 @@ const LayerTilesService: { [key: string]: any } = {
                     source: new ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
-                    }),
+                    } as any),
                 }),
                 new ol.layer.Tile({
                     source: new ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer',
-                    }),
+                    } as any),
                 }),
             ]
             return LayerTilesService.WorldStreetBasemap.tileLayer

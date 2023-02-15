@@ -18,11 +18,12 @@ const YellowPagesApiService = {
                     false,
                     { timeout: 120000 }
                 )
-                    .then((data) => {
+                    .then((data: { organizations: any[] }) => {
                         staticOrganizations = data.organizations
                         for (const organization of staticOrganizations) {
                             const registrationDate = organization.extras.find(
-                                (extra) => extra.key === 'Registration Date'
+                                (extra: { key: string }) =>
+                                    extra.key === 'Registration Date'
                             )
                             if (registrationDate && registrationDate.value) {
                                 const date = new Date()
@@ -49,14 +50,14 @@ const YellowPagesApiService = {
 
                             let principles = []
                             const principlesStr = organization.extras.find(
-                                (extra) =>
+                                (extra: { key: string }) =>
                                     extra.key ===
                                     'GEO Data Management Principles Label'
                             )
                             if (principlesStr && principlesStr.value) {
                                 principles = principlesStr.value.split(',')
                                 principles = principles
-                                    .map((principle) => {
+                                    .map((principle: string) => {
                                         const label = principle.split('-')[0]
                                         if (label) {
                                             return label
@@ -67,19 +68,20 @@ const YellowPagesApiService = {
                                             return null
                                         }
                                     })
-                                    .filter((principle) => principle)
+                                    .filter((principle: any) => principle)
                             }
 
                             organization.principles = principles
 
                             let goalsSBA = []
                             const goalsSBAStr = organization.extras.find(
-                                (extra) => extra.key === 'Relevant SBA'
+                                (extra: { key: string }) =>
+                                    extra.key === 'Relevant SBA'
                             )
                             if (goalsSBAStr && goalsSBAStr.value) {
                                 goalsSBA = goalsSBAStr.value.split(',')
                                 goalsSBA = goalsSBA
-                                    .map((goal) => {
+                                    .map((goal: string) => {
                                         let label = goal.split('-')[0]
                                         if (label) {
                                             label = label
@@ -94,19 +96,20 @@ const YellowPagesApiService = {
                                             return null
                                         }
                                     })
-                                    .filter((goal) => goal)
+                                    .filter((goal: any) => goal)
                             }
 
                             organization.goalsSBA = goalsSBA
 
                             let goalsSDG = []
                             const goalsSDGStr = organization.extras.find(
-                                (extra) => extra.key === 'Relevant SDG'
+                                (extra: { key: string }) =>
+                                    extra.key === 'Relevant SDG'
                             )
                             if (goalsSDGStr && goalsSDGStr.value) {
                                 goalsSDG = goalsSDGStr.value.split(',')
                                 goalsSDG = goalsSDG
-                                    .map((goal) => {
+                                    .map((goal: string) => {
                                         let label = goal.split('-')[0]
                                         if (label) {
                                             label = label
@@ -121,7 +124,7 @@ const YellowPagesApiService = {
                                             return null
                                         }
                                     })
-                                    .filter((goal) => goal)
+                                    .filter((goal: any) => goal)
                             }
 
                             organization.goalsSDG = goalsSDG
@@ -129,7 +132,7 @@ const YellowPagesApiService = {
                     })
                     .then(resolve)
             } else {
-                resolve()
+                resolve
             }
         }).then(() => {
             const providers = staticOrganizations.filter(
