@@ -1,7 +1,7 @@
-import { DataSource } from './DataSources';
+import { DataSource } from './DataSources'
 
 export interface ParentRef {
-	dataSource: DataSource;
-	id: string;
-	entry?: any;
+    dataSource: DataSource
+    id: string
+    entry?: any
 }

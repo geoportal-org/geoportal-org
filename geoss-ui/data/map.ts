@@ -1,7 +1,8 @@
-import ol from '@/ol'
+import ol from '@/utils/ol'
 
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { StaticPath } from '@/data/global'
+import Feature from 'ol/Feature'
 
 export const MapSource = new ol.source.Vector({
     wrapX: false,
@@ -27,7 +28,7 @@ const vector: any = new ol.layer.Vector({
     }),
 })
 
-export function getMapDrawnLayer(rectangle: ol.Feature) {
+export function getMapDrawnLayer(rectangle: Feature) {
     const layer = new ol.layer.Vector({
         source: new ol.source.Vector({
             features: [rectangle],
@@ -50,13 +51,13 @@ export const MapVector = vector
 
 export const MapDragAndDropInteraction = new ol.interaction.DragAndDrop({
     formatConstructors: [
-        ol.format.GPX,
-        ol.format.GeoJSON,
-        ol.format.IGC,
-        ol.format.KML,
-        ol.format.TopoJSON,
+        new ol.format.GPX(),
+        new ol.format.GeoJSON(),
+        new ol.format.IGC(),
+        new ol.format.KML(),
+        new ol.format.TopoJSON(),
     ],
-    projection: null,
+    projection: undefined,
 })
 
 const what3wordsStyle = new ol.style.Style({
@@ -75,7 +76,7 @@ export const getWhat3wordsLayer = (coordinates: MapCoordinate) => {
         geometry: new ol.geom.Point([lon, lat]),
     })
 
-    w3wIcon.getGeometry().transform('EPSG:4326', 'EPSG:3857')
+    w3wIcon.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
     w3wIcon.setStyle(what3wordsStyle)
 

@@ -20,15 +20,23 @@ export const StaticPath = () => {
     }
 }
 
-const LiferayStr = 'Liferay'
-const jQStr = '$'
-const cookiesStr = 'Cookies'
+interface Window {
+    [key: string]: any
+}
+declare const window: Window
+
+const LiferayStr: string = 'Liferay'
+const jQStr: string = '$'
+const cookiesStr: string = 'Cookies'
 
 export const Liferay = window[LiferayStr]
 export const $ = window[jQStr]
 export const Cookies = window[cookiesStr]
 
-export const AppVueObj = {
-    app: null as Vue,
-    storeStateBackup: null as string,
+interface AppVueObj {
+    [key: string]: any
+}
+export const AppVueObj: AppVueObj = {
+    app: null,
+    storeStateBackup: null,
 }
