@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * The enum Api settings category.
  */
-public enum ApiSettingsCategory {
+public enum ApiSettingsSet {
 
     /**
      * External api settings category.
@@ -44,7 +44,7 @@ public enum ApiSettingsCategory {
      * @param category the category
      * @return the status
      */
-    public static ApiSettingsCategory fromString(String category) {
-        return ApiSettingsCategory.valueOf(category.toUpperCase());
+    public static ApiSettingsSet fromString(String category) {
+        return ApiSettingsSet.valueOf(category.toUpperCase());
     }
 }

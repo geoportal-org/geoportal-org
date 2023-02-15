@@ -1,5 +1,8 @@
 package com.eversis.esa.geoss.settings.system.configuration;
 
+import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsKeyConverter;
+import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsSetConverter;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -7,7 +10,9 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +65,22 @@ public class SystemSettingsConfiguration {
                     }
                 }
             });
+        };
+    }
+
+    /**
+     * System settings repository rest configurer repository rest configurer.
+     *
+     * @return the repository rest configurer
+     */
+    @Bean
+    RepositoryRestConfigurer systemSettingsRepositoryRestConfigurer() {
+        return new RepositoryRestConfigurer() {
+            @Override
+            public void configureConversionService(ConfigurableConversionService conversionService) {
+                conversionService.addConverter(new StringToApiSettingsKeyConverter());
+                conversionService.addConverter(new StringToApiSettingsSetConverter());
+            }
         };
     }
 }
