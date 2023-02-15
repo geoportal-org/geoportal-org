@@ -98,6 +98,7 @@ public class WebSecurityConfiguration {
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests()
                 .requestMatchers(basePath + "/api-settings/**").hasRole("ADMIN")
+                .requestMatchers(basePath + "/layers/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();
