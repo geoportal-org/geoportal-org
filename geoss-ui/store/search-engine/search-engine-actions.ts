@@ -1,0 +1,14 @@
+export enum SearchEngineActions {
+    setDabBaseUrl = 'searchEngine/setDabBaseUrl',
+    setDabBaseUrlConf = 'searchEngine/setDabBaseUrlConf',
+    setKpBaseUrl = 'searchEngine/setKpBaseUrl',
+    setSiteName = 'searchEngine/setSiteName',
+    setSiteLogo = 'searchEngine/setSiteLogo',
+    setSiteUrl = 'searchEngine/setSiteUrl',
+    setTourUrl = 'searchEngine/setTourUrl',
+    setDabDataProvidersUrl = 'searchEngine/setDabDataProvidersUrl',
+    setW3wKey = 'searchEngine/setW3wKey',
+    setUserDabBaseUrl = 'searchEngine/setUserDabBaseUrl',
+    setInternalOpenSearchUrl = 'searchEngine/setInternalOpenSearchUrl',
+    setDefaultSourceName = 'searchEngine/setDefaultSourceName',
+}

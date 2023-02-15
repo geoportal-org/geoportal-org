@@ -1,0 +1,300 @@
+@font-face {
+    font-family: 'icomoon-geoss';
+    src: url('/fonts/icomoon.eot?til5xk');
+    src: url('/fonts/icomoon.eot?til5xk#iefix') format('embedded-opentype'),
+        url('/fonts/icomoon.ttf?til5xk') format('truetype'),
+        url('/fonts/icomoon.woff?til5xk') format('woff'),
+        url('/fonts/icomoon.svg?til5xk#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^='icomoon-'],
+[class*=' icomoon-'] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon-geoss' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icomoon-all-directions-arrows:before {
+    content: '\e900';
+}
+.icomoon-arrow:before {
+    content: '\e901';
+}
+.icomoon-bookmarks-delete:before {
+    content: '\e902';
+}
+.icomoon-bookmarks-like:before {
+    content: '\e903';
+}
+.icomoon-bookmarks-share:before {
+    content: '\e904';
+}
+.icomoon-bookmarks-show:before {
+    content: '\e905';
+}
+.icomoon-bulk-download:before {
+    content: '\e906';
+}
+.icomoon-calendar:before {
+    content: '\e907';
+}
+.icomoon-center:before {
+    content: '\e908';
+}
+.icomoon-checkbox--empty:before {
+    content: '\e909';
+}
+.icomoon-checkbox--filled:before {
+    content: '\e90a';
+}
+.icomoon-checkmark:before {
+    content: '\e90b';
+}
+.icomoon-close:before {
+    content: '\e90c';
+}
+.icomoon-collapse-view:before {
+    content: '\e90d';
+}
+.icomoon-community-portals:before {
+    content: '\e90e';
+}
+.icomoon-compare-layers:before {
+    content: '\e90f';
+}
+.icomoon-copy-link:before {
+    content: '\e910';
+}
+.icomoon-cross:before {
+    content: '\e911';
+}
+.icomoon-custom-download:before {
+    content: '\e912';
+}
+.icomoon-danger-triangle:before {
+    content: '\e913';
+}
+.icomoon-data-source--data:before {
+    content: '\e914';
+}
+.icomoon-data-source--information:before {
+    content: '\e915';
+}
+.icomoon-data-source--services:before {
+    content: '\e916';
+}
+.icomoon-doc-file:before {
+    content: '\e917';
+}
+.icomoon-doc-html:before {
+    content: '\e918';
+}
+.icomoon-doc-jpg:before {
+    content: '\e919';
+}
+.icomoon-doc-kml:before {
+    content: '\e91a';
+}
+.icomoon-doc-kmz:before {
+    content: '\e91b';
+}
+.icomoon-doc-pdf:before {
+    content: '\e91c';
+}
+.icomoon-doc-png:before {
+    content: '\e91d';
+}
+.icomoon-doc-txt:before {
+    content: '\e91e';
+}
+.icomoon-doc-xml:before {
+    content: '\e91f';
+}
+.icomoon-download:before {
+    content: '\e920';
+}
+.icomoon-drill-down:before {
+    content: '\e921';
+}
+.icomoon-drill-up:before {
+    content: '\e922';
+}
+.icomoon-earth:before {
+    content: '\e923';
+}
+.icomoon-editor--add:before {
+    content: '\e924';
+}
+.icomoon-editor--edit:before {
+    content: '\e925';
+}
+.icomoon-editor--eye:before {
+    content: '\e926';
+}
+.icomoon-editor--file-blank:before {
+    content: '\e927';
+}
+.icomoon-editor--file-img:before {
+    content: '\e928';
+}
+.icomoon-editor--file-txt:before {
+    content: '\e929';
+}
+.icomoon-editor--out:before {
+    content: '\e92a';
+}
+.icomoon-editor--remove:before {
+    content: '\e92b';
+}
+.icomoon-editor--star:before {
+    content: '\e92c';
+}
+.icomoon-editor--trash:before {
+    content: '\e92d';
+}
+.icomoon-editor--user:before {
+    content: '\e92e';
+}
+.icomoon-envelope:before {
+    content: '\e92f';
+}
+.icomoon-expand-view:before {
+    content: '\e930';
+}
+.icomoon-eye:before {
+    content: '\e931';
+}
+.icomoon-filters:before {
+    content: '\e932';
+}
+.icomoon-fullscreen:before {
+    content: '\e933';
+}
+.icomoon-info:before {
+    content: '\e934';
+}
+.icomoon-language:before {
+    content: '\e935';
+}
+.icomoon-layers:before {
+    content: '\e936';
+}
+.icomoon-legend:before {
+    content: '\e937';
+}
+.icomoon-lock:before {
+    content: '\e938';
+}
+.icomoon-map-search-switcher:before {
+    content: '\e939';
+}
+.icomoon-map-type:before {
+    content: '\e93a';
+}
+.icomoon-minimize:before {
+    content: '\e93b';
+}
+.icomoon-minus:before {
+    content: '\e93c';
+}
+.icomoon-my-workspace:before {
+    content: '\e93d';
+}
+.icomoon-pencil:before {
+    content: '\e93e';
+}
+.icomoon-plus:before {
+    content: '\e93f';
+}
+.icomoon-related:before {
+    content: '\e940';
+}
+.icomoon-resize:before {
+    content: '\e941';
+}
+.icomoon-results-grid:before {
+    content: '\e942';
+}
+.icomoon-results-list:before {
+    content: '\e943';
+}
+.icomoon-returnArrow:before {
+    content: '\e944';
+}
+.icomoon-revert:before {
+    content: '\e945';
+}
+.icomoon-save:before {
+    content: '\e946';
+}
+.icomoon-search:before {
+    content: '\e947';
+}
+.icomoon-search-1:before {
+    content: '\e948';
+}
+.icomoon-search-share:before {
+    content: '\e949';
+}
+.icomoon-select:before {
+    content: '\e94a';
+}
+.icomoon-settings:before {
+    content: '\e94b';
+}
+.icomoon-share:before {
+    content: '\e94c';
+}
+.icomoon-show-on-map:before {
+    content: '\e94d';
+}
+.icomoon-sign-in:before {
+    content: '\e94e';
+}
+.icomoon-star:before {
+    content: '\e94f';
+}
+.icomoon-star-empty:before {
+    content: '\e950';
+}
+.icomoon-statistics:before {
+    content: '\e951';
+}
+.icomoon-terms-and-conditions:before {
+    content: '\e952';
+}
+.icomoon-tour:before {
+    content: '\e953';
+}
+.icomoon-wikipedia:before {
+    content: '\e954';
+}
+.icomoon-workflow-run:before {
+    content: '\e955';
+}
+.icomoon-yellow-pages:before {
+    content: '\e956';
+}
+.icomoon-zoom-in:before {
+    content: '\e957';
+}
+.icomoon-zoom-out:before {
+    content: '\e958';
+}
+.icomoon-lightbulb-off:before {
+    content: '\e959';
+}
+.icomoon-lightbulb-on:before {
+    content: '\e95a';
+}

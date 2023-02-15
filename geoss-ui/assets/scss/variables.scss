@@ -1,0 +1,45 @@
+$staticPath: '/static';
+
+$green: #209d90;
+$green-light: #70abb2;
+$green-dark: #01685b;
+$green-darker: #035a53;
+$black: #000000;
+$blue: #0661a9;
+$blue-light: #59a4e0;
+$blue-dark: #0e4f7f;
+$blue-medium: #2b78b5;
+$blue-darker: #074c81;
+$blue-rare: #245e6e;
+$grey-light: #dedfdf;
+$grey-lighter: #e0e0e0;
+$grey: #ccc;
+$grey-dark: #aaa;
+$grey-darker: #5c5d5d;
+$grey-medium: #9fa3a6;
+$grey-blue-tint: #7b8695;
+$red: #e31e24;
+$red-light: #ed0c11;
+$red-dark: #770000;
+$white: #ffffff;
+$yellow: #e8b012;
+$orange: #df822f;
+$blue-transparent: rgba($blue, 0.75);
+$red-transparent: rgba($red, 0.75);
+$white-transparent: rgba(white, 0.75);
+$green-transparent: rgba($green, 0.75);
+$grey-transparent: rgba($grey, 0.75);
+$black-transparent: rgba(black, 0.75);
+
+$breakpoint-xxs: 400px;
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1365px;
+$breakpoint-xxxl: 1730px;
+
+$text-shadow-black: 0px 0px 1px rgba(0, 0, 0, 0.5),
+    0px 0px 1px rgba(0, 0, 0, 0.5);
+$text-shadow-black-darker: 0px 1px 5px black, 0px -2px 5px black;

@@ -1,0 +1,14 @@
+export enum SearchEngineGetters {
+    dabBaseUrl = 'searchEngine/dabBaseUrl',
+    dabBaseUrlConf = 'searchEngine/dabBaseUrlConf',
+    kpBaseUrl = 'searchEngine/kpBaseUrl',
+    siteName = 'searchEngine/siteName',
+    siteLogo = 'searchEngine/siteLogo',
+    siteUrl = 'searchEngine/siteUrl',
+    tourUrl = 'searchEngine/tourUrl',
+    dabDataProvidersUrl = 'searchEngine/dabDataProvidersUrl',
+    w3wKey = 'searchEngine/w3wKey',
+    userDabBaseUrl = 'searchEngine/userDabBaseUrl',
+    internalOpenSearchUrl = 'searchEngine/internalOpenSearchUrl',
+    defaultSourceName = 'searchEngine/defaultSourceName',
+}
