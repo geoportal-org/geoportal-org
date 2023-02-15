@@ -13,11 +13,14 @@ import LayerTilesService from '@/services/map/layer-tiles.service'
 import LayersUtils from '@/services/map/layer-utils'
 import Overlay from 'ol/Overlay'
 import { TileWMS } from 'ol/source'
-import ol from '@/utils/ol'
+import Vue from 'vue'
 import to from '@/utils/to'
 import { Units } from 'ol/control/ScaleLine'
 import { FeatureClass } from 'ol/Feature'
 import Map from 'ol/Map'
+
+// @ts-ignore
+const ol = Vue.ol
 
 declare let loadshp: any
 

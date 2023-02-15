@@ -1,4 +1,4 @@
-import ol from '@/utils/ol'
+import Vue from 'vue'
 import Layer from 'ol/layer/Layer'
 import Map from 'ol/Map'
 import Overlay from 'ol/Overlay'
@@ -12,6 +12,9 @@ import { Timers } from '@/data/timers'
 import { AppVueObj } from '@/data/global'
 import { GeneralGetters } from '@/store/general/general-getters'
 import { MapGetters } from './map-getters'
+
+// @ts-ignore
+const ol = Vue.ol
 
 const state = {
     boxAccessToken:
@@ -37,7 +40,7 @@ const state = {
             value: null,
             type: LayerTypes.BOUNDING,
         },
-    ] as LayerData[],
+    ],
     hoveredLayerId: null,
     clickedLayerId: null,
     activeLayerLegend: null,
@@ -78,7 +81,7 @@ const getters = {
         return state.initialZoom
     },
     center: (state: any) => {
-        return ol.proj.transform(state.center, 'EPSG:4326', 'EPSG:3857')
+        return ol && ol.proj.transform(state.center, 'EPSG:4326', 'EPSG:3857')
     },
     isMapConf: (state: any) => {
         return state.isMapConf

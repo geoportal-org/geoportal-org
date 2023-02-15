@@ -1,78 +1,82 @@
 <template>
     <div class="survey"
         :class="{ 'hide-navigation': currentPage > 8, 'hide-next-button': currentPage === 8, 'hide-prev-button': currentPage === 0, 'survey-complete': currentPage === 9 }"
-        :style="`background: url('${staticPath()}/svg/survey-background.svg') center center no-repeat;`">
-        <carousel class="survey" ref="slider" v-model="currentPage" :scrollPerPage="false" :mouse-drag="false"
+        :style="`background: url('~/assets/svg/survey-background.svg') center center no-repeat;`">
+        <!-- <carousel class="survey" ref="slider" v-model="currentPage" :scrollPerPage="false" :mouse-drag="false"
             :paginationEnabled="true" :per-page="1" :navigationNextLabel="''" :navigationPrevLabel="''"
             :navigationEnabled="true">
             <slide class="survey__slide_item question question--impression">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.generalImpression.question') }}</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.generalImpression.question') }}</div>
                 <div class="question--impression__container">
                     <div class="question--impression__choice" @click="selectImpression('negative')">
-                        <img class="question--impression__img" :src="`${staticPath()}/svg/survey-face_negative.svg`"
-                            :alt="$t('survey.generalImpression.negative')" />
-                        <span class="question--impression__caption">{{ $t('survey.generalImpression.negative') }}</span>
+                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_negative.svg`"
+                            :alt="$tc('survey.generalImpression.negative')" />
+                        <span class="question--impression__caption">{{
+                            $tc('survey.generalImpression.negative')
+                        }}</span>
                     </div>
                     <div class="question--impression__choice" @click="selectImpression('neutral')">
-                        <img class="question--impression__img" :src="`${staticPath()}/svg/survey-face_neutral.svg`"
-                            :alt="$t('survey.generalImpression.neutral')" />
-                        <span class="question--impression__caption">{{ $t('survey.generalImpression.neutral') }}</span>
+                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_neutral.svg`"
+                            :alt="$tc('survey.generalImpression.neutral')" />
+                        <span class="question--impression__caption">{{ $tc('survey.generalImpression.neutral') }}</span>
                     </div>
                     <div class="question--impression__choice" @click="selectImpression('positive')">
-                        <img class="question--impression__img" :src="`${staticPath()}/svg/survey-face_positive.svg`"
-                            :alt="$t('survey.generalImpression.positive')" />
-                        <span class="question--impression__caption">{{ $t('survey.generalImpression.positive') }}</span>
+                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_positive.svg`"
+                            :alt="$tc('survey.generalImpression.positive')" />
+                        <span class="question--impression__caption">{{
+                            $tc('survey.generalImpression.positive')
+                        }}</span>
                     </div>
                 </div>
             </slide>
             <slide class="survey__slide_item question question--did-you-find">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
                 <div class="question__text">
-                    {{ $t('survey.didYouFind.thankYou') }}<br />{{ $t('survey.didYouFind.question') }}</div>
+                    {{ $tc('survey.didYouFind.thankYou') }}<br />{{ $tc('survey.didYouFind.question') }}</div>
                 <div class="question__answers question__answers--did-you-find">
                     <button type="button" class="answer--no" @click="answerDidYouFind('no')">{{
-                        $t('survey.didYouFind.no')
+                        $tc('survey.didYouFind.no')
                     }}</button>
                     <button type="button" class="answer--partially" @click="answerDidYouFind('partially')">{{
-                        $t('survey.didYouFind.partially')
+                        $tc('survey.didYouFind.partially')
                     }}</button>
                     <button type="button" class="answer--yes" @click="answerDidYouFind('yes')">{{
-                        $t('survey.didYouFind.yes')
+                        $tc('survey.didYouFind.yes')
                     }}</button>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.whatWereYouLookingFor.question') }}</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.whatWereYouLookingFor.question') }}</div>
                 <textarea class="question__answers--textarea"
-                    :placeholder="$t('survey.whatWereYouLookingFor.placeholder')"
+                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
                     v-model="form.what_looking_for"></textarea>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text">{{ $t('survey.interest.question1') }}
-                    <br />{{ $t('survey.interest.question2') }}
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text">{{ $tc('survey.interest.question1') }}
+                    <br />{{ $tc('survey.interest.question2') }}
                 </div>
                 <div class="question__answers question__answers--single_choice">
-                    <label class="answer" v-for="option in $t('survey.interest.options')" :key="option.value">
+                    <label class="answer" v-for="option in $tc('survey.interest.options')" :key="option.value">
                         <input type="radio" @change="selectRadio('interest', $event)" name="interest"
                             :value="option.value">
                         <span class="checkmark"></span> {{ option.label }}
                     </label>
                     <label class="answer">
                         <input type="radio" @change="selectRadio('interest', $event)" name="interest" value="other">
-                        <span class="checkmark"></span> {{ $t('survey.other') }}:
+                        <span class="checkmark"></span> {{ $tc('survey.other') }}:
                         <input type="text" :disabled="form.interest !== 'other'" v-model="form.interestText"
-                            :placeholder="$t('survey.whatWereYouLookingFor.placeholder')" />
+                            :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')" />
                     </label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.classification.question') }}</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.classification.question') }}</div>
                 <div class="question__answers question__answers--single_choice">
-                    <label class="answer" v-for="option in $t('survey.classification.options')" :key="option.value">
+                    <label class="answer" v-for="option in $tc('survey.classification.options')" :key="option.value">
                         <input type="radio" @change="selectRadio('classification', $event)" name="classification"
                             :value="option.value">
                         <span class="checkmark"></span> {{ option.label }}
@@ -80,95 +84,93 @@
                     <label class="answer">
                         <input type="radio" @change="selectRadio('classification', $event)" name="classification"
                             value="other">
-                        <span class="checkmark"></span> {{ $t('survey.other') }}:
+                        <span class="checkmark"></span> {{ $tc('survey.other') }}:
                         <input type="text" :disabled="form.classification !== 'other'"
                             v-model="form.classificationText">
                     </label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.organized.title') }}</div>
-                <div class="question__quote">"{{ $t('survey.organized.question') }}"</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.organized.title') }}</div>
+                <div class="question__quote">"{{ $tc('survey.organized.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
-                    :style="`background: url('${staticPath()}/img/survey-barometer.png') center bottom no-repeat;`">
-                    <label class="strongly-disagree">{{ $t('survey.organized.stronglyDisagree') }}</label>
+                    :style="`background: url('~/assets/img/survey-barometer.png') center bottom no-repeat;`">
+                    <label class="strongly-disagree">{{ $tc('survey.organized.stronglyDisagree') }}</label>
                     <label class="answer" v-for="value in [1, 2, 3, 4, 5]" :key="value">
                         <input type="radio" @change="selectRadio('organized', $event)" name="organized" :value="value">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="strongly-agree">{{ $t('survey.organized.stronglyAgree') }}</label>
+                    <label class="strongly-agree">{{ $tc('survey.organized.stronglyAgree') }}</label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.adequately.title') }}</div>
-                <div class="question__quote">"{{ $t('survey.adequately.question') }}"</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.adequately.title') }}</div>
+                <div class="question__quote">"{{ $tc('survey.adequately.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
-                    :style="`background: url('${staticPath()}/img/survey-barometer.png') center bottom no-repeat;`">
-                    <label class="strongly-disagree">{{ $t('survey.adequately.stronglyDisagree') }}</label>
+                    :style="`background: url('~/assets/img/survey-barometer.png') center bottom no-repeat;`">
+                    <label class="strongly-disagree">{{ $tc('survey.adequately.stronglyDisagree') }}</label>
                     <label class="answer" v-for="value in [1, 2, 3, 4, 5]" :key="value">
                         <input type="radio" @change="selectRadio('adequately', $event)" name="adequately"
                             :value="value">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="strongly-agree">{{ $t('survey.adequately.stronglyAgree') }}</label>
+                    <label class="strongly-agree">{{ $tc('survey.adequately.stronglyAgree') }}</label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text one-liner">{{ $t('survey.search_criteria.question') }}</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text one-liner">{{ $tc('survey.search_criteria.question') }}</div>
                 <textarea name="search_criteria" class="question__answers--textarea"
-                    :placeholder="$t('survey.whatWereYouLookingFor.placeholder')"
+                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
                     v-model="form.search_criteria"></textarea>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $t('survey.question') }} {{ currentPage + 1}}/9</div>
-                <div class="question__text">{{ $t('survey.visualization.question') }}</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__text">{{ $tc('survey.visualization.question') }}</div>
                 <textarea name="visualization" class="question__answers--textarea"
-                    :placeholder="$t('survey.whatWereYouLookingFor.placeholder')"
+                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
                     v-model="form.visualization"></textarea>
             </slide>
             <slide class="survey__slide_item question question--survey-complete">
-                <div class="question__text">{{ $t('survey.thankYouForCompleting') }}</div>
+                <div class="question__text">{{ $tc('survey.thankYouForCompleting') }}</div>
             </slide>
-            <!-- for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to) -->
-            <slide></slide>
-            <slide></slide>
-        </carousel>
+            for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to)
+        <slide></slide>
+        <slide></slide>
+        </carousel> -->
         <div class="d-flex flex--justify-between buttons-wrapper">
             <div class="checkbox">
                 <input id="hide-in-future" type="checkbox" @change="toggleHideInFuture($event)" />
                 <label for="hide-in-future">
                     <i class="icomoon-tick"></i>
-                    <span>{{ $t('survey.hideInFuture') }}</span>
+                    <span>{{ $tc('survey.hideInFuture') }}</span>
                 </label>
             </div>
-            <button v-if="this.currentPage !== 9" type="button" class="green-btn-default" @click="submit()">{{
-                $t('survey.submit')
+            <button v-if="currentPage !== 9" type="button" class="green-btn-default" @click="submit()">{{
+                $tc('survey.submit')
             }}</button>
-            <button v-else type="button" class="green-btn-default" @click="closePopup()">{{ $t('survey.ok') }}</button>
+            <button v-else type="button" class="green-btn-default" @click="closePopup()">{{ $tc('survey.ok') }}</button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Carousel, Slide } from 'vue-carousel';
+import { Component, Vue, Watch } from 'nuxt-property-decorator';
+// import { Carousel, Slide } from 'vue-carousel';
 
 import GeossSearchApiService from '@/services/geoss-search.api.service';
 import PopupCloseService from '@/services/popup-close.service';
-import { PopupGetters } from '../stores/popup/popup-getters';
+// import { PopupGetters } from '@/store/popup/popup-getters';
 
 @Component({
     components: {
-        Carousel,
-        Slide
     }
 })
 export default class SurveyComponent extends Vue {
-    public currentPage = 0;
-    public form = {
+    public currentPage: number = 0;
+    public form: any = {
         impression: '',
         did_found_what_looking_for: '',
         what_looking_for: '',

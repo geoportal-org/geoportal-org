@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Menu />
-        <h1>Layout: full</h1>
+        <dummy-menu />
         <Nuxt />
+        <dummy-layout-identifier layoutId="full" />
     </div>
 </template>

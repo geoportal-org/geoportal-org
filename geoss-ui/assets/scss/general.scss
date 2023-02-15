@@ -1,26 +1,26 @@
 @font-face {
     font-family: NotesEsaReg;
-    src: url('~assets/fonts/NotesEsaReg.otf') format('opentype'),
-        url('~assets/fonts/NotesEsaReg.eot?#iefix') format('embedded-opentype'); // IE11
+    src: url('~/assets/fonts/NotesEsaReg.otf') format('opentype'),
+        url('~/assets/fonts/NotesEsaReg.eot?#iefix') format('embedded-opentype'); // IE11
 }
 
 @font-face {
     font-family: NotesEsaItal;
-    src: url('~assets/fonts/NotesEsaRegIta.otf');
+    src: url('~/assets/fonts/NotesEsaRegIta.otf');
 }
 
 @font-face {
     font-family: NotesEsaBold;
-    src: url('~assets/fonts/NotesEsaBol.otf');
+    src: url('~/assets/fonts/NotesEsaBol.otf');
 }
 
 @font-face {
     font-family: NotesEsaBoldItal;
-    src: url('~assets/fonts/NotesEsaBolIta.otf');
+    src: url('~/assets/fonts/NotesEsaBolIta.otf');
 }
 
 @mixin regular-page-body {
-    background-image: url('/img/map-background.jpg');
+    background-image: url('~/assets/img/map-background.jpg');
     background-position: right top;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -40,7 +40,7 @@
     max-width: 740px;
     height: calc(95% - 94px);
     margin: 94px auto 0;
-    background-color: transparent;
+    background-color: $white-transparent;
     display: flex;
     flex-direction: column;
 
@@ -184,49 +184,49 @@ code {
     }
 }
 
-@media (min-width: $breakpoint-xxxl + 1px) {
+@media (min-width: ($breakpoint-xxxl + 1px)) {
     .xxxl-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-xxl + 1px) {
+@media (min-width: ($breakpoint-xxl + 1px)) {
     .xxl-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-xl + 1px) {
+@media (min-width: ($breakpoint-xl + 1px)) {
     .xl-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-lg + 1px) {
+@media (min-width: ($breakpoint-lg + 1px)) {
     .lg-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-md + 1px) {
+@media (min-width: ($breakpoint-md + 1px)) {
     .md-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-sm + 1px) {
+@media (min-width: ($breakpoint-sm + 1px)) {
     .sm-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-xs + 1px) {
+@media (min-width: ($breakpoint-xs + 1px)) {
     .xs-hidden-up {
         display: none !important;
     }
 }
 
-@media (min-width: $breakpoint-xxs + 1px) {
+@media (min-width: ($breakpoint-xxs + 1px)) {
     .xxs-hidden-up {
         display: none !important;
     }

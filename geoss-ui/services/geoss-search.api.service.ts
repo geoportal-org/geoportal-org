@@ -604,7 +604,7 @@ const GeossSearchApiService = {
                                 request: new Promise((resolve) => {
                                     return resolve(
                                         AppVueObj.app.$store.getters[
-                                            SearchGetters[
+                                            (<any>SearchGetters)[
                                                 `${
                                                     frozenSource as DataSource
                                                 }Results`

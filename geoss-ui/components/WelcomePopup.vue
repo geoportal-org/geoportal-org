@@ -15,17 +15,17 @@
                 $t('welcomePopup.newVersionPart3')
             }}</a>. <br />
             {{ $t('welcomePopup.newVersionPart4') }} <a target="_blank" href="/release-notes"><i
-                    class="icomoon-info"></i> {{ $t('welcomePopup.newVersionPart5') }}</a> {{
-                        $t('welcomePopup.newVersionPart6')
+                    class="icomoon-info"></i> {{ $tc('welcomePopup.newVersionPart5') }}</a> {{
+            $t('welcomePopup.newVersionPart6')
                     }}
         </p>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import PopupCloseService from '@/services/popup-close.service';
-import { SearchEngineGetters } from '@/stores/search-engine/search-engine-getters';
+import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 
 @Component

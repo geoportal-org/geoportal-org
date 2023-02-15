@@ -1,7 +1,9 @@
-import ol from '@/utils/ol'
-
+import Vue from 'vue'
 import { MapGetters } from '@/store/map/map-getters'
 import { AppVueObj } from '@/data/global'
+
+// @ts-ignore
+const ol = Vue.ol
 
 const LayerTilesService: { [key: string]: any } = {
     osm: {

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1>Layout: default</h1>
+        <dummy-menu />
         <Nuxt />
+        <dummy-layout-identifier layoutId="default" />
     </div>
 </template>

@@ -1,8 +1,9 @@
-import ol from '@/utils/ol'
-
+import Vue from 'vue'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
-import { StaticPath } from '@/data/global'
 import Feature from 'ol/Feature'
+
+// @ts-ignore
+const ol = Vue.ol
 
 export const MapSource = new ol.source.Vector({
     wrapX: false,
@@ -64,7 +65,7 @@ const what3wordsStyle = new ol.style.Style({
     image: new ol.style.Icon({
         anchor: [0.5, 1],
         opacity: 0.75,
-        src: `${StaticPath()}/img/w3wlogo.png`,
+        src: `~assets/img/w3wlogo.png`,
     }),
 })
 

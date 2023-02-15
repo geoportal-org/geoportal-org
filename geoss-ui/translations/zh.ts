@@ -1,4 +1,4 @@
-export const zh = {
+export default {
     placeholders: {
         searchBar: '输入搜索词',
         googlePlaces: '输入位置',

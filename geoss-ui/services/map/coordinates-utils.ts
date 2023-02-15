@@ -1,4 +1,6 @@
-import ol from '@/utils/ol'
+import Vue from 'vue'
+// @ts-ignore
+const ol = Vue.ol
 
 const MapCoordinatesUtils = {
     parseCoordinates(coordinates: string | string[]) {

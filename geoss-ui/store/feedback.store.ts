@@ -12,7 +12,7 @@ import { map } from '@/store/map/map'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
     modules: {
         general,
         myWorkspace,

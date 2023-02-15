@@ -1,4 +1,4 @@
-export const ru = {
+export default {
     placeholders: {
         searchBar: 'Введите слова для поиска',
         googlePlaces: 'Введите местоположение',

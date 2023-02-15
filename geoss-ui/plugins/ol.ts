@@ -1,5 +1,5 @@
-// @ts-ignore
-import { Draw, createBox } from 'ol/interaction/Draw'
+import Vue from 'vue'
+import Draw, { createBox } from 'ol/interaction/Draw'
 import DragAndDrop from 'ol/interaction/DragAndDrop'
 import * as interaction from 'ol/interaction'
 
@@ -43,7 +43,7 @@ import { Style, Fill, Stroke, Circle, Icon } from 'ol/style'
 import { applyTransform, getTopLeft, getWidth } from 'ol/extent'
 
 const DrawCopy = Draw
-DrawCopy.createBox = createBox
+// DrawCopy.createBox = createBox
 
 const ol = {
     interaction: {
@@ -111,4 +111,5 @@ const ol = {
     },
 }
 
-export default ol
+// @ts-ignore
+Vue.ol = ol

@@ -19,7 +19,7 @@ import { general } from '@/store/general/general'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
     modules: {
         general,
         map,

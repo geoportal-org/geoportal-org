@@ -20,18 +20,23 @@ export const StaticPath = () => {
     }
 }
 
-interface Window {
-    [key: string]: any
+export const Liferay = {
+    authToken: 'authToken',
+    ThemeDisplay: {
+        getScopeGroupId: () => {
+            return 0
+        },
+        getUserId: () => {
+            return 1
+        },
+        getLayoutURL: () => {
+            return ''
+        },
+        isSignedIn: () => {
+            return false
+        },
+    },
 }
-declare const window: Window
-
-const LiferayStr: string = 'Liferay'
-const jQStr: string = '$'
-const cookiesStr: string = 'Cookies'
-
-export const Liferay = window[LiferayStr]
-export const $ = window[jQStr]
-export const Cookies = window[cookiesStr]
 
 interface AppVueObj {
     [key: string]: any

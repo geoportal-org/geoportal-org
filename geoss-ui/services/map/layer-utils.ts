@@ -1,5 +1,4 @@
-import ol from '@/utils/ol'
-
+import Vue from 'vue'
 import MapCoordinatesUtils from '@/services/map/coordinates-utils'
 import SearchEngineService from '@/services/search-engine.service'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
@@ -18,6 +17,9 @@ import { FeatureClass } from 'ol/Feature'
 import Layer from 'ol/layer/Layer'
 import VectorLayer from 'ol/layer/Vector'
 import TileLayer from 'ol/layer/Tile'
+
+// @ts-ignore
+const ol = Vue.ol
 
 const LayersUtils = {
     getIrisCircleLayerData(

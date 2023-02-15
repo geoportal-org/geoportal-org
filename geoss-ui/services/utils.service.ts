@@ -5,13 +5,9 @@ import { UserGetters } from '@/store/user/user-getters'
 import SpinnerService from './spinner.service'
 import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions'
 
-const requestAnimFrame =
-    window.requestAnimationFrame ||
-    // @ts-ignore
-    window.webkitRequestAnimationFrame ||
-    ((callback) => {
-        window.setTimeout(callback, 1000 / 60)
-    })
+// const requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || ((callback) => {
+//         window.setTimeout(callback, 1000 / 60)
+//     })
 
 const UtilsService = {
     getPropByString(
@@ -192,7 +188,7 @@ const UtilsService = {
                 const t = easingEquations[easing](p)
 
                 if (p < 1) {
-                    requestAnimFrame(tick)
+                    // requestAnimFrame(tick)
 
                     scrollableContainer.scrollTop =
                         scrollY + (scrollTargetY - scrollY) * t
@@ -424,14 +420,14 @@ const UtilsService = {
     },
 }
 
-window.onpopstate = async (event) => {
-    if (!UtilsService.isWidget()) {
-        SpinnerService.showSpinner()
-        setTimeout(() => {
-            UtilsService.popFromHistory(event.state)
-            SpinnerService.hideSpinner()
-        }, 0)
-    }
-}
+// window.onpopstate = async (event: any) => {
+//     if (!UtilsService.isWidget()) {
+//         SpinnerService.showSpinner()
+//         setTimeout(() => {
+//             UtilsService.popFromHistory(event.state)
+//             SpinnerService.hideSpinner()
+//         }, 0)
+//     }
+// }
 
 export default UtilsService

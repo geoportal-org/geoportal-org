@@ -26,7 +26,7 @@ export default {
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [],
+    plugins: [{ src: '~plugins/ol.ts', ssr: false }],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: [
@@ -85,7 +85,7 @@ export default {
                 file: 'zh.ts',
             },
         ],
-        lazy: true,
+        lazy: false,
         langDir: 'translations/',
         defaultLocale: 'en',
         vueI18n: {
@@ -104,7 +104,9 @@ export default {
     },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
-    build: {},
-    ssr: true,
+    build: {
+        vendor: ['ol'],
+    },
+    //   ssr: true,
     target: 'server',
 }

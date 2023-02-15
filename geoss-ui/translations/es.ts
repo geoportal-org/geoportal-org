@@ -1,4 +1,4 @@
-export const es = {
+export default {
     placeholders: {
         searchBar: 'Ingrese palabras de búsqueda',
         googlePlaces: 'Ingrese ubicación',
