@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * The enum Api settings name.
  */
-public enum ApiSettingsName {
+public enum ApiSettingsKey {
 
     /**
      * Google maps api key api settings name.
@@ -54,7 +54,7 @@ public enum ApiSettingsName {
 
     private final String value;
 
-    ApiSettingsName(String value) {
+    ApiSettingsKey(String value) {
         this.value = value;
     }
 
@@ -70,12 +70,12 @@ public enum ApiSettingsName {
      * @param name the name
      * @return the status
      */
-    public static ApiSettingsName fromString(String name) {
-        for (ApiSettingsName apiSettingsName : ApiSettingsName.values()) {
+    public static ApiSettingsKey fromString(String name) {
+        for (ApiSettingsKey apiSettingsName : ApiSettingsKey.values()) {
             if (apiSettingsName.value.equals(name)) {
                 return apiSettingsName;
             }
         }
-        return ApiSettingsName.valueOf(name.toUpperCase());
+        return ApiSettingsKey.valueOf(name.toUpperCase());
     }
 }

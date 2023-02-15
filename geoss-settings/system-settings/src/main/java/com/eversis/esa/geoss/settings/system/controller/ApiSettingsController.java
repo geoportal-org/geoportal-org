@@ -1,7 +1,7 @@
 package com.eversis.esa.geoss.settings.system.controller;
 
-import com.eversis.esa.geoss.settings.system.domain.ApiSettingsCategory;
-import com.eversis.esa.geoss.settings.system.domain.ApiSettingsName;
+import com.eversis.esa.geoss.settings.system.domain.ApiSettingsKey;
+import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,22 +26,22 @@ import java.util.EnumSet;
 public class ApiSettingsController {
 
     /**
-     * Gets api settings categories.
+     * Gets api settings sets.
      *
-     * @return the api settings categories
+     * @return the api settings sets
      */
-    @RequestMapping(path = "/categories", method = RequestMethod.OPTIONS)
-    EnumSet<ApiSettingsCategory> getApiSettingsCategories() {
-        return EnumSet.allOf(ApiSettingsCategory.class);
+    @RequestMapping(path = "/sets", method = RequestMethod.OPTIONS)
+    EnumSet<ApiSettingsSet> getApiSettingsSets() {
+        return EnumSet.allOf(ApiSettingsSet.class);
     }
 
     /**
-     * Gets api settings names.
+     * Gets api settings keys.
      *
-     * @return the api settings names
+     * @return the api settings keys
      */
-    @RequestMapping(path = "/names", method = RequestMethod.OPTIONS)
-    EnumSet<ApiSettingsName> getApiSettingsNames() {
-        return EnumSet.allOf(ApiSettingsName.class);
+    @RequestMapping(path = "/keys", method = RequestMethod.OPTIONS)
+    EnumSet<ApiSettingsKey> getApiSettingsKeys() {
+        return EnumSet.allOf(ApiSettingsKey.class);
     }
 }

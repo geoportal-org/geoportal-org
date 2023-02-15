@@ -39,13 +39,13 @@ public class ApiSettings {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ApiSettingsCategory category;
+    @Column(name = "set_", nullable = false)
+    private ApiSettingsSet set;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ApiSettingsName name;
+    @Column(name = "key_", nullable = false)
+    private ApiSettingsKey key;
 
     @Column(name = "value_")
     private String value;
