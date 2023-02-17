@@ -8,4 +8,4 @@ RUN yarn --non-interactive run generate
 
 EXPOSE 3000
 
-CMD ["yarn", ,"--non-interactive", "run", "start"]
+CMD ["yarn", "--non-interactive", "run", "start"]
