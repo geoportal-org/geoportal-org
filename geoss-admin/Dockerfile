@@ -1,4 +1,4 @@
-FROM node:19.6-alpine
+FROM node:16.19.0-alpine
 
 COPY . .
 
