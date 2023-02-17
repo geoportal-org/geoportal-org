@@ -31,5 +31,4 @@ RUN keytool -importcert -file ./certs/server.crt -noprompt -alias server -storep
 
 EXPOSE 8080
 
-ENTRYPOINT
 CMD exec java $JAVA_OPTS -jar ./application-boot.jar
