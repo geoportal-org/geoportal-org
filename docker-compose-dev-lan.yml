@@ -141,8 +141,6 @@ services:
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
-    ports:
-      - "3001:3000"
     networks:
       - geosslan
     depends_on:
