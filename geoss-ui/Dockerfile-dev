@@ -1,0 +1,11 @@
+FROM node:16.19.0-alpine
+
+COPY . .
+
+RUN npm install --global yarn
+
+RUN yarn --non-interactive install 
+
+EXPOSE 3000
+
+CMD ["yarn", ,"--non-interactive", "run", "dev"]
