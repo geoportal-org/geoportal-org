@@ -82,7 +82,7 @@ server {
 
     include conf.d/utils/proxy_request_headers.conf;
     proxy_pass    http://cms_upstream/settings/rest/;
-    proxy_redirect http://cms_upstream/ http://cms_upstream/settings/rest/;
+    #proxy_redirect http://cms_upstream/ http://cms_upstream/settings/rest/;
     proxy_no_cache 1;
     include conf.d/utils/proxy_response_headers.conf;
 
