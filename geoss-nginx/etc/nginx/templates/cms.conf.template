@@ -77,6 +77,18 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
+  location /settings/rest/ {
+    include conf.d/common/maintenance_conditions.conf;
+
+    include conf.d/utils/proxy_request_headers.conf;
+    proxy_pass    http://cms_upstream/settings/rest/;
+    proxy_redirect http://cms_upstream/ http://cms_upstream/settings/rest/;
+    proxy_no_cache 1;
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
 }
 
 server {
