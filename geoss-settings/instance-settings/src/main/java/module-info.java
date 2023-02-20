@@ -3,10 +3,10 @@ module geoss.instance.settings {
     exports com.eversis.esa.geoss.settings.instance.repository;
 
     exports com.eversis.esa.geoss.settings.instance.configuration to spring.beans, spring.boot, spring.context;
-    // exports com.eversis.esa.geoss.settings.instance.event to spring.beans, spring.context;
 
     requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
+    requires io.swagger.v3.core;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 /**
  * The interface Available locale.
  */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AvailableLocaleValidator.class)
 @Documented

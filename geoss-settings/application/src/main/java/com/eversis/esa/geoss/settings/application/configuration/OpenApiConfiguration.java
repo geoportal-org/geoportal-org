@@ -1,7 +1,6 @@
 package com.eversis.esa.geoss.settings.application.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -18,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 /**
@@ -28,8 +28,7 @@ import java.util.stream.Stream;
         value = {
                 @SecurityScheme(name = "Basic",
                                 scheme = "basic",
-                                type = SecuritySchemeType.HTTP,
-                                in = SecuritySchemeIn.HEADER)
+                                type = SecuritySchemeType.HTTP)
         }
 )
 @Configuration(proxyBeanMethods = false)
@@ -64,6 +63,21 @@ public class OpenApiConfiguration {
                     }
                 }
             });
+        };
+    }
+
+    /**
+     * Sort schemas open api customizer open api customizer.
+     *
+     * @return the open api customizer
+     */
+    @Bean
+    OpenApiCustomizer sortSchemasOpenApiCustomizer() {
+        return openApi -> {
+            Components components = openApi.getComponents();
+            if (components != null && components.getSchemas() != null) {
+                components.setSchemas(new TreeMap<>(components.getSchemas()));
+            }
         };
     }
 }
