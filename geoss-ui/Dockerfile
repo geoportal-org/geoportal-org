@@ -4,7 +4,6 @@ COPY . .
 
 RUN yarn --non-interactive install 
 RUN yarn --non-interactive run build 
-RUN yarn --non-interactive run generate 
 
 EXPOSE 3000
 
