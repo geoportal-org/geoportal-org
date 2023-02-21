@@ -1,7 +1,14 @@
 package com.eversis.esa.geoss.settings.instance.configuration;
 
+import com.eversis.esa.geoss.settings.instance.domain.CatalogOption;
+
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -63,8 +70,11 @@ public class InstanceSettingsConfiguration {
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
-                    if (tags != null && tags.contains("tags")) {
-                        operation.setSecurity(securityRequirements);
+                    if (tags != null) {
+                        if (tags.contains("catalogs") || tags.contains("default-layers") || tags.contains(
+                                "tutorial-tags") || tags.contains("views")) {
+                            operation.setSecurity(securityRequirements);
+                        }
                     }
                 }
             });
@@ -87,6 +97,24 @@ public class InstanceSettingsConfiguration {
             tagLocalizedDescriptionSchema.setExample(
                     locales.stream().collect(Collectors.toMap(k -> k, v -> "Lorem ipsum dolor sit amet")));
             openApi.schema("TagLocalizedDescription", tagLocalizedDescriptionSchema);
+
+            ModelConverters modelConverters = ModelConverters.getInstance();
+            ResolvedSchema catalogOptionSchema = modelConverters.resolveAsResolvedSchema(
+                    new AnnotatedType(CatalogOption.class));
+            openApi.schema("CatalogOption", catalogOptionSchema.schema);
+
+            // override schemas
+            Optional.ofNullable(openApi.getComponents())
+                    .flatMap(components -> Optional.ofNullable(components.getSchemas()))
+                    .map(Map::values)
+                    .orElse(Collections.emptySet())
+                    .forEach(schema -> {
+                        String name = schema.getName();
+                        if ("EntityModelCatalog".equals(name) || "CatalogRequestBody".equals(name)) {
+                            schema.addProperty("subOptions", new ArraySchema().items(
+                                    new StringSchema().$ref(AnnotationsUtils.COMPONENTS_REF + "ViewOption")));
+                        }
+                    });
         };
     }
 }
