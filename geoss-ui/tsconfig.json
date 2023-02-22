@@ -6,7 +6,7 @@
         "lib": ["ESNext", "ESNext.AsyncIterable", "DOM", "ES2018.Promise"],
         "esModuleInterop": true,
         "allowJs": true,
-        "sourceMap": true,
+        "sourceMap": false,
         "strict": true,
         "noEmit": true,
         "experimentalDecorators": true,
