@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "dev": "HOST=0.0.0.0 PORT=3000 nuxt --max_old_space_size=4096",
+        "dev": "HOST=0.0.0.0 PORT=3000 nuxt",
         "build": "nuxt build",
         "start": "nuxt start",
         "generate": "nuxt generate",
