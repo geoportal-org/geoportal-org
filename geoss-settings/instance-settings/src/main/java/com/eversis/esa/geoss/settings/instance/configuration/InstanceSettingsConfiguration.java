@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.settings.instance.configuration;
 
 import com.eversis.esa.geoss.settings.instance.domain.CatalogOption;
+import com.eversis.esa.geoss.settings.instance.domain.ViewOption;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,7 +37,8 @@ import java.util.stream.Stream;
 @ComponentScan(
         basePackages = {
                 "com.eversis.esa.geoss.settings.instance.controller",
-                "com.eversis.esa.geoss.settings.instance.event"
+                "com.eversis.esa.geoss.settings.instance.event",
+                "com.eversis.esa.geoss.settings.instance.service"
         }
 )
 @Configuration(proxyBeanMethods = false)
@@ -53,12 +54,12 @@ public class InstanceSettingsConfiguration {
     OpenApiCustomizer instanceSettingsOpenApiCustomizer(
             @Value("${com.eversis.esa.geoss.settings.available-locales}") List<String> locales) {
         return openApi -> {
-            Set<String> securitySchemes = Optional.ofNullable(openApi.getComponents())
+            List<SecurityRequirement> securityRequirements = Optional.ofNullable(openApi.getComponents())
                     .map(Components::getSecuritySchemes)
                     .filter(Objects::nonNull)
                     .map(Map::keySet)
-                    .orElse(Collections.emptySet());
-            List<SecurityRequirement> securityRequirements = securitySchemes.stream()
+                    .orElse(Collections.emptySet())
+                    .stream()
                     .map(s -> {
                         SecurityRequirement securityRequirement = new SecurityRequirement();
                         securityRequirement.addList(s);
@@ -102,6 +103,9 @@ public class InstanceSettingsConfiguration {
             ResolvedSchema catalogOptionSchema = modelConverters.resolveAsResolvedSchema(
                     new AnnotatedType(CatalogOption.class));
             openApi.schema("CatalogOption", catalogOptionSchema.schema);
+            ResolvedSchema viewOptionSchema = modelConverters.resolveAsResolvedSchema(
+                    new AnnotatedType(ViewOption.class));
+            openApi.schema("ViewOption", viewOptionSchema.schema);
 
             // override schemas
             Optional.ofNullable(openApi.getComponents())
@@ -111,6 +115,10 @@ public class InstanceSettingsConfiguration {
                     .forEach(schema -> {
                         String name = schema.getName();
                         if ("EntityModelCatalog".equals(name) || "CatalogRequestBody".equals(name)) {
+                            schema.addProperty("subOptions", new ArraySchema().items(
+                                    new StringSchema().$ref(AnnotationsUtils.COMPONENTS_REF + "ViewOption")));
+                        }
+                        if ("EntityModelView".equals(name) || "ViewRequestBody".equals(name)) {
                             schema.addProperty("subOptions", new ArraySchema().items(
                                     new StringSchema().$ref(AnnotationsUtils.COMPONENTS_REF + "ViewOption")));
                         }
