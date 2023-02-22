@@ -1,8 +1,10 @@
-FROM node:16.19.0-alpine
+FROM node:16.19.1-slim
 
-COPY . .
+COPY package*.json .
 
 RUN yarn --non-interactive install 
+
+COPY . .
 
 EXPOSE 3000
 

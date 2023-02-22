@@ -139,7 +139,7 @@ services:
           - "node.labels.shared_tag==geoss-apps"
     environment:
       API_URL: http://gpp-api.devel.esaportal.eu/
-      NODE_OPTIONS: "--max-old-space-size=6144"
+      NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
