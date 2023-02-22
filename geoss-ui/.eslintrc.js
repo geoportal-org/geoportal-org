@@ -11,8 +11,5 @@ module.exports = {
     ],
     plugins: [],
     // add your custom rules here
-    rules: {},
-    watchOptions: {
-    ignored: /node_modules/,
-    },
+    rules: {}
 }
