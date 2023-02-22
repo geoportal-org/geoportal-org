@@ -52,16 +52,16 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  include conf.d/cms_conf/location_monitoring.conf;
+  #include conf.d/cms_conf/location_monitoring.conf;
 
   ## SCRIPTS TO CLEAR CACHE
-  include conf.d/common/location_cache_clear.conf;
+  #include conf.d/common/location_cache_clear.conf;
 
   ## Handle redirects
-  include conf.d/cms_conf/location_redirects.conf;
+  #include conf.d/cms_conf/location_redirects.conf;
 
   ## Handle static locations
-  include conf.d/cms_conf/location_static.conf;
+  #include conf.d/cms_conf/location_static.conf;
 
   ## Handle locations that required cookie like COMPANY_ID to be set.
   include conf.d/cms_conf/location_signed.conf;
