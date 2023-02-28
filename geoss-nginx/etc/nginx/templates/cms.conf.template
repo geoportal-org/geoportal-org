@@ -69,9 +69,14 @@ server {
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
+    #request headers
     include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+
     proxy_pass    http://cms_upstream;
     proxy_no_cache 1;
+
+    #response headers
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
@@ -80,11 +85,14 @@ server {
   location /settings/rest/ {
     include conf.d/common/maintenance_conditions.conf;
 
+    #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    proxy_set_header X-Forwarded-Prefix /settings/rest;
+    include conf.d/utils/proxy_request_headers_x_geoss_settings.conf;
+
     proxy_pass    http://cms_upstream;
-    #proxy_redirect http://cms_upstream/ http://cms_upstream/settings/rest/;
     proxy_no_cache 1;
+
+    #response headers
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
@@ -135,9 +143,14 @@ server {
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
+    #request headers
     include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+
     proxy_pass    http://keycloak_upstream;
     proxy_no_cache 1;
+
+    #response headers
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
@@ -188,9 +201,14 @@ server {
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
+    #request headers
     include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+
     proxy_pass    http://admin_upstream;
     proxy_no_cache 1;
+
+    #response headers
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
