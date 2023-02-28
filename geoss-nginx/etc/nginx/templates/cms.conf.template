@@ -82,7 +82,7 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
-  location /settings/rest/ {
+  location /settings/ {
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
