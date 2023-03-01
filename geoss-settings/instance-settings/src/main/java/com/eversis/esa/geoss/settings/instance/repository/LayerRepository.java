@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * The interface Api settings repository.
+ * The interface Layer repository.
  */
-@RepositoryRestResource(collectionResourceRel = "layers", path = "layers")
+@RepositoryRestResource(path = "layers", collectionResourceRel = "layers", itemResourceRel = "layer")
 @Tag(name = "default-layers")
 public interface LayerRepository extends JpaRepository<Layer, Long> {
 
