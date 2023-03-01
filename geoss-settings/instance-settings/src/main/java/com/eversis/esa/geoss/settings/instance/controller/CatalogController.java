@@ -1,9 +1,9 @@
 package com.eversis.esa.geoss.settings.instance.controller;
 
 import com.eversis.esa.geoss.settings.common.hateoas.PageMapper;
-import com.eversis.esa.geoss.settings.instance.domain.View;
-import com.eversis.esa.geoss.settings.instance.model.ViewOptionModel;
-import com.eversis.esa.geoss.settings.instance.service.ViewService;
+import com.eversis.esa.geoss.settings.instance.domain.Catalog;
+import com.eversis.esa.geoss.settings.instance.model.CatalogOptionModel;
+import com.eversis.esa.geoss.settings.instance.service.CatalogService;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,82 +41,82 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
- * The type View controller.
+ * The type Catalog controller.
  */
 @Log4j2
 @RequiredArgsConstructor
-@RepositoryRestController("/views")
+@RepositoryRestController("/catalogs")
 @ResponseBody
-@Tag(name = "views")
-public class ViewController {
+@Tag(name = "catalogs")
+public class CatalogController {
 
     private static final String LINK_HEADER = "Link";
 
-    private final ViewService viewService;
+    private final CatalogService catalogService;
 
     private final PageMapper pageMapper;
 
     private final EntityLinks entityLinks;
 
     /**
-     * Head view options response entity.
+     * Head catalog options response entity.
      *
      * @param id the id
      * @return the response entity
      */
     @Hidden
     @RequestMapping(method = RequestMethod.HEAD, path = "{id}/options")
-    ResponseEntity<?> headViewOptions(@PathVariable Long id) {
-        List<ViewOptionModel> viewOptions = viewService.getViewOptions(id);
-        if (null == viewOptions) {
+    ResponseEntity<?> headCatalogOptions(@PathVariable Long id) {
+        List<CatalogOptionModel> catalogOptions = catalogService.getCatalogOptions(id);
+        if (null == catalogOptions) {
             throw new ResourceNotFoundException();
         }
         HttpHeaders headers = new HttpHeaders();
-        Links links = Links.of(viewOptionsLinks());
+        Links links = Links.of(catalogOptionsLinks());
         headers.add(LINK_HEADER, links.toString());
         return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
     }
 
     /**
-     * Gets view options.
+     * Gets catalog options.
      *
      * @param id the id
-     * @return the view options
+     * @return the catalog options
      */
     @GetMapping("{id}/options")
-    CollectionModel<EntityModel<ViewOptionModel>> getViewOptions(@PathVariable Long id) {
-        List<ViewOptionModel> viewOptions = viewService.getViewOptions(id);
-        return pageMapper.toCollectionModel(viewOptions, this::viewOptionLinks, this::viewOptionsLinks);
+    CollectionModel<EntityModel<CatalogOptionModel>> getCatalogOptions(@PathVariable Long id) {
+        List<CatalogOptionModel> catalogOptions = catalogService.getCatalogOptions(id);
+        return pageMapper.toCollectionModel(catalogOptions, this::catalogOptionLinks, this::catalogOptionsLinks);
     }
 
     /**
-     * Delete view options.
+     * Delete catalog options.
      *
      * @param id the id
      */
     @DeleteMapping("{id}/options")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteViewOptions(@PathVariable Long id) {
-        viewService.removeViewOptions(id);
+    void deleteCatalogOptions(@PathVariable Long id) {
+        catalogService.removeCatalogOptions(id);
     }
 
     /**
-     * Post view option entity model.
+     * Post catalog option entity model.
      *
      * @param id the id
-     * @param viewOptionModel the view option model
+     * @param catalogOptionModel the catalog option model
      * @return the entity model
      */
     @PostMapping("{id}/options")
     @ResponseStatus(HttpStatus.CREATED)
-    EntityModel<ViewOptionModel> postViewOption(@PathVariable Long id,
-            @RequestBody @Valid ViewOptionModel viewOptionModel) {
-        ViewOptionModel viewOption = viewService.addViewOption(id, viewOptionModel);
-        return EntityModel.of(viewOption, viewOptionLinks(viewOption));
+    EntityModel<CatalogOptionModel> postCatalogOption(@PathVariable Long id,
+            @RequestBody @Valid CatalogOptionModel catalogOptionModel) {
+        CatalogOptionModel catalogOption = catalogService.addCatalogOption(id, catalogOptionModel);
+        return EntityModel.of(catalogOption, catalogOptionLinks(catalogOption));
     }
 
     /**
-     * Head view option response entity.
+     * Head catalog option response entity.
      *
      * @param id the id
      * @param optionId the option id
@@ -124,89 +124,90 @@ public class ViewController {
      */
     @Hidden
     @RequestMapping(method = RequestMethod.HEAD, path = "{id}/options/{optionId}")
-    ResponseEntity<?> headViewOption(@PathVariable Long id, @PathVariable Long optionId) {
-        ViewOptionModel viewOptionModel = viewService.getViewOption(id, optionId);
-        if (null == viewOptionModel) {
+    ResponseEntity<?> headCatalogOption(@PathVariable Long id, @PathVariable Long optionId) {
+        CatalogOptionModel catalogOptionModel = catalogService.getCatalogOption(id, optionId);
+        if (null == catalogOptionModel) {
             throw new ResourceNotFoundException();
         }
         HttpHeaders headers = new HttpHeaders();
-        Links links = Links.of(viewOptionLinks(viewOptionModel));
+        Links links = Links.of(catalogOptionLinks(catalogOptionModel));
         headers.add(LINK_HEADER, links.toString());
         return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
     }
 
     /**
-     * Gets view option.
+     * Gets catalog option.
      *
      * @param id the id
      * @param optionId the option id
-     * @return the view option
+     * @return the catalog option
      */
     @GetMapping("{id}/options/{optionId}")
-    EntityModel<ViewOptionModel> getViewOption(@PathVariable Long id, @PathVariable Long optionId) {
-        ViewOptionModel viewOptionModel = viewService.getViewOption(id, optionId);
-        return EntityModel.of(viewOptionModel, viewOptionLinks(viewOptionModel));
+    EntityModel<CatalogOptionModel> getCatalogOption(@PathVariable Long id, @PathVariable Long optionId) {
+        CatalogOptionModel catalogOptionModel = catalogService.getCatalogOption(id, optionId);
+        return EntityModel.of(catalogOptionModel, catalogOptionLinks(catalogOptionModel));
     }
 
     /**
-     * Put view option entity model.
+     * Put catalog option entity model.
      *
      * @param id the id
      * @param optionId the option id
-     * @param viewOptionModel the view option model
+     * @param catalogOptionModel the catalog option model
      * @return the entity model
      */
     @PutMapping("{id}/options/{optionId}")
-    EntityModel<ViewOptionModel> putViewOption(@PathVariable Long id, @PathVariable Long optionId,
-            @RequestBody @Valid ViewOptionModel viewOptionModel) {
-        ViewOptionModel viewOption = viewService.setViewOption(id, optionId, viewOptionModel);
-        return EntityModel.of(viewOption, viewOptionLinks(viewOption));
+    EntityModel<CatalogOptionModel> putCatalogOption(@PathVariable Long id, @PathVariable Long optionId,
+            @RequestBody @Valid CatalogOptionModel catalogOptionModel) {
+        CatalogOptionModel catalogOption = catalogService.setCatalogOption(id, optionId, catalogOptionModel);
+        return EntityModel.of(catalogOption, catalogOptionLinks(catalogOption));
     }
 
     /**
-     * Delete view option.
+     * Delete catalog option.
      *
      * @param id the id
      * @param optionId the option id
      */
     @DeleteMapping("{id}/options/{optionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteViewOption(@PathVariable Long id, @PathVariable Long optionId) {
-        viewService.removeViewOption(id, optionId);
+    void deleteCatalogOption(@PathVariable Long id, @PathVariable Long optionId) {
+        catalogService.removeCatalogOption(id, optionId);
     }
 
     /**
-     * Patch view option entity model.
+     * Patch catalog option entity model.
      *
      * @param id the id
      * @param optionId the option id
-     * @param viewOptionModel the view option model
+     * @param catalogOptionModel the catalog option model
      * @return the entity model
      */
     @PatchMapping("{id}/options/{optionId}")
-    EntityModel<ViewOptionModel> patchViewOption(@PathVariable Long id, @PathVariable Long optionId,
-            @RequestBody ViewOptionModel viewOptionModel) {
-        ViewOptionModel viewOption = viewService.updateViewOption(id, optionId, viewOptionModel);
-        return EntityModel.of(viewOption, viewOptionLinks(viewOption));
+    EntityModel<CatalogOptionModel> patchCatalogOption(@PathVariable Long id, @PathVariable Long optionId,
+            @RequestBody CatalogOptionModel catalogOptionModel) {
+        CatalogOptionModel catalogOption = catalogService.updateCatalogOption(id, optionId, catalogOptionModel);
+        return EntityModel.of(catalogOption, catalogOptionLinks(catalogOption));
     }
 
-    private List<Link> viewOptionsLinks() {
+    private List<Link> catalogOptionsLinks() {
         final String requestUri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
         return Arrays.asList(
                 Link.of(requestUri).withSelfRel(),
-                entityLinks.linkToCollectionResource(View.class)
+                entityLinks.linkToCollectionResource(Catalog.class)
         );
     }
 
-    private List<Link> viewOptionLinks(ViewOptionModel viewOptionModel) {
-        if (viewOptionModel.getViewId() == null) {
+    private List<Link> catalogOptionLinks(CatalogOptionModel catalogOptionModel) {
+        if (catalogOptionModel.getCatalogId() == null) {
             return Collections.emptyList();
         }
         return Arrays.asList(
-                entityLinks.linkToItemResource(View.class, viewOptionModel.getViewId()),
-                linkTo(methodOn(ViewController.class).getViewOptions(viewOptionModel.getViewId())).withRel("options"),
-                linkTo(methodOn(ViewController.class).getViewOption(viewOptionModel.getViewId(),
-                        viewOptionModel.getId())).withRel("option")
+                entityLinks.linkToItemResource(Catalog.class, catalogOptionModel.getCatalogId()),
+                linkTo(methodOn(CatalogController.class).getCatalogOptions(catalogOptionModel.getCatalogId())).withRel(
+                        "options"),
+                linkTo(methodOn(CatalogController.class).getCatalogOption(catalogOptionModel.getCatalogId(),
+                        catalogOptionModel.getId())).withRel("option")
         );
     }
 }
