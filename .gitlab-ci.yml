@@ -26,10 +26,10 @@ build_apps:
     - chmod u+x ./geoss-settings/gradlew
     - ./geoss-settings/gradlew clean assemble -p ./geoss-settings
     - echo "Build geoss-settings complete"
-  cache:
-    paths:
-      - ./geoss-settings/application
-    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+   cache: { }
+  #   paths:
+  #     - ./geoss-settings/application
+  #   key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
       - ./geoss-settings/application
