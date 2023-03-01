@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import java.util.Arrays;
@@ -45,7 +46,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Log4j2
 @RequiredArgsConstructor
-@Validated
 @RepositoryRestController("/views")
 @ResponseBody
 @Tag(name = "views")
@@ -186,13 +186,15 @@ public class ViewController {
      */
     @PatchMapping("{id}/options/{optionId}")
     EntityModel<ViewOptionModel> patchViewOption(@PathVariable Long id, @PathVariable Long optionId,
-            @RequestBody @Valid ViewOptionModel viewOptionModel) {
+            @RequestBody @Validated(value = ViewOptionModel.class) ViewOptionModel viewOptionModel) {
         ViewOptionModel viewOption = viewService.updateViewOption(id, optionId, viewOptionModel);
         return EntityModel.of(viewOption, viewOptionLinks(viewOption));
     }
 
     private List<Link> viewOptionsLinks() {
+        final String requestUri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
         return Arrays.asList(
+                Link.of(requestUri).withSelfRel(),
                 entityLinks.linkToCollectionResource(View.class)
         );
     }

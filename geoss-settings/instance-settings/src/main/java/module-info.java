@@ -1,5 +1,6 @@
 module geoss.instance.settings {
     exports com.eversis.esa.geoss.settings.instance.domain;
+    exports com.eversis.esa.geoss.settings.instance.model;
     exports com.eversis.esa.geoss.settings.instance.repository;
 
     exports com.eversis.esa.geoss.settings.instance.configuration to spring.beans, spring.boot, spring.context;
@@ -15,6 +16,7 @@ module geoss.instance.settings {
     requires org.apache.logging.log4j;
     requires org.hibernate.orm.envers;
     requires org.hibernate.validator;
+    requires org.mapstruct;
     requires org.springdoc.openapi.common;
     requires spring.beans;
     requires spring.boot;

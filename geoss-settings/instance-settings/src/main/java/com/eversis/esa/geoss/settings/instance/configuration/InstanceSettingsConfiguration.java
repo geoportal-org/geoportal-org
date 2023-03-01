@@ -38,7 +38,8 @@ import java.util.stream.Stream;
         basePackages = {
                 "com.eversis.esa.geoss.settings.instance.controller",
                 "com.eversis.esa.geoss.settings.instance.event",
-                "com.eversis.esa.geoss.settings.instance.service"
+                "com.eversis.esa.geoss.settings.instance.service",
+                "com.eversis.esa.geoss.settings.instance.support"
         }
 )
 @Configuration(proxyBeanMethods = false)

@@ -79,7 +79,7 @@ public class SendMailEventListener {
         if (to == null || to.isEmpty()) {
             InternetAddress internetAddress = new InternetAddress(emailProperties.getReceiver().getAddress(),
                     emailProperties.getReceiver().getPersonal(), emailProperties.getDefaultEncoding().name());
-            simpleMailMessage.setFrom(internetAddress.toString());
+            simpleMailMessage.setReplyTo(internetAddress.toString());
         }
     }
 

@@ -6,6 +6,8 @@ module geoss.settings.application {
     exports com.eversis.esa.geoss.settings.application.controller to spring.beans, spring.web;
     exports com.eversis.esa.geoss.settings.application.exception to spring.beans;
 
+    opens com.eversis.esa.geoss.settings.application.exception;
+
     opens com.eversis.esa.geoss.settings.application to spring.core;
     opens com.eversis.esa.geoss.settings.application.configuration to spring.core;
     opens com.eversis.esa.geoss.settings.application.configuration.oauth2 to spring.core;
