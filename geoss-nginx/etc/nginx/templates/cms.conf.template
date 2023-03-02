@@ -30,8 +30,8 @@ server {
   listen *:80;
   server_name ${CMS_DOMAIN_NAME};
 
-  #modsecurity on;
-  #modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
+  modsecurity on;
+  modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
 
   ssl_certificate /etc/nginx/certs/${DEPLOY_ENV}/server.crt;
   ssl_certificate_key /etc/nginx/certs/${DEPLOY_ENV}/server.key;
@@ -104,8 +104,8 @@ server {
   listen *:80;
   server_name ${KEYCLOAK_DOMAIN_NAME};
 
-  #modsecurity on;
-  #modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
+  modsecurity on;
+  modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
 
   ssl_certificate /etc/nginx/certs/${DEPLOY_ENV}/server.crt;
   ssl_certificate_key /etc/nginx/certs/${DEPLOY_ENV}/server.key;
@@ -162,8 +162,8 @@ server {
   listen *:80;
   server_name ${ADMIN_DOMAIN_NAME};
 
-  #modsecurity on;
-  #modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
+  modsecurity on;
+  modsecurity_rules_file /etc/nginx/modsecurity.d/cms.conf;
 
   ssl_certificate /etc/nginx/certs/${DEPLOY_ENV}/server.crt;
   ssl_certificate_key /etc/nginx/certs/${DEPLOY_ENV}/server.key;
