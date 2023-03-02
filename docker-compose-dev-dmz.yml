@@ -79,7 +79,7 @@ services:
   #     - geossdmz
 
   squid:
-    image: nexus-docker.eversis.com:7443/common/squid:1.0.0
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:latest
     hostname: geoss-dmz-squid
     deploy:
       replicas: 1

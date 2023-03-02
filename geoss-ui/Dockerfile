@@ -1,5 +1,10 @@
 FROM node:16.19.1-slim
 
+LABEL vendor="Eversis"
+LABEL maintainer="Eversis"
+LABEL project="GEOSS"
+LABEL version="1.0"
+LABEL image="geoss-ui"
 
 COPY package*.json .
 

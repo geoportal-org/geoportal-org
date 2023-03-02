@@ -24,11 +24,11 @@ services:
       context: ./geoss-haproxy
       dockerfile: Dockerfile
 
-  # geoss-squid:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-squid
-  #     dockerfile: Dockerfile
+  geoss-squid:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-squid
+      dockerfile: Dockerfile
 
 ########################
 ###    LAN IMAGES    ###
