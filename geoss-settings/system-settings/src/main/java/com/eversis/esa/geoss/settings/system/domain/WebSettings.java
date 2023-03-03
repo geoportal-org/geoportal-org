@@ -1,18 +1,19 @@
 package com.eversis.esa.geoss.settings.system.domain;
 
 import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.settings.system.support.WebSettingsKeyAttributeConverter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -42,10 +43,10 @@ public class WebSettings {
     @Column(name = "set_", nullable = false)
     private WebSettingsSet set;
 
-    @Schema(enumAsRef = true, allowableValues = "{}")
     @NotNull
+    @Convert(converter = WebSettingsKeyAttributeConverter.class)
     @Column(name = "key_", nullable = false)
-    private String key;
+    private WebSettingsKey key;
 
     @Column(name = "value_")
     private String value;
@@ -63,7 +64,6 @@ public class WebSettings {
      */
     @JsonSetter
     public void setKey(String key) {
-        this.set.validKey(key);
-        this.key = key;
+        this.key = this.set.getKey(key);
     }
 }

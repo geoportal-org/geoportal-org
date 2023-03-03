@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The enum Web settings set.
@@ -16,32 +18,37 @@ import java.util.List;
 public enum WebSettingsSet {
 
     /**
-     * Logo web settings set.
+     * The Logo.
      */
-    LOGO(EnumSet.allOf(WebSettingsLogo.class)),
+    LOGO(new HashSet<>(EnumSet.allOf(Logo.class))),
 
     /**
-     * Source web settings set.
+     * The Source.
      */
-    SOURCE(EnumSet.allOf(WebSettingsSource.class)),
+    SOURCE(new HashSet<>(EnumSet.allOf(Source.class))),
 
     /**
-     * Map web settings set.
+     * The Map.
      */
-    MAP(EnumSet.allOf(WebSettingsMap.class));
+    MAP(new HashSet<>(EnumSet.allOf(Map.class)));
 
     /**
-     * The enum Web settings logo.
+     * The enum Logo.
      */
-    enum WebSettingsLogo {
+    enum Logo implements WebSettingsKey {
         /**
-         * Title web settings logo.
+         * Title logo.
          */
         TITLE,
         /**
-         * Source web settings logo.
+         * Source logo.
          */
         SOURCE;
+
+        @Override
+        public String key() {
+            return name();
+        }
 
         @JsonValue
         @Override
@@ -51,38 +58,43 @@ public enum WebSettingsSet {
     }
 
     /**
-     * The enum Web settings source.
+     * The enum Source.
      */
-    enum WebSettingsSource {
+    enum Source implements WebSettingsKey {
         /**
-         * Geoss web settings source.
+         * Geoss source.
          */
         GEOSS("GEOSS"),
         /**
-         * The Geoss curated.
+         * Geoss curated source.
          */
         GEOSS_CURATED("GEOSSCurated"),
         /**
-         * Ameri geoss web settings source.
+         * Ameri geoss source.
          */
         AMERI_GEOSS("AmeriGEO"),
         /**
-         * Next geoss web settings source.
+         * Next geoss source.
          */
         NEXT_GEOSS("NextGEOSS"),
         /**
-         * Wikipedia web settings source.
+         * Wikipedia source.
          */
         WIKIPEDIA(
                 "Wikipedia"),
         /**
-         * Zenodo web settings source.
+         * Zenodo source.
          */
         ZENODO("Zenodo");
         private final String value;
 
-        WebSettingsSource(String value) {
+        Source(String value) {
             this.value = value;
+        }
+
+        @Override
+        public String key() {
+            return name();
         }
 
         @JsonValue
@@ -93,21 +105,26 @@ public enum WebSettingsSet {
     }
 
     /**
-     * The enum Web settings map.
+     * The enum Map.
      */
-    enum WebSettingsMap {
+    enum Map implements WebSettingsKey {
         /**
-         * Longitude web settings map.
+         * Longitude map.
          */
         LONGITUDE,
         /**
-         * Latitude web settings map.
+         * Latitude map.
          */
         LATITUDE,
         /**
-         * Zoom web settings map.
+         * Zoom map.
          */
         ZOOM;
+
+        @Override
+        public String key() {
+            return name();
+        }
 
         @JsonValue
         @Override
@@ -117,9 +134,9 @@ public enum WebSettingsSet {
     }
 
     @JsonIgnore
-    private final EnumSet<?> keys;
+    private final Set<WebSettingsKey> keys;
 
-    WebSettingsSet(EnumSet<?> keys) {
+    WebSettingsSet(Set<WebSettingsKey> keys) {
         this.keys = keys;
     }
 
@@ -127,6 +144,23 @@ public enum WebSettingsSet {
     @Override
     public String toString() {
         return name().toLowerCase();
+    }
+
+    /**
+     * Gets key.
+     *
+     * @param key the key
+     * @return the key
+     */
+    public WebSettingsKey getKey(String key) {
+        for (WebSettingsKey webSettingskey : keys) {
+            if (webSettingskey.key().equals(key) || webSettingskey.toString().equals(key)) {
+                return webSettingskey;
+            }
+        }
+        throw new IllegalArgumentException(
+                "Invalid key `" + key + "` for set `" + this + "`: not one of the values accepted for " + this
+                        + " set: " + this.keys);
     }
 
     /**
@@ -140,30 +174,34 @@ public enum WebSettingsSet {
     }
 
     /**
-     * Valid key.
+     * Keys list.
      *
-     * @param key the key
-     */
-    public void validKey(String key) {
-        for (Enum<?> k : keys) {
-            if (k.name().equals(key.toUpperCase())) {
-                return;
-            }
-        }
-        throw new IllegalArgumentException(
-                "Invalid key " + key + " for set " + this + ": not one of the values accepted for " + this + ": "
-                        + this.keys);
-    }
-
-    /**
-     * Keys string [ ].
-     *
-     * @return the string [ ]
+     * @return the list
      */
     public static List<String> keys() {
         return EnumSet.allOf(WebSettingsSet.class).stream()
-                .flatMap(webSettingsSet -> webSettingsSet.keys.stream())
-                .map(Enum::toString)
+                .flatMap(webSettingsKey -> webSettingsKey.keys.stream())
+                .map(WebSettingsKey::toString)
                 .toList();
+    }
+
+    /**
+     * Key from string web settings key.
+     *
+     * @param key the key
+     * @return the web settings key
+     */
+    public static WebSettingsKey keyFromString(String key) {
+        for (WebSettingsSet webSettingsSet : WebSettingsSet.values()) {
+            for (WebSettingsKey webSettingsKey : webSettingsSet.keys) {
+                if (webSettingsKey.key().equals(key) || webSettingsKey.toString().equals(key)) {
+                    return webSettingsKey;
+                }
+            }
+        }
+        throw new IllegalArgumentException(
+                "Cannot deserialize value of type `" + WebSettingsSet.class.getCanonicalName() + "` from String `" + key
+                        + "`: not one of the values accepted for " + WebSettingsSet.class.getCanonicalName()
+                        + " class: " + keys());
     }
 }

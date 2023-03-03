@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsSetConverter;
+import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConverter;
 
 import io.swagger.v3.oas.models.Components;
@@ -69,7 +70,7 @@ public class SystemSettingsConfiguration {
                             operation.setSecurity(securityRequirements);
                         }
                     }
-                    //override params
+                    // override params
                     String operationId = operation.getOperationId();
                     if ("executeSearch-apisettings-get".equals(operationId)) {
                         List<Parameter> parameters = operation.getParameters();
@@ -78,6 +79,18 @@ public class SystemSettingsConfiguration {
                                 if ("key".equals(parameter.getName())) {
                                     if (parameter.getSchema() instanceof StringSchema stringSchema) {
                                         stringSchema.setEnum(ApiSettingsSet.keys());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ("executeSearch-websettings-get".equals(operationId)) {
+                        List<Parameter> parameters = operation.getParameters();
+                        if (parameters != null) {
+                            for (Parameter parameter : parameters) {
+                                if ("key".equals(parameter.getName())) {
+                                    if (parameter.getSchema() instanceof StringSchema stringSchema) {
+                                        stringSchema.setEnum(WebSettingsSet.keys());
                                     }
                                 }
                             }
@@ -128,6 +141,7 @@ public class SystemSettingsConfiguration {
             public void configureConversionService(ConfigurableConversionService conversionService) {
                 conversionService.addConverter(new StringToApiSettingsKeyConverter());
                 conversionService.addConverter(new StringToApiSettingsSetConverter());
+                conversionService.addConverter(new StringToWebSettingsKeyConverter());
                 conversionService.addConverter(new StringToWebSettingsSetConverter());
             }
         };

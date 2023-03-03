@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.settings.system.controller;
 
+import com.eversis.esa.geoss.settings.system.domain.WebSettingsKey;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The type Web settings controller.
@@ -40,7 +42,7 @@ public class WebSettingsController {
      * @return the web settings keys
      */
     @RequestMapping(path = "/sets/{set}/keys", method = RequestMethod.OPTIONS)
-    EnumSet<?> getWebSettingsKeys(@PathVariable("set") WebSettingsSet webSettingsSet) {
+    Set<WebSettingsKey> getWebSettingsKeys(@PathVariable("set") WebSettingsSet webSettingsSet) {
         return webSettingsSet.getKeys();
     }
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * The interface Api settings repository.
  */
-@RepositoryRestResource(collectionResourceRel = "apiSettings", path = "api-settings")
+@RepositoryRestResource(path = "api-settings", collectionResourceRel = "apiSettings", itemResourceRel = "apiSetting")
 @Tag(name = "api-settings")
 public interface ApiSettingsRepository extends JpaRepository<ApiSettings, Long> {
 
