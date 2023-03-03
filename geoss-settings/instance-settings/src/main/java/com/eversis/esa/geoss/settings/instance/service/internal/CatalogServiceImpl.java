@@ -129,7 +129,8 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public CatalogOptionModel updateCatalogOption(Long catalogId, Long optionId, CatalogOptionModel catalogOptionModel) {
+    public CatalogOptionModel updateCatalogOption(Long catalogId, Long optionId,
+            CatalogOptionModel catalogOptionModel) {
         log.debug("catalogId:{},optionId:{},catalogOptionModel:{}", catalogId, optionId, catalogOptionModel);
         return catalogOptionRepository.findById(optionId)
                 .map(catalogOption -> {

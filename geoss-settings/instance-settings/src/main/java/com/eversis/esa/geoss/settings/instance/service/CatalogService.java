@@ -28,10 +28,10 @@ public interface CatalogService {
      * Add catalog option catalog option model.
      *
      * @param id the id
-     * @param CatalogOptionModel the catalog option model
+     * @param catalogOptionModel the catalog option model
      * @return the catalog option model
      */
-    CatalogOptionModel addCatalogOption(Long id, CatalogOptionModel CatalogOptionModel);
+    CatalogOptionModel addCatalogOption(Long id, CatalogOptionModel catalogOptionModel);
 
     /**
      * Gets catalog option.
@@ -47,10 +47,10 @@ public interface CatalogService {
      *
      * @param id the id
      * @param optionId the option id
-     * @param CatalogOptionModel the catalog option model
+     * @param catalogOptionModel the catalog option model
      * @return the catalog option
      */
-    CatalogOptionModel setCatalogOption(Long id, Long optionId, CatalogOptionModel CatalogOptionModel);
+    CatalogOptionModel setCatalogOption(Long id, Long optionId, CatalogOptionModel catalogOptionModel);
 
     /**
      * Remove catalog option.
@@ -65,8 +65,8 @@ public interface CatalogService {
      *
      * @param id the id
      * @param optionId the option id
-     * @param CatalogOptionModel the catalog option model
+     * @param catalogOptionModel the catalog option model
      * @return the catalog option model
      */
-    CatalogOptionModel updateCatalogOption(Long id, Long optionId, CatalogOptionModel CatalogOptionModel);
+    CatalogOptionModel updateCatalogOption(Long id, Long optionId, CatalogOptionModel catalogOptionModel);
 }

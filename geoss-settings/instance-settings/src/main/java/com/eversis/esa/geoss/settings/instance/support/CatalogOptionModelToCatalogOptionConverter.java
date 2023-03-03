@@ -15,7 +15,8 @@ import org.springframework.core.convert.converter.Converter;
  * The type Catalog option model to catalog option converter.
  */
 @Mapper(componentModel = ComponentModel.SPRING, uses = CatalogIdToCatalogConverter.class)
-public abstract class CatalogOptionModelToCatalogOptionConverter implements Converter<CatalogOptionModel, CatalogOption> {
+public abstract class CatalogOptionModelToCatalogOptionConverter implements
+        Converter<CatalogOptionModel, CatalogOption> {
 
     private CatalogOptionRepository catalogOptionRepository;
 
