@@ -5,6 +5,7 @@ module geoss.system.settings {
     exports com.eversis.esa.geoss.settings.system.configuration to spring.beans, spring.boot, spring.context;
     // exports com.eversis.esa.geoss.settings.system.event to spring.beans, spring.context;
 
+    requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;

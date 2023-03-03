@@ -1,10 +1,13 @@
 package com.eversis.esa.geoss.settings.system.configuration;
 
+import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsSetConverter;
+import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConverter;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -43,28 +45,48 @@ public class SystemSettingsConfiguration {
     @Bean
     OpenApiCustomizer systemSettingsOpenApiCustomizer() {
         return openApi -> {
-            Set<String> securitySchemes = Optional.ofNullable(openApi.getComponents())
+            List<SecurityRequirement> securityRequirements = Optional.ofNullable(openApi.getComponents())
                     .map(Components::getSecuritySchemes)
                     .filter(Objects::nonNull)
                     .map(Map::keySet)
-                    .orElse(Collections.emptySet());
-            List<SecurityRequirement> securityRequirements = securitySchemes.stream()
+                    .orElse(Collections.emptySet())
+                    .stream()
                     .map(s -> {
                         SecurityRequirement securityRequirement = new SecurityRequirement();
                         securityRequirement.addList(s);
                         return securityRequirement;
                     }).toList();
-
+            // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
                     .flatMap(pathItem -> pathItem.readOperations().stream());
             operations.forEach(operation -> {
                 if (operation != null) {
-                    String operationId = operation.getOperationId();
-                    if (operationId.contains("apisettings") || operationId.contains("ApiSettings")) {
-                        operation.setSecurity(securityRequirements);
+                    List<String> tags = operation.getTags();
+                    if (tags != null) {
+                        if (tags.contains("api-settings") || tags.contains("web-settings")) {
+                            operation.setSecurity(securityRequirements);
+                        }
                     }
                 }
             });
+            // override schemas
+            Optional.ofNullable(openApi.getComponents())
+                    .flatMap(components -> Optional.ofNullable(components.getSchemas()))
+                    .map(Map::values)
+                    .orElse(Collections.emptySet())
+                    .forEach(schema -> {
+                        String name = schema.getName();
+                        if ("EntityModelWebSettings".equals(name) || "WebSettingsRequestBody".equals(name)) {
+                            Optional.ofNullable(schema.getProperties())
+                                    .map(map -> map.get("key"))
+                                    .map(o -> {
+                                        if (o instanceof StringSchema stringSchema) {
+                                            stringSchema.setEnum(WebSettingsSet.keys());
+                                        }
+                                        return o;
+                                    });
+                        }
+                    });
         };
     }
 
@@ -80,6 +102,7 @@ public class SystemSettingsConfiguration {
             public void configureConversionService(ConfigurableConversionService conversionService) {
                 conversionService.addConverter(new StringToApiSettingsKeyConverter());
                 conversionService.addConverter(new StringToApiSettingsSetConverter());
+                conversionService.addConverter(new StringToWebSettingsSetConverter());
             }
         };
     }
