@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.settings.system.configuration;
 
+import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsSetConverter;
@@ -8,6 +9,7 @@ import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConve
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -67,6 +69,20 @@ public class SystemSettingsConfiguration {
                             operation.setSecurity(securityRequirements);
                         }
                     }
+                    //override params
+                    String operationId = operation.getOperationId();
+                    if ("executeSearch-apisettings-get".equals(operationId)) {
+                        List<Parameter> parameters = operation.getParameters();
+                        if (parameters != null) {
+                            for (Parameter parameter : parameters) {
+                                if ("key".equals(parameter.getName())) {
+                                    if (parameter.getSchema() instanceof StringSchema stringSchema) {
+                                        stringSchema.setEnum(ApiSettingsSet.keys());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             });
             // override schemas
@@ -76,6 +92,16 @@ public class SystemSettingsConfiguration {
                     .orElse(Collections.emptySet())
                     .forEach(schema -> {
                         String name = schema.getName();
+                        if ("EntityModelApiSettings".equals(name) || "ApiSettingsRequestBody".equals(name)) {
+                            Optional.ofNullable(schema.getProperties())
+                                    .map(map -> map.get("key"))
+                                    .map(o -> {
+                                        if (o instanceof StringSchema stringSchema) {
+                                            stringSchema.setEnum(ApiSettingsSet.keys());
+                                        }
+                                        return o;
+                                    });
+                        }
                         if ("EntityModelWebSettings".equals(name) || "WebSettingsRequestBody".equals(name)) {
                             Optional.ofNullable(schema.getProperties())
                                     .map(map -> map.get("key"))

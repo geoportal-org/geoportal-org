@@ -8,11 +8,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The type Api settings controller.
@@ -38,10 +40,11 @@ public class ApiSettingsController {
     /**
      * Gets api settings keys.
      *
-     * @return the api settings keys
+     * @param apiSettingsSet the api settings set
+     * @return the web settings keys
      */
-    @RequestMapping(path = "/keys", method = RequestMethod.OPTIONS)
-    EnumSet<ApiSettingsKey> getApiSettingsKeys() {
-        return EnumSet.allOf(ApiSettingsKey.class);
+    @RequestMapping(path = "/sets/{set}/keys", method = RequestMethod.OPTIONS)
+    Set<ApiSettingsKey> getApiSettingsKeys(@PathVariable("set") ApiSettingsSet apiSettingsSet) {
+        return apiSettingsSet.getKeys();
     }
 }

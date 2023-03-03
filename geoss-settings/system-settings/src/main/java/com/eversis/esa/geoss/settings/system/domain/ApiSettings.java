@@ -1,16 +1,19 @@
 package com.eversis.esa.geoss.settings.system.domain;
 
+import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.settings.system.support.ApiSettingsKeyAttributeConverter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -18,10 +21,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-import java.time.Instant;
 
 /**
  * The type Api settings.
@@ -43,7 +43,7 @@ public class ApiSettings {
     private ApiSettingsSet set;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ApiSettingsKeyAttributeConverter.class)
     @Column(name = "key_", nullable = false)
     private ApiSettingsKey key;
 
@@ -51,28 +51,18 @@ public class ApiSettings {
     private String value;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonUnwrapped
     @NotAudited
-    @CreatedBy
-    @Column(name = "created_by", nullable = false, updatable = false)
-    private String createdBy;
+    @Embedded
+    private AuditableEmbeddable auditable = new AuditableEmbeddable();
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @NotAudited
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_on", nullable = false, updatable = false)
-    private Instant createdDate;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @NotAudited
-    @LastModifiedBy
-    @Column(name = "modified_by", nullable = false)
-    private String modifiedBy;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @NotAudited
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified_on", nullable = false)
-    private Instant modifiedDate;
+    /**
+     * Sets key.
+     *
+     * @param key the key
+     */
+    @JsonSetter
+    public void setKey(String key) {
+        this.key = this.set.getKey(key);
+    }
 }

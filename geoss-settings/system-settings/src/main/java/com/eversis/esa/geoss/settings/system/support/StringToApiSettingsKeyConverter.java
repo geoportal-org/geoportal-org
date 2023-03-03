@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.settings.system.support;
 
 import com.eversis.esa.geoss.settings.system.domain.ApiSettingsKey;
+import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 
 import org.springframework.core.convert.converter.Converter;
 
@@ -15,6 +16,6 @@ public class StringToApiSettingsKeyConverter implements Converter<String, ApiSet
             // It's an empty enum identifier: reset the enum value to null.
             return null;
         }
-        return ApiSettingsKey.fromString(source.trim());
+        return ApiSettingsSet.keyFromString(source);
     }
 }
