@@ -68,6 +68,16 @@ services:
             - geoss-db
             - geoss-keycloak
 
+    geoss-contents:
+        container_name: geoss-contents
+        build:
+            context: ./geoss-contents
+            dockerfile: Dockerfile-local
+        ports:
+            - "8081:8081"
+        networks:
+            - geoss_net
+
 volumes:
     geoss_db:
 

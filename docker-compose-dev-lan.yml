@@ -107,6 +107,16 @@ services:
       - geoss-db
       - geoss-keycloak
 
+  geoss-contents:
+    container_name: geoss-contents
+    build:
+      context: ./geoss-contents
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - geosslan
+
   geoss-admin:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:latest
     hostname: geoss-admin

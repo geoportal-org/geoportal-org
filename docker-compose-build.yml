@@ -45,11 +45,11 @@ services:
   #     context: ./geoss-bookmarks
   #     dockerfile: Dockerfile
 
-  # geoss-contents:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-contents
-  #     dockerfile: Dockerfile
+  geoss-contents:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-contents
+      dockerfile: Dockerfile
 
   geoss-settings:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
