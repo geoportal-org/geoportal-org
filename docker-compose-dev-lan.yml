@@ -108,14 +108,25 @@ services:
       - geoss-keycloak
 
   geoss-contents:
-    container_name: geoss-contents
-    build:
-      context: ./geoss-contents
-      dockerfile: Dockerfile
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:latest
+    hostname: geoss-contents
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
     ports:
       - "8081:8081"
     networks:
       - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
 
   geoss-admin:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:latest
