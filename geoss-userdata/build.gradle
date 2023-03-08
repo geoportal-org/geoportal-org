@@ -1,0 +1,43 @@
+plugins {
+    id "io.spring.dependency-management"
+    id 'jacoco-report-aggregation'
+    id 'test-report-aggregation'
+    id 'org.sonarqube'
+}
+
+allprojects {
+    apply plugin: 'project-report'
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://jakarta.oss.sonatype.org/content/groups/staging/' }
+    }
+}
+
+subprojects {
+    apply plugin: 'checkstyle'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+
+    checkstyle {
+        configFile "${project.rootDir}/../eversis_checks.xml" as File
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "net.javacrumbs.shedlock:shedlock-bom:${shedlockVersion}"
+            mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs << '-parameters'
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}
