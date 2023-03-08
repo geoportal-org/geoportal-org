@@ -26,6 +26,10 @@ build_apps:
     - chmod u+x ./geoss-settings/gradlew
     - ./geoss-settings/gradlew clean assemble -p ./geoss-settings
     - echo "Build geoss-settings complete"
+    - echo "Building geoss-contents app..."
+    - chmod u+x ./geoss-contents/gradlew
+    - ./geoss-contents/gradlew clean assemble -p ./geoss-contents
+    - echo "Build geoss-contents complete"
   cache: { }
   #   paths:
   #     - ./geoss-settings/application
@@ -33,6 +37,7 @@ build_apps:
   artifacts:
     paths:
       - ./geoss-settings/application
+      - ./geoss-contents/build
     expire_in: 4 weeks
   only:
     - develop
