@@ -14,7 +14,9 @@ public class ExtensionTypeValidator implements ConstraintValidator<ExtensionType
     /**
      * The Extension types.
      */
-    List<String> extensionTypes = Arrays.asList("pdf", "doc", "docx", "png", "jpg");
+    List<String> extensionTypes = Arrays.asList("bmp","css","doc","docx","dot","eot","flv","gif","htm","html","jpg",
+            "jrxml","js","map","mp3","mp4","odb","odf","odg","odp","ods","odt","pdf","png","ppt","pptx","rtf","svg",
+            "swf","sxc","sxi","sxw","tiff","ttf","txt","vsd","woff","xls","xlsx","xml");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
