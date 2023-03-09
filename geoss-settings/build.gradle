@@ -20,7 +20,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
 
     checkstyle {
-        configFile "${project.rootDir}/eversis_checks.xml" as File
+        configFile "${project.rootDir}/../eversis_checks.xml" as File
     }
 
     dependencyManagement {
