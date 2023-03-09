@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.settings.application.configuration.oauth2;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
+import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,8 +27,13 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
                         type = SecuritySchemeType.OAUTH2,
                         flows = @OAuthFlows(
                                 authorizationCode = @OAuthFlow(
-                                        authorizationUrl = "${springdoc.oauth2.oauth-flow.authorizationUrl}",
-                                        tokenUrl = "${springdoc.oauth2.oauth-flow.tokenUrl}"
+                                        authorizationUrl = "${openapi.oauth2.oauth-flow.authorizationUrl}",
+                                        tokenUrl = "${openapi.oauth2.oauth-flow.tokenUrl}",
+                                        refreshUrl = "${openapi.oauth2.oauth-flow.refreshUrl}",
+                                        scopes = {
+                                                @OAuthScope(name = "openid", description = "OpenID Connect"),
+                                                @OAuthScope(name = "roles", description = "OpenID Connect scope for add user roles to the access token")
+                                        }
                                 ))
                 )
         }
