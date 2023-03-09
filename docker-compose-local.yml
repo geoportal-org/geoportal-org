@@ -105,10 +105,16 @@ services:
         build:
             context: ./geoss-contents
             dockerfile: Dockerfile-local
+        environment:
+            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_contents_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+            SPRING_DATASOURCE_USERNAME: admin
+            SPRING_DATASOURCE_PASSWORD: qaz123
         ports:
             - "8081:8081"
         networks:
             - geoss_net
+        depends_on:
+            - geoss-db
 
 volumes:
     geoss_db:

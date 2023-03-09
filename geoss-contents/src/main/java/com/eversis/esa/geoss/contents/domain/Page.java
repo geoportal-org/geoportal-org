@@ -42,6 +42,7 @@ public class Page extends AuditableEntity {
     private String title;
 
     @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 2048, message = "{validation.description}")
     @Column(nullable = false)
     private String description;
 
@@ -51,6 +52,7 @@ public class Page extends AuditableEntity {
     private Long contentId;
 
     @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 255, message = "{validation.slug}")
     @Column(nullable = false)
     private String slug;
 

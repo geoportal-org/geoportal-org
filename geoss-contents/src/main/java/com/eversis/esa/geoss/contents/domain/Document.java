@@ -44,14 +44,17 @@ public class Document extends AuditableEntity {
     private String title;
 
     @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 255, message = "{validation.fileName}")
     @Column(nullable = false)
     private String fileName;
 
+    @NotNull(message = "{validation.notNull}")
     @ExtensionType
     @Column(nullable = false)
     private String extension;
 
     @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 2048, message = "{validation.url}")
     @Column(nullable = false)
     private String url;
 
