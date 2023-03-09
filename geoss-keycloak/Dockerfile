@@ -31,4 +31,4 @@ COPY themes/geoss/ /opt/keycloak/themes/geoss/
 COPY certs/ /etc/x509/https/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start", "--optimized", "--import-realm"]
+CMD ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss"]
