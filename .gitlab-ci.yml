@@ -63,7 +63,8 @@ build_images_b:
     - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "PATHS" && ls && pwd
+    - echo "###PATHS" && ls && pwd
+    - echo "###WHOAMI" && whoami && ps aux | grep gitlab
   dependencies:
     - build_apps
   only:
