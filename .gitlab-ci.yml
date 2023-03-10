@@ -63,9 +63,9 @@ build_images:
     - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "Building images" && docker compose -f docker-compose-build.yml build
+    - echo "Building images" && docker-compose -f docker-compose-build.yml build
     - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
-    - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker compose -f docker-compose-build.yml push;
+    - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
     - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
   dependencies:
     - build_apps
