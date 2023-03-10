@@ -20,7 +20,7 @@ build_apps:
   stage: build
   cache: { }
   tags:
-    - gitlab-runner-3
+    - geoss-runner-1
   script:
     - echo "Building geoss-settings app..."
     - chmod u+x ./geoss-settings/gradlew
