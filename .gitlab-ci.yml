@@ -20,7 +20,7 @@ build_apps:
   stage: build
   cache: { }
   tags:
-    - geoss-runner-1
+    - gitlab-runner-3
   script:
     - echo "Building geoss-settings app..."
     - chmod u+x ./geoss-settings/gradlew
@@ -46,7 +46,7 @@ build_apps:
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
 ########################################################################################################################
-build_images_b:
+build_images:
   stage: build_docker_images
   image: docker/compose:1.29.2
   tags:
@@ -63,35 +63,6 @@ build_images_b:
     - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "###PATHS" && ls && pwd
-    - echo "###WHOAMI" && whoami && ps aux | grep gitlab
-  dependencies:
-    - build_apps
-  only:
-    - develop
-    - /^release-.*/
-
-build_images:
-  stage: build_docker_images
-  image: docker/compose:1.29.2
-  tags:
-    - geoss-runner-1
-  cache: { }
-  before_script:
-    - chmod +x setup_tag.sh
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/dev/server.pem
-    # - echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/uat/server.pem
-    # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/prod/server.pem
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/tls.key
-    - ls -lah ./geoss-haproxy/etc/haproxy/certs/dev/
-    - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
-  script:
-    - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "PATHS" && ls -alh && pwd
-    - echo "###PATHS" && ls && pwd
-    - echo "###WHOAMI" && whoami && ps aux | grep gitlab
-
     - echo "Building images" && docker-compose -f docker-compose-build.yml build
     - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
     - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
@@ -109,7 +80,7 @@ dev_deploy_to_dmz:
   stage: docker_stack_deploy
   image: debian:11.4
   tags:
-    - geoss-runner-1
+    - gitlab-runner-3
   cache: { }
   variables:
     VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
@@ -151,7 +122,7 @@ dev_deploy_to_lan:
   stage: docker_stack_deploy
   image: debian:11.4
   tags:
-    - geoss-runner-1
+    - gitlab-runner-3
   cache: { }
   variables:
     VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
