@@ -320,7 +320,170 @@
                 }
             ],
             "security-admin-console": [],
-            "geoss-settings": [],
+            "geoss-settings": [
+                {
+                    "id": "49b0e327-fb17-4046-89de-a6bafd8944e6",
+                    "name": "api_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "7c836de4-079e-4903-98a4-122e0a46f993",
+                    "name": "layer_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "4ffa8a82-de86-4d74-af97-24c0d932207f",
+                    "name": "layer_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "61896798-06f1-4ef0-ab44-b27ad8b5ee2c",
+                    "name": "api_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "bfdd8c5b-658a-4969-a042-66c57bd08662",
+                    "name": "tag_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "1b169972-1275-4553-857e-a15c5d2bb75d",
+                    "name": "web_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "be61a2bd-c464-42b3-b6b8-6edbc0d9b9e6",
+                    "name": "api_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "349e8a46-399e-4b77-9544-ecb1e51b847f",
+                    "name": "catalog_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "68819bfe-bc02-466e-8cdd-1cae6ddcb023",
+                    "name": "tag_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "7a7ad08c-20bb-4368-b718-10f03b02800b",
+                    "name": "tag_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "8e652167-5c92-404f-a195-9b41c1a8aa64",
+                    "name": "view_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "587c0c7a-b8ee-42c1-b7f4-332b41e8846c",
+                    "name": "catalog_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "5f23651d-7981-4689-98ab-5ed17ef307e5",
+                    "name": "web_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "286255e1-0396-4c81-9918-832fbdc0c0b7",
+                    "name": "view_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "b55df3d2-e984-4892-b230-8013e5640378",
+                    "name": "view_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "2ff85aa6-fe2a-4ec3-928f-03cee2aad42d",
+                    "name": "catalog_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "5b26b486-f107-430e-95a4-8d128e6868dc",
+                    "name": "web_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                },
+                {
+                    "id": "1b7fd017-1638-42fb-9452-3b5fb4287007",
+                    "name": "layer_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "be27403f-4fc4-4e8f-997f-c4a84472990e",
+                    "attributes": {}
+                }
+            ],
             "geoss-userdata": [],
             "account-console": [],
             "broker": [
@@ -335,7 +498,143 @@
                 }
             ],
             "geoss-ui": [],
-            "geoss-contents": [],
+            "geoss-contents": [
+                {
+                    "id": "ef55155d-29fc-4ff5-9271-90b3181e1dfb",
+                    "name": "menu_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "eb6be844-ca94-490d-9771-0b67fae341cd",
+                    "name": "content_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "2bcb6ea9-bc0c-4c6b-a978-c0978662dc70",
+                    "name": "directory_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "bb276cb1-0194-4fae-8cce-cec9286dfa2c",
+                    "name": "menu_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "e1e355a7-33c9-4c8c-9d96-ab06d73803bb",
+                    "name": "page_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "7ada8357-0d9b-429e-b448-ecbc9209a80a",
+                    "name": "file_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "3d61f8cf-8c8e-409a-b14d-75dc3aec7960",
+                    "name": "file_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "a2be7867-5de1-4a5a-be1f-6b145b18ad58",
+                    "name": "page_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "8cebd2c0-32e5-40a8-b7af-26733cf5a75d",
+                    "name": "content_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "4f02980d-00c0-4be6-a3e8-3f7c4e4909ee",
+                    "name": "file_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "7d1a82ca-3e82-4723-983b-4e80e9f116fb",
+                    "name": "directory_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "6b254180-37ea-4142-9bde-e9af25c0173a",
+                    "name": "directory_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "1bf4a1be-0e34-4ecf-bb84-203b9b4f5e7a",
+                    "name": "menu_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "52e2b98e-67ba-43f6-a2ab-0839b4d20c05",
+                    "name": "page_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "a5d9d4ba-4de7-4cd3-8c84-9ab971227b74",
+                    "name": "content_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                }
+            ],
             "geoss-proxy": [],
             "geoss-bookmarks": [],
             "admin-cli": [],
@@ -460,7 +759,45 @@
                 "admin",
                 "user"
             ],
-            "clientRoles": {},
+            "clientRoles": {
+                "geoss-contents": [
+                    "menu_remover",
+                    "directory_remover",
+                    "directory_reader",
+                    "directory_writer",
+                    "page_remover",
+                    "content_remover",
+                    "menu_reader",
+                    "page_reader",
+                    "file_remover",
+                    "file_reader",
+                    "page_writer",
+                    "file_writer",
+                    "content_writer",
+                    "menu_writer",
+                    "content_reader"
+                ],
+                "geoss-settings": [
+                    "api_writer",
+                    "api_reader",
+                    "tag_writer",
+                    "web_writer",
+                    "tag_reader",
+                    "tag_remover",
+                    "view_reader",
+                    "api_remover",
+                    "web_reader",
+                    "catalog_writer",
+                    "web_remover",
+                    "layer_writer",
+                    "layer_remover",
+                    "catalog_reader",
+                    "catalog_remover",
+                    "view_remover",
+                    "view_writer",
+                    "layer_reader"
+                ]
+            },
             "subGroups": []
         },
         {
@@ -469,7 +806,39 @@
             "path": "/content-manager",
             "attributes": {},
             "realmRoles": [],
-            "clientRoles": {},
+            "clientRoles": {
+                "geoss-contents": [
+                    "menu_remover",
+                    "directory_remover",
+                    "directory_reader",
+                    "directory_writer",
+                    "page_remover",
+                    "content_remover",
+                    "menu_reader",
+                    "page_reader",
+                    "file_remover",
+                    "file_reader",
+                    "page_writer",
+                    "file_writer",
+                    "content_writer",
+                    "menu_writer",
+                    "content_reader"
+                ],
+                "geoss-settings": [
+                    "api_reader",
+                    "tag_writer",
+                    "tag_reader",
+                    "tag_remover",
+                    "view_reader",
+                    "web_reader",
+                    "catalog_writer",
+                    "catalog_reader",
+                    "catalog_remover",
+                    "view_remover",
+                    "view_writer",
+                    "layer_reader"
+                ]
+            },
             "subGroups": []
         },
         {
@@ -509,7 +878,23 @@
             "path": "/registered-user",
             "attributes": {},
             "realmRoles": [],
-            "clientRoles": {},
+            "clientRoles": {
+                "geoss-contents": [
+                    "menu_reader",
+                    "page_reader",
+                    "directory_reader",
+                    "file_reader",
+                    "content_reader"
+                ],
+                "geoss-settings": [
+                    "catalog_reader",
+                    "tag_reader",
+                    "view_reader",
+                    "web_reader",
+                    "api_reader",
+                    "layer_reader"
+                ]
+            },
             "subGroups": []
         }
     ],
@@ -521,6 +906,9 @@
         "clientRole": false,
         "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529"
     },
+    "defaultGroups": [
+        "/registered-user"
+    ],
     "requiredCredentials": [
         "password"
     ],
