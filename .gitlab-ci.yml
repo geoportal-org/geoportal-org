@@ -46,6 +46,30 @@ build_apps:
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
 ########################################################################################################################
+build_images_b:
+  stage: build_docker_images
+  image: docker/compose:1.29.2
+  tags:
+    - gitlab-runner-3
+  cache: { }
+  before_script:
+    - chmod +x setup_tag.sh
+    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/dev/server.pem
+    # - echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/uat/server.pem
+    # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/prod/server.pem
+    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
+    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/tls.key
+    - ls -lah ./geoss-haproxy/etc/haproxy/certs/dev/
+    - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
+  script:
+    - echo "Docker image tag setup" && source setup_tag.sh
+    - echo "PATHS" && ls && pwd
+  dependencies:
+    - build_apps
+  only:
+    - develop
+    - /^release-.*/
+
 build_images:
   stage: build_docker_images
   image: docker/compose:1.29.2
@@ -63,6 +87,7 @@ build_images:
     - ls -lah ./geoss-nginx/etc/nginx/certs/dev/
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
+    - echo "PATHS" && ls && pwd
     - echo "Building images" && docker-compose -f docker-compose-build.yml build
     - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
     - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
