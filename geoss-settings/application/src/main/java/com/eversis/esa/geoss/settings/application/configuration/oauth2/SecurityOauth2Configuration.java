@@ -32,7 +32,11 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
                                         refreshUrl = "${openapi.oauth2.oauth-flow.refreshUrl}",
                                         scopes = {
                                                 @OAuthScope(name = "openid", description = "OpenID Connect"),
-                                                @OAuthScope(name = "roles", description = "OpenID Connect scope for add user roles to the access token")
+                                                @OAuthScope(name = "profile",
+                                                            description = "OpenID Connect scope profile"),
+                                                @OAuthScope(name = "roles",
+                                                            description = "OpenID Connect scope for add user roles to "
+                                                                    + "the access token")
                                         }
                                 ))
                 )
@@ -65,11 +69,10 @@ public class SecurityOauth2Configuration {
      */
     @Bean
     ClaimAccessorGrantedAuthoritiesConverter claimAccessorGrantedAuthoritiesConverter(
-            SimpleAuthorityMapper simpleAuthorityMapper) {
+            SimpleAuthorityMapper simpleAuthorityMapper, SecurityOauth2Properties securityOauth2Properties) {
         ClaimAccessorGrantedAuthoritiesConverter claimAccessorGrantedAuthoritiesConverter
                 = new ClaimAccessorGrantedAuthoritiesConverter();
-        claimAccessorGrantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access");
-        claimAccessorGrantedAuthoritiesConverter.setAuthoritiesClaimAttributeName("roles");
+        claimAccessorGrantedAuthoritiesConverter.setClientId(securityOauth2Properties.getClientId());
         claimAccessorGrantedAuthoritiesConverter.setSimpleAuthorityMapper(simpleAuthorityMapper);
         return claimAccessorGrantedAuthoritiesConverter;
     }

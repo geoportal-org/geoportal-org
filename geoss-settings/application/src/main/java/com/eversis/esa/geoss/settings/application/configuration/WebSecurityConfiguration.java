@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -97,8 +98,24 @@ public class WebSecurityConfiguration {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests()
-                .requestMatchers(basePath + "/api-settings/**").hasRole("ADMIN")
-                .requestMatchers(basePath + "/layers/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, basePath + "/api-settings/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, basePath + "/api-settings/**").hasAnyRole("API_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/api-settings/**").hasAnyRole("API_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, basePath + "/catalogs/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, basePath + "/catalogs/**").hasAnyRole("CATALOG_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/catalogs/**").hasAnyRole("CATALOG_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET,basePath + "/layers/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE,basePath + "/layers/**").hasAnyRole("LAYER_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/layers/**").hasAnyRole("LAYER_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET,basePath + "/tags/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE,basePath + "/tags/**").hasAnyRole("TAG_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/tags/**").hasAnyRole("TAG_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET,basePath + "/views/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE,basePath + "/views/**").hasAnyRole("VIEW_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/views/**").hasAnyRole("VIEW_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET,basePath + "/web-settings/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE,basePath + "/web-settings/**").hasAnyRole("WEB_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/web-settings/**").hasAnyRole("WEB_WRITER", "ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();
