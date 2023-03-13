@@ -1,5 +1,14 @@
 variables:
 
+.build_apps:
+  image: gradle:jdk17-jammy
+  tags:
+    - geoss-runner-1
+  cache: { }
+  only:
+    - develop
+    - /^release-.*/
+
 ###########################
 #         STAGES          #
 ###########################
@@ -15,10 +24,9 @@ stages:  # List of stages for jobs, and their order of execution
 ########################################################################################################################
 #                                                     BUILD                                                            #
 ########################################################################################################################
-build_apps:
-  image: gradle:jdk17-jammy
+build_geoss-settings:
   stage: build
-  cache: { }
+  extends: .build_apps
   tags:
     - geoss-runner-1
   script:
@@ -30,13 +38,26 @@ build_apps:
     - chmod u+x ./geoss-contents/gradlew
     - ./geoss-contents/gradlew clean assemble -p ./geoss-contents
     - echo "Build geoss-contents complete"
-  cache: { }
-  #   paths:
-  #     - ./geoss-settings/application
-  #   key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
       - ./geoss-settings/application
+    expire_in: 4 weeks
+  only:
+    - develop
+    - /^release-.*/
+
+build_geoss-contents:
+  stage: build
+  extends: .build_apps
+  tags:
+    - geoss-runner-1
+  script:
+    - echo "Building geoss-contents app..."
+    - chmod u+x ./geoss-contents/gradlew
+    - ./geoss-contents/gradlew clean assemble -p ./geoss-contents
+    - echo "Build geoss-contents complete"
+  artifacts:
+    paths:
       - ./geoss-contents/build
     expire_in: 4 weeks
   only:
@@ -68,7 +89,8 @@ build_images:
     - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
     - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
   dependencies:
-    - build_apps
+    - build_geoss-settings
+    - build_geoss-contents
   only:
     - develop
     - /^release-.*/
