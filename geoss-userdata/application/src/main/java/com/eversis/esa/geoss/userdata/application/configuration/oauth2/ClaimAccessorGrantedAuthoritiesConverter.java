@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.userdata.application.configuration.oauth2;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,21 +18,29 @@ import java.util.Map;
 /**
  * The type Claim accessor granted authorities converter.
  */
+@Log4j2
 @Setter
 public class ClaimAccessorGrantedAuthoritiesConverter implements
         Converter<ClaimAccessor, Collection<GrantedAuthority>> {
 
-    private String authoritiesClaimName;
+    private static final String REALM_ACCESS = "realm_access";
 
-    private String authoritiesClaimAttributeName;
+    private static final String RESOURCE_ACCESS = "resource_access";
+
+    private static final String ROLES = "roles";
+
+    private String clientId;
 
     private SimpleAuthorityMapper simpleAuthorityMapper;
 
     @Override
     public Collection<GrantedAuthority> convert(ClaimAccessor claimAccessor) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (String authority : getAuthorities(claimAccessor)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+        for (String role : getRealmRoles(claimAccessor)) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role));
+        }
+        for (String role : getResourceAccessRoles(claimAccessor)) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role));
         }
         if (simpleAuthorityMapper != null) {
             return simpleAuthorityMapper.mapAuthorities(grantedAuthorities);
@@ -39,25 +48,38 @@ public class ClaimAccessorGrantedAuthoritiesConverter implements
         return grantedAuthorities;
     }
 
-    private Collection<String> getAuthorities(ClaimAccessor claimAccessor) {
-        Object authorities = claimAccessor.getClaim(authoritiesClaimName);
-        if (authorities instanceof String) {
-            if (StringUtils.hasText((String) authorities)) {
-                return Arrays.asList(((String) authorities).split(" "));
+    private Collection<String> getRealmRoles(ClaimAccessor claimAccessor) {
+        Object claim = claimAccessor.getClaim(REALM_ACCESS);
+        return getRolesFromClaim(claim, null);
+    }
+
+    private Collection<String> getResourceAccessRoles(ClaimAccessor claimAccessor) {
+        Object claim = claimAccessor.getClaim(RESOURCE_ACCESS);
+        return getRolesFromClaim(claim, clientId);
+    }
+
+    private Collection<String> getRolesFromClaim(Object claim, String nestedClaimName) {
+        if (claim instanceof String) {
+            if (StringUtils.hasText((String) claim)) {
+                return Arrays.asList(((String) claim).split(" "));
             }
             return Collections.emptyList();
         }
-        if (authorities instanceof Collection) {
-            return castAuthoritiesToCollection(authorities);
+        if (claim instanceof Collection) {
+            return castRolesToCollection(claim);
         }
-        if (authorities instanceof Map<?, ?> mapAuthorities) {
-            return castAuthoritiesToCollection(mapAuthorities.get(authoritiesClaimAttributeName));
+        if (claim instanceof Map<?, ?> map) {
+            if (nestedClaimName != null) {
+                Object nestedClaim = map.get(nestedClaimName);
+                return getRolesFromClaim(nestedClaim, null);
+            }
+            return castRolesToCollection(map.get(ROLES));
         }
         return Collections.emptyList();
     }
 
     @SuppressWarnings("unchecked")
-    private Collection<String> castAuthoritiesToCollection(Object authorities) {
-        return (Collection<String>) authorities;
+    private Collection<String> castRolesToCollection(Object roles) {
+        return (Collection<String>) roles;
     }
 }

@@ -16,5 +16,7 @@ public class SecurityOauth2Properties {
 
     private String baseUri;
 
+    private String clientId;
+
     private String postLogoutRedirectUri;
 }
