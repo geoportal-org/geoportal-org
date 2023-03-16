@@ -54,9 +54,9 @@ public class Document extends AuditableEntity {
     private String extension;
 
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 2048, message = "{validation.url}")
+    @Size(min = 1, max = 2048, message = "{validation.path}")
     @Column(nullable = false)
-    private String url;
+    private String path;
 
     @NotNull(message = "{validation.notNull}")
     @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")

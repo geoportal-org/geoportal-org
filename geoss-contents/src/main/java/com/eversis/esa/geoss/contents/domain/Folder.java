@@ -1,6 +1,5 @@
 package com.eversis.esa.geoss.contents.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,5 +46,10 @@ public class Folder extends AuditableEntity {
     @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
     @Column(nullable = false)
     private Long parentFolderId;
+
+    @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 2048, message = "{validation.path}")
+    @Column(nullable = false)
+    private String path;
 
 }

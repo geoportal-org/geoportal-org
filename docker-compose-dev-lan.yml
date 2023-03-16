@@ -130,6 +130,8 @@ services:
     depends_on:
       - geoss-db
       - geoss-keycloak
+    volumes:
+      - /nfs/data:/repository
 
   geoss-admin:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:latest

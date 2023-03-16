@@ -1,9 +1,8 @@
 package com.eversis.esa.geoss.contents.exception;
 
+import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import jakarta.validation.ConstraintViolationException;
 
@@ -13,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -29,14 +29,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      */
     @ExceptionHandler({RepositoryConstraintViolationException.class})
     public ResponseEntity<Object> handleRepositoryConstraintViolation(final RepositoryConstraintViolationException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date());
-        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
-        body.put("message", "Validation Failed");
         List<String> errors = ex.getErrors().getAllErrors().stream()
                 .map(p -> p.toString()).collect(Collectors.toList());
-        body.put("errors", errors);
-        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        ExceptionResponseMessage responseMessage = new ExceptionResponseMessage("Validation Failed.",
+                HttpStatus.UNPROCESSABLE_ENTITY.value(), new Date(), errors);
+        return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -51,4 +48,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    /**
+     * Handle max size exception response entity.
+     *
+     * @param ex the ex
+     * @return the response entity
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ExceptionResponseMessage> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        List<String> errors = Arrays.asList(new String[] {ex.getMessage()});
+        ExceptionResponseMessage responseMessage =
+                new ExceptionResponseMessage("File is too large. Max file size is 10MB.",
+                        HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
+        return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
+    }
 }
