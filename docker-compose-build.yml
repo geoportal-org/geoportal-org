@@ -63,11 +63,11 @@ services:
       context: ./geoss-ui
       dockerfile: Dockerfile
 
-  # geoss-userdata:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-userdata
-  #     dockerfile: Dockerfile
+  geoss-userdata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-userdata
+      dockerfile: Dockerfile
 
   geoss-db:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db:${DOCKER_IMAGE_TAG}

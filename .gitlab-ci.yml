@@ -36,7 +36,7 @@ build_geoss-settings:
     - echo "Build geoss-settings complete"
   artifacts:
     paths:
-      - ./geoss-settings/application
+      - ./geoss-settings/application/build
     expire_in: 4 weeks
   only:
     - develop
@@ -55,6 +55,24 @@ build_geoss-contents:
   artifacts:
     paths:
       - ./geoss-contents/build
+    expire_in: 4 weeks
+  only:
+    - develop
+    - /^release-.*/
+
+build_geoss-userdata:
+  stage: build
+  extends: .build_apps
+  tags:
+    - geoss-runner-1
+  script:
+    - echo "Building geoss-userdata app..."
+    - chmod u+x ./geoss-userdata/gradlew
+    - ./geoss-userdata/gradlew clean assemble -p ./geoss-userdata
+    - echo "Build geoss-userdata complete"
+  artifacts:
+    paths:
+      - ./geoss-userdata/application/build
     expire_in: 4 weeks
   only:
     - develop
@@ -87,6 +105,7 @@ build_images:
   dependencies:
     - build_geoss-settings
     - build_geoss-contents
+    - build_geoss-userdata
   only:
     - develop
     - /^release-.*/

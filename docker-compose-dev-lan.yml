@@ -107,6 +107,41 @@ services:
       - geoss-db
       - geoss-keycloak
 
+  geoss-userdata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:latest
+    hostname: geoss-userdata
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_userdata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+      SPRING_SECURITY_USER_NAME: user
+      SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
+      SPRING_SECURITY_USER_ROLES: USER,ADMIN
+      SPRING_SECURITY_USER_EMAIL: user@geoss-userdata
+      SPRING_SECURITY_USER_FIRST_NAME: User
+      SPRING_SECURITY_USER_LAST_NAME: User
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: ${SPRINGDOCSECURITY_OA_CSECRET}
+      KEYTOOL_STOREPASS: notusedyet
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+    ports:
+      - "8083:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+
   geoss-contents:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_contents:latest
     hostname: geoss-contents
