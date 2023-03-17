@@ -98,6 +98,22 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
+  location /userdata/ {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_userdata.conf;
+
+    proxy_pass    http://cms_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
   location /contents/ {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -245,6 +261,22 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
+  location /userdata/ {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_userdata.conf;
+
+    proxy_pass    http://cms_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+  
   location /contents/ {
     include conf.d/common/maintenance_conditions.conf;
 
