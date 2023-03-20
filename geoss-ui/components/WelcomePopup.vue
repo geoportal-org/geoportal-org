@@ -14,10 +14,9 @@
             {{ $t('welcomePopup.newVersionPart2') }} <a target="_blank" :href="tourUrl"> <i class="icomoon-tour"></i> {{
                 $t('welcomePopup.newVersionPart3')
             }}</a>. <br />
-            {{ $t('welcomePopup.newVersionPart4') }} <a target="_blank" href="/release-notes"><i
-                    class="icomoon-info"></i> {{ $tc('welcomePopup.newVersionPart5') }}</a> {{
-            $t('welcomePopup.newVersionPart6')
-                    }}
+            {{ $t('welcomePopup.newVersionPart4') }} <NuxtLink to="/release-notes"><i class="icomoon-info"></i> {{
+                $tc('welcomePopup.newVersionPart5')
+            }}</NuxtLink> {{ $t('welcomePopup.newVersionPart6') }}
         </p>
     </div>
 </template>

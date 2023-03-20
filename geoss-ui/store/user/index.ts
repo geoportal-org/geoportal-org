@@ -66,7 +66,7 @@ const actions = {
     },
 }
 
-export const user = {
+export default {
     namespaced: true,
     state,
     getters,

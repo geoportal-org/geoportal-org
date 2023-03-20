@@ -60,7 +60,7 @@ const actions = {
     },
 }
 
-export let myWorkspace = {
+export default {
     namespaced: true,
     state,
     getters,

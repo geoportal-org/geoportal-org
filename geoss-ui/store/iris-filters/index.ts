@@ -130,7 +130,7 @@ for (const key of Object.keys(initialState)) {
     }
 }
 
-export const irisFilters = {
+export default {
     namespaced: true,
     state,
     getters,

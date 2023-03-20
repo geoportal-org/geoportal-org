@@ -65,7 +65,7 @@ const what3wordsStyle = new ol.style.Style({
     image: new ol.style.Icon({
         anchor: [0.5, 1],
         opacity: 0.75,
-        src: `~assets/img/w3wlogo.png`,
+        src: `/img/w3wlogo.png`,
     }),
 })
 

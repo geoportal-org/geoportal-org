@@ -339,12 +339,12 @@ const SearchEngineService = {
     },
 
     getUserSettingsUrl() {
-        const geossVersion = AppVueObj.app.$cookies.get('geoss_version')
-        const splashscreenTooltips = AppVueObj.app.$cookies.get(
+        const geossVersion = window.$nuxt.$cookies.get('geoss_version')
+        const splashscreenTooltips = window.$nuxt.$cookies.get(
             'splashscreen_tooltips'
         )
-        const dhusUsername = AppVueObj.app.$cookies.get('dhus_username')
-        const dhusPassword = AppVueObj.app.$cookies.get('dhus_password')
+        const dhusUsername = window.$nuxt.$cookies.get('dhus_username')
+        const dhusPassword = window.$nuxt.$cookies.get('dhus_password')
 
         return SearchEngineService.getResourceUrl('USER_SETTINGS', {
             geoss_version: geossVersion,

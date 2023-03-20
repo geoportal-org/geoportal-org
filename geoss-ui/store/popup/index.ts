@@ -101,7 +101,7 @@ const actions = {
     },
 }
 
-export const popup = {
+export default {
     namespaced: true,
     state,
     getters,

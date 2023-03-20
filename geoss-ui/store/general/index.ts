@@ -3,8 +3,8 @@ import { AppVueObj } from '@/data/global'
 const state = {
     storeInitialized: false,
     langLocale: '',
-    staticPath: `${process.env.VUE_APP_IMAGE_PATH}`,
-    baseUrl: `${process.env.VUE_APP_BASE_URL}`,
+    staticPath: `${process.env.NUXT_ENV_IMAGE_PATH}`,
+    baseUrl: `${process.env.NUXT_ENV_BASE_URL}`,
     imagePreview: null,
     isWidget: false,
     isEntryExtensionEnabled: true,
@@ -89,7 +89,7 @@ const actions = {
     },
 }
 
-export let general = {
+export default {
     namespaced: true,
     state,
     getters,

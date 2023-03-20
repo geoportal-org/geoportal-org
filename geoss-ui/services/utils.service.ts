@@ -396,7 +396,7 @@ const UtilsService = {
     },
 
     getAccessKeyObject() {
-        if (`${process.env.VUE_APP_TYPE}` === 'widgets') {
+        if (`${process.env.NUXT_ENV_TYPE}` === 'widgets') {
             return {
                 accesskey:
                     AppVueObj.app.$store.getters[
@@ -409,7 +409,7 @@ const UtilsService = {
 
     getAccessKeyString() {
         if (
-            `${process.env.VUE_APP_TYPE}` === 'widgets' &&
+            `${process.env.NUXT_ENV_TYPE}` === 'widgets' &&
             AppVueObj.app.$store.getters[GeneralGetters.widgetAccessKey]
         ) {
             return `&accesskey=${

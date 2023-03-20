@@ -334,7 +334,7 @@ const actions = {
     },
 }
 
-export const bookmarks = {
+export default {
     namespaced: true,
     state,
     getters,

@@ -626,7 +626,7 @@ const actions = {
     },
 }
 
-export let map = {
+export default {
     namespaced: true,
     state,
     getters,

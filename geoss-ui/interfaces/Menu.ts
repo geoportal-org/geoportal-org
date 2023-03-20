@@ -2,6 +2,8 @@ export interface MenuLink {
     imgURL: string
     link: string
     title: string
+    links: MenuSublink[]
+    visible: boolean
 }
 
 interface MenuSublink {
@@ -14,4 +16,5 @@ export interface MenuLinksWrapper {
     title: string
     links: MenuSublink[]
     visible: boolean
+    link: string
 }

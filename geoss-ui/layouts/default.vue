@@ -1,7 +1,10 @@
 <template>
-    <div>
-        <dummy-menu />
+    <main>
+        <!-- <dummy-menu />
         <Nuxt />
-        <dummy-layout-identifier layoutId="default" />
-    </div>
+        <dummy-layout-identifier layoutId="full" /> -->
+
+        <Header />
+        <Menu />
+    </main>
 </template>

@@ -20,7 +20,7 @@
 }
 
 @mixin regular-page-body {
-    background-image: url('~/assets/img/map-background.jpg');
+    background-image: url('/img/map-background.jpg');
     background-position: right top;
     background-attachment: fixed;
     background-repeat: no-repeat;

@@ -261,7 +261,7 @@ actions = {
     },
 }
 
-export const granulaFilters = {
+export default {
     namespaced: true,
     state,
     getters,

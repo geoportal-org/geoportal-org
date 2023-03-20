@@ -450,7 +450,7 @@ const LogService: any = {
     /*-----------------------------------------------*/
     logSignIn() {
         return new Promise((resolve, reject) => {
-            if (AppVueObj.app.$cookies.get('geoss_justSignedIn')) {
+            if (window.$nuxt.$cookies.get('geoss_justSignedIn')) {
                 LogService.client.bulk(
                     {
                         body: [
@@ -478,7 +478,7 @@ const LogService: any = {
                         }
                     }
                 )
-                AppVueObj.app.$cookies.remove('geoss_justSignedIn')
+                window.$nuxt.$cookies.remove('geoss_justSignedIn')
             } else {
                 resolve
             }
@@ -664,16 +664,16 @@ const LogService: any = {
         if (UtilsService.isWidget()) {
             return
         }
-        let logsearchHost = `${process.env.VUE_APP_ELASTIC_SEARCH_URL}`
+        let logsearchHost = `${process.env.NUXT_ENV_ELASTIC_SEARCH_URL}`
         if (UtilsService.isWidget()) {
             // widget users
             logsearchHost = `${BaseUrl()}/logsearch`
         } else if (window.location.origin.includes('//localhost')) {
             // localhost development (standalone FE and Liferay version)
             logsearchHost = 'https://geoss.devel.esaportal.eu/logsearch'
-        } else if (process.env.VUE_APP_ELASTIC_SEARCH_URL!.startsWith('/')) {
+        } else if (process.env.NUXT_ENV_ELASTIC_SEARCH_URL!.startsWith('/')) {
             // production packages (dev, uat, sit, prod)
-            logsearchHost = `${window.location.origin}${process.env.VUE_APP_ELASTIC_SEARCH_URL}`
+            logsearchHost = `${window.location.origin}${process.env.NUXT_ENV_ELASTIC_SEARCH_URL}`
         }
 
         return new Promise((resolve) => {
@@ -731,11 +731,11 @@ const LogService: any = {
                 : null
         document.session_user_email =
             typeof Liferay !== 'undefined' && Liferay.ThemeDisplay.isSignedIn()
-                ? AppVueObj.app.$cookies.get('geoss_email')
+                ? window.$nuxt.$cookies.get('geoss_email')
                 : null
         document.session_id =
             typeof Liferay !== 'undefined'
-                ? AppVueObj.app.$cookies.get(
+                ? window.$nuxt.$cookies.get(
                       'LFR_SESSION_STATE_' + Liferay.ThemeDisplay.getUserId()
                   )
                 : null

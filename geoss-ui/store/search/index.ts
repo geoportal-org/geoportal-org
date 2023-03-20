@@ -1267,7 +1267,7 @@ const actions = {
     },
 }
 
-export let search = {
+export default {
     namespaced: true,
     state,
     getters,

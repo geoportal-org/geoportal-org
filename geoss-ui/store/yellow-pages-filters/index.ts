@@ -62,7 +62,7 @@ const actions = {
     },
 }
 
-export const yellowPagesFilters = {
+export default {
     namespaced: true,
     state,
     getters,

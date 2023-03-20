@@ -127,7 +127,7 @@ const actions = {
     },
 }
 
-export const fileDownload = {
+export default {
     namespaced: true,
     state,
     getters,

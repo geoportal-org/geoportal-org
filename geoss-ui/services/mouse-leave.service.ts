@@ -171,7 +171,7 @@ const MouseLeaveService = {
     initSurvey() {
         if (
             !AppVueObj.app.$store.getters[GeneralGetters.isWidget] &&
-            AppVueObj.app.$cookies.get('hide-survey') !== 'true'
+            window.$nuxt.$cookies.get('hide-survey') !== 'true'
         ) {
             glioInstance.init([
                 'top',

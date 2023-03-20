@@ -5,7 +5,7 @@ export const BaseUrl = () => {
     if (AppVueObj.app && AppVueObj.app.$store.getters[GeneralGetters.baseUrl]) {
         return AppVueObj.app.$store.getters[GeneralGetters.baseUrl]
     } else {
-        return `${process.env.VUE_APP_BASE_URL}`
+        return `${process.env.NUXT_ENV_BASE_URL}`
     }
 }
 
@@ -16,7 +16,7 @@ export const StaticPath = () => {
     ) {
         return AppVueObj.app.$store.getters[GeneralGetters.staticPath]
     } else {
-        return `${process.env.VUE_APP_IMAGE_PATH}`
+        return `${process.env.NUXT_ENV_IMAGE_PATH}`
     }
 }
 

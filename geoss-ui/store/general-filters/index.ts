@@ -350,7 +350,7 @@ const actions = {
     },
 }
 
-export const generalFilters = {
+export default {
     namespaced: true,
     state,
     getters,

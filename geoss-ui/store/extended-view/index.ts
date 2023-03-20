@@ -27,7 +27,7 @@ const actions = {
     },
 }
 
-export const extendedView = {
+export default {
     namespaced: true,
     state,
     getters,

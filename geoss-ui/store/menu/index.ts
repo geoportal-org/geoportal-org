@@ -47,7 +47,7 @@ const actions = {
     },
 }
 
-export let menu = {
+export default {
     namespaced: true,
     state,
     getters,

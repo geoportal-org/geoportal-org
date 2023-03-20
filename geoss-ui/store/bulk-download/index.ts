@@ -71,7 +71,7 @@ const actions = {
     },
 }
 
-export const bulkDownload = {
+export default {
     namespaced: true,
     state,
     getters,

@@ -44,7 +44,7 @@ export default class ConfirmSearchPopupComponent extends Vue {
 
 <style lang="scss" scoped>
 .popup-default {
-    background: url('~/assets/img/powered_by_google_on_white.png') center calc(100% - 10px) no-repeat #fff;
+    background: url('/img/powered_by_google_on_white.png') center calc(100% - 10px) no-repeat #fff;
 
     &__title {
         i {

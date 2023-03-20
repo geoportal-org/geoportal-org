@@ -205,7 +205,7 @@ export const GeneralApiService = {
         return makeRequest(
             'get',
             `https://api-ssl.bitly.com/v3/shorten?access_token=${
-                process.env.VUE_APP_BITLY_ACCESS_TOKEN
+                process.env.NUXT_ENV_BITLY_ACCESS_TOKEN
             }&longUrl=${encodeURIComponent(link)}`,
             null,
             true

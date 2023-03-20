@@ -99,7 +99,7 @@ const actions = {
     },
 }
 
-export let searchEngine = {
+export default {
     namespaced: true,
     state,
     getters,

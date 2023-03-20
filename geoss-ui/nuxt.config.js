@@ -1,9 +1,9 @@
 export default {
     server: {
-      port: 3000,     // default : 3000
-      host: '0.0.0.0' // do not put localhost (only accessible from the host machine)
+        port: 3000, // default : 3000
+        host: '0.0.0.0', // do not put localhost (only accessible from the host machine)
     },
-    
+
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         title: 'GEOSS Portal',
@@ -31,7 +31,11 @@ export default {
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [{ src: '~plugins/ol.ts', ssr: false }],
+    plugins: [
+        { src: '~plugins/ol.ts', ssr: false },
+        '~/plugins/AppVueObj.ts',
+        '~/plugins/CollapseTransition.ts',
+    ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: [
@@ -69,26 +73,26 @@ export default {
                 code: 'en',
                 file: 'en.ts',
             },
-            {
-                code: 'es',
-                file: 'es.ts',
-            },
-            {
-                code: 'fr',
-                file: 'fr.ts',
-            },
-            {
-                code: 'pl',
-                file: 'pl.ts',
-            },
-            {
-                code: 'ru',
-                file: 'ru.ts',
-            },
-            {
-                code: 'zh',
-                file: 'zh.ts',
-            },
+            // {
+            //     code: 'es',
+            //     file: 'es.ts',
+            // },
+            // {
+            //     code: 'fr',
+            //     file: 'fr.ts',
+            // },
+            // {
+            //     code: 'pl',
+            //     file: 'pl.ts',
+            // },
+            // {
+            //     code: 'ru',
+            //     file: 'ru.ts',
+            // },
+            // {
+            //     code: 'zh',
+            //     file: 'zh.ts',
+            // },
         ],
         lazy: false,
         langDir: 'translations/',
@@ -112,6 +116,7 @@ export default {
     build: {
         vendor: ['ol'],
     },
+
     //   ssr: true,
     target: 'server',
 }

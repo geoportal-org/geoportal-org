@@ -206,7 +206,7 @@ const actions = {
     },
 }
 
-export const facetedFilters = {
+export default {
     namespaced: true,
     state,
     getters,

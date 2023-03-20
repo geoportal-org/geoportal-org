@@ -41,7 +41,7 @@ const actions = {
     },
 }
 
-export const feedback = {
+export default {
     namespaced: true,
     state,
     getters,

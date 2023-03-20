@@ -1,7 +1,7 @@
 <template>
     <div class="survey"
         :class="{ 'hide-navigation': currentPage > 8, 'hide-next-button': currentPage === 8, 'hide-prev-button': currentPage === 0, 'survey-complete': currentPage === 9 }"
-        :style="`background: url('~/assets/svg/survey-background.svg') center center no-repeat;`">
+        :style="`background: url('/svg/survey-background.svg') center center no-repeat;`">
         <!-- <carousel class="survey" ref="slider" v-model="currentPage" :scrollPerPage="false" :mouse-drag="false"
             :paginationEnabled="true" :per-page="1" :navigationNextLabel="''" :navigationPrevLabel="''"
             :navigationEnabled="true">
@@ -10,19 +10,19 @@
                 <div class="question__text one-liner">{{ $tc('survey.generalImpression.question') }}</div>
                 <div class="question--impression__container">
                     <div class="question--impression__choice" @click="selectImpression('negative')">
-                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_negative.svg`"
+                        <img class="question--impression__img" :src="`/svg/survey-face_negative.svg`"
                             :alt="$tc('survey.generalImpression.negative')" />
                         <span class="question--impression__caption">{{
                             $tc('survey.generalImpression.negative')
                         }}</span>
                     </div>
                     <div class="question--impression__choice" @click="selectImpression('neutral')">
-                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_neutral.svg`"
+                        <img class="question--impression__img" :src="`/svg/survey-face_neutral.svg`"
                             :alt="$tc('survey.generalImpression.neutral')" />
                         <span class="question--impression__caption">{{ $tc('survey.generalImpression.neutral') }}</span>
                     </div>
                     <div class="question--impression__choice" @click="selectImpression('positive')">
-                        <img class="question--impression__img" :src="`~/assets/svg/survey-face_positive.svg`"
+                        <img class="question--impression__img" :src="`/svg/survey-face_positive.svg`"
                             :alt="$tc('survey.generalImpression.positive')" />
                         <span class="question--impression__caption">{{
                             $tc('survey.generalImpression.positive')
@@ -95,7 +95,7 @@
                 <div class="question__text one-liner">{{ $tc('survey.organized.title') }}</div>
                 <div class="question__quote">"{{ $tc('survey.organized.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
-                    :style="`background: url('~/assets/img/survey-barometer.png') center bottom no-repeat;`">
+                    :style="`background: url('/img/survey-barometer.png') center bottom no-repeat;`">
                     <label class="strongly-disagree">{{ $tc('survey.organized.stronglyDisagree') }}</label>
                     <label class="answer" v-for="value in [1, 2, 3, 4, 5]" :key="value">
                         <input type="radio" @change="selectRadio('organized', $event)" name="organized" :value="value">
@@ -109,7 +109,7 @@
                 <div class="question__text one-liner">{{ $tc('survey.adequately.title') }}</div>
                 <div class="question__quote">"{{ $tc('survey.adequately.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
-                    :style="`background: url('~/assets/img/survey-barometer.png') center bottom no-repeat;`">
+                    :style="`background: url('/img/survey-barometer.png') center bottom no-repeat;`">
                     <label class="strongly-disagree">{{ $tc('survey.adequately.stronglyDisagree') }}</label>
                     <label class="answer" v-for="value in [1, 2, 3, 4, 5]" :key="value">
                         <input type="radio" @change="selectRadio('adequately', $event)" name="adequately"
