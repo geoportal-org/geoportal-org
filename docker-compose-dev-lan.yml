@@ -227,6 +227,7 @@ services:
       MAILDEV_WEB_USER: ${MAILDEV_WEB_USERNAME}
       MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
     ports:
+      - "1025:1025"
       - "1081:1080"
     logging:
       driver: "json-file"
