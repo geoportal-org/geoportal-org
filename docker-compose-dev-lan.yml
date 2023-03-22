@@ -227,11 +227,11 @@ services:
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "1081:1080"
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 300
-        max-size: 10m
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-file: 300
+    #     max-size: 10m
     networks:
       - geosslan
 
