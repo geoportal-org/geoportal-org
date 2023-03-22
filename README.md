@@ -42,10 +42,6 @@ Database module. (MariaDB)
 
 Elasticsearch module.
 
-### [GEOSS Postfix](geoss-postfix/README.md)
-
-E-mail provider module.
-
 ### [GEOSS Keycloak](geoss-keycloak/README.md)
 
 Authorization provider module.
@@ -61,10 +57,6 @@ Matomo module.
 ### [GEOSS Nginx](geoss-nginx/README.md)
 
 Nginx module.
-
-### [GEOSS Postfix](geoss-postfix-relay/README.md)
-
-Postfix relay module.
 
 ### [GEOSS Proxy](geoss-proxy/README.md)
 

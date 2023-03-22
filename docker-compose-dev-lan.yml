@@ -227,31 +227,12 @@ services:
       MAILDEV_WEB_USER: ${MAILDEV_WEB_USERNAME}
       MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
     ports:
-      - "1025:1025"
       - "1081:1080"
     logging:
       driver: "json-file"
       options:
         max-file: 300
         max-size: 10m
-    networks:
-      - geosslan
-
-  geoss-postfix:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix:latest
-    hostname: geoss-postfix
-    deploy:
-      replicas: 1
-    environment:
-      SMTP_PORT: ${POSTFIX_SMTP_PORT}
-      SMTP_SERVER: ${POSTFIX_SMTP_SERVER}
-      SMTP_USERNAME: ${POSTFIX_SMTP_USERNAME}
-      SMTP_PASSWORD: ${POSTFIX_SMTP_PASSWORD}
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
-    ports:
-      - "25:25"  
     networks:
       - geosslan
 
