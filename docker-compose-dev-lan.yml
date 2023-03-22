@@ -222,16 +222,13 @@ services:
       MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
       MAILDEV_WEB_USER: ${MAILDEV_WEB_USERNAME}
       MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "1081:1080"
-    # logging:
-    #   driver: "json-file"
-    #   options:
-    #     max-file: 300
-    #     max-size: 10m
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 300
+        max-size: 10m
     networks:
       - geosslan
 
