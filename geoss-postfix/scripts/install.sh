@@ -48,8 +48,8 @@ fi
 # Cyrus-SASL support for authentication of mail clients.
 ############
 # /etc/postfix/main.cf
-echo "Setting up main.cf"
-postconf -e relayhost=$DMZ_RELAYHOST
-postconf -e smtp_sasl_security_options=
-postconf -e sender_canonical_maps=regexp:/etc/postfix/sender_canonical
-postconf -e smtp_header_checks=regexp:/etc/postfix/header_check
+#echo "Setting up main.cf"
+#postconf -e relayhost=$DMZ_RELAYHOST
+#postconf -e smtp_sasl_security_options=
+#postconf -e sender_canonical_maps=regexp:/etc/postfix/sender_canonical
+#postconf -e smtp_header_checks=regexp:/etc/postfix/header_check
