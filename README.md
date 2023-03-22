@@ -42,7 +42,7 @@ Database module. (MariaDB)
 
 Elasticsearch module.
 
-### [GEOSS Email](geoss-email/README.md)
+### [GEOSS Postfix](geoss-postfix/README.md)
 
 E-mail provider module.
 

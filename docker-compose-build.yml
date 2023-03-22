@@ -81,11 +81,11 @@ services:
   #     context: ./geoss-elk
   #     dockerfile: Dockerfile
 
-  # geoss-email:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_email:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-email
-  #     dockerfile: Dockerfile
+  geoss-postfix:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-postfix
+      dockerfile: Dockerfile
 
   geoss-keycloak:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}

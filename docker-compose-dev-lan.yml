@@ -9,7 +9,7 @@ services:
     environment:
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "8087:8087"
       - "8088:8088"
@@ -33,7 +33,7 @@ services:
       MARIADB_DATABASE: geoss_db
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     volumes:
       - /var/lib/mysql:/var/lib/mysql
       - /var/log/mysql:/var/log/mysql
@@ -65,7 +65,7 @@ services:
       PROXY_ADDRESS_FORWARDING: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       #- "8081:8080"
       - "8443:8443"
@@ -98,7 +98,7 @@ services:
       KEYTOOL_STOREPASS: notusedyet
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "8080:8080"
     networks:
@@ -133,7 +133,7 @@ services:
       KEYTOOL_STOREPASS: notusedyet
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "8083:8080"
     networks:
@@ -157,7 +157,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "8082:8081"
     networks:
@@ -180,7 +180,7 @@ services:
     environment:
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "3000:3000"
     networks:
@@ -203,7 +203,7 @@ services:
       NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
     ports:
       - "3001:3000"
     networks:
@@ -211,6 +211,47 @@ services:
     depends_on:
       - geoss-db
       - geoss-keycloak
+
+  geoss-maildev:
+    hostname: geoss-maildev
+    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
+    deploy:
+      replicas: 1
+    environment:
+      MAILDEV_INCOMING_USER: ${MAILDEV_SMTP_USERNAME}
+      MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
+      MAILDEV_WEB_USER: ${MAILDEV_WEB_USERNAME}
+      MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
+    ports:
+      - "1081:1080"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 300
+        max-size: 10m
+    networks:
+      - geosslan
+
+  geoss-postfix:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix:latest
+    hostname: geoss-postfix
+    deploy:
+      replicas: 1
+    environment:
+      SMTP_PORT: ${POSTFIX_SMTP_PORT}
+      SMTP_SERVER: ${POSTFIX_SMTP_SERVER}
+      SMTP_USERNAME: ${POSTFIX_SMTP_USERNAME}
+      SMTP_PASSWORD: ${POSTFIX_SMTP_PASSWORD}
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev
+    ports:
+      - "25:25"  
+    networks:
+      - geosslan
 
   #######################################
   #          HELPER CONTAINERS          #
