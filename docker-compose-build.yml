@@ -12,12 +12,6 @@ services:
       context: ./geoss-nginx
       dockerfile: Dockerfile
 
-  # geoss-postfix-relay:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-postfix-relay
-  #     dockerfile: Dockerfile
-
   geoss-haproxy:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:${DOCKER_IMAGE_TAG}
     build:
@@ -80,12 +74,6 @@ services:
   #   build:
   #     context: ./geoss-elk
   #     dockerfile: Dockerfile
-
-  geoss-postfix:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-postfix
-      dockerfile: Dockerfile
 
   geoss-keycloak:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}
