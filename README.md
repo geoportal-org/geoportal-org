@@ -74,7 +74,7 @@ Squid request caching module.
 
 Frontend graphic interface for search, content pages, etc. (Nuxt.js / Vue)
 
-### [GEOSS Userdata](geoss-userdata/README.md)
+### [GEOSS personaldata](geoss-personaldata/README.md)
 
 Module for User data management. (Java / Spring)
 

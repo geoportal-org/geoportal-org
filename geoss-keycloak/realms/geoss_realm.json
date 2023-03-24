@@ -484,7 +484,7 @@
                     "attributes": {}
                 }
             ],
-            "geoss-userdata": [
+            "geoss-personaldata": [
                 {
                     "id": "23bb9774-1fd4-4a8c-976d-c3e91a82c32a",
                     "name": "comment_writer",
@@ -824,7 +824,7 @@
                     "view_writer",
                     "layer_reader"
                 ],
-                "geoss-userdata": [
+                "geoss-personaldata": [
                     "comment_writer",
                     "comment_reader",
                     "comment_remover"
@@ -1517,9 +1517,9 @@
         },
         {
             "id": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
-            "clientId": "geoss-userdata",
-            "name": "Geoss Userdata",
-            "description": "Geoss Userdata application",
+            "clientId": "geoss-personaldata",
+            "name": "Geoss personaldata",
+            "description": "Geoss personaldata application",
             "rootUrl": "",
             "adminUrl": "",
             "baseUrl": "",

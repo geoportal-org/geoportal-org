@@ -107,9 +107,9 @@ services:
       - geoss-db
       - geoss-keycloak
 
-  geoss-userdata:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_userdata:latest
-    hostname: geoss-userdata
+  geoss-personaldata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_personaldata:latest
+    hostname: geoss-personaldata
     deploy:
       replicas: 1
       placement:
@@ -117,13 +117,13 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_userdata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_personaldata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
       SPRING_SECURITY_USER_NAME: user
       SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
       SPRING_SECURITY_USER_ROLES: USER,ADMIN
-      SPRING_SECURITY_USER_EMAIL: user@geoss-userdata
+      SPRING_SECURITY_USER_EMAIL: user@geoss-personaldata
       SPRING_SECURITY_USER_FIRST_NAME: User
       SPRING_SECURITY_USER_LAST_NAME: User
       SPRING_PROFILES_ACTIVE: keycloak

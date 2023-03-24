@@ -60,19 +60,19 @@ build_geoss-contents:
     - develop
     - /^release-.*/
 
-build_geoss-userdata:
+build_geoss-personaldata:
   stage: build
   extends: .build_apps
   tags:
     - geoss-runner-1
   script:
-    - echo "Building geoss-userdata app..."
-    - chmod u+x ./geoss-userdata/gradlew
-    - ./geoss-userdata/gradlew clean assemble -p ./geoss-userdata
-    - echo "Build geoss-userdata complete"
+    - echo "Building geoss-personaldata app..."
+    - chmod u+x ./geoss-personaldata/gradlew
+    - ./geoss-personaldata/gradlew clean assemble -p ./geoss-personaldata
+    - echo "Build geoss-personaldata complete"
   artifacts:
     paths:
-      - ./geoss-userdata/application/build
+      - ./geoss-personaldata/application/build
     expire_in: 4 weeks
   only:
     - develop
@@ -105,7 +105,7 @@ build_images:
   dependencies:
     - build_geoss-settings
     - build_geoss-contents
-    - build_geoss-userdata
+    - build_geoss-personaldata
   only:
     - develop
     - /^release-.*/

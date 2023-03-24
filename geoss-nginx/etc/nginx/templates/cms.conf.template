@@ -1,6 +1,6 @@
 #proxy_cache_path /var/nginx/cache/static/admin_geoss levels=1:2 keys_zone=ADMIN_GEOSS_STATIC:100m inactive=600h max_size=4g;
 
-#gpp (ui, settings, contents, bookmarks, userdata)
+#gpp (ui, settings, contents, bookmarks, personaldata)
 upstream cms_upstream {
   ###UPSTREAM_CONFIG###
 }
@@ -98,12 +98,12 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
-  location /userdata/ {
+  location /personaldata/ {
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_userdata.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
 
     proxy_pass    http://cms_upstream;
     proxy_no_cache 1;
@@ -261,12 +261,12 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
-  location /userdata/ {
+  location /personaldata/ {
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_userdata.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
 
     proxy_pass    http://cms_upstream;
     proxy_no_cache 1;
@@ -276,7 +276,7 @@ server {
 
     add_header X-Cache-Status $upstream_cache_status;
   }
-  
+
   location /contents/ {
     include conf.d/common/maintenance_conditions.conf;
 
