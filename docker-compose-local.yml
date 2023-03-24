@@ -39,8 +39,8 @@ services:
             KC_SPI_THEME_CACHE_THEMES: "false"
             KC_SPI_THEME_CACHE_TEMPLATES: "false"
             KC_SPI_THEME_STATIC_MAX_AGE: "-1"
-        volumes:
-            - "./geoss-keycloak/themes/geoss:/opt/keycloak/themes/geoss"
+#        volumes:
+#            - "./geoss-keycloak/themes/geoss:/opt/keycloak/themes/geoss"
         ports:
             - "8080:8080"
         networks:

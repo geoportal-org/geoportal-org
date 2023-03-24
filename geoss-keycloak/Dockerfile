@@ -1,3 +1,13 @@
+FROM node:18.15-slim as themes
+
+WORKDIR /themes/geoss/account/src
+
+COPY themes/geoss/account/src/ ./
+
+RUN npm install
+RUN npm run build
+RUN npm run babel
+
 FROM quay.io/keycloak/keycloak:21.0 as builder
 
 # Enable health and metrics support
@@ -28,6 +38,7 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 COPY realms/ /opt/keycloak/data/import/
 COPY themes/geoss/ /opt/keycloak/themes/geoss/
+COPY --from=themes /themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
 COPY certs/ /etc/x509/https/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]

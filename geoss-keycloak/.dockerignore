@@ -1,0 +1,20 @@
+### Hidden ###
+.*
+
+### Markdown ###
+*.md
+
+### Docker ###
+Dockerfile
+Dockerfile*
+
+### Node ###
+node/
+**/node/
+**/node/*
+node_modules/
+**/node_modules/
+**/node_modules/*
+web_modules/
+**/web_modules/
+**/web_modules/*

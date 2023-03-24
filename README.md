@@ -107,3 +107,15 @@ curl --location --request POST 'http://geoss-keycloak:8080/admin/realms/geoss/us
 --header 'Authorization: Bearer <access_token>' \
 --data-raw '{"firstName":"Geoss","lastName":"Geoss","username":"geoss","email":"geoss@localhost","enabled":"true","emailVerified":"true","credentials":[{"type":"password","value":"geoss","temporary":false}],"groups":["administrator"]}'
 ```
+
+### Keycloak
+On first run keycloak import realm configuration from file geoss_realm.json, it may take a while.
+
+After start keycloak is available on address
+http://geoss-keycloak:8080/
+
+Admin console for geoss realm is available at
+http://geoss-keycloak:8080/admin/geoss/console/
+
+Account console for geoss realm is available at
+http://geoss-keycloak:8080/realms/geoss/account/
