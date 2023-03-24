@@ -1227,6 +1227,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1283,6 +1284,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1339,6 +1341,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1395,6 +1398,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1451,6 +1455,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1504,6 +1509,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -1560,6 +1566,7 @@
                 "phone",
                 "offline_access",
                 "profile",
+                "organization",
                 "roles",
                 "microprofile-jwt",
                 "email"
@@ -2033,6 +2040,85 @@
             ]
         },
         {
+            "id": "9375e23c-2f4b-4b23-a93c-7c14691763fe",
+            "name": "organization",
+            "description": "OpenID Connect custom scope: organization",
+            "protocol": "openid-connect",
+            "attributes": {
+                "include.in.token.scope": "true",
+                "display.on.consent.screen": "true",
+                "gui.order": "",
+                "consent.screen.text": ""
+            },
+            "protocolMappers": [
+                {
+                    "id": "9fd7411f-3977-425b-8dc4-6bf9db3c6582",
+                    "name": "job_title",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-usermodel-attribute-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "aggregate.attrs": "false",
+                        "multivalued": "false",
+                        "userinfo.token.claim": "true",
+                        "user.attribute": "job_title",
+                        "id.token.claim": "true",
+                        "access.token.claim": "true",
+                        "claim.name": "job_title"
+                    }
+                },
+                {
+                    "id": "ad4d7d3a-4a72-49d7-89fd-6fd5763d4ec8",
+                    "name": "opacity",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-usermodel-attribute-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "aggregate.attrs": "false",
+                        "multivalued": "false",
+                        "userinfo.token.claim": "true",
+                        "user.attribute": "opacity",
+                        "id.token.claim": "true",
+                        "access.token.claim": "true",
+                        "claim.name": "opacity",
+                        "jsonType.label": "int"
+                    }
+                },
+                {
+                    "id": "f6749cf8-468a-43ff-9622-04e8ab07dba0",
+                    "name": "organization",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-usermodel-attribute-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "aggregate.attrs": "false",
+                        "multivalued": "false",
+                        "userinfo.token.claim": "true",
+                        "user.attribute": "organization",
+                        "id.token.claim": "true",
+                        "access.token.claim": "true",
+                        "claim.name": "organization"
+                    }
+                },
+                {
+                    "id": "e234d697-9dc4-4b4d-8d50-959cc1937981",
+                    "name": "greeting",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-usermodel-attribute-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "aggregate.attrs": "false",
+                        "multivalued": "false",
+                        "userinfo.token.claim": "true",
+                        "user.attribute": "greeting",
+                        "id.token.claim": "true",
+                        "access.token.claim": "true",
+                        "claim.name": "greeting"
+                    }
+                }
+            ]
+        },
+        {
             "id": "45f13d0e-838b-43a3-a98d-762d68c55baa",
             "name": "microprofile-jwt",
             "description": "Microprofile - JWT built-in scope",
@@ -2196,6 +2282,7 @@
     "defaultOptionalClientScopes": [
         "microprofile-jwt",
         "address",
+        "organization",
         "offline_access",
         "phone"
     ],
