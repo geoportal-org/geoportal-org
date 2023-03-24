@@ -1,6 +1,8 @@
 package com.eversis.esa.geoss.settings.common.event;
 
-import com.eversis.esa.geoss.settings.common.configuration.EmailProperties;
+import com.eversis.esa.geoss.settings.common.domain.NonTransactionalSimpleMailMessage;
+import com.eversis.esa.geoss.settings.common.domain.TransactionalSimpleMailMessage;
+import com.eversis.esa.geoss.settings.common.properties.EmailProperties;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,7 +36,7 @@ public class SendMailEventListener {
      *
      * @param simpleMailMessage the simple mail message
      */
-    @EventListener
+    @EventListener(NonTransactionalSimpleMailMessage.class)
     public void simpleMailMessageEventListener(SimpleMailMessage simpleMailMessage) {
         handleEvent(simpleMailMessage);
     }
@@ -44,7 +46,7 @@ public class SendMailEventListener {
      *
      * @param simpleMailMessage the simple mail message
      */
-    @TransactionalEventListener
+    @TransactionalEventListener(TransactionalSimpleMailMessage.class)
     public void simpleMailMessageTransactionalEventListener(SimpleMailMessage simpleMailMessage) {
         handleEvent(simpleMailMessage);
     }
