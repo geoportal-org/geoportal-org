@@ -484,7 +484,35 @@
                     "attributes": {}
                 }
             ],
-            "geoss-userdata": [],
+            "geoss-userdata": [
+                {
+                    "id": "23bb9774-1fd4-4a8c-976d-c3e91a82c32a",
+                    "name": "comment_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "e34cb26e-67a1-4c9b-a9aa-84ca6e19d36e",
+                    "name": "comment_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "0a899b7b-0dcd-4af7-b497-d5f732a24197",
+                    "name": "comment_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                }
+            ],
             "account-console": [],
             "broker": [
                 {
@@ -756,8 +784,7 @@
             "path": "/administrator",
             "attributes": {},
             "realmRoles": [
-                "admin",
-                "user"
+                "admin"
             ],
             "clientRoles": {
                 "geoss-contents": [
@@ -796,6 +823,11 @@
                     "view_remover",
                     "view_writer",
                     "layer_reader"
+                ],
+                "geoss-userdata": [
+                    "comment_writer",
+                    "comment_reader",
+                    "comment_remover"
                 ]
             },
             "subGroups": []
@@ -1417,9 +1449,9 @@
                 "acr",
                 "address",
                 "phone",
-                "roles",
                 "offline_access",
                 "profile",
+                "roles",
                 "microprofile-jwt",
                 "email"
             ]
