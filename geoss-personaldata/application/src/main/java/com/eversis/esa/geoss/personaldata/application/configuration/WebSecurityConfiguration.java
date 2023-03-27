@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -99,7 +100,9 @@ public class WebSecurityConfiguration {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests()
-                .requestMatchers(basePath + "/personaldata/**").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, basePath + "/comments/**").hasAnyRole("COMMENT_READER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, basePath + "/comments/**").hasAnyRole("COMMENT_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/comments/**").hasAnyRole("COMMENT_WRITER", "ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();

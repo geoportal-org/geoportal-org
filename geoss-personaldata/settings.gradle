@@ -13,4 +13,5 @@ pluginManagement {
 }
 rootProject.name = 'geoss-personaldata'
 include 'common'
+include 'profile'
 include 'application'
