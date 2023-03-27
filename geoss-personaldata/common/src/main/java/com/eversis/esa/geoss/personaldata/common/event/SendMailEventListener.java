@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.personaldata.common.event;
 
-import com.eversis.esa.geoss.personaldata.common.domain.TransactionalSimpleMailMessage;
-import com.eversis.esa.geoss.personaldata.common.configuration.EmailProperties;
 import com.eversis.esa.geoss.personaldata.common.domain.NonTransactionalSimpleMailMessage;
+import com.eversis.esa.geoss.personaldata.common.domain.TransactionalSimpleMailMessage;
+import com.eversis.esa.geoss.personaldata.common.properties.EmailProperties;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

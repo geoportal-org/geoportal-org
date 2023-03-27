@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.personaldata.common.configuration;
+package com.eversis.esa.geoss.personaldata.common.properties;
 
 import lombok.Getter;
 import lombok.Setter;

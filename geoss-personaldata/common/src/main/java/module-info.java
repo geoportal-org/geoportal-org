@@ -2,6 +2,7 @@ module geoss.personaldata.common {
     exports com.eversis.esa.geoss.personaldata.common.constraints;
     exports com.eversis.esa.geoss.personaldata.common.domain;
     exports com.eversis.esa.geoss.personaldata.common.hateoas;
+    exports com.eversis.esa.geoss.personaldata.common.properties;
 
     exports com.eversis.esa.geoss.personaldata.common.configuration to spring.beans, spring.boot, spring.context;
     exports com.eversis.esa.geoss.personaldata.common.event to spring.beans, spring.context;
