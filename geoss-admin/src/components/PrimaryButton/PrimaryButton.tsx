@@ -9,7 +9,8 @@ export const PrimaryButton = ({ children, color, disabled, onClick, type, varian
             size="sm"
             type={type || ButtonType.BUTTON}
             variant={variant || ButtonVariant.OUTLINE}
-            color={color || "brand.dark"}
+            color={variant !== ButtonVariant.SOLID ? color || "brand.dark" : "brand.mainLight"}
+            bg={variant === ButtonVariant.SOLID ? color : "inherit"}
         >
             {children}
         </Button>

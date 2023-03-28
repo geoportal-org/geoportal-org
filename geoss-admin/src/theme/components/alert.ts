@@ -1,5 +1,5 @@
-import { ToastStatus } from "@/types";
 import { ComponentStyleConfig, StyleFunctionProps } from "@chakra-ui/react";
+import { ToastStatus } from "@/types";
 
 const setAlertColor = (status: ToastStatus): { bgColor: string; borderColor: string } => {
     switch (status) {
@@ -32,9 +32,9 @@ export const alert: ComponentStyleConfig = {
             borderStartWidth: { base: "6px", "2xl": "0" },
             borderTopWidth: { base: "0", "2xl": "6px" },
             color: "brand.mainLight",
-            maxW: "container.xs",
-            top: "10px",
-            left: ["10px", null, "20px", null, null, "0"],
+            maxW: { base: "280px", sm: "container.xs" },
+            top: "12",
+            left: [2.5, null, null, null, null, 0],
         },
         description: {
             lineHeight: "normal",

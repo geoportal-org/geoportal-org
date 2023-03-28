@@ -12,6 +12,7 @@ export const button: ComponentStyleConfig = {
         borderRadius: "primary",
         fontWeight: "normal",
         transitionDuration: "slower",
+        color: "brand.mainLight",
         _disabled: {
             ...disabledStyles,
         },
@@ -23,7 +24,7 @@ export const button: ComponentStyleConfig = {
 
     sizes: {
         sm: {
-            minW: "28",
+            px: 4,
         },
     },
 
@@ -54,6 +55,50 @@ export const button: ComponentStyleConfig = {
                     },
                 },
             };
+        },
+        geossSolid: (props: StyleFunctionProps) => {
+            const { bg } = props;
+            return {
+                bg: bg,
+                borderColor: bg,
+                borderWidth: "1px",
+                _disabled: {
+                    bg: "brand.mainLight",
+                },
+                _hover: {
+                    bg: "brand.mainLight",
+                    boxShadow: "none",
+                    color: bg,
+                    _disabled: {
+                        ...disabledStyles,
+                    },
+                },
+            };
+        },
+        geossBreadcrumb: {
+            h: "auto",
+            p: 1,
+            _hover: {
+                color: "brand.mainDark",
+                boxShadow: "none",
+                bg: "brand.darkSoft",
+            },
+        },
+        geossFileItem: {
+            alignItems: "center",
+            bg: "transparent",
+            color: "brand.mainDark",
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "sm",
+            h: "full",
+            justifyContent: "flex-start",
+            p: 2,
+            _hover: {
+                bg: "brand.darkSoft",
+                boxShadow: "none",
+                color: "brand.mainDark",
+            },
         },
     },
 };

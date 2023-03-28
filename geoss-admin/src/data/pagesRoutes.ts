@@ -1,0 +1,15 @@
+export const pagesRoutes = {
+    api: "/api-settings",
+    catalogs: "/catalogs-settings",
+    defaultLayer: "/default-layer-settings",
+    fileRepository: "/file-repository",
+    menu: "/menu-settings",
+    myProfile: "/profile",
+    page: "/page",
+    tutorialTags: "/tutorial-tags-settings",
+    views: "/views-settings",
+    web: "/web-settings",
+    website: "/website",
+    addPage: "/page/add",
+    addContent: "/website/add",
+};

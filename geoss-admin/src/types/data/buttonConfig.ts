@@ -7,4 +7,5 @@ export enum ButtonType {
 export enum ButtonVariant {
     OUTLINE = "geossOutline",
     GHOST = "geossGhost",
+    SOLID = "geossSolid",
 }

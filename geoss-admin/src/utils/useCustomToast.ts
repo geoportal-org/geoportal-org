@@ -8,7 +8,7 @@ const useCustomToast = () => {
     const showToast = ({ title, description, status = ToastStatus.SUCCESS }: ToastData) => {
         toast({
             description,
-            duration: 5000,
+            duration: 4000,
             isClosable: true,
             position,
             status,

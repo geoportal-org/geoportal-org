@@ -11,6 +11,8 @@ export const colors = {
         dark: "rgba(6, 97, 169, 1)",
         darkSoft: "rgba(6, 97, 169, 0.15)",
         darkTransparent: "rgba(6, 97, 169, 0.9)",
+        divider: "rgba(217, 217, 217, 1)",
+        dividerDark: "rgba(197, 197, 197, 1)",
         light: "rgba(43, 120, 181, 1)",
         lightTransparent: "rgba(43, 120, 181, 0.9)",
         mainDark: "rgba(0, 0, 0, 1)",
