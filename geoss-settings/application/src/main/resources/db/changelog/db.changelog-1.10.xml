@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro
+        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+>
+    <changeSet id="28" author="Eversis">
+        <comment>API Settings</comment>
+        <addColumn tableName="api_settings">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="29" author="Eversis">
+        <comment>Layer Settings</comment>
+        <addColumn tableName="layer">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="30" author="Eversis">
+        <comment>Tutorial Tag Settings</comment>
+        <addColumn tableName="tag">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="31" author="Eversis">
+        <comment>Catalog Settings</comment>
+        <addColumn tableName="catalog">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="catalog_option">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="32" author="Eversis">
+        <comment>View Settings</comment>
+        <addColumn tableName="view">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="view_option">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="33" author="Eversis">
+        <comment>Web Settings</comment>
+        <addColumn tableName="web_settings">
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

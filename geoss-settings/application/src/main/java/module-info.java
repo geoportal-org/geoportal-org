@@ -16,7 +16,6 @@ module geoss.settings.application {
     requires com.zaxxer.hikari;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
-    requires jakarta.mail;
     requires jakarta.persistence;
     requires jakarta.validation;
     requires java.sql;

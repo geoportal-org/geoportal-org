@@ -29,6 +29,7 @@ public abstract class ViewOptionModelToViewOptionConverter implements Converter<
         this.viewOptionRepository = viewOptionRepository;
     }
 
+    @Mapping(target = "version", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)

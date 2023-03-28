@@ -22,7 +22,6 @@ module geoss.instance.settings {
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires spring.context;
-    requires spring.context.support;
     requires spring.core;
     requires spring.data.commons;
     requires spring.data.jpa;

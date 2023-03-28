@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.settings.system.domain;
 import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
 import com.eversis.esa.geoss.settings.system.support.WebSettingsKeyAttributeConverter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -22,6 +23,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -37,6 +39,11 @@ public class WebSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
+    @JsonIgnore
+    @Version
+    @Column
+    private Long version;
 
     @NotNull
     @Enumerated(EnumType.STRING)

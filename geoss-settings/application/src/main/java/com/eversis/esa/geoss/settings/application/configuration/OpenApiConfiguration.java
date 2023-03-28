@@ -57,9 +57,11 @@ public class OpenApiConfiguration {
             Stream<Operation> operations = openApi.getPaths().values().stream().map(PathItem::getGet);
             operations.forEach(operation -> {
                 if (operation != null) {
-                    String operationId = operation.getOperationId();
-                    if (operationId.startsWith("listAllFormsOfMetadata_") || operationId.startsWith("descriptor_")) {
-                        operation.setSecurity(securityRequirements);
+                    List<String> tags = operation.getTags();
+                    if (tags != null) {
+                        if (tags.contains("profile-controller")) {
+                            operation.setSecurity(securityRequirements);
+                        }
                     }
                 }
             });

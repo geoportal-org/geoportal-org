@@ -30,6 +30,7 @@ public abstract class CatalogOptionModelToCatalogOptionConverter implements
         this.catalogOptionRepository = catalogOptionRepository;
     }
 
+    @Mapping(target = "version", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)

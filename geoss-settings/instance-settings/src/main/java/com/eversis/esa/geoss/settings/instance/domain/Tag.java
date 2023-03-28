@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.settings.instance.domain;
 import com.eversis.esa.geoss.settings.common.constraints.AvailableLocale;
 import com.eversis.esa.geoss.settings.common.domain.AuditableEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.Version;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -45,6 +47,11 @@ public class Tag extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
+    @JsonIgnore
+    @Version
+    @Column
+    private Long version;
 
     @NotNull
     @NotEmpty
