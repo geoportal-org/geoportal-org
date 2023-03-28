@@ -26,7 +26,8 @@ export const FileRepositoryAddFolder = ({
 
     const getFolderInfo = async (id: number) => {
         try {
-            const editedFolder = await FileRepositoryService.getFolderRoute(id);
+            // test client side
+            const editedFolder = await FileRepositoryService.getFolder(id);
             setInitValues(setExistingFormValues(createFolderForm, editedFolder));
         } catch (e) {
             console.error(e);
@@ -42,7 +43,8 @@ export const FileRepositoryAddFolder = ({
     const updateFolder = async (id: number, values: FormikValues) => {
         const folderData: Pick<IFolderData, "title"> = { title: values.title };
         try {
-            const updatedFolder = await FileRepositoryService.updateFolderTitleRoute(id, folderData);
+            // test client side
+            const updatedFolder = await FileRepositoryService.updateFolderTitle(id, folderData);
             setFoldersList((foldersList) =>
                 foldersList.map((folder) => (+getIdFromUrl(folder._links.self.href) === id ? updatedFolder : folder))
             );
@@ -59,9 +61,11 @@ export const FileRepositoryAddFolder = ({
     const createNewFolder = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         const folderData: IFolderData = { title: values.title, parentFolderId: currFolder, path };
         try {
-            const addedFolder = await FileRepositoryService.createFolderRoute(folderData);
+            // test client side
+            const addedFolder = await FileRepositoryService.createFolder(folderData);
             const newFolderId = +getIdFromUrl(addedFolder._links.folder.href);
-            const newFolder = await FileRepositoryService.getFolderRoute(newFolderId);
+            // test client side
+            const newFolder = await FileRepositoryService.getFolder(newFolderId);
             setFoldersList([...foldersList, newFolder]);
             actions.resetForm();
             showToast({

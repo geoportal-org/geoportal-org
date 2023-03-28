@@ -3,8 +3,10 @@ import { IDocumentList, IFolder, IFolderData, IFolderList } from "@/types/models
 import { fetcher } from "@/utils/fetcher";
 
 export const FileRepositoryService = {
-    baseFolderUrl: "http://10.254.7.59:8082/rest/folder",
-    baseDocumentUrl: "http://10.254.7.59:8082/rest/document",
+    //baseFolderUrl: "http://10.254.7.59:8082/rest/folder",
+    baseFolderUrl: "https://gpp.devel.esaportal.eu/contents/rest/folder",
+    //baseDocumentUrl: "http://10.254.7.59:8082/rest/document",
+    baseDocumentUrl: "https://gpp.devel.esaportal.eu/contents/rest/document",
     baseFolderRoute: "/api/backend/folder",
     baseDocumentRoute: "/api/backend/document",
 

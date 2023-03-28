@@ -36,7 +36,7 @@ const Home: NextPage = () => {
 
     const getContents = async () => {
         try {
-            const contents = await ContentService.getContentList();
+            const contents = await ContentService.getContentsClientSide();
             console.log(contents);
         } catch (e) {
             console.log("failed");
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
 
     const getPages = async () => {
         try {
-            const pages = await PageService.getPagesList();
+            const pages = await PageService.getPagesListClientSide();
             console.log(pages);
         } catch (e) {
             console.log("failed");

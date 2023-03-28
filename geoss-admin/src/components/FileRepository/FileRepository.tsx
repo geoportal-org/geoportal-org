@@ -41,13 +41,15 @@ export const FileRepository = () => {
 
     const getFileRepositoryItems = async () => {
         try {
+            // test client side
             const {
                 _embedded: { folder },
-            } = await FileRepositoryService.getFoldersRoute();
+            } = await FileRepositoryService.getFoldersList();
             setFoldersList(() => folder);
+            // test client side
             const {
                 _embedded: { document },
-            } = await FileRepositoryService.getDocumentsRoute();
+            } = await FileRepositoryService.getDocumentsList();
             setDocumentsList(() => document);
         } catch (e) {
             console.error(e);
@@ -142,7 +144,8 @@ export const FileRepository = () => {
 
     const deleteFolder = async (title: string, id: number) => {
         try {
-            await FileRepositoryService.deleteFolderRoute(id);
+            // test client side
+            await FileRepositoryService.deleteFolder(id);
             setFoldersList((foldersList) =>
                 foldersList.filter((folder) => +getIdFromUrl(folder._links.self.href) !== id)
             );

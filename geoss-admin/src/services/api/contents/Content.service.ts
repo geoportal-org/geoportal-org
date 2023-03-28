@@ -6,6 +6,10 @@ export const ContentService = {
     baseUrl: "http://10.254.7.59:8082/rest/content",
     baseRoute: "/api/backend/contents",
 
+    // to be removed - just for test
+    getContentsClientSide: async (query?: QueryParams): Promise<IContentList> =>
+        fetcher({ url: "https://gpp.devel.esaportal.eu/contents/rest/content", query }),
+
     getContentList: async (query?: QueryParams): Promise<IContentList> =>
         fetcher({ url: ContentService.baseUrl, query }),
 

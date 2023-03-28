@@ -6,6 +6,10 @@ export const PageService = {
     baseUrl: "http://10.254.7.59:8082/rest/page",
     baseRoute: "/api/backend/pages",
 
+    //to be removed - just for test
+    getPagesListClientSide: async (query?: QueryParams): Promise<IPageList> =>
+        fetcher({ url: "https://gpp.devel.esaportal.eu/contents/rest/page", query }),
+
     getPagesList: async (query?: QueryParams): Promise<IPageList> => fetcher({ url: PageService.baseUrl, query }),
 
     getPage: async (id: number): Promise<IPage> => fetcher({ url: `${PageService.baseUrl}/${id}` }),
