@@ -182,7 +182,7 @@ server {
     proxy_no_cache 1;
 
     #response headers
-    include conf.d/utils/proxy_response_headers.conf;
+    include conf.d/utils/proxy_response_headers_keycloak.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
   }
