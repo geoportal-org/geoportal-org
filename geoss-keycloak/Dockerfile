@@ -36,10 +36,16 @@ ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-COPY realms/ /opt/keycloak/data/import/
-COPY themes/geoss/ /opt/keycloak/themes/geoss/
-COPY --from=themes /themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
 COPY certs/ /etc/x509/https/
+COPY realms/ /opt/keycloak/data/import/
+COPY themes/geoss/account/messages/ /opt/keycloak/themes/geoss/account/messages/
+COPY themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
+COPY themes/geoss/account/theme.properties /opt/keycloak/themes/geoss/account/theme.properties
+COPY themes/geoss/admin/ /opt/keycloak/themes/geoss/admin/
+COPY themes/geoss/email/ /opt/keycloak/themes/geoss/email/
+COPY themes/geoss/login/ /opt/keycloak/themes/geoss/login/
+COPY themes/geoss/welcome/ /opt/keycloak/themes/geoss/welcome/
+COPY --from=themes /themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss"]

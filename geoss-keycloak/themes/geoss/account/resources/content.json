@@ -11,7 +11,7 @@
   {
     "id": "display-settings",
     "path": "display-settings",
-    "icon": "pficon-settings",
+    "icon": "pf-icon-screen",
     "label": "displaySettingsSidebarTitle",
     "descriptionLabel": "displaySettingsIntroMessage",
     "modulePath": "/content/display-settings/DisplaySettings.js",
@@ -20,7 +20,7 @@
   {
     "id": "custom-fields",
     "path": "custom-fields",
-    "icon": "fa-cog",
+    "icon": "pf-icon-project",
     "label": "customFieldsSidebarTitle",
     "descriptionLabel": "customFieldsIntroMessage",
     "modulePath": "/content/custom-fields/CustomFields.js",
