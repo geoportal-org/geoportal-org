@@ -128,6 +128,7 @@ server {
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
+    add_header Access-Control-Allow-Origin *;
   }
 }
 
@@ -291,6 +292,7 @@ server {
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
+    add_header Access-Control-Allow-Origin *;
   }
 
 }
