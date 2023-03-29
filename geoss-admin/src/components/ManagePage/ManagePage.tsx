@@ -40,7 +40,9 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             if (isEditMode) {
                 const id = router.query.id as string;
                 setPageId(id);
-                const editedPage = await PageService.getPageRoute(+id);
+                // test client side fetch
+                //const editedPage = await PageService.getPageRoute(+id);
+                const editedPage = await PageService.getPage(+id);
                 setInitValues(() => setExistingFormValues(addPageForm, editedPage));
             }
         } catch (e) {
@@ -53,9 +55,13 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         const pageData = { ...values, contentId: +values.contentId, published: true } as IPageData;
         try {
-            const { title } = !isEditMode
+            // test client side fetch
+            /*const { title } = !isEditMode
                 ? await PageService.createPageRoute(pageData)
-                : await PageService.updatePageRoute(+pageId, pageData);
+                : await PageService.updatePageRoute(+pageId, pageData);*/
+            const { title } = !isEditMode
+                ? await PageService.createPage(pageData)
+                : await PageService.updatePage(+pageId, pageData);
             !isEditMode && actions.resetForm();
             isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
             showToast({

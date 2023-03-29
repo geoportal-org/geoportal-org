@@ -3,12 +3,13 @@ import { IPage, IPageData, IPageList } from "@/types/models";
 import { fetcher } from "@/utils/fetcher";
 
 export const PageService = {
-    baseUrl: "http://10.254.7.59:8082/rest/page",
+    //baseUrl: "http://10.254.7.59:8082/rest/page",
+    baseUrl: "https://gpp-admin.devel.esaportal.eu/contents/rest/page",
     baseRoute: "/api/backend/pages",
 
     //to be removed - just for test
     getPagesListClientSide: async (query?: QueryParams): Promise<IPageList> =>
-        fetcher({ url: "https://gpp.devel.esaportal.eu/contents/rest/page", query }),
+        fetcher({ url: "https://gpp-admin.devel.esaportal.eu/contents/rest/page", query }),
 
     getPagesList: async (query?: QueryParams): Promise<IPageList> => fetcher({ url: PageService.baseUrl, query }),
 

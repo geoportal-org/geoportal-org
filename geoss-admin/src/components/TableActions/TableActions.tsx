@@ -50,7 +50,9 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
 
     const deletePage = async () => {
         try {
-            await PageService.deletePageRoute(+itemId);
+            // tst client side
+            // await PageService.deletePageRoute(+itemId);
+            await PageService.deletePage(+itemId);
             onDeleteAction(itemId);
             onCloseModal();
             showToast({

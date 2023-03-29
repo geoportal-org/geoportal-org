@@ -28,9 +28,13 @@ export const PageContents = () => {
     useEffect(() => {
         const getPagesList = async () => {
             try {
+                // test client side fetching
+                /*const {
+                    _embedded: { page },
+                } = await PageService.getPagesRoute();*/
                 const {
                     _embedded: { page },
-                } = await PageService.getPagesRoute();
+                } = await PageService.getPagesList();
                 setPagesList(() => page);
             } catch (e) {
                 console.error(e);
