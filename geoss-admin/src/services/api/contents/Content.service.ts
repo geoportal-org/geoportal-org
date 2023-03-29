@@ -8,7 +8,7 @@ export const ContentService = {
 
     // to be removed - just for test
     getContentsClientSide: async (query?: QueryParams): Promise<IContentList> =>
-        fetcher({ url: "https://gpp.devel.esaportal.eu/contents/rest/content", query }),
+        fetcher({ url: "https://gpp-admin.devel.esaportal.eu/contents/rest/content", query }),
 
     getContentList: async (query?: QueryParams): Promise<IContentList> =>
         fetcher({ url: ContentService.baseUrl, query }),
