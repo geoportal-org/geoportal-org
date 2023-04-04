@@ -34,7 +34,7 @@ export const LanguageSwitcher = ({ onMenuClose }: LanguageSwitcherProps) => {
                             transitionDuration="normal"
                         />
                     </MenuButton>
-                    <MenuList zIndex={10}>
+                    <MenuList>
                         {languagesSwitcher.map((lang) => {
                             const { locale: langLocale, flagUrl, title } = lang;
                             const isActive = langLocale === locale;

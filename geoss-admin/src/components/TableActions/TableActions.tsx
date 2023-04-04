@@ -50,8 +50,6 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
 
     const deletePage = async () => {
         try {
-            // tst client side
-            // await PageService.deletePageRoute(+itemId);
             await PageService.deletePage(+itemId);
             onDeleteAction(itemId);
             onCloseModal();
@@ -87,7 +85,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                 onOpenModal();
                 break;
             case TableActionsType.EDIT:
-                router.push(`/website/${itemId}`);
+                router.push(`/contents/${itemId}`);
                 break;
             case TableActionsType.PREVIEW:
                 const isContent = "content" in item;
@@ -103,7 +101,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
 
     const deleteContent = async () => {
         try {
-            await ContentService.deleteContentRoute(+itemId);
+            await ContentService.deleteContent(+itemId);
             onDeleteAction(itemId);
             onCloseModal();
             showToast({

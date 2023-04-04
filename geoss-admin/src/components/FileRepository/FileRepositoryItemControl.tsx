@@ -1,5 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { controlBtns } from "@/data/fieRepositoryItemControls";
+import { controlBtns } from "@/data";
 import { ControlType, FileRepositoryItemControlProps } from "@/types";
 
 export const FileRepositoryItemControl = ({
@@ -7,9 +7,15 @@ export const FileRepositoryItemControl = ({
     handleItemDeleteClick,
     handleItemEditClick,
 }: FileRepositoryItemControlProps) => {
-    const actionBtnClick = {
-        [ControlType.EDIT]: () => handleItemEditClick(item),
-        [ControlType.DELETE]: () => handleItemDeleteClick(item),
+    const onClickAction = (actionName: ControlType) => {
+        switch (actionName) {
+            case ControlType.EDIT:
+                handleItemEditClick(item);
+                break;
+            case ControlType.DELETE:
+                handleItemDeleteClick(item);
+                break;
+        }
     };
 
     return (
@@ -37,7 +43,7 @@ export const FileRepositoryItemControl = ({
                         px={2.5}
                         _active={{ color }}
                         _hover={{ color }}
-                        onClick={() => actionBtnClick[actionName]()}
+                        onClick={() => onClickAction(actionName)}
                     >
                         {icon}
                     </Button>

@@ -21,7 +21,7 @@ export const menu: ComponentStyleConfig = {
                 borderRadius: "secondary",
                 color: "brand.mainDark",
                 minWidth: "max-content",
-                zIndex: "3",
+                zIndex: "10",
             },
             item: {
                 borderEnd: "3px solid transparent",
@@ -35,6 +35,14 @@ export const menu: ComponentStyleConfig = {
                 },
                 _hover: {
                     bg: "brand.darkSoft",
+                },
+            },
+        },
+        geossPagination: {
+            button: {
+                borderRadius: "primary",
+                _focusVisible: {
+                    boxShadow: "outline",
                 },
             },
         },

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Field, useFormikContext, FormikValues } from "formik";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
-import { TextContent, TextEditor } from "@/components";
+import { TextContent, TextEditor, Uploader } from "@/components";
 import { chakraSelectStyles } from "@/theme/commons";
 import { ValidationService } from "@/services";
 import { FormFieldProps, FormFieldSelect } from "@/types";
@@ -29,9 +29,10 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
         fieldDependence,
     } = fieldData;
 
-    const isDefaultField = inputType !== "select" && inputType !== "editor";
+    const isDefaultField = inputType !== "select" && inputType !== "editor" && inputType !== "uploader";
     const isSelectField = inputType === "select" && selectSettings;
     const isTextEditor = inputType === "editor";
+    const isFileUploader = inputType === "uploader";
     const isFieldError = !!formErrors[fieldName];
     const isFieldTouched = !!touched[fieldName];
 
@@ -84,7 +85,12 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
 
     return (
         <FormControl isRequired={isRequired} isInvalid={isFieldError && isFieldTouched} w="full">
-            <FormLabel htmlFor={fieldName} fontWeight="bold" fontSize="sm" m={isTextEditor ? "0 0 10px 0" : 0}>
+            <FormLabel
+                htmlFor={fieldName}
+                fontWeight="bold"
+                fontSize="sm"
+                m={isTextEditor || isFileUploader ? "0 0 10px 0" : 0}
+            >
                 <TextContent id={fieldLabelId} />:
             </FormLabel>
             {isDefaultField && (
@@ -135,6 +141,7 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                     initialContent={formValues[fieldName]}
                 />
             )}
+            {isFileUploader && <Uploader />}
             {isFieldError && isFieldTouched && (
                 <FormErrorMessage mt="5px">
                     <TextContent id={formErrors[fieldName] as string} />

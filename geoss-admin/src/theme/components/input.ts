@@ -5,7 +5,7 @@ export const input: ComponentStyleConfig = {
         field: {
             borderRadius: "primary",
             _autofill: {
-                boxShadow: "0 0 0px 1000px white inset",
+                boxShadow: "0 0 0px 1000px inherit inset",
                 transition: "background-color 5000s ease-in-out 0s",
             },
             _placeholder: {

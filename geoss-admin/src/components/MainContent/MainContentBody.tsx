@@ -11,7 +11,7 @@ export const MainContentBody = ({ children }: MainContentBodyProps) => (
             overflowY="auto"
             overflowX="hidden"
             p={0}
-            pr={1}
+            px={1}
             sx={scrollbarStyles}
             w="full"
         >

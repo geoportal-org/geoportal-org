@@ -12,6 +12,7 @@ export const global = {
         body: {
             fontSize: "sm",
             scrollBehavior: "smooth",
+            overflow: "hidden",
         },
     },
 };

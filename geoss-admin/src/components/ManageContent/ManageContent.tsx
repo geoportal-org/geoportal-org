@@ -30,7 +30,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
         const id = router.query.id as string;
         setContentId(id);
         try {
-            const response = await ContentService.getContentRoute(+id);
+            const response = await ContentService.getContent(+id);
             setInitValues(() => setExistingFormValues(addContentForm, response));
         } catch (e) {
             console.error(e);
@@ -43,8 +43,8 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
         const contentData = getContentInfo(values);
         try {
             const { title } = !isEditMode
-                ? await ContentService.createContentRoute(contentData)
-                : await ContentService.updateContentRoute(+contentId, contentData);
+                ? await ContentService.createContent(contentData)
+                : await ContentService.updateContent(+contentId, contentData);
             !isEditMode && actions.resetForm();
             isEditMode && setInitValues(() => setExistingFormValues(addContentForm, values));
             showToast({
@@ -101,8 +101,8 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             const contentData = getContentInfo(values, false);
             try {
                 const { title } = !isEditMode
-                    ? await ContentService.createContentRoute(contentData)
-                    : await ContentService.updateContentRoute(+contentId, contentData);
+                    ? await ContentService.createContent(contentData)
+                    : await ContentService.updateContent(+contentId, contentData);
                 !isEditMode && resetForm();
                 isEditMode && setInitValues(() => setExistingFormValues(addContentForm, values));
                 showToast({
@@ -161,12 +161,15 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                     const { handleSubmit, values, setTouched, validateForm, resetForm } = formikProps;
                     const headingActions = [
                         {
-                            titleId: "pages.add-content.preview",
+                            titleId: "pages.manage-content.preview",
                             onClick: () => showContentPreview(values),
                         },
                     ];
                     return (
-                        <MainContent titleId="pages.add-content.title" actions={headingActions}>
+                        <MainContent
+                            titleId={isEditMode ? "pages.manage-content.edit-title" : "pages.manage-content.add-title"}
+                            actions={headingActions}
+                        >
                             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
                                 <form onSubmit={handleSubmit} noValidate>
                                     {renderFormFields()}

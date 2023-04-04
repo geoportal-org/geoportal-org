@@ -1,5 +1,5 @@
 import { FormikValues } from "formik";
-import { navSectionsUrls } from "@/data";
+import { NodeModel } from "@minoru/react-dnd-treeview";
 import {
     BreadcrumbItem,
     ButtonVariant,
@@ -9,7 +9,8 @@ import {
     NestedMsgs,
     SelectSettings,
 } from "@/types";
-import { IContent, IDocument, IFolder } from "@/types/models";
+import { IContent, IDocument, IFolder, IMenuItem } from "@/types/models";
+import { navSectionsUrls } from "@/data";
 
 export const getActiveNavSection = (activeRoute: string): number => {
     const activeSectionIndex = navSectionsUrls.findIndex((section) => section.includes(activeRoute));
@@ -85,6 +86,9 @@ export const setExistingFormValues = (formFields: FormField[], values: FormikVal
     return existingValues;
 };
 
+export const areObjectsArraysEqual = <T>(arrayOne: T[], arrayTwo: T[]): boolean =>
+    arrayOne.length === arrayTwo.length && arrayOne.every((obj, index) => areObjectsEqual(obj, arrayTwo[index]));
+
 export const areObjectsEqual = (objOne: any, objTwo: any): boolean =>
     typeof objOne === "object" && Object.keys(objOne).length > 0
         ? Object.keys(objOne).length === Object.keys(objTwo).length &&
@@ -115,6 +119,36 @@ export const createTouchedForm = (formFields: FormField[]): { [index: string]: b
     const touchedForm: { [index: string]: boolean } = {};
     formFields.forEach((field) => (touchedForm[field.name] = true));
     return touchedForm;
+};
+
+export const sortMenuList = (menuList: IMenuItem[]): NodeModel<IMenuItem>[] => {
+    const orderedMenu: (IMenuItem & { subitems?: IMenuItem[] })[] = [];
+    menuList.forEach((menuItem) => menuItem.levelId === 0 && orderedMenu.push({ ...menuItem, subitems: [] }));
+    orderedMenu.sort((a, b) => a.priority - b.priority);
+    orderedMenu.forEach((menuItem) => {
+        const itemId = getIdFromUrl(menuItem._links.self.href);
+        menuList.forEach(
+            (item) =>
+                item.levelId === 1 && item.parentMenuId === +itemId && menuItem.subitems && menuItem.subitems.push(item)
+        );
+    });
+    orderedMenu.forEach((menuItem) => menuItem.subitems && menuItem.subitems.sort((a, b) => a.priority - b.priority));
+    const preparedMenu: IMenuItem[] = [];
+    orderedMenu.forEach((menuItem) => {
+        const subitems = menuItem.subitems;
+        delete menuItem.subitems;
+        preparedMenu.push(menuItem);
+        if (subitems && subitems.length) {
+            subitems.forEach((item) => preparedMenu.push(item));
+        }
+    });
+    return preparedMenu.map((menuItem) => ({
+        id: +getIdFromUrl(menuItem._links.self.href),
+        parent: menuItem.parentMenuId,
+        text: menuItem.title,
+        droppable: menuItem.parentMenuId === 0,
+        data: menuItem,
+    }));
 };
 
 // create folders & documents structure ready to create directory tree

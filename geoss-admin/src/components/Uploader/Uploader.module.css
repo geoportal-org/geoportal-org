@@ -1,0 +1,17 @@
+label.uploader {
+    border-color: rgba(6, 97, 169, 1);
+    border-radius: 4px;
+    gap: 4px;
+    height: 50px;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+}
+
+label.uploader span {
+    color: black;
+}
+
+label.uploader input {
+    width: calc(100% - 24px);
+}

@@ -16,6 +16,7 @@ const useCustomToast = () => {
             variant: "geossAlert",
             containerStyle: {
                 margin: "4px 4px 4px 0",
+                transform: "translate(10px, 48px)",
             },
         });
     };

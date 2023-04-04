@@ -34,14 +34,12 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
         try {
             const {
                 _embedded: { content },
-            } = await ContentService.getContentsRoute();
+            } = await ContentService.getContentList();
             const selectContentsList = createSelectContentsList(content);
             setContentsList(() => selectContentsList);
             if (isEditMode) {
                 const id = router.query.id as string;
                 setPageId(id);
-                // test client side fetch
-                //const editedPage = await PageService.getPageRoute(+id);
                 const editedPage = await PageService.getPage(+id);
                 setInitValues(() => setExistingFormValues(addPageForm, editedPage));
             }
@@ -55,10 +53,6 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         const pageData = { ...values, contentId: +values.contentId, published: true } as IPageData;
         try {
-            // test client side fetch
-            /*const { title } = !isEditMode
-                ? await PageService.createPageRoute(pageData)
-                : await PageService.updatePageRoute(+pageId, pageData);*/
             const { title } = !isEditMode
                 ? await PageService.createPage(pageData)
                 : await PageService.updatePage(+pageId, pageData);
@@ -102,8 +96,8 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             const pageData = { ...values, contentId: +values.contentId, published: false } as IPageData;
             try {
                 const { title } = !isEditMode
-                    ? await PageService.createPageRoute(pageData)
-                    : await PageService.updatePageRoute(+pageId, pageData);
+                    ? await PageService.createPage(pageData)
+                    : await PageService.updatePage(+pageId, pageData);
                 !isEditMode && resetForm();
                 isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
                 showToast({
@@ -152,7 +146,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     }
 
     return (
-        <MainContent titleId="pages.add-page.title">
+        <MainContent titleId={isEditMode ? "pages.manage-page.edit-title" : "pages.manage-page.add-title"}>
             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
                 <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
                     {(formikProps) => {

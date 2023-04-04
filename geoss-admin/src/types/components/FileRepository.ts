@@ -35,7 +35,7 @@ export type FileRepositoryItemControlProps = {
     handleItemEditClick: (item: IFolder | IDocument) => void;
 };
 
-export type FileRepositoryAddFolderProps = {
+export type FileRepositoryManageFolderProps = {
     currFolder: number;
     path: string;
     foldersList: IFolder[];

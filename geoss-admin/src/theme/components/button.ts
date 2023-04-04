@@ -100,5 +100,14 @@ export const button: ComponentStyleConfig = {
                 color: "brand.mainDark",
             },
         },
+        geossPagination: {
+            p: 0,
+            color: "brand.mainDark",
+            _hover: {
+                bg: "brand.darkSoft",
+                color: "brand.mainDark",
+                boxShadow: "none",
+            },
+        },
     },
 };

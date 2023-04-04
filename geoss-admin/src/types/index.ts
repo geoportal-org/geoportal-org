@@ -10,7 +10,7 @@ export type {
     FileRepositoryProps,
     FileRepositoryItemProps,
     FileRepositoryItemControlProps,
-    FileRepositoryAddFolderProps,
+    FileRepositoryManageFolderProps,
     FileRepositoryFileInfoProps,
 } from "./components/FileRepository";
 export type { FormField, FormFieldSelect, SelectSettings } from "./data/formField";
@@ -42,3 +42,11 @@ export type { DataStatusProps } from "./components/DataStatus";
 export type { ManageContentProps } from "./components/ManageContent";
 export type { ManagePageProps } from "./components/ManagePage";
 export type { SideBarProps } from "./components/SideBar";
+export type { PaginationProps } from "./components/Pagination";
+export type {
+    MenuContentItemProps,
+    MenuContentItemPreviewProps,
+    MenuContentManageProps,
+    MovedItemInfo,
+    MovedItemData,
+} from "./components/MenuContent";

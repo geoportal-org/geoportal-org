@@ -17,32 +17,32 @@ import { NavItem, NavSection } from "@/types";
 
 const navSettingsData: NavItem[] = [
     {
-        titleId: "settings.section.api",
+        titleId: "nav.settings.section.api",
         href: pagesRoutes.api,
         Icon: ApiIcon,
     },
     {
-        titleId: "settings.section.web",
+        titleId: "nav.settings.section.web",
         href: pagesRoutes.web,
         Icon: WebIcon,
     },
     {
-        titleId: "settings.section.catalogs",
+        titleId: "nav.settings.section.catalogs",
         href: pagesRoutes.catalogs,
         Icon: CatalogIcon,
     },
     {
-        titleId: "settings.section.views",
+        titleId: "nav.settings.section.views",
         href: pagesRoutes.views,
         Icon: LayoutIcon,
     },
     {
-        titleId: "settings.section.layer",
+        titleId: "nav.settings.section.layer",
         href: pagesRoutes.defaultLayer,
         Icon: LayerIcon,
     },
     {
-        titleId: "settings.section.tutorial",
+        titleId: "nav.settings.section.tutorial",
         href: pagesRoutes.tutorialTags,
         Icon: TutorialIcon,
     },
@@ -50,22 +50,22 @@ const navSettingsData: NavItem[] = [
 
 const navContentsData: NavItem[] = [
     {
-        titleId: "contents.section.website",
+        titleId: "nav.contents.section.website",
         href: pagesRoutes.website,
         Icon: WebsiteIcon,
     },
     {
-        titleId: "contents.section.page",
+        titleId: "nav.contents.section.page",
         href: pagesRoutes.page,
         Icon: PageIcon,
     },
     {
-        titleId: "contents.section.repository",
+        titleId: "nav.contents.section.repository",
         href: pagesRoutes.fileRepository,
         Icon: FileIcon,
     },
     {
-        titleId: "settings.section.menu",
+        titleId: "nav.contents.section.menu",
         href: pagesRoutes.menu,
         Icon: MenuIcon,
     },
@@ -73,21 +73,21 @@ const navContentsData: NavItem[] = [
 
 const navProfileData: NavItem[] = [
     {
-        titleId: "profile.section.profile",
+        titleId: "nav.profile.section.profile",
         href: pagesRoutes.myProfile,
         Icon: ProfileIcon,
     },
     {
-        titleId: "profile.section.logout",
+        titleId: "nav.profile.section.logout",
         href: "#",
         Icon: LogoutIcon,
     },
 ];
 
 export const navData: NavSection[] = [
-    { titleId: "contents.title", items: navContentsData },
-    { titleId: "settings.title", items: navSettingsData },
-    { titleId: "profile.title", items: navProfileData },
+    { titleId: "nav.contents.title", items: navContentsData },
+    { titleId: "nav.settings.title", items: navSettingsData },
+    { titleId: "nav.profile.title", items: navProfileData },
 ];
 
 export const navSectionsUrls = [

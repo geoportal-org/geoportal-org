@@ -65,6 +65,10 @@ export const drawer: ComponentStyleConfig = {
                 mt: 0,
                 h: "full",
             },
+            body: {
+                flexGrow: 1,
+                overflow: "hidden",
+            },
         },
     },
     sizes: {

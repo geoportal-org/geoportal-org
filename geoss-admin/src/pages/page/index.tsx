@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import { PageContents } from "@/components";
+import { Pages as PagesCard } from "@/components";
 
-const Page: NextPage = () => <PageContents />;
+const Page: NextPage = () => <PagesCard />;
 
 export default Page;

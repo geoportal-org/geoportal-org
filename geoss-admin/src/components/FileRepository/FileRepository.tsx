@@ -4,13 +4,14 @@ import { Loader, MainContent, Modal, SideBar, TextContent } from "@/components";
 import { FileRepositoryFileInfo } from "./FileRepositoryFileInfo";
 import { FileRepositoryBreadcrumb } from "./FileRepositoryBreadcrumb";
 import { FileRepositoryItem } from "./FileRepositoryItem";
-import { FileRepositoryAddFolder } from "./FileRepositoryAddFolder";
+import { FileRepositoryManageFolder } from "./FileRepositoryManageFolder";
 import { FileRepositoryService } from "@/services/api";
 import { BreadcrumbItem, MainContentAction, ModalAction, ToastStatus } from "@/types";
 import { IDocument, IFolder } from "@/types/models";
 import { generatePath, getIdFromUrl, setDecisionModalActions } from "@/utils/helpers";
 import useFormatMsg from "@/utils/useFormatMsg";
 import useCustomToast from "@/utils/useCustomToast";
+import { FileRepositoryManageFile } from "./FileRepositoryManageFile";
 
 export const FileRepository = () => {
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -41,12 +42,10 @@ export const FileRepository = () => {
 
     const getFileRepositoryItems = async () => {
         try {
-            // test client side
             const {
                 _embedded: { folder },
             } = await FileRepositoryService.getFoldersList();
             setFoldersList(() => folder);
-            // test client side
             const {
                 _embedded: { document },
             } = await FileRepositoryService.getDocumentsList();
@@ -72,7 +71,7 @@ export const FileRepository = () => {
     const handleAddFolderClick = () => {
         setSideBarTitle("pages.file-repository.add-folder");
         setSideBarContent(() => (
-            <FileRepositoryAddFolder
+            <FileRepositoryManageFolder
                 currFolder={currentFolder}
                 path={generatePath(breadcrumb)}
                 foldersList={foldersList}
@@ -84,7 +83,7 @@ export const FileRepository = () => {
 
     const handleAddFileClick = () => {
         setSideBarTitle("pages.file-repository.add-file");
-        setSideBarContent(null);
+        setSideBarContent(() => <FileRepositoryManageFile />);
         onOpen();
     };
 
@@ -144,7 +143,6 @@ export const FileRepository = () => {
 
     const deleteFolder = async (title: string, id: number) => {
         try {
-            // test client side
             await FileRepositoryService.deleteFolder(id);
             setFoldersList((foldersList) =>
                 foldersList.filter((folder) => +getIdFromUrl(folder._links.self.href) !== id)
@@ -171,15 +169,19 @@ export const FileRepository = () => {
     const handleItemEditClick = (item: IFolder | IDocument) => {
         const isFolderType = "parentFolderId" in item;
         setSideBarTitle(isFolderType ? "pages.file-repository.folder-editing" : "pages.file-repository.file-editing");
-        setSideBarContent(() => (
-            <FileRepositoryAddFolder
-                folderId={+getIdFromUrl(item._links.self.href)}
-                currFolder={currentFolder}
-                path={generatePath(breadcrumb)}
-                foldersList={foldersList}
-                setFoldersList={setFoldersList}
-            />
-        ));
+        setSideBarContent(() =>
+            isFolderType ? (
+                <FileRepositoryManageFolder
+                    folderId={+getIdFromUrl(item._links.self.href)}
+                    currFolder={currentFolder}
+                    path={generatePath(breadcrumb)}
+                    foldersList={foldersList}
+                    setFoldersList={setFoldersList}
+                />
+            ) : (
+                <FileRepositoryManageFile />
+            )
+        );
         onOpen();
     };
 
