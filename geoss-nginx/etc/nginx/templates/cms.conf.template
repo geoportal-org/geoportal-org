@@ -73,7 +73,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
 
-    proxy_pass    http://cms_upstream;
+    proxy_pass    http://cms_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -89,7 +89,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_settings.conf;
 
-    proxy_pass    http://cms_upstream;
+    proxy_pass    http://cms_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -105,7 +105,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
 
-    proxy_pass    http://cms_upstream;
+    proxy_pass    http://cms_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -121,7 +121,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_contents.conf;
 
-    proxy_pass    http://cms_upstream;
+    proxy_pass    http://cms_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -179,7 +179,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
 
-    proxy_pass    http://keycloak_upstream;
+    proxy_pass    http://keycloak_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -237,7 +237,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://admin_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -253,7 +253,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_settings.conf;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://admin_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -269,7 +269,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://admin_upstream/;
     proxy_no_cache 1;
 
     #response headers
@@ -285,7 +285,7 @@ server {
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_geoss_contents.conf;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://admin_upstream/;
     proxy_no_cache 1;
 
     #response headers
