@@ -236,6 +236,53 @@ services:
     networks:
       - geosslan
 
+  geoss-elasticsearch-1:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss-elk:latest
+    hostname: geoss-elasticsearch-1
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.unique_tag==geoss-elastic-1"
+    environment:
+      - node.name=geoss-elasticsearch-1
+      - cluster.name=geoss-elasticsearch
+#      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
+#      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
+#      - bootstrap.memory_lock=true
+      - network.publish_host=geoss-elasticsearch-1
+      - http.max_content_length=1000mb
+      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+    ports:
+      - "9200:9200"
+    volumes:
+      - /opt/elasticsearch/data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - geosslan
+
+  geoss-kibana:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss-kibana:latest
+    hostname: geoss-kibana
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.unique_tag==geoss-elastic-1"
+    environment:
+      KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
+    volumes:
+      - /opt/kibana:/bitnami/kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - geosslan
+
   #######################################
   #          HELPER CONTAINERS          #
   #######################################
