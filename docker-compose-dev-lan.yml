@@ -237,7 +237,7 @@ services:
       - geosslan
 
   geoss-elasticsearch-1:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss-elk:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_elk:latest
     hostname: geoss-elasticsearch-1
     deploy:
       replicas: 1
