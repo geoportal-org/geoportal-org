@@ -257,7 +257,7 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - /opt/elasticsearch/data:/usr/share/elasticsearch/data
+      - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
@@ -266,7 +266,7 @@ services:
       - geosslan
 
   geoss-kibana:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss-kibana:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_kibana:latest
     hostname: geoss-kibana
     deploy:
       replicas: 1
