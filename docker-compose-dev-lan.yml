@@ -246,8 +246,8 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-#       node.name=geoss-elasticsearch-1
-#       cluster.name=geoss-elasticsearch
+       node.name=geoss-elasticsearch-1
+       cluster.name=geoss-elasticsearch
 #       discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
 #       cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
 #       bootstrap.memory_lock=true
