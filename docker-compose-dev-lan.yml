@@ -255,7 +255,6 @@ services:
       - discovery.type=single-node
       - http.max_content_length=1000mb
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev,geoss-elasticsearch-1,geoss-kibana
     ports:
       - "9200:9200"
     volumes:
