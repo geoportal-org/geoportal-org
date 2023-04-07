@@ -4,9 +4,6 @@ import { Formik, FormikErrors, FormikHelpers, FormikState, FormikTouched, Formik
 import { Flex } from "@chakra-ui/react";
 import { FormField, Loader, MainContent, PrimaryButton, TextContent } from "@/components";
 import { ContentService, PageService } from "@/services/api";
-import { addPageForm } from "@/data/forms";
-import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus } from "@/types";
-import { IPageData } from "@/types/models";
 import {
     areObjectsEqual,
     createSelectContentsList,
@@ -15,6 +12,10 @@ import {
     setFormInitialValues,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
+import { initContentsPagination } from "@/data";
+import { addPageForm } from "@/data/forms";
+import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus } from "@/types";
+import { IPageData } from "@/types/models";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addPageForm));
@@ -34,7 +35,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
         try {
             const {
                 _embedded: { content },
-            } = await ContentService.getContentList();
+            } = await ContentService.getContentList(initContentsPagination);
             const selectContentsList = createSelectContentsList(content);
             setContentsList(() => selectContentsList);
             if (isEditMode) {

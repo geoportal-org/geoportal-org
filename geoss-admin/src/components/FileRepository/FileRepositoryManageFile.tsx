@@ -1,38 +1,105 @@
-import { addFileForm } from "@/data/forms";
-import { scrollbarStyles } from "@/theme/commons";
-import useCustomToast from "@/utils/useCustomToast";
-import { Box, Flex } from "@chakra-ui/react";
-import { Formik, FormikHelpers, FormikValues } from "formik";
 import { useEffect, useState } from "react";
+import { Formik, FormikHelpers, FormikValues } from "formik";
+import { Box, Flex } from "@chakra-ui/react";
 import { PrimaryButton, Loader, FormField, TextContent } from "@/components";
-import { ButtonType } from "@/types";
-import { areObjectsEqual, setFormInitialValues } from "@/utils/helpers";
+import { FileRepositoryService } from "@/services/api";
+import useCustomToast from "@/utils/useCustomToast";
+import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
+import { addFileForm, editFileForm } from "@/data/forms";
+import { scrollbarStyles } from "@/theme/commons";
+import { ButtonType, FileRepositoryManageFileProps } from "@/types";
+import { IDocument } from "@/types/models";
 
-type FileRepositoryManageFileProps = {
-    fileId?: number;
-};
-
-export const FileRepositoryManageFile = ({ fileId }: FileRepositoryManageFileProps) => {
+export const FileRepositoryManageFile = ({
+    fileId,
+    currentFolder,
+    path,
+    documentsList,
+    setDocumentsList,
+}: FileRepositoryManageFileProps) => {
+    const fileForm = fileId ? editFileForm : addFileForm;
     const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addFileForm));
+    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(fileForm));
     const { showToast } = useCustomToast();
 
     useEffect(() => {
         fileId ? getFileInfo(fileId) : setIsLoading(false);
     }, []);
 
-    const getFileInfo = (id: number) => {};
+    const getFileInfo = async (id: number) => {
+        try {
+            const editedFile = await FileRepositoryService.getFile(id);
+            setInitValues(setExistingFormValues(fileForm, editedFile));
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleFormSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         fileId ? updateFile(fileId, values) : addNewFile(values, actions);
     };
 
-    const updateFile = (id: number, values: FormikValues) => {};
+    const updateFile = async (id: number, values: FormikValues) => {
+        const fileData: Pick<IDocument, "title"> = { title: values.title };
+        try {
+            const updatedFile = await FileRepositoryService.updateFileTitle(id, fileData);
+            setDocumentsList((documentsList) =>
+                documentsList.map((file) => (+getIdFromUrl(file._links.self.href) === id ? updatedFile : file))
+            );
+            setInitValues(setExistingFormValues(fileForm, values));
+            showToast({
+                title: "File updated",
+                description: "File title updated",
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
-    const addNewFile = (values: FormikValues, actions: FormikHelpers<FormikValues>) => {};
+    const addNewFile = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
+        const fileData = prepareFileToUpload(values);
+
+        try {
+            const addedFile = await FileRepositoryService.uploadFile(fileData);
+            const newFileId = +getIdFromUrl(addedFile._links.document.href);
+            const newFile = await FileRepositoryService.getFile(newFileId);
+            setDocumentsList([...documentsList, newFile]);
+            actions.resetForm();
+            showToast({
+                title: "File uploaded",
+                description: `File ${addedFile.title} has been uploaded`,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const prepareFileToUpload = (values: FormikValues): FormData => {
+        const formData = new FormData();
+        const file = values.file as File;
+        const fileInfo = getNewFileData(values);
+        formData.set("files", file, file.name);
+        formData.set("model", JSON.stringify(fileInfo));
+        return formData;
+    };
+
+    const getNewFileData = (values: FormikValues) => {
+        const file = values.file as File;
+        const name = file.name;
+        const extension = name.substring(name.lastIndexOf(".") + 1, name.length);
+        return {
+            title: values.title,
+            fileName: name,
+            extension,
+            path: path,
+            folderId: currentFolder,
+        };
+    };
 
     const renderFormFields = () => {
-        const formFields = addFileForm.map((field) => <FormField key={field.name} fieldData={field} />);
+        const formFields = fileForm.map((field) => <FormField key={field.name} fieldData={field} />);
         return (
             <Flex direction="column" gap={6} mb={6}>
                 {formFields}
@@ -46,7 +113,7 @@ export const FileRepositoryManageFile = ({ fileId }: FileRepositoryManageFilePro
                 type={ButtonType.SUBMIT}
                 disabled={fileId !== undefined && areObjectsEqual(initValues, values)}
             >
-                <TextContent id="general.save" />
+                <TextContent id={fileId ? "general.save" : "general.upload"} />
             </PrimaryButton>
         </Flex>
     );

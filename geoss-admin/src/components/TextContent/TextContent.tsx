@@ -6,5 +6,9 @@ import { TextContentProps } from "@/types";
 const defaultTextContent = flattenMessages(contentMessages.en);
 
 export const TextContent = ({ id, ...values }: TextContentProps) => (
-    <FormattedMessage id={id} values={values} defaultMessage={defaultTextContent[id]} />
+    <FormattedMessage
+        id={id}
+        values={{ ...values, b: (chunks) => <strong>{chunks}</strong>, u: (chunks) => <u>{chunks}</u> }}
+        defaultMessage={defaultTextContent[id]}
+    />
 );

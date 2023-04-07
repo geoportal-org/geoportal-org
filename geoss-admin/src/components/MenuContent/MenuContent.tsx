@@ -21,7 +21,8 @@ import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ModalAction, MovedItemData, MovedItemInfo, ToastStatus } from "@/types";
 import { IMenuItem, IMenuItemData } from "@/types/models";
-import { addMenuItemForm } from "@/data/forms";
+import { initMenuPagination } from "@/data";
+import { addChildMenuItemForm, addMenuItemForm } from "@/data/forms";
 import styles from "./MenuContent.module.css";
 
 export const MenuContent = () => {
@@ -51,7 +52,7 @@ export const MenuContent = () => {
         try {
             const {
                 _embedded: { menu: fullMenu },
-            } = await MenuService.getMenuList();
+            } = await MenuService.getMenuList(initMenuPagination);
             const menuStructure = sortMenuList(fullMenu);
             setMenuList(() => menuStructure);
         } catch (e) {
@@ -166,15 +167,28 @@ export const MenuContent = () => {
     const openAllMenuItems = () => itemTreeRef.current?.openAll();
 
     const onAddAction = (parentMenuId: number) => {
-        setSideBarTitle(parentMenuId === 0 ? "pages.menu.add-item" : "pages.menu.add-subitem");
-        setSideBarContent(() => <MenuContentManage parentMenuId={parentMenuId} manageMenuItem={manageMenuItem} />);
+        const isMainMenuItem = parentMenuId === 0;
+        setSideBarTitle(isMainMenuItem ? "pages.menu.add-item" : "pages.menu.add-subitem");
+        setSideBarContent(() => (
+            <MenuContentManage
+                parentMenuId={parentMenuId}
+                manageMenuItem={manageMenuItem}
+                isMainMenuItem={isMainMenuItem}
+            />
+        ));
         onOpen();
     };
 
     const onEditAction = (parentMenuId: number, menuItemId: number) => {
+        const isMainMenuItem = parentMenuId === 0;
         setSideBarTitle("pages.menu.edit");
         setSideBarContent(() => (
-            <MenuContentManage parentMenuId={parentMenuId} manageMenuItem={manageMenuItem} menuItemId={menuItemId} />
+            <MenuContentManage
+                parentMenuId={parentMenuId}
+                manageMenuItem={manageMenuItem}
+                menuItemId={menuItemId}
+                isMainMenuItem={isMainMenuItem}
+            />
         ));
         onOpen();
     };
@@ -246,14 +260,16 @@ export const MenuContent = () => {
         menuItemId?: number
     ) =>
         menuItemId !== undefined
-            ? updateMenuItem(values, menuItemId, setInitValues)
+            ? updateMenuItem(values, menuItemId, setInitValues, parentMenuId)
             : createMenuItem(parentMenuId, values, actions);
 
     const updateMenuItem = async (
         values: FormikValues,
         menuItemId: number,
-        setInitValues: Dispatch<SetStateAction<FormikValues>>
+        setInitValues: Dispatch<SetStateAction<FormikValues>>,
+        parentMenuId: number
     ) => {
+        const isMainMenuItem = parentMenuId === 0;
         const menuItemData = getUpdatedItemData(values);
         try {
             const updatedMenuItem = await MenuService.updateMenuItem(menuItemData, menuItemId);
@@ -264,7 +280,7 @@ export const MenuContent = () => {
                         : menuItem
                 )
             );
-            setInitValues(setExistingFormValues(addMenuItemForm, values));
+            setInitValues(setExistingFormValues(isMainMenuItem ? addMenuItemForm : addChildMenuItemForm, values));
             showToast({
                 title: translate("general.updated"),
                 description: translate("pages.menu.updated-item", { title: updatedMenuItem.title }),
@@ -296,7 +312,7 @@ export const MenuContent = () => {
     };
 
     const getNewItemData = (parentMenuId: number, values: FormikValues): IMenuItemData => {
-        const { title, imageTitle, imageSource, url } = values;
+        const { title, imageTitle = " ", imageSource = " ", url } = values;
         const levelId = parentMenuId === 0 ? 0 : 1;
         const priority = getNewItemPriority(parentMenuId);
         return { title, imageTitle, imageSource, url, levelId, parentMenuId, priority };

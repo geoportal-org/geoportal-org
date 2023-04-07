@@ -43,6 +43,14 @@ export type FileRepositoryManageFolderProps = {
     folderId?: number;
 };
 
+export type FileRepositoryManageFileProps = {
+    fileId?: number;
+    currentFolder: number;
+    path: string;
+    documentsList: IDocument[];
+    setDocumentsList: Dispatch<SetStateAction<IDocument[]>>;
+};
+
 export type FileRepositoryFileInfoProps = {
     document: IDocument;
 };

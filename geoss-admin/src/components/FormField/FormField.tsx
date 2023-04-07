@@ -6,7 +6,7 @@ import { chakraSelectStyles } from "@/theme/commons";
 import { ValidationService } from "@/services";
 import { FormFieldProps, FormFieldSelect } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { createSlug } from "@/utils/helpers";
+import { createRelativeUrl, createSlug } from "@/utils/helpers";
 
 export const FormField = ({ fieldData }: FormFieldProps) => {
     const { translate } = useFormatMsg();
@@ -26,28 +26,35 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
         labelId: fieldLabelId,
         selectSettings,
         isRequired,
-        fieldDependence,
+        automaticFill,
     } = fieldData;
 
-    const isDefaultField = inputType !== "select" && inputType !== "editor" && inputType !== "uploader";
+    const isDefaultField = inputType !== "select" && inputType !== "editor" && inputType !== "file";
     const isSelectField = inputType === "select" && selectSettings;
     const isTextEditor = inputType === "editor";
-    const isFileUploader = inputType === "uploader";
+    const isFileUploader = inputType === "file";
     const isFieldError = !!formErrors[fieldName];
     const isFieldTouched = !!touched[fieldName];
+
+    const automaticFieldFillTypes = {
+        slug: () => (automaticFill ? createSlug(formValues[automaticFill.superiorField]) : null),
+        "relative-url": () => (automaticFill ? createRelativeUrl(formValues[automaticFill.superiorField]) : null),
+    };
 
     useEffect(
         () => {
             const fillField = () => {
-                if (fieldName !== "slug") {
+                if (!automaticFill) {
                     return;
                 }
 
-                fieldName === "slug" && setFieldValue("slug", formValues.title ? createSlug(formValues.title) : "");
+                const { superiorField, fillType } = automaticFill;
+                const superiorValue = formValues[superiorField];
+                setFieldValue(fieldName, superiorValue ? automaticFieldFillTypes[fillType]() : "");
             };
             fillField();
         },
-        fieldName !== "slug" ? [] : [formValues.title, touched.title]
+        !automaticFill ? [] : [formValues[automaticFill.superiorField], touched[automaticFill.superiorField]]
     );
 
     const setSelectValue = () => {
@@ -82,6 +89,8 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
     const handleEditorChange = (text: string) => setFieldValue(fieldName, text);
 
     const handleEditorOnBlur = () => markFieldTouched();
+
+    const handleFileAdd = (file: File | "") => setFieldValue(fieldName, file);
 
     return (
         <FormControl isRequired={isRequired} isInvalid={isFieldError && isFieldTouched} w="full">
@@ -141,7 +150,15 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                     initialContent={formValues[fieldName]}
                 />
             )}
-            {isFileUploader && <Uploader />}
+            {isFileUploader && (
+                <Uploader
+                    fieldData={fieldData}
+                    value={formValues[fieldName]}
+                    handleUploaderChange={handleFileAdd}
+                    handleFileUploaderUse={markFieldTouched}
+                    isError={isFieldTouched && isFieldError}
+                />
+            )}
             {isFieldError && isFieldTouched && (
                 <FormErrorMessage mt="5px">
                     <TextContent id={formErrors[fieldName] as string} />

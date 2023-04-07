@@ -1,5 +1,5 @@
 import { QueryParams } from "@/types";
-import { IDocumentList, IFolder, IFolderData, IFolderList } from "@/types/models";
+import { IDocument, IDocumentList, IFolder, IFolderData, IFolderList } from "@/types/models";
 import { fetcher } from "@/utils/fetcher";
 
 export const FileRepositoryService = {
@@ -15,6 +15,13 @@ export const FileRepositoryService = {
     createFolder: async (folderData: IFolderData): Promise<IFolder> =>
         fetcher({ url: FileRepositoryService.baseFolderUrl, method: "POST", body: folderData }),
 
+    uploadFile: (fileData: FormData): Promise<IDocument> =>
+        fetcher({
+            url: FileRepositoryService.baseDocumentUrl,
+            method: "POST",
+            body: fileData,
+        }),
+
     getFolder: async (id: number): Promise<IFolder> => fetcher({ url: `${FileRepositoryService.baseFolderUrl}/${id}` }),
 
     deleteFolder: async (id: number) =>
@@ -22,4 +29,13 @@ export const FileRepositoryService = {
 
     updateFolderTitle: async (id: number, folderData: Pick<IFolderData, "title">): Promise<IFolder> =>
         fetcher({ url: `${FileRepositoryService.baseFolderUrl}/${id}`, body: folderData, method: "PATCH" }),
+
+    deleteFile: async (id: number): Promise<null> =>
+        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}`, method: "DELETE" }),
+
+    getFile: async (id: number): Promise<IDocument> =>
+        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}` }),
+
+    updateFileTitle: async (id: number, fileData: Pick<IDocument, "title">): Promise<IDocument> =>
+        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}`, body: fileData, method: "PATCH" }),
 };

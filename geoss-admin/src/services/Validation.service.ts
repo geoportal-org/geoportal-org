@@ -23,6 +23,10 @@ export const ValidationService = {
             regExp: regExp.slug,
             errorMsgId: "form.errors.invalid-slug",
         },
+        "relative-url": {
+            regExp: regExp["relative-url"],
+            errorMsgId: "form.errors.invalid-relative-url",
+        },
     },
 
     checkForErrors: (field: FormField, fieldValue: string | string[]): string | undefined => {
@@ -52,13 +56,24 @@ export const ValidationService = {
         return error;
     },
 
-    validateRequiredOnEmpty: (fieldValue: string | string[], type: string): string | undefined => {
+    validateRequiredOnEmpty: (fieldValue: string | string[] | File, type: string): string | undefined => {
+        if (type === "file" && !Array.isArray(fieldValue)) {
+            return ValidationService.validateFileOnEmpty(fieldValue);
+        }
         if ((type === "select" || type === "checkbox") && Array.isArray(fieldValue)) {
             return ValidationService.validateMultiSelectOnEmpty(fieldValue);
         }
-        if (!Array.isArray(fieldValue)) {
+        if (!Array.isArray(fieldValue) && !(fieldValue instanceof File)) {
             return ValidationService.validateInputOnEmpty(fieldValue);
         }
+    },
+
+    validateFileOnEmpty: (fieldValue: File | string): string | undefined => {
+        let error;
+        if (!(fieldValue instanceof File)) {
+            error = "form.errors.required-file";
+        }
+        return error;
     },
 
     validateMultiSelectOnEmpty: (fieldValue: string[]): string | undefined => {

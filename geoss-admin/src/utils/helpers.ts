@@ -115,6 +115,8 @@ export const createSelectContentsList = (contents: IContent[]): SelectSettings =
 export const createSlug = (value: string): string =>
     value.trim().toLowerCase().replace(/\s\s+/g, " ").replaceAll(" ", "-");
 
+export const createRelativeUrl = (value: string): string => `/${createSlug(value)}`;
+
 export const createTouchedForm = (formFields: FormField[]): { [index: string]: boolean } => {
     const touchedForm: { [index: string]: boolean } = {};
     formFields.forEach((field) => (touchedForm[field.name] = true));

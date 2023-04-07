@@ -12,6 +12,7 @@ export type {
     FileRepositoryItemControlProps,
     FileRepositoryManageFolderProps,
     FileRepositoryFileInfoProps,
+    FileRepositoryManageFileProps,
 } from "./components/FileRepository";
 export type { FormField, FormFieldSelect, SelectSettings } from "./data/formField";
 export type { FormFieldProps } from "./components/FormField";
@@ -50,3 +51,4 @@ export type {
     MovedItemInfo,
     MovedItemData,
 } from "./components/MenuContent";
+export type { UploaderProps } from "./components/Uploader";

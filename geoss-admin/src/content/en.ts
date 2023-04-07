@@ -13,6 +13,7 @@ export const en = {
         deleted: "Deleted",
         updated: "Updated",
         error: "Error occured",
+        upload: "Upload",
     },
     form: {
         placeholders: {
@@ -28,6 +29,8 @@ export const en = {
             "invalid-slug": "Invalid friendly URL (spaces not allowed)",
             required: "Required field",
             "passwords-not-match": "Passwords don't match",
+            "required-file": "File is required",
+            "invalid-relative-url": "Invalid relative URL",
         },
         actions: {
             submit: "Submit",
@@ -39,6 +42,11 @@ export const en = {
     information: {
         error: {
             loading: "Oops, an error occured. Please refresh the page and if the problem persists, contact support.",
+            upload: "An error occurred while adding the file - pleas try again",
+            "file-invalid-type": "Invalid file type",
+            "file-too-large": "Too large file - maximum file size is 10MB",
+            "file-too-small": "Too small file - minimum file size is 1B",
+            "too-many-files": "Too many files - single file is accepted",
         },
         success: {},
     },
@@ -99,7 +107,7 @@ export const en = {
             "file-createdDate": "Creation date",
             "file-deleted-info": "{title} file has been deleted",
             "file-deleted": "File deleted",
-            "file-editing": "File editing",
+            "file-editing": "Edit file",
             "file-extension": "File extension",
             "file-fileName": "File name",
             "file-icon": "File {title} icon",
@@ -109,12 +117,17 @@ export const en = {
             "file-title": "File title",
             "folder-deleted-info": "{title} folder has been deleted",
             "folder-deleted": "Folder deleted",
-            "folder-editing": "Folder editing",
+            "folder-editing": "Edit folder",
             "folder-icon": "Folder {title} icon",
             "open-folder": "Open folder {title}",
             "root-folder": "Root",
             title: "File repository",
             file: "File",
+            upload: "<b>Drop</b> single file here or <b>click</b> to upload",
+            "no-file": "File not added",
+            drop: "Drop file here",
+            "upload-new": "To replace an added file, add a new one by <b>drop</b> or <b>click</b>",
+            "delete-folder-error": "Folder was not removed - please refresh the page and try again",
         },
         menu: {
             title: "Menu",

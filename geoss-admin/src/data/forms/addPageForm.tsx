@@ -34,5 +34,9 @@ export const addPageForm: FormField[] = [
         placeholderId: "form.placeholders.type",
         type: "text",
         validationSchema: "slug",
+        automaticFill: {
+            superiorField: "title",
+            fillType: "slug",
+        },
     },
 ];

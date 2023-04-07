@@ -3,12 +3,12 @@ import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { Loader, TextContent, PrimaryButton, FormField } from "@/components";
 import { FileRepositoryService } from "@/services/api";
-import { createFolderForm } from "@/data/forms";
-import { ButtonType, FileRepositoryManageFolderProps } from "@/types";
-import { IFolderData } from "@/types/models";
 import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { scrollbarStyles } from "@/theme/commons";
+import { createFolderForm } from "@/data/forms";
+import { ButtonType, FileRepositoryManageFolderProps } from "@/types";
+import { IFolderData } from "@/types/models";
 
 export const FileRepositoryManageFolder = ({
     folderId,

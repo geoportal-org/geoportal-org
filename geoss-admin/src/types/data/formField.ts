@@ -14,8 +14,9 @@ export type FormField = {
     type?: string;
     validationSchema?: string;
     selectSettings?: SelectSettings;
-    fieldDependence?: {
-        fieldName: string;
+    automaticFill?: {
+        superiorField: string;
+        fillType: "slug" | "relative-url";
     };
 };
 

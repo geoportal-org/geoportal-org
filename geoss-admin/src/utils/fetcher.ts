@@ -10,8 +10,14 @@ export const fetcher = async ({
 }: FetcherData): Promise<any> => {
     const options: RequestInit = {
         method,
-        headers: new Headers({ "content-type": "application/json", ...headers }),
-        body: body ? JSON.stringify(body) : null,
+        ...(!(body instanceof FormData) && {
+            headers: new Headers({
+                "Content-Type": "application/json",
+                ...headers,
+            }),
+        }),
+        ...(body && !(body instanceof FormData) && { body: JSON.stringify(body) }),
+        ...(body && body instanceof FormData && { body }),
         ...(useCredentials && { credentials: "include" }),
     };
 
@@ -29,14 +35,8 @@ export const fetcher = async ({
         return response.json();
     }
 
-    /*const responseBody = await response.json();
-    return Promise.reject({
-        status: response.status,
-        ok: false,
-        message: responseBody.message,
-        body: responseBody,
-    });*/
-    return Promise.reject(response);
+    const errorResponse = await response.json();
+    return Promise.reject(errorResponse);
 };
 
 const setQueryParams = (queryParams: QueryParams): string =>

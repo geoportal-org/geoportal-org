@@ -5,13 +5,14 @@ import { FileRepositoryFileInfo } from "./FileRepositoryFileInfo";
 import { FileRepositoryBreadcrumb } from "./FileRepositoryBreadcrumb";
 import { FileRepositoryItem } from "./FileRepositoryItem";
 import { FileRepositoryManageFolder } from "./FileRepositoryManageFolder";
+import { FileRepositoryManageFile } from "./FileRepositoryManageFile";
 import { FileRepositoryService } from "@/services/api";
-import { BreadcrumbItem, MainContentAction, ModalAction, ToastStatus } from "@/types";
-import { IDocument, IFolder } from "@/types/models";
 import { generatePath, getIdFromUrl, setDecisionModalActions } from "@/utils/helpers";
 import useFormatMsg from "@/utils/useFormatMsg";
 import useCustomToast from "@/utils/useCustomToast";
-import { FileRepositoryManageFile } from "./FileRepositoryManageFile";
+import { initRepositoryPagination } from "@/data";
+import { BreadcrumbItem, MainContentAction, ModalAction, ToastStatus } from "@/types";
+import { IDocument, IFolder } from "@/types/models";
 
 export const FileRepository = () => {
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -44,11 +45,11 @@ export const FileRepository = () => {
         try {
             const {
                 _embedded: { folder },
-            } = await FileRepositoryService.getFoldersList();
+            } = await FileRepositoryService.getFoldersList(initRepositoryPagination);
             setFoldersList(() => folder);
             const {
                 _embedded: { document },
-            } = await FileRepositoryService.getDocumentsList();
+            } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
             setDocumentsList(() => document);
         } catch (e) {
             console.error(e);
@@ -83,7 +84,14 @@ export const FileRepository = () => {
 
     const handleAddFileClick = () => {
         setSideBarTitle("pages.file-repository.add-file");
-        setSideBarContent(() => <FileRepositoryManageFile />);
+        setSideBarContent(() => (
+            <FileRepositoryManageFile
+                currentFolder={currentFolder}
+                path={generatePath(breadcrumb)}
+                documentsList={documentsList}
+                setDocumentsList={setDocumentsList}
+            />
+        ));
         onOpen();
     };
 
@@ -142,28 +150,62 @@ export const FileRepository = () => {
     };
 
     const deleteFolder = async (title: string, id: number) => {
+        const deletePromises: Promise<null>[] = [];
+        const [deleteFoldersIds, deleteFilesIds] = getDeleteIds(id);
+
+        deleteFoldersIds.forEach((id) => deletePromises.push(FileRepositoryService.deleteFolder(id)));
+        deleteFilesIds.forEach((id) => deletePromises.push(FileRepositoryService.deleteFile(id)));
+
+        await Promise.all(deletePromises)
+            .then(() => handleItemsDelete(deleteFoldersIds, deleteFilesIds, title, id))
+            .catch((e) => showErrorInfo("pages.file-repository.delete-folder-error"));
+    };
+
+    const getDeleteIds = (id: number): number[][] => {
+        const deleteFoldersIds = foldersList
+            .filter((folder) => folder.parentFolderId === id || +getIdFromUrl(folder._links.self.href) === id)
+            .map((folder) => +getIdFromUrl(folder._links.self.href));
+
+        const deleteFilesIds = documentsList
+            .filter((file) => file.folderId === id)
+            .map((file) => +getIdFromUrl(file._links.self.href));
+
+        return [deleteFoldersIds, deleteFilesIds];
+    };
+
+    const handleItemsDelete = (deleteFoldersIds: number[], deleteFilesIds: number[], title: string, id: number) => {
+        setFoldersList((foldersList) =>
+            foldersList.filter((folder) => !deleteFoldersIds.includes(+getIdFromUrl(folder._links.self.href)))
+        );
+        setDocumentsList((documentsList) =>
+            documentsList.filter((file) => !deleteFilesIds.includes(+getIdFromUrl(file._links.self.href)))
+        );
+        showToast({
+            title: "Folder deleted",
+            description: `Folder ${title} (ID: ${id}) has been deleted along with its contents`,
+        });
+        onCloseModal();
+    };
+
+    const deleteDocument = async (title: string, id: number) => {
         try {
-            await FileRepositoryService.deleteFolder(id);
-            setFoldersList((foldersList) =>
-                foldersList.filter((folder) => +getIdFromUrl(folder._links.self.href) !== id)
+            await FileRepositoryService.deleteFile(id);
+            setDocumentsList((documentsList) =>
+                documentsList.filter((file) => +getIdFromUrl(file._links.self.href) !== id)
             );
             showToast({
-                title: "Folder deleted",
-                description: `Folder ${title} (ID: ${id}) has been deleted`,
+                title: "File deleted",
+                description: `File ${title} (ID: ${id}) has been delted`,
             });
             onCloseModal();
         } catch (e) {
-            console.error(e);
+            console.log(e);
             showToast({
                 title: "Error occured",
-                description: "Folder has not been deleted - try again",
+                description: "File has not been deleted - try again",
                 status: ToastStatus.ERROR,
             });
         }
-    };
-
-    const deleteDocument = (title: string, id: number) => {
-        console.log(`Delete file ${title} (ID: ${id})`);
     };
 
     const handleItemEditClick = (item: IFolder | IDocument) => {
@@ -179,11 +221,24 @@ export const FileRepository = () => {
                     setFoldersList={setFoldersList}
                 />
             ) : (
-                <FileRepositoryManageFile />
+                <FileRepositoryManageFile
+                    currentFolder={currentFolder}
+                    path={generatePath(breadcrumb)}
+                    documentsList={documentsList}
+                    setDocumentsList={setDocumentsList}
+                    fileId={+getIdFromUrl(item._links.self.href)}
+                />
             )
         );
         onOpen();
     };
+
+    const showErrorInfo = (messageId: string) =>
+        showToast({
+            title: translate("general.error"),
+            description: translate(messageId),
+            status: ToastStatus.ERROR,
+        });
 
     if (isLoading) {
         return <Loader />;

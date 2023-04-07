@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { FormField } from "@/types";
 
-export const addMenuItemForm: FormField[] = [
+export const addChildMenuItemForm: FormField[] = [
     {
         fieldType: Input,
         isRequired: true,
@@ -9,23 +9,6 @@ export const addMenuItemForm: FormField[] = [
         name: "title",
         placeholderId: "form.placeholders.type",
         type: "text",
-    },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.menu.img-title",
-        name: "imageTitle",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-    },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.menu.img-url",
-        name: "imageSource",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-        validationSchema: "url",
     },
     {
         fieldType: Input,

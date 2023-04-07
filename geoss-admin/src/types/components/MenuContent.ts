@@ -28,6 +28,7 @@ export type MenuContentManageProps = {
         setInitValues: Dispatch<SetStateAction<FormikValues>>,
         menuItemId?: number
     ) => void;
+    isMainMenuItem: boolean;
 };
 
 export type MovedItemInfo = {

@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { FormField } from "@/types";
 
-export const addFileForm: FormField[] = [
+export const editFileForm: FormField[] = [
     {
         fieldType: Input,
         isRequired: true,
@@ -9,11 +9,5 @@ export const addFileForm: FormField[] = [
         name: "title",
         placeholderId: "form.placeholders.type",
         type: "text",
-    },
-    {
-        isRequired: true,
-        labelId: "pages.file-repository.file",
-        name: "file",
-        type: "file",
     },
 ];

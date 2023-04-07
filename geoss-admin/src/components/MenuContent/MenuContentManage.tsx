@@ -3,14 +3,20 @@ import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { FormField, Loader, PrimaryButton, TextContent } from "@/components";
 import { MenuService } from "@/services/api";
-import { addMenuItemForm } from "@/data/forms";
+import { addChildMenuItemForm, addMenuItemForm } from "@/data/forms";
 import { areObjectsEqual, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { ButtonType, MenuContentManageProps } from "@/types";
 import { scrollbarStyles } from "@/theme/commons";
 
-export const MenuContentManage = ({ parentMenuId, menuItemId, manageMenuItem }: MenuContentManageProps) => {
+export const MenuContentManage = ({
+    parentMenuId,
+    menuItemId,
+    manageMenuItem,
+    isMainMenuItem,
+}: MenuContentManageProps) => {
+    const itemForm = isMainMenuItem ? addMenuItemForm : addChildMenuItemForm;
     const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addMenuItemForm));
+    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(itemForm));
 
     useEffect(() => {
         menuItemId ? getMenuItemInfo(menuItemId) : setIsLoading(false);
@@ -19,7 +25,7 @@ export const MenuContentManage = ({ parentMenuId, menuItemId, manageMenuItem }: 
     const getMenuItemInfo = async (itemId: number) => {
         try {
             const editedMenuItem = await MenuService.getMenuItem(itemId);
-            setInitValues(setExistingFormValues(addMenuItemForm, editedMenuItem));
+            setInitValues(setExistingFormValues(itemForm, editedMenuItem));
         } catch (e) {
             console.error(e);
         } finally {
@@ -31,7 +37,7 @@ export const MenuContentManage = ({ parentMenuId, menuItemId, manageMenuItem }: 
         manageMenuItem(parentMenuId, values, actions, setInitValues, menuItemId);
 
     const renderFormFields = () => {
-        const formFields = addMenuItemForm.map((field) => <FormField key={field.name} fieldData={field} />);
+        const formFields = itemForm.map((field) => <FormField key={field.name} fieldData={field} />);
         return (
             <Flex direction="column" gap={6} mb={6}>
                 {formFields}
