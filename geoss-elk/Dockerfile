@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.8
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
