@@ -250,7 +250,7 @@ services:
       - cluster.name=geoss-elasticsearch
 #      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
 #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
-#      - bootstrap.memory_lock=true
+      - bootstrap.memory_lock=true
       - network.publish_host=geoss-elasticsearch-1
       - discovery.type=single-node
       - http.max_content_length=1000mb
@@ -276,7 +276,7 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
+      KIBANA_ELASTICSEARCH_URL: 10.254.7.62/
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev,geoss-elasticsearch-1,geoss-kibana
     volumes:
       - /opt/kibana:/bitnami/kibana
