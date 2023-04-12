@@ -17,4 +17,4 @@ HEALTHCHECK \
 	--interval=30s \
 	--start-period=30s \
 	--timeout=1m \
-CMD curl -fsS "http://localhost:9200/" || exit 1
+CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
