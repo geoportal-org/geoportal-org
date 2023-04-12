@@ -1,10 +1,12 @@
-FROM docker.elastic.co/kibana/kibana:8.7.0
+FROM bitnami/kibana:7.17.9
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
 LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-kibana"
+
+COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
 HEALTHCHECK \
 	--interval=30s \
