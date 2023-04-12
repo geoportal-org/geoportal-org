@@ -276,7 +276,9 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
+      SERVER_BASEPATH: "/geoss/kibana"
+      #KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
+      ELASTICSEARCH_HOSTS: '["http://geoss-elasticsearch-1:9200"]'
       no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev,geoss-elasticsearch-1,geoss-kibana
     volumes:
       - /opt/kibana:/bitnami/kibana
