@@ -53,4 +53,11 @@ public interface RepositoryService {
      * @return the document content
      */
     Resource getDocumentContent(Long id);
+
+    /**
+     * Validate file name unique.
+     *
+     * @param document the document
+     */
+    void validateFileNameUnique(Document document);
 }

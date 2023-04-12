@@ -5,10 +5,12 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import com.eversis.esa.geoss.contents.configuration.RepositoryProperties;
 import com.eversis.esa.geoss.contents.domain.Document;
 import com.eversis.esa.geoss.contents.domain.Folder;
+import com.eversis.esa.geoss.contents.exception.FileNameNotUniqueException;
 import com.eversis.esa.geoss.contents.repository.DocumentRepository;
 import com.eversis.esa.geoss.contents.repository.FolderRepository;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
@@ -16,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -129,6 +134,22 @@ public class RepositoryServiceImpl implements RepositoryService {
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void validateFileNameUnique(Document document) {
+        int page = 0;
+        int size = Integer.MAX_VALUE;
+        Pageable paging = PageRequest.of(page, size);
+        Page<Document> documentPage = documentRepository.findByFolderId(document.getFolderId().toString(), paging);
+        List<Document> documents = documentPage.getContent();
+
+        boolean isFileNameNotUnique = documents.stream()
+                .anyMatch(doc -> doc.getFileName().equals(document.getFileName()));
+
+        if (isFileNameNotUnique) {
+            throw new FileNameNotUniqueException("fileName not unique");
         }
     }
 

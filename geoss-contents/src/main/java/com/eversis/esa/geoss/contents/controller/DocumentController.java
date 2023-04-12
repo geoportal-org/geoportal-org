@@ -61,6 +61,7 @@ public class DocumentController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             Document documentDTO = mapper.readValue(model, Document.class);
+            repositoryService.validateFileNameUnique(documentDTO);
             savedDocument = repositoryService.addDocument(documentDTO, files[0]);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

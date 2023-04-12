@@ -62,4 +62,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                         HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
         return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }
+
+    @ExceptionHandler(FileNameNotUniqueException.class)
+    public ResponseEntity<ExceptionResponseMessage> handleFileNameNotUniqueException(FileNameNotUniqueException ex) {
+        List<String> errors = Arrays.asList(new String[] {ex.getMessage()});
+        ExceptionResponseMessage responseMessage =
+                new ExceptionResponseMessage("fileName is not unique. File with the same name is already in upload folder. Change file name",
+                        HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
+        return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
+    }
 }
