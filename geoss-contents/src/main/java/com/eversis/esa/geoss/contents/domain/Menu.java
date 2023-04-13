@@ -43,17 +43,14 @@ public class Menu extends AuditableEntity {
     private String title;
 
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 255, message = "{validation.title}")
     @Column(nullable = false)
     private String imageTitle;
 
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 2048, message = "{validation.url}")
     @Column(nullable = false)
     private String imageSource;
 
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 2048, message = "{validation.url}")
     @Column(nullable = false)
     private String url;
 
