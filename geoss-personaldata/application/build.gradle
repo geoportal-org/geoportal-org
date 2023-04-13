@@ -54,6 +54,7 @@ dependencies {
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
     implementation project(':common')
     implementation project(':profile')
+    implementation project(':searches')
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
