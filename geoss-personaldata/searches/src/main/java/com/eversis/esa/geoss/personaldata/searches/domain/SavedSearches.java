@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.personaldata.searches.domain;
 
+import com.eversis.esa.geoss.personaldata.common.constraints.URI;
 import com.eversis.esa.geoss.personaldata.common.domain.AuditableEmbeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ public class SavedSearches {
     @Column(nullable = false)
     private String phrase;
 
+    @URI(absolute = false)
     @NotNull
     @NotEmpty
     @NotBlank

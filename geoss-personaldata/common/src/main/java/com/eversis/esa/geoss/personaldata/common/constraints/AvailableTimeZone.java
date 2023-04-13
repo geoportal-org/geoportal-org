@@ -1,12 +1,9 @@
 package com.eversis.esa.geoss.personaldata.common.constraints;
 
+import com.eversis.esa.geoss.personaldata.common.constraintvalidators.AvailableStringTimeZoneValidator;
+
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import jakarta.validation.ReportAsSingleViolation;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,25 +11,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The interface Password.
+ * The interface Available time zone.
  */
-@NotEmpty
-@NotBlank
-@Size(min = 8, max = 500)
-@Pattern(regexp = "^(?=.*\\p{Digit})(?=.*\\p{Lower})(?=.*\\p{Upper})(?=.*\\p{Punct})(?=\\S+$).{8,500}$")
-@ReportAsSingleViolation
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.TYPE_USE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = AvailableStringTimeZoneValidator.class)
 @Documented
-public @interface Password {
+public @interface AvailableTimeZone {
 
     /**
      * Message string.
      *
      * @return the string
      */
-    String message() default "{com.eversis.validation.constraints.Password.message}";
+    String message() default "{com.eversis.validation.constraints.AvailableTimeZone.message}";
 
     /**
      * Groups class [ ].
@@ -47,4 +39,11 @@ public @interface Password {
      * @return the class [ ]
      */
     Class<? extends Payload>[] payload() default {};
+
+    /**
+     * Required boolean.
+     *
+     * @return the boolean
+     */
+    boolean required() default true;
 }
