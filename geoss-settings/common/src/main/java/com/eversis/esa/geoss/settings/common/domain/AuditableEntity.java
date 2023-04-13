@@ -1,31 +1,25 @@
 package com.eversis.esa.geoss.settings.common.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Auditable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.Transient;
 import java.time.Instant;
-import java.util.Optional;
 
 /**
  * The type Auditable entity.
  */
-@Setter
-@ToString
+@Data
 @MappedSuperclass
-public abstract class AuditableEntity implements Auditable<String, Long, Instant> {
+public abstract class AuditableEntity {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "created_by")
     @NotAudited
@@ -52,31 +46,4 @@ public abstract class AuditableEntity implements Auditable<String, Long, Instant
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_on", nullable = false)
     protected Instant lastModifiedDate;
-
-    @JsonIgnore
-    @Transient
-    @Override
-    public boolean isNew() {
-        return null == getId();
-    }
-
-    @Override
-    public Optional<String> getCreatedBy() {
-        return Optional.ofNullable(createdBy);
-    }
-
-    @Override
-    public Optional<Instant> getCreatedDate() {
-        return null == createdDate ? Optional.empty() : Optional.of(createdDate);
-    }
-
-    @Override
-    public Optional<String> getLastModifiedBy() {
-        return Optional.ofNullable(lastModifiedBy);
-    }
-
-    @Override
-    public Optional<Instant> getLastModifiedDate() {
-        return null == createdDate ? Optional.empty() : Optional.of(lastModifiedDate);
-    }
 }

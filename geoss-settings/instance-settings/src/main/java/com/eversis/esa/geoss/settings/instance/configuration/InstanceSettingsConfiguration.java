@@ -53,7 +53,7 @@ public class InstanceSettingsConfiguration {
      */
     @Bean
     OpenApiCustomizer instanceSettingsOpenApiCustomizer(
-            @Value("${com.eversis.esa.geoss.settings.available-locales}") List<String> locales) {
+            @Value("${com.eversis.esa.geoss.settings.supported-languages}") List<String> locales) {
         return openApi -> {
             List<SecurityRequirement> securityRequirements = Optional.ofNullable(openApi.getComponents())
                     .map(Components::getSecuritySchemes)

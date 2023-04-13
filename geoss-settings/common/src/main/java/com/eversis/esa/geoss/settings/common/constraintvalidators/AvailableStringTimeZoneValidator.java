@@ -1,33 +1,35 @@
 package com.eversis.esa.geoss.settings.common.constraintvalidators;
 
 import com.eversis.esa.geoss.settings.common.constraints.AvailableLocale;
+import com.eversis.esa.geoss.settings.common.constraints.AvailableTimeZone;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 /**
  * The type Available locale validator.
  */
-public class AvailableLocaleValidator implements ConstraintValidator<AvailableLocale, Locale> {
+public class AvailableStringTimeZoneValidator implements ConstraintValidator<AvailableTimeZone, String> {
 
-    private static final Set<Locale> LOCALES = Arrays.stream(Locale.getAvailableLocales()).collect(Collectors.toSet());
+    private static final Set<String> TIME_ZONES = Arrays.stream(TimeZone.getAvailableIDs()).collect(Collectors.toSet());
 
     private boolean required;
 
     @Override
-    public void initialize(AvailableLocale availableLocale) {
+    public void initialize(AvailableTimeZone availableLocale) {
         this.required = availableLocale.required();
     }
 
     @Override
-    public boolean isValid(Locale value, ConstraintValidatorContext context) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         if (!required && value == null) {
             return true;
         }
-        return LOCALES.contains(value);
+        return TIME_ZONES.contains(value);
     }
 }

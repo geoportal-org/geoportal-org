@@ -116,6 +116,8 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.GET,basePath + "/web-settings/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE,basePath + "/web-settings/**").hasAnyRole("WEB_REMOVER", "ADMIN")
                 .requestMatchers(basePath + "/web-settings/**").hasAnyRole("WEB_WRITER", "ADMIN")
+                .requestMatchers(HttpMethod.GET,basePath + "/regional-settings/**").permitAll()
+                .requestMatchers(basePath + "/regional-settings/**").hasAnyRole("SETTINGS_WRITER", "ADMIN")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();

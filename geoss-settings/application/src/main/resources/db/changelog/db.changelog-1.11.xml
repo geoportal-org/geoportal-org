@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro
+        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+>
+    <changeSet id="34" author="Eversis">
+        <comment>Regional Settings</comment>
+        <createTable tableName="regional_settings">
+            <column name="id" type="boolean">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="char(2)">
+            </column>
+            <column name="locale" type="varchar(24)">
+            </column>
+            <column name="time_zone" type="varchar(32)">
+            </column>
+        </createTable>
+        <createTable tableName="regional_settings_languages">
+            <column name="regional_settings_id" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="char(2)">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_regional_settings_languages_regional_settings_id"
+                baseTableName="regional_settings_languages" baseColumnNames="regional_settings_id"
+                referencedTableName="regional_settings" referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="35" author="Eversis">
+        <comment>Regional Settings audit</comment>
+        <addColumn tableName="regional_settings">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_on" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="36" author="Eversis">
+        <comment>Regional Settings audit</comment>
+        <createTable tableName="regional_settings_aud">
+            <column name="id" type="boolean">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="rev" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="revtype" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="varchar(2)">
+            </column>
+            <column name="locale" type="varchar(24)">
+            </column>
+            <column name="time_zone" type="varchar(32)">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_regional_settings_aud_rev_revinfo_rev"
+                baseTableName="regional_settings_aud" baseColumnNames="rev"
+                referencedTableName="revinfo" referencedColumnNames="rev"/>
+        <createTable tableName="regional_settings_languages_aud">
+            <column name="regional_settings_id" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="varchar(2)">
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

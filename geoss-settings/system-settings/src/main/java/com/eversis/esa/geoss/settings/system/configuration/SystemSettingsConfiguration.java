@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToApiSettingsSetConverter;
+import com.eversis.esa.geoss.settings.system.support.StringToRegionalSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsKeyConverter;
 import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConverter;
 
@@ -18,7 +19,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.rest.webmvc.BaseUri;
+import org.springframework.data.rest.webmvc.ProfileController;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +40,9 @@ import java.util.stream.Stream;
 @ComponentScan(
         basePackages = {
                 "com.eversis.esa.geoss.settings.system.controller",
-                "com.eversis.esa.geoss.settings.system.event"
+                "com.eversis.esa.geoss.settings.system.event",
+                "com.eversis.esa.geoss.settings.system.service",
+                "com.eversis.esa.geoss.settings.system.support"
         }
 )
 @Configuration(proxyBeanMethods = false)
@@ -66,7 +74,8 @@ public class SystemSettingsConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("api-settings") || tags.contains("web-settings")) {
+                        if (tags.contains("api-settings") || tags.contains("web-settings") || tags.contains(
+                                "regional-settings")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }
@@ -143,7 +152,27 @@ public class SystemSettingsConfiguration {
                 conversionService.addConverter(new StringToApiSettingsSetConverter());
                 conversionService.addConverter(new StringToWebSettingsKeyConverter());
                 conversionService.addConverter(new StringToWebSettingsSetConverter());
+                conversionService.addConverter(new StringToRegionalSettingsKeyConverter());
             }
+        };
+    }
+
+    /**
+     * System settings profile controller contributor representation model processor.
+     *
+     * @param baseUri the base uri
+     * @return the representation model processor
+     */
+    @Bean
+    RepresentationModelProcessor<RepresentationModel<?>> systemSettingsProfileControllerContributor(BaseUri baseUri) {
+        return model -> {
+            if (model.getClass().isAssignableFrom(RepresentationModel.class)) {
+                String regionalSettings = baseUri.getUriComponentsBuilder()
+                        .path(ProfileController.PROFILE_ROOT_MAPPING)
+                        .path("/regional-settings").toUriString();
+                model.add(Link.of(regionalSettings, "regionalSettings"));
+            }
+            return model;
         };
     }
 }

@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 /**
  * The type Available locale validator.
  */
-public class AvailableLocaleValidator implements ConstraintValidator<AvailableLocale, Locale> {
+public class AvailableStringLocaleValidator implements ConstraintValidator<AvailableLocale, String> {
 
-    private static final Set<Locale> LOCALES = Arrays.stream(Locale.getAvailableLocales()).collect(Collectors.toSet());
+    private static final Set<String> LOCALES = Arrays.stream(Locale.getAvailableLocales()).map(Locale::toString)
+            .collect(Collectors.toSet());
 
     private boolean required;
 
@@ -24,7 +25,7 @@ public class AvailableLocaleValidator implements ConstraintValidator<AvailableLo
     }
 
     @Override
-    public boolean isValid(Locale value, ConstraintValidatorContext context) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         if (!required && value == null) {
             return true;
         }

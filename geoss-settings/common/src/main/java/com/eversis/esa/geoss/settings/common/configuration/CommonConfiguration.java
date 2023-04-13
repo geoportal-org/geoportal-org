@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(
         basePackages = {
                 "com.eversis.esa.geoss.settings.common.event",
+                "com.eversis.esa.geoss.settings.common.constraintvalidators",
                 "com.eversis.esa.geoss.settings.common.hateoas"
         }
 )
