@@ -660,6 +660,7 @@ const LogService: any = {
     /*----- elastic client init ----------*/
     /*------------------------------------*/
     createElasticSearchClient() {
+        return
         // ElasticSearch is no longer available for Widget users
         if (UtilsService.isWidget()) {
             return
