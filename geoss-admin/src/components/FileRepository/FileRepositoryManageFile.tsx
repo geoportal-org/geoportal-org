@@ -24,6 +24,7 @@ export const FileRepositoryManageFile = ({
 
     useEffect(() => {
         fileId ? getFileInfo(fileId) : setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getFileInfo = async (id: number) => {
@@ -45,8 +46,8 @@ export const FileRepositoryManageFile = ({
         const fileData: Pick<IDocument, "title"> = { title: values.title };
         try {
             const updatedFile = await FileRepositoryService.updateFileTitle(id, fileData);
-            setDocumentsList((documentsList) =>
-                documentsList.map((file) => (+getIdFromUrl(file._links.self.href) === id ? updatedFile : file))
+            setDocumentsList((prevDocumentsList) =>
+                prevDocumentsList.map((file) => (+getIdFromUrl(file._links.self.href) === id ? updatedFile : file))
             );
             setInitValues(setExistingFormValues(fileForm, values));
             showToast({
@@ -65,7 +66,7 @@ export const FileRepositoryManageFile = ({
             const addedFile = await FileRepositoryService.uploadFile(fileData);
             const newFileId = +getIdFromUrl(addedFile._links.document.href);
             const newFile = await FileRepositoryService.getFile(newFileId);
-            setDocumentsList([...documentsList, newFile]);
+            setDocumentsList([...documentsList.current, newFile]);
             actions.resetForm();
             showToast({
                 title: "File uploaded",

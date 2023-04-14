@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { Loader, MainContent, Modal, SideBar, TextContent } from "@/components";
 import { FileRepositoryFileInfo } from "./FileRepositoryFileInfo";
@@ -27,6 +27,10 @@ export const FileRepository = () => {
     ]);
     const [foldersList, setFoldersList] = useState<IFolder[]>([]);
     const [documentsList, setDocumentsList] = useState<IDocument[]>([]);
+    const foldersListRef = useRef<IFolder[]>([]);
+    foldersListRef.current = foldersList;
+    const documentsListRef = useRef<IDocument[]>([]);
+    documentsListRef.current = documentsList;
     const [modalContent, setModalContent] = useState<{
         header: string;
         body: ReactNode;
@@ -75,7 +79,7 @@ export const FileRepository = () => {
             <FileRepositoryManageFolder
                 currFolder={currentFolder}
                 path={generatePath(breadcrumb)}
-                foldersList={foldersList}
+                foldersList={foldersListRef}
                 setFoldersList={setFoldersList}
             />
         ));
@@ -88,7 +92,7 @@ export const FileRepository = () => {
             <FileRepositoryManageFile
                 currentFolder={currentFolder}
                 path={generatePath(breadcrumb)}
-                documentsList={documentsList}
+                documentsList={documentsListRef}
                 setDocumentsList={setDocumentsList}
             />
         ));
@@ -217,14 +221,14 @@ export const FileRepository = () => {
                     folderId={+getIdFromUrl(item._links.self.href)}
                     currFolder={currentFolder}
                     path={generatePath(breadcrumb)}
-                    foldersList={foldersList}
+                    foldersList={foldersListRef}
                     setFoldersList={setFoldersList}
                 />
             ) : (
                 <FileRepositoryManageFile
                     currentFolder={currentFolder}
                     path={generatePath(breadcrumb)}
-                    documentsList={documentsList}
+                    documentsList={documentsListRef}
                     setDocumentsList={setDocumentsList}
                     fileId={+getIdFromUrl(item._links.self.href)}
                 />

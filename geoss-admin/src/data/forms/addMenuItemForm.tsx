@@ -34,7 +34,7 @@ export const addMenuItemForm: FormField[] = [
         name: "url",
         placeholderId: "form.placeholders.type",
         type: "text",
-        validationSchema: "relative-url",
+        validationSchema: "relative-full-url",
         automaticFill: {
             superiorField: "title",
             fillType: "relative-url",

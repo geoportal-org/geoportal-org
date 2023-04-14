@@ -5,5 +5,5 @@ export type TableActionsProps = {
     itemId: string;
     item: IPage | IContent;
     actionsSource: TableActionsSource;
-    onDeleteAction: (id: string) => void;
+    onDeleteAction: () => void;
 };

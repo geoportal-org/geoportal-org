@@ -4,7 +4,7 @@ import { Tree, NodeModel, MultiBackend, getBackendOptions, DndProvider, TreeMeth
 import { DropOptions } from "@minoru/react-dnd-treeview/dist/types";
 import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import { SideBar, MainContent, Loader, PrimaryButton, TextContent, Modal, LoadingErrorInfo } from "@/components";
+import { SideBar, MainContent, Loader, PrimaryButton, TextContent, Modal, TextInfo } from "@/components";
 import { MenuContentItem } from "./MenuContentItem";
 import { MenuContentPlaceholder } from "./MenuContentPlaceholder";
 import { MenuContentItemPreview } from "./MenuContentItemPreview";
@@ -410,7 +410,7 @@ export const MenuContent = () => {
                         </DndProvider>
                     </>
                 ) : (
-                    <LoadingErrorInfo />
+                    <TextInfo id="information.error.loading" />
                 )}
             </MainContent>
 

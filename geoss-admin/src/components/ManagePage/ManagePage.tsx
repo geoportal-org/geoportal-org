@@ -29,6 +29,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
         if (router.isReady) {
             getPageData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady]);
 
     const getPageData = async () => {

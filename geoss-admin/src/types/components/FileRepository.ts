@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { IDocument, IDocumentList, IFolder, IFolderList } from "../models";
 
 export type FileRepositoryTreeItem = {
@@ -38,7 +38,7 @@ export type FileRepositoryItemControlProps = {
 export type FileRepositoryManageFolderProps = {
     currFolder: number;
     path: string;
-    foldersList: IFolder[];
+    foldersList: MutableRefObject<IFolder[]>;
     setFoldersList: Dispatch<SetStateAction<IFolder[]>>;
     folderId?: number;
 };
@@ -47,7 +47,7 @@ export type FileRepositoryManageFileProps = {
     fileId?: number;
     currentFolder: number;
     path: string;
-    documentsList: IDocument[];
+    documentsList: MutableRefObject<IDocument[]>;
     setDocumentsList: Dispatch<SetStateAction<IDocument[]>>;
 };
 

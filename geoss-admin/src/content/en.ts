@@ -49,6 +49,10 @@ export const en = {
             "too-many-files": "Too many files - single file is accepted",
         },
         success: {},
+        info: {
+            "no-contents": "No website content added",
+            "no-pages": "No page added",
+        },
     },
     pages: {
         error: {

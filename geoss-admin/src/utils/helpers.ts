@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { IContent, IDocument, IFolder, IMenuItem } from "@/types/models";
 import { navSectionsUrls } from "@/data";
+import { SortingState } from "@tanstack/react-table";
 
 export const getActiveNavSection = (activeRoute: string): number => {
     const activeSectionIndex = navSectionsUrls.findIndex((section) => section.includes(activeRoute));
@@ -151,6 +152,14 @@ export const sortMenuList = (menuList: IMenuItem[]): NodeModel<IMenuItem>[] => {
         droppable: menuItem.parentMenuId === 0,
         data: menuItem,
     }));
+};
+
+export const setTableSorting = (sortingInfo: SortingState): { sort: string } => {
+    const { id: sortingProperty, desc } = sortingInfo[0];
+    const sortingDirection = desc ? "desc" : "asc";
+    return {
+        sort: `${sortingProperty},${sortingDirection}`,
+    };
 };
 
 // create folders & documents structure ready to create directory tree

@@ -1,5 +1,5 @@
 import { Flex, Table, Tbody, Th, Thead, Tr, Td } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon, UpDownIcon } from "@chakra-ui/icons";
 import { flexRender } from "@tanstack/react-table";
 import { firstTableCellBorderStyles, lastTableCellBorderStyles } from "@/theme/commons";
 import { TableProps } from "@/types";
@@ -15,6 +15,8 @@ export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
                                 {header.isPlaceholder ? null : (
                                     <Flex
                                         align="center"
+                                        justify="space-between"
+                                        gap={1}
                                         cursor={header.column.getCanSort() ? "pointer" : "auto"}
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
@@ -23,6 +25,9 @@ export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
                                             asc: <ChevronUpIcon />,
                                             desc: <ChevronDownIcon />,
                                         }[header.column.getIsSorted() as string] ?? null}
+                                        {header.column.getCanSort() && !header.column.getIsSorted() && (
+                                            <UpDownIcon boxSize={2.5} />
+                                        )}
                                     </Flex>
                                 )}
                             </Th>

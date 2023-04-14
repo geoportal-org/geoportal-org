@@ -51,7 +51,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     const deletePage = async () => {
         try {
             await PageService.deletePage(+itemId);
-            onDeleteAction(itemId);
+            onDeleteAction();
             onCloseModal();
             showToast({
                 title: "Deleted",
@@ -102,7 +102,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     const deleteContent = async () => {
         try {
             await ContentService.deleteContent(+itemId);
-            onDeleteAction(itemId);
+            onDeleteAction();
             onCloseModal();
             showToast({
                 title: "Deleted",

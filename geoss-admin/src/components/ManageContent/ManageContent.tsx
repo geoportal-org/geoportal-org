@@ -24,6 +24,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
         if (router.isReady) {
             isEditMode ? getEditedContent() : setIsLoading(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady]);
 
     const getEditedContent = async () => {

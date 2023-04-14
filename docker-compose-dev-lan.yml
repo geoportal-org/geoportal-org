@@ -45,6 +45,7 @@ services:
   geoss-keycloak:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:latest
     #command: ["start-dev", "--import-realm"]
+    command: ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss", "--https-certificate-file=/etc/x509/https/dev/tls.crt", "--https-certificate-key-file=/etc/x509/https/dev/tls.key"]
     hostname: geoss-keycloak
     deploy:
       replicas: 1

@@ -14,6 +14,9 @@ export const menu: ComponentStyleConfig = {
                 _focusVisible: {
                     boxShadow: "outline",
                 },
+                _disabled: {
+                    cursor: "not-allowed",
+                },
             },
             list: {
                 bg: "brand.background",
