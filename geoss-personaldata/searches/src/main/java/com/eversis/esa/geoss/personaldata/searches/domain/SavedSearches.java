@@ -43,6 +43,7 @@ public class SavedSearches {
     @Column
     private Long version;
 
+    @JsonProperty(access = Access.READ_ONLY)
     @NotNull
     @NotEmpty
     @NotBlank

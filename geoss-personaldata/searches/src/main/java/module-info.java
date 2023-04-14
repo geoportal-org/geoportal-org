@@ -3,6 +3,7 @@ module geoss.personaldata.searches {
     exports com.eversis.esa.geoss.personaldata.searches.repository;
 
     exports com.eversis.esa.geoss.personaldata.searches.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.personaldata.searches.event to spring.beans, spring.context;
 
     requires geoss.personaldata.common;
     requires com.fasterxml.jackson.annotation;
@@ -23,6 +24,7 @@ module geoss.personaldata.searches {
     requires spring.data.jpa;
     requires spring.data.rest.core;
     requires spring.hateoas;
+    requires spring.security.core;
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;

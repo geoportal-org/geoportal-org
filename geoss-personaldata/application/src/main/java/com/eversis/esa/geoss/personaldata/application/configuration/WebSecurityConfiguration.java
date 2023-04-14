@@ -26,7 +26,6 @@ import java.util.Optional;
  * The type Web security configuration.
  */
 @Log4j2
-
 @Configuration(proxyBeanMethods = false)
 public class WebSecurityConfiguration {
 
@@ -64,7 +63,7 @@ public class WebSecurityConfiguration {
         http.securityMatcher("/v3/api-docs/**", "/swagger-ui/**");
         http.authorizeHttpRequests()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
-                        .authenticated();
+                .authenticated();
         http.formLogin();
         return http.build();
     }
@@ -103,6 +102,20 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, basePath + "/comments/**").hasAnyRole("COMMENT_READER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, basePath + "/comments/**").hasAnyRole("COMMENT_REMOVER", "ADMIN")
                 .requestMatchers(basePath + "/comments/**").hasAnyRole("COMMENT_WRITER", "ADMIN")
+
+                .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/search/current")
+                .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/search/**")
+                .hasAnyRole("SAVED_SEARCHES_READER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, basePath + "/saved-searches")
+                .hasAnyRole("SAVED_SEARCHES_READER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/**")
+                .hasAnyRole("SAVED_SEARCHES_MANAGER", "SAVED_SEARCHES_READER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, basePath + "/saved-searches/**")
+                .hasAnyRole("SAVED_SEARCHES_MANAGER", "SAVED_SEARCHES_REMOVER", "ADMIN")
+                .requestMatchers(basePath + "/saved-searches/**")
+                .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN")
+
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();
@@ -145,12 +158,12 @@ public class WebSecurityConfiguration {
     ) throws Exception {
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.httpBasic();
-        http.formLogin();
         if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2Login();
             http.oauth2Client();
             http.logout().logoutSuccessHandler(oidcLogoutSuccessHandler.getIfAvailable());
         } else {
+            http.formLogin();
             http.rememberMe().tokenRepository(persistentTokenRepository);
             http.logout();
         }

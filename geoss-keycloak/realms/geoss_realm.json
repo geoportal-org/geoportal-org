@@ -511,6 +511,33 @@
                     "clientRole": true,
                     "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
                     "attributes": {}
+                },
+                {
+                    "id": "48bf4314-3f53-419b-a04f-db42ddf3ac49",
+                    "name": "saved_searches_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "aafb72dc-e3b6-46f6-bb15-c3a8a013b1ff",
+                    "name": "saved_searches_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "c42036a1-a101-460d-af69-ab20aef0acb9",
+                    "name": "saved_searches_manager",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
                 }
             ],
             "account-console": [],
@@ -826,7 +853,9 @@
                 ],
                 "geoss-personaldata": [
                     "comment_writer",
+                    "saved_searches_reader",
                     "comment_reader",
+                    "saved_searches_remover",
                     "comment_remover"
                 ]
             },
@@ -925,6 +954,9 @@
                     "web_reader",
                     "api_reader",
                     "layer_reader"
+                ],
+                "geoss-personaldata": [
+                    "saved_searches_manager"
                 ]
             },
             "subGroups": []
@@ -953,8 +985,8 @@
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
         "totpAppGoogleName",
-        "totpAppMicrosoftAuthenticatorName",
-        "totpAppFreeOTPName"
+        "totpAppFreeOTPName",
+        "totpAppMicrosoftAuthenticatorName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
@@ -3204,7 +3236,7 @@
         "frontendUrl": "",
         "acr.loa.map": "{}"
     },
-    "keycloakVersion": "21.0.1",
+    "keycloakVersion": "21.0.2",
     "userManagedAccessAllowed": false,
     "clientProfiles": {
         "profiles": []

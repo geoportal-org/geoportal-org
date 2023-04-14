@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
  * The type Security configuration.
  */
 @Log4j2
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfiguration {
 
