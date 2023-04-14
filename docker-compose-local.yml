@@ -117,6 +117,7 @@ services:
             - geoss-db
 
     geoss-maildev:
+        container_name: geoss-maildev
         hostname: geoss-maildev
         image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
         environment:

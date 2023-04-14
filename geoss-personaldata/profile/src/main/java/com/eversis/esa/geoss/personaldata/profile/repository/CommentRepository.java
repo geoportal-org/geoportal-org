@@ -3,12 +3,12 @@ package com.eversis.esa.geoss.personaldata.profile.repository;
 import com.eversis.esa.geoss.personaldata.profile.domain.Comment;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-
-import java.util.List;
 
 /**
  * The interface Comment repository.
@@ -18,20 +18,22 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     /**
-     * Current user comments list.
+     * Find by current user page.
      *
-     * @return the list
+     * @param pageable the pageable
+     * @return the page
      */
     @RestResource(path = "current")
     @Query("select c from Comment c where c.user = ?#{authentication.name}")
-    List<Comment> currentUserComments();
+    Page<Comment> findByCurrentUser(Pageable pageable);
 
     /**
-     * Find comments by user list.
+     * Find by user page.
      *
      * @param user the user
-     * @return the list
+     * @param pageable the pageable
+     * @return the page
      */
     @RestResource(path = "byUser")
-    List<Comment> findCommentsByUser(String user);
+    Page<Comment> findByUser(String user, Pageable pageable);
 }

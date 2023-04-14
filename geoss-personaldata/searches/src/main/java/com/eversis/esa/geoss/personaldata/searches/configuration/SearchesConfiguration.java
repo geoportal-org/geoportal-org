@@ -56,7 +56,7 @@ public class SearchesConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("saved-searches")) {
+                        if (tags.contains("saved-searches") || tags.contains("highlighted-searches")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }
