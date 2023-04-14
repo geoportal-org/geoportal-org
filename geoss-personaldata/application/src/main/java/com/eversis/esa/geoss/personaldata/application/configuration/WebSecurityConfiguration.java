@@ -103,6 +103,7 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, basePath + "/comments/**").hasAnyRole("COMMENT_REMOVER", "ADMIN")
                 .requestMatchers(basePath + "/comments/**").hasAnyRole("COMMENT_WRITER", "ADMIN")
 
+                .requestMatchers(HttpMethod.GET, basePath + "/highlighted-searches/search/enabled").permitAll()
                 .requestMatchers(HttpMethod.GET, basePath + "/highlighted-searches/**")
                 .hasAnyRole("HIGHLIGHTED_SEARCHES_READER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, basePath + "/highlighted-searches/**")

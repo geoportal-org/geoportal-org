@@ -13,6 +13,7 @@ module geoss.personaldata.searches {
     requires jakarta.validation;
     requires lombok;
     requires org.apache.logging.log4j;
+    requires org.hibernate.orm.core;
     requires org.hibernate.orm.envers;
     requires org.hibernate.validator;
     requires org.springdoc.openapi.common;

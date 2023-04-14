@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -44,6 +45,10 @@ public class HighlightedSearches {
     @Column
     private Long version;
 
+    @NaturalId
+    @Column(nullable = false, unique = true)
+    private String name;
+
     @NotNull
     @NotEmpty
     @NotBlank
@@ -58,7 +63,7 @@ public class HighlightedSearches {
     private String url;
 
     @Schema(defaultValue = "false")
-    @Column(name = "enabled", nullable = false)
+    @Column(nullable = false)
     private boolean enabled;
 
     @Schema(defaultValue = "false")
