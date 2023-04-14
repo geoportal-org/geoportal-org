@@ -69,10 +69,10 @@ services:
       context: ./geoss-db
       dockerfile: Dockerfile
 
-  geoss-elk:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_elk:${DOCKER_IMAGE_TAG}
+  geoss-els:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:${DOCKER_IMAGE_TAG}
     build:
-      context: ./geoss-elk
+      context: ./geoss-els
       dockerfile: Dockerfile
 
   geoss-keycloak:

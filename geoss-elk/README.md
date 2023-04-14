@@ -1,3 +1,3 @@
-# [GEOSS Elasticsearch](geoss-elk/README.md)
+# [GEOSS Elasticsearch](geoss-els/README.md)
 
 Elasticsearch module.
