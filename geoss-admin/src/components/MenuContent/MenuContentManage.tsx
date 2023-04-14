@@ -20,6 +20,7 @@ export const MenuContentManage = ({
 
     useEffect(() => {
         menuItemId ? getMenuItemInfo(menuItemId) : setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getMenuItemInfo = async (itemId: number) => {

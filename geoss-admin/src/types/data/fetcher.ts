@@ -1,5 +1,5 @@
 export type QueryParams = {
-    [index: string]: string;
+    [index: string]: string | number;
 };
 
 export type FetcherData = {

@@ -52,3 +52,5 @@ export type {
     MovedItemData,
 } from "./components/MenuContent";
 export type { UploaderProps } from "./components/Uploader";
+export type { TablePaginationProps } from "./components/TablePagination";
+export type { TextInfoProps } from "./components/TextInfo";

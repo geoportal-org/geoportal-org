@@ -54,6 +54,7 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
             };
             fillField();
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         !automaticFill ? [] : [formValues[automaticFill.superiorField], touched[automaticFill.superiorField]]
     );
 

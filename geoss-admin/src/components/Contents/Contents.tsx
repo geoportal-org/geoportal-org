@@ -5,71 +5,81 @@ import {
     createColumnHelper,
     useReactTable,
     getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
+    PaginationState,
+    SortingState,
+    RowSelectionState,
 } from "@tanstack/react-table";
 import { Checkbox } from "@chakra-ui/react";
-import { Table, MainContent, TableActions, Loader, Pagination } from "@/components";
+import { Table, MainContent, TableActions, Loader, TablePagination, TextInfo } from "@/components";
 import { ContentService } from "@/services/api";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { convertIsoDate, getIdFromUrl } from "@/utils/helpers";
+import { convertIsoDate, getIdFromUrl, setTableSorting } from "@/utils/helpers";
 import { IContent } from "@/types/models";
 import { ButtonVariant, TableActionsSource } from "@/types";
 import { initPagination, pagesRoutes } from "@/data";
 
-const basicPagination = initPagination;
-
 export const Contents = () => {
     const [contentsList, setContentsList] = useState<IContent[]>([]);
-    const [selectedContents, setSelectedContents] = useState<Record<string, boolean>>({});
+    const [selectedContents, setSelectedContents] = useState<RowSelectionState>({});
     const [isLoading, setIsLoading] = useState(true);
-    const [totalPages, setTotalPages] = useState<number>(1);
+    const [isPageChange, setIsPageChange] = useState(false);
+    const [{ totalPages, totalElements }, setDataInfo] = useState<{ totalPages: number; totalElements: number }>({
+        totalPages: 0,
+        totalElements: 0,
+    });
+    const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+        pageIndex: initPagination.page,
+        pageSize: initPagination.size,
+    });
+    const [sorting, setSorting] = useState<SortingState>([]);
     const { translate } = useFormatMsg();
     const columnHelper = createColumnHelper<IContent>();
     const router = useRouter();
 
     useEffect(() => {
-        const getContentsList = async () => {
-            try {
-                const {
-                    _embedded: { content },
-                    page: { totalPages },
-                } = await ContentService.getContentList(basicPagination);
-                setContentsList(() => content);
-                setTotalPages(() => totalPages);
-            } catch (e) {
-                console.error(e);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        getContentsList();
-    }, []);
+        handlePaginationParamsChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex, pageSize, sorting]);
+
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    );
+
+    const handlePaginationParamsChange = async () => {
+        try {
+            setIsPageChange(true);
+            table.resetRowSelection();
+            const {
+                _embedded: { content },
+                page: { totalPages, totalElements },
+            } = await ContentService.getContentList({
+                page: table.getState().pagination.pageIndex,
+                size: table.getState().pagination.pageSize,
+                ...(sorting[0] && setTableSorting(sorting)),
+            });
+            setContentsList(() => content);
+            setDataInfo(() => ({ totalPages, totalElements }));
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsLoading(false);
+            setIsPageChange(false);
+        }
+    };
 
     const navigateToAddContent = () => router.push(pagesRoutes.addContent);
 
     const deleteAction = () => {
-        console.log(selectedContents);
+        const deleteIds = table.getFilteredSelectedRowModel().rows.map((row) => +getIdFromUrl(row.getValue("id")));
+        console.log(deleteIds);
         console.log(table.getFilteredSelectedRowModel());
     };
 
-    const deleteContent = (itemId: string) =>
-        setContentsList((contentsList) =>
-            contentsList.filter((content) => getIdFromUrl(content._links.self.href) !== itemId)
-        );
-
-    const handlePageChange = async (pageNumber: string, itemsPerPage: string) => {
-        try {
-            const {
-                _embedded: { content },
-                page: { totalPages },
-            } = await ContentService.getContentList({ page: pageNumber, size: itemsPerPage });
-            setTotalPages(() => totalPages);
-            setContentsList(() => content);
-        } catch (e) {
-            console.error(e);
-        }
-    };
+    const deleteContent = () => handlePaginationParamsChange();
 
     const rowData = useMemo(() => contentsList, [contentsList]);
 
@@ -96,6 +106,7 @@ export const Contents = () => {
                 header: "ID",
                 cell: (info) => getIdFromUrl(info.getValue()),
                 id: "id",
+                enableSorting: false,
             }),
             columnHelper.accessor("title", {
                 header: translate("pages.contents.content-title"),
@@ -128,21 +139,26 @@ export const Contents = () => {
                 ),
             }),
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [router.locale]
     );
 
     const table = useReactTable({
-        data: rowData,
         columns,
-        state: {
-            rowSelection: selectedContents,
-        },
+        data: rowData,
         enableRowSelection: true,
-        onRowSelectionChange: setSelectedContents,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        initialState: { pagination: { pageSize: +basicPagination.size } },
+        manualPagination: true,
+        manualSorting: true,
+        onPaginationChange: setPagination,
+        onRowSelectionChange: setSelectedContents,
+        onSortingChange: setSorting,
+        pageCount: totalPages,
+        state: {
+            pagination,
+            rowSelection: selectedContents,
+            sorting,
+        },
     });
 
     const headingActions = [
@@ -165,14 +181,14 @@ export const Contents = () => {
 
     return (
         <MainContent titleId="pages.contents.title" actions={headingActions}>
-            <Table tableData={table} />
-            <Pagination
-                totalPages={totalPages}
-                itemsPerPage={+basicPagination.size}
-                listLength={contentsList.length}
-                onPageChange={handlePageChange}
-                table={table}
-            />
+            {totalElements ? (
+                <>
+                    <Table tableData={table} />
+                    <TablePagination tableData={table} isPageChange={isPageChange} />
+                </>
+            ) : (
+                <TextInfo id="information.info.no-contents" />
+            )}
         </MainContent>
     );
 };

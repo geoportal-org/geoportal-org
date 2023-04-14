@@ -18,6 +18,7 @@ export const MenuContentItem = ({
 
     useEffect(() => {
         openAll();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [node]);
 
     const onClickAction = (actionName: ControlType) => {

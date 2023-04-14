@@ -27,6 +27,10 @@ export const ValidationService = {
             regExp: regExp["relative-url"],
             errorMsgId: "form.errors.invalid-relative-url",
         },
+        "relative-full-url": {
+            regExp: regExp["relative-full-url"],
+            errorMsgId: "form.errors.invalid-url",
+        },
     },
 
     checkForErrors: (field: FormField, fieldValue: string | string[]): string | undefined => {

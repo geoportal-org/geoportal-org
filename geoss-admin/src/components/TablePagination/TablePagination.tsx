@@ -1,73 +1,52 @@
-import { useEffect, useState } from "react";
-import { Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Button, Flex, Menu, MenuButton, MenuItem, MenuList, Spinner, Text } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { TextContent } from "@/components";
-import { PaginationProps } from "@/types";
 import { itemsPerPageOptions } from "@/data";
+import { TablePaginationProps } from "@/types";
 
-export const Pagination = <T extends object>({
-    totalPages,
-    itemsPerPage,
-    listLength,
-    onPageChange,
-    table,
-}: PaginationProps<T>) => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(itemsPerPage);
-    const pages = new Array(totalPages).fill(0).map((_, index) => index + 1);
+export const TablePagination = <T extends object>({ tableData, isPageChange }: TablePaginationProps<T>) => {
+    const { pageIndex, pageSize } = tableData.getState().pagination;
+    const {
+        previousPage,
+        getCanPreviousPage,
+        nextPage,
+        getCanNextPage,
+        getPageCount,
+        setPageIndex,
+        setPageSize,
+        getRowModel,
+    } = tableData;
+    const pages = new Array(getPageCount()).fill(0).map((_, index) => index + 1);
+    const rows = getRowModel().rows;
+    const rowsLength = getRowModel().rows.length;
 
     useEffect(() => {
-        checkCurrentPage();
+        checkLastPage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [totalPages]);
+    }, [rows]);
 
-    const checkCurrentPage = () => {
-        if (totalPages && currentPage > totalPages) {
-            goToLastPage();
-        }
-    };
-
-    const checkEmptyPage = () => {
-        if (listLength === 0 && currentPage > 1) {
-            handlePageChange("prev");
-        }
-    };
-
-    const goToLastPage = () => {
-        totalPages && setCurrentPage(totalPages);
-        onPageChange((totalPages - 1).toString(), pageSize.toString());
-    };
-
-    const handlePageChange = (direction: "prev" | "next") => {
-        onPageChange(direction === "prev" ? (currentPage - 2).toString() : currentPage.toString(), pageSize.toString());
-        setCurrentPage((currentPage) => (direction === "prev" ? currentPage - 1 : currentPage + 1));
-    };
-
-    const goToPage = (page: number) => {
-        onPageChange((page - 1).toString(), pageSize.toString());
-        setCurrentPage(page);
-    };
-
-    const handleItemsPerPageChange = (itemsSize: number) => {
-        onPageChange((currentPage - 1).toString(), itemsSize.toString());
-        setPageSize(itemsSize);
-        if (table) {
-            table.setPageSize(itemsSize);
+    const checkLastPage = () => {
+        if (rowsLength === 0 && pageIndex !== 0) {
+            previousPage();
         }
     };
 
     return (
         <Flex align="center" justify="flex-end" my={1}>
+            {isPageChange && (
+                <Spinner size="sm" emptyColor="brand.darkSoft" speed="0.9s" color="brand.dark" thickness="2px" mr={1} />
+            )}
             <Flex align="center" gap={1}>
                 <Button
                     size="xs"
                     variant="geossPagination"
-                    onClick={() => handlePageChange("prev")}
-                    isDisabled={currentPage === 1}
+                    onClick={() => previousPage()}
+                    isDisabled={!getCanPreviousPage() || isPageChange}
                 >
                     <ChevronLeftIcon color="currentColor" boxSize={4} />
                 </Button>
-                {totalPages !== 1 ? (
+                {getPageCount() !== 1 ? (
                     <Flex align="center" gap={1}>
                         <Text as="span">
                             <TextContent id="pagination.page" />{" "}
@@ -75,8 +54,8 @@ export const Pagination = <T extends object>({
                         <Menu variant="geossLangSwitcher">
                             {({ isOpen }) => (
                                 <>
-                                    <MenuButton>
-                                        {currentPage}
+                                    <MenuButton disabled={isPageChange}>
+                                        {pageIndex + 1}
                                         <ChevronDownIcon
                                             transform={isOpen ? "rotate(-180deg)" : "rotate(0)"}
                                             transitionDuration="normal"
@@ -84,14 +63,14 @@ export const Pagination = <T extends object>({
                                     </MenuButton>
                                     <MenuList>
                                         {pages.map((page) => {
-                                            const isActive = currentPage === page;
+                                            const isActive = pageIndex + 1 === page;
 
                                             return (
                                                 <MenuItem
                                                     key={page}
                                                     borderStartColor={isActive ? "brand.dark" : "transparent"}
                                                     bg={isActive ? "brand.darkSoft" : "brand.background"}
-                                                    onClick={() => (!isActive ? goToPage(page) : null)}
+                                                    onClick={() => (!isActive ? setPageIndex(page - 1) : null)}
                                                 >
                                                     {page}
                                                 </MenuItem>
@@ -105,14 +84,14 @@ export const Pagination = <T extends object>({
                     </Flex>
                 ) : (
                     <Text>
-                        <TextContent id="pagination.page" /> {currentPage} / {totalPages}
+                        <TextContent id="pagination.page" /> {pageIndex + 1} / {getPageCount()}
                     </Text>
                 )}
                 <Button
                     size="xs"
                     variant="geossPagination"
-                    onClick={() => handlePageChange("next")}
-                    isDisabled={currentPage === totalPages}
+                    onClick={() => nextPage()}
+                    isDisabled={!getCanNextPage() || isPageChange}
                 >
                     <ChevronRightIcon color="currentColor" boxSize={4} />
                 </Button>
@@ -121,7 +100,7 @@ export const Pagination = <T extends object>({
                 <Menu variant="geossLangSwitcher">
                     {({ isOpen }) => (
                         <>
-                            <MenuButton>
+                            <MenuButton disabled={isPageChange}>
                                 <TextContent id="pagination.show" /> {pageSize}
                                 <ChevronDownIcon
                                     transform={isOpen ? "rotate(-180deg)" : "rotate(0)"}
@@ -137,7 +116,7 @@ export const Pagination = <T extends object>({
                                             key={itemsSize}
                                             borderStartColor={isActive ? "brand.dark" : "transparent"}
                                             bg={isActive ? "brand.darkSoft" : "brand.background"}
-                                            onClick={() => (!isActive ? handleItemsPerPageChange(itemsSize) : null)}
+                                            onClick={() => (!isActive ? setPageSize(itemsSize) : null)}
                                         >
                                             {itemsSize}
                                         </MenuItem>

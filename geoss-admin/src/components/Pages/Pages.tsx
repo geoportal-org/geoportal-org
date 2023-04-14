@@ -5,75 +5,75 @@ import {
     createColumnHelper,
     useReactTable,
     getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
+    PaginationState,
+    SortingState,
+    RowSelectionState,
 } from "@tanstack/react-table";
 import { Checkbox } from "@chakra-ui/react";
-import { Loader, MainContent, Pagination, Table, TableActions } from "@/components";
+import { Loader, MainContent, Table, TableActions, TablePagination, TextInfo } from "@/components";
 import { PageService } from "@/services/api";
 import { initPagination, pagesRoutes } from "@/data";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { convertIsoDate, getIdFromUrl } from "@/utils/helpers";
+import { convertIsoDate, getIdFromUrl, setTableSorting } from "@/utils/helpers";
 import { ButtonVariant, MainContentAction, TableActionsSource } from "@/types";
 import { IPage } from "@/types/models";
 
-const basicPagination = initPagination;
-
 export const Pages = () => {
     const [pagesList, setPagesList] = useState<IPage[]>([]);
-    const [selectedContents, setSelectedContents] = useState<Record<string, boolean>>({});
+    const [selectedContents, setSelectedContents] = useState<RowSelectionState>({});
     const [isLoading, setIsLoading] = useState(true);
-    const [totalPages, setTotalPages] = useState<number>(1);
+    const [isPageChange, setIsPageChange] = useState(false);
+    const [{ totalPages, totalElements }, setDataInfo] = useState<{ totalPages: number; totalElements: number }>({
+        totalPages: 0,
+        totalElements: 0,
+    });
+    const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+        pageIndex: initPagination.page,
+        pageSize: initPagination.size,
+    });
+    const [sorting, setSorting] = useState<SortingState>([]);
     const { translate } = useFormatMsg();
     const columnHelper = createColumnHelper<IPage>();
     const router = useRouter();
 
     useEffect(() => {
-        const getPagesList = async () => {
-            try {
-                const {
-                    _embedded: { page },
-                    page: { totalPages },
-                } = await PageService.getPagesList(basicPagination);
-                setTotalPages(() => totalPages);
-                setPagesList(() => page);
-            } catch (e) {
-                console.error(e);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        getPagesList();
-    }, []);
+        handlePaginationParamsChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex, pageSize, sorting]);
+
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    );
+
+    const handlePaginationParamsChange = async () => {
+        try {
+            setIsPageChange(true);
+            table.resetRowSelection();
+            const {
+                _embedded: { page },
+                page: { totalPages, totalElements },
+            } = await PageService.getPagesList({
+                page: table.getState().pagination.pageIndex,
+                size: table.getState().pagination.pageSize,
+                ...(sorting[0] && setTableSorting(sorting)),
+            });
+            setPagesList(() => page);
+            setDataInfo(() => ({ totalPages, totalElements }));
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsLoading(false);
+            setIsPageChange(false);
+        }
+    };
 
     const navigateToAddPage = () => router.push(pagesRoutes.addPage);
 
-    const headingActions: MainContentAction[] = [
-        { titleId: "pages.page.add", onClick: navigateToAddPage },
-        {
-            titleId: "pages.page.delete-selected",
-            variant: ButtonVariant.GHOST,
-            color: "brand.cancel",
-            onClick: () => console.log(table.getFilteredSelectedRowModel()),
-            disabled: !Object.keys(selectedContents).length,
-        },
-    ];
-
-    const deletePage = (itemId: string) =>
-        setPagesList((pagesList) => pagesList.filter((page) => getIdFromUrl(page._links.self.href) !== itemId));
-
-    const handlePageChange = async (pageNumber: string, itemsPerPage: string) => {
-        try {
-            const {
-                _embedded: { page },
-                page: { totalPages },
-            } = await PageService.getPagesList({ page: pageNumber, size: itemsPerPage });
-            setTotalPages(() => totalPages);
-            setPagesList(() => page);
-        } catch (e) {
-            console.error(e);
-        }
-    };
+    const deletePage = () => handlePaginationParamsChange();
 
     const rowData = useMemo(() => pagesList, [pagesList]);
 
@@ -100,6 +100,7 @@ export const Pages = () => {
                 header: "ID",
                 cell: (info) => getIdFromUrl(info.getValue()),
                 id: "id",
+                enableSorting: false,
             }),
             columnHelper.accessor("title", {
                 header: translate("pages.page.page-title"),
@@ -132,22 +133,38 @@ export const Pages = () => {
                 ),
             }),
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [router.locale]
     );
 
     const table = useReactTable({
-        data: rowData,
         columns,
-        state: {
-            rowSelection: selectedContents,
-        },
+        data: rowData,
         enableRowSelection: true,
-        onRowSelectionChange: setSelectedContents,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        initialState: { pagination: { pageSize: +basicPagination.size } },
+        manualPagination: true,
+        manualSorting: true,
+        onPaginationChange: setPagination,
+        onRowSelectionChange: setSelectedContents,
+        onSortingChange: setSorting,
+        pageCount: totalPages,
+        state: {
+            pagination,
+            rowSelection: selectedContents,
+            sorting,
+        },
     });
+
+    const headingActions: MainContentAction[] = [
+        { titleId: "pages.page.add", onClick: navigateToAddPage },
+        {
+            titleId: "pages.page.delete-selected",
+            variant: ButtonVariant.GHOST,
+            color: "brand.cancel",
+            onClick: () => console.log(table.getFilteredSelectedRowModel()),
+            disabled: !Object.keys(selectedContents).length,
+        },
+    ];
 
     if (isLoading) {
         return <Loader />;
@@ -155,14 +172,14 @@ export const Pages = () => {
 
     return (
         <MainContent titleId="pages.page.title" actions={headingActions}>
-            <Table tableData={table} />
-            <Pagination
-                totalPages={totalPages}
-                itemsPerPage={+basicPagination.size}
-                listLength={pagesList.length}
-                onPageChange={handlePageChange}
-                table={table}
-            />
+            {totalElements ? (
+                <>
+                    <Table tableData={table} />
+                    <TablePagination tableData={table} isPageChange={isPageChange} />
+                </>
+            ) : (
+                <TextInfo id="information.info.no-pages" />
+            )}
         </MainContent>
     );
 };

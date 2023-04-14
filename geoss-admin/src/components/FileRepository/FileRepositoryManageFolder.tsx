@@ -23,6 +23,7 @@ export const FileRepositoryManageFolder = ({
 
     useEffect(() => {
         folderId ? getFolderInfo(folderId) : setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getFolderInfo = async (id: number) => {
@@ -44,8 +45,10 @@ export const FileRepositoryManageFolder = ({
         const folderData: Pick<IFolderData, "title"> = { title: values.title };
         try {
             const updatedFolder = await FileRepositoryService.updateFolderTitle(id, folderData);
-            setFoldersList((foldersList) =>
-                foldersList.map((folder) => (+getIdFromUrl(folder._links.self.href) === id ? updatedFolder : folder))
+            setFoldersList((prevFoldersList) =>
+                prevFoldersList.map((folder) =>
+                    +getIdFromUrl(folder._links.self.href) === id ? updatedFolder : folder
+                )
             );
             setInitValues(setExistingFormValues(createFolderForm, values));
             showToast({
@@ -63,7 +66,7 @@ export const FileRepositoryManageFolder = ({
             const addedFolder = await FileRepositoryService.createFolder(folderData);
             const newFolderId = +getIdFromUrl(addedFolder._links.folder.href);
             const newFolder = await FileRepositoryService.getFolder(newFolderId);
-            setFoldersList([...foldersList, newFolder]);
+            setFoldersList([...foldersList.current, newFolder]);
             actions.resetForm();
             showToast({
                 title: "Folder created",
