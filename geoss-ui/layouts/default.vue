@@ -1,10 +1,28 @@
 <template>
     <main>
-        <!-- <dummy-menu />
-        <Nuxt />
-        <dummy-layout-identifier layoutId="full" /> -->
-
         <Header />
         <Menu />
+        <div class="sub-page">
+            <div class="sub-page__content">
+                <Nuxt />
+            </div>
+        </div>
     </main>
 </template>
+
+<style lang="scss">
+@import "~/assets/scss/reset.scss";
+@import "~/assets/scss/general.scss";
+
+body {
+    @include regular-page-body;
+}
+
+.sub-page {
+    @include regular-page;
+
+    &__content {
+        @include regular-page-content;
+    }
+}
+</style>

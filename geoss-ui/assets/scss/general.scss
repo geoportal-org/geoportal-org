@@ -37,7 +37,7 @@
 
 @mixin regular-page-content {
     width: 80%;
-    max-width: 740px;
+    max-width: 1200px;
     height: calc(95% - 94px);
     margin: 94px auto 0;
     background-color: $white-transparent;
@@ -858,4 +858,72 @@ input {
             display: none;
         }
     }
+}
+
+.my-workspace-header {
+    width: 100%;
+    background-color: rgba(6, 97, 169, 0.9);
+    color: #fff;
+    padding: 0 25px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'notesesareg';
+    line-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+
+    .close-window {
+        width: 25px;
+        height: 25px;
+        position: relative;
+        cursor: pointer;
+
+        &:hover {
+            animation: rotateCloseIcon 300ms
+                cubic-bezier(0.645, 0.045, 0.355, 1) both;
+
+            & > div {
+                background-color: #e31e24;
+            }
+        }
+
+        & > div {
+            width: 25px;
+            height: 2px;
+            background-color: white;
+            transform-origin: center;
+            position: absolute;
+            top: 50%;
+            transition: background-color 300ms
+                cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .line-1 {
+            transform: rotate(45deg);
+        }
+
+        .line-2 {
+            transform: rotate(-45deg);
+        }
+    }
+
+    @keyframes rotateCloseIcon {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+.my-workspace-tab {
+    padding: 25px;
 }

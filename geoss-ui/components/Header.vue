@@ -13,9 +13,9 @@
             </a>
         </div>
         <div class="header__middle">
-            <a :title="siteName" :href="siteUrl" data-tutorial-tag="header-logo-main">
+            <NuxtLink :title="siteName" :to="siteUrl" data-tutorial-tag="header-logo-main">
                 <img :src="siteLogo" :alt="siteName" />
-            </a>
+            </NuxtLink>
         </div>
         <div class="header__right">
             <a title="CNR_IIA" href="https://en.iia.cnr.it/" target="_blank" data-tutorial-tag="header-logo-cnr">
@@ -64,7 +64,7 @@ import { MenuActions } from '@/store/menu/menu-actions';
 import { MenuGetters } from '@/store/menu/menu-getters';
 import { GeneralActions } from '@/store/general/general-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
-import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters';
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters';
 import SpinnerService from '@/services/spinner.service';
 import axios from 'axios';
 import CollapseTransition from '@/plugins/CollapseTransition';
@@ -114,7 +114,6 @@ export default class HeaderComponent extends Vue {
     }
 
     public toggleMenu() {
-        console.log(this.$store)
         this.$store.dispatch(MenuActions.toggleOpened);
     }
 

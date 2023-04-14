@@ -30,7 +30,7 @@ export enum DataSourcesMask {
     cr_services = DataSources.SERVICES,
 }
 
-export const DataPromiseId = {
+export const DataPromiseId: { [key: string]: string } = {
     [DataSources.DAB]: 'dab',
     [DataSources.DATA]: 'cr_data',
     [DataSources.AMERIGEOSS]: 'amerigeoss_ckan',
@@ -41,7 +41,7 @@ export const DataPromiseId = {
     [DataSources.SERVICES]: 'cr_services',
 }
 
-export const DataSourceGroup = {
+export const DataSourceGroup: { [key: string]: string } = {
     [DataSources.DAB]: 'data',
     [DataSources.DATA]: 'data',
     [DataSources.AMERIGEOSS]: 'data',
@@ -53,7 +53,7 @@ export const DataSourceGroup = {
 }
 
 // Corresponds to ds parameter
-export const DataOrigin = {
+export const DataOrigin: { [key: string]: string } = {
     [DataSources.DAB]: 'dab',
     [DataSources.DATA]: 'geoss_cr',
     [DataSources.AMERIGEOSS]: 'amerigeoss_ckan',
@@ -64,7 +64,7 @@ export const DataOrigin = {
     [DataSources.SERVICES]: 'geoss_cr',
 }
 
-export const DataOriginMask = {
+export const DataOriginMask: { [key: string]: string } = {
     dab: 'GEOSS',
     geoss_cr: 'GEOSS Curated',
     amerigeoss_ckan: 'AmeriGEO',
@@ -73,7 +73,7 @@ export const DataOriginMask = {
     wikipedia: 'Wikipedia',
 }
 
-export const AlternateSourcesMap = {
+export const AlternateSourcesMap: { [key: string]: string } = {
     [DataSources.DAB]: `GEOSS`,
     [DataSources.DATA]: `GEOSS Curated`,
     [DataSources.AMERIGEOSS]: `AmeriGEO`,

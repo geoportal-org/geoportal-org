@@ -1,6 +1,4 @@
-import Vue from 'vue'
-// @ts-ignore
-const ol = Vue.ol
+import { AppVueObj } from '~/data/global'
 
 const MapCoordinatesUtils = {
     parseCoordinates(coordinates: string | string[]) {
@@ -35,22 +33,25 @@ const MapCoordinatesUtils = {
                 // parse from Open Layers feature geometry
                 // [[[lon,lat],[lon,lat],[lon,lat],[lon,lat]]]
                 const converted = [
-                    ol.proj.transform(
+                    AppVueObj.ol.proj.transform(
                         coordinates[0][0],
                         'EPSG:3857',
                         'EPSG:4326'
                     ),
-                    ol.proj.transform(
+
+                    AppVueObj.ol.proj.transform(
                         coordinates[0][1],
                         'EPSG:3857',
                         'EPSG:4326'
                     ),
-                    ol.proj.transform(
+
+                    AppVueObj.ol.proj.transform(
                         coordinates[0][2],
                         'EPSG:3857',
                         'EPSG:4326'
                     ),
-                    ol.proj.transform(
+
+                    AppVueObj.ol.proj.transform(
                         coordinates[0][3],
                         'EPSG:3857',
                         'EPSG:4326'

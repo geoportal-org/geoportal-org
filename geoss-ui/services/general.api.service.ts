@@ -1,7 +1,7 @@
 import axios from 'axios'
 import xmljs from 'xml-js'
 import axiosCancel from 'axios-cancel'
-import { Liferay, BaseUrl } from '@/data/global'
+import { Liferay, BaseUrl } from '~/data/global'
 import SpinnerService from './spinner.service'
 import UtilsService from './utils.service'
 import {
@@ -41,7 +41,7 @@ export const parseXMLToJSON = (data: string) => {
         ignoreCdata: true,
         ignoreDoctype: true,
         textFn: removeJsonTextAttribute,
-    })
+    } as any)
 }
 
 export const makeRequest = (

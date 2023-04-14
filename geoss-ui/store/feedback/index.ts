@@ -1,9 +1,9 @@
-const state = {
+const state = () => ({
     formType: 'simple',
     showSimpleForm: false,
     showEnhancedForm: false,
     questionnaireSubmitted: false,
-}
+})
 
 const getters = {
     formType: (state: any) => {

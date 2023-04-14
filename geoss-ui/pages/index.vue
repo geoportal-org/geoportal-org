@@ -1,28 +1,26 @@
 <template>
     <div>
-        <!-- <UserWelcome />
-        <Notification />
-        <Spinner />
-        <Popup />
-        <IrisLegend />
-        <LayerLegend />
-        <ImagePreview />
-        <PrivacyPolicy />
-        <SendFeedback />
-        <TakeATour />
-        <MapAttribution />
-        <ExtendedView />
-        <TutorialTags />
-        <portal-target name="custom-select-container"></portal-target> -->
-
-        <!-- <main v-if="storeInitialized">
-            <Header />
-            <Menu />
-            <!-- <Map />
+        <client-only>
+            <UserWelcome />
+            <Notification />
+            <Spinner />
+            <Popup />
+            <IrisLegend />
+            <LayerLegend />
+            <ImagePreview />
+            <PrivacyPolicy />
+            <SendFeedback />
+            <TakeATour />
+            <MapAttribution />
+            <ExtendedView />
+            <TutorialTags />
+            <Map />
             <MapControls />
-            <SearchContainer /> -->
-        </main> -->
-        <!-- <div class="geoss-data-pickers"></div> -->
+            <SearchContainer />
+
+            <div class="geoss-data-pickers"></div>
+            <portal-target name="custom-select-container"></portal-target>
+        </client-only>
     </div>
 </template>
 
@@ -30,23 +28,23 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import { MapActions } from '@/store/map/map-actions';
 import { MapGetters } from '@/store/map/map-getters';
-import { MyWorkspaceGetters } from '@/store/my-workspace/my-workspace-getters';
-import { SearchEngineActions } from '@/store/search-engine/search-engine-actions';
-import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters';
-import { MyWorkspaceActions } from '@/store/my-workspace/my-workspace-actions';
+import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters';
+import { SearchEngineActions } from '@/store/searchEngine/search-engine-actions';
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
+import { MyWorkspaceActions } from '@/store/myWorkspace/my-workspace-actions';
 import { LayerTypes } from '@/interfaces/LayerTypes';
 import LayersUtils from '@/services/map/layer-utils';
-import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions';
-import { GranulaFiltersActions } from '@/store/granula-filters/granula-filters-actions';
-import { IrisFiltersActions } from '@/store/iris-filters/iris-filters-actions';
-import { GeneralFiltersGetters } from '@/store/general-filters/general-filters-getters';
+import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions';
+import { GranulaFiltersActions } from '@/store/granulaFilters/granula-filters-actions';
+import { IrisFiltersActions } from '@/store/irisFilters/iris-filters-actions';
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters';
 import { SearchActions } from '@/store/search/search-actions';
 import { PopupGetters } from '@/store/popup/popup-getters';
 import { UserActions } from '@/store/user/user-actions';
 import { Liferay } from '@/data/global';
 import LogService from '@/services/log.service';
 import { PopupActions } from '@/store/popup/popup-actions';
-import { FacetedFiltersActions } from '@/store/faceted-filters/faceted-filters-actions';
+import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions';
 import GeossSearchApiService from '@/services/geoss-search.api.service';
 import { GeneralGetters } from '@/store/general/general-getters';
 import UtilsService from '@/services/utils.service';
@@ -59,14 +57,21 @@ import { DataSources, DataOrigin } from '@/interfaces/DataSources';
 import { SearchGetters } from '@/store/search/search-getters';
 import { GeneralApiService } from '@/services/general.api.service';
 import { GeneralActions } from '@/store/general/general-actions';
-import { BulkDownloadActions } from '@/store/bulk-download/bulk-download-actions';
-import { FileDownloadActions } from '@/store/file-download/file-download-actions';
+import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions';
+import { FileDownloadActions } from '@/store/fileDownload/file-download-actions';
 import to from '@/utils/to';
 import WelcomePopup from '@/components/WelcomePopup.vue';
 import { Timers } from '@/data/timers';
 import { LayerData } from '@/interfaces/LayerData';
+import search from '@/store/search';
+import MapAttribution from '@/components/MapAttribution.vue';
 
-@Component
+@Component({
+    layout: 'full',
+    components: {
+        MapAttribution
+    }
+})
 export default class App extends Vue {
     get storeInitialized() {
         return this.$store.getters[GeneralGetters.storeInitialized];
@@ -108,8 +113,8 @@ export default class App extends Vue {
                     destEntry: []
                 });
                 NotificationService.show(
-                    `${this.$t('popupTitles.entryRelations')}`,
-                    `${this.$t('popupContent.entryRelationsStart')}`,
+                    `${this.$tc('popupTitles.entryRelations')}`,
+                    `${this.$tc('popupContent.entryRelationsStart')}`,
                     10000,
                     undefined,
                     9999,
@@ -140,8 +145,8 @@ export default class App extends Vue {
                                     destEntry: []
                                 });
                                 NotificationService.show(
-                                    `${this.$t('popupTitles.entryRelations')}`,
-                                    `${this.$t('popupContent.entryRelationsSrcSet1')}: <br /><b>"${result.title}"</b><br />${this.$t('popupContent.entryRelationsSrcSet2')}`,
+                                    `${this.$tc('popupTitles.entryRelations')}`,
+                                    `${this.$tc('popupContent.entryRelationsSrcSet1')}: <br /><b>"${result.title}"</b><br />${this.$tc('popupContent.entryRelationsSrcSet2')}`,
                                     10000,
                                     undefined,
                                     9999,
@@ -369,7 +374,7 @@ export default class App extends Vue {
     }
 
     private mounted() {
-
+        // return false;
         // LiferayService.init();
 
         const promises = [
@@ -533,21 +538,4 @@ export default class App extends Vue {
 }
 </script>
 
-
-<!-- import global styles here -->
-<style lang="scss">
-@import "~/assets/scss/reset.scss";
-@import "~/assets/scss/general.scss";
-
-body {
-    @include regular-page-body;
-}
-
-.sub-page {
-    @include regular-page;
-
-    &__content {
-        @include regular-page-content;
-    }
-}
-</style>
+<style lang="scss"></style>

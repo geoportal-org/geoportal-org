@@ -2,7 +2,7 @@ import TutorialTagsService from '@/services/tutorial-tags.service'
 
 const Transition = {
     transitionForceVisible(el: any) {
-        return el.classList.includes('transition-force-visible')
+        return el.classList.contains('transition-force-visible')
     },
 
     beforeEnter(el: any) {

@@ -1,5 +1,5 @@
 import { PopupActions } from '@/store/popup/popup-actions'
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import { GeneralGetters } from '@/store/general/general-getters'
 import Survey from '@/components/Survey.vue'
 
@@ -178,7 +178,7 @@ const MouseLeaveService = {
                 () => {
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'survey',
-                        title: AppVueObj.app.$t('popupTitles.quickSurvey'),
+                        title: AppVueObj.app.$tc('popupTitles.quickSurvey'),
                         component: Survey,
                     })
                 },

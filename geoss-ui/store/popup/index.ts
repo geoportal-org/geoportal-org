@@ -1,7 +1,7 @@
-const state = {
+const state = () => ({
     queue: [],
     promises: [],
-}
+})
 
 const getters = {
     queue: (state: any) => {

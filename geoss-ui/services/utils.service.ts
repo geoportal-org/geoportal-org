@@ -1,9 +1,9 @@
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import SearchEngineService from './search-engine.service'
 import { GeneralGetters } from '@/store/general/general-getters'
 import { UserGetters } from '@/store/user/user-getters'
 import SpinnerService from './spinner.service'
-import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions'
+import { GeneralFiltersActions } from '~/store/generalFilters/general-filters-actions'
 
 // const requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || ((callback) => {
 //         window.setTimeout(callback, 1000 / 60)

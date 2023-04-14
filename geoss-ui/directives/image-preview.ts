@@ -1,4 +1,4 @@
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import { GeneralActions } from '@/store/general/general-actions'
 
 export default {

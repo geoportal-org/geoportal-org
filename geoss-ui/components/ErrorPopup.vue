@@ -19,8 +19,8 @@
             </template>
             <button v-if="(!actions || !actions.length) && description" class="blue-btn-default"
                 @click="toggleDescription()">{{
-            showDetails? $t('general.hideDetails'):
-                $t('general.showDetails')}}</button>
+                    showDetails ? $tc('general.hideDetails') :
+                    $tc('general.showDetails') }}</button>
             <button v-if="!actions || !actions.length" class="blue-btn-default" @click="close()">Ok</button>
         </div>
     </div>

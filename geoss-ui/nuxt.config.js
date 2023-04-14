@@ -32,9 +32,10 @@ export default {
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [
-        { src: '~plugins/ol.ts', ssr: false },
+        { src: '~plugins/OpenLayers.ts', mode: 'client' },
         '~/plugins/AppVueObj.ts',
         '~/plugins/CollapseTransition.ts',
+        '~/plugins/AxiosPort.ts',
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -117,6 +118,6 @@ export default {
         vendor: ['ol'],
     },
 
-    //   ssr: true,
+    ssr: true,
     target: 'server',
 }

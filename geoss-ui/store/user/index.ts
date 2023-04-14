@@ -1,11 +1,11 @@
-const state = {
+const state = () => ({
     id: null,
     isSignedIn: false,
     authToken: null,
     groupId: null,
     bookmarks: [] as string[],
     savedRuns: [],
-}
+})
 
 const getters = {
     id: (state: any) => {

@@ -4,23 +4,24 @@ import { SearchActions } from '@/store/search/search-actions'
 import { SearchGetters } from '@/store/search/search-getters'
 import { LayerData } from '@/interfaces/LayerData'
 import { LayerTypes } from '@/interfaces/LayerTypes'
-import { MapDragAndDropInteraction, DefaultShapesStyles } from '@/data/map'
-import { AppVueObj } from '@/data/global'
+// import {
+//     MapDragAndDropInteraction,
+//     DefaultShapesStyles,
+// } from '~/plugins/OpenLayers'
+import { AppVueObj } from '~/data/global'
 import UtilsService from '@/services/utils.service'
 import { getWmsLayerInfo } from '@/services/wms.service'
 import NotificationService from '@/services/notification.service'
 import LayerTilesService from '@/services/map/layer-tiles.service'
 import LayersUtils from '@/services/map/layer-utils'
-import Overlay from 'ol/Overlay'
-import { TileWMS } from 'ol/source'
+
+// import Overlay from 'ol/Overlay'
+// mport { TileWMS } from 'ol/source'
 import Vue from 'vue'
 import to from '@/utils/to'
-import { Units } from 'ol/control/ScaleLine'
+// import { Units } from 'ol/control/ScaleLine'
 import { FeatureClass } from 'ol/Feature'
 import Map from 'ol/Map'
-
-// @ts-ignore
-const ol = Vue.ol
 
 declare let loadshp: any
 
@@ -30,8 +31,8 @@ const MapUtils = {
      * while mouse is over the map
      */
     createMapPositionController: () => {
-        return new ol.control.MousePosition({
-            coordinateFormat: ol.coordinate.createStringXY(4),
+        return new AppVueObj.ol.control.MousePosition({
+            coordinateFormat: AppVueObj.ol.coordinate.createStringXY(4),
             projection: 'EPSG:4326',
             undefinedHTML: '&nbsp;',
         })
@@ -41,8 +42,8 @@ const MapUtils = {
      * Creates controller displaying scale of the map
      */
     createScaleLineController: () => {
-        const scaleLineControl = new ol.control.ScaleLine()
-        scaleLineControl.setUnits(Units.METRIC)
+        const scaleLineControl = new AppVueObj.ol.control.ScaleLine()
+        scaleLineControl.setUnits(AppVueObj.ol.Units.METRIC)
         return scaleLineControl
     },
 
@@ -51,76 +52,81 @@ const MapUtils = {
      * dragged and then dropped into the map area
      */
     createDragAndDropInteraction: () => {
-        MapDragAndDropInteraction.on('addfeatures', async (event: any) => {
-            const [, { id, features }] = await to(
-                new Promise((resolve) => {
-                    if (event.file.name.indexOf('.zip') > -1) {
-                        loadshp(
-                            {
-                                url: event.file,
-                                encoding: 'utf-8',
-                            },
-                            (geojson: any) => {
-                                const collection = new ol.Collection(
-                                    new ol.format.GeoJSON().readFeatures(
-                                        geojson
-                                    )
-                                )
+        //@ts-ignore
+        AppVueObj.ol.MapDragAndDropInteraction.on(
+            'addfeatures',
+            async (event: any) => {
+                const [, { id, features }] = await to(
+                    new Promise((resolve) => {
+                        if (event.file.name.indexOf('.zip') > -1) {
+                            loadshp(
+                                {
+                                    url: event.file,
+                                    encoding: 'utf-8',
+                                },
+                                (geojson: any) => {
+                                    const collection =
+                                        new AppVueObj.ol.Collection(
+                                            new AppVueObj.ol.format.GeoJSON().readFeatures(
+                                                geojson
+                                            )
+                                        )
 
-                                collection.forEach((f: any) => {
-                                    f.getGeometry().transform(
-                                        'EPSG:4326',
-                                        'EPSG:3857'
-                                    )
-                                })
+                                    collection.forEach((f: any) => {
+                                        f.getGeometry().transform(
+                                            'EPSG:4326',
+                                            'EPSG:3857'
+                                        )
+                                    })
 
-                                resolve({
-                                    id: event.file.name,
-                                    features: collection,
-                                })
-                            }
-                        )
-                    } else {
-                        resolve({
-                            id: event.file.name,
-                            features: event.features,
-                        })
-                    }
+                                    resolve({
+                                        id: event.file.name,
+                                        features: collection,
+                                    })
+                                }
+                            )
+                        } else {
+                            resolve({
+                                id: event.file.name,
+                                features: event.features,
+                            })
+                        }
+                    })
+                )
+
+                const vectorSource = new AppVueObj.ol.source.Vector({
+                    features,
                 })
-            )
+                const layer = new AppVueObj.ol.layer.Vector({
+                    source: vectorSource,
+                    style: (feature: FeatureClass, resolution: number) => {
+                        const featureStyleFunction = feature.getStyleFunction()
+                        if (featureStyleFunction) {
+                            return featureStyleFunction.call(
+                                undefined,
+                                feature,
+                                resolution
+                            )
+                        } else {
+                            return (<any>AppVueObj.ol.DefaultShapesStyles)[
+                                feature.getGeometry()!.getType()
+                            ]
+                        }
+                    },
+                })
+                layer.setZIndex(8)
 
-            const vectorSource = new ol.source.Vector({
-                features,
-            })
-            const layer = new ol.layer.Vector({
-                source: vectorSource,
-                style: (feature: FeatureClass, resolution: number) => {
-                    const featureStyleFunction = feature.getStyleFunction()
-                    if (featureStyleFunction) {
-                        return featureStyleFunction.call(
-                            undefined,
-                            feature,
-                            resolution
-                        )
-                    } else {
-                        return (<any>DefaultShapesStyles)[
-                            feature.getGeometry()!.getType()
-                        ]
-                    }
-                },
-            })
-            layer.setZIndex(8)
+                AppVueObj.app.$store.dispatch(MapActions.addLayer, {
+                    layer,
+                    id,
+                    type: LayerTypes.CUSTOM,
+                    title: id,
+                })
 
-            AppVueObj.app.$store.dispatch(MapActions.addLayer, {
-                layer,
-                id,
-                type: LayerTypes.CUSTOM,
-                title: id,
-            })
-
-            AppVueObj.app.$store.dispatch(MapActions.zoomInLayer, id)
-        })
-        return MapDragAndDropInteraction
+                AppVueObj.app.$store.dispatch(MapActions.zoomInLayer, id)
+            }
+        )
+        return AppVueObj.ol.MapDragAndDropInteraction
     },
 
     addBoundingBoxInteractions: (map: Map) => {
@@ -322,7 +328,7 @@ const MapUtils = {
 
             // Create placeholder for map popup
             if (!AppVueObj.app.$store.getters[MapGetters.mapTooltip]) {
-                const popupOverlay = new Overlay({
+                const popupOverlay = new AppVueObj.ol.Overlay({
                     element: document.getElementById('map-tooltip'),
                     stopEvent: false,
                 } as { element: HTMLElement | undefined; stopEvent: boolean })
@@ -334,8 +340,9 @@ const MapUtils = {
             }
             const popupOverlay = AppVueObj.app.$store.getters[
                 MapGetters.mapTooltip
-            ] as Overlay
+            ] as any
             let overlayPosition
+            // @ts-ignore
             popupOverlay.setPosition(undefined)
 
             const UNSDLayers = AppVueObj.app.$store.getters[
@@ -386,11 +393,12 @@ const MapUtils = {
                         }
                     }
                 }
+                // @ts-ignore
                 popupOverlay.setPosition(overlayPosition)
             }
 
             const source = hitLayer.getSource()
-            if (source instanceof TileWMS) {
+            if (source instanceof AppVueObj.ol.source.TileWMS) {
                 const viewResolution: number = map.getView().getResolution()!
                 const url: string = source.getGetFeatureInfoUrl(
                     event.coordinate,
@@ -430,7 +438,7 @@ const MapUtils = {
 
                                 keys.forEach((item) => {
                                     const label =
-                                        AppVueObj.app.$t(
+                                        AppVueObj.app.$tc(
                                             `wms.${item.toLowerCase()}`
                                         ) || item
                                     message += `${label}: ${
@@ -438,7 +446,7 @@ const MapUtils = {
                                     }<br>`
                                 })
                             } else {
-                                message += AppVueObj.app.$t('general.noData')
+                                message += AppVueObj.app.$tc('general.noData')
                             }
 
                             AppVueObj.app.$store.dispatch(
@@ -451,7 +459,7 @@ const MapUtils = {
                         .catch((e: any) =>
                             AppVueObj.app.$store.dispatch(
                                 MapActions.setMapTooltipMessage,
-                                AppVueObj.app.$t('general.errorOccurred')
+                                AppVueObj.app.$tc('general.errorOccurred')
                             )
                         )
                 }
@@ -496,8 +504,8 @@ const MapUtils = {
         )
 
         NotificationService.show(
-            `${AppVueObj.app.$t('notifications.basemapUnavailableTitle')}`,
-            `${AppVueObj.app.$t('notifications.basemapUnavailable')}`,
+            `${AppVueObj.app.$tc('notifications.basemapUnavailableTitle')}`,
+            `${AppVueObj.app.$tc('notifications.basemapUnavailable')}`,
             30000,
             'basemap-unvailable',
             undefined,

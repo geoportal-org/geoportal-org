@@ -1,11 +1,12 @@
+//@ts-nocheck
 // import '@babel/polyfill'
 // import '@/assets/loadshp/loadshp'
 
 import Vue from 'vue'
-// import PortalVue from 'portal-vue'
-// import Vuebar from 'vuebar'
-import SocialSharing from 'vue-social-sharing'
-// import LineClamp from 'vue-line-clamp'
+import PortalVue from 'portal-vue'
+import Vuebar from 'vuebar'
+//import SocialSharing from 'vue-social-sharing'
+
 import VueAnalytics from 'vue-analytics'
 // import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // import 'element-closest-polyfill'
@@ -18,17 +19,16 @@ import ClickOutside from '@/directives/click-outside'
 import ImagePreview from '@/directives/image-preview'
 import HtmlToText from '@/directives/html-to-text'
 
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import { GeneralApiService } from '@/services/general.api.service'
 import { GeneralGetters } from '@/store/general/general-getters'
 
 Vue.config.devtools = true
 
 // plugins
-// Vue.use(PortalVue)
-// Vue.use(Vuebar)
-Vue.use(SocialSharing)
-// Vue.use(LineClamp)
+Vue.use(PortalVue)
+Vue.use(Vuebar)
+//Vue.use(SocialSharing)
 Vue.use(VueAnalytics, {
     id: () =>
         GeneralApiService.getSiteSettings().then(
@@ -75,7 +75,3 @@ Vue.mixin({
         },
     },
 })
-
-// AppVueObj.app = new Vue({
-//     store,
-// })

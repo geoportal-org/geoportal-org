@@ -3,12 +3,12 @@ import { Source, View } from '@/interfaces/GeneralFilters'
 import SearchEngineService from '@/services/search-engine.service'
 import SpinnerService from '@/services/spinner.service'
 import UtilsService from '@/services/utils.service'
-import { BaseUrl, Liferay, AppVueObj } from '@/data/global'
+import { BaseUrl, Liferay, AppVueObj } from '~/data/global'
 import LogService from '@/services/log.service'
-import { GeneralFiltersGetters } from '@/store/general-filters/general-filters-getters'
-import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions'
+import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters'
+import { GeneralFiltersActions } from '~/store/generalFilters/general-filters-actions'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
-import { Timers } from '@/data/timers'
+import { Timers } from '~/data/timers'
 import PopupCloseService from '@/services/popup-close.service'
 import { PopupActions } from '@/store/popup/popup-actions'
 import { parseXMLToJSON, makeRequest } from './general.api.service'
@@ -1054,8 +1054,8 @@ const GeossSearchApiService = {
                         `Status code: ${thrown.status}, Status text: ${thrown.statusText}`
                     )
                     const props = {
-                        title: AppVueObj.app.$t('general.error'),
-                        subtitle: AppVueObj.app.$t('errors.noMetadata'),
+                        title: AppVueObj.app.$tc('general.error'),
+                        subtitle: AppVueObj.app.$tc('errors.noMetadata'),
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',

@@ -1,7 +1,7 @@
-import { YellowPagesFiltersGetters } from '@/store/yellow-pages-filters/yellow-pages-filters-getters'
+import { YellowPagesFiltersGetters } from '~/store/yellowPagesFilters/yellow-pages-filters-getters'
 import { makeRequest } from './general.api.service'
-import { AppVueObj } from '@/data/global'
-import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters'
+import { AppVueObj } from '~/data/global'
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 
 let staticOrganizations: any[] = []
 

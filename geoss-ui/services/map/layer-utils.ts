@@ -5,8 +5,8 @@ import GeossSearchApiService from '@/services/geoss-search.api.service'
 import ErrorPopup from '@/components/ErrorPopup.vue'
 import LogService from '../log.service'
 import to from '@/utils/to'
-import { StaticPath, AppVueObj } from '@/data/global'
-import { Timers } from '@/data/timers'
+import { StaticPath, AppVueObj } from '~/data/global'
+import { Timers } from '~/data/timers'
 import { LayerTypes } from '@/interfaces/LayerTypes'
 import { LayerData } from '@/interfaces/LayerData'
 import { MapGetters } from '@/store/map/map-getters'
@@ -489,7 +489,7 @@ const LayersUtils = {
                     mapLayer = LayersUtils.createKML(layer.url)
                 } else {
                     const props = {
-                        title: AppVueObj.app.$t('general.error'),
+                        title: AppVueObj.app.$tc('general.error'),
                         subtitle: err,
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
@@ -506,7 +506,7 @@ const LayersUtils = {
                     mapLayer = LayersUtils.createKMZ(layer.url)
                 } else {
                     const props = {
-                        title: AppVueObj.app.$t('general.error'),
+                        title: AppVueObj.app.$tc('general.error'),
                         subtitle: err,
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
@@ -550,18 +550,18 @@ const LayersUtils = {
                 }
 
                 const props = {
-                    title: AppVueObj.app.$t('general.backendError'),
-                    subtitle: AppVueObj.app.$t(
+                    title: AppVueObj.app.$tc('general.backendError'),
+                    subtitle: AppVueObj.app.$tc(
                         'popupContent.mapLayerUnavailable'
                     ),
                     actions: [
                         {
                             event: 'ignore',
-                            label: AppVueObj.app.$t('general.ignore'),
+                            label: AppVueObj.app.$tc('general.ignore'),
                         },
                         {
                             event: 'disable',
-                            label: AppVueObj.app.$t('general.disable'),
+                            label: AppVueObj.app.$tc('general.disable'),
                         },
                     ],
                 }

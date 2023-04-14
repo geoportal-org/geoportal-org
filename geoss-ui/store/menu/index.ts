@@ -1,9 +1,9 @@
-const state = {
+const state = () => ({
     menuOpened: false,
     menuItems: [],
     menuItemsURL: '',
     langContainerActive: false,
-}
+})
 
 const getters = {
     opened: (state: any) => {

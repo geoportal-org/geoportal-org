@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Timers } from '@/data/timers'
+import { Timers } from '~/data/timers'
 
 const TutorialTagsService = {
     eventBus: new Vue(),
@@ -121,13 +121,10 @@ const TutorialTagsService = {
         }
     },
 
-    getPositions({
-        tag,
-        event = null,
-    }: {
-        tag: { id: any; placement: string; startPosition: any }
-        event: { action: any } | null
-    }) {
+    getPositions(
+        tag: { id: any; placement: string; startPosition: any },
+        event: { action: any } | null = null
+    ) {
         const eventAction = event && event.action ? event.action : null
         const tagId = tag.id
         const tagPlacement = tag.placement || 'top-left'

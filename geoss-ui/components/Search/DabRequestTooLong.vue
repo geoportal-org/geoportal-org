@@ -2,14 +2,14 @@
     <div class="dab-request-too-long-popup-content">
         <div class="dab-request-too-long-popup-content__title">
             <i class="icomoon-info"></i>
-            <div>{{ $t('general.warning') }}</div>
+            <div>{{ $tc('general.warning') }}</div>
             <button class="close-btn" :title="$tc('general.close')" :aria-label="$tc('general.close')"></button>
         </div>
         <div class="dab-request-too-long-popup-content__subtitle">
-            {{ $t('popupContent.resourceTakesMoreTime') }}<br>{{ $t('popupContent.wouldYouLikeToContinue') }}</div>
+            {{ $tc('popupContent.resourceTakesMoreTime') }}<br>{{ $tc('popupContent.wouldYouLikeToContinue') }}</div>
         <div class="dab-request-too-long-popup-content__actions">
-            <button class="blue-btn-default" @click="close(false)">{{ $t('general.no') }}</button>
-            <button class="blue-btn-default" @click="close(true)">{{ $t('general.yes') }}</button>
+            <button class="blue-btn-default" @click="close(false)">{{ $tc('general.no') }}</button>
+            <button class="blue-btn-default" @click="close(true)">{{ $tc('general.yes') }}</button>
         </div>
     </div>
 </template>

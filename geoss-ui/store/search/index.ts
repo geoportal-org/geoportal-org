@@ -1,16 +1,16 @@
 import GeossSearchApiService from '@/services/geoss-search.api.service'
-import { GeneralFiltersGetters } from '@/store/general-filters/general-filters-getters'
-import { GeneralFiltersActions } from '@/store/general-filters/general-filters-actions'
-import { FacetedFiltersActions } from '@/store/faceted-filters/faceted-filters-actions'
-import { FacetedFiltersGetters } from '@/store/faceted-filters/faceted-filters-getters'
-import { GranulaFiltersGetters } from '@/store/granula-filters/granula-filters-getters'
-import { GranulaFiltersActions } from '@/store/granula-filters/granula-filters-actions'
-import { IrisFiltersActions } from '@/store/iris-filters/iris-filters-actions'
-import { IRIS_CATALOG } from '@/data/general-filters'
-import { IrisFiltersGetters } from '@/store/iris-filters/iris-filters-getters'
+import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters'
+import { GeneralFiltersActions } from '~/store/generalFilters/general-filters-actions'
+import { FacetedFiltersActions } from '~/store/facetedFilters/faceted-filters-actions'
+import { FacetedFiltersGetters } from '~/store/facetedFilters/faceted-filters-getters'
+import { GranulaFiltersGetters } from '~/store/granulaFilters/granula-filters-getters'
+import { GranulaFiltersActions } from '~/store/granulaFilters/granula-filters-actions'
+import { IrisFiltersActions } from '~/store/irisFilters/iris-filters-actions'
+import { IRIS_CATALOG } from '~/data/general-filters'
+import { IrisFiltersGetters } from '~/store/irisFilters/iris-filters-getters'
 import { PopupActions } from '../popup/popup-actions'
 import LogService from '@/services/log.service'
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import UtilsService from '@/services/utils.service'
 import {
     DataSources,
@@ -24,12 +24,12 @@ import { SearchActions } from './search-actions'
 import { ParentRef } from '@/interfaces/ParentRef'
 import ConfirmSearchPopup from '@/components/Search/ConfirmSearchPopup.vue'
 import ErrorPopup from '@/components/ErrorPopup.vue'
-import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters'
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 
 const totalResultsProp = 'totalResults'
 const totalResultsOpenSearchProp = 'opensearch:totalResults'
 
-const state: { [key: string]: any; dataSource: DataSource | null } = {
+const state = () => ({
     dataSource: null,
     dabResults: null,
     dataResults: null,
@@ -140,11 +140,11 @@ const state: { [key: string]: any; dataSource: DataSource | null } = {
     crRelation: null,
     crRelationParams: null,
     longRequestInfo: null,
-}
+})
 
-const initialState = JSON.parse(JSON.stringify(state))
+const initialState = JSON.parse(JSON.stringify(state()))
 
-const getters = {
+const getters: { [key: string]: any } = {
     resultsActive: (state: any) => {
         return !!(
             state.dabResults ||
@@ -670,9 +670,9 @@ const actions = {
         if (!results && err) {
             const errorInfo = {
                 title: (
-                    AppVueObj.app.$t('general.backendError') as string
+                    AppVueObj.app.$tc('general.backendError') as string
                 ).toUpperCase(),
-                subtitle: AppVueObj.app.$t('general.errorOccurred'),
+                subtitle: AppVueObj.app.$tc('general.errorOccurred'),
                 description: err.toString(),
             }
             dispatch(
@@ -739,11 +739,11 @@ const actions = {
                         }
                         if (!otherAvailableSourceResults.length) {
                             errorInfo.title = (
-                                AppVueObj.app.$t(
+                                AppVueObj.app.$tc(
                                     'general.noResourcesFound'
                                 ) as string
                             ).toUpperCase()
-                            errorInfo.subtitle = AppVueObj.app.$t(
+                            errorInfo.subtitle = AppVueObj.app.$tc(
                                 'general.unableToFindAnyResources'
                             )
                         } else {
@@ -774,9 +774,9 @@ const actions = {
                     }
                     case 'timeout': {
                         errorInfo.title = (
-                            AppVueObj.app.$t('general.warning') as string
+                            AppVueObj.app.$tc('general.warning') as string
                         ).toUpperCase()
-                        errorInfo.subtitle = AppVueObj.app.$t(
+                        errorInfo.subtitle = AppVueObj.app.$tc(
                             'general.loadingResourcesIsTakingTooLong'
                         )
                         break
@@ -787,9 +787,9 @@ const actions = {
                     }
                     default: {
                         errorInfo.title = (
-                            AppVueObj.app.$t('general.backendError') as string
+                            AppVueObj.app.$tc('general.backendError') as string
                         ).toUpperCase()
-                        errorInfo.subtitle = AppVueObj.app.$t(
+                        errorInfo.subtitle = AppVueObj.app.$tc(
                             'general.errorOccurred'
                         )
                         errorInfo.description = currentResults.error
@@ -1165,16 +1165,17 @@ const actions = {
         commit('setStateProp', { prop: 'freezeDataSources', value })
     },
     addFreezeDataSources({ commit }: any, value: string) {
-        const frozenSources = state.freezeDataSources
-            .filter((f: string) => f !== value)
-            .concat([value])
+        const frozenSources: string[] = state().freezeDataSources.filter(
+            (f: string) => f !== value
+        )
+        frozenSources.concat([value])
         commit('setStateProp', {
             prop: 'freezeDataSources',
             value: frozenSources,
         })
     },
     removeFreezeDataSources({ commit }: any, value: string) {
-        const frozenSources = state.freezeDataSources.filter(
+        const frozenSources = state().freezeDataSources.filter(
             (f: string) => f !== value
         )
         commit('setStateProp', {

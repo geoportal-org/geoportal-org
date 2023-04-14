@@ -24,13 +24,13 @@ export const Liferay = {
     authToken: 'authToken',
     ThemeDisplay: {
         getScopeGroupId: () => {
-            return 0
+            return 20181
         },
         getUserId: () => {
-            return 1
+            return 20158
         },
         getLayoutURL: () => {
-            return ''
+            return 'https://geoss.devel.esaportal.eu/home'
         },
         isSignedIn: () => {
             return false

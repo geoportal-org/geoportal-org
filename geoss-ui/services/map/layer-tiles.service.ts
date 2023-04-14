@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import { MapGetters } from '@/store/map/map-getters'
-import { AppVueObj } from '@/data/global'
-
-// @ts-ignore
-const ol = Vue.ol
+import { AppVueObj } from '~/data/global'
 
 const LayerTilesService: { [key: string]: any } = {
     osm: {
@@ -12,10 +9,10 @@ const LayerTilesService: { [key: string]: any } = {
         disabled: false,
         tileLayer: null,
         getLayerTile: () => {
-            const projection = ol.proj.getProjection('EPSG:3857')
+            const projection = AppVueObj.ol.proj.getProjection('EPSG:3857')
             const projectionExtent = projection.getExtent()
-            const origin = ol.extent.getTopLeft(projectionExtent)
-            const size = ol.extent.getWidth(projectionExtent) / 256
+            const origin = AppVueObj.ol.extent.getTopLeft(projectionExtent)
+            const size = AppVueObj.ol.extent.getWidth(projectionExtent) / 256
             const resolutions = new Array(19)
             const matrixIds = new Array(19)
             for (let z = 0; z < 19; ++z) {
@@ -25,18 +22,18 @@ const LayerTilesService: { [key: string]: any } = {
 
             LayerTilesService.osm.tileLayer =
                 LayerTilesService.osm.tileLayer ||
-                new ol.layer.Tile({
+                new AppVueObj.ol.layer.Tile({
                     /*
                      * Original OSM tile layer service was changed to GISCO service
-                     * source: new ol.source.XYZ({ url: `https://c.tile.openstreetmap.org/{z}/{x}/{y}.png` })
+                     * source: new AppVueObj.ol.source.XYZ({ url: `https://c.tile.openstreetmap.org/{z}/{x}/{y}.png` })
                      */
-                    source: new ol.source.WMTS({
+                    source: new AppVueObj.ol.source.WMTS({
                         url: 'https://gisco-services.ec.europa.eu/maps/service?',
                         layer: 'OSMCartoComposite',
                         matrixSet: 'EPSG3857',
                         format: 'image/png',
                         projection,
-                        tileGrid: new ol.tilegrid.WMTSTileGrid({
+                        tileGrid: new AppVueObj.ol.tilegrid.WMTSTileGrid({
                             origin,
                             resolutions,
                             matrixIds,
@@ -57,8 +54,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.addsat.tileLayer =
                 LayerTilesService.addsat.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         tileSize: [512, 512],
                         url: `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${
@@ -80,8 +77,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.mb_hybrid.tileLayer =
                 LayerTilesService.mb_hybrid.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         tileSize: [512, 512],
                         url: `https://api.mapbox.com/styles/v1/mapbox/streets-v8/tiles/{z}/{x}/{y}?access_token=${
@@ -103,8 +100,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.addhyb.tileLayer =
                 LayerTilesService.addhyb.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         tileSize: [512, 512],
                         url: `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/{z}/{x}/{y}?access_token=${
@@ -126,8 +123,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.oceanBasemap.tileLayer =
                 LayerTilesService.oceanBasemap.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.TileArcGISRest({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer',
                     } as any),
@@ -144,8 +141,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.topographicBasemap.tileLayer =
                 LayerTilesService.topographicBasemap.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.TileArcGISRest({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer',
                     } as any),
@@ -162,14 +159,14 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.WorldStreetBasemap.tileLayer = LayerTilesService
                 .WorldStreetBasemap.tileLayer || [
-                new ol.layer.Tile({
-                    source: new ol.source.TileArcGISRest({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
                     } as any),
                 }),
-                new ol.layer.Tile({
-                    source: new ol.source.TileArcGISRest({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
                         url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer',
                     } as any),
@@ -187,8 +184,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.dark_all.tileLayer =
                 LayerTilesService.dark_all.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
                     }),
@@ -205,8 +202,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.dark_nolabels.tileLayer =
                 LayerTilesService.dark_nolabels.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
                     }),
@@ -223,8 +220,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.light_all.tileLayer =
                 LayerTilesService.light_all.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
                     }),
@@ -241,8 +238,8 @@ const LayerTilesService: { [key: string]: any } = {
         getLayerTile: () => {
             LayerTilesService.light_nolabels.tileLayer =
                 LayerTilesService.light_nolabels.tileLayer ||
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
+                new AppVueObj.ol.layer.Tile({
+                    source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
                         url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
                     }),

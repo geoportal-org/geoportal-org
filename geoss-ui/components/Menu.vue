@@ -4,41 +4,57 @@
         <div class="menu__inner-wrapper">
             <template v-for="(route, index) of routes">
                 <div :key="route.title + '-separator'" v-if="index === 4" class="menu__separator"></div>
-                <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="route.title"
+                <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
                     <div v-if="route.links && route.links.length" class="menu__links-expander"
                         @click="toggleMenuSublinks(route)">
-                        <img :src="`/svg/${route.imgURL}`" :alt="route.title" />
+                        <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title.toUpperCase() }}</span>
                     </div>
                     <div v-if="route.links" :key="route.title" class="md-hidden-up">
                         <CollapseTransition>
                             <div v-show="route === activeLinksExpander">
                                 <div class="menu__links-expanded">
-                                    <a class="menu__sublink" v-for="subroute of route.links" :key="subroute.link"
-                                        :href="subroute.link">
-                                        {{ subroute.title }}
-                                    </a>
+                                    <template v-for="(subroute, subindex) of route.links">
+                                        <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex"
+                                            :to="subroute.link" target="_blank">
+                                            {{ subroute.title }}
+                                        </a>
+                                        <NuxtLink v-else class="menu__sublink" :key="subroute.link" :to="subroute.link">
+                                            {{ subroute.title }}
+                                        </NuxtLink>
+                                    </template>
                                 </div>
                             </div>
                         </CollapseTransition>
                     </div>
-                    <a v-if="!route.links || !route.links.length" :href="route.link || '/c/portal/login'"
-                        class="menu__link">
-                        <img :src="`/svg/${route.imgURL}`" :alt="route.title" />
-                        <span>{{ route.title.toUpperCase() }}</span>
+                    <a v-if="(!route.links || !route.links.length) && isExternal(route.link)"
+                        :href="route.link || '/c/portal/login'" class="menu__link" target="_blank">
+                        <img :src="route.imgURL" :alt="route.title" />
+                        <span>{{ route.title }}</span>
                     </a>
+                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)"
+                        :to="route.link || '/c/portal/login'" class="menu__link">
+                        <img :src="route.imgURL" :alt="route.title" />
+                        <span>{{ route.title }}</span>
+                    </NuxtLink>
                 </div>
             </template>
         </div>
         <div class="menu__inner-wrapper md-hidden-down">
-            <div v-for="(route, index) of routes" :key="route.title" class="menu__item">
+            <div v-for="(route, index) of routes" :key="index" class="menu__item">
                 <CollapseTransition v-if="route.links">
                     <div v-show="route === activeLinksExpander" class="menu__links-expanded">
-                        <a class="menu__sublink" v-for="(subroute, subindex) of route.links" :key="subroute.link"
-                            :href="subroute.link" :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`">
-                            {{ subroute.title }}
-                        </a>
+                        <template v-for="(subroute, subindex) of route.links">
+                            <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex" :href="subroute.link"
+                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`" target="_blank">
+                                {{ subroute.title }}
+                            </a>
+                            <NuxtLink v-else class="menu__sublink" :key="subroute.link" :to="subroute.link"
+                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`">
+                                {{ subroute.title }}
+                            </NuxtLink>
+                        </template>
                     </div>
                 </CollapseTransition>
             </div>
@@ -47,17 +63,18 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
-import { MenuLink, MenuLinksWrapper } from '@/interfaces/Menu';
+import { MenuLinksWrapper } from '@/interfaces/Menu';
 import { MenuGetters } from '@/store/menu/menu-getters';
 import { MenuActions } from '@/store/menu/menu-actions';
-import { GeneralApiService } from '@/services/general.api.service';
 import { GeneralGetters } from '@/store/general/general-getters';
 import { UserGetters } from '@/store/user/user-getters';
-import to from '@/utils/to';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
+
+import MenuAPI from '@/api/menu'
 
 @Component({
     components: {
@@ -69,7 +86,7 @@ export default class MenuComponent extends Vue {
     @Prop({ type: Number }) public paddingTop!: number;
 
     public activeLinksExpander: MenuLinksWrapper | null = null;
-    public routes: Array<MenuLink | MenuLinksWrapper> = [];
+    public routes: any = []; // : Array<MenuLink | MenuLinksWrapper> = [];
 
     get isSignedIn() {
         return this.$store.getters[UserGetters.isSignedIn];
@@ -105,14 +122,24 @@ export default class MenuComponent extends Vue {
         TutorialTagsService.refreshTagsGroup('header-menu-subitem', this.activeLinksExpander, 450);
     }
 
+    public isExternal(link: string) {
+        if (link.indexOf('/') !== 0 && link.indexOf('http') === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Watch('langLocale')
     private async onLangLocaleChange() {
-        [, this.routes] = await to(GeneralApiService.getMenuItems(this.langLocale));
+        // [, this.routes] = await to(GeneralApiService.getMenuItems(this.langLocale));
+        this.routes = await MenuAPI.getMenu();
     }
 
     private async mounted() {
-        const langLocale = this.langLocale !== '' ? this.langLocale : this.$cookies.get('GUEST_LANGUAGE_ID');
-        [, this.routes] = await to(GeneralApiService.getMenuItems(langLocale));
+        // const langLocale = this.langLocale !== '' ? this.langLocale : this.$cookies.get('GUEST_LANGUAGE_ID');
+        // [, this.routes] = await to(GeneralApiService.getMenuItems(langLocale));
+        this.routes = await MenuAPI.getMenu();
     }
 }
 </script>

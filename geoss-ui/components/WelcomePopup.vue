@@ -5,18 +5,18 @@
             <i class="icomoon-earth"></i>
         </p>
         <h2>
-            {{ $t('welcomePopup.newVersionTitle') }}
+            {{ $tc('welcomePopup.newVersionTitle') }}
         </h2>
         <p>
-            {{ $t('welcomePopup.newVersionPart1') }}
+            {{ $tc('welcomePopup.newVersionPart1') }}
         </p>
         <p>
-            {{ $t('welcomePopup.newVersionPart2') }} <a target="_blank" :href="tourUrl"> <i class="icomoon-tour"></i> {{
-                $t('welcomePopup.newVersionPart3')
+            {{ $tc('welcomePopup.newVersionPart2') }} <a target="_blank" :href="tourUrl"> <i class="icomoon-tour"></i> {{
+                $tc('welcomePopup.newVersionPart3')
             }}</a>. <br />
-            {{ $t('welcomePopup.newVersionPart4') }} <NuxtLink to="/release-notes"><i class="icomoon-info"></i> {{
+            {{ $tc('welcomePopup.newVersionPart4') }} <NuxtLink to="/release-notes"><i class="icomoon-info"></i> {{
                 $tc('welcomePopup.newVersionPart5')
-            }}</NuxtLink> {{ $t('welcomePopup.newVersionPart6') }}
+            }}</NuxtLink> {{ $tc('welcomePopup.newVersionPart6') }}
         </p>
     </div>
 </template>
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import PopupCloseService from '@/services/popup-close.service';
-import { SearchEngineGetters } from '@/store/search-engine/search-engine-getters';
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 
 @Component

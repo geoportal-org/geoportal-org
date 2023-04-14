@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 import { SearchActions } from '@/store/search/search-actions'
 
 const SpinnerService = {
@@ -16,7 +16,7 @@ const SpinnerService = {
     setLongRequestInfo(enable: boolean) {
         let longRequestInfo = null
         if (enable) {
-            longRequestInfo = AppVueObj.app.$t(
+            longRequestInfo = AppVueObj.app.$tc(
                 'fileDownloadsPopup.requestTakesLongerThanExpected'
             )
         }

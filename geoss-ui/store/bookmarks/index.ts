@@ -1,9 +1,9 @@
 import to from '@/utils/to'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
-import { bookmarksTestIds } from '@/data/bookmarks-test'
+import { bookmarksTestIds } from '~/data/bookmarks-test'
 import { DataSources } from '@/interfaces/DataSources'
 
-const state = {
+const state = () => ({
     perPage: 10,
     pageOffset: 0,
     results: [],
@@ -14,7 +14,7 @@ const state = {
     resultsOrigin: {},
     checkedOrigins: [],
     mode: 'bookmarks',
-}
+})
 
 const getters = {
     perPage: (state: any) => {

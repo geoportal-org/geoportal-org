@@ -1,6 +1,6 @@
-import { AppVueObj } from '@/data/global'
+import { AppVueObj } from '~/data/global'
 
-const state = {
+const state = () => ({
     storeInitialized: false,
     langLocale: '',
     staticPath: `${process.env.NUXT_ENV_IMAGE_PATH}`,
@@ -11,7 +11,7 @@ const state = {
     isExtendedViewEnabled: true,
     isBulkDownloadEnabled: true,
     widgetAccessKey: null,
-}
+})
 
 const getters = {
     storeInitialized: (state: any) => {
@@ -60,7 +60,7 @@ const actions = {
         })
     },
     setLangLocale: (context: any, value: string) => {
-        AppVueObj.app.$i18n.locale = value
+        // AppVueObj.app.$i18n.locale = value
         context.commit('setStateProp', { prop: 'langLocale', value })
     },
     setStaticPath: (context: any, value: string) => {

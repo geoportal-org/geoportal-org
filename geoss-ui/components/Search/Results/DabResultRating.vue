@@ -1,0 +1,191 @@
+<template>
+    <div class="dab-result-rating">
+        <div class="dab-result-rating__comment">
+            <label>{{ $tc('popupContent.comment') }}:</label>
+            <textarea v-model="comment" :disabled="!isSignedIn"></textarea>
+        </div>
+        <div class="d-flex flex--justify-between flex--align-end">
+            <div class="dab-result-rating__rating">
+                <label>{{ $tc('popupContent.rating') }}:</label>
+                <div class="dab-result-rating__stars">
+                    <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="dab-result-rating__star"
+                        :class="{ active: score === num }">
+                        <i class="icomoon-star-empty"></i>
+                        <i class="icomoon-star" @click="setScore(num)"></i>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="blue-btn-default" :disabled="!score" @click="rate()">{{ $tc('popupContent.send') }}</button>
+            </div>
+        </div>
+        <div class="dab-result-rating__user-comment" v-for="(comment, index) in comments" :key="index">
+            <div class="dab-result-rating__stars">
+                <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="dab-result-rating__star"
+                    :class="{ active: comment.score === num }">
+                    <i class="icomoon-star-empty"></i>
+                    <i class="icomoon-star" @click="setScore(num)"></i>
+                </div>
+            </div>
+            <div class="dab-result-rating__comment">{{ comment.comment }}</div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import GeossSearchApiService from '@/services/geoss-search.api.service';
+import { GeneralGetters } from '@/store/general/general-getters';
+import { SearchActions } from '@/store/search/search-actions';
+import MouseLeaveService from '@/services/mouse-leave.service';
+import PopupCloseService from '@/services/popup-close.service';
+import to from '@/utils/to';
+import LogService from '../../../services/log.service';
+import { Liferay } from '@/data/global';
+import { DataOrigin } from '@/interfaces/DataSources';
+import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions';
+
+@Component
+export default class DabResultRatingComponent extends Vue {
+    public comment: string = '';
+    public score: number = 0;
+
+    @Prop({ default: null, type: String }) private id!: string;
+    @Prop({ default: null, type: String }) private title!: string;
+    @Prop({ default: () => [], type: Array }) public comments!: Array<{ score: number, comment: string }>;
+    @Prop({ default: null, type: Number }) private userScore!: number;
+    @Prop({ default: null, type: String }) private userComment!: string;
+    @Prop({ default: 'dab', type: String }) private dataSource!: string;
+    @Prop({ default: null, type: String }) private referer!: string;
+
+    get isWidget() {
+        return this.$store.getters[GeneralGetters.isWidget];
+    }
+
+    get isSignedIn() {
+        return (!this.isWidget ? Liferay.ThemeDisplay.isSignedIn : false);
+    }
+
+    public setScore(score: number) {
+        this.score = score;
+        LogService.logElementClick(null, null, this.id, null, 'Edit rating', null, null, null);
+    }
+
+    public async rate() {
+        MouseLeaveService.initSurvey();
+        const [, data] = await to(GeossSearchApiService.rateResource(
+            this.title,
+            this.id,
+            this.score,
+            this.comment,
+            (DataOrigin[this.dataSource] || this.dataSource)
+        ));
+        if (data) {
+            if (!this.referer) {
+                this.$store.dispatch(SearchActions.updateDabResultRating, { id: this.id, rating: data });
+            } else if (this.referer === 'bookmarks') {
+                this.$store.dispatch(BookmarksActions.updateResultRating, { id: this.id, rating: data });
+            }
+        }
+        LogService.logElementClick(null, null, this.id, null, 'Send rating', null, null, null);
+        PopupCloseService.closePopup('rating');
+    }
+
+    private mounted() {
+        this.comment = (this.userComment ? this.userComment : '');
+        this.score = this.userScore;
+        LogService.logElementClick(null, null, this.id, null, 'Show comments', null, null, null);
+    }
+}
+</script>
+
+<style lang="scss">
+.dab-result-rating {
+    padding: 30px 25px;
+
+    &__comment,
+    &__rating {
+        label {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__comment {
+        margin-bottom: 20px;
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            border: 2px solid $grey;
+            border-radius: 7px;
+            resize: none;
+            outline: 0;
+            padding: 5px;
+        }
+    }
+
+    &__stars {
+        display: inline-flex;
+        flex-direction: row-reverse;
+
+        &:not(:hover) {
+            .dab-result-rating__star.active {
+                .icomoon-star {
+                    display: block;
+                }
+
+                &~div {
+                    .icomoon-star {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+
+    &__star {
+        position: relative;
+        min-height: 25px;
+        min-width: 25px;
+        display: block;
+        cursor: pointer;
+
+        &:hover {
+            .icomoon-star {
+                display: block;
+            }
+
+            &~div {
+                .icomoon-star {
+                    display: block;
+                }
+            }
+        }
+
+        i {
+            font-size: 25px;
+            margin-right: 5px;
+        }
+
+        .icomoon-star {
+            color: $yellow;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+    }
+
+    &__user-comment {
+        margin-top: 40px;
+
+        .dab-result-rating__stars {
+            i {
+                font-size: 17px;
+            }
+        }
+    }
+}
+</style>

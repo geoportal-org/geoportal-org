@@ -8,15 +8,18 @@ import { LayerTypes } from '@/interfaces/LayerTypes'
 import LayersUtils from '@/services/map/layer-utils'
 import MapCoordinatesUtils from '@/services/map/coordinates-utils'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
-import { Timers } from '@/data/timers'
-import { AppVueObj } from '@/data/global'
+import { Timers } from '~/data/timers'
+import { AppVueObj } from '~/data/global'
 import { GeneralGetters } from '@/store/general/general-getters'
 import { MapGetters } from './map-getters'
 
-// @ts-ignore
-const ol = Vue.ol
+declare global {
+    interface Window {
+        geossMap: Map
+    }
+}
 
-const state = {
+const state = () => ({
     boxAccessToken:
         'pk.eyJ1IjoidXJoZW4xMiIsImEiOiJjazJnNm95ZWMwbTk2M21zNXJ5b3BvaXU3In0.xkKCRxWyUIEkyQ9ftAYB5w',
     googleMapsApiKey: '',
@@ -52,9 +55,9 @@ const state = {
     progressBarLoaded: 0,
     progressBarPercentage: 0,
     progressBarEnable: false,
-}
+})
 
-const initialState = JSON.parse(JSON.stringify(state))
+const initialState = JSON.parse(JSON.stringify(state()))
 
 let padding = [30, 30, 30, 30]
 
@@ -69,7 +72,7 @@ const getters = {
         return state.googleMapsApiKey
     },
     map: (state: any) => {
-        return state.map
+        return window.geossMap
     },
     mapTooltip: (state: any) => {
         return state.mapTooltip
@@ -81,7 +84,10 @@ const getters = {
         return state.initialZoom
     },
     center: (state: any) => {
-        return ol && ol.proj.transform(state.center, 'EPSG:4326', 'EPSG:3857')
+        return (
+            AppVueObj.ol &&
+            AppVueObj.ol.proj.transform(state.center, 'EPSG:4326', 'EPSG:3857')
+        )
     },
     isMapConf: (state: any) => {
         return state.isMapConf
@@ -176,24 +182,26 @@ const mutations = {
         if (tileToApply) {
             state.activeLayerTileId = tileId
         }
-        if (state.map && tileToApply) {
+        if (window.geossMap && tileToApply) {
             for (const prop of Object.keys(LayerTilesService)) {
                 const tile = LayerTilesService[prop]
                 if (tile.id !== tileId) {
                     const layers = tile.getLayerTile()
                     if (layers.constructor !== Array) {
-                        state.map.removeLayer(layers)
+                        window.geossMap.removeLayer(layers)
                     } else {
-                        layers.map((layer) => state.map.removeLayer(layer))
+                        layers.map((layer) =>
+                            window.geossMap.removeLayer(layer)
+                        )
                     }
                 }
             }
 
             const layers = tileToApply.getLayerTile()
             if (layers.constructor !== Array) {
-                state.map.addLayer(layers)
+                window.geossMap.addLayer(layers)
             } else {
-                layers.map((layer) => state.map.addLayer(layer))
+                layers.map((layer) => window.geossMap.addLayer(layer))
             }
         }
     },
@@ -273,8 +281,8 @@ const mutations = {
 
         state.layers.push(newLayer)
 
-        if (state.map) {
-            state.map.addLayer(layer)
+        if (window.geossMap) {
+            window.geossMap.addLayer(layer)
         }
     },
     changeLayerVisibility(
@@ -314,8 +322,8 @@ const mutations = {
             (layer: { id: string }) => layer.id === id
         )
         if (layerIndex !== -1) {
-            if (state.map) {
-                state.map.removeLayer(state.layers[layerIndex].value)
+            if (window.geossMap) {
+                window.geossMap.removeLayer(state.layers[layerIndex].value)
             }
             state.layers.splice(layerIndex, 1)
         }
@@ -347,7 +355,7 @@ const mutations = {
         }
     },
     centerMap(state: any, { W, S, E, N }: MapCoordinate) {
-        if (state.map) {
+        if (window.geossMap) {
             const longitudes = MapCoordinatesUtils.denormalizeLongitude(W, E)
             let denormalizedW: number = longitudes[0]
             let denormalizedE: number = longitudes[1]
@@ -368,9 +376,9 @@ const mutations = {
                 denormalizedE,
                 N,
             ]
-            extent = ol.extent.applyTransform(
+            extent = AppVueObj.ol.extent.applyTransform(
                 extent,
-                ol.proj.getTransform('EPSG:4326', 'EPSG:3857')
+                AppVueObj.ol.proj.getTransform('EPSG:4326', 'EPSG:3857')
             ) as [number, number, number, number]
 
             let aoiPaddingLeft = 30
@@ -408,7 +416,7 @@ const mutations = {
             }
             padding = [30, aoiPaddingRight, 30, aoiPaddingLeft]
 
-            state.map.getView().fit(extent, {
+            window.geossMap.getView().fit(extent, {
                 padding,
                 duration: Timers.fitExtent,
             })
@@ -432,8 +440,13 @@ const actions = {
             value,
         })
     },
-    setMap(context: any, value: Map | null) {
-        return context.commit('setStateProp', { prop: 'map', value })
+    setMap(context: any, value: Map) {
+        window['geossMap'] = value
+        return
+        return context.commit('setStateProp', {
+            prop: 'map',
+            value,
+        })
     },
     setMapTooltip(context: any, value: Overlay | null) {
         return context.commit('setStateProp', { prop: 'mapTooltip', value })
