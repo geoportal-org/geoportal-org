@@ -31,6 +31,6 @@ public class RevisionInfoRevisionListener implements RevisionListener {
                 .orElse("unknown");
 
         revisionInfo.setUsername(username);
-        log.info("revisionEntity:{}", revisionInfo);
+        log.debug("revisionEntity:{}", revisionInfo);
     }
 }
