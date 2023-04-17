@@ -11,6 +11,7 @@ ENV NODE_ENV=production
 COPY . .
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ls -alh /
 
 RUN npm install --production
 #RUN npm run build
