@@ -335,7 +335,6 @@ uat_remove_all:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Removing uat environment";
-    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
     - echo "Removing dmz services and data"
     - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm uat && docker system prune -f"
     - echo "Removing lan services and data"
