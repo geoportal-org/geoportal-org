@@ -24,7 +24,9 @@ import java.util.stream.Stream;
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.personaldata.searches.repository")
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.personaldata.searches.controller",
                 "com.eversis.esa.geoss.personaldata.searches.event",
+                "com.eversis.esa.geoss.personaldata.searches.service",
         }
 )
 @Configuration(proxyBeanMethods = false)

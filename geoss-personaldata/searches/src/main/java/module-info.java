@@ -24,6 +24,7 @@ module geoss.personaldata.searches {
     requires spring.data.commons;
     requires spring.data.jpa;
     requires spring.data.rest.core;
+    requires spring.data.rest.webmvc;
     requires spring.hateoas;
     requires spring.security.core;
     requires spring.tx;

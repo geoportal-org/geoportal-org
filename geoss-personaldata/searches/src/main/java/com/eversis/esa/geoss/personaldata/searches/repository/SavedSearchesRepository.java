@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.personaldata.searches.repository;
 
 import com.eversis.esa.geoss.personaldata.searches.domain.SavedSearches;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,9 @@ import java.util.Optional;
 @Tag(name = "saved-searches")
 public interface SavedSearchesRepository extends JpaRepository<SavedSearches, Long> {
 
+    @Operation(
+            description = "Get saved searches by id.",
+            summary = "Get saved searches by id.")
     @PostAuthorize("returnObject.isEmpty() or returnObject.orElse(null)?.user == authentication.name"
             + " or hasAnyRole('SAVED_SEARCHES_READER', 'SAVED_SEARCHES_REMOVER', 'ADMIN')")
     @Override
@@ -33,6 +37,9 @@ public interface SavedSearchesRepository extends JpaRepository<SavedSearches, Lo
      * @param pageable the pageable
      * @return the page
      */
+    @Operation(
+            description = "Get current logged user saved searches.",
+            summary = "Get current logged user saved searches.")
     @RestResource(path = "current")
     @Query("select s from SavedSearches s where s.user = ?#{authentication.name}")
     Page<SavedSearches> findByCurrentUser(Pageable pageable);
@@ -44,6 +51,9 @@ public interface SavedSearchesRepository extends JpaRepository<SavedSearches, Lo
      * @param pageable the pageable
      * @return the page
      */
+    @Operation(
+            description = "Get user saved searches.",
+            summary = "Get user saved searches.")
     @PreAuthorize("#user == authentication.name or hasAnyRole('SAVED_SEARCHES_READER', 'ADMIN')")
     @RestResource(path = "byUser")
     Page<SavedSearches> findByUser(String user, Pageable pageable);
