@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,8 +87,26 @@ public class RepositoryServiceImpl implements RepositoryService {
         Path path = Paths.get(removedfolder.getPath());
         Path removeDirectory = rootDirectory.resolve(path).resolve(String.valueOf(id));
         FileSystemUtils.deleteRecursively(removeDirectory.toFile());
-        folderRepository.deleteById(id);
+        deleteDocumentsAndFoldersRecursively(id);
         log.info("Removed folder at path {}", removeDirectory);
+    }
+
+    @Transactional
+    public void deleteDocumentsAndFoldersRecursively(Long folderId) {
+        Folder folder = folderRepository.findById(folderId).orElse(null);
+        if (folder != null) {
+            log.debug("folder: {}", folder);
+            Pageable paging = PageRequest.of(0, Integer.MAX_VALUE);
+            Page<Folder> folderPage = folderRepository.findByParentFolderId(folderId.toString(), paging);
+            List<Folder> subFolders = folderPage.getContent();
+            log.debug("subFolders: {}", subFolders);
+            subFolders.forEach(subfolder -> deleteDocumentsAndFoldersRecursively(subfolder.getId()));
+            Page<Document> documentPage = documentRepository.findByFolderId(folderId.toString(), paging);
+            List<Document> documents = documentPage.getContent();
+            log.debug("documents: {}", documents);
+            documents.forEach(document -> documentRepository.delete(document));
+            folderRepository.delete(folder);
+        }
     }
 
     @Override

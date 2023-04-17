@@ -31,6 +31,13 @@ public interface RepositoryService {
     void removeFolder(Long id);
 
     /**
+     * Delete documents and folders recursively.
+     *
+     * @param folderId the folder id
+     */
+    void deleteDocumentsAndFoldersRecursively(Long folderId);
+
+    /**
      * Add document document.
      *
      * @param document the document
