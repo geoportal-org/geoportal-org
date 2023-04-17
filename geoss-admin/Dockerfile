@@ -6,11 +6,16 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-admin"
 
-COPY . .
+ENV NODE_ENV=production
 
-RUN npm install
-RUN npm run build
+COPY . .
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+RUN npm install --production
+#RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD [ "npm", "run", "start" ]
