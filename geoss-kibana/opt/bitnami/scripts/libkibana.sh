@@ -116,7 +116,7 @@ kibana_initialize() {
             kibana_conf_set "pid.file" "$KIBANA_PID_FILE"
             kibana_conf_set "server.host" "$KIBANA_HOST"
             kibana_conf_set "server.port" "$KIBANA_PORT_NUMBER" "int"
-            kibana_conf_set "server.basePath" "/geoss/kibana"
+            kibana_conf_set "server.basePath" "/kibana"
             kibana_conf_set "server.rewriteBasePath" "false" "bool"
             kibana_conf_set "elasticsearch.hosts" "$(kibana_sanitize_elasticsearch_hosts "${KIBANA_ELASTICSEARCH_URL}" "${KIBANA_ELASTICSEARCH_PORT_NUMBER}")"
         else
