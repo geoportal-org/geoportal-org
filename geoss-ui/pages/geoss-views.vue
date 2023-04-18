@@ -222,7 +222,7 @@ export default {
         },
         async getViews() {
             SpinnerService.showSpinner();
-            await fetch('http://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?count=9999&token=' + this.token)
+            await fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?count=9999&token=' + this.token)
                 .then(r => r.json())
                 .then(r => this.availableViews = r.views)
                 .then(r => SpinnerService.hideSpinner())
@@ -232,7 +232,7 @@ export default {
             SpinnerService.showSpinner();
             const data = this.prepareViewData();
             try {
-                fetch('http://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?token=' + this.token, {
+                fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?token=' + this.token, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
@@ -267,7 +267,7 @@ export default {
             SpinnerService.showSpinner();
             const data = this.prepareViewData();
             try {
-                fetch('http://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views/' + data.id + '?token=' + this.token, {
+                fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views/' + data.id + '?token=' + this.token, {
                     method: 'PUT',
                     headers: {
                         "Content-Type": "application/json",
@@ -299,7 +299,7 @@ export default {
         deleteView(viewData) {
             SpinnerService.showSpinner();
             try {
-                fetch('http://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views/' + viewData.id + '?token=' + this.token, {
+                fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views/' + viewData.id + '?token=' + this.token, {
                     method: 'DELETE',
                     headers: {
                         "Content-Type": "application/json",
