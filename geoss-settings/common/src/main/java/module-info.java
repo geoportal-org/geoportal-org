@@ -4,6 +4,7 @@ module geoss.settings.common {
     exports com.eversis.esa.geoss.settings.common.hateoas;
     exports com.eversis.esa.geoss.settings.common.model;
     exports com.eversis.esa.geoss.settings.common.properties;
+    exports com.eversis.esa.geoss.settings.common.support;
     exports com.eversis.esa.geoss.settings.common.web;
 
     exports com.eversis.esa.geoss.settings.common.configuration to spring.beans, spring.boot, spring.context;

@@ -50,8 +50,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "catalogs")
 public class CatalogController {
 
-    private static final String LINK_HEADER = "Link";
-
     private final CatalogService catalogService;
 
     private final PageMapper pageMapper;
@@ -73,7 +71,7 @@ public class CatalogController {
         }
         HttpHeaders headers = new HttpHeaders();
         Links links = Links.of(catalogOptionsLinks());
-        headers.add(LINK_HEADER, links.toString());
+        headers.add(HttpHeaders.LINK, links.toString());
         return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
     }
 
@@ -131,7 +129,7 @@ public class CatalogController {
         }
         HttpHeaders headers = new HttpHeaders();
         Links links = Links.of(catalogOptionLinks(catalogOptionModel));
-        headers.add(LINK_HEADER, links.toString());
+        headers.add(HttpHeaders.LINK, links.toString());
         return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
     }
 

@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.settings.system.domain.ApiSettings;
 import com.eversis.esa.geoss.settings.system.domain.ApiSettingsKey;
 import com.eversis.esa.geoss.settings.system.domain.ApiSettingsSet;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,9 @@ public interface ApiSettingsRepository extends JpaRepository<ApiSettings, Long> 
      * @param key the key
      * @return the optional
      */
+    @Operation(
+            description = "Get api settings by set and key.",
+            summary = "Get api settings by set and key.")
     @RestResource(path = "setting")
     Optional<ApiSettings> findBySetAndKey(@Param("set") ApiSettingsSet set, @Param("key") ApiSettingsKey key);
 
@@ -37,6 +41,9 @@ public interface ApiSettingsRepository extends JpaRepository<ApiSettings, Long> 
      * @param set the set
      * @return the list
      */
+    @Operation(
+            description = "Get api settings by set.",
+            summary = "Get api settings by set.")
     @RestResource(path = "settings")
     List<ApiSettings> findBySet(@Param("set") @NotNull ApiSettingsSet set);
 }

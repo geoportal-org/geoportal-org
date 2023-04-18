@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import java.util.IllformedLocaleException;
 
 /**
  * The type Rest exception handler.
@@ -36,6 +37,17 @@ import jakarta.validation.ConstraintViolationException;
                 RepositoryRestResource.class
         })
 public class RestExceptionHandler {
+
+    /**
+     * Handle unsupported locale exception response entity.
+     *
+     * @param illformedLocaleException the illformed locale exception
+     * @return the response entity
+     */
+    @ExceptionHandler
+    ResponseEntity<?> handleUnsupportedLocaleException(IllformedLocaleException illformedLocaleException) {
+        return response(HttpStatus.BAD_REQUEST, new HttpHeaders(), null);
+    }
 
     /**
      * Handle conversion failed exception response entity.
@@ -54,7 +66,7 @@ public class RestExceptionHandler {
     }
 
     /**
-     * Handle not found response entity.
+     * Handle entity not found exception response entity.
      *
      * @param entityNotFoundException the entity not found exception
      * @return the response entity
@@ -63,7 +75,6 @@ public class RestExceptionHandler {
     ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException entityNotFoundException) {
         return response(HttpStatus.NOT_FOUND, new HttpHeaders(), null);
     }
-
 
     /**
      * Handle repository constraint violation exception response entity.

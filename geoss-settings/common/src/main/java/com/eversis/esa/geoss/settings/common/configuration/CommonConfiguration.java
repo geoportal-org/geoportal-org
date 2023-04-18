@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
         basePackages = {
                 "com.eversis.esa.geoss.settings.common.event",
                 "com.eversis.esa.geoss.settings.common.constraintvalidators",
-                "com.eversis.esa.geoss.settings.common.hateoas"
+                "com.eversis.esa.geoss.settings.common.hateoas",
+                "com.eversis.esa.geoss.settings.common.support"
         }
 )
 @Configuration(proxyBeanMethods = false)

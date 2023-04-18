@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.settings.system.domain.WebSettings;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsKey;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,9 @@ public interface WebSettingsRepository extends JpaRepository<WebSettings, Long> 
      * @param key the key
      * @return the optional
      */
+    @Operation(
+            description = "Get web settings by set and key.",
+            summary = "Get web settings by set and key.")
     @RestResource(path = "setting")
     Optional<WebSettings> findBySetAndKey(@Param("set") WebSettingsSet set, @Param("key") WebSettingsKey key);
 
@@ -37,6 +41,9 @@ public interface WebSettingsRepository extends JpaRepository<WebSettings, Long> 
      * @param set the set
      * @return the list
      */
+    @Operation(
+            description = "Get web settings by set.",
+            summary = "Get web settings by set.")
     @RestResource(path = "settings")
     List<WebSettings> findBySet(@Param("set") @NotNull WebSettingsSet set);
 }

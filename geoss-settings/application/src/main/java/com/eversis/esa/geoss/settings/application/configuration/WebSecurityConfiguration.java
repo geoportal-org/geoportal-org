@@ -160,12 +160,12 @@ public class WebSecurityConfiguration {
     ) throws Exception {
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.httpBasic();
-        http.formLogin();
         if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2Login();
             http.oauth2Client();
             http.logout().logoutSuccessHandler(oidcLogoutSuccessHandler.getIfAvailable());
         } else {
+            http.formLogin();
             http.rememberMe().tokenRepository(persistentTokenRepository);
             http.logout();
         }

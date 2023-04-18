@@ -1,21 +1,26 @@
 package com.eversis.esa.geoss.settings.instance.domain;
 
 import com.eversis.esa.geoss.settings.common.constraints.AvailableLocale;
+import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
 import com.eversis.esa.geoss.settings.common.domain.AuditableEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -36,12 +41,10 @@ import java.util.Map;
  * The type Tag.
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Audited
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Tag extends AuditableEntity {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,4 +93,10 @@ public class Tag extends AuditableEntity {
     @MapKeyColumn(name = "locale")
     @Column(name = "description")
     private Map<@AvailableLocale Locale, String> description;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    @JsonUnwrapped
+    @NotAudited
+    @Embedded
+    private AuditableEmbeddable auditable = new AuditableEmbeddable();
 }

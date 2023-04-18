@@ -4,7 +4,7 @@ import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 import com.eversis.esa.geoss.settings.common.model.VersionedModel;
 import com.eversis.esa.geoss.settings.common.properties.GeossProperties;
 import com.eversis.esa.geoss.settings.common.web.ETagHeader;
-import com.eversis.esa.geoss.settings.common.web.ModifiedHeader;
+import com.eversis.esa.geoss.settings.common.web.HttpHeadersUtil;
 import com.eversis.esa.geoss.settings.system.domain.RegionalSettings;
 import com.eversis.esa.geoss.settings.system.domain.RegionalSettingsKey;
 import com.eversis.esa.geoss.settings.system.model.RegionalSettingsModel;
@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
@@ -201,12 +200,12 @@ public class RegionalSettingsController {
         VersionedModel versionedModel = regionalSettingsModel.getVersioned();
         AuditableModel auditableModel = regionalSettingsModel.getAuditable();
 
-        HttpHeaders responseHeaders = responseHeaders(versionedModel, auditableModel);
+        HttpHeaders responseHeaders = HttpHeadersUtil.responseHeaders(versionedModel, auditableModel);
         if (HttpMethod.PUT.equals(httpMethod) || HttpMethod.PATCH.equals(httpMethod)) {
             addLocationHeader(responseHeaders, regionalSettingsModel.getId());
         }
 
-        return isNotModified(versionedModel, auditableModel, httpMethod, requestHeaders) //
+        return HttpHeadersUtil.isNotModified(versionedModel, auditableModel, httpMethod, requestHeaders) //
                 ? new ResponseEntity<>(responseHeaders, HttpStatus.NOT_MODIFIED) //
                 : new ResponseEntity<>(
                         EntityModel.of(regionalSettingsModel, regionalSettingsLinks(regionalSettingsModel)),
@@ -214,38 +213,16 @@ public class RegionalSettingsController {
                 ;
     }
 
-    private HttpHeaders responseHeaders(VersionedModel versionedModel, AuditableModel auditableModel) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        Optional.ofNullable(versionedModel)
-                .map(VersionedModel::getVersion)
-                .map(version -> "\"" + version + "\"")
-                .ifPresent(responseHeaders::setETag);
-        Optional.ofNullable(auditableModel)
-                .map(AuditableModel::getLastModifiedDate)
-                .ifPresent(responseHeaders::setLastModified);
-        return responseHeaders;
-    }
-
     private void addLocationHeader(HttpHeaders headers, Object id) {
         Link link = entityLinks.linkToItemResource(RegionalSettings.class, id);
         headers.setLocation(link.withSelfRel().toUri());
-    }
-
-    private boolean isNotModified(VersionedModel versionedModel, AuditableModel auditableModel, HttpMethod httpMethod,
-            HttpHeaders requestHeaders) {
-
-        ETagHeader etagHeader = HttpMethod.GET.equals(httpMethod) ? ETagHeader.fromIfNoneMatch(requestHeaders)
-                : ETagHeader.fromIfMatch(requestHeaders);
-        ModifiedHeader modifiedHeader = ModifiedHeader.fromIfModifiedSince(requestHeaders);
-
-        return etagHeader.matches(versionedModel) && modifiedHeader.isObjectStillValid(auditableModel);
     }
 
     private List<Link> regionalSettingsLinks(RegionalSettingsModel regionalSettings) {
         if (regionalSettings == null) {
             return Collections.emptyList();
         }
-        return Arrays.asList(
+        return List.of(
                 entityLinks.linkToItemResource(RegionalSettings.class, regionalSettings.getId())
         );
     }
