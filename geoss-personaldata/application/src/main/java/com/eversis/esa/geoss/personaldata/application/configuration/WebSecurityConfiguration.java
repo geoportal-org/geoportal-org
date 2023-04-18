@@ -124,6 +124,10 @@ public class WebSecurityConfiguration {
                 .requestMatchers(basePath + "/saved-searches/**")
                 .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN")
 
+                .requestMatchers(HttpMethod.GET, basePath + "/surveys/**").hasAnyRole("SURVEY_READER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, basePath + "/surveys/**").hasAnyRole("SURVEY_REMOVER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, basePath + "/surveys/**").permitAll()
+
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.httpBasic();

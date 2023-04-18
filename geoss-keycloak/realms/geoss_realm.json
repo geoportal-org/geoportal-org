@@ -504,26 +504,8 @@
                     "attributes": {}
                 },
                 {
-                    "id": "47512646-a12d-4f83-9005-fba9aa3fba16",
-                    "name": "highlighted_searches_viewer",
-                    "description": "",
-                    "composite": false,
-                    "clientRole": true,
-                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
-                    "attributes": {}
-                },
-                {
-                    "id": "e34cb26e-67a1-4c9b-a9aa-84ca6e19d36e",
-                    "name": "comment_remover",
-                    "description": "",
-                    "composite": false,
-                    "clientRole": true,
-                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
-                    "attributes": {}
-                },
-                {
-                    "id": "792a727d-dd0e-495a-a01a-24c9a1ab0acc",
-                    "name": "highlighted_searches_remover",
+                    "id": "e4de663b-7c0d-4491-a9d6-23ddb4a9dd46",
+                    "name": "survey_reader",
                     "description": "",
                     "composite": false,
                     "clientRole": true,
@@ -578,6 +560,51 @@
                 {
                     "id": "c42036a1-a101-460d-af69-ab20aef0acb9",
                     "name": "saved_searches_manager",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "47512646-a12d-4f83-9005-fba9aa3fba16",
+                    "name": "highlighted_searches_viewer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "e34cb26e-67a1-4c9b-a9aa-84ca6e19d36e",
+                    "name": "comment_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "792a727d-dd0e-495a-a01a-24c9a1ab0acc",
+                    "name": "highlighted_searches_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "c2b02cd5-6ae0-4cde-9a73-533518dd7977",
+                    "name": "survey_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "5fb9b2e1-f29e-40e6-ad79-21a169dfa59e",
+                    "name": "survey_remover",
                     "description": "",
                     "composite": false,
                     "clientRole": true,
@@ -899,7 +926,10 @@
                 "geoss-personaldata": [
                     "comment_writer",
                     "saved_searches_reader",
+                    "survey_writer",
+                    "survey_remover",
                     "highlighted_searches_reader",
+                    "survey_reader",
                     "comment_reader",
                     "highlighted_searches_writer",
                     "saved_searches_remover",
@@ -946,6 +976,10 @@
                     "view_remover",
                     "view_writer",
                     "layer_reader"
+                ],
+                "geoss-personaldata": [
+                    "survey_writer",
+                    "survey_reader"
                 ]
             },
             "subGroups": []
@@ -1033,9 +1067,9 @@
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
-        "totpAppGoogleName",
+        "totpAppMicrosoftAuthenticatorName",
         "totpAppFreeOTPName",
-        "totpAppMicrosoftAuthenticatorName"
+        "totpAppGoogleName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
