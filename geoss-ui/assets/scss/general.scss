@@ -43,6 +43,7 @@
     background-color: $white-transparent;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 
     @media (max-width: $breakpoint-lg) {
         width: calc(100% - 10px);
