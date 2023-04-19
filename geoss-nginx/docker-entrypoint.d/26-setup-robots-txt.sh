@@ -6,7 +6,7 @@ if [ "${DEPLOY_ENV}" = "uat" ]; then
     return 200 "User-agent: *\\nDisallow: /\\n";
   }'
   mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###ROBOTS_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
+  awk -v r="${robots_conf}" '{gsub(/###ROBOTS_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
   rm /etc/nginx/conf.d/cms.conf.old
 else
   echo "Skipping robots.txt configuration"
