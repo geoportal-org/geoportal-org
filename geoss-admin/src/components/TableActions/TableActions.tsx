@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import { ReactNode, useState, Fragment, useContext } from "react";
 import { Button, Flex, useDisclosure, Text, Divider } from "@chakra-ui/react";
 import { Modal, TextContent } from "@/components";
-import { ContentService, DefaultLayerService, PageService } from "@/services/api";
-import { DefaultLayerContext } from "@/context";
+import { ContentService, DefaultLayerService, PageService, TutorialTagsService } from "@/services/api";
+import { DefaultLayerContext, TutorialTagsContext } from "@/context";
 import { tableActionsBtns } from "@/data";
 import { ModalAction, TableActionsProps, TableActionsSource, TableActionsType, ToastStatus } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
@@ -21,12 +21,14 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     const { showToast } = useCustomToast();
     const router = useRouter();
     const { onLayerEditAction } = useContext(DefaultLayerContext);
+    const { onTagEditAction } = useContext(TutorialTagsContext);
     const actionsBtns = tableActionsBtns.filter(({ source }) => source.includes(actionsSource));
 
     const actionBtnClick = {
         [TableActionsSource.PAGES]: (actionName: TableActionsType) => onPagesAction(actionName),
         [TableActionsSource.WEBSITE]: (actionName: TableActionsType) => onContentsAction(actionName),
         [TableActionsSource.LAYER]: (actionName: TableActionsType) => onLayersAction(actionName),
+        [TableActionsSource.TUTORIAL]: (actionName: TableActionsType) => onTutorialTagsAction(actionName),
     };
 
     const onPagesAction = (actionName: TableActionsType) => {
@@ -66,10 +68,14 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                 description: `Page ${item.title} (ID: ${itemId}) has been deleted`,
             });
         } catch (error) {
-            error instanceof Response &&
+            const err = error as { errorInfo: any; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            errorStatus &&
                 showToast({
                     title: "Error occured",
-                    description: `${error.status}`,
+                    description: `${errorStatus}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -112,7 +118,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     };
 
     const deleteContent = async () => {
-        if (!("content" in item)) {
+        if (!("title" in item)) {
             return;
         }
 
@@ -125,10 +131,14 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                 description: `Content ${item.title} (ID: ${itemId}) has been deleted`,
             });
         } catch (error) {
-            error instanceof Response &&
+            const err = error as { errorInfo: any; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            errorStatus &&
                 showToast({
                     title: "Error occured",
-                    description: `${error.status}`,
+                    description: `${errorStatus}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -178,6 +188,57 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
             showToast({
                 title: translate("general.error"),
                 description: translate("pages.layer.delete-error", { title: item.name, itemId }),
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
+
+    const onTutorialTagsAction = (actionName: TableActionsType) => {
+        if (!("name" in item)) {
+            return;
+        }
+
+        switch (actionName) {
+            case TableActionsType.DELETE:
+                console.log(item);
+                setModalContent({
+                    header: translate("pages.tags.delete-tag-title"),
+                    body: (
+                        <Text py={4}>
+                            <TextContent id="pages.tags.delete-tag-body" title={item.name} />
+                        </Text>
+                    ),
+                    actions: setDecisionModalActions(
+                        async () => await deleteTag(),
+                        () => onCloseModal()
+                    ),
+                });
+                onOpenModal();
+                break;
+            case TableActionsType.EDIT:
+                onTagEditAction(+itemId);
+                break;
+        }
+    };
+
+    const deleteTag = async () => {
+        if (!("name" in item)) {
+            return;
+        }
+
+        try {
+            await TutorialTagsService.deleteTag(+itemId);
+            onDeleteAction();
+            onCloseModal();
+            showToast({
+                title: translate("general.deleted"),
+                description: translate("pages.tags.delete-confirmation", { title: item.name }),
+            });
+        } catch (e) {
+            showToast({
+                title: translate("general.error"),
+                description: translate("pages.tags.delete-error", { title: item.name }),
+                status: ToastStatus.ERROR,
             });
         }
     };

@@ -5,6 +5,7 @@ export type { ILayer, ILayerList, ILayerData } from "./defaultLayer";
 export type { ILink, IPagination, IResponseLinks, IErrorObject, IErrorInformation } from "./commons";
 export type { IMenuItem, IMenuList, IMenuItemData, IFoundMenuList } from "./menu";
 export type { IPage, IPageData, IPageList } from "./page";
-export type { ITutorialTag, ITutorialTagList, ITutorialTagData } from "./tutorialTags";
+export type { ITutorialTag, ITutorialTagList, ITutorialTagData, ITutorialTagTranslated } from "./tutorialTags";
+export { TagType, TagPlacement } from "./tutorialTags";
 export type { IView, ISubView, IViewList, IViewData, ISubViewData } from "./views";
 export type { IWebSetting, IWebSettingsList, IWebSettingData } from "./webSettings";

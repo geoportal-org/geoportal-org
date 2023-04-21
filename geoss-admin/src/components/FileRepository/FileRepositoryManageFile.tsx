@@ -57,11 +57,11 @@ export const FileRepositoryManageFile = ({
                 description: "File title updated",
             });
         } catch (e) {
-            console.log(e);
-            const err = e as IErrorObject;
-            if (err && err.status && err.status === 417) {
-                showErrorInfo("not-unique-file-name");
-            }
+            const err = e as { errorInfo: IErrorObject; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
         }
     };
 
@@ -79,11 +79,11 @@ export const FileRepositoryManageFile = ({
                 description: `File ${addedFile.title} has been uploaded`,
             });
         } catch (e) {
-            console.log(e);
-            const err = e as IErrorObject;
-            if (err && err.status && err.status === 417) {
-                showErrorInfo("not-unique-file-name");
-            }
+            const err = e as { errorInfo: IErrorObject; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
         }
     };
 

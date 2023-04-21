@@ -8,4 +8,5 @@ export enum TableActionsSource {
     PAGES = "PAGES",
     WEBSITE = "WEBSITE",
     LAYER = "LAYER",
+    TUTORIAL = "TUTORIAL",
 }

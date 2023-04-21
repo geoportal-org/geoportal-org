@@ -88,8 +88,11 @@ export const DefaultLayerSettings = () => {
                 description: translate("pages.layer.layer-added", { title: name }),
             });
         } catch (e) {
-            console.log(e);
-            showErrorInfo("new-layer");
+            const err = e as { errorInfo: any; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name" : "new-layer");
         }
     };
 
@@ -104,8 +107,11 @@ export const DefaultLayerSettings = () => {
                 description: translate("pages.layer.layer-updated", { title: updatedLayer.name }),
             });
         } catch (e) {
-            console.log(e);
-            showErrorInfo("updated-layer");
+            const err = e as { errorInfo: any; errorStatus: number };
+            const { errorStatus, errorInfo } = err;
+            console.log(errorInfo);
+            console.log(errorStatus);
+            showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name-update" : "updated-layer");
         }
     };
 

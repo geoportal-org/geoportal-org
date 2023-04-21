@@ -35,9 +35,12 @@ export const fetcher = async ({
         return response.json();
     }
 
-    const errorResponse = await response.json();
-    // return Promise.reject({ errorInfo: errorResponse, status: response.status });
-    return Promise.reject(errorResponse);
+    const contentType = response.headers.get("content-type");
+    const errorResponse =
+        contentType && contentType.indexOf("application/json") !== -1 ? await response.json() : await response.text();
+
+    //return Promise.reject(errorResponse);
+    return Promise.reject({ errorInfo: errorResponse, errorStatus: response.status });
 };
 
 const setQueryParams = (queryParams: QueryParams): string =>

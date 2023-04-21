@@ -4,6 +4,7 @@ export { addFileForm } from "./addFileForm";
 export { addLayerForm } from "./addLayerForm";
 export { addMenuItemForm } from "./addMenuItemForm";
 export { addPageForm } from "./addPageForm";
+export { addTutorialTagForm } from "./addTutorialTagForm";
 export { apiSettingsForm } from "./apiSettingsForm";
 export { createFolderForm } from "./createFolderForm";
 export { editFileForm } from "./editFileForm";
