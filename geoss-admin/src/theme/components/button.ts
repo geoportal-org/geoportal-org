@@ -81,7 +81,6 @@ export const button: ComponentStyleConfig = {
             _hover: {
                 color: "brand.mainDark",
                 boxShadow: "none",
-                bg: "brand.darkSoft",
             },
         },
         geossFileItem: {

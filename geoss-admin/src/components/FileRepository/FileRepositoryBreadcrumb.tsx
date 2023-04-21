@@ -1,6 +1,4 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import { HomeIcon } from "../Icons";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { FileRepositoryBreadcrumProps } from "@/types";
 
@@ -10,16 +8,18 @@ export const FileRepositoryBreadcrumb = ({ breadcrumb, handleBreadcrumbClick }: 
     return (
         <Breadcrumb
             bg="brand.background"
-            borderRadius="primary"
             boxShadow="controlPanel"
+            borderRadius="primary"
             display="flex"
-            justifyContent="center"
-            listProps={{ flexWrap: "wrap", justifyContent: "center" }}
-            m={1}
+            justifyContent="flex-start"
+            listProps={{ flexWrap: "wrap", justifyContent: "flex-start" }}
             mb={6}
-            p={2}
-            separator={<ChevronRightIcon boxSize={4} />}
+            p={1}
+            separator="/"
             spacing={0.25}
+            position="sticky"
+            top={0}
+            zIndex={1}
         >
             {breadcrumb.map((item, idx) => {
                 const isLastItem = breadcrumb.length - 1 === idx;
@@ -28,11 +28,9 @@ export const FileRepositoryBreadcrumb = ({ breadcrumb, handleBreadcrumbClick }: 
                         <BreadcrumbLink
                             as={Button}
                             fontWeight={isLastItem ? "bold" : "normal"}
-                            iconSpacing="2px"
-                            leftIcon={idx === 0 ? <HomeIcon /> : null}
                             size="sm"
+                            minW="auto"
                             variant="geossBreadcrumb"
-                            _hover={{ textDecoration: "none" }}
                         >
                             {idx !== 0 ? item.folderTitle : translate("pages.file-repository.root-folder")}
                         </BreadcrumbLink>

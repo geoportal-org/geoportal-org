@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Field, useFormikContext, FormikValues } from "formik";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { chakraComponents } from "chakra-react-select";
 import { TextContent, TextEditor, Uploader } from "@/components";
 import { chakraSelectStyles } from "@/theme/commons";
 import { ValidationService } from "@/services";
@@ -27,6 +28,7 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
         selectSettings,
         isRequired,
         automaticFill,
+        isReadOnly,
     } = fieldData;
 
     const isDefaultField = inputType !== "select" && inputType !== "editor" && inputType !== "file";
@@ -108,6 +110,7 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                     as={fieldType}
                     validate={(value: string) => ValidationService.checkForErrors(fieldData, value)}
                     id={fieldName}
+                    isReadOnly={isReadOnly}
                     name={fieldName}
                     type={inputType || null}
                     borderColor="brand.dividerDark"
@@ -136,12 +139,19 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                     fontSize="sm"
                     hideSelectedOptions={false}
                     isMulti={selectSettings.isMultiselect}
-                    options={selectSettings.options}
+                    options={
+                        selectSettings.isTranslated
+                            ? selectSettings.options.map((option) => ({ ...option, label: translate(option.label) }))
+                            : selectSettings.options
+                    }
                     placeholder={placeholderId && translate(placeholderId)}
                     selectedOptionStyle="check"
                     size="sm"
                     useBasicStyles
                     variant="flushed"
+                    isReadOnly={isReadOnly}
+                    noOptionsMessage={() => translate("form.placeholders.no-options")}
+                    components={customSelectComponents(translate, selectSettings.isTranslated)}
                 />
             )}
             {isTextEditor && (
@@ -167,4 +177,19 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
             )}
         </FormControl>
     );
+};
+
+const customSelectComponents = (
+    translate: (id: string, values?: { [key: string]: any }) => any,
+    isTranslated: boolean = false
+): Partial<typeof chakraComponents> => {
+    // TBD components with translation for multi select
+
+    return {
+        SingleValue: ({ children, ...props }) => (
+            <chakraComponents.SingleValue {...props}>
+                {isTranslated ? translate(children as string) : children}
+            </chakraComponents.SingleValue>
+        ),
+    };
 };

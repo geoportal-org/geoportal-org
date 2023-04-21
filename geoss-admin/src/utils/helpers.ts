@@ -1,5 +1,6 @@
 import { FormikValues } from "formik";
 import { NodeModel } from "@minoru/react-dnd-treeview";
+import { SortingState, Table } from "@tanstack/react-table";
 import {
     BreadcrumbItem,
     ButtonVariant,
@@ -9,9 +10,9 @@ import {
     NestedMsgs,
     SelectSettings,
 } from "@/types";
-import { IContent, IDocument, IFolder, IMenuItem } from "@/types/models";
+import { IApiSetting, IContent, IDocument, IFolder, IMenuItem, IWebSetting } from "@/types/models";
 import { navSectionsUrls } from "@/data";
-import { SortingState } from "@tanstack/react-table";
+import { apiSettingsForm, webSettingsForm } from "@/data/forms";
 
 export const getActiveNavSection = (activeRoute: string): number => {
     const activeSectionIndex = navSectionsUrls.findIndex((section) => section.includes(activeRoute));
@@ -77,7 +78,7 @@ export const setDecisionModalActions = (confirmAction: () => void, cancelAction:
 
 export const setFormInitialValues = (formFields: FormField[]): FormikValues => {
     const initialValues: FormikValues = {};
-    formFields.forEach((field) => (initialValues[field.name] = ""));
+    formFields.forEach((field) => (initialValues[field.name] = field.defaultValue || ""));
     return initialValues;
 };
 
@@ -99,16 +100,21 @@ export const areObjectsEqual = (objOne: any, objTwo: any): boolean =>
 export const generatePath = (breadcrumb: BreadcrumbItem[]): string =>
     breadcrumb.map((breadcrumb) => breadcrumb.folderId).join("/");
 
-export const createSelectContentsList = (contents: IContent[]): SelectSettings => {
-    const options = contents.map((content) => {
-        const contentId = getIdFromUrl(content._links.self.href);
+export const createSelectItemsList = (
+    items: IContent[] | IDocument[],
+    isMultiselect: boolean = false
+): SelectSettings => {
+    const options = items.map((item) => {
+        const isDocument = "extension" in item;
+        const itemId = getIdFromUrl(item._links.self.href);
+        const label = isDocument ? `${item.title} (${item.fileName})` : `${item.title} (ID: ${itemId})`;
         return {
-            label: `${content.title} (ID: ${contentId})`,
-            value: contentId,
+            label,
+            value: itemId,
         };
     });
     return {
-        isMultiselect: false,
+        isMultiselect,
         options,
     };
 };
@@ -160,6 +166,101 @@ export const setTableSorting = (sortingInfo: SortingState): { sort: string } => 
     return {
         sort: `${sortingProperty},${sortingDirection}`,
     };
+};
+
+export const getSelectedTableItemsIds = <T extends object>(table: Table<T>): number[] =>
+    table.getFilteredSelectedRowModel().rows.map((row) => +getIdFromUrl(row.getValue("id")));
+
+export const createWebSettingsKeyValues = (values: FormikValues): { set: string; key: string; value: string }[] => {
+    const keyValues: { set: string; key: string; value: string }[] = [];
+    webSettingsForm.forEach(({ set, data }) => {
+        data.forEach(({ name }) =>
+            keyValues.push({
+                set,
+                key: set !== "source" ? name : values[name],
+                value:
+                    set === "logo" && name === "source"
+                        ? `/contents/rest/document/${values[name]}/content`
+                        : values[name],
+            })
+        );
+    });
+    return keyValues;
+};
+
+export const createApiSettingsKeyValues = (values: FormikValues): { set: string; key: string; value: string }[] => {
+    const keyValues: { set: string; key: string; value: string }[] = [];
+    apiSettingsForm.forEach(({ set, data }) => {
+        data.forEach(({ name }) =>
+            keyValues.push({
+                set,
+                key: name,
+                value: values[name],
+            })
+        );
+    });
+    return keyValues;
+};
+
+export const setExistingWebSettingsKeyValues = (
+    values: IWebSetting[],
+    formFields: FormField[],
+    isFormInit: boolean = true
+): FormikValues => {
+    const existingValues: FormikValues = {};
+    formFields.forEach((field) => {
+        const webSetting = values.find(
+            (value) => (value.set === "source" && field.name === "defaultSource") || value.key === field.name
+        );
+        if (webSetting) {
+            existingValues[field.name] =
+                field.name !== "source" ? webSetting.value : webSetting.value.split("/").reverse()[1];
+        } else if (!webSetting && isFormInit) {
+            existingValues[field.name] = "";
+        }
+        if (isFormInit && field.defaultValue && !existingValues[field.name]) {
+            existingValues[field.name] = field.defaultValue;
+        }
+    });
+    return existingValues;
+};
+
+export const setExistingApiSettingsKeyValues = (
+    values: IApiSetting[],
+    formFields: FormField[],
+    isFormInit: boolean = true
+): FormikValues => {
+    const existingValues: FormikValues = {};
+    formFields.forEach((field) => {
+        const apiSetting = values.find((value) => value.key === field.name);
+        if (apiSetting) {
+            existingValues[field.name] = apiSetting.value;
+        } else if (!apiSetting && isFormInit) {
+            existingValues[field.name] = "";
+        }
+    });
+    return existingValues;
+};
+
+export const setFormValuesAsString = (values: FormikValues): FormikValues => {
+    const valuesAsString: FormikValues = {};
+    Object.keys(values).forEach((key) => (valuesAsString[key] = values[key].toString()));
+    return valuesAsString;
+};
+
+export const getKeyValueFormChanges = (
+    values: FormikValues,
+    savedValues: FormikValues
+): { newValues: string[]; changedValues: string[] } => {
+    const newValues = Object.keys(values)
+        .filter((key) => !savedValues[key])
+        .map((key) => key);
+
+    const changedValues = Object.keys(values)
+        .filter((key) => savedValues[key] && savedValues[key] !== values[key])
+        .map((key) => key);
+
+    return { newValues, changedValues };
 };
 
 // create folders & documents structure ready to create directory tree

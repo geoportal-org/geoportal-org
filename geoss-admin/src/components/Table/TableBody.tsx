@@ -19,6 +19,7 @@ export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
                                         gap={1}
                                         cursor={header.column.getCanSort() ? "pointer" : "auto"}
                                         onClick={header.column.getToggleSortingHandler()}
+                                        pl={header.id === "actions" ? "2.5" : "0"}
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
                                         {{

@@ -9,13 +9,20 @@ import {
     SortingState,
     RowSelectionState,
 } from "@tanstack/react-table";
-import { Checkbox } from "@chakra-ui/react";
-import { Table, MainContent, TableActions, Loader, TablePagination, TextInfo } from "@/components";
+import { Checkbox, Text, useDisclosure } from "@chakra-ui/react";
+import { Table, MainContent, TableActions, Loader, TablePagination, TextInfo, Modal, TextContent } from "@/components";
 import { ContentService } from "@/services/api";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { convertIsoDate, getIdFromUrl, setTableSorting } from "@/utils/helpers";
+import useCustomToast from "@/utils/useCustomToast";
+import {
+    convertIsoDate,
+    getIdFromUrl,
+    getSelectedTableItemsIds,
+    setDecisionModalActions,
+    setTableSorting,
+} from "@/utils/helpers";
 import { IContent } from "@/types/models";
-import { ButtonVariant, TableActionsSource } from "@/types";
+import { ButtonVariant, TableActionsSource, ToastStatus } from "@/types";
 import { initPagination, pagesRoutes } from "@/data";
 
 export const Contents = () => {
@@ -32,22 +39,20 @@ export const Contents = () => {
         pageSize: initPagination.size,
     });
     const [sorting, setSorting] = useState<SortingState>([]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { translate } = useFormatMsg();
+    const { showToast } = useCustomToast();
     const columnHelper = createColumnHelper<IContent>();
     const router = useRouter();
+    const decisionModalActions = setDecisionModalActions(
+        async () => await deleteSelectedContents(),
+        () => onClose()
+    );
 
     useEffect(() => {
         handlePaginationParamsChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex, pageSize, sorting]);
-
-    const pagination = useMemo(
-        () => ({
-            pageIndex,
-            pageSize,
-        }),
-        [pageIndex, pageSize]
-    );
 
     const handlePaginationParamsChange = async () => {
         try {
@@ -71,15 +76,34 @@ export const Contents = () => {
         }
     };
 
-    const navigateToAddContent = () => router.push(pagesRoutes.addContent);
-
-    const deleteAction = () => {
-        const deleteIds = table.getFilteredSelectedRowModel().rows.map((row) => +getIdFromUrl(row.getValue("id")));
-        console.log(deleteIds);
-        console.log(table.getFilteredSelectedRowModel());
+    const deleteSelectedContents = async () => {
+        try {
+            await ContentService.deleteContents({ ids: getSelectedTableItemsIds(table).join(",") });
+            handlePaginationParamsChange();
+            onClose();
+            showToast({
+                title: translate("general.deleted"),
+                description: translate("pages.contents.selected-deleted"),
+            });
+        } catch (e) {
+            console.log(e);
+            showToast({
+                title: translate("general.error"),
+                description: translate("information.error.loading"),
+                status: ToastStatus.ERROR,
+            });
+        }
     };
 
-    const deleteContent = () => handlePaginationParamsChange();
+    const navigateToAddContent = () => router.push(pagesRoutes.addContent);
+
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    );
 
     const rowData = useMemo(() => contentsList, [contentsList]);
 
@@ -134,7 +158,7 @@ export const Contents = () => {
                         itemId={getIdFromUrl(info.row.getValue("id"))}
                         item={info.row.original}
                         actionsSource={TableActionsSource.WEBSITE}
-                        onDeleteAction={deleteContent}
+                        onDeleteAction={handlePaginationParamsChange}
                     />
                 ),
             }),
@@ -170,7 +194,7 @@ export const Contents = () => {
             titleId: "pages.contents.delete-selected",
             variant: ButtonVariant.GHOST,
             color: "brand.cancel",
-            onClick: () => deleteAction(),
+            onClick: () => onOpen(),
             disabled: !table.getFilteredSelectedRowModel().rows.length,
         },
     ];
@@ -180,15 +204,36 @@ export const Contents = () => {
     }
 
     return (
-        <MainContent titleId="pages.contents.title" actions={headingActions}>
-            {totalElements ? (
-                <>
-                    <Table tableData={table} />
-                    <TablePagination tableData={table} isPageChange={isPageChange} />
-                </>
-            ) : (
-                <TextInfo id="information.info.no-contents" />
-            )}
-        </MainContent>
+        <>
+            <MainContent titleId="nav.contents.section.website" actions={headingActions}>
+                {totalElements ? (
+                    <>
+                        <Table tableData={table} />
+                        <TablePagination tableData={table} isPageChange={isPageChange} />
+                    </>
+                ) : (
+                    <TextInfo id="information.info.no-contents" />
+                )}
+            </MainContent>
+
+            <Modal
+                modalHeader={translate("pages.contents.delete-content-title")}
+                modalBody={
+                    <Text py={4}>
+                        <TextContent
+                            id={`pages.contents.${
+                                table.getFilteredSelectedRowModel().rows.length === 1
+                                    ? "delete-selected-single-info"
+                                    : "delete-selected-info"
+                            }`}
+                            itemId={getSelectedTableItemsIds(table).join(", ")}
+                        />
+                    </Text>
+                }
+                onModalClose={onClose}
+                isModalOpen={isOpen}
+                actions={decisionModalActions}
+            />
+        </>
     );
 };

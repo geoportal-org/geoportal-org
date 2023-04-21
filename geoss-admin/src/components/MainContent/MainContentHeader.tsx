@@ -1,8 +1,10 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { PrimaryButton, TextContent } from "@/components";
 import { MainContentHeaderProps } from "@/types";
 
-export const MainContentHeader = ({ titleId: headerTitleId, actions }: MainContentHeaderProps) => {
+export const MainContentHeader = ({ titleId: headerTitleId, actions, backPath }: MainContentHeaderProps) => {
     const renderHeaderActions = () =>
         actions?.map((action) => {
             const { titleId, ...rest } = action;
@@ -24,9 +26,31 @@ export const MainContentHeader = ({ titleId: headerTitleId, actions }: MainConte
                 py={2}
                 wrap="wrap"
             >
-                <Text as="h2" fontSize="lg" fontWeight="bold">
-                    <TextContent id={headerTitleId} />
-                </Text>
+                {backPath ? (
+                    <Flex align="center" gap={2}>
+                        <Link
+                            as={NextLink}
+                            alignItems="center"
+                            bg="brand.dark"
+                            borderRadius="50%"
+                            color="brand.mainLight"
+                            display="flex"
+                            h={7}
+                            href={backPath}
+                            justifyContent="center"
+                            w={7}
+                        >
+                            <ArrowLeftIcon />
+                        </Link>
+                        <Text as="h2" fontSize="lg" fontWeight="bold">
+                            <TextContent id={headerTitleId} />
+                        </Text>
+                    </Flex>
+                ) : (
+                    <Text as="h2" fontSize="lg" fontWeight="bold">
+                        <TextContent id={headerTitleId} />
+                    </Text>
+                )}
                 {actions && (
                     <Flex gap="4px" wrap="wrap">
                         {renderHeaderActions()}

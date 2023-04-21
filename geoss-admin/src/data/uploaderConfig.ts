@@ -1,7 +1,7 @@
 export const uploaderConfig = {
-    maxFiles: 1, // single file
+    maxFiles: 1, // accept only single file
     maxSize: 10485760, // up to 10MB per file
-    multiple: false, // single file selection from dialog
+    multiple: false, // single file selection from dialog window
     accept: {
         "application/jrxml": [".jrxml"],
         "application/json": [".map"],
@@ -42,5 +42,7 @@ export const uploaderConfig = {
         "text/xml": [".xml"],
         "video/mp4": [".mp4"],
         "video/x-flv": [".flv"],
-    }, // accepted files formats
+    }, // accepted files formats: mimeType: [extensions list]
 };
+
+export const acceptedLogoExtensions = ["jpeg", "jpg", "png", "svg"];

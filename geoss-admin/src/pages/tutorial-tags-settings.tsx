@@ -1,5 +1,6 @@
 import { NextPage } from "next";
+import { TutorialTagsSettings as TutorialTagsSettingsPage } from "@/components";
 
-const TutorialTagsSettings: NextPage = () => <div>Tutorial Tags Settings</div>;
+const TutorialTagsSettings: NextPage = () => <TutorialTagsSettingsPage />;
 
 export default TutorialTagsSettings;

@@ -12,4 +12,4 @@ export { navData, navSectionsUrls } from "./navData";
 export { pagesRoutes } from "./pagesRoutes";
 export { regExp } from "./regExp";
 export { tableActionsBtns } from "./tableActions";
-export { uploaderConfig } from "./uploaderConfig";
+export { uploaderConfig, acceptedLogoExtensions } from "./uploaderConfig";

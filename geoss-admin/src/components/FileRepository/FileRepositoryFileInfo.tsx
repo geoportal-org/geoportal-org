@@ -14,7 +14,7 @@ export const FileRepositoryFileInfo = ({ document }: FileRepositoryFileInfoProps
                 <SimpleGrid
                     key={info.labelId}
                     spacingX="15px"
-                    templateColumns={["2fr 3fr"]}
+                    templateColumns={["1fr 1fr"]}
                     bg={idx % 2 !== 0 ? "brand.darkSoft" : "brand.mainLight"}
                     p="5px"
                     borderRadius="primary"

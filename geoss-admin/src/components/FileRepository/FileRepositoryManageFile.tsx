@@ -4,11 +4,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import { PrimaryButton, Loader, FormField, TextContent } from "@/components";
 import { FileRepositoryService } from "@/services/api";
 import useCustomToast from "@/utils/useCustomToast";
+import useFormatMsg from "@/utils/useFormatMsg";
 import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { addFileForm, editFileForm } from "@/data/forms";
 import { scrollbarStyles } from "@/theme/commons";
-import { ButtonType, FileRepositoryManageFileProps } from "@/types";
-import { IDocument } from "@/types/models";
+import { ButtonType, FileRepositoryManageFileProps, ToastStatus } from "@/types";
+import { IDocument, IErrorObject } from "@/types/models";
 
 export const FileRepositoryManageFile = ({
     fileId,
@@ -21,6 +22,7 @@ export const FileRepositoryManageFile = ({
     const [isLoading, setIsLoading] = useState(true);
     const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(fileForm));
     const { showToast } = useCustomToast();
+    const { translate } = useFormatMsg();
 
     useEffect(() => {
         fileId ? getFileInfo(fileId) : setIsLoading(false);
@@ -55,7 +57,11 @@ export const FileRepositoryManageFile = ({
                 description: "File title updated",
             });
         } catch (e) {
-            console.error(e);
+            console.log(e);
+            const err = e as IErrorObject;
+            if (err && err.status && err.status === 417) {
+                showErrorInfo("not-unique-file-name");
+            }
         }
     };
 
@@ -74,6 +80,10 @@ export const FileRepositoryManageFile = ({
             });
         } catch (e) {
             console.log(e);
+            const err = e as IErrorObject;
+            if (err && err.status && err.status === 417) {
+                showErrorInfo("not-unique-file-name");
+            }
         }
     };
 
@@ -118,6 +128,13 @@ export const FileRepositoryManageFile = ({
             </PrimaryButton>
         </Flex>
     );
+
+    const showErrorInfo = (msgId: string) =>
+        showToast({
+            title: translate("general.error"),
+            description: translate(`information.error.${msgId}`),
+            status: ToastStatus.ERROR,
+        });
 
     if (isLoading) {
         return <Loader />;

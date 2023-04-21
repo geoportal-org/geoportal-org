@@ -6,13 +6,13 @@ import { FormField, Loader, MainContent, PrimaryButton, TextContent } from "@/co
 import { ContentService, PageService } from "@/services/api";
 import {
     areObjectsEqual,
-    createSelectContentsList,
+    createSelectItemsList,
     createTouchedForm,
     setExistingFormValues,
     setFormInitialValues,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
-import { initContentsPagination } from "@/data";
+import { initContentsPagination, pagesRoutes } from "@/data";
 import { addPageForm } from "@/data/forms";
 import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus } from "@/types";
 import { IPageData } from "@/types/models";
@@ -37,7 +37,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             const {
                 _embedded: { content },
             } = await ContentService.getContentList(initContentsPagination);
-            const selectContentsList = createSelectContentsList(content);
+            const selectContentsList = createSelectItemsList(content);
             setContentsList(() => selectContentsList);
             if (isEditMode) {
                 const id = router.query.id as string;
@@ -148,7 +148,10 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     }
 
     return (
-        <MainContent titleId={isEditMode ? "pages.manage-page.edit-title" : "pages.manage-page.add-title"}>
+        <MainContent
+            titleId={isEditMode ? "pages.manage-page.edit-title" : "pages.manage-page.add-title"}
+            backPath={pagesRoutes.page}
+        >
             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
                 <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
                     {(formikProps) => {

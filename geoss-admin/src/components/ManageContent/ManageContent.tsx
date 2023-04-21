@@ -6,18 +6,21 @@ import { FormField, Loader, MainContent, Modal, PrimaryButton, TextContent } fro
 import { ValidationService } from "@/services";
 import { ContentService } from "@/services/api";
 import { addContentForm } from "@/data/forms";
+import { pagesRoutes } from "@/data";
 import { IContentData } from "@/types/models";
 import { ManageContentProps, ButtonType, ButtonVariant, ToastStatus } from "@/types";
 import useCustomToast from "@/utils/useCustomToast";
+import useFormatMsg from "@/utils/useFormatMsg";
 import { areObjectsEqual, createTouchedForm, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 
 export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
-    const [modalContent, setModalContent] = useState<{ header: string; body: ReactNode }>();
+    const [modalBody, setModalBody] = useState<ReactNode>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addContentForm));
     const [contentId, setContentId] = useState<string>("");
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
     const router = useRouter();
+    const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
 
     useEffect(() => {
@@ -72,10 +75,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
     };
 
     const showContentPreview = (values: FormikValues) => {
-        setModalContent({
-            header: values.title || "xyz",
-            body: renderContentPreview(values.data),
-        });
+        setModalBody(renderContentPreview(values.data));
         onOpenModal();
     };
 
@@ -164,12 +164,14 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                         {
                             titleId: "pages.manage-content.preview",
                             onClick: () => showContentPreview(values),
+                            disabled: !!ValidationService.validateTextEditorContent(values),
                         },
                     ];
                     return (
                         <MainContent
                             titleId={isEditMode ? "pages.manage-content.edit-title" : "pages.manage-content.add-title"}
                             actions={headingActions}
+                            backPath={pagesRoutes.website}
                         >
                             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
                                 <form onSubmit={handleSubmit} noValidate>
@@ -183,11 +185,11 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             </Formik>
 
             <Modal
-                modalHeader={modalContent?.header}
-                modalBody={modalContent?.body}
+                modalHeader={translate("pages.contents.preview")}
+                modalBody={modalBody}
                 isModalOpen={isOpenModal}
                 onModalClose={onCloseModal}
-                size="6xl"
+                size="4xl"
             />
         </>
     );

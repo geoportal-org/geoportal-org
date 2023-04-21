@@ -12,6 +12,12 @@ export const input: ComponentStyleConfig = {
                 fontStyle: "italic",
                 opacity: 0.6,
             },
+            _readOnly: {
+                cursor: "not-allowed",
+                _focus: {
+                    borderColor: "brand.dividerDark",
+                },
+            },
         },
     },
 

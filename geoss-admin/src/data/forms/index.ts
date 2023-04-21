@@ -1,7 +1,10 @@
 export { addChildMenuItemForm } from "./addChildMenuItemForm";
 export { addContentForm } from "./addContentForm";
 export { addFileForm } from "./addFileForm";
+export { addLayerForm } from "./addLayerForm";
 export { addMenuItemForm } from "./addMenuItemForm";
 export { addPageForm } from "./addPageForm";
+export { apiSettingsForm } from "./apiSettingsForm";
 export { createFolderForm } from "./createFolderForm";
 export { editFileForm } from "./editFileForm";
+export { webSettingsForm } from "./webSettingsForm";

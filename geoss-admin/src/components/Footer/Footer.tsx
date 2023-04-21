@@ -12,6 +12,6 @@ export const Footer = () => (
         justify="flex-end"
         align="center"
     >
-        <Text>footer</Text>
+        <Text>&copy; {new Date().getFullYear()}</Text>
     </Flex>
 );

@@ -9,13 +9,20 @@ import {
     SortingState,
     RowSelectionState,
 } from "@tanstack/react-table";
-import { Checkbox } from "@chakra-ui/react";
-import { Loader, MainContent, Table, TableActions, TablePagination, TextInfo } from "@/components";
+import { Checkbox, Text, useDisclosure } from "@chakra-ui/react";
+import { Loader, MainContent, Modal, Table, TableActions, TablePagination, TextContent, TextInfo } from "@/components";
 import { PageService } from "@/services/api";
 import { initPagination, pagesRoutes } from "@/data";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { convertIsoDate, getIdFromUrl, setTableSorting } from "@/utils/helpers";
-import { ButtonVariant, MainContentAction, TableActionsSource } from "@/types";
+import useCustomToast from "@/utils/useCustomToast";
+import {
+    convertIsoDate,
+    getIdFromUrl,
+    getSelectedTableItemsIds,
+    setDecisionModalActions,
+    setTableSorting,
+} from "@/utils/helpers";
+import { ButtonVariant, MainContentAction, TableActionsSource, ToastStatus } from "@/types";
 import { IPage } from "@/types/models";
 
 export const Pages = () => {
@@ -32,9 +39,15 @@ export const Pages = () => {
         pageSize: initPagination.size,
     });
     const [sorting, setSorting] = useState<SortingState>([]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { translate } = useFormatMsg();
+    const { showToast } = useCustomToast();
     const columnHelper = createColumnHelper<IPage>();
     const router = useRouter();
+    const decisionModalActions = setDecisionModalActions(
+        async () => await deleteSelectedPages(),
+        () => onClose()
+    );
 
     useEffect(() => {
         handlePaginationParamsChange();
@@ -71,9 +84,26 @@ export const Pages = () => {
         }
     };
 
-    const navigateToAddPage = () => router.push(pagesRoutes.addPage);
+    const deleteSelectedPages = async () => {
+        try {
+            await PageService.deletePages({ ids: getSelectedTableItemsIds(table).join(",") });
+            handlePaginationParamsChange();
+            onClose();
+            showToast({
+                title: translate("general.deleted"),
+                description: translate("pages.page.selected-deleted"),
+            });
+        } catch (e) {
+            console.log(e);
+            showToast({
+                title: translate("general.error"),
+                description: translate("information.error.loading"),
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
 
-    const deletePage = () => handlePaginationParamsChange();
+    const navigateToAddPage = () => router.push(pagesRoutes.addPage);
 
     const rowData = useMemo(() => pagesList, [pagesList]);
 
@@ -128,7 +158,7 @@ export const Pages = () => {
                         itemId={getIdFromUrl(info.row.getValue("id"))}
                         item={info.row.original}
                         actionsSource={TableActionsSource.PAGES}
-                        onDeleteAction={deletePage}
+                        onDeleteAction={handlePaginationParamsChange}
                     />
                 ),
             }),
@@ -161,7 +191,7 @@ export const Pages = () => {
             titleId: "pages.page.delete-selected",
             variant: ButtonVariant.GHOST,
             color: "brand.cancel",
-            onClick: () => console.log(table.getFilteredSelectedRowModel()),
+            onClick: () => onOpen(),
             disabled: !Object.keys(selectedContents).length,
         },
     ];
@@ -171,15 +201,36 @@ export const Pages = () => {
     }
 
     return (
-        <MainContent titleId="pages.page.title" actions={headingActions}>
-            {totalElements ? (
-                <>
-                    <Table tableData={table} />
-                    <TablePagination tableData={table} isPageChange={isPageChange} />
-                </>
-            ) : (
-                <TextInfo id="information.info.no-pages" />
-            )}
-        </MainContent>
+        <>
+            <MainContent titleId="nav.contents.section.page" actions={headingActions}>
+                {totalElements ? (
+                    <>
+                        <Table tableData={table} />
+                        <TablePagination tableData={table} isPageChange={isPageChange} />
+                    </>
+                ) : (
+                    <TextInfo id="information.info.no-pages" />
+                )}
+            </MainContent>
+
+            <Modal
+                modalHeader={translate("pages.page.delete-page-title")}
+                modalBody={
+                    <Text py={4}>
+                        <TextContent
+                            id={`pages.page.${
+                                table.getFilteredSelectedRowModel().rows.length === 1
+                                    ? "delete-selected-single-info"
+                                    : "delete-selected-info"
+                            }`}
+                            itemId={getSelectedTableItemsIds(table).join(", ")}
+                        />
+                    </Text>
+                }
+                onModalClose={onClose}
+                isModalOpen={isOpen}
+                actions={decisionModalActions}
+            />
+        </>
     );
 };

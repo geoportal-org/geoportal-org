@@ -23,6 +23,7 @@ export const pl = {
     form: {
         placeholders: {
             type: "Pisz tutaj...",
+            "no-options": "Brak opcji",
         },
         errors: {
             "invalid-email": "Invalid e-mail address",
@@ -78,10 +79,18 @@ export const pl = {
             title: "File repository",
             "add-folder": "Dodaj folder",
             "add-file": "Dodaj plik",
-            "root-folder": "Dom",
+            "root-folder": "Home",
             "open-folder": "Otwórz folder {title}",
             "file-preview": "Pokaż informacje o pliku {title}",
             "file-info-modal-header": "Informacje o pliku",
+        },
+        layer: {
+            add: "Dodaj",
+            edit: "Edit layer",
+            name: "Name",
+            visibility: "Visibility",
+            visible: "Widoczna",
+            invisible: "Niewidoczna",
         },
     },
     nav: {

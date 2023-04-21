@@ -14,7 +14,7 @@ export type {
     FileRepositoryFileInfoProps,
     FileRepositoryManageFileProps,
 } from "./components/FileRepository";
-export type { FormField, FormFieldSelect, SelectSettings } from "./data/formField";
+export type { FormField, FormFieldSelect, SelectSettings, FormSection } from "./data/formField";
 export type { FormFieldProps } from "./components/FormField";
 export type { HeaderProps } from "./components/Header";
 export type { IconProps } from "./components/Icon";
@@ -54,3 +54,4 @@ export type {
 export type { UploaderProps } from "./components/Uploader";
 export type { TablePaginationProps } from "./components/TablePagination";
 export type { TextInfoProps } from "./components/TextInfo";
+export type { FormSectionProps } from "./components/FormSection";

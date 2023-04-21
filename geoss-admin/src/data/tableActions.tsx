@@ -12,12 +12,12 @@ export const tableActionsBtns = [
         icon: <EditIcon />,
         actionName: TableActionsType.EDIT,
         color: "blue",
-        source: [TableActionsSource.WEBSITE, TableActionsSource.PAGES],
+        source: [TableActionsSource.WEBSITE, TableActionsSource.PAGES, TableActionsSource.LAYER],
     },
     {
         icon: <DeleteIcon />,
         actionName: TableActionsType.DELETE,
         color: "red",
-        source: [TableActionsSource.WEBSITE, TableActionsSource.PAGES],
+        source: [TableActionsSource.WEBSITE, TableActionsSource.PAGES, TableActionsSource.LAYER],
     },
 ];

@@ -1,5 +1,6 @@
 import { NextPage } from "next";
+import { ApiSettings as ApiSettingsPage } from "@/components";
 
-const ApiSettings: NextPage = () => <div>Api Settings</div>;
+const ApiSettings: NextPage = () => <ApiSettingsPage />;
 
 export default ApiSettings;

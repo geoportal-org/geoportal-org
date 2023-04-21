@@ -4,8 +4,7 @@ export const modal: ComponentStyleConfig = {
     variants: {
         geossModal: {
             overlay: {
-                backdropFilter: "blur(2px)",
-                bg: "blackAlpha.500",
+                bg: "blackAlpha.600",
             },
             dialog: {
                 borderRadius: "primary",

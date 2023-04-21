@@ -353,62 +353,60 @@ export const MenuContent = () => {
             status: ToastStatus.ERROR,
         });
 
+    const headingActions = [
+        {
+            titleId: "pages.menu.add",
+            onClick: () => onAddAction(0),
+        },
+    ];
+
     if (isLoading) {
         return <Loader />;
     }
 
     return (
         <>
-            <MainContent titleId="pages.menu.title">
+            <MainContent titleId="nav.contents.section.menu" actions={headingActions}>
                 {!isError ? (
-                    <>
-                        <Box py={1}>
-                            <PrimaryButton onClick={() => onAddAction(0)}>
-                                <AddIcon boxSize={3} mr={2} /> <TextContent id="pages.menu.add" />
-                            </PrimaryButton>
-                        </Box>
-                        <DndProvider backend={MultiBackend} options={getBackendOptions()}>
-                            <Tree
-                                ref={itemTreeRef}
-                                tree={menuList}
-                                rootId={0}
-                                sort={false}
-                                insertDroppableFirst={false}
-                                dropTargetOffset={10}
-                                canDrop={(tree, { dragSource, dropTargetId }) => {
-                                    if (tree.some((item) => item.parent === dragSource?.id) && dropTargetId !== 0) {
-                                        return false;
-                                    }
-                                    if (dragSource?.parent === dropTargetId) {
-                                        return true;
-                                    }
-                                }}
-                                render={(node, options) => (
-                                    <MenuContentItem
-                                        node={node}
-                                        {...options}
-                                        openAll={openAllMenuItems}
-                                        onAddAction={onAddAction}
-                                        onDeleteAction={onDeleteAction}
-                                        onEditAction={onEditAction}
-                                    />
-                                )}
-                                placeholderRender={() => <MenuContentPlaceholder />}
-                                dragPreviewRender={(monitorProps) => (
-                                    <MenuContentItemPreview monitorProps={monitorProps} />
-                                )}
-                                onDrop={handleMenuItemDrop}
-                                initialOpen={true}
-                                classes={{
-                                    root: styles.list,
-                                    draggingSource: styles.list__dragging,
-                                    placeholder: styles.list__placeholder,
-                                    listItem: styles.list__item,
-                                    container: styles.list__inner,
-                                }}
-                            />
-                        </DndProvider>
-                    </>
+                    <DndProvider backend={MultiBackend} options={getBackendOptions()}>
+                        <Tree
+                            ref={itemTreeRef}
+                            tree={menuList}
+                            rootId={0}
+                            sort={false}
+                            insertDroppableFirst={false}
+                            dropTargetOffset={10}
+                            canDrop={(tree, { dragSource, dropTargetId }) => {
+                                if (tree.some((item) => item.parent === dragSource?.id) && dropTargetId !== 0) {
+                                    return false;
+                                }
+                                if (dragSource?.parent === dropTargetId) {
+                                    return true;
+                                }
+                            }}
+                            render={(node, options) => (
+                                <MenuContentItem
+                                    node={node}
+                                    {...options}
+                                    openAll={openAllMenuItems}
+                                    onAddAction={onAddAction}
+                                    onDeleteAction={onDeleteAction}
+                                    onEditAction={onEditAction}
+                                />
+                            )}
+                            placeholderRender={() => <MenuContentPlaceholder />}
+                            dragPreviewRender={(monitorProps) => <MenuContentItemPreview monitorProps={monitorProps} />}
+                            onDrop={handleMenuItemDrop}
+                            initialOpen={true}
+                            classes={{
+                                root: styles.list,
+                                draggingSource: styles.list__dragging,
+                                placeholder: styles.list__placeholder,
+                                listItem: styles.list__item,
+                                container: styles.list__inner,
+                            }}
+                        />
+                    </DndProvider>
                 ) : (
                     <TextInfo id="information.error.loading" />
                 )}

@@ -10,6 +10,8 @@ export type FormField = {
     isRequired: boolean;
     labelId: string;
     name: string;
+    isReadOnly?: boolean;
+    defaultValue?: string | number;
     placeholderId?: string;
     type?: string;
     validationSchema?: string;
@@ -22,10 +24,17 @@ export type FormField = {
 
 export type SelectSettings = {
     isMultiselect: boolean;
+    isTranslated?: boolean;
     options: FormFieldSelect[];
 };
 
 export type FormFieldSelect = {
     label: string;
     value: string;
+};
+
+export type FormSection = {
+    titleId: string;
+    set: string;
+    data: FormField[];
 };

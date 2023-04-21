@@ -28,19 +28,19 @@ export const FileRepositoryItemControl = ({
             pos="absolute"
             right="0"
             top="-5px"
-            gap="2px"
+            gap="1px"
         >
             {controlBtns.map((btn) => {
                 const { icon, actionName, color } = btn;
                 return (
                     <Button
                         key={actionName}
-                        aria-label={actionName}
+                        aria-label={actionName.toLowerCase()}
                         size="sm"
                         variant="ghost"
                         h="auto"
                         py={1}
-                        px={2.5}
+                        px={2}
                         _active={{ color }}
                         _hover={{ color }}
                         onClick={() => onClickAction(actionName)}

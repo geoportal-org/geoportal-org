@@ -1,5 +1,6 @@
 import { NextPage } from "next";
+import { ViewsSettings as ViewsSettingsPage } from "@/components";
 
-const ViewsSettings: NextPage = () => <div>Views Settings</div>;
+const ViewsSettings: NextPage = () => <ViewsSettingsPage />;
 
 export default ViewsSettings;

@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { ReactNode, useState } from "react";
-import { Button, Flex, useDisclosure, Text } from "@chakra-ui/react";
+import { ReactNode, useState, Fragment, useContext } from "react";
+import { Button, Flex, useDisclosure, Text, Divider } from "@chakra-ui/react";
 import { Modal, TextContent } from "@/components";
-import { ContentService, PageService } from "@/services/api";
+import { ContentService, DefaultLayerService, PageService } from "@/services/api";
+import { DefaultLayerContext } from "@/context";
 import { tableActionsBtns } from "@/data";
 import { ModalAction, TableActionsProps, TableActionsSource, TableActionsType, ToastStatus } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
@@ -19,10 +20,13 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const router = useRouter();
+    const { onLayerEditAction } = useContext(DefaultLayerContext);
+    const actionsBtns = tableActionsBtns.filter(({ source }) => source.includes(actionsSource));
 
     const actionBtnClick = {
         [TableActionsSource.PAGES]: (actionName: TableActionsType) => onPagesAction(actionName),
         [TableActionsSource.WEBSITE]: (actionName: TableActionsType) => onContentsAction(actionName),
+        [TableActionsSource.LAYER]: (actionName: TableActionsType) => onLayersAction(actionName),
     };
 
     const onPagesAction = (actionName: TableActionsType) => {
@@ -49,6 +53,10 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     };
 
     const deletePage = async () => {
+        if (!("title" in item)) {
+            return;
+        }
+
         try {
             await PageService.deletePage(+itemId);
             onDeleteAction();
@@ -68,6 +76,10 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     };
 
     const onContentsAction = (actionName: TableActionsType) => {
+        if (!("title" in item)) {
+            return;
+        }
+
         switch (actionName) {
             case TableActionsType.DELETE:
                 setModalContent({
@@ -100,6 +112,10 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     };
 
     const deleteContent = async () => {
+        if (!("content" in item)) {
+            return;
+        }
+
         try {
             await ContentService.deleteContent(+itemId);
             onDeleteAction();
@@ -118,33 +134,80 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
         }
     };
 
+    const onLayersAction = (actionName: TableActionsType) => {
+        if (!("name" in item)) {
+            return;
+        }
+
+        switch (actionName) {
+            case TableActionsType.DELETE:
+                setModalContent({
+                    header: translate("pages.layer.delete-layer-title"),
+                    body: (
+                        <Text py={4}>
+                            <TextContent id="pages.layer.delete-layer-body" itemId={itemId} title={item.name} />
+                        </Text>
+                    ),
+                    actions: setDecisionModalActions(
+                        async () => await deleteLayer(),
+                        () => onCloseModal()
+                    ),
+                });
+                onOpenModal();
+                break;
+            case TableActionsType.EDIT:
+                onLayerEditAction(+itemId);
+                break;
+        }
+    };
+
+    const deleteLayer = async () => {
+        if (!("name" in item)) {
+            return;
+        }
+
+        try {
+            await DefaultLayerService.deleteLayer(+itemId);
+            onDeleteAction();
+            onCloseModal();
+            showToast({
+                title: translate("general.deleted"),
+                description: translate("pages.layer.delete-confirmation", { title: item.name, itemId }),
+            });
+        } catch (e) {
+            showToast({
+                title: translate("general.error"),
+                description: translate("pages.layer.delete-error", { title: item.name, itemId }),
+            });
+        }
+    };
+
     return (
         <>
-            <Flex
-                bg="brand.backgroundSelected"
-                borderRadius="primary"
-                boxShadow="controlPanel"
-                gap="5px"
-                w="max-content"
-            >
-                {tableActionsBtns.map((btn) => {
-                    const { icon, actionName, color, source } = btn;
-                    return source.includes(actionsSource) ? (
-                        <Button
-                            key={actionName}
-                            aria-label={actionName}
-                            size="sm"
-                            variant="ghost"
-                            py={1}
-                            px={2.5}
-                            h="auto"
-                            _active={{ color }}
-                            _hover={{ color }}
-                            onClick={() => actionBtnClick[actionsSource](actionName)}
-                        >
-                            {icon}
-                        </Button>
-                    ) : null;
+            <Flex gap="5px" w="max-content">
+                {actionsBtns.map((btn, index) => {
+                    const isLast = index === actionsBtns.length - 1;
+                    const { icon, actionName, color } = btn;
+                    return (
+                        <Fragment key={actionName}>
+                            <Button
+                                aria-label={actionName.toLowerCase()}
+                                size="sm"
+                                variant="ghost"
+                                py={1}
+                                px={2.5}
+                                h="auto"
+                                _active={{ color }}
+                                _hover={{ color }}
+                                onClick={() => actionBtnClick[actionsSource](actionName)}
+                            >
+                                {icon}
+                            </Button>
+                            {!isLast && (
+                                <Divider orientation="vertical" borderColor="brand.dividerDark" opacity="1" h="auto" />
+                            )}
+                        </Fragment>
+                    );
                 })}
             </Flex>
 

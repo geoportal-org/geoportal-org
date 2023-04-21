@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Grid, Text, useDisclosure } from "@chakra-ui/react";
-import { Loader, MainContent, Modal, SideBar, TextContent } from "@/components";
+import { Loader, MainContent, Modal, SideBar, TextContent, TextInfo } from "@/components";
 import { FileRepositoryFileInfo } from "./FileRepositoryFileInfo";
 import { FileRepositoryBreadcrumb } from "./FileRepositoryBreadcrumb";
 import { FileRepositoryItem } from "./FileRepositoryItem";
@@ -250,10 +250,10 @@ export const FileRepository = () => {
 
     return (
         <>
-            <MainContent titleId="pages.file-repository.title" actions={headingActions}>
+            <MainContent titleId="nav.contents.section.repository" actions={headingActions}>
                 <FileRepositoryBreadcrumb breadcrumb={breadcrumb} handleBreadcrumbClick={handleBreadcrumbClick} />
                 {!isEmptyFolder ? (
-                    <Grid templateColumns="repeat(auto-fill, minmax(min(100px, 100%), 1fr))" gap={6} m={1}>
+                    <Grid templateColumns="repeat(auto-fill, minmax(min(90px, 100%), 1fr))" gap={6} m={1}>
                         {currentFolders.map((folder) => {
                             return (
                                 <FileRepositoryItem
@@ -278,9 +278,7 @@ export const FileRepository = () => {
                         })}
                     </Grid>
                 ) : (
-                    <Text textAlign="center" fontSize="s">
-                        <TextContent id="pages.file-repository.empty-folder" />
-                    </Text>
+                    <TextInfo id="pages.file-repository.empty-folder" />
                 )}
             </MainContent>
 

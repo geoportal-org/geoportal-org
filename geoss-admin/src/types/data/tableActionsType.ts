@@ -7,4 +7,5 @@ export enum TableActionsType {
 export enum TableActionsSource {
     PAGES = "PAGES",
     WEBSITE = "WEBSITE",
+    LAYER = "LAYER",
 }

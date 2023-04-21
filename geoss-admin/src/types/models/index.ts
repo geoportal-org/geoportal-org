@@ -1,5 +1,10 @@
+export type { IApiSetting, IApiSettingsList, IApiSettingData } from "./apiSettings";
 export type { IContent, IContentData, IContentList } from "./contents";
 export type { IDocument, IDocumentList, IFolder, IFolderData, IFolderList } from "./fileRepository";
-export type { ILink, IPagination, IResponseLinks } from "./commons";
-export type { IPage, IPageData, IPageList } from "./page";
+export type { ILayer, ILayerList, ILayerData } from "./defaultLayer";
+export type { ILink, IPagination, IResponseLinks, IErrorObject, IErrorInformation } from "./commons";
 export type { IMenuItem, IMenuList, IMenuItemData, IFoundMenuList } from "./menu";
+export type { IPage, IPageData, IPageList } from "./page";
+export type { ITutorialTag, ITutorialTagList, ITutorialTagData } from "./tutorialTags";
+export type { IView, ISubView, IViewList, IViewData, ISubViewData } from "./views";
+export type { IWebSetting, IWebSettingsList, IWebSettingData } from "./webSettings";

@@ -31,9 +31,21 @@ export const ValidationService = {
             regExp: regExp["relative-full-url"],
             errorMsgId: "form.errors.invalid-url",
         },
+        "zero-or-positive-integer": {
+            regExp: regExp["zero-or-positive-integer"],
+            errorMsgId: "form.errors.invalid-zero-positive-integer",
+        },
+        latitude: {
+            regExp: regExp.latitude,
+            errorMsgId: "form.errors.invalid-latitude",
+        },
+        longitude: {
+            regExp: regExp.longitude,
+            errorMsgId: "form.errors.invalid-longitude",
+        },
     },
 
-    checkForErrors: (field: FormField, fieldValue: string | string[]): string | undefined => {
+    checkForErrors: (field: FormField, fieldValue: string | string[] | number): string | undefined => {
         const { isRequired } = field;
 
         return isRequired
@@ -41,7 +53,7 @@ export const ValidationService = {
             : ValidationService.validateNotRequiredField(field, fieldValue);
     },
 
-    validateRequiredField: (field: FormField, fieldValue: string | string[]): string | undefined => {
+    validateRequiredField: (field: FormField, fieldValue: string | string[] | number): string | undefined => {
         const { type = "text", validationSchema } = field;
         let error = ValidationService.validateRequiredOnEmpty(fieldValue, type);
         if (!error && !Array.isArray(fieldValue) && validationSchema) {
@@ -50,7 +62,7 @@ export const ValidationService = {
         return error;
     },
 
-    validateNotRequiredField: (field: FormField, fieldValue: string | string[]): string | undefined => {
+    validateNotRequiredField: (field: FormField, fieldValue: string | string[] | number): string | undefined => {
         let error;
         const { validationSchema } = field;
         const isEmptyField = ValidationService.checkIsFieldEmpty(fieldValue);
@@ -60,22 +72,33 @@ export const ValidationService = {
         return error;
     },
 
-    validateRequiredOnEmpty: (fieldValue: string | string[] | File, type: string): string | undefined => {
+    validateRequiredOnEmpty: (fieldValue: string | string[] | File | number, type: string): string | undefined => {
         if (type === "file" && !Array.isArray(fieldValue)) {
             return ValidationService.validateFileOnEmpty(fieldValue);
         }
         if ((type === "select" || type === "checkbox") && Array.isArray(fieldValue)) {
             return ValidationService.validateMultiSelectOnEmpty(fieldValue);
         }
+        if (type === "number") {
+            return ValidationService.validateNumberInputOnEmpty(fieldValue);
+        }
         if (!Array.isArray(fieldValue) && !(fieldValue instanceof File)) {
             return ValidationService.validateInputOnEmpty(fieldValue);
         }
     },
 
-    validateFileOnEmpty: (fieldValue: File | string): string | undefined => {
+    validateFileOnEmpty: (fieldValue: File | string | number): string | undefined => {
         let error;
         if (!(fieldValue instanceof File)) {
             error = "form.errors.required-file";
+        }
+        return error;
+    },
+
+    validateNumberInputOnEmpty: (fieldValue: string | string[] | File | number) => {
+        let error;
+        if (fieldValue !== 0 && !fieldValue) {
+            error = "form.errors.required";
         }
         return error;
     },
@@ -88,15 +111,15 @@ export const ValidationService = {
         return error;
     },
 
-    validateInputOnEmpty: (fieldValue: string): string | undefined => {
+    validateInputOnEmpty: (fieldValue: string | number): string | undefined => {
         let error;
-        if (!fieldValue || !fieldValue.trim()) {
+        if (!fieldValue || !fieldValue.toString().trim()) {
             error = "form.errors.required";
         }
         return error;
     },
 
-    validateOnValidationSchema: (validationSchema: string, fieldValue: string): string | undefined => {
+    validateOnValidationSchema: (validationSchema: string, fieldValue: string | number): string | undefined => {
         let error;
         const validationRule =
             ValidationService.validationRules[validationSchema as keyof typeof ValidationService.validationRules];
@@ -110,18 +133,18 @@ export const ValidationService = {
         return error;
     },
 
-    isMatchRegExp: (fieldValue: string, validationSchema: string): boolean => {
+    isMatchRegExp: (fieldValue: string | number, validationSchema: string): boolean => {
         const validationRegExp =
             ValidationService.validationRules[validationSchema as keyof typeof ValidationService.validationRules]
                 .regExp;
-        return validationRegExp.test(fieldValue);
+        return validationRegExp.test(fieldValue.toString());
     },
 
-    checkIsFieldEmpty: (fieldValue: string | string[]): boolean => {
+    checkIsFieldEmpty: (fieldValue: string | string[] | number): boolean => {
         if (Array.isArray(fieldValue)) {
             return !!fieldValue.length;
         }
-        return !fieldValue || !fieldValue.trim();
+        return !fieldValue || !fieldValue.toString().trim();
     },
 
     validateTextEditorContent: (values: { [index: string]: string }): { [index: string]: string } | undefined => {

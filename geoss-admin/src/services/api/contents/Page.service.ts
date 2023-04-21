@@ -16,4 +16,7 @@ export const PageService = {
         fetcher({ url: `${PageService.baseUrl}/${id}`, method: "PUT", body: pageData }),
 
     deletePage: async (id: number) => fetcher({ url: `${PageService.baseUrl}/${id}`, method: "DELETE" }),
+
+    deletePages: async (query: QueryParams) =>
+        fetcher({ url: `${PageService.baseUrl}/deleteByIdsIn`, method: "DELETE", query }),
 };

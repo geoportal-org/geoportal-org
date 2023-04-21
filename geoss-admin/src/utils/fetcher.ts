@@ -36,6 +36,7 @@ export const fetcher = async ({
     }
 
     const errorResponse = await response.json();
+    // return Promise.reject({ errorInfo: errorResponse, status: response.status });
     return Promise.reject(errorResponse);
 };
 

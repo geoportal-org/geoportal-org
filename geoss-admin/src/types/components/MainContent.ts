@@ -12,6 +12,7 @@ export type MainContentAction = ActionTitle & Action;
 export type MainContentHeaderProps = {
     titleId: string;
     actions?: MainContentAction[];
+    backPath?: string;
 };
 
 export type MainContentBodyProps = {
@@ -22,4 +23,5 @@ export type MainContentProps = {
     titleId?: string;
     children: ReactNode;
     actions?: MainContentAction[];
+    backPath?: string;
 };
