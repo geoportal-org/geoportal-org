@@ -9,6 +9,7 @@ import {
     CancelCurrentrequest,
 } from './geoss-search.api.service'
 import SearchEngineService from './search-engine.service'
+import webSettingsAPI from '@/api/webSettings'
 
 axiosCancel(axios)
 
@@ -119,24 +120,28 @@ export const GeneralApiService = {
     },
 
     getSiteSettings() {
-        return makeRequest(
-            'get',
-            SearchEngineService.getSiteSettingsUrl(),
-            null,
-            true
-        )
-            .then((data: { status: number }) => {
-                if (!data || data.status === 500) {
-                    return null
-                }
-                return data
-            })
-            .catch(() => {
-                return Promise.resolve(null)
-            })
+        return webSettingsAPI.getSiteSettings()
+
+        // return makeRequest(
+        //     'get',
+        //     SearchEngineService.getSiteSettingsUrl(),
+        //     null,
+        //     true
+        // )
+        //     .then((data: { status: number }) => {
+        //         if (!data || data.status === 500) {
+        //             return null
+        //         }
+        //         return data
+        //     })
+        //     .catch(() => {
+        //         return Promise.resolve(null)
+        //     })
     },
 
     getSearchSettings() {
+        // return webSettingsAPI.getSearchSettings();
+
         return makeRequest(
             'get',
             SearchEngineService.getSearchSettingsUrl(),
