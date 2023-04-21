@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.hateoas.server.core.Relation;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.NotNull;
  * The type Tag.
  */
 @Data
+@Relation(collectionRelation = "tags", itemRelation = "tag")
 public class TagModel {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

@@ -63,12 +63,12 @@ public class Tag {
     private String name;
 
     @Schema(defaultValue = "false")
-    @Column(nullable = false)
+    @Column(nullable = false, name = "show_")
     private boolean show;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "type_")
     private TagType type;
 
     @NotNull
