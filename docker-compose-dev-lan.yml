@@ -92,6 +92,7 @@ services:
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: ${SPRINGDOCSECURITY_OA_CSECRET}
       SPRING_JPA_SHOW_SQL: "true"
       SPRING_MVC_LOG_REQUEST_DETAILS: "true"
+      LOGGING_LEVEL_COM_EVERSIS: "debug"
       KEYTOOL_STOREPASS: notusedyet
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
