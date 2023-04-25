@@ -41,14 +41,17 @@ public enum ApiSettingsSet {
      * The enum External.
      */
     enum External implements ApiSettingsKey {
+
         /**
          * Google maps api key external.
          */
-        GOOGLE_MAPS_API_KEY("googleMapsApiKey"),
+        EXT_GOOGLE_MAPS_API_KEY("googleMapsApiKey"),
+
         /**
          * W 3 w key external.
          */
-        W3W_KEY("w3wKey");
+        EXT_W3W_KEY("w3wKey");
+
         private final String value;
 
         External(String value) {
@@ -71,25 +74,27 @@ public enum ApiSettingsSet {
      * The enum Dab.
      */
     enum DAB implements ApiSettingsKey {
+
         /**
          * Base url dab.
          */
-        BASE_URL("dabBaseUrl"),
+        DAB_BASE_URL("dabBaseUrl"),
 
         /**
          * Data providers url dab.
          */
-        DATA_PROVIDERS_URL("dabDataProvidersUrl"),
+        DAB_DATA_PROVIDERS_URL("dabDataProvidersUrl"),
 
         /**
          * View api key dab.
          */
-        VIEW_API_KEY("dabViewApiKey"),
+        DAB_VIEW_API_KEY("dabViewApiKey"),
 
         /**
          * View base url dab.
          */
-        VIEW_BASE_URL("dabViewBaseUrl");
+        DAB_VIEW_BASE_URL("dabViewBaseUrl");
+
         private final String value;
 
         DAB(String value) {
@@ -112,15 +117,17 @@ public enum ApiSettingsSet {
      * The enum Knowledge producer.
      */
     enum KnowledgeProducer implements ApiSettingsKey {
+
         /**
          * Base url knowledge producer.
          */
-        BASE_URL("kpBaseUrl"),
+        KP_BASE_URL("kpBaseUrl"),
 
         /**
          * Api key knowledge producer.
          */
-        API_KEY("kpApiKey");
+        KP_API_KEY("kpApiKey");
+
         private final String value;
 
         KnowledgeProducer(String value) {
@@ -143,10 +150,12 @@ public enum ApiSettingsSet {
      * The enum Other.
      */
     enum Other implements ApiSettingsKey {
+
         /**
          * Next geoss base url other.
          */
         NEXT_GEOSS_BASE_URL("nextGeossBaseUrl");
+
         private final String value;
 
         Other(String value) {
