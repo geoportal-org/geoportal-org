@@ -77,11 +77,11 @@ public class SendMailEventListener {
     }
 
     private void setDefaultTo(SimpleMailMessage simpleMailMessage) throws UnsupportedEncodingException {
-        String to = simpleMailMessage.getReplyTo();
-        if (to == null || to.isEmpty()) {
+        String[] to = simpleMailMessage.getTo();
+        if (to == null || to.length == 0) {
             InternetAddress internetAddress = new InternetAddress(emailProperties.getReceiver().getAddress(),
                     emailProperties.getReceiver().getPersonal(), emailProperties.getDefaultEncoding().name());
-            simpleMailMessage.setReplyTo(internetAddress.toString());
+            simpleMailMessage.setTo(internetAddress.toString());
         }
     }
 

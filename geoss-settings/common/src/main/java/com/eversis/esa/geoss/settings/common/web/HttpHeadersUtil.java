@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.ACCEPT_LANGUAGE;
 
 /**
- * The type Http header util.
+ * The type Http headers util.
  */
 public class HttpHeadersUtil {
 
@@ -25,7 +25,7 @@ public class HttpHeadersUtil {
      * Gets supported accept language as locale.
      *
      * @param headers the headers
-     * @param languages the languages
+     * @param supportedLanguages the supported languages
      * @return the supported accept language as locale
      */
     public static Locale getSupportedAcceptLanguageAsLocale(HttpHeaders headers, String[] supportedLanguages) {
