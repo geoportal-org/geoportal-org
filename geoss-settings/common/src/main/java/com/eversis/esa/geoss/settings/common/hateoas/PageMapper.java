@@ -14,11 +14,14 @@ import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.PagedModel.PageMetadata;
 import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.server.core.EmbeddedWrapper;
+import org.springframework.hateoas.server.core.EmbeddedWrappers;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -32,6 +35,8 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 @RequiredArgsConstructor
 @Component
 public class PageMapper {
+
+    private final EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
 
     private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
 
@@ -78,6 +83,20 @@ public class PageMapper {
                 .map(entity -> EntityModel.of(entity, entityLinks.apply(entity)))
                 .toList();
         return PagedModel.of(entityModels, asPageMetadata(page), collectionLinks.get());
+    }
+
+    /**
+     * To empty model paged model.
+     *
+     * @param page the page
+     * @param type the type
+     * @param collectionLinks the collection links
+     * @return the paged model
+     */
+    public PagedModel<?> toEmptyModel(Page<?> page, Class<?> type, Supplier<List<Link>> collectionLinks) {
+        EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(type);
+        List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
+        return PagedModel.of(embedded, asPageMetadata(page), collectionLinks.get());
     }
 
     /**

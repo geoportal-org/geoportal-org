@@ -63,16 +63,14 @@ public class TagController {
      * @return the localized tags
      */
     @Operation(hidden = true)
-    @GetMapping(headers = ACCEPT_LANGUAGE)
-    PagedModel<EntityModel<TagModel>> getLocalizedTags(@ParameterObject @PageableDefault Pageable pageable,
+    @GetMapping(value = {"/tags", ""}, headers = ACCEPT_LANGUAGE)
+    PagedModel<?> getLocalizedTags(@ParameterObject @PageableDefault Pageable pageable,
             @RequestHeader HttpHeaders headers) {
         Locale acceptLocale = HttpHeadersUtil.getSupportedAcceptLanguageAsLocale(headers,
                 geossProperties.getSupportedLanguages());
         log.debug("acceptLocale:{}", acceptLocale);
         Page<TagModel> tagModels = tagService.getLocalizedTags(pageable, acceptLocale);
-        PagedModel<EntityModel<TagModel>> entityModels = pageMapper.toPagedModel(tagModels, this::tagLinks,
-                this::tagLinks);
-        return pageMapper.addPaginationLinks(entityModels, tagModels, Optional.empty());
+        return toPagedModel(tagModels);
     }
 
     /**
@@ -90,6 +88,16 @@ public class TagController {
         log.debug("acceptLocale:{}", acceptLocale);
         TagModel tagModel = tagService.getLocalizedTag(id, acceptLocale);
         return toResponseEntity(tagModel, HttpMethod.GET, headers);
+    }
+
+    private PagedModel<?> toPagedModel(Page<TagModel> tagModels) {
+        if (tagModels.getContent().isEmpty()) {
+            PagedModel<?> pagedModel = pageMapper.toEmptyModel(tagModels, TagModel.class, this::tagLinks);
+            return pageMapper.addPaginationLinks(pagedModel, tagModels, Optional.empty());
+        }
+        PagedModel<EntityModel<TagModel>> entityModels = pageMapper.toPagedModel(tagModels, this::tagLinks,
+                this::tagLinks);
+        return pageMapper.addPaginationLinks(entityModels, tagModels, Optional.empty());
     }
 
     private ResponseEntity<EntityModel<TagModel>> toResponseEntity(
