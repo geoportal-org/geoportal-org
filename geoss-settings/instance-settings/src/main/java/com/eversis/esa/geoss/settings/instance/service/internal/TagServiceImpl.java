@@ -78,6 +78,7 @@ public class TagServiceImpl implements TagService {
         tagModel.setShow(tag.isShow());
         tagModel.setType(tag.getType());
         tagModel.setPlacement(tag.getPlacement());
+        tagModel.setLocale(locale);
         Map<@AvailableLocale Locale, String> titles = tag.getTitle();
         if (titles != null) {
             tagModel.setTitle(titles.get(language));

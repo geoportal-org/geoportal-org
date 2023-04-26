@@ -16,6 +16,7 @@ import org.springframework.hateoas.server.core.Relation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.util.Locale;
 
 /**
  * The type Tag.
@@ -29,6 +30,9 @@ public class TagModel {
 
     @JsonIgnore
     private VersionedModel versioned;
+
+    @JsonIgnore
+    private Locale locale;
 
     @NotNull
     @NotEmpty
