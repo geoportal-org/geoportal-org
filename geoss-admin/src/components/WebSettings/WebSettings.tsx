@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Flex } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { Formik, FormikValues } from "formik";
-import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent } from "@/components";
+import { Flex } from "@chakra-ui/react";
+import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent, TextInfo } from "@/components";
 import { FileRepositoryService, WebSettingsService } from "@/services/api";
 import { ButtonType, SelectSettings, ToastStatus } from "@/types";
 import {
@@ -17,32 +17,20 @@ import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { IWebSetting, IWebSettingData } from "@/types/models";
 import { acceptedLogoExtensions, initRepositoryPagination } from "@/data";
-import { webSettingsForm } from "@/data/forms";
+import { webSettingsForm, webSettingsFormFields } from "@/data/forms";
 
 export const WebSettings = () => {
-    const webSettingsFormFields = webSettingsForm.map((section) => section.data).flat();
     const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(webSettingsFormFields));
+    const [isError, setIsError] = useState(false);
+    const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(webSettingsFormFields));
     const [savedValues, setSavedValues] = useState<FormikValues>({});
     const [webSettingsList, setWebSettingsList] = useState<IWebSetting[]>([]);
     const [documentsList, setDocumentsList] = useState<SelectSettings>();
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
 
-    useEffect(() => {
-        getWebSettingsInfo();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const getWebSettingsInfo = async () => {
+    const getCurrentWebSettings = useCallback(async () => {
         try {
-            const {
-                _embedded: { document },
-            } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
-            const selectDocumentsList = createSelectItemsList(
-                document.filter(({ extension }) => acceptedLogoExtensions.includes(extension))
-            );
-            setDocumentsList(() => selectDocumentsList);
             const {
                 _embedded: { webSettings },
             } = await WebSettingsService.getWebSettings();
@@ -51,10 +39,34 @@ export const WebSettings = () => {
             setInitValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields));
         } catch (e) {
             console.error(e);
+            setIsError(true);
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        const getDocumentsList = async () => {
+            try {
+                const {
+                    _embedded: { document },
+                } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
+                const selectDocumentsList = createSelectItemsList(
+                    document.filter(({ extension }) => acceptedLogoExtensions.includes(extension))
+                );
+                setDocumentsList(() => selectDocumentsList);
+            } catch (e) {
+                console.error(e);
+                setIsError(true);
+            }
+        };
+        getDocumentsList();
+    }, []);
+
+    useEffect(() => {
+        const getWebSettings = async () => await getCurrentWebSettings();
+        getWebSettings();
+    }, [getCurrentWebSettings]);
 
     const handleFormSubmit = (values: FormikValues) => {
         const valuesAsString = setFormValuesAsString(values);
@@ -65,6 +77,7 @@ export const WebSettings = () => {
     };
 
     const handleWebSettingsSubmit = async (values: FormikValues) => {
+        setIsLoading(true);
         const promises: Promise<IWebSetting>[] = [];
         const { newValues, changedValues } = getKeyValueFormChanges(values, savedValues);
         const keyValues = createWebSettingsKeyValues(values);
@@ -78,8 +91,7 @@ export const WebSettings = () => {
 
         await Promise.all(promises)
             .then(async () => {
-                setIsLoading(true);
-                await getWebSettingsInfo();
+                await getCurrentWebSettings();
                 showInfo("general.updated", "pages.web.updated", ToastStatus.SUCCESS);
             })
             .catch((e) => {
@@ -141,25 +153,25 @@ export const WebSettings = () => {
         </Flex>
     );
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
     return (
         <MainContent titleId="nav.settings.section.web">
-            <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
-                <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
-                    {(formikProps) => {
-                        const { handleSubmit } = formikProps;
-                        return (
-                            <form onSubmit={handleSubmit} noValidate>
-                                {renderFormFields()}
-                                {renderFormFooter()}
-                            </form>
-                        );
-                    }}
-                </Formik>
-            </Flex>
+            {!isLoading && isError && <TextInfo id="information.error.loading" />}
+            {isLoading && !isError && <Loader />}
+            {!isLoading && !isError && (
+                <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
+                    <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
+                        {(formikProps) => {
+                            const { handleSubmit } = formikProps;
+                            return (
+                                <form onSubmit={handleSubmit} noValidate>
+                                    {renderFormFields()}
+                                    {renderFormFooter()}
+                                </form>
+                            );
+                        }}
+                    </Formik>
+                </Flex>
+            )}
         </MainContent>
     );
 };

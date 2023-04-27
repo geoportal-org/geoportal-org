@@ -1,16 +1,17 @@
 import { useRouter } from "next/router";
-import { ReactNode, useState, Fragment, useContext } from "react";
+import { ReactNode, useState, Fragment, useContext, useMemo } from "react";
 import { Button, Flex, useDisclosure, Text, Divider } from "@chakra-ui/react";
 import { Modal, TextContent } from "@/components";
-import { ContentService, DefaultLayerService, PageService, TutorialTagsService } from "@/services/api";
-import { DefaultLayerContext, TutorialTagsContext } from "@/context";
+import { ContentService, DefaultLayerService, PageService, TutorialTagsService, ViewsService } from "@/services/api";
+import { DefaultLayerContext, TutorialTagsContext, ViewsContext } from "@/context";
 import { tableActionsBtns } from "@/data";
 import { ModalAction, TableActionsProps, TableActionsSource, TableActionsType, ToastStatus } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { setDecisionModalActions } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
+import { ILayer, ITutorialTag } from "@/types/models";
 
-export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: TableActionsProps) => {
+export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disabled }: TableActionsProps) => {
     const [modalContent, setModalContent] = useState<{
         header: ReactNode;
         body: ReactNode;
@@ -22,13 +23,24 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
     const router = useRouter();
     const { onLayerEditAction } = useContext(DefaultLayerContext);
     const { onTagEditAction } = useContext(TutorialTagsContext);
-    const actionsBtns = tableActionsBtns.filter(({ source }) => source.includes(actionsSource));
+    const { onAddSubViewAction, onEditSubViewAction, onEditViewAction } = useContext(ViewsContext);
+
+    const actionsBtns = useMemo(
+        () =>
+            tableActionsBtns.filter(({ source, isMainRowOnlyAction }) =>
+                !isMainRowOnlyAction
+                    ? source.includes(actionsSource)
+                    : source.includes(actionsSource) && !("parentViewId" in item)
+            ),
+        [actionsSource, item]
+    );
 
     const actionBtnClick = {
         [TableActionsSource.PAGES]: (actionName: TableActionsType) => onPagesAction(actionName),
         [TableActionsSource.WEBSITE]: (actionName: TableActionsType) => onContentsAction(actionName),
         [TableActionsSource.LAYER]: (actionName: TableActionsType) => onLayersAction(actionName),
         [TableActionsSource.TUTORIAL]: (actionName: TableActionsType) => onTutorialTagsAction(actionName),
+        [TableActionsSource.VIEWS]: (actionName: TableActionsType) => onViewsAction(actionName),
     };
 
     const onPagesAction = (actionName: TableActionsType) => {
@@ -166,7 +178,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                 onOpenModal();
                 break;
             case TableActionsType.EDIT:
-                onLayerEditAction(+itemId);
+                onLayerEditAction(item as ILayer);
                 break;
         }
     };
@@ -200,7 +212,6 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
 
         switch (actionName) {
             case TableActionsType.DELETE:
-                console.log(item);
                 setModalContent({
                     header: translate("pages.tags.delete-tag-title"),
                     body: (
@@ -216,7 +227,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                 onOpenModal();
                 break;
             case TableActionsType.EDIT:
-                onTagEditAction(+itemId);
+                onTagEditAction(item as ITutorialTag);
                 break;
         }
     };
@@ -243,6 +254,83 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
         }
     };
 
+    const onViewsAction = (actionName: TableActionsType) => {
+        if (!("label" in item)) {
+            return;
+        }
+
+        const isNestedViewAction = !!item.parentViewId;
+        const isSubViews = item.subRows && item.subRows.length;
+
+        switch (actionName) {
+            case TableActionsType.DELETE:
+                setModalContent({
+                    header: translate(
+                        item.parentViewId ? "pages.views.delete-nested-title" : "pages.views.delete-view-title"
+                    ),
+                    body: (
+                        <Text py={4}>
+                            <TextContent
+                                id={
+                                    !isNestedViewAction
+                                        ? isSubViews
+                                            ? "pages.views.delete-view-with-nested-body"
+                                            : "pages.views.delete-view-body"
+                                        : "pages.views.delete-nested-body"
+                                }
+                                title={item.label}
+                            />
+                        </Text>
+                    ),
+                    actions: setDecisionModalActions(
+                        async () => await deleteView(),
+                        () => onCloseModal()
+                    ),
+                });
+                onOpenModal();
+                break;
+            case TableActionsType.EDIT:
+                item.parentViewId
+                    ? onEditSubViewAction(item.parentViewId, item.id, item)
+                    : onEditViewAction(item.id, item);
+                break;
+            case TableActionsType.ADD:
+                onAddSubViewAction(item.id);
+                break;
+        }
+    };
+
+    const deleteView = async () => {
+        if (!("label" in item)) {
+            return;
+        }
+
+        const isSubViews = item.subRows && item.subRows.length;
+        const successMsgId = `pages.views.delete-${
+            item.parentViewId ? "nested-confirmation" : isSubViews ? "with-nested-confirmation" : "confirmation"
+        }`;
+        const errorMsgId = `pages.views.delete-${item.parentViewId ? "nested-error" : "error"}`;
+        try {
+            !item.parentViewId
+                ? await ViewsService.deleteView(+itemId)
+                : await ViewsService.deleteSubView(item.parentViewId, +itemId);
+            isSubViews && (await ViewsService.deleteViewSubViews(+itemId));
+            onDeleteAction();
+            onCloseModal();
+            showToast({
+                title: translate("general.deleted"),
+                description: translate(successMsgId, { title: item.label }),
+            });
+        } catch (e) {
+            console.log(e);
+            showToast({
+                title: translate("general.error"),
+                description: translate(errorMsgId, { title: item.label }),
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
+
     return (
         <>
             <Flex gap="5px" w="max-content">
@@ -259,8 +347,15 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction }: Ta
                                 px={2.5}
                                 h="auto"
                                 _active={{ color }}
-                                _hover={{ color }}
                                 onClick={() => actionBtnClick[actionsSource](actionName)}
+                                isDisabled={disabled}
+                                _hover={{
+                                    color,
+                                }}
+                                _disabled={{
+                                    cursor: "not-allowed",
+                                    color: "brand.mainDark",
+                                }}
                             >
                                 {icon}
                             </Button>

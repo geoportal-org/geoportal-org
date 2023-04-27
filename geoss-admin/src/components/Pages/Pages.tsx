@@ -17,6 +17,7 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import useCustomToast from "@/utils/useCustomToast";
 import {
     convertIsoDate,
+    cutString,
     getIdFromUrl,
     getSelectedTableItemsIds,
     setDecisionModalActions,
@@ -79,8 +80,8 @@ export const Pages = () => {
         } catch (e) {
             console.error(e);
         } finally {
-            setIsLoading(false);
             setIsPageChange(false);
+            setIsLoading(false);
         }
     };
 
@@ -115,6 +116,7 @@ export const Pages = () => {
                         isChecked={table.getIsAllPageRowsSelected()}
                         onChange={table.getToggleAllPageRowsSelectedHandler()}
                         variant="geossTable"
+                        isDisabled={isPageChange}
                     />
                 ),
                 cell: ({ row }) => (
@@ -122,6 +124,7 @@ export const Pages = () => {
                         isChecked={row.getIsSelected()}
                         onChange={row.getToggleSelectedHandler()}
                         variant="geossTable"
+                        isDisabled={isPageChange}
                     />
                 ),
                 id: "check",
@@ -134,6 +137,7 @@ export const Pages = () => {
             }),
             columnHelper.accessor("title", {
                 header: translate("pages.page.page-title"),
+                cell: ({ getValue }) => cutString(getValue(), 30),
             }),
             columnHelper.accessor("createdDate", {
                 header: translate("pages.page.creation-date"),
@@ -145,6 +149,7 @@ export const Pages = () => {
             }),
             columnHelper.accessor("createdBy", {
                 header: translate("pages.page.author"),
+                cell: ({ getValue }) => cutString(getValue(), 30),
             }),
             columnHelper.accessor("published", {
                 header: translate("pages.contents.status"),
@@ -159,12 +164,13 @@ export const Pages = () => {
                         item={info.row.original}
                         actionsSource={TableActionsSource.PAGES}
                         onDeleteAction={handlePaginationParamsChange}
+                        disabled={isPageChange}
                     />
                 ),
             }),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.locale]
+        [router.locale, isPageChange]
     );
 
     const table = useReactTable({
@@ -186,31 +192,27 @@ export const Pages = () => {
     });
 
     const headingActions: MainContentAction[] = [
-        { titleId: "pages.page.add", onClick: navigateToAddPage },
+        { titleId: "pages.page.add", onClick: navigateToAddPage, disabled: isPageChange || isLoading },
         {
             titleId: "pages.page.delete-selected",
             variant: ButtonVariant.GHOST,
             color: "brand.cancel",
             onClick: () => onOpen(),
-            disabled: !Object.keys(selectedContents).length,
+            disabled: !Object.keys(selectedContents).length || isPageChange || isLoading,
         },
     ];
-
-    if (isLoading) {
-        return <Loader />;
-    }
 
     return (
         <>
             <MainContent titleId="nav.contents.section.page" actions={headingActions}>
-                {totalElements ? (
+                {isLoading && <Loader />}
+                {!!totalElements && !isLoading && (
                     <>
-                        <Table tableData={table} />
+                        <Table tableData={table} isDisabled={isPageChange} />
                         <TablePagination tableData={table} isPageChange={isPageChange} />
                     </>
-                ) : (
-                    <TextInfo id="information.info.no-pages" />
                 )}
+                {!totalElements && !isLoading && <TextInfo id="information.info.no-pages" />}
             </MainContent>
 
             <Modal

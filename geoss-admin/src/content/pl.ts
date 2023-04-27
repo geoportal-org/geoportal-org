@@ -1,22 +1,4 @@
 export const pl = {
-    // to be removed
-    devTest: {
-        header: "Test header PL",
-        btnToastErr: "Err PL",
-        btnToastInfo: "Info PL",
-        btnToastSuccess: "Success PL",
-        btnToastWarning: "Warning PL",
-        btnErrPage: "Go to error page PL",
-        show: "Show modal PL",
-        btnDisabled: "Click disabled PL",
-        btnGhost: "Ghost btn PL",
-        toastTitle: "Title PL",
-        toastDesc: "Description PL",
-        modalAccept: "Accept PL",
-        modalCancel: "Cancel PL",
-        add: "Add PL",
-        remove: "Remove PL",
-    },
     general: {
         title: "Tytuł",
     },
@@ -92,9 +74,48 @@ export const pl = {
             visible: "Widoczna",
             invisible: "Niewidoczna",
         },
+        views: {
+            add: "Add view",
+            "add-nested": "Add nested view",
+            name: "View name",
+            id: "View ID",
+            parent: "Parent view name",
+            default: "Default option",
+            edit: "Edit view",
+            "edit-nested": "Edit nested view",
+            expand: "Pokaż zagnieżdzone widoki",
+            "expand-all": "Pokaż wszystkie zagnieżdżone widoki",
+        },
     },
     nav: {
         open: "Otwórz menu",
         close: "Zamknij menu",
+        contents: {
+            title: "Zawartość",
+            section: {
+                website: "Zawartości",
+                page: "Strony",
+                repository: "Repozytorium plików",
+                menu: "Menu",
+            },
+        },
+        settings: {
+            title: "Ustawienia",
+            section: {
+                api: "API",
+                catalogs: "Katalogi",
+                layer: "Domyślna warstwa",
+                tutorial: "Tagi samouczka",
+                views: "Widoki",
+                web: "Sieć",
+            },
+        },
+        profile: {
+            title: "Profil",
+            section: {
+                profile: "Mój profil",
+                logout: "Wyloguj",
+            },
+        },
     },
 };

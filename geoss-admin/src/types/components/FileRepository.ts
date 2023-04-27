@@ -41,6 +41,7 @@ export type FileRepositoryManageFolderProps = {
     foldersList: MutableRefObject<IFolder[]>;
     setFoldersList: Dispatch<SetStateAction<IFolder[]>>;
     folderId?: number;
+    folder?: IFolder;
 };
 
 export type FileRepositoryManageFileProps = {
@@ -49,6 +50,7 @@ export type FileRepositoryManageFileProps = {
     path: string;
     documentsList: MutableRefObject<IDocument[]>;
     setDocumentsList: Dispatch<SetStateAction<IDocument[]>>;
+    file?: IDocument;
 };
 
 export type FileRepositoryFileInfoProps = {

@@ -55,3 +55,4 @@ export type { UploaderProps } from "./components/Uploader";
 export type { TablePaginationProps } from "./components/TablePagination";
 export type { TextInfoProps } from "./components/TextInfo";
 export type { FormSectionProps } from "./components/FormSection";
+export type { ViewsSettingsExpandControllerProps, FormattedView, EditedViewInfo } from "./components/ViewsSettings";

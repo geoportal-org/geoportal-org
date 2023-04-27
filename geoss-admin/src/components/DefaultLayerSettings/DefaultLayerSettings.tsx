@@ -14,7 +14,7 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { DefaultLayerSettingsManage } from "./DefaultLayerSettingsManage";
 import { DefaultLayerService } from "@/services/api";
 import { DefaultLayerContext } from "@/context";
-import { convertIsoDate, setTableSorting } from "@/utils/helpers";
+import { convertIsoDate, cutString, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { TableActionsSource, ToastStatus } from "@/types";
@@ -25,7 +25,7 @@ export const DefaultLayerSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [layersList, setLayersList] = useState<ILayer[]>([]);
     const [isPageChange, setIsPageChange] = useState(false);
-    const [editedLayerId, setEditedLayerId] = useState<number | null>(null);
+    const [editedLayer, setEditedLayer] = useState<ILayer | null>(null);
     const [{ totalPages, totalElements }, setDataInfo] = useState<{ totalPages: number; totalElements: number }>({
         totalPages: 0,
         totalElements: 0,
@@ -62,18 +62,18 @@ export const DefaultLayerSettings = () => {
         } catch (e) {
             console.error(e);
         } finally {
-            setIsLoading(false);
             setIsPageChange(false);
+            setIsLoading(false);
         }
     };
 
     const onAddAction = () => {
-        setEditedLayerId(null);
+        setEditedLayer(null);
         onSideBarOpen();
     };
 
-    const onLayerEditAction = (id: number) => {
-        setEditedLayerId(id);
+    const onLayerEditAction = (layerData: ILayer) => {
+        setEditedLayer(layerData);
         onSideBarOpen();
     };
 
@@ -141,14 +141,16 @@ export const DefaultLayerSettings = () => {
     const columns = useMemo<ColumnDef<ILayer, any>[]>(
         () => [
             columnHelper.accessor("id", {
-                header: "ID",
+                header: translate("general.id"),
                 enableSorting: false,
             }),
             columnHelper.accessor("name", {
                 header: translate("pages.layer.name"),
+                cell: ({ getValue }) => cutString(getValue(), 30),
             }),
             columnHelper.accessor("url", {
                 header: translate("general.url"),
+                cell: ({ getValue }) => cutString(getValue(), 30),
             }),
             columnHelper.accessor("created_on", {
                 header: translate("general.creation-date"),
@@ -160,10 +162,11 @@ export const DefaultLayerSettings = () => {
             }),
             columnHelper.accessor("created_by", {
                 header: translate("general.author"),
+                cell: ({ getValue }) => cutString(getValue(), 30),
             }),
             columnHelper.accessor("visible", {
                 header: translate("pages.layer.visible"),
-                cell: (info) => translate(`general.${info.getValue() ? "yes" : "no"}`),
+                cell: (info) => translate(`general.${info.getValue() ? "yes" : "no"}`).toLowerCase(),
             }),
             columnHelper.display({
                 header: translate("general.actions"),
@@ -174,12 +177,13 @@ export const DefaultLayerSettings = () => {
                         item={info.row.original}
                         actionsSource={TableActionsSource.LAYER}
                         onDeleteAction={handlePaginationParamsChange}
+                        disabled={isPageChange}
                     />
                 ),
             }),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.locale]
+        [router.locale, isPageChange]
     );
 
     const table = useReactTable({
@@ -201,30 +205,27 @@ export const DefaultLayerSettings = () => {
         {
             titleId: "pages.layer.add",
             onClick: () => onAddAction(),
+            disabled: isPageChange || isLoading,
         },
     ];
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
     return (
-        <DefaultLayerContext.Provider value={{ editedLayerId, addNewLayer, onLayerEditAction, updateLayer }}>
+        <DefaultLayerContext.Provider value={{ editedLayer, addNewLayer, onLayerEditAction, updateLayer }}>
             <MainContent titleId="nav.settings.section.layer" actions={headingActions}>
-                {totalElements ? (
+                {isLoading && <Loader />}
+                {!!totalElements && !isLoading && (
                     <>
-                        <Table tableData={table} />
+                        <Table tableData={table} isDisabled={isPageChange} />
                         <TablePagination tableData={table} isPageChange={isPageChange} />
                     </>
-                ) : (
-                    <TextInfo id="information.info.no-layers" />
                 )}
+                {!totalElements && !isLoading && <TextInfo id="information.info.no-layers" />}
             </MainContent>
 
             <SideBar
                 isOpen={isSideBarOpen}
                 onClose={onSideBarClose}
-                titleId={`pages.layer.${Number.isInteger(editedLayerId) ? "edit" : "add"}`}
+                titleId={`pages.layer.${editedLayer ? "edit" : "add"}`}
                 content={<DefaultLayerSettingsManage />}
             />
         </DefaultLayerContext.Provider>

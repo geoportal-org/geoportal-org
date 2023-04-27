@@ -15,8 +15,8 @@ const useCustomToast = () => {
             title,
             variant: "geossAlert",
             containerStyle: {
-                margin: "4px 4px 4px 0",
-                transform: "translate(10px, 48px)",
+                margin: position === "top-left" ? "4px 4px 4px 0" : "4px",
+                transform: position === "top-left" ? "translate(10px, 48px)" : "translate(0, 48px)",
             },
         });
     };

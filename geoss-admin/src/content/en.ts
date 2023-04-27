@@ -22,6 +22,7 @@ export const en = {
         actions: "Actions",
         id: "ID",
         description: "Description",
+        "not-applicable": "n/a",
     },
     form: {
         placeholders: {
@@ -70,6 +71,12 @@ export const en = {
             "not-unique-layer-name-update": "The layer name is not unique, to update layer please rename it",
             "not-unique-tag-id": "The tag ID is not unique, to add tag please change ID",
             "not-unique-tag-id-update": "The tag ID is not unique, to update tag please change ID",
+            "new-view": "An error occurred while adding the view - please try again",
+            "new-nested-view": "An error occurred while adding the nested view - please try again",
+            "update-view": "An error occurred while updating the view - please try again",
+            "update-nested-view": "An error occurred while updating the nested view - please try again",
+            "404": "Please try again. Contact support if the problem persists.",
+            "load-web": "An error occurred while loading the web settings - please refresh the page and try again",
         },
         success: {},
         info: {
@@ -78,6 +85,8 @@ export const en = {
             "no-layers": "No layer added",
             "no-changes": "No changes",
             "no-tags": "No tutorial tag added",
+            "no-views": "No views added",
+            "no-menu-items": "No menu item added",
         },
     },
     pages: {
@@ -168,6 +177,7 @@ export const en = {
             "add-item": "Add main menu item",
             "add-subitem": "Add child menu item",
             edit: "Edit menu item",
+            "edit-subitem": "Edit child menu item",
             "edit-on": "Edit menu",
             "edit-off": "Save menu",
             "delete-info": "Are you sure you want to remove menu item {title}?",
@@ -238,6 +248,30 @@ export const en = {
         catalogs: {},
         views: {
             add: "Add view",
+            "add-nested": "Add nested view",
+            name: "View name",
+            id: "View ID",
+            parent: "Parent view name",
+            default: "Default option",
+            edit: "Edit view",
+            "edit-nested": "Edit nested view",
+            expand: "Expand the table row to see the nested views",
+            "expand-all": "Expand all table rows to see the nested views",
+            "delete-nested-body": "Are you sure you want to remove nested view <b>{title}</b>?",
+            "delete-view-with-nested-body":
+                "Are you sure you want to remove view <b>{title}</b> with its nested views?",
+            "delete-view-body": "Are you sure you want to remove view <b>{title}</b>?",
+            "delete-nested-title": "Nested view deletion",
+            "delete-view-title": "View deletion",
+            "delete-confirmation": "View {title} has been deleted",
+            "delete-with-nested-confirmation": "View {title} has been deleted with its nested views",
+            "delete-nested-confirmation": "Nested view {title} has been deleted",
+            "delete-error": "View {title} has not been deleted - please refresh the page and try again",
+            "delete-nested-error": "Nested view {title} has not been deleted - please refresh the page and try again",
+            added: "View {title} has been created",
+            updated: "View {title} has been updated",
+            "added-nested": "Nested view {title} has been created",
+            "updated-nested": "Nested view {title} has been updated",
         },
         tags: {
             type: "Type",
@@ -310,24 +344,5 @@ export const en = {
     },
     loader: {
         status: "Loading...",
-    },
-
-    // to be removed
-    devTest: {
-        header: "Test header en",
-        btnToastErr: "Err en",
-        btnToastInfo: "Info en",
-        btnToastSuccess: "Success en",
-        btnToastWarning: "Warning en",
-        btnErrPage: "Go to error page en",
-        show: "Show modal en",
-        btnDisabled: "Click disabled en",
-        btnGhost: "Ghost btn en",
-        toastTitle: "Title en",
-        toastDesc: "Description en",
-        modalAccept: "Accept en",
-        modalCancel: "Cancel en",
-        add: "Add EN",
-        remove: "Remove EN",
     },
 };

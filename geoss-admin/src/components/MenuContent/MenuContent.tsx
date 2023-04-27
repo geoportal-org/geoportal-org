@@ -2,9 +2,8 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useRef, useState } from
 import { FormikHelpers, FormikValues } from "formik";
 import { Tree, NodeModel, MultiBackend, getBackendOptions, DndProvider, TreeMethods } from "@minoru/react-dnd-treeview";
 import { DropOptions } from "@minoru/react-dnd-treeview/dist/types";
-import { Box, Text, useDisclosure } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import { SideBar, MainContent, Loader, PrimaryButton, TextContent, Modal, TextInfo } from "@/components";
+import { Text, useDisclosure } from "@chakra-ui/react";
+import { SideBar, MainContent, Loader, TextContent, Modal, TextInfo } from "@/components";
 import { MenuContentItem } from "./MenuContentItem";
 import { MenuContentPlaceholder } from "./MenuContentPlaceholder";
 import { MenuContentItemPreview } from "./MenuContentItemPreview";
@@ -179,15 +178,16 @@ export const MenuContent = () => {
         onOpen();
     };
 
-    const onEditAction = (parentMenuId: number, menuItemId: number) => {
+    const onEditAction = (parentMenuId: number, menuItemId: number, menuItem: IMenuItem) => {
         const isMainMenuItem = parentMenuId === 0;
-        setSideBarTitle("pages.menu.edit");
+        setSideBarTitle(isMainMenuItem ? "pages.menu.edit" : "pages.menu.edit-subitem");
         setSideBarContent(() => (
             <MenuContentManage
                 parentMenuId={parentMenuId}
                 manageMenuItem={manageMenuItem}
                 menuItemId={menuItemId}
                 isMainMenuItem={isMainMenuItem}
+                menuItem={menuItem}
             />
         ));
         onOpen();
@@ -260,8 +260,8 @@ export const MenuContent = () => {
         menuItemId?: number
     ) =>
         menuItemId !== undefined
-            ? updateMenuItem(values, menuItemId, setInitValues, parentMenuId)
-            : createMenuItem(parentMenuId, values, actions);
+            ? await updateMenuItem(values, menuItemId, setInitValues, parentMenuId)
+            : await createMenuItem(parentMenuId, values, actions);
 
     const updateMenuItem = async (
         values: FormikValues,
@@ -312,7 +312,7 @@ export const MenuContent = () => {
     };
 
     const getNewItemData = (parentMenuId: number, values: FormikValues): IMenuItemData => {
-        const { title, imageTitle = " ", imageSource = " ", url } = values;
+        const { title, imageTitle = "", imageSource = "", url } = values;
         const levelId = parentMenuId === 0 ? 0 : 1;
         const priority = getNewItemPriority(parentMenuId);
         return { title, imageTitle, imageSource, url, levelId, parentMenuId, priority };
@@ -357,17 +357,15 @@ export const MenuContent = () => {
         {
             titleId: "pages.menu.add",
             onClick: () => onAddAction(0),
+            disabled: isLoading,
         },
     ];
-
-    if (isLoading) {
-        return <Loader />;
-    }
 
     return (
         <>
             <MainContent titleId="nav.contents.section.menu" actions={headingActions}>
-                {!isError ? (
+                {isLoading && <Loader />}
+                {!isLoading && !isError && !!menuList.length && (
                     <DndProvider backend={MultiBackend} options={getBackendOptions()}>
                         <Tree
                             ref={itemTreeRef}
@@ -407,9 +405,9 @@ export const MenuContent = () => {
                             }}
                         />
                     </DndProvider>
-                ) : (
-                    <TextInfo id="information.error.loading" />
                 )}
+                {!isLoading && !isError && !menuList.length && <TextInfo id="information.info.no-menu-items" />}
+                {!isLoading && isError && <TextInfo id="information.error.loading" />}
             </MainContent>
 
             <Modal

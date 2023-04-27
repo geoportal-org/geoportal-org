@@ -9,33 +9,33 @@ export const ViewsService = {
 
     getView: async (id: number): Promise<IView> => fetcher({ url: `${ViewsService.baseUrl}/${id}` }),
 
-    createView: async (viewData: IViewData): Promise<IViewData> =>
+    createView: async (viewData: IViewData): Promise<IView> =>
         fetcher({ url: ViewsService.baseUrl, method: "POST", body: viewData }),
 
-    updateView: async (id: number, viewData: IViewData): Promise<IViewData> =>
+    updateView: async (id: number, viewData: IViewData): Promise<IView> =>
         fetcher({ url: `${ViewsService.baseUrl}/${id}`, method: "PUT", body: viewData }),
 
-    patchView: async (id: number, viewData: Partial<IViewData>): Promise<IViewData> =>
+    patchView: async (id: number, viewData: Partial<IViewData>): Promise<IView> =>
         fetcher({ url: `${ViewsService.baseUrl}/${id}`, method: "PATCH", body: viewData }),
 
-    deleteView: async (id: number) => fetcher({ url: `${ViewsService.baseUrl}/${id}`, method: "DELETE" }),
+    deleteView: async (id: number): Promise<null> =>
+        fetcher({ url: `${ViewsService.baseUrl}/${id}`, method: "DELETE" }),
 
-    deleteViewSubViews: async (id: number) =>
+    deleteViewSubViews: async (id: number): Promise<null> =>
         fetcher({ url: `${ViewsService.baseUrl}/${id}/options`, method: "DELETE" }),
 
     createSubView: async (id: number, subViewData: ISubViewData): Promise<ISubView> =>
         fetcher({ url: `${ViewsService.baseUrl}/${id}/options`, method: "POST", body: subViewData }),
 
-    updateSubView: async (viewId: number, subViewId: number, subViewData: ISubViewData): Promise<ISubViewData> =>
+    getSubView: async (viewId: number, subViewId: number): Promise<ISubView> =>
+        fetcher({ url: `${ViewsService.baseUrl}/${viewId}/options/${subViewId}` }),
+
+    updateSubView: async (viewId: number, subViewId: number, subViewData: ISubViewData): Promise<ISubView> =>
         fetcher({ url: `${ViewsService.baseUrl}/${viewId}/options/${subViewId}`, method: "PUT", body: subViewData }),
 
-    patchSubView: async (
-        viewId: number,
-        subViewId: number,
-        subViewData: Partial<ISubViewData>
-    ): Promise<ISubViewData> =>
+    patchSubView: async (viewId: number, subViewId: number, subViewData: Partial<ISubViewData>): Promise<ISubView> =>
         fetcher({ url: `${ViewsService.baseUrl}/${viewId}/options/${subViewId}`, method: "PATCH", body: subViewData }),
 
-    deleteSubView: async (viewId: number, subViewId: number) =>
+    deleteSubView: async (viewId: number, subViewId: number): Promise<null> =>
         fetcher({ url: `${ViewsService.baseUrl}/${viewId}/options/${subViewId}`, method: "DELETE" }),
 };

@@ -29,7 +29,6 @@ export const Uploader = ({ fieldData, value, handleUploaderChange, handleFileUpl
     };
 
     const handleFileReject = (fileRejections: FileRejection[]) => {
-        console.log(fileRejections);
         const rejectionError = setRejectionError(fileRejections);
         const errorMessageId = Object.values(ErrorCode).includes(rejectionError)
             ? `information.error.${rejectionError}`

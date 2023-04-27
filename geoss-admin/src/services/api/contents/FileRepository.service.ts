@@ -27,7 +27,7 @@ export const FileRepositoryService = {
     deleteFolder: async (id: number) =>
         fetcher({ url: `${FileRepositoryService.baseFolderUrl}/${id}`, method: "DELETE" }),
 
-    updateFolderTitle: async (id: number, folderData: Pick<IFolderData, "title">): Promise<IFolder> =>
+    updateFolder: async (id: number, folderData: Pick<IFolderData, "title" | "path">): Promise<IFolder> =>
         fetcher({ url: `${FileRepositoryService.baseFolderUrl}/${id}`, body: folderData, method: "PATCH" }),
 
     deleteFile: async (id: number): Promise<null> =>

@@ -30,7 +30,7 @@ export const MenuContentItem = ({
                 onDeleteAction(node);
                 break;
             case ControlType.EDIT:
-                onEditAction(+node.parent, +node.id);
+                node.data && onEditAction(+node.parent, +node.id, node.data);
                 break;
         }
     };

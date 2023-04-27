@@ -93,6 +93,7 @@ export const button: ComponentStyleConfig = {
             h: "full",
             justifyContent: "flex-start",
             p: 2,
+            maxW: "full",
             _hover: {
                 bg: "brand.darkSoft",
                 boxShadow: "none",

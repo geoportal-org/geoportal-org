@@ -142,3 +142,5 @@ export const apiSettingsForm: FormSection[] = [
     //{ titleId: "pages.api.geoss", set: "geoss", data: geossForm }, GEOSS CR not included yet
     { titleId: "pages.api.other", set: "other", data: otherForm },
 ];
+
+export const apiSettingsFormFields = apiSettingsForm.map((section) => section.data).flat();

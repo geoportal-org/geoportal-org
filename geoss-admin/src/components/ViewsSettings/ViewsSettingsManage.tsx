@@ -2,29 +2,34 @@ import { useContext, useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { TextContent, PrimaryButton, FormField } from "@/components";
-import { DefaultLayerContext } from "@/context";
+import { ViewsContext } from "@/context";
 import { areObjectsEqual, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { ButtonType } from "@/types";
 import { scrollbarStyles } from "@/theme/commons";
-import { addLayerForm } from "@/data/forms";
+import { addViewForm, addSubViewForm } from "@/data/forms";
 
-export const DefaultLayerSettingsManage = () => {
+export const ViewsSettingsManage = () => {
     const [isSaving, setIsSaving] = useState<boolean>(false);
-    const { addNewLayer, updateLayer, editedLayer } = useContext(DefaultLayerContext);
+    const { addNewView, updateView, editedView } = useContext(ViewsContext);
+    const currentForm = !editedView || (editedView.viewId && !editedView.parentViewId) ? addViewForm : addSubViewForm;
     const [initValues, setInitValues] = useState<FormikValues>(
-        editedLayer ? setExistingFormValues(addLayerForm, editedLayer) : setFormInitialValues(addLayerForm)
+        editedView && editedView.item
+            ? setExistingFormValues(currentForm, editedView.item)
+            : setFormInitialValues(currentForm)
     );
 
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         setIsSaving(true);
-        !editedLayer ? await addNewLayer(values, actions) : await updateLayer(values, editedLayer.id, updateFormState);
+        !editedView || (editedView && !editedView.isEditMode)
+            ? await addNewView(values, actions)
+            : await updateView(values, updateFormState);
         setIsSaving(false);
     };
 
-    const updateFormState = (values: FormikValues) => setInitValues(setExistingFormValues(addLayerForm, values));
+    const updateFormState = (values: FormikValues) => setInitValues(setExistingFormValues(currentForm, values));
 
     const renderFormFields = () => {
-        const formFields = addLayerForm.map((field) => <FormField key={field.name} fieldData={field} />);
+        const formFields = currentForm.map((field) => <FormField key={field.name} fieldData={field} />);
         return (
             <Flex direction="column" gap={6} mb={6}>
                 {formFields}
@@ -36,7 +41,7 @@ export const DefaultLayerSettingsManage = () => {
         <Flex justifyContent="flex-end" py={1} w="full">
             <PrimaryButton
                 type={ButtonType.SUBMIT}
-                disabled={(!!editedLayer && areObjectsEqual(initValues, values)) || isSaving}
+                disabled={(!!editedView && editedView.isEditMode && areObjectsEqual(initValues, values)) || isSaving}
             >
                 <TextContent id="general.save" />
             </PrimaryButton>

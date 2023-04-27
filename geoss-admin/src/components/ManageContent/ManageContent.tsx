@@ -16,7 +16,8 @@ import { areObjectsEqual, createTouchedForm, setExistingFormValues, setFormIniti
 export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
     const [modalBody, setModalBody] = useState<ReactNode>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addContentForm));
+    const [isDraft, setIsDraft] = useState<boolean>(false);
+    const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addContentForm));
     const [contentId, setContentId] = useState<string>("");
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
     const router = useRouter();
@@ -34,8 +35,9 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
         const id = router.query.id as string;
         setContentId(id);
         try {
-            const response = await ContentService.getContent(+id);
-            setInitValues(() => setExistingFormValues(addContentForm, response));
+            const editedContent = await ContentService.getContent(+id);
+            setInitValues(() => setExistingFormValues(addContentForm, editedContent));
+            setIsDraft(!editedContent.published);
         } catch (e) {
             console.error(e);
         } finally {
@@ -51,6 +53,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                 : await ContentService.updateContent(+contentId, contentData);
             !isEditMode && actions.resetForm();
             isEditMode && setInitValues(() => setExistingFormValues(addContentForm, values));
+            setIsDraft(false);
             showToast({
                 title: isEditMode ? "Content updated" : "Content created",
                 description: `Content ${title} has been ${isEditMode ? "updated" : "created"}`,
@@ -106,6 +109,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                     : await ContentService.updateContent(+contentId, contentData);
                 !isEditMode && resetForm();
                 isEditMode && setInitValues(() => setExistingFormValues(addContentForm, values));
+                setIsDraft(true);
                 showToast({
                     title: isEditMode ? "Content updated" : "Content created",
                     description: `Content ${title} has been saved as draft`,
@@ -132,14 +136,14 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                 <PrimaryButton
                     variant={ButtonVariant.GHOST}
                     onClick={handleDraftSave}
-                    disabled={isEditMode && areObjectsEqual(values, initValues)}
+                    disabled={isEditMode && areObjectsEqual(values, initValues) && isDraft}
                 >
                     <TextContent id="form.actions.save-draft" />
                 </PrimaryButton>
                 <PrimaryButton
                     type={ButtonType.SUBMIT}
                     color="brand.accept"
-                    disabled={isEditMode && areObjectsEqual(values, initValues)}
+                    disabled={isEditMode && areObjectsEqual(values, initValues) && !isDraft}
                 >
                     <TextContent id={isEditMode ? "form.actions.submit-changes" : "form.actions.submit"} />
                 </PrimaryButton>
@@ -170,7 +174,8 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                     return (
                         <MainContent
                             titleId={isEditMode ? "pages.manage-content.edit-title" : "pages.manage-content.add-title"}
-                            actions={headingActions}
+                            // hidden preview
+                            // actions={headingActions}
                             backPath={pagesRoutes.website}
                         >
                             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">

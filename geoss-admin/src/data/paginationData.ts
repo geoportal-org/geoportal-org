@@ -19,3 +19,8 @@ export const initContentsPagination = {
     page: 0,
     size: 999,
 };
+
+export const extendedViewsPagination = {
+    page: 0,
+    size: 999,
+};

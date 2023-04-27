@@ -4,7 +4,7 @@ import { flexRender } from "@tanstack/react-table";
 import { firstTableCellBorderStyles, lastTableCellBorderStyles } from "@/theme/commons";
 import { TableProps } from "@/types";
 
-export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
+export const TableBody = <T extends object>({ tableData, isDisabled }: TableProps<T>) => {
     return (
         <Table size="sm" variant="geossTable">
             <Thead>
@@ -17,8 +17,14 @@ export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
                                         align="center"
                                         justify="space-between"
                                         gap={1}
-                                        cursor={header.column.getCanSort() ? "pointer" : "auto"}
-                                        onClick={header.column.getToggleSortingHandler()}
+                                        cursor={
+                                            !header.column.getCanSort()
+                                                ? "auto"
+                                                : isDisabled
+                                                ? "not-allowed"
+                                                : "pointer"
+                                        }
+                                        onClick={!isDisabled ? header.column.getToggleSortingHandler() : undefined}
                                         pl={header.id === "actions" ? "2.5" : "0"}
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
@@ -39,8 +45,13 @@ export const TableBody = <T extends object>({ tableData }: TableProps<T>) => {
             <Tbody>
                 {tableData.getRowModel().rows.map((row) => {
                     const isSelectedRow = row.getIsSelected();
+                    const isSubRow = !!row.depth;
                     return (
-                        <Tr key={row.id}>
+                        <Tr
+                            key={row.id}
+                            _even={{ td: { bg: isSubRow ? "brand.background" : "brand.darkSoft" } }}
+                            _odd={{ td: { bg: isSubRow ? "brand.background" : "transparent" } }}
+                        >
                             {row.getVisibleCells().map((cell) => (
                                 <Td
                                     key={cell.id}

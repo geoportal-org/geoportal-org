@@ -25,7 +25,7 @@ export const TutorialTagsSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [tagsList, setTagsList] = useState<ITutorialTag[]>([]);
     const [isPageChange, setIsPageChange] = useState(false);
-    const [editedTagId, setEditedTagId] = useState<number | null>(null);
+    const [editedTag, setEditedTag] = useState<ITutorialTag | null>(null);
     const [{ totalPages, totalElements }, setDataInfo] = useState<{ totalPages: number; totalElements: number }>({
         totalPages: 0,
         totalElements: 0,
@@ -62,18 +62,18 @@ export const TutorialTagsSettings = () => {
         } catch (e) {
             console.log(e);
         } finally {
-            setIsLoading(false);
             setIsPageChange(false);
+            setIsLoading(false);
         }
     };
 
     const onAddAction = () => {
-        setEditedTagId(null);
+        setEditedTag(null);
         onSideBarOpen();
     };
 
-    const onTagEditAction = (id: number) => {
-        setEditedTagId(id);
+    const onTagEditAction = (tagData: ITutorialTag) => {
+        setEditedTag(tagData);
         onSideBarOpen();
     };
 
@@ -159,11 +159,11 @@ export const TutorialTagsSettings = () => {
         () => [
             columnHelper.accessor("name", {
                 header: translate("general.id"),
-                cell: (info) => cutString(info.getValue(), 20),
+                cell: (info) => cutString(info.getValue(), 30),
             }),
             columnHelper.accessor("title", {
                 header: translate("general.title"),
-                cell: (info) => cutString(info.getValue(), 20),
+                cell: (info) => cutString(info.getValue(), 30),
             }),
             columnHelper.accessor("description", {
                 header: translate("general.description"),
@@ -171,6 +171,7 @@ export const TutorialTagsSettings = () => {
             }),
             columnHelper.accessor("type", {
                 header: translate("pages.tags.type"),
+                cell: (info) => translate(`pages.tags.${info.getValue()}`).toLowerCase(),
             }),
             columnHelper.accessor("show", {
                 header: translate("pages.tags.show"),
@@ -178,6 +179,7 @@ export const TutorialTagsSettings = () => {
             }),
             columnHelper.accessor("placement", {
                 header: translate("pages.tags.placement"),
+                cell: (info) => translate(`pages.tags.${info.getValue()}`),
             }),
             columnHelper.display({
                 header: translate("general.actions"),
@@ -188,12 +190,13 @@ export const TutorialTagsSettings = () => {
                         item={info.row.original}
                         actionsSource={TableActionsSource.TUTORIAL}
                         onDeleteAction={handlePaginationParamsChange}
+                        disabled={isPageChange}
                     />
                 ),
             }),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [router.locale]
+        [router.locale, isPageChange]
     );
 
     const table = useReactTable({
@@ -215,30 +218,27 @@ export const TutorialTagsSettings = () => {
         {
             titleId: "pages.tags.add",
             onClick: () => onAddAction(),
+            disabled: isPageChange || isLoading,
         },
     ];
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
     return (
-        <TutorialTagsContext.Provider value={{ editedTagId, addNewTag, onTagEditAction, updateTag }}>
+        <TutorialTagsContext.Provider value={{ editedTag, addNewTag, onTagEditAction, updateTag }}>
             <MainContent titleId="nav.settings.section.tutorial" actions={headingActions}>
-                {totalElements ? (
+                {isLoading && <Loader />}
+                {!!totalElements && !isLoading && (
                     <>
-                        <Table tableData={table} />
+                        <Table tableData={table} isDisabled={isPageChange} />
                         <TablePagination tableData={table} isPageChange={isPageChange} />
                     </>
-                ) : (
-                    <TextInfo id="information.info.no-tags" />
                 )}
+                {!isLoading && !totalElements && <TextInfo id="information.info.no-tags" />}
             </MainContent>
 
             <SideBar
                 isOpen={isSideBarOpen}
                 onClose={onSideBarClose}
-                titleId={`pages.tags.${Number.isInteger(editedTagId) ? "edit" : "add"}`}
+                titleId={`pages.tags.${editedTag ? "edit" : "add"}`}
                 content={<TutorialTagsSettingsManage />}
             />
         </TutorialTagsContext.Provider>

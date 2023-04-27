@@ -14,12 +14,11 @@ import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ButtonType, ToastStatus } from "@/types";
 import { IApiSetting, IApiSettingData } from "@/types/models";
-import { apiSettingsForm } from "@/data/forms";
+import { apiSettingsForm, apiSettingsFormFields } from "@/data/forms";
 
 export const ApiSettings = () => {
-    const apiSettingsFormFields = apiSettingsForm.map((section) => section.data).flat();
     const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(apiSettingsFormFields));
+    const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(apiSettingsFormFields));
     const [savedValues, setSavedValues] = useState<FormikValues>({});
     const [apiSettingsList, setApiSettingList] = useState<IApiSetting[]>([]);
     const { showToast } = useCustomToast();
@@ -117,25 +116,24 @@ export const ApiSettings = () => {
         </Flex>
     );
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
     return (
         <MainContent titleId="nav.settings.section.api">
-            <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
-                <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
-                    {(formikProps) => {
-                        const { handleSubmit } = formikProps;
-                        return (
-                            <form onSubmit={handleSubmit} noValidate>
-                                {renderFormFields()}
-                                {renderFormFooter()}
-                            </form>
-                        );
-                    }}
-                </Formik>
-            </Flex>
+            {isLoading && <Loader />}
+            {!isLoading && (
+                <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
+                    <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
+                        {(formikProps) => {
+                            const { handleSubmit } = formikProps;
+                            return (
+                                <form onSubmit={handleSubmit} noValidate>
+                                    {renderFormFields()}
+                                    {renderFormFooter()}
+                                </form>
+                            );
+                        }}
+                    </Formik>
+                </Flex>
+            )}
         </MainContent>
     );
 };

@@ -29,7 +29,7 @@ export const addMenuItemForm: FormField[] = [
     },
     {
         fieldType: Input,
-        isRequired: true,
+        isRequired: false,
         labelId: "general.url",
         name: "url",
         placeholderId: "form.placeholders.type",

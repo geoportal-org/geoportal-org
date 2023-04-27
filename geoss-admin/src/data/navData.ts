@@ -26,11 +26,14 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.web,
         Icon: WebIcon,
     },
+    // hidden Catalogs in menu
+    /*
     {
         titleId: "nav.settings.section.catalogs",
         href: pagesRoutes.catalogs,
         Icon: CatalogIcon,
     },
+    */
     {
         titleId: "nav.settings.section.views",
         href: pagesRoutes.views,

@@ -11,7 +11,7 @@ export type MenuContentItemProps = {
     openAll: () => void;
     onAddAction: (parentMenuId: number) => void;
     onDeleteAction: (item: NodeModel<IMenuItem>) => void;
-    onEditAction: (parentMenuId: number, menuItemId: number) => void;
+    onEditAction: (parentMenuId: number, menuItemId: number, menuItem: IMenuItem) => void;
 };
 
 export type MenuContentItemPreviewProps = {
@@ -27,8 +27,9 @@ export type MenuContentManageProps = {
         actions: FormikHelpers<FormikValues>,
         setInitValues: Dispatch<SetStateAction<FormikValues>>,
         menuItemId?: number
-    ) => void;
+    ) => Promise<void>;
     isMainMenuItem: boolean;
+    menuItem?: IMenuItem;
 };
 
 export type MovedItemInfo = {

@@ -69,3 +69,5 @@ export const webSettingsForm: FormSection[] = [
     { titleId: "pages.web.default-source", set: "source", data: defaultSourceNameForm },
     { titleId: "pages.web.map", set: "map", data: mapScopeForm },
 ];
+
+export const webSettingsFormFields: FormField[] = webSettingsForm.map((section) => section.data).flat();

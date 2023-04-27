@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
-import { FormField, Loader, PrimaryButton, TextContent } from "@/components";
-import { MenuService } from "@/services/api";
+import { FormField, PrimaryButton, TextContent } from "@/components";
 import { addChildMenuItemForm, addMenuItemForm } from "@/data/forms";
 import { areObjectsEqual, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { ButtonType, MenuContentManageProps } from "@/types";
@@ -13,32 +12,23 @@ export const MenuContentManage = ({
     menuItemId,
     manageMenuItem,
     isMainMenuItem,
+    menuItem,
 }: MenuContentManageProps) => {
     const itemForm = isMainMenuItem ? addMenuItemForm : addChildMenuItemForm;
-    const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(itemForm));
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [initValues, setInitValues] = useState<FormikValues>(
+        menuItem ? setExistingFormValues(itemForm, menuItem) : setFormInitialValues(itemForm)
+    );
 
-    useEffect(() => {
-        menuItemId ? getMenuItemInfo(menuItemId) : setIsLoading(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const getMenuItemInfo = async (itemId: number) => {
-        try {
-            const editedMenuItem = await MenuService.getMenuItem(itemId);
-            setInitValues(setExistingFormValues(itemForm, editedMenuItem));
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setIsLoading(false);
-        }
+    const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
+        setIsSaving(true);
+        await manageMenuItem(parentMenuId, values, actions, setInitValues, menuItemId);
+        setIsSaving(false);
     };
 
-    const handleFormSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>) =>
-        manageMenuItem(parentMenuId, values, actions, setInitValues, menuItemId);
-
     const renderFormFields = () => {
-        const formFields = itemForm.map((field) => <FormField key={field.name} fieldData={field} />);
+        const formFieldsData = menuItem ? itemForm.map((field) => ({ ...field, automaticFill: undefined })) : itemForm;
+        const formFields = formFieldsData.map((field) => <FormField key={field.name} fieldData={field} />);
         return (
             <Flex direction="column" gap={6} mb={6}>
                 {formFields}
@@ -50,16 +40,12 @@ export const MenuContentManage = ({
         <Flex justifyContent="flex-end" py={1} w="full">
             <PrimaryButton
                 type={ButtonType.SUBMIT}
-                disabled={menuItemId !== undefined && areObjectsEqual(initValues, values)}
+                disabled={(menuItemId !== undefined && areObjectsEqual(initValues, values)) || isSaving}
             >
                 <TextContent id="general.save" />
             </PrimaryButton>
         </Flex>
     );
-
-    if (isLoading) {
-        return <Loader />;
-    }
 
     return (
         <Formik initialValues={initValues} onSubmit={handleFormSubmit}>

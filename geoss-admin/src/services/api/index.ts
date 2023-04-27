@@ -5,4 +5,5 @@ export { FileRepositoryService } from "./contents/FileRepository.service";
 export { MenuService } from "./contents/Menu.service";
 export { PageService } from "./contents/Page.service";
 export { TutorialTagsService } from "./settings/TutorialTagsService";
+export { ViewsService } from "./settings/ViewsService";
 export { WebSettingsService } from "./settings/WebSettingsService";

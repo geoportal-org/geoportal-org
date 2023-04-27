@@ -9,8 +9,9 @@ import {
     ModalAction,
     NestedMsgs,
     SelectSettings,
+    FormattedView,
 } from "@/types";
-import { IApiSetting, IContent, IDocument, IFolder, IMenuItem, IWebSetting } from "@/types/models";
+import { IApiSetting, IContent, IDocument, IFolder, IMenuItem, IView, IWebSetting } from "@/types/models";
 import { navSectionsUrls } from "@/data";
 import { apiSettingsForm, webSettingsForm } from "@/data/forms";
 
@@ -261,6 +262,50 @@ export const getKeyValueFormChanges = (
         .map((key) => key);
 
     return { newValues, changedValues };
+};
+
+export const prepareViewsToShow = (viewsList: IView[]): FormattedView[] =>
+    viewsList.map((view) => {
+        const { subOptions, _links, ...mainView } = view;
+        const subRows = subOptions.map((subOption) => ({
+            ...subOption,
+            parentViewName: view.label,
+            parentViewId: view.id,
+        }));
+        return { ...mainView, subRows: subRows as FormattedView[] };
+    });
+
+export const getViewsActionsMsgIds = (
+    isMainView: boolean,
+    isAddMode: boolean = true
+): { successMsgId: string; errorMsgId: string } => {
+    const successMsgId = isAddMode
+        ? `pages.views.added${isMainView ? "" : "-nested"}`
+        : `pages.views.updated${isMainView ? "" : "-nested"}`;
+    const errorMsgId = isAddMode
+        ? `information.error.${isMainView ? "new-view" : "new-nested-view"}`
+        : `information.error.${isMainView ? "update-view" : "update-nested-view"}`;
+    return { successMsgId, errorMsgId };
+};
+
+export const getViewsSideBarTitleId = (
+    editedView: {
+        viewId?: number;
+        parentViewId?: number;
+        isEditMode: boolean;
+    } | null
+) => {
+    const titleId = "pages.views.";
+    if (!editedView) {
+        return titleId + "add";
+    }
+    if (editedView.viewId && editedView.parentViewId) {
+        return titleId + "edit-nested";
+    }
+    if (editedView.parentViewId) {
+        return titleId + "add-nested";
+    }
+    return titleId + "edit";
 };
 
 // create folders & documents structure ready to create directory tree

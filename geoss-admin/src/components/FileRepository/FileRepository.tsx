@@ -66,10 +66,12 @@ export const FileRepository = () => {
         {
             titleId: "pages.file-repository.add-folder",
             onClick: () => handleAddFolderClick(),
+            disabled: isLoading,
         },
         {
             titleId: "pages.file-repository.add-file",
             onClick: () => handleAddFileClick(),
+            disabled: isLoading,
         },
     ];
 
@@ -154,41 +156,20 @@ export const FileRepository = () => {
     };
 
     const deleteFolder = async (title: string, id: number) => {
-        const deletePromises: Promise<null>[] = [];
-        const [deleteFoldersIds, deleteFilesIds] = getDeleteIds(id);
-
-        deleteFoldersIds.forEach((id) => deletePromises.push(FileRepositoryService.deleteFolder(id)));
-        deleteFilesIds.forEach((id) => deletePromises.push(FileRepositoryService.deleteFile(id)));
-
-        await Promise.all(deletePromises)
-            .then(() => handleItemsDelete(deleteFoldersIds, deleteFilesIds, title, id))
-            .catch((e) => showErrorInfo("pages.file-repository.delete-folder-error"));
-    };
-
-    const getDeleteIds = (id: number): number[][] => {
-        const deleteFoldersIds = foldersList
-            .filter((folder) => folder.parentFolderId === id || +getIdFromUrl(folder._links.self.href) === id)
-            .map((folder) => +getIdFromUrl(folder._links.self.href));
-
-        const deleteFilesIds = documentsList
-            .filter((file) => file.folderId === id)
-            .map((file) => +getIdFromUrl(file._links.self.href));
-
-        return [deleteFoldersIds, deleteFilesIds];
-    };
-
-    const handleItemsDelete = (deleteFoldersIds: number[], deleteFilesIds: number[], title: string, id: number) => {
-        setFoldersList((foldersList) =>
-            foldersList.filter((folder) => !deleteFoldersIds.includes(+getIdFromUrl(folder._links.self.href)))
-        );
-        setDocumentsList((documentsList) =>
-            documentsList.filter((file) => !deleteFilesIds.includes(+getIdFromUrl(file._links.self.href)))
-        );
-        showToast({
-            title: "Folder deleted",
-            description: `Folder ${title} (ID: ${id}) has been deleted along with its contents`,
-        });
-        onCloseModal();
+        try {
+            await FileRepositoryService.deleteFolder(id);
+            setFoldersList((foldersList) =>
+                foldersList.filter((folder) => +getIdFromUrl(folder._links.self.href) !== id)
+            );
+            showToast({
+                title: "Folder deleted",
+                description: `Folder ${title} (ID: ${id}) has been deleted along with its contents`,
+            });
+            onCloseModal();
+        } catch (e) {
+            console.log(e);
+            showErrorInfo("pages.file-repository.delete-folder-error");
+        }
     };
 
     const deleteDocument = async (title: string, id: number) => {
@@ -223,6 +204,7 @@ export const FileRepository = () => {
                     path={generatePath(breadcrumb)}
                     foldersList={foldersListRef}
                     setFoldersList={setFoldersList}
+                    folder={item}
                 />
             ) : (
                 <FileRepositoryManageFile
@@ -231,6 +213,7 @@ export const FileRepository = () => {
                     documentsList={documentsListRef}
                     setDocumentsList={setDocumentsList}
                     fileId={+getIdFromUrl(item._links.self.href)}
+                    file={item}
                 />
             )
         );
@@ -244,15 +227,14 @@ export const FileRepository = () => {
             status: ToastStatus.ERROR,
         });
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
     return (
         <>
             <MainContent titleId="nav.contents.section.repository" actions={headingActions}>
-                <FileRepositoryBreadcrumb breadcrumb={breadcrumb} handleBreadcrumbClick={handleBreadcrumbClick} />
-                {!isEmptyFolder ? (
+                {isLoading && <Loader />}
+                {!isLoading && (
+                    <FileRepositoryBreadcrumb breadcrumb={breadcrumb} handleBreadcrumbClick={handleBreadcrumbClick} />
+                )}
+                {!isLoading && !isEmptyFolder && (
                     <Grid templateColumns="repeat(auto-fill, minmax(min(90px, 100%), 1fr))" gap={6} m={1}>
                         {currentFolders.map((folder) => {
                             return (
@@ -277,9 +259,8 @@ export const FileRepository = () => {
                             );
                         })}
                     </Grid>
-                ) : (
-                    <TextInfo id="pages.file-repository.empty-folder" />
                 )}
+                {!isLoading && isEmptyFolder && <TextInfo id="pages.file-repository.empty-folder" />}
             </MainContent>
 
             <Modal

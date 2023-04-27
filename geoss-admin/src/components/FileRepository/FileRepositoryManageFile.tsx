@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
-import { PrimaryButton, Loader, FormField, TextContent } from "@/components";
+import { PrimaryButton, FormField, TextContent } from "@/components";
 import { FileRepositoryService } from "@/services/api";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
@@ -17,31 +17,20 @@ export const FileRepositoryManageFile = ({
     path,
     documentsList,
     setDocumentsList,
+    file,
 }: FileRepositoryManageFileProps) => {
     const fileForm = fileId ? editFileForm : addFileForm;
-    const [isLoading, setIsLoading] = useState(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(fileForm));
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [initValues, setInitValues] = useState<FormikValues>(
+        file ? setExistingFormValues(fileForm, file) : setFormInitialValues(fileForm)
+    );
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
 
-    useEffect(() => {
-        fileId ? getFileInfo(fileId) : setIsLoading(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const getFileInfo = async (id: number) => {
-        try {
-            const editedFile = await FileRepositoryService.getFile(id);
-            setInitValues(setExistingFormValues(fileForm, editedFile));
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleFormSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        fileId ? updateFile(fileId, values) : addNewFile(values, actions);
+    const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
+        setIsSaving(true);
+        fileId ? await updateFile(fileId, values) : await addNewFile(values, actions);
+        setIsSaving(false);
     };
 
     const updateFile = async (id: number, values: FormikValues) => {
@@ -122,7 +111,7 @@ export const FileRepositoryManageFile = ({
         <Flex justifyContent="flex-end" py={1} w="full">
             <PrimaryButton
                 type={ButtonType.SUBMIT}
-                disabled={fileId !== undefined && areObjectsEqual(initValues, values)}
+                disabled={(fileId !== undefined && areObjectsEqual(initValues, values)) || isSaving}
             >
                 <TextContent id={fileId ? "general.save" : "general.upload"} />
             </PrimaryButton>
@@ -135,10 +124,6 @@ export const FileRepositoryManageFile = ({
             description: translate(`information.error.${msgId}`),
             status: ToastStatus.ERROR,
         });
-
-    if (isLoading) {
-        return <Loader />;
-    }
 
     return (
         <Formik initialValues={initValues} onSubmit={handleFormSubmit}>

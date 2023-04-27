@@ -18,10 +18,11 @@ import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus
 import { IPageData } from "@/types/models";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(addPageForm));
+    const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addPageForm));
     const [contentsList, setContentsList] = useState<SelectSettings>();
     const [pageId, setPageId] = useState<string>("");
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isDraft, setIsDraft] = useState<boolean>(false);
     const router = useRouter();
     const { showToast } = useCustomToast();
 
@@ -44,6 +45,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 setPageId(id);
                 const editedPage = await PageService.getPage(+id);
                 setInitValues(() => setExistingFormValues(addPageForm, editedPage));
+                setIsDraft(!editedPage.published);
             }
         } catch (e) {
             console.error(e);
@@ -60,9 +62,10 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 : await PageService.updatePage(+pageId, pageData);
             !isEditMode && actions.resetForm();
             isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
+            setIsDraft(false);
             showToast({
-                title: "Page created",
-                description: "Page created",
+                title: isEditMode ? "Updated" : "Created",
+                description: `Page ${title} has been ${isEditMode ? "updated" : "created"}`,
             });
         } catch (e) {
             console.error(e);
@@ -75,7 +78,10 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     };
 
     const renderFormFields = () => {
-        const formFields = addPageForm.map((field) => {
+        const formFieldsData = isEditMode
+            ? addPageForm.map((field) => ({ ...field, automaticFill: undefined }))
+            : addPageForm;
+        const formFields = formFieldsData.map((field) => {
             if (field.name === "contentId") {
                 field.selectSettings = contentsList;
             }
@@ -102,6 +108,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                     : await PageService.updatePage(+pageId, pageData);
                 !isEditMode && resetForm();
                 isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
+                setIsDraft(true);
                 showToast({
                     title: isEditMode ? "Page updated" : "Page created",
                     description: `Page ${title} has been saved as draft`,
@@ -128,14 +135,14 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 <PrimaryButton
                     variant={ButtonVariant.GHOST}
                     onClick={handleDraftSave}
-                    disabled={isEditMode && areObjectsEqual(values, initValues)}
+                    disabled={isEditMode && areObjectsEqual(values, initValues) && isDraft}
                 >
                     <TextContent id="form.actions.save-draft" />
                 </PrimaryButton>
                 <PrimaryButton
                     type={ButtonType.SUBMIT}
                     color="brand.accept"
-                    disabled={isEditMode && areObjectsEqual(values, initValues)}
+                    disabled={isEditMode && areObjectsEqual(values, initValues) && !isDraft}
                 >
                     <TextContent id={isEditMode ? "form.actions.submit-changes" : "form.actions.submit"} />
                 </PrimaryButton>

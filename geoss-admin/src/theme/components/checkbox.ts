@@ -9,6 +9,10 @@ export const checkbox: ComponentStyleConfig = {
                 _checked: {
                     bg: "brand.dark",
                 },
+                _disabled: {
+                    bg: "transparent",
+                    borderColor: "brand.mainDark",
+                },
             },
         },
     },

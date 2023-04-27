@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
-import { Loader, TextContent, PrimaryButton, FormField } from "@/components";
+import { TextContent, PrimaryButton, FormField } from "@/components";
 import { FileRepositoryService } from "@/services/api";
 import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
@@ -16,35 +16,24 @@ export const FileRepositoryManageFolder = ({
     path,
     foldersList,
     setFoldersList,
+    folder,
 }: FileRepositoryManageFolderProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [initValues, setInitValues] = useState<FormikValues>(setFormInitialValues(createFolderForm));
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [initValues, setInitValues] = useState<FormikValues>(
+        folder ? setExistingFormValues(createFolderForm, folder) : setFormInitialValues(createFolderForm)
+    );
     const { showToast } = useCustomToast();
 
-    useEffect(() => {
-        folderId ? getFolderInfo(folderId) : setIsLoading(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const getFolderInfo = async (id: number) => {
-        try {
-            const editedFolder = await FileRepositoryService.getFolder(id);
-            setInitValues(setExistingFormValues(createFolderForm, editedFolder));
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleFormSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        folderId ? updateFolder(folderId, values) : createNewFolder(values, actions);
+    const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
+        setIsSaving(true);
+        folderId ? await updateFolder(folderId, values) : await createNewFolder(values, actions);
+        setIsSaving(false);
     };
 
     const updateFolder = async (id: number, values: FormikValues) => {
-        const folderData: Pick<IFolderData, "title"> = { title: values.title };
+        const folderData = { title: values.title, path };
         try {
-            const updatedFolder = await FileRepositoryService.updateFolderTitle(id, folderData);
+            const updatedFolder = await FileRepositoryService.updateFolder(id, folderData);
             setFoldersList((prevFoldersList) =>
                 prevFoldersList.map((folder) =>
                     +getIdFromUrl(folder._links.self.href) === id ? updatedFolder : folder
@@ -90,16 +79,12 @@ export const FileRepositoryManageFolder = ({
         <Flex justifyContent="flex-end" py={1} w="full">
             <PrimaryButton
                 type={ButtonType.SUBMIT}
-                disabled={folderId !== undefined && areObjectsEqual(initValues, values)}
+                disabled={(folderId !== undefined && areObjectsEqual(initValues, values)) || isSaving}
             >
                 <TextContent id="general.save" />
             </PrimaryButton>
         </Flex>
     );
-
-    if (isLoading) {
-        return <Loader />;
-    }
 
     return (
         <Formik initialValues={initValues} onSubmit={handleFormSubmit}>

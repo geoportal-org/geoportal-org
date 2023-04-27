@@ -5,6 +5,7 @@ export {
     initMenuPagination,
     initRepositoryPagination,
     initContentsPagination,
+    extendedViewsPagination,
 } from "./paginationData";
 export { languagesSwitcher } from "./languagesSwitcher";
 export { menuItemControls } from "./menuItemControls";
