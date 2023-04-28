@@ -1,7 +1,6 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SessionProvider } from "next-auth/react";
 import { useMemo } from "react";
 import { IntlProvider } from "react-intl";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -10,7 +9,7 @@ import { flattenMessages } from "@/utils/helpers";
 import { contentMessages } from "@/content";
 import geossTheme from "@/theme";
 
-const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps) => {
     const { locale } = useRouter();
     const [shortLocale] = locale ? locale.split("-") : ["en"];
 
@@ -30,11 +29,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
             <IntlProvider locale={shortLocale} messages={textContent} defaultLocale="en" onError={() => null}>
                 <ChakraProvider theme={geossTheme}>
                     <Fonts />
-                    <SessionProvider session={session}>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
-                    </SessionProvider>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
                 </ChakraProvider>
             </IntlProvider>
         </>
