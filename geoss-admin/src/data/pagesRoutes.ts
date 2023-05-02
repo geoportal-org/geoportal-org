@@ -8,6 +8,7 @@ export const pagesRoutes = {
     menu: "/menu",
     myProfile: "/profile",
     page: "/page",
+    signIn: "/",
     tutorialTags: "/tutorial-tags-settings",
     views: "/views-settings",
     web: "/web-settings",

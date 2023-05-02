@@ -4,7 +4,7 @@ import { Button, Flex, useDisclosure, Text, Divider } from "@chakra-ui/react";
 import { Modal, TextContent } from "@/components";
 import { ContentService, DefaultLayerService, PageService, TutorialTagsService, ViewsService } from "@/services/api";
 import { DefaultLayerContext, TutorialTagsContext, ViewsContext } from "@/context";
-import { tableActionsBtns } from "@/data";
+import { pagesRoutes, tableActionsBtns } from "@/data";
 import { ModalAction, TableActionsProps, TableActionsSource, TableActionsType, ToastStatus } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { setDecisionModalActions } from "@/utils/helpers";
@@ -61,7 +61,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 onOpenModal();
                 break;
             case TableActionsType.EDIT:
-                router.push(`/page/${itemId}`);
+                router.push(`${pagesRoutes.page}/${itemId}`);
                 break;
         }
     };
@@ -115,7 +115,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 onOpenModal();
                 break;
             case TableActionsType.EDIT:
-                router.push(`/contents/${itemId}`);
+                router.push(`${pagesRoutes.website}/${itemId}`);
                 break;
             case TableActionsType.PREVIEW:
                 const isContent = "content" in item;
