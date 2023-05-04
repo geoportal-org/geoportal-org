@@ -1,5 +1,6 @@
 import apiClient from './apiClient'
 import geossSettings from './module/geoss-settings'
+import { parseXMLToJSON } from '@/services/general.api.service'
 
 interface WebSetting {
     id: number
@@ -43,13 +44,18 @@ interface WebSettings {
     }
 }
 
+interface WebSettingsData {
+    [key: string]: string
+}
+
 interface SiteSettings {
-    site: {
-        name: string
-        defaultDataSource: string
-        url: string
-        logoUrl: string
-    }
+    name: string
+    defaultDataSource: string
+    url: string
+    logoUrl: string
+    mapZoom: number
+    latitude: number
+    longitude: number
 }
 
 interface SearchEngine {
@@ -75,15 +81,15 @@ interface SearchEngineConfig {
 }
 
 interface SearchSettings {
-    localization: any
+    localization?: any
     searchEngine: Array<SearchEngine>
     searchEngineConfigs: Array<SearchEngineConfig>
-    searchFilterParams: any
-    linkSharing: {
+    searchFilterParams?: any
+    linkSharing?: {
         geossSearchPlid: number
         searchEngineLayers: any
     }
-    popularSearch: {
+    popularSearch?: {
         groupId: number
         aoiRelation: string
         showAoi: boolean
@@ -112,10 +118,6 @@ interface SearchSettings {
     }
 }
 
-interface WebSettingsData {
-    [key: string]: string
-}
-
 const parseWebSettings = (data: WebSettings): WebSettingsData => {
     const webSettingsData: WebSettingsData = {}
     for (const setting of data._embedded.webSettings) {
@@ -125,23 +127,43 @@ const parseWebSettings = (data: WebSettings): WebSettingsData => {
     return webSettingsData
 }
 
+const parseApiSettings = (data: any): any => {
+    const apiSettingsData: any = {}
+    for (const setting of data._embedded.apiSettings) {
+        const key: string = `${setting.key}`
+        apiSettingsData[key] = setting.value
+    }
+    return apiSettingsData
+}
+
 const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
     return {
-        site: {
-            name: data.logo_title,
-            defaultDataSource: data.source_GEOSS,
-            url: '/',
-            logoUrl: data.logo_source,
-        },
+        name: data.logo_title,
+        defaultDataSource: data.source_GEOSS,
+        url: '/',
+        logoUrl: data.logo_source,
+        mapZoom: Number(data.map_zoom),
+        latitude: Number(data.map_latitude),
+        longitude: Number(data.map_longitude),
     }
 }
 
-// const parseSearchSettings = (data: WebSettingsData): SearchSettings => {
-//     return {
-//         searchEngine: [],
-//         searchEngineConfigs: [],
-//     }
-// }
+const parseCatalogsResponse = (data: string): any => {
+    const catalogsObject = JSON.parse(parseXMLToJSON(data))
+    const catalogsArray = catalogsObject.feed.entry
+    const catalogs = []
+
+    for (const cat of catalogsArray) {
+        catalogs.push({
+            defaultOption: false,
+            subOptions: [],
+            label: cat.title,
+            title: cat.title,
+            value: cat.id,
+        })
+    }
+    return catalogs
+}
 
 export default {
     getSiteSettings: async () => {
@@ -152,6 +174,21 @@ export default {
         return parseSiteSettings(webSettingsData)
     },
     getSearchSettings: async () => {
-        return {}
+        const apiSettings: WebSettings = await apiClient.$get(
+            geossSettings.apiSettings
+        )
+        const apiSettingsData: any = parseApiSettings(apiSettings)
+        return apiSettingsData
+    },
+    getCatalogs: async (catalogsUrl: string) => {
+        if (process.browser) {
+            const catalogsResponse: any = await apiClient.$get(catalogsUrl)
+            return parseCatalogsResponse(catalogsResponse)
+        }
+        return []
+    },
+    getViews: async () => {
+        const views: any = await apiClient.$get(geossSettings.views)
+        return views._embedded.views
     },
 }

@@ -89,6 +89,7 @@ import { MapCoordinate } from '@/interfaces/MapCoordinate';
 import { DataSources } from '@/interfaces/DataSources';
 import to from '@/utils/to';
 import { AppVueObj } from '@/data/global';
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
 
 declare const google: any;
 
@@ -427,8 +428,8 @@ export default class SearchGeneralFiltersComponent extends Vue {
         }
     }
 
-    private async created() {
-        const [, sourceOptions] = await to(GeossSearchApiService.getSourcesOptions());
+    private async mounted() {
+        const [, sourceOptions] = await to(GeossSearchApiService.getSourcesOptions(this.$store.getters[SearchEngineGetters.dabBaseUrl] + '/opensearch/query?si=1&ct=1000&parents=ROOT'));
         if (sourceOptions) {
             this.sourceOptions = sourceOptions;
         }

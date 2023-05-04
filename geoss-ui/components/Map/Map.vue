@@ -27,7 +27,7 @@ import { AppVueObj } from '~/data/global'
 export default class MapComponent extends Vue {
 
     get map() {
-        return this.$store.getters[MapGetters.map];
+        return window['geossMap']; // this.$store.getters[MapGetters.map];
     }
 
     get tooltipMessage() {
@@ -40,6 +40,14 @@ export default class MapComponent extends Vue {
 
     get compareBarPosition() {
         return this.$store.getters[MapGetters.compareBarPosition];
+    }
+
+    get center() {
+        return this.$store.getters[MapGetters.center];
+    }
+
+    get initialZoom() {
+        return this.$store.getters[MapGetters.initialZoom];
     }
 
     @Watch('activeCompareLayer')
@@ -56,6 +64,28 @@ export default class MapComponent extends Vue {
         if (overlay) {
             overlay.setPosition(undefined);
         }
+    }
+
+    @Watch('center')
+    private onCenterChange(newVal: Array<number>, oldVal: Array<number>) {
+        if (newVal[0] !== oldVal[0] || newVal[1] !== oldVal[1]) {
+            this.setMapPosition();
+        }
+    }
+
+    @Watch('initialZoom')
+    private onInitialZoomChange(newVal: number, oldVal: number) {
+        if (newVal !== oldVal) {
+            this.setMapPosition();
+        }
+
+    }
+
+    private setMapPosition() {
+        this.map.setView(new AppVueObj.ol.View({
+            center: this.center,
+            zoom: this.initialZoom
+        }));
     }
 
     private mounted() {
@@ -135,7 +165,7 @@ export default class MapComponent extends Vue {
     background: rgba(0, 60, 136, 0.5);
     border-radius: 4px;
     bottom: 10px;
-    right: 300px;
+    right: 45px; // right: 300px;
     padding: 2px;
     position: absolute;
 

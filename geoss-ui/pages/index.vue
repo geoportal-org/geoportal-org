@@ -1,7 +1,7 @@
 <template>
     <div>
         <client-only>
-            <UserWelcome />
+            <!-- <UserWelcome /> -->
             <Notification />
             <Spinner />
             <Popup />
@@ -9,14 +9,16 @@
             <LayerLegend />
             <ImagePreview />
             <PrivacyPolicy />
-            <SendFeedback />
+            <!-- <SendFeedback /> -->
             <TakeATour />
             <MapAttribution />
             <ExtendedView />
-            <TutorialTags />
-            <Map />
-            <MapControls />
-            <SearchContainer />
+            <!-- <TutorialTags /> -->
+            <template v-if="storeInitialized">
+                <Map />
+                <MapControls />
+                <SearchContainer />
+            </template>
 
             <div class="geoss-data-pickers"></div>
             <portal-target name="custom-select-container"></portal-target>
@@ -41,7 +43,7 @@ import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-ge
 import { SearchActions } from '@/store/search/search-actions';
 import { PopupGetters } from '@/store/popup/popup-getters';
 import { UserActions } from '@/store/user/user-actions';
-import { Liferay } from '@/data/global';
+import { AppVueObj, Liferay } from '@/data/global';
 import LogService from '@/services/log.service';
 import { PopupActions } from '@/store/popup/popup-actions';
 import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions';
@@ -73,6 +75,7 @@ import MapAttribution from '@/components/MapAttribution.vue';
     }
 })
 export default class App extends Vue {
+
     get storeInitialized() {
         return this.$store.getters[GeneralGetters.storeInitialized];
     }
@@ -377,6 +380,9 @@ export default class App extends Vue {
         // return false;
         // LiferayService.init();
 
+        AppVueObj.app.$store = this.$store;
+        // console.log(this.$i18n)
+
         const promises = [
             this.parseQueryParams(),
             LogService.createElasticSearchClient(),
@@ -393,58 +399,51 @@ export default class App extends Vue {
                 this.$store.dispatch(SearchActions.setCancelConfirmSearch, true);
             }
             if (siteSettings) {
-                if (siteSettings.site.name && siteSettings.site.name !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteName, siteSettings.site.name);
+                if (siteSettings.name && siteSettings.name !== '') {
+                    this.$store.dispatch(SearchEngineActions.setSiteName, siteSettings.name);
                 }
-                if (siteSettings.site.logoUrl && siteSettings.site.logoUrl !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteLogo, siteSettings.site.logoUrl);
+                if (siteSettings.logoUrl && siteSettings.logoUrl !== '') {
+                    this.$store.dispatch(SearchEngineActions.setSiteLogo, siteSettings.logoUrl);
                 }
-                if (siteSettings.site.url && siteSettings.site.url !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteUrl, siteSettings.site.url);
+                if (siteSettings.url && siteSettings.url !== '') {
+                    this.$store.dispatch(SearchEngineActions.setSiteUrl, siteSettings.url);
                 }
-                if (siteSettings.site.defaultDataSource && siteSettings.site.defaultDataSource !== '') {
+                if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
                     if (!this.$store.getters[SearchGetters.dataSource]) {
-                        this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.site.defaultDataSource);
+                        this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
                         this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
                     }
                 } else {
                     this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
                 }
+                if (siteSettings.mapZoom) {
+                    this.$store.dispatch(MapActions.setInitialZoom, siteSettings.mapZoom);
+                }
+                if (siteSettings.longitude && siteSettings.latitude) {
+                    this.$store.dispatch(MapActions.setCenter, [siteSettings.longitude, siteSettings.latitude]);
+                }
             }
             if (searchSettings) {
-                if (searchSettings.searchEngine) {
-                    const searchEngineConfigs = searchSettings.searchEngine.searchEngineConfigs;
-                    const searchEngineData = searchSettings.searchEngine.searchEngine;
+                if (searchSettings) {
+                    this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
+                    this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
+                    this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
 
-                    if (searchEngineData.dabBaseUrl) {
-                        this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchEngineData.dabBaseUrl);
-                    } else {
-                        this.$store.dispatch(SearchEngineActions.setDabBaseUrl, SearchEngineService.getConfigValue(searchEngineConfigs, 'dabBaseUrl'));
-                    }
-                    this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, SearchEngineService.getConfigValue(searchEngineConfigs, 'dabDataProvidersUrl'));
-                    this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, SearchEngineService.getConfigValue(searchEngineConfigs, 'geossCrOpensearchUrl'));
-
-                    this.$store.dispatch(SearchEngineActions.setW3wKey, SearchEngineService.getConfigValue(searchEngineConfigs, 'w3wKey'));
-                    this.$store.dispatch(SearchEngineActions.setTourUrl, SearchEngineService.getConfigValue(searchEngineConfigs, 'tourUrl'));
-                    this.$store.dispatch(MapActions.setBoxAccessToken, SearchEngineService.getConfigValue(searchEngineConfigs, 'mapBoxAccessToken'));
-                    this.$store.dispatch(MapActions.setGooglesApiKey, SearchEngineService.getConfigValue(searchEngineConfigs, 'googleMapsApiKey'));
-
-                    if (searchEngineData.mapConf) {
-                        this.$store.dispatch(MapActions.setInitialZoom, searchEngineData.mapZoom);
-                        this.$store.dispatch(MapActions.setCenter, [searchEngineData.longitude, searchEngineData.latitude]);
-                    }
+                    this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
+                    this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);
+                    this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
+                    this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
                 }
-
-                if (searchSettings.popularSearch) {
-                    this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
-                    if (searchSettings.popularSearch.currMap) {
-                        const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
-                        const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
-                        if (notDeclared || newCommunitySite) {
-                            this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
-                        }
-                    }
-                }
+                // if (searchSettings.popularSearch) {
+                //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
+                //     if (searchSettings.popularSearch.currMap) {
+                //         const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
+                //         const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
+                //         if (notDeclared || newCommunitySite) {
+                //             this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
+                //         }
+                //     }
+                // }
 
                 if (searchSettings.linkSharing) {
                     const searchSettingsLayers = searchSettings.linkSharing.searchEngineLayers;

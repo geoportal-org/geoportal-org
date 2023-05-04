@@ -388,7 +388,7 @@ export default class MapControlLayersComponent extends Vue {
 
     private mounted() {
         if (!this.isWidget) {
-            this.map = this.$store.getters[MapGetters.map];
+            this.map = window['geossMap']; // this.$store.getters[MapGetters.map];
             this.comparisonBar = document.querySelector('#comparison-bar');
             this.comparisonBarVerticalLine = this.comparisonBar!.querySelector('.vertical-line');
             this.mapElement = document.querySelector('#map');

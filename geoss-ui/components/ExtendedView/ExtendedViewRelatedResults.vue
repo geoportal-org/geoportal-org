@@ -6,13 +6,13 @@
         <div class="ev-related__tabs">
             <button @click="sectionChange('data')" class="ev-related__tab data disabled-transparent"
                 :class="{ active: activeSection === 'data' }" :disabled="!getResultsLength(dataResults)">{{
-                    $t('dataSources.dab') }}</button>
+                    $tc('dataSources.dab') }}</button>
             <button @click="sectionChange('information')" class="ev-related__tab information disabled-transparent"
                 :class="{ active: activeSection === 'information' }" :disabled="!getResultsLength(informationResults)">{{
-                    $t('dataSources.information') }}</button>
+                    $tc('dataSources.information') }}</button>
             <button @click="sectionChange('services')" class="ev-related__tab services disabled-transparent"
                 :class="{ active: activeSection === 'services' }" :disabled="!getResultsLength(servicesResults)">{{
-                    $t('dataSources.services') }}</button>
+                    $tc('dataSources.services') }}</button>
         </div>
         <div class="ev-related__data">
             <div class="ev-related__left">

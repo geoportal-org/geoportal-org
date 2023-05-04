@@ -25,7 +25,7 @@ export default class MapControlDrawComponent extends Vue {
     public drawActive = false;
 
     get map() {
-        return this.$store.getters[MapGetters.map];
+        return window['geossMap']; // this.$store.getters[MapGetters.map];
     }
 
     get selectedAreaCoordinates() {

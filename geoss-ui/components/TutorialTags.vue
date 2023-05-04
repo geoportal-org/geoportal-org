@@ -7,7 +7,7 @@
                 <label :for="tag.id" class="tutorial-tag__label">
                     <input type="checkbox" :id="tag.id" class="tutorial-tag__input" name="tutorial-tag" />
                     <span v-if="getType(tag) === 'new'" class="tutorial-tag__badge new" @click="tagClick(tag.id)">{{
-                        $t(`tutorial.${getType(tag)}`) }}</span>
+                        $tc(`tutorial.${getType(tag)}`) }}</span>
                     <span v-else class="tutorial-tag__badge" @click="tagClick(tag.id)">
                         <i
                             :class="{ 'icomoon-lightbulb-off': activeTagId !== tag.id, 'icomoon-lightbulb-on': activeTagId === tag.id }"></i>
@@ -26,11 +26,11 @@
 
         <span class="tutorial-mode" data-tutorial-tag="tutorial-mode-switch" @click="tutorialSwitch()">
             <i :class="{ 'icomoon-lightbulb-off': !showTutorial, 'icomoon-lightbulb-on': showTutorial }"></i>
-            <span>{{ $t('tutorial.mode') }}</span>
+            <span>{{ $tc('tutorial.mode') }}</span>
         </span>
 
         <button v-if="showTutorial" class="tutorial-off green-btn-default" @click="tutorialSwitch()">
-            <span>{{ $t('tutorial.close') }}</span>
+            <span>{{ $tc('tutorial.close') }}</span>
         </button>
     </div>
 </template>

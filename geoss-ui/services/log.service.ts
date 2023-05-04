@@ -584,46 +584,48 @@ const LogService: any = {
         queryString: string,
         limit: string | number,
         addMixedTerms: boolean
-    ) =>
-        new Promise((resolve, reject) => {
-            if (limit) {
-                const relatedUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/concepts?st=${queryString}&ct=${limit}${UtilsService.getAccessKeyString()}`
-                makeRequest('get', relatedUrl, null, true, null, true)
-                    .then((data: Array<any>) => {
-                        if (addMixedTerms) {
-                            let queryArray = queryString.split(' ')
-                            const forbiddenWords = [
-                                'and',
-                                'or',
-                                'a',
-                                'an',
-                                'the',
-                                'of',
-                                'for',
-                                'in',
-                                'to',
-                            ]
-                            queryArray = queryArray.filter(
-                                (item) =>
-                                    !forbiddenWords.includes(item.toLowerCase())
-                            )
-                            if (
-                                queryArray.length === 2 ||
-                                queryArray.length === 3
-                            ) {
-                                data.unshift(`${queryArray.join(' AND ')}`)
-                                data.unshift(`${queryArray.join(' OR ')}`)
-                            }
-                        }
-                        resolve(data)
-                    })
-                    .catch((error: any) => {
-                        reject(error)
-                    })
-            } else {
-                reject(new Error('Related phrases are off.'))
-            }
-        }),
+    ) => {
+        return
+    },
+    // new Promise((resolve, reject) => {
+    //     if (limit) {
+    //         const relatedUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/concepts?st=${queryString}&ct=${limit}${UtilsService.getAccessKeyString()}`
+    //         makeRequest('get', relatedUrl, null, true, null, true)
+    //             .then((data: Array<any>) => {
+    //                 if (addMixedTerms) {
+    //                     let queryArray = queryString.split(' ')
+    //                     const forbiddenWords = [
+    //                         'and',
+    //                         'or',
+    //                         'a',
+    //                         'an',
+    //                         'the',
+    //                         'of',
+    //                         'for',
+    //                         'in',
+    //                         'to',
+    //                     ]
+    //                     queryArray = queryArray.filter(
+    //                         (item) =>
+    //                             !forbiddenWords.includes(item.toLowerCase())
+    //                     )
+    //                     if (
+    //                         queryArray.length === 2 ||
+    //                         queryArray.length === 3
+    //                     ) {
+    //                         data.unshift(`${queryArray.join(' AND ')}`)
+    //                         data.unshift(`${queryArray.join(' OR ')}`)
+    //                     }
+    //                 }
+    //                 resolve(data)
+    //             })
+    //             .catch((error: any) => {
+    //                 reject(error)
+    //             })
+    //     } else {
+    //         reject(new Error('Related phrases are off.'))
+    //     }
+    // }),
 
     getSeeAlsoRecommendations: (queryString: string) =>
         new Promise((resolve, reject) => {

@@ -28,6 +28,8 @@ import ErrorPopup from '@/components/ErrorPopup.vue'
 import MapCoordinatesUtils from '@/services/map/coordinates-utils'
 import { DownloadFile } from '@/interfaces/DownloadFile'
 import TutorialTagsService from './tutorial-tags.service'
+import webSettingsAPI from '@/api/webSettings'
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 
 interface Window {
     URL?: any
@@ -150,50 +152,55 @@ const sendLiferayRequest = (
 }
 
 const GeossSearchApiService = {
-    getSourcesOptions(): Promise<Source[]> {
-        if (cache.sources) {
-            return Promise.resolve(cache.sources)
-        }
-        return makeRequest(
-            'get',
-            SearchEngineService.getCatalogsAndViewsUrl(),
-            null,
-            true
-        ).then(
-            (data: {
-                catalogs: Source[] | null
-                views: View[] | null
-                PopularSearch: null
-            }) => {
-                cache.sources = data.catalogs
-                cache.views = data.views
-                cache.popularSearch = data.PopularSearch
-                return cache.sources
-            }
-        )
+    getSourcesOptions(catalogsUrl: string): Promise<Source[]> {
+        return webSettingsAPI.getCatalogs(catalogsUrl)
+
+        // if (cache.sources) {
+        //     return Promise.resolve(cache.sources)
+        // }
+        // return makeRequest(
+        //     'get',
+        //     SearchEngineService.getCatalogsAndViewsUrl(),
+        //     null,
+        //     true
+        // ).then(
+        //     (data: {
+        //         catalogs: Source[] | null
+        //         views: View[] | null
+        //         PopularSearch: null
+        //     }) => {
+        //         cache.sources = data.catalogs
+        //         cache.views = data.views
+        //         cache.popularSearch = data.PopularSearch
+        //         console.log(cache.sources)
+        //         return cache.sources
+        //     }
+        // )
     },
 
     getViewsOptions(): Promise<Source[]> {
-        if (cache.views) {
-            return Promise.resolve(cache.views)
-        }
-        return makeRequest(
-            'get',
-            SearchEngineService.getCatalogsAndViewsUrl(),
-            null,
-            true
-        ).then(
-            (data: {
-                catalogs: Source[] | null
-                views: View[] | null
-                PopularSearch: null
-            }) => {
-                cache.sources = data.catalogs
-                cache.views = data.views
-                cache.popularSearch = data.PopularSearch
-                return cache.views
-            }
-        )
+        return webSettingsAPI.getViews()
+
+        // if (cache.views) {
+        //     return Promise.resolve(cache.views)
+        // }
+        // return makeRequest(
+        //     'get',
+        //     SearchEngineService.getCatalogsAndViewsUrl(),
+        //     null,
+        //     true
+        // ).then(
+        //     (data: {
+        //         catalogs: Source[] | null
+        //         views: View[] | null
+        //         PopularSearch: null
+        //     }) => {
+        //         cache.sources = data.catalogs
+        //         cache.views = data.views
+        //         cache.popularSearch = data.PopularSearch
+        //         return cache.views
+        //     }
+        // )
     },
 
     getWhat3WordsOptions(phrase: string) {
@@ -618,22 +625,22 @@ const GeossSearchApiService = {
                 }
 
                 // Load SeeAlso and Recommendations
-                LogService.getSeeAlsoWords(requestParams.st, 10, true)
-                    .catch((error: any) => error)
-                    .then((result: any) => {
-                        AppVueObj.app.$store.dispatch(
-                            SearchActions.setRecentSeeAlsoPhrases,
-                            result
-                        )
-                    })
-                LogService.getSeeAlsoRecommendations(requestParams.st)
-                    .catch((error: any) => error)
-                    .then((result: any) => {
-                        AppVueObj.app.$store.dispatch(
-                            SearchActions.setRecentSeeAlsoRecommendations,
-                            result
-                        )
-                    })
+                // LogService.getSeeAlsoWords(requestParams.st, 10, true)
+                //     .catch((error: any) => error)
+                //     .then((result: any) => {
+                //         AppVueObj.app.$store.dispatch(
+                //             SearchActions.setRecentSeeAlsoPhrases,
+                //             result
+                //         )
+                //     })
+                // LogService.getSeeAlsoRecommendations(requestParams.st)
+                //     .catch((error: any) => error)
+                //     .then((result: any) => {
+                //         AppVueObj.app.$store.dispatch(
+                //             SearchActions.setRecentSeeAlsoRecommendations,
+                //             result
+                //         )
+                //     })
             } else {
                 const sourceName: DataSource =
                     AppVueObj.app.$store.getters[SearchGetters.dataSource]

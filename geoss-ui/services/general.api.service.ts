@@ -102,21 +102,22 @@ export const GeneralApiService = {
     },
 
     getUserSettings() {
-        return makeRequest(
-            'get',
-            SearchEngineService.getUserSettingsUrl(),
-            null,
-            true
-        )
-            .then((data: { status: number }) => {
-                if (!data || data.status === 500) {
-                    return null
-                }
-                return data
-            })
-            .catch(() => {
-                return Promise.resolve(null)
-            })
+        return []
+        // return makeRequest(
+        //     'get',
+        //     SearchEngineService.getUserSettingsUrl(),
+        //     null,
+        //     true
+        // )
+        //     .then((data: { status: number }) => {
+        //         if (!data || data.status === 500) {
+        //             return null
+        //         }
+        //         return data
+        //     })
+        //     .catch(() => {
+        //         return Promise.resolve(null)
+        //     })
     },
 
     getSiteSettings() {
@@ -140,23 +141,23 @@ export const GeneralApiService = {
     },
 
     getSearchSettings() {
-        // return webSettingsAPI.getSearchSettings();
+        return webSettingsAPI.getSearchSettings()
 
-        return makeRequest(
-            'get',
-            SearchEngineService.getSearchSettingsUrl(),
-            null,
-            true
-        )
-            .then((data: { status: number }) => {
-                if (!data || data.status === 500) {
-                    return null
-                }
-                return data
-            })
-            .catch(() => {
-                return Promise.resolve(null)
-            })
+        // return makeRequest(
+        //     'get',
+        //     SearchEngineService.getSearchSettingsUrl(),
+        //     null,
+        //     true
+        // )
+        //     .then((data: { status: number }) => {
+        //         if (!data || data.status === 500) {
+        //             return null
+        //         }
+        //         return data
+        //     })
+        //     .catch(() => {
+        //         return Promise.resolve(null)
+        //     })
     },
 
     getMenuItems(locale: string) {
