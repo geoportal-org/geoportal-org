@@ -143,6 +143,7 @@ export default class ShareComponent extends Vue {
         position: relative;
         color: white;
         background-color: rgba(#EFA310, 0.9);
+        margin: 0;
 
         &:hover {
             background-color: rgba(#EFA310, 1);

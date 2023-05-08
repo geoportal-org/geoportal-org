@@ -114,7 +114,7 @@ import NotificationService from '@/services/notification.service';
 
 export default {
     layout() {
-        return 'default'
+        return 'static'
     },
     data() {
         return {

@@ -1,6 +1,7 @@
 import apiClient from './apiClient'
 import geossSettings from './module/geoss-settings'
 import { parseXMLToJSON } from '@/services/general.api.service'
+import SpinnerService from '@/services/spinner.service'
 
 interface WebSetting {
     id: number
@@ -190,5 +191,15 @@ export default {
     getViews: async () => {
         const views: any = await apiClient.$get(geossSettings.views)
         return views._embedded.views
+    },
+    getDataProviders: async (dataProvidersUrl: string) => {
+        if (process.browser) {
+            SpinnerService.showSpinner()
+            const dataProvidersResponse: any = await apiClient.$get(
+                dataProvidersUrl
+            )
+            SpinnerService.hideSpinner()
+            return dataProvidersResponse
+        }
     },
 }

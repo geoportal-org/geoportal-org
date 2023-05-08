@@ -351,6 +351,7 @@ export default class CustomSelectComponent extends Vue {
 
     &__options {
         overflow: auto;
+        color: initial;
     }
 
     &__option {

@@ -1,23 +1,15 @@
 import { YellowPagesFiltersGetters } from '~/store/yellowPagesFilters/yellow-pages-filters-getters'
-import { makeRequest } from './general.api.service'
 import { AppVueObj } from '~/data/global'
-import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
+import webSettingsAPI from '@/api/webSettings'
 
 let staticOrganizations: any[] = []
 
 const YellowPagesApiService = {
-    getProviders() {
+    getProviders(dataProvidersUrl: string) {
         return new Promise((resolve) => {
             if (!staticOrganizations.length) {
-                return makeRequest(
-                    'get',
-                    AppVueObj.app.$store.getters[
-                        SearchEngineGetters.dabDataProvidersUrl
-                    ],
-                    null,
-                    false,
-                    { timeout: 120000 }
-                )
+                return webSettingsAPI
+                    .getDataProviders(dataProvidersUrl)
                     .then((data: { organizations: any[] }) => {
                         staticOrganizations = data.organizations
                         for (const organization of staticOrganizations) {
@@ -47,7 +39,6 @@ const YellowPagesApiService = {
                                 )
                                 organization.date = date
                             }
-
                             let principles = []
                             const principlesStr = organization.extras.find(
                                 (extra: { key: string }) =>
@@ -70,9 +61,7 @@ const YellowPagesApiService = {
                                     })
                                     .filter((principle: any) => principle)
                             }
-
                             organization.principles = principles
-
                             let goalsSBA = []
                             const goalsSBAStr = organization.extras.find(
                                 (extra: { key: string }) =>
@@ -98,9 +87,7 @@ const YellowPagesApiService = {
                                     })
                                     .filter((goal: any) => goal)
                             }
-
                             organization.goalsSBA = goalsSBA
-
                             let goalsSDG = []
                             const goalsSDGStr = organization.extras.find(
                                 (extra: { key: string }) =>
@@ -126,13 +113,12 @@ const YellowPagesApiService = {
                                     })
                                     .filter((goal: any) => goal)
                             }
-
                             organization.goalsSDG = goalsSDG
                         }
                     })
                     .then(resolve)
             } else {
-                resolve
+                resolve(true)
             }
         }).then(() => {
             const providers = staticOrganizations.filter(

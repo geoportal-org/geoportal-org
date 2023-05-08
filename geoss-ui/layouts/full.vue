@@ -1,5 +1,6 @@
 <template>
     <main>
+        <RocketSpinner />
         <Header />
         <Menu />
         <Nuxt />

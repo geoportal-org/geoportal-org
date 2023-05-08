@@ -342,7 +342,6 @@ export default class SearchBarComponent extends Vue {
         } else if (event.keyCode === 27) { // esc
             this.selectedSuggestion = null;
         } else if (event.keyCode === 13 && this.selectedSuggestion) { // enter
-            console.log('x')
             this.phrase = this.selectedSuggestion;
             this.preventKeyup = true;
             this.search(event);

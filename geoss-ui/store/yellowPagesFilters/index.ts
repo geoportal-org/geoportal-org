@@ -1,4 +1,6 @@
 import YellowPagesApiService from '@/services/yellow-pages.api.service'
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
+import { AppVueObj } from '@/data/global'
 
 const state = () => ({
     search: '',
@@ -50,15 +52,17 @@ const actions = {
         commit('setStateProp', { prop: 'pageOffset', value })
     },
     getResults({ commit }: any) {
-        return YellowPagesApiService.getProviders().then(
-            ({ results, resultsTotal }) => {
-                commit('setStateProp', { prop: 'results', value: results })
-                commit('setStateProp', {
-                    prop: 'resultsTotal',
-                    value: resultsTotal,
-                })
-            }
-        )
+        return YellowPagesApiService.getProviders(
+            AppVueObj.app.$store.getters[
+                SearchEngineGetters.dabDataProvidersUrl
+            ]
+        ).then(({ results, resultsTotal }) => {
+            commit('setStateProp', { prop: 'results', value: results })
+            commit('setStateProp', {
+                prop: 'resultsTotal',
+                value: resultsTotal,
+            })
+        })
     },
 }
 

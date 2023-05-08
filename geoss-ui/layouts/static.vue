@@ -1,6 +1,5 @@
 <template>
     <main>
-        <RocketSpinner />
         <Header />
         <Menu />
         <div class="sub-page">

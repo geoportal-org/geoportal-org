@@ -383,156 +383,162 @@ export default class App extends Vue {
         AppVueObj.app.$store = this.$store;
         // console.log(this.$i18n)
 
-        const promises = [
-            this.parseQueryParams(),
-            LogService.createElasticSearchClient(),
-            GeneralApiService.getSiteSettings(),
-            GeneralApiService.getSearchSettings(),
-            GeneralApiService.getUserSettings()
-        ];
 
-        if (this.$store.getters[UserGetters.isSignedIn]) {
-            promises.push(GeossSearchApiService.getBookmarks());
-        }
-        Promise.all(promises).then(([paramsParsed, , siteSettings, searchSettings, userSettings, bookmarks]) => {
-            if (this.$store.getters[GeneralFiltersGetters.state].phrase) {
-                this.$store.dispatch(SearchActions.setCancelConfirmSearch, true);
+        if (!this.storeInitialized) {
+            const promises = [
+                this.parseQueryParams(),
+                LogService.createElasticSearchClient(),
+                GeneralApiService.getSiteSettings(),
+                GeneralApiService.getSearchSettings(),
+                GeneralApiService.getUserSettings()
+            ];
+
+            if (this.$store.getters[UserGetters.isSignedIn]) {
+                promises.push(GeossSearchApiService.getBookmarks());
             }
-            if (siteSettings) {
-                if (siteSettings.name && siteSettings.name !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteName, siteSettings.name);
+            Promise.all(promises).then(([paramsParsed, , siteSettings, searchSettings, userSettings, bookmarks]) => {
+                if (this.$store.getters[GeneralFiltersGetters.state].phrase) {
+                    this.$store.dispatch(SearchActions.setCancelConfirmSearch, true);
                 }
-                if (siteSettings.logoUrl && siteSettings.logoUrl !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteLogo, siteSettings.logoUrl);
-                }
-                if (siteSettings.url && siteSettings.url !== '') {
-                    this.$store.dispatch(SearchEngineActions.setSiteUrl, siteSettings.url);
-                }
-                if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
-                    if (!this.$store.getters[SearchGetters.dataSource]) {
-                        this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
-                        this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
+                if (siteSettings) {
+                    if (siteSettings.name && siteSettings.name !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteName, siteSettings.name);
                     }
-                } else {
-                    this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
+                    if (siteSettings.logoUrl && siteSettings.logoUrl !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteLogo, siteSettings.logoUrl);
+                    }
+                    if (siteSettings.url && siteSettings.url !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteUrl, siteSettings.url);
+                    }
+                    if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
+                        if (!this.$store.getters[SearchGetters.dataSource]) {
+                            this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
+                            this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
+                        }
+                    } else {
+                        this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
+                    }
+                    if (siteSettings.mapZoom) {
+                        this.$store.dispatch(MapActions.setInitialZoom, siteSettings.mapZoom);
+                    }
+                    if (siteSettings.longitude && siteSettings.latitude) {
+                        this.$store.dispatch(MapActions.setCenter, [siteSettings.longitude, siteSettings.latitude]);
+                    }
                 }
-                if (siteSettings.mapZoom) {
-                    this.$store.dispatch(MapActions.setInitialZoom, siteSettings.mapZoom);
-                }
-                if (siteSettings.longitude && siteSettings.latitude) {
-                    this.$store.dispatch(MapActions.setCenter, [siteSettings.longitude, siteSettings.latitude]);
-                }
-            }
-            if (searchSettings) {
                 if (searchSettings) {
-                    this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
-                    this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
-                    this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
+                    if (searchSettings) {
+                        this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
+                        this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
+                        this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
 
-                    this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
-                    this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);
-                    this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
-                    this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
-                }
-                // if (searchSettings.popularSearch) {
-                //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
-                //     if (searchSettings.popularSearch.currMap) {
-                //         const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
-                //         const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
-                //         if (notDeclared || newCommunitySite) {
-                //             this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
-                //         }
-                //     }
-                // }
+                        this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
+                        this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);
+                        this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
+                        this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
+                    }
+                    // if (searchSettings.popularSearch) {
+                    //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
+                    //     if (searchSettings.popularSearch.currMap) {
+                    //         const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
+                    //         const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
+                    //         if (notDeclared || newCommunitySite) {
+                    //             this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
+                    //         }
+                    //     }
+                    // }
 
-                if (searchSettings.linkSharing) {
-                    const searchSettingsLayers = searchSettings.linkSharing.searchEngineLayers;
-                    if (searchSettingsLayers && searchSettingsLayers.length) {
-                        for (const layer of searchSettingsLayers) {
-                            let mapLayer = null;
-                            if (layer.type === LayerTypes.WMS) {
-                                mapLayer = LayersUtils.createWMS(layer.title, layer.url);
-                            } else if (layer.type === LayerTypes.TMS) {
-                                mapLayer = LayersUtils.createTMS(layer.url);
-                            } else if (layer.type === LayerTypes.KML) {
-                                mapLayer = LayersUtils.createKML(layer.url);
-                            } else if (layer.type === LayerTypes.KMZ) {
-                                mapLayer = LayersUtils.createKMZ(layer.url);
-                            } else {
-                                continue;
+                    if (searchSettings.linkSharing) {
+                        const searchSettingsLayers = searchSettings.linkSharing.searchEngineLayers;
+                        if (searchSettingsLayers && searchSettingsLayers.length) {
+                            for (const layer of searchSettingsLayers) {
+                                let mapLayer = null;
+                                if (layer.type === LayerTypes.WMS) {
+                                    mapLayer = LayersUtils.createWMS(layer.title, layer.url);
+                                } else if (layer.type === LayerTypes.TMS) {
+                                    mapLayer = LayersUtils.createTMS(layer.url);
+                                } else if (layer.type === LayerTypes.KML) {
+                                    mapLayer = LayersUtils.createKML(layer.url);
+                                } else if (layer.type === LayerTypes.KMZ) {
+                                    mapLayer = LayersUtils.createKMZ(layer.url);
+                                } else {
+                                    continue;
+                                }
+                                mapLayer.setZIndex(layer.zIndex);
+
+                                const layerData = {
+                                    layer: mapLayer,
+                                    id: layer.url,
+                                    type: layer.type,
+                                    title: layer.name,
+                                    visible: layer.visible,
+                                };
+                                this.$store.dispatch(MapActions.addLayer, layerData);
                             }
-                            mapLayer.setZIndex(layer.zIndex);
-
-                            const layerData = {
-                                layer: mapLayer,
-                                id: layer.url,
-                                type: layer.type,
-                                title: layer.name,
-                                visible: layer.visible,
-                            };
-                            this.$store.dispatch(MapActions.addLayer, layerData);
                         }
                     }
                 }
-            }
-            if (bookmarks && bookmarks.items) {
-                this.$store.dispatch(UserActions.setBookmarks, bookmarks.items);
-            }
-
-            const spinnerElem: HTMLElement | null = document.querySelector('.earch-rocket-spinner');
-            if (spinnerElem) {
-                spinnerElem.classList.add('inactive');
-            }
-
-            if (userSettings) {
-                if (userSettings.dhus && userSettings.dhus.credentialsAvailable) {
-                    this.$store.dispatch(MyWorkspaceActions.setDhusUsername, userSettings.dhus.username);
+                if (bookmarks && bookmarks.items) {
+                    this.$store.dispatch(UserActions.setBookmarks, bookmarks.items);
                 }
-                if (userSettings.geossVersion) {
-                    const savedGeossVersion = this.$cookies.get('geoss_version');
-                    if (savedGeossVersion &&
-                        userSettings.geossVersion.geossVersion &&
-                        userSettings.geossVersion.showNewVersionTooltips &&
-                        savedGeossVersion !== userSettings.geossVersion.geossVersion
-                    ) {
-                        this.$store.dispatch(PopupActions.openPopup, { contentId: 'welcome', component: WelcomePopup });
+
+                if (userSettings) {
+                    if (userSettings.dhus && userSettings.dhus.credentialsAvailable) {
+                        this.$store.dispatch(MyWorkspaceActions.setDhusUsername, userSettings.dhus.username);
                     }
-                    if (userSettings.geossVersion.geossVersion) {
-                        const date: any = new Date();
-                        date.setFullYear(date.getFullYear() + 20);
-                        this.$cookies.set('geoss_version', userSettings.geossVersion.geossVersion, date);
+                    if (userSettings.geossVersion) {
+                        const savedGeossVersion = this.$cookies.get('geoss_version');
+                        if (savedGeossVersion &&
+                            userSettings.geossVersion.geossVersion &&
+                            userSettings.geossVersion.showNewVersionTooltips &&
+                            savedGeossVersion !== userSettings.geossVersion.geossVersion
+                        ) {
+                            this.$store.dispatch(PopupActions.openPopup, { contentId: 'welcome', component: WelcomePopup });
+                        }
+                        if (userSettings.geossVersion.geossVersion) {
+                            const date: any = new Date();
+                            date.setFullYear(date.getFullYear() + 20);
+                            this.$cookies.set('geoss_version', userSettings.geossVersion.geossVersion, date);
+                        }
+                    }
+
+                    if (userSettings.bbox &&
+                        typeof userSettings.bbox.opacity !== 'undefined' &&
+                        userSettings.bbox.opacity !== null &&
+                        !Number.isNaN(parseInt(userSettings.bbox.opacity, 10))) {
+                        this.$store.dispatch(MapActions.changeLayerTransparency, { id: LayerTypes.BOUNDING, value: parseInt(userSettings.bbox.opacity, 10) });
                     }
                 }
-
-                if (userSettings.bbox &&
-                    typeof userSettings.bbox.opacity !== 'undefined' &&
-                    userSettings.bbox.opacity !== null &&
-                    !Number.isNaN(parseInt(userSettings.bbox.opacity, 10))) {
-                    this.$store.dispatch(MapActions.changeLayerTransparency, { id: LayerTypes.BOUNDING, value: parseInt(userSettings.bbox.opacity, 10) });
+                this.$store.dispatch(GeneralActions.setStoreInitialized, true);
+                if (!paramsParsed) {
+                    UtilsService.pushToHistory(true);
+                }
+            });
+            // this.$ga.page(window.location.pathname + window.location.search);
+            LogService.logRecommendationData('Search', 'Search', 'external');
+            if (this.isBulkDownloadEnabled) {
+                const bulkDownloadItems = JSON.parse(sessionStorage.getItem('bulkDownload') as string);
+                if (this.$store.getters[UserGetters.isSignedIn] && bulkDownloadItems && bulkDownloadItems.length) {
+                    bulkDownloadItems.forEach((link: any) => {
+                        this.$store.dispatch(BulkDownloadActions.addLink, link);
+                    });
                 }
             }
-            this.$store.dispatch(GeneralActions.setStoreInitialized, true);
-            if (!paramsParsed) {
-                UtilsService.pushToHistory(true);
-            }
-        });
-        // this.$ga.page(window.location.pathname + window.location.search);
-        LogService.logRecommendationData('Search', 'Search', 'external');
-        if (this.isBulkDownloadEnabled) {
-            const bulkDownloadItems = JSON.parse(sessionStorage.getItem('bulkDownload') as string);
-            if (this.$store.getters[UserGetters.isSignedIn] && bulkDownloadItems && bulkDownloadItems.length) {
-                bulkDownloadItems.forEach((link: any) => {
-                    this.$store.dispatch(BulkDownloadActions.addLink, link);
+
+            const fileDownloadItems = JSON.parse(sessionStorage.getItem('fileDownload') as string);
+            if (this.$store.getters[UserGetters.isSignedIn] && fileDownloadItems && fileDownloadItems.length) {
+                fileDownloadItems.forEach((file: any) => {
+                    this.$store.dispatch(FileDownloadActions.addFile, file);
                 });
             }
         }
 
-        const fileDownloadItems = JSON.parse(sessionStorage.getItem('fileDownload') as string);
-        if (this.$store.getters[UserGetters.isSignedIn] && fileDownloadItems && fileDownloadItems.length) {
-            fileDownloadItems.forEach((file: any) => {
-                this.$store.dispatch(FileDownloadActions.addFile, file);
-            });
+        const spinnerElem: HTMLElement | null = document.querySelector('.earch-rocket-spinner');
+        if (spinnerElem) {
+            spinnerElem.classList.add('inactive');
         }
+
+
+
     }
 }
 </script>

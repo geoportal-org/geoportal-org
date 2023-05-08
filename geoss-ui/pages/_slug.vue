@@ -16,7 +16,7 @@ import ContentAPI from '@/api/content'
 
 export default {
     layout() {
-        return 'default'
+        return 'static'
     },
     data() {
         return {

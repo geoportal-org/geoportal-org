@@ -224,7 +224,6 @@ const SearchEngineService = {
             baseUrl =
                 AppVueObj.app.$store.getters[SearchEngineGetters.dabBaseUrl]
         }
-
         // Make sure trailing slash is removed from the end
         return baseUrl.replace(/\/+$/, '')
     },
