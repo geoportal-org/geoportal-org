@@ -1,7 +1,6 @@
 <template>
     <div class="yellow-pages">
         <client-only>
-
             <!-- <UserWelcome /> -->
             <Notification />
             <Spinner />
