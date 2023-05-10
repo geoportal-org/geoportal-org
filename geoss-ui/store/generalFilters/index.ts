@@ -1,6 +1,7 @@
 import SearchEngineService from '@/services/search-engine.service'
 import date from '@/filters/date'
 import { SearchGetters } from '../search/search-getters'
+import { AppVueObj } from '~/data/global'
 
 declare const google: any
 
@@ -64,12 +65,11 @@ const getters = {
         rootState: any,
         rootGetters: any
     ) => {
-        state.requestId = Math.random().toString(36).substring(2)
-
+        // state.requestId = Math.random().toString(36).substring(2)
         const params: any = {
             searchFields: state.searchFields,
-            reqID: state.requestId,
-            si: rootGetters[SearchGetters.startIndex],
+            reqID: Math.random().toString(36).substring(2),
+            si: AppVueObj.app.$store.getters[SearchGetters.startIndex],
             ct: state.resultsPerPage,
             tf: state.termFrequency,
             rel: state.boundingBoxRelation,

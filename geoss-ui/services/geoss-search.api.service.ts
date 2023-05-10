@@ -669,6 +669,7 @@ const GeossSearchApiService = {
                 if (!promise.request) {
                     continue
                 }
+
                 allResultsPromises.push(
                     new Promise((resolve) => {
                         promise.request

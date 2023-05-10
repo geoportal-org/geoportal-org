@@ -237,10 +237,12 @@ import to from '@/utils/to';
 import { UserGetters } from '@/store/user/user-getters';
 import LayersUtils from '@/services/map/layer-utils';
 import ErrorPopup from '@/components/ErrorPopup.vue';
+import CollapseTransition from '@/plugins/CollapseTransition';
 
 @Component({
     components: {
-        Pagination
+        Pagination,
+        CollapseTransition
     }
 })
 export default class ServiceWorkflowComponent extends Vue {

@@ -27,10 +27,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
-
+import CollapseTransition from '@/plugins/CollapseTransition';
 import PopupCloseService from '@/services/popup-close.service';
 
-@Component
+@Component({
+    components: {
+        CollapseTransition
+    }
+})
 export default class GeneralPopupComponent extends Vue {
     @Prop({ type: String }) public title!: string;
     @Prop({ type: String }) public subtitle!: string;

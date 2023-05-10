@@ -383,7 +383,6 @@ export default class App extends Vue {
         AppVueObj.app.$store = this.$store;
         // console.log(this.$i18n)
 
-
         if (!this.storeInitialized) {
             const promises = [
                 this.parseQueryParams(),
@@ -512,6 +511,10 @@ export default class App extends Vue {
                 if (!paramsParsed) {
                     UtilsService.pushToHistory(true);
                 }
+
+                if (!siteSettings.name || siteSettings.name === '' || !siteSettings.logoUrl || siteSettings.logoUrl === '') {
+                    this.$router.push('/creator')
+                }
             });
             // this.$ga.page(window.location.pathname + window.location.search);
             LogService.logRecommendationData('Search', 'Search', 'external');
@@ -531,6 +534,8 @@ export default class App extends Vue {
                 });
             }
         }
+
+
 
         const spinnerElem: HTMLElement | null = document.querySelector('.earch-rocket-spinner');
         if (spinnerElem) {

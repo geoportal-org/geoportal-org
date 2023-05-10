@@ -38,13 +38,13 @@ const LayersUtils = {
             depthLevel = 1
         }
 
-        const circleFeature: FeatureClass = new ol.Feature({
-            geometry: new ol.geom.MultiPoint(center),
+        const circleFeature: FeatureClass = new AppVueObj.ol.Feature({
+            geometry: new AppVueObj.ol.geom.MultiPoint(center),
         })
         circleFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
-        const layer: any = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        const layer: any = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
                 features: [circleFeature],
             }),
         })
@@ -58,8 +58,8 @@ const LayersUtils = {
     },
 
     getPolygonLayerData(coordinates: any, index: number) {
-        const boxFeature: FeatureClass = new ol.Feature({
-            geometry: new ol.geom.Polygon([
+        const boxFeature: FeatureClass = new AppVueObj.ol.Feature({
+            geometry: new AppVueObj.ol.geom.Polygon([
                 MapCoordinatesUtils.dateLineFix(
                     MapCoordinatesUtils.parsePolygon(coordinates)
                 ),
@@ -67,8 +67,8 @@ const LayersUtils = {
         })
         boxFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
-        const layer = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        const layer = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
                 features: [boxFeature],
             }),
         })
@@ -96,16 +96,16 @@ const LayersUtils = {
         for (let i = 0; i < coordinates.length; i++) {
             pointsArray.push([E[i], N[i]])
         }
-        const iconFeature: FeatureClass = new ol.Feature({
-            geometry: new ol.geom.MultiPoint(pointsArray),
+        const iconFeature: FeatureClass = new AppVueObj.ol.Feature({
+            geometry: new AppVueObj.ol.geom.MultiPoint(pointsArray),
         })
         iconFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
-        const vectorSource = new ol.source.Vector({
+        const vectorSource = new AppVueObj.ol.source.Vector({
             features: [iconFeature],
         })
 
-        const layer = new ol.layer.Vector({
+        const layer = new AppVueObj.ol.layer.Vector({
             source: vectorSource,
         })
 
@@ -144,15 +144,15 @@ const LayersUtils = {
                 ],
             ])
         }
-        const multiPolygon = new ol.geom.MultiPolygon(boxesArray)
-        const boxFeature: FeatureClass = new ol.Feature({
+        const multiPolygon = new AppVueObj.ol.geom.MultiPolygon(boxesArray)
+        const boxFeature: FeatureClass = new AppVueObj.ol.Feature({
             geometry: multiPolygon,
         })
 
         boxFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
-        const layer = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        const layer = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
                 features: [boxFeature],
             }),
         })
@@ -221,11 +221,11 @@ const LayersUtils = {
     },
 
     getBoundingBoxStyle(fillColor: string, strokeColor: string) {
-        return new ol.style.Style({
-            fill: new ol.style.Fill({
+        return new AppVueObj.ol.style.Style({
+            fill: new AppVueObj.ol.style.Fill({
                 color: fillColor,
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new AppVueObj.ol.style.Stroke({
                 color: strokeColor,
                 width: 2,
             }),
@@ -233,8 +233,8 @@ const LayersUtils = {
     },
 
     getBoundingPinStyle(transparency: number) {
-        return new ol.style.Style({
-            image: new ol.style.Icon({
+        return new AppVueObj.ol.style.Style({
+            image: new AppVueObj.ol.style.Icon({
                 anchor: [0.5, 1],
                 opacity: transparency,
                 src: `${StaticPath()}/img/marker.png`,
@@ -247,8 +247,8 @@ const LayersUtils = {
         radius: number,
         depth: number
     ) {
-        return new ol.style.Style({
-            image: new ol.style.Icon({
+        return new AppVueObj.ol.style.Style({
+            image: new AppVueObj.ol.style.Icon({
                 anchor: [0.5, 0.5],
                 opacity: transparency,
                 src: `${StaticPath()}/svg/irisCircles${depth}.svg`,
@@ -314,8 +314,8 @@ const LayersUtils = {
             }
         }
 
-        const wms = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
+        const wms = new AppVueObj.ol.layer.Tile({
+            source: new AppVueObj.ol.source.TileWMS({
                 crossOrigin: 'Anonymous',
                 projection: 'EPSG:4326',
                 url: urlLayer,
@@ -338,8 +338,8 @@ const LayersUtils = {
     createTMS(url: string) {
         const urlParsed = url.replace('/${z}/${x}/${y}', '/{z}/{x}/{y}')
 
-        const tms = new ol.layer.Tile({
-            source: new ol.source.XYZ({
+        const tms = new AppVueObj.ol.layer.Tile({
+            source: new AppVueObj.ol.source.XYZ({
                 crossOrigin: 'Anonymous',
                 projection: 'EPSG:4326',
                 tileSize: [512, 512],
@@ -356,10 +356,10 @@ const LayersUtils = {
     createKML(url: string) {
         const proxyUrl = SearchEngineService.getLayerKmlUrl(url)
 
-        const kml = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        const kml = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
                 url: proxyUrl,
-                format: new ol.format.KML(),
+                format: new AppVueObj.ol.format.KML(),
             }),
         })
 
@@ -372,10 +372,10 @@ const LayersUtils = {
     createKMZ(url: string) {
         const proxyUrl = SearchEngineService.getLayerKmzUrl(url)
 
-        const kmz = new ol.layer.Vector({
-            source: new ol.source.Vector({
+        const kmz = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
                 url: proxyUrl,
-                format: new ol.format.KML(),
+                format: new AppVueObj.ol.format.KML(),
             }),
         })
 
@@ -754,9 +754,9 @@ const LayersUtils = {
         const min = Math.min(...arr)
         const max = Math.max(...arr)
 
-        const statisticsLayer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                format: new ol.format.GeoJSON(),
+        const statisticsLayer = new AppVueObj.ol.layer.Vector({
+            source: new AppVueObj.ol.source.Vector({
+                format: new AppVueObj.ol.format.GeoJSON(),
                 url: `${StaticPath()}/data/countriesUNSD.geojson`,
             }),
             style: (feature: { [key: string]: any }) => {
@@ -765,22 +765,22 @@ const LayersUtils = {
                     feature.set('description', title)
                     feature.set('stats_value', statistics[layerName])
                     feature.set('stats_year', year)
-                    return new ol.style.Style({
-                        fill: new ol.style.Fill({
+                    return new AppVueObj.ol.style.Style({
+                        fill: new AppVueObj.ol.style.Fill({
                             color: LayersUtils.getColorScale(
                                 statistics[layerName],
                                 min,
                                 max
                             ),
                         }),
-                        stroke: new ol.style.Stroke({
+                        stroke: new AppVueObj.ol.style.Stroke({
                             color: 'rgb(0,0,0)',
                             width: 1,
                         }),
                     })
                 }
-                return new ol.style.Style({
-                    stroke: new ol.style.Stroke({
+                return new AppVueObj.ol.style.Style({
+                    stroke: new AppVueObj.ol.style.Stroke({
                         color: 'rgb(0,0,0)',
                         width: 1,
                     }),

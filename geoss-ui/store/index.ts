@@ -43,3 +43,5 @@ export const store = new Vuex.Store({
 AppVueObj.app = new Vue({
     store,
 })
+
+export const strict = false

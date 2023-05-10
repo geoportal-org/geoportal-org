@@ -69,6 +69,9 @@ const buildMenu = (menu: Array<MenuElement>) => {
     const linksLevel1 = menu.filter((e) => e.levelId === 0)
     const linksLevel2 = menu.filter((e) => e.levelId === 1)
 
+    linksLevel1.sort((a, b) => a.priority - b.priority)
+    linksLevel2.sort((a, b) => a.priority - b.priority)
+
     for (const link of linksLevel1) {
         const routeLevel1: Level1Route = {
             imgURL: link.imageSource,
@@ -89,6 +92,7 @@ const buildMenu = (menu: Array<MenuElement>) => {
         }
         routes.push(routeLevel1)
     }
+
     return routes
 }
 

@@ -162,7 +162,6 @@ export default class SearchFacetedFiltersComponent extends Vue {
             const filterOptionsRaw = this.currentResults['dm:termFrequency'][`dm:${filter}`];
 
             if (filterOptionsRaw && filterOptionsRaw[`dm:item`]) {
-
                 if (filterOptionsRaw[`dm:item`].constructor !== Array) {
                     filterOptionsRaw[`dm:item`] = [filterOptionsRaw[`dm:item`]];
                 }
@@ -206,7 +205,7 @@ export default class SearchFacetedFiltersComponent extends Vue {
         this.$store.dispatch(storeAction, options);
     }
 
-    private parseOrganizationName(name: string) {
+    private parseOrganizationName(name: string = '') {
         let orgName = name;
         let searchOrg = '';
 

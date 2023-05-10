@@ -256,10 +256,12 @@ import { ExtendedViewActions } from '@/store/extendedView/extended-view-actions'
 import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions';
 import ViewsAndRatings from '@/components/ViewsAndRatings.vue';
 import TutorialTagsService from '@/services/tutorial-tags.service';
+import CollapseTransition from '@/plugins/CollapseTransition';
 
 @Component({
     components: {
-        ViewsAndRatings
+        ViewsAndRatings,
+        CollapseTransition
     }
 })
 export default class SearchResultDabDetailsComponent extends Vue {

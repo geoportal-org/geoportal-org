@@ -24,7 +24,8 @@
             <a title="ESA" href="http://www.esa.int" target="_blank" data-tutorial-tag="header-logo-esa">
                 <img :src="`/img/ESA-logo-51-white.png`" alt="ESA logo" />
             </a>
-            <div class="header__language-switcher" v-click-outside="closeLangContainer"
+
+            <!-- <div class="header__language-switcher" v-click-outside="closeLangContainer"
                 data-tutorial-tag="header-language-switch">
                 <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')"
                     :aria-label="$tc('menu.languageToggle')">
@@ -53,7 +54,7 @@
                         </div>
                     </CollapseTransition>
                 </div>
-            </div>
+            </div> -->
         </div>
     </header>
 </template>

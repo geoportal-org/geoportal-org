@@ -64,7 +64,7 @@ Vue.mixin({
                 typeof imagePath !== 'string' ||
                 (this as any)[invalidImages].indexOf(imagePath) !== -1
             ) {
-                return `${(this as any)[staticPath]()}/svg/geoss-gray.svg`
+                return `/svg/geoss-gray.svg`
             } else if (imagePath.startsWith('http:')) {
                 return imagePath.replace('http:', 'https:')
             }

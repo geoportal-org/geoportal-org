@@ -1,6 +1,7 @@
 import { SearchGetters } from '../search/search-getters'
 import { ParentRef } from '@/interfaces/ParentRef'
 import { DataSources } from '@/interfaces/DataSources'
+import { AppVueObj } from '~/data/global'
 
 const state = () => ({
     productType: null,
@@ -200,8 +201,8 @@ actions = {
     checkParamsAvailability({ dispatch, rootGetters, getters }: any) {
         // Temporary VLAB Sentinel2-only Support
         if (
-            rootGetters[SearchGetters.workflow] &&
-            rootGetters[SearchGetters.workflowInputId]
+            AppVueObj.app.$store.getters[SearchGetters.workflow] &&
+            AppVueObj.app.$store.getters[SearchGetters.workflowInputId]
         ) {
             dispatch('setCloudCoverageAvailable', true)
             dispatch('setRelativeOrbitAvailable', true)
@@ -211,7 +212,9 @@ actions = {
         }
 
         let queryable = []
-        const dabparentRef = rootGetters[SearchGetters.parentRefs].find(
+        const dabparentRef = AppVueObj.app.$store.getters[
+            SearchGetters.parentRefs
+        ].find(
             (parentRef: ParentRef) => parentRef.dataSource === DataSources.DAB
         )
         if (dabparentRef) {

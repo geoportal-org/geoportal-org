@@ -26,6 +26,12 @@ import ConfirmSearchPopup from '@/components/Search/ConfirmSearchPopup.vue'
 import ErrorPopup from '@/components/ErrorPopup.vue'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 
+declare global {
+    interface Window {
+        [x: string]: any
+    }
+}
+
 const totalResultsProp = 'totalResults'
 const totalResultsOpenSearchProp = 'opensearch:totalResults'
 
@@ -260,8 +266,8 @@ const getters: { [key: string]: any } = {
     },
     filtersParams: (getters: any, rootGetters: any) => {
         let params = {
-            ...rootGetters[GeneralFiltersGetters.stateMapped],
-            ...rootGetters[FacetedFiltersGetters.stateMapped],
+            ...AppVueObj.app.$store.getters[GeneralFiltersGetters.stateMapped],
+            ...AppVueObj.app.$store.getters[FacetedFiltersGetters.stateMapped],
         }
 
         if (getters.workflow && getters.workflowInputId) {
@@ -273,7 +279,9 @@ const getters: { [key: string]: any } = {
                 delete params.st
                 params = {
                     ...params,
-                    ...rootGetters[GranulaFiltersGetters.stateMapped],
+                    ...AppVueObj.app.$store.getters[
+                        GranulaFiltersGetters.stateMapped
+                    ],
                 }
             } else if (getters.workflowSources) {
                 params.sources = getters.workflowSources
@@ -295,7 +303,7 @@ const getters: { [key: string]: any } = {
                     .split(',')
                     .filter(
                         (item: any) =>
-                            rootGetters[
+                            AppVueObj.app.$store.getters[
                                 GranulaFiltersGetters.availableQueryable
                             ].indexOf(item) !== -1
                     )
@@ -307,18 +315,23 @@ const getters: { [key: string]: any } = {
 
             params = {
                 ...params,
-                ...rootGetters[GranulaFiltersGetters.stateMapped],
+                ...AppVueObj.app.$store.getters[
+                    GranulaFiltersGetters.stateMapped
+                ],
             }
         } else if (
-            rootGetters[GeneralFiltersGetters.state] &&
-            rootGetters[GeneralFiltersGetters.state].sources.length === 1 &&
-            rootGetters[GeneralFiltersGetters.state].sources[0] === IRIS_CATALOG
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state] &&
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state].sources
+                .length === 1 &&
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .sources[0] === IRIS_CATALOG
         ) {
             params = {
                 ...params,
-                ...rootGetters[IrisFiltersGetters.stateMapped],
+                ...AppVueObj.app.$store.getters[IrisFiltersGetters.stateMapped],
             }
         }
+
         return params
     },
     actionBeforeRequest: (state: any) => {
@@ -553,7 +566,8 @@ const actions = {
             dispatch(SearchActions.setStartIndex, { value: 1 }, { root: true })
         }
 
-        const generalFilters: any = rootGetters[GeneralFiltersGetters.state]
+        const generalFilters: any =
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
 
         dispatch(GeneralFiltersActions.setContainerVisible, false, {
             root: true,
@@ -566,7 +580,7 @@ const actions = {
             'search_query',
             null,
             null,
-            rootGetters[GeneralFiltersGetters.state].phrase,
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state].phrase,
             'dab',
             'viewed'
         )
@@ -579,11 +593,14 @@ const actions = {
         if (
             !getters.cancelConfirmSearch &&
             (!getters.previousQueryParams ||
-                lastPhrase !== rootGetters[GeneralFiltersGetters.state].phrase)
+                lastPhrase !==
+                    AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                        .phrase)
         ) {
             const [, data] = await to(
                 GeossSearchApiService.checkIfQueryLocation(
-                    rootGetters[GeneralFiltersGetters.state].phrase
+                    AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                        .phrase
                 )
             )
             if (data) {
@@ -641,18 +658,19 @@ const actions = {
                 await to(returnVal)
             }
         }
-
         if (
             getters.filtersParams &&
             getters.filtersParams.searchFields &&
-            rootGetters[GeneralFiltersGetters.additionalSearchFields] !== ''
+            AppVueObj.app.$store.getters[
+                GeneralFiltersGetters.additionalSearchFields
+            ] !== ''
         ) {
             const currentSearchFields =
                 getters.filtersParams.searchFields.split(',')
             const addedSeachFields =
-                rootGetters[GeneralFiltersGetters.additionalSearchFields].split(
-                    ','
-                )
+                AppVueObj.app.$store.getters[
+                    GeneralFiltersGetters.additionalSearchFields
+                ].split(',')
             getters.filtersParams.searchFields = currentSearchFields
                 .concat(
                     addedSeachFields.filter(
@@ -844,7 +862,10 @@ const actions = {
                     (!data.theSameTab && result && !result.error) ||
                     (data.theSameTab && result === currentResults)
                 ) {
-                    commit('setStateProp', { prop, value: result })
+                    commit('setStateProp', {
+                        prop,
+                        value: result,
+                    })
                 } else if (!data.theSameTab) {
                     commit('setStateProp', { prop, value: null })
                 }
@@ -1091,7 +1112,7 @@ const actions = {
         data: { value: string; checkDefault?: boolean }
     ) {
         const defaultSourceName =
-            rootGetters[SearchEngineGetters.defaultSourceName]
+            AppVueObj.app.$store.getters[SearchEngineGetters.defaultSourceName]
         let value = data.value
         if (value && value.includes(',')) {
             value = value.split(',')[0] as DataSource

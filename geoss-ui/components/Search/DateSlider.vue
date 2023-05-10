@@ -4,8 +4,9 @@
             <div class="date-slider__title">{{ $tc('generalFilters.dateRanges') }}:</div>
             <div class="date-slider__min">{{ minYear }}</div>
             <div class="date-slider__max">{{ maxYear }}</div>
-            <!-- <vue-slider :tooltip-placement="['left', 'right']" :min="minYear" :max="maxYear" :tooltip-formatter="dateFormatter"
-				@change="sliderChange($event)" @drag-start="dragStart()" @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" /> -->
+            <!-- <vue-slider :tooltip-placement="['left', 'right']" :min="minYear" :max="maxYear"
+                :tooltip-formatter="dateFormatter" @change="sliderChange($event)" @drag-start="dragStart()"
+                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" /> -->
         </div>
         <DateIntervalRadio :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
             @on-dates-change="setDates($event)" class="margin-top-5 full-width" />
@@ -17,15 +18,15 @@
 
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 
-// import VueSlider from '@/components/Slider/index';
-// import DatepickerComponent from '@/components/DatePicker/DatePicker.vue';
+// import VueSlider from '~/components/Slider/vue-slider';
+import DatepickerComponent from '@/components/DatePicker/DatePicker.vue';
 import DateIntervalRadio from '@/components/Search/DateIntervalRadio.vue';
 
 import date from '@/filters/date';
 
 @Component({
     components: {
-        // VueSlider,
+        //  VueSlider,
         DateIntervalRadio
     }
 })
@@ -123,7 +124,7 @@ export default class DateSliderComponent extends Vue {
     }
 
     private mounted() {
-        /*
+
         this.sliderDateFrom = this.dateFrom;
         this.sliderDateTo = this.dateTo;
 
@@ -177,7 +178,7 @@ export default class DateSliderComponent extends Vue {
                 event.stopPropagation();
             });
         }
-        */
+
     }
 }
 </script>
