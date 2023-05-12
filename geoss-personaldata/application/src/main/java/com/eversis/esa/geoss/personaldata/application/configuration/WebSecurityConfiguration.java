@@ -130,9 +130,10 @@ public class WebSecurityConfiguration {
 
                 .anyRequest().authenticated();
         http.csrf().disable();
-        http.httpBasic();
         if (securityOauth2Properties.map(SecurityOauth2Properties::isEnabled).orElse(false)) {
             http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        } else {
+            http.httpBasic();
         }
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
