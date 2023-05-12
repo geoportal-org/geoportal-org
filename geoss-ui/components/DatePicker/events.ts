@@ -1,3 +1,5 @@
+export default {}
+
 // Events to emit, copied from flatpickr source
 const includedEvents = [
 	'onChange',

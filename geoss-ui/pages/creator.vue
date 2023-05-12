@@ -28,13 +28,13 @@
                     <p>In order to start a configuration, you need to log in as admin.</p>
                     <div class="creator__field required">
                         <label>Login: <span>*</span></label>
-                        <input placeholder="Type here..." type="text" />
+                        <input placeholder="Type here..." type="text" ref="login" />
                     </div>
                     <div class="creator__field required">
                         <label>Password: <span>*</span></label>
-                        <input placeholder="Type here..." type="password" />
+                        <input placeholder="Type here..." type="password" ref="password" />
                     </div>
-                    <button class="green-btn-default" @click="next()">Log in</button>
+                    <button class="green-btn-default" @click="loginCheck()">Log in</button>
                     <p>To get more information: <a href="#">View the manual</a></p>
                 </template>
 
@@ -43,16 +43,16 @@
                     <h1 class="creator__header">Configuration</h1>
                     <div class="creator__field required">
                         <label>Name of the Mirror Site: <span>*</span></label>
-                        <input placeholder="Type here..." type="text" />
+                        <input placeholder="Type here..." type="text" ref="site_name" />
                     </div>
                     <div class="creator__field required">
                         <label>Upload a logo: <span>*</span></label>
-                        <input type="file" />
+                        <input type="file" ref="site_logo" name="site_logo" accept="image/png, image/jpeg, image/svg" />
                     </div>
                     <p class="creator__hint">Additional frontend customization can be conducted via the source code.</p>
                     <div class="creator__buttons">
                         <button class="green-btn-default inverted" @click="prev()">Back</button>
-                        <button class="green-btn-default" @click="next()">Next</button>
+                        <button class="green-btn-default" @click="saveSiteSettings()">Next</button>
                     </div>
                 </template>
 
@@ -64,17 +64,19 @@
                         default. The default view will be set if you don't indicate any of the catalogues.</p>
                     <div class="view-options">
                         <div class="creator__field radio">
-                            <input type="radio" id="default" name="default-view" checked="true">
+                            <input type="radio" id="default" name="default-view" checked="true" ref="view" value=""
+                                data-id="0" data-default="true">
                             <label for="default">Default</label>
                         </div>
-                        <div class="creator__field radio" v-for="view of views" :key="view">
-                            <input type="radio" :id="view.value" name="default-view">
+                        <div class="creator__field radio" v-for="view of views" :key="view.value">
+                            <input type="radio" :id="view.value" name="default-view" ref="view" :value="view.value"
+                                :data-id="view.id" :data-name="view.title" :data-value="view.value">
                             <label :for="view.value">{{ view.title }}</label>
                         </div>
                     </div>
                     <div class="creator__buttons">
                         <button class="green-btn-default inverted" @click="prev()">Back</button>
-                        <button class="green-btn-default" @click="next()">Next</button>
+                        <button class="green-btn-default" @click="saveDefaultView()">Next</button>
                     </div>
                 </template>
 
@@ -104,6 +106,9 @@
 
 <script>
 import GeossSearchApiService from '@/services/geoss-search.api.service';
+import webSettingsAPI from '@/api/webSettings'
+import ContentAPI from '@/api/content'
+import defaultViews from '@/data/views'
 
 export default {
     layout() {
@@ -112,7 +117,10 @@ export default {
     data() {
         return {
             step: 0,
-            views: []
+            settings: null,
+            views: [],
+            nameFieldId: null,
+            logoFieldId: null,
         }
     },
     methods: {
@@ -121,10 +129,78 @@ export default {
         },
         prev() {
             --this.step
+        },
+        loginCheck() {
+            if (!this.$refs.login || this.$refs.login.value === '' || !this.$refs.password || this.$refs.password.value === '') {
+                return false
+            } else {
+                this.next();
+            }
+        },
+        async saveSiteSettings() {
+            if (!this.$refs.site_name || this.$refs.site_name === '' || !this.$refs.site_logo || !this.$refs.site_logo.files[0]) {
+                return false
+            } else {
+                await webSettingsAPI.setSiteSetting(this.nameFieldId, {
+                    set: 'logo',
+                    key: 'title',
+                    value: this.$refs.site_name.value
+                })
+
+                const logo_id = await ContentAPI.addContent(this.$refs.site_logo.files[0])
+
+                await webSettingsAPI.setSiteSetting(this.logoFieldId, {
+                    set: 'logo',
+                    key: 'source',
+                    value: `/contents/rest/document/${logo_id}/content`
+                })
+
+                this.next();
+            }
+        },
+        async saveDefaultView() {
+            const selectedView = this.$refs.view.filter(e => e.checked)[0];
+            if (!selectedView) {
+                this.next()
+                return
+            }
+
+            const id = selectedView.attributes['data-id'].value
+            if (id * 1) {
+                const value = selectedView.attributes['data-value'].value
+                const title = selectedView.attributes['data-name'].value
+                const viewData = {
+                    label: title,
+                    value,
+                    title,
+                    defaultOption: true,
+                }
+
+                await webSettingsAPI.updateView(id, viewData);
+                this.next()
+            }
+        },
+        async addDefaultViews() {
+            for (const view of defaultViews.views) {
+                const viewData = {
+                    label: view.label,
+                    value: view.value,
+                    title: view.title,
+                    defaultOption: false,
+                }
+                await webSettingsAPI.setView(viewData);
+            }
         }
     },
     async mounted() {
-        this.views = await GeossSearchApiService.getViewsOptions();
+        this.views = await GeossSearchApiService.getViewsOptions()
+        if (!this.views.length) {
+            this.addDefaultViews();
+        }
+
+        this.settings = await webSettingsAPI.getSiteSettingsRaw()
+        this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title').id;
+        this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source').id;
     }
 }
 </script>

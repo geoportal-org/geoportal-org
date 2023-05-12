@@ -2,7 +2,6 @@ import apiClient from './apiClient'
 import geossSettings from './module/geoss-settings'
 import { parseXMLToJSON } from '@/services/general.api.service'
 import SpinnerService from '@/services/spinner.service'
-
 interface WebSetting {
     id: number
     set: string
@@ -119,6 +118,12 @@ interface SearchSettings {
     }
 }
 
+export interface IWebSettingData {
+    set: string
+    key: string
+    value: string
+}
+
 const parseWebSettings = (data: WebSettings): WebSettingsData => {
     const webSettingsData: WebSettingsData = {}
     for (const setting of data._embedded.webSettings) {
@@ -167,6 +172,12 @@ const parseCatalogsResponse = (data: string): any => {
 }
 
 export default {
+    getSiteSettingsRaw: async () => {
+        const webSettings: WebSettings = await apiClient.$get(
+            geossSettings.webSettings
+        )
+        return webSettings._embedded.webSettings
+    },
     getSiteSettings: async () => {
         const webSettings: WebSettings = await apiClient.$get(
             geossSettings.webSettings
@@ -201,5 +212,37 @@ export default {
             SpinnerService.hideSpinner()
             return dataProvidersResponse
         }
+    },
+    setSiteSetting: async (id: number, webSettingData: IWebSettingData) => {
+        return apiClient.$put(
+            `${geossSettings.webSettings}/${id}`,
+            JSON.stringify(webSettingData),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic dXNlcjpxYXoxMjM=',
+                },
+            }
+        )
+    },
+    setView: async (view: any) => {
+        return apiClient.$post(`${geossSettings.views}`, JSON.stringify(view), {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic dXNlcjpxYXoxMjM=',
+            },
+        })
+    },
+    updateView: async (id: number, view: any) => {
+        return apiClient.$patch(
+            `${geossSettings.views}/${id}`,
+            JSON.stringify(view),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic dXNlcjpxYXoxMjM=',
+                },
+            }
+        )
     },
 }

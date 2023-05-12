@@ -66,6 +66,28 @@ const getPages = () => {
     return apiClient.$get(geossContents.page)
 }
 
+const prepareFileToUpload = (inputFile: any): FormData => {
+    const formData = new FormData()
+    const file = inputFile as File
+    const fileInfo = getNewFileData(inputFile)
+    formData.set('files', file, file.name)
+    formData.set('model', JSON.stringify(fileInfo))
+    return formData
+}
+
+const getNewFileData = (inputFile: any) => {
+    const file = inputFile as File
+    const name = file.name
+    const extension = name.substring(name.lastIndexOf('.') + 1, name.length)
+    return {
+        title: name,
+        fileName: name,
+        extension,
+        path: 0,
+        folderId: 0,
+    }
+}
+
 export default {
     getPage: async (slug: string) => {
         const pages: Pages = await getPages()
@@ -74,10 +96,21 @@ export default {
         )[0]
         return page
     },
+
     getContent: async (contentId: string) => {
         const content: Content = await apiClient.$get(
             geossContents.content + '/' + contentId
         )
         return content
+    },
+
+    addContent: async (inputFile: any) => {
+        const fileData = prepareFileToUpload(inputFile)
+        try {
+            const resp = await apiClient.$post(geossContents.document, fileData)
+            return resp._links.document.href.split('/').slice(-1).pop()
+        } catch (e) {
+            console.warn(e)
+        }
     },
 }
