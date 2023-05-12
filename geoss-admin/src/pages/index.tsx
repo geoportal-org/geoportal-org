@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { SignIn } from "@/components";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
+import { pagesRoutes } from "@/data";
 
 interface HomeProps {
     providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null;
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     //if (session) {
     return {
-        redirect: { destination: "/contents", permanent: false },
+        redirect: { destination: pagesRoutes.website, permanent: false },
     };
     //}
 

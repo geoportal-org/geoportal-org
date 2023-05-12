@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import { Contents as ConentsCard } from "@/components";
 import { ProtectedNextPage } from "@/types";
 
-const Contents: ProtectedNextPage = () => <ConentsCard />;
+const WebsiteContents: ProtectedNextPage = () => <ConentsCard />;
 
-Contents.auth = true;
+WebsiteContents.auth = true;
 
-export default Contents;
+export default WebsiteContents;

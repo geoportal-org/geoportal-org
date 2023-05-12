@@ -1,5 +1,5 @@
 export const pagesRoutes = {
-    addContent: "/contents/add",
+    addContent: "/website-contents/add",
     addPage: "/page/add",
     api: "/api-settings",
     catalogs: "/catalogs-settings",
@@ -12,7 +12,7 @@ export const pagesRoutes = {
     tutorialTags: "/tutorial-tags-settings",
     views: "/views-settings",
     web: "/web-settings",
-    website: "/contents",
+    website: "/website-contents",
 };
 
 export const unauthenicatedRoutes = [pagesRoutes.signIn];
