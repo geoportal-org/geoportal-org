@@ -78,6 +78,8 @@ public class SecurityConfiguration {
 
         if (!jdbcUserDetailsManager.userExists(securityProperties.getUser().getName())) {
             jdbcUserDetailsManager.createUser(defaultUser(securityProperties));
+        } else {
+            jdbcUserDetailsManager.updateUser(defaultUser(securityProperties));
         }
         return jdbcUserDetailsManager;
     }
