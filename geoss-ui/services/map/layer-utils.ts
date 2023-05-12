@@ -237,7 +237,7 @@ const LayersUtils = {
             image: new AppVueObj.ol.style.Icon({
                 anchor: [0.5, 1],
                 opacity: transparency,
-                src: `${StaticPath()}/img/marker.png`,
+                src: `/img/marker.png`,
             }),
         })
     },
@@ -251,7 +251,7 @@ const LayersUtils = {
             image: new AppVueObj.ol.style.Icon({
                 anchor: [0.5, 0.5],
                 opacity: transparency,
-                src: `${StaticPath()}/svg/irisCircles${depth}.svg`,
+                src: `/svg/irisCircles${depth}.svg`,
                 scale: radius,
             }),
         })
@@ -757,7 +757,7 @@ const LayersUtils = {
         const statisticsLayer = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
                 format: new AppVueObj.ol.format.GeoJSON(),
-                url: `${StaticPath()}/data/countriesUNSD.geojson`,
+                url: `/data/countriesUNSD.geojson`,
             }),
             style: (feature: { [key: string]: any }) => {
                 const layerName = feature.get('name')

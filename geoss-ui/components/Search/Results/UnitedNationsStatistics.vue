@@ -125,7 +125,7 @@ export default class UnitedNationsStatisticsComponent extends Vue {
             type: LayerTypes.CUSTOM,
             title,
             legend: scaleLegend,
-            image: `${StaticPath()}/img/un-logo.png`
+            image: `/img/un-logo.png`
         });
         this.$store.dispatch(MapActions.changeLayerVisibility, { id: LayerTypes.BOUNDING, value: false });
         this.$store.dispatch(MapActions.setShowFull, true);

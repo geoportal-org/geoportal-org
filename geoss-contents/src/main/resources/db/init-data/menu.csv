@@ -17,4 +17,4 @@ id|title|image_title|image_source|url|priority|parent_menu_id|level_id|created_b
 16|GOS4M|||"https://www.geoportal.org/community/gos4m"|7|9|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
 17|GTN-H Community|||"https://www.geoportal.org/community/gtn-h-community"|8|9|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
 18|SWOS Community Portal|||"http://portal.swos-service.eu/mapviewer/detail/1.html"|9|9|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-19|Yellow Pages|Yellow Pages|"https://www.geoportal.org/geoss-portlet/website/static/svg/yellow-pages.svg"|"https://www.geoportal.org/community/guest/yellow-pages"|4|0|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+19|Yellow Pages|Yellow Pages|"https://www.geoportal.org/geoss-portlet/website/static/svg/yellow-pages.svg"|"/yellow-pages"|4|0|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
