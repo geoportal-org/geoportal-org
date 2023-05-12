@@ -23,6 +23,7 @@ export const en = {
         id: "ID",
         description: "Description",
         "not-applicable": "n/a",
+        "invalid-id": "Invalid ID",
     },
     form: {
         placeholders: {
@@ -41,7 +42,7 @@ export const en = {
             "passwords-not-match": "Passwords don't match",
             "required-file": "File is required",
             "invalid-relative-url": "Invalid relative URL",
-            "invalid-zero-positive-integer": "Zero or positive integer",
+            "invalid-zero-positive-integer": "An integer between 0 - 20 is required",
             "invalid-latitude": "Invalid latitude (from -90 to 90, up to six decimal places)",
             "invalid-longitude": "Invalid longitude (from -180 to 180, up to six decimal places)",
         },
@@ -77,6 +78,7 @@ export const en = {
             "update-nested-view": "An error occurred while updating the nested view - please try again",
             "404": "Please try again. Contact support if the problem persists.",
             "load-web": "An error occurred while loading the web settings - please refresh the page and try again",
+            logout: "Logout failed. Please try again and if the problem persists, contact support",
         },
         success: {},
         info: {
@@ -111,6 +113,7 @@ export const en = {
             status: "Status",
             preview: "Content preview",
             "selected-deleted": "Selected content(s) has been deleted",
+            "not-exist": "The content with the specified ID does not exist",
         },
         "manage-content": {
             "add-title": "Add content",
@@ -133,6 +136,7 @@ export const en = {
             "selected-deleted": "Selected page(s) has been deleted",
             "delete-selected-info": "Are you sure you want to remove selected pages (IDs: {itemId})?",
             "delete-selected-single-info": "Are you sure you want to remove selected page (ID: {itemId})?",
+            "not-exist": "The page with the specified ID does not exist",
         },
         "manage-page": {
             "add-title": "Add page",

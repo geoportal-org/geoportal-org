@@ -38,10 +38,18 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             const editedContent = await ContentService.getContent(+id);
             setInitValues(() => setExistingFormValues(addContentForm, editedContent));
             setIsDraft(!editedContent.published);
-        } catch (e) {
-            console.error(e);
-        } finally {
             setIsLoading(false);
+        } catch (e) {
+            const err = e as { errorInfo: any; errorStatus: number };
+            const { errorStatus } = err;
+            console.log(err);
+            const is404Error = errorStatus === 404;
+            showToast({
+                title: translate(is404Error ? "general.invalid-id" : "general.error"),
+                description: translate(is404Error ? "pages.contents.not-exist" : "information.error.loading"),
+                status: is404Error ? ToastStatus.WARNING : ToastStatus.ERROR,
+            });
+            router.push(pagesRoutes.website);
         }
     };
 

@@ -5,7 +5,7 @@ export const HeaderMenuToggler = ({ onClose, onOpen, isOpen }: any) => {
     const { translate } = useFormatMsg();
 
     return (
-        <Box w="48px">
+        <Box w="52px">
             <Button
                 aria-label={translate(isOpen ? "nav.close" : "nav.open")}
                 h="34px"

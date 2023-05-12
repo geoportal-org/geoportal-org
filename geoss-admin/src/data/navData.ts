@@ -44,11 +44,14 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.defaultLayer,
         Icon: LayerIcon,
     },
+    // hidden tutorial tags in menu
+    /*
     {
         titleId: "nav.settings.section.tutorial",
         href: pagesRoutes.tutorialTags,
         Icon: TutorialIcon,
     },
+    */
 ];
 
 const navContentsData: NavItem[] = [
@@ -82,15 +85,18 @@ const navProfileData: NavItem[] = [
     },
     {
         titleId: "nav.profile.section.logout",
-        href: "#",
         Icon: LogoutIcon,
+        action: {
+            id: "nav.profile.section.logout",
+            name: "logout",
+        },
     },
 ];
 
 export const navData: NavSection[] = [
     { titleId: "nav.contents.title", items: navContentsData },
     { titleId: "nav.settings.title", items: navSettingsData },
-    { titleId: "nav.profile.title", items: navProfileData },
+    /*{ titleId: "nav.profile.title", items: navProfileData },*/
 ];
 
 export const navSectionsUrls = [

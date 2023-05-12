@@ -16,6 +16,7 @@ import { initContentsPagination, pagesRoutes } from "@/data";
 import { addPageForm } from "@/data/forms";
 import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus } from "@/types";
 import { IPageData } from "@/types/models";
+import useFormatMsg from "@/utils/useFormatMsg";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addPageForm));
@@ -24,6 +25,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDraft, setIsDraft] = useState<boolean>(false);
     const router = useRouter();
+    const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
 
     useEffect(() => {
@@ -47,10 +49,18 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 setInitValues(() => setExistingFormValues(addPageForm, editedPage));
                 setIsDraft(!editedPage.published);
             }
-        } catch (e) {
-            console.error(e);
-        } finally {
             setIsLoading(false);
+        } catch (e) {
+            const err = e as { errorInfo: any; errorStatus: number };
+            const { errorStatus } = err;
+            console.log(err);
+            const is404Error = errorStatus === 404;
+            showToast({
+                title: translate(is404Error ? "general.invalid-id" : "general.error"),
+                description: translate(is404Error ? "pages.page.not-exist" : "information.error.loading"),
+                status: is404Error ? ToastStatus.WARNING : ToastStatus.ERROR,
+            });
+            router.push(pagesRoutes.page);
         }
     };
 

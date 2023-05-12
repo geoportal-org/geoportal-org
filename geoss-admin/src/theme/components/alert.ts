@@ -32,7 +32,7 @@ export const alert: ComponentStyleConfig = {
             borderStartWidth: { base: "6px", "2xl": "0" },
             borderTopWidth: { base: "0", "2xl": "6px" },
             color: "brand.mainLight",
-            maxW: { base: "280px", sm: "container.xs" },
+            maxW: { base: "calc(100% - 20px)", sm: "container.xs" },
         },
         description: {
             lineHeight: "normal",

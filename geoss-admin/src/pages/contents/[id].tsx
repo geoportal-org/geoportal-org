@@ -1,6 +1,9 @@
 import { NextPage } from "next";
 import { ManageContent } from "@/components";
+import { ProtectedNextPage } from "@/types";
 
-const ContentEdit: NextPage = () => <ManageContent isEditMode={true} />;
+const ContentEdit: ProtectedNextPage = () => <ManageContent isEditMode={true} />;
+
+ContentEdit.auth = true;
 
 export default ContentEdit;

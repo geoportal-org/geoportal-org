@@ -8,16 +8,15 @@ import { Fonts, Layout } from "@/components";
 import { flattenMessages } from "@/utils/helpers";
 import { contentMessages } from "@/content";
 import geossTheme from "@/theme";
-import { SessionProvider } from "next-auth/react";
-import { Session } from "next-auth";
+//import { SessionProvider } from "next-auth/react";
+//import { Session } from "next-auth";
 
-interface CustomAppProps extends AppProps {
-    pageProps: {
-        session: Session;
-    };
-}
+/*interface CustomAppProps<P = {}> {
+    Component: AppProps["Component"] & { auth: boolean };
+    pageProps: AppProps["pageProps"] & P;
+}*/
 
-const App = ({ Component, pageProps }: CustomAppProps) => {
+const App = ({ Component, pageProps }: /*CustomAppProps<{ session: Session }>)*/ AppProps) => {
     const { locale } = useRouter();
     const [shortLocale] = locale ? locale.split("-") : ["en"];
 
@@ -37,11 +36,18 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
             <IntlProvider locale={shortLocale} messages={textContent} defaultLocale="en" onError={() => null}>
                 <ChakraProvider theme={geossTheme}>
                     <Fonts />
-                    <SessionProvider session={pageProps.session}>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
-                    </SessionProvider>
+                    {/*<SessionProvider session={pageProps.session}>*/}
+                    <Layout>
+                        <Component {...pageProps} />
+                        {/*Component.auth ? (
+                                <AuthGuard>
+                                    <Component {...pageProps} />
+                                </AuthGuard>
+                            ) : (
+                                <Component {...pageProps} />
+                            )*/}
+                    </Layout>
+                    {/*</SessionProvider>*/}
                 </ChakraProvider>
             </IntlProvider>
         </>

@@ -14,3 +14,9 @@ export const pagesRoutes = {
     web: "/web-settings",
     website: "/contents",
 };
+
+export const unauthenicatedRoutes = [pagesRoutes.signIn];
+
+export const authenticatedRoutes = Object.keys(pagesRoutes).map(
+    (routeKey) => pagesRoutes[routeKey as keyof typeof pagesRoutes]
+);

@@ -4,7 +4,7 @@ export const languagesSwitcher = [
         flagUrl: "/images/flag-us.png",
         locale: "en",
     },
-    {
+    /*{
         title: "Polish",
         flagUrl: "/images/flag-pl.png",
         locale: "pl",
@@ -28,5 +28,5 @@ export const languagesSwitcher = [
         title: "Russian",
         flagUrl: "/images/flag-ru.png",
         locale: "ru",
-    },
+    },*/
 ];

@@ -13,6 +13,7 @@ export const fetcher = async ({
         ...(!(body instanceof FormData) && {
             headers: new Headers({
                 "Content-Type": "application/json",
+                Authorization: "Basic dXNlcjpxYXoxMjM=",
                 ...headers,
             }),
         }),
