@@ -340,7 +340,7 @@ uat_remove_all:
     - echo "Removing dmz services and data"
     - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm uat && docker system prune -f"
     - echo "Removing lan services and nfs data"
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm uat" && sudo rm -rf /nfs/data/* && docker system prune -f"
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm uat && sudo rm -rf /nfs/data/* && docker system prune -f"
     - echo "Removing lan db persistent data"
     - ssh -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
     - echo "Removing lan elastic persistent data"
