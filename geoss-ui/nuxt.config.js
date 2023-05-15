@@ -119,10 +119,10 @@ export default {
     },
 
     env: {
-        baseUrl: process.env.BASE_URL || 'https://gpp.devel.esaportal.eu',
-        adminUrl: process.env.ADMIN_URL || 'https://gpp-admin.devel.esaportal.eu'
+        baseUrl: process.env.NUXT_ENV_BASE_URL || 'https://gpp.uat.esaportal.eu',
+        adminUrl: process.env.NUXT_ENV_ADMIN_URL || 'https://gpp-admin.uat.esaportal.eu'
     },
 
-    ssr: true,
-    target: 'server',
+    // ssr: true,
+    // target: 'server',
 }

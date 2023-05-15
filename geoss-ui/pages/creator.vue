@@ -126,8 +126,8 @@ export default {
             nameFieldId: null,
             logoFieldId: null,
             defaultView: null,
-            baseUrl: process.env.baseUrl,
-            adminUrl: process.env.adminUrl
+            baseUrl: process.env.NUXT_ENV_BASE_URL,
+            adminUrl: process.env.NUXT_ENV_ADMIN_URL
         }
     },
     methods: {

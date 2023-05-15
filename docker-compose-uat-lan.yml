@@ -203,8 +203,8 @@ services:
           - "node.labels.shared_tag==geoss-apps"
     environment:
       API_URL: http://gpp-api.uat.esaportal.eu/
-      BASE_URL: http://gpp.uat.esaportal.eu/
-      ADMIN_URL: http://gpp-admin.uat.esaportal.eu/
+      NUXT_ENV_BASE_URL: https://gpp.uat.esaportal.eu/
+      NUXT_ENV_ADMIN_URL: https://gpp-admin.uat.esaportal.eu/
       NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
