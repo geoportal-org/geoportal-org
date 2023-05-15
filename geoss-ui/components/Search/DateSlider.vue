@@ -1,13 +1,14 @@
 <template>
     <div>
-        <div class="date-slider">
+        <!-- <div class="date-slider">
             <div class="date-slider__title">{{ $tc('generalFilters.dateRanges') }}:</div>
             <div class="date-slider__min">{{ minYear }}</div>
             <div class="date-slider__max">{{ maxYear }}</div>
-            <!-- <vue-slider :tooltip-placement="['left', 'right']" :min="minYear" :max="maxYear"
+            <vue-slider :tooltip-placement="['left', 'right']" :min="minYear" :max="maxYear"
                 :tooltip-formatter="dateFormatter" @change="sliderChange($event)" @drag-start="dragStart()"
-                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" /> -->
-        </div>
+                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" />
+        </div> -->
+        <div class="date-interval__title">{{ $tc('generalFilters.dateRanges') }}:</div>
         <DateIntervalRadio :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
             @on-dates-change="setDates($event)" class="margin-top-5 full-width" />
     </div>
@@ -184,6 +185,13 @@ export default class DateSliderComponent extends Vue {
 </script>
 
 <style lang="scss">
+.date-interval {
+    &__title {
+        margin-top: 20px;
+        font-size: 14px;
+        color: white;
+    }
+}
 .date-slider {
     margin-top: 15px;
     margin-bottom: 15px;
