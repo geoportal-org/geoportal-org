@@ -1,6 +1,7 @@
 
 <template>
     <div class="community-portal-configuration">
+        <Notification />
         <div class="my-workspace-header">
             Mirror Site Setup
         </div>
@@ -19,7 +20,7 @@
                         installation files.
                     </p>
                     <button class="green-btn-default" @click="next()">Start Configuration</button>
-                    <p>To get more information: <a href="#">View the manual</a></p>
+                    <p>To get more information: <a href="/tutorials" target="_blank">View the manual</a></p>
                 </template>
 
                 <template v-if="step === 1">
@@ -35,7 +36,7 @@
                         <input placeholder="Type here..." type="password" ref="password" />
                     </div>
                     <button class="green-btn-default" @click="loginCheck()">Log in</button>
-                    <p>To get more information: <a href="#">View the manual</a></p>
+                    <p>To get more information: <a href="/tutorials" target="_blank">View the manual</a></p>
                 </template>
 
                 <template v-if="step === 2">
@@ -70,7 +71,8 @@
                         </div>
                         <div class="creator__field radio" v-for="view of views" :key="view.value">
                             <input type="radio" :id="view.value" name="default-view" ref="view" :value="view.value"
-                                :data-id="view.id" :data-name="view.title" :data-value="view.value">
+                                :checked="view.defaultOption" :data-id="view.id" :data-name="view.title"
+                                :data-value="view.value">
                             <label :for="view.value">{{ view.title }}</label>
                         </div>
                     </div>
@@ -92,12 +94,13 @@
                     </p>
                     <p>
                         Remember you can always access the configuraion panel using your login and password at this link: <a
-                            href="https://gpp-admin.devel.esaportal.eu" target="_blank">Reconfigure</a>
+                            :href="adminUrl" target="_blank">Reconfigure</a>
                     </p>
                     <NuxtLink to="/">
                         <button class="green-btn-default">Finish and close</button>
                     </NuxtLink>
-                    <p>Any additional questions can be asked on our <a href="#">Contact page</a></p>
+                    <p>Any additional questions can be asked on our <a href="/help-desk" target="_blank">Contact page</a>
+                    </p>
                 </template>
             </div>
         </div>
@@ -109,6 +112,7 @@ import GeossSearchApiService from '@/services/geoss-search.api.service';
 import webSettingsAPI from '@/api/webSettings'
 import ContentAPI from '@/api/content'
 import defaultViews from '@/data/views'
+import NotificationService from '@/services/notification.service';
 
 export default {
     layout() {
@@ -121,6 +125,9 @@ export default {
             views: [],
             nameFieldId: null,
             logoFieldId: null,
+            defaultView: null,
+            baseUrl: process.env.baseUrl,
+            adminUrl: process.env.adminUrl
         }
     },
     methods: {
@@ -132,6 +139,14 @@ export default {
         },
         loginCheck() {
             if (!this.$refs.login || this.$refs.login.value === '' || !this.$refs.password || this.$refs.password.value === '') {
+                NotificationService.show(
+                    'Mirror Site Configuration',
+                    'Please provide correct credentials',
+                    10000,
+                    null,
+                    9999,
+                    'info'
+                );
                 return false
             } else {
                 this.next();
@@ -139,6 +154,14 @@ export default {
         },
         async saveSiteSettings() {
             if (!this.$refs.site_name || this.$refs.site_name === '' || !this.$refs.site_logo || !this.$refs.site_logo.files[0]) {
+                NotificationService.show(
+                    'Mirror Site Configuration',
+                    'Please provide both: Site name and Site logo',
+                    10000,
+                    null,
+                    9999,
+                    'info'
+                );
                 return false
             } else {
                 await webSettingsAPI.setSiteSetting(this.nameFieldId, {
@@ -147,12 +170,24 @@ export default {
                     value: this.$refs.site_name.value
                 })
 
-                const logo_id = await ContentAPI.addContent(this.$refs.site_logo.files[0])
+                const logo = await ContentAPI.addContent(this.$refs.site_logo.files[0])
+
+                if (logo.errors && logo.errors.length || logo.error) {
+                    NotificationService.show(
+                        'Mirror Site Configuration',
+                        logo.message || logo.error,
+                        10000,
+                        null,
+                        9999,
+                        'error'
+                    );
+                    return
+                }
 
                 await webSettingsAPI.setSiteSetting(this.logoFieldId, {
                     set: 'logo',
                     key: 'source',
-                    value: `/contents/rest/document/${logo_id}/content`
+                    value: `/contents/rest/document/${logo}/content`
                 })
 
                 this.next();
@@ -163,6 +198,16 @@ export default {
             if (!selectedView) {
                 this.next()
                 return
+            }
+
+            if (this.defaultView) {
+                const viewData = {
+                    label: this.defaultView.label,
+                    value: this.defaultView.value,
+                    title: this.defaultView.title,
+                    defaultOption: false,
+                }
+                await webSettingsAPI.updateView(this.defaultView.id, viewData);
             }
 
             const id = selectedView.attributes['data-id'].value
@@ -190,14 +235,22 @@ export default {
                 }
                 await webSettingsAPI.setView(viewData);
             }
+        },
+        getCurrentDefaultView() {
+            for (const view of this.views) {
+                if (view.defaultOption) {
+                    this.defaultView = view
+                }
+            }
         }
     },
     async mounted() {
         this.views = await GeossSearchApiService.getViewsOptions()
         if (!this.views.length) {
             this.addDefaultViews();
+        } else {
+            this.getCurrentDefaultView();
         }
-
         this.settings = await webSettingsAPI.getSiteSettingsRaw()
         this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title').id;
         this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source').id;

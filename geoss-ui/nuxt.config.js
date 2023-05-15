@@ -118,6 +118,11 @@ export default {
         vendor: ['ol'],
     },
 
+    env: {
+        baseUrl: process.env.BASE_URL || 'https://gpp.devel.esaportal.eu',
+        adminUrl: process.env.ADMIN_URL || 'https://gpp-admin.devel.esaportal.eu'
+    },
+
     ssr: true,
     target: 'server',
 }

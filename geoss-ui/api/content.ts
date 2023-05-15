@@ -111,6 +111,7 @@ export default {
             return resp._links.document.href.split('/').slice(-1).pop()
         } catch (e) {
             console.warn(e)
+            return e.response.data
         }
     },
 }
