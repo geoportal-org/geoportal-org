@@ -202,7 +202,7 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      API_URL: http://gpp-api.uat.esaportal.eu/
+      API_URL: http://gpp.uat.esaportal.eu/
       NUXT_ENV_BASE_URL: https://gpp.uat.esaportal.eu/
       NUXT_ENV_ADMIN_URL: https://gpp-admin.uat.esaportal.eu/
       NODE_OPTIONS: "--max-old-space-size=4096"
