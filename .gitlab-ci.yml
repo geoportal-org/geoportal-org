@@ -334,6 +334,8 @@ uat_remove_all:
     - chmod 700 ~/.ssh
     - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
     - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Removing uat environment";
