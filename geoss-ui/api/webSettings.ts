@@ -214,16 +214,18 @@ export default {
         }
     },
     setSiteSetting: async (id: number, webSettingData: IWebSettingData) => {
-        return apiClient.$put(
-            `${geossSettings.webSettings}/${id}`,
-            JSON.stringify(webSettingData),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic dXNlcjpxYXoxMjM=',
-                },
-            }
-        )
+        let method = '$post'
+        let url = `${geossSettings.webSettings}`
+        if (id) {
+            method = '$put'
+            url += `/${id}`
+        }
+        return apiClient[method](url, JSON.stringify(webSettingData), {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic dXNlcjpxYXoxMjM=',
+            },
+        })
     },
     setView: async (view: any) => {
         return apiClient.$post(`${geossSettings.views}`, JSON.stringify(view), {
