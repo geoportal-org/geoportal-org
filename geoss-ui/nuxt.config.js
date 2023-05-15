@@ -118,7 +118,7 @@ export default {
         vendor: ['ol'],
     },
 
-    env: {
+    publicRuntimeConfig: {
         baseUrl: process.env.NUXT_ENV_BASE_URL || 'https://gpp.uat.esaportal.eu',
         adminUrl: process.env.NUXT_ENV_ADMIN_URL || 'https://gpp-admin.uat.esaportal.eu'
     },
