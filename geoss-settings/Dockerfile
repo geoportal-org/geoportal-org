@@ -26,6 +26,7 @@ COPY ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
 
+#KCI
 COPY ./certs /opt/app/certs/
 RUN keytool -importcert -file ./certs/server.crt -noprompt -alias server -storepass changeit -keystore $JAVA_HOME/lib/security/cacerts
 
