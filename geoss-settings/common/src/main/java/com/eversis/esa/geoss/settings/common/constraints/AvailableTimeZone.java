@@ -24,7 +24,7 @@ public @interface AvailableTimeZone {
      *
      * @return the string
      */
-    String message() default "{com.eversis.esa.geoss.settings.common.constraints.AvailableTimeZone.message}";
+    String message() default "{com.eversis.validation.common.constraints.AvailableTimeZone.message}";
 
     /**
      * Groups class [ ].

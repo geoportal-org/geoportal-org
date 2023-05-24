@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.common.constraints;
 
-import com.eversis.esa.geoss.settings.common.constraintvalidators.AvailableLanguageValidator;
+import com.eversis.esa.geoss.settings.common.constraintvalidators.URIValidator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -11,20 +11,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The interface Available language.
+ * The interface Uri.
  */
 @Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = AvailableLanguageValidator.class)
+@Constraint(validatedBy = URIValidator.class)
 @Documented
-public @interface AvailableLanguage {
+public @interface URI {
 
     /**
      * Message string.
      *
      * @return the string
      */
-    String message() default "{com.eversis.validation.common.constraints.AvailableLanguage.message}";
+    String message() default "{com.eversis.validation.common.constraints.URI.message}";
 
     /**
      * Groups class [ ].
@@ -41,9 +41,38 @@ public @interface AvailableLanguage {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * Required boolean.
+     * Access type.
      *
-     * @return the boolean
+     * @return the type
      */
-    boolean required() default true;
+    Type type() default Type.AUTO;
+
+    /**
+     * The enum Type.
+     */
+    enum Type {
+        /**
+         * Auto type.
+         */
+        AUTO,
+        /**
+         * Absolute type.
+         */
+        ABSOLUTE,
+
+        /**
+         * Opaque type.
+         */
+        OPAQUE,
+
+        /**
+         * Protocol relative type.
+         */
+        PROTOCOL_RELATIVE,
+
+        /**
+         * Relative type.
+         */
+        RELATIVE
+    }
 }

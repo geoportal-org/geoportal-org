@@ -24,7 +24,7 @@ public @interface AvailableLocale {
      *
      * @return the string
      */
-    String message() default "{com.eversis.esa.geoss.settings.common.constraints.AvailableLocale.message}";
+    String message() default "{com.eversis.validation.common.constraints.AvailableLocale.message}";
 
     /**
      * Groups class [ ].

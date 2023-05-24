@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.settings.instance.domain;
 
+import com.eversis.esa.geoss.settings.common.constraints.URI;
 import com.eversis.esa.geoss.settings.common.domain.AuditableEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
@@ -50,7 +50,7 @@ public class Layer extends AuditableEntity {
     @Column(nullable = false)
     private String name;
 
-    @URL
+    @URI
     @NotNull
     @NotEmpty
     @Column(nullable = false)

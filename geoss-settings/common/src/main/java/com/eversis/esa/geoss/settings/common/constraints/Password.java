@@ -32,7 +32,7 @@ public @interface Password {
      *
      * @return the string
      */
-    String message() default "{com.eversis.esa.geoss.settings.common.constraints.Password.message}";
+    String message() default "{com.eversis.validation.common.constraints.Password.message}";
 
     /**
      * Groups class [ ].
