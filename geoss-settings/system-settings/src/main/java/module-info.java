@@ -7,7 +7,7 @@ module geoss.system.settings {
     requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
-    requires com.fasterxml.jackson.module.jsonSchema;
+    requires com.fasterxml.jackson.module.jsonSchema.jakarta;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;
