@@ -21,26 +21,26 @@ import java.time.Instant;
 @MappedSuperclass
 public abstract class AuditableEntity {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "created_by")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "createdBy")
     @NotAudited
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
     protected String createdBy;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "created_on")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "createdOn")
     @NotAudited
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", nullable = false, updatable = false)
     protected Instant createdDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modified_by")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modifiedBy")
     @NotAudited
     @LastModifiedBy
     @Column(name = "modified_by", nullable = false)
     protected String lastModifiedBy;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modified_on")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modifiedOn")
     @NotAudited
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)

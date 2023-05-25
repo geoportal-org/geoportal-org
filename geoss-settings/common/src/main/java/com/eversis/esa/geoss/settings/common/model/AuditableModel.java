@@ -11,15 +11,15 @@ import java.time.Instant;
 @Data
 public class AuditableModel {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "created_by")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "createdBy")
     protected String createdBy;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "created_on")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "createdOn")
     protected Instant createdDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modified_by")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modifiedBy")
     protected String lastModifiedBy;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modified_on")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "modifiedOn")
     protected Instant lastModifiedDate;
 }
