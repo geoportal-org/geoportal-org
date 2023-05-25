@@ -109,6 +109,10 @@ export default class MenuComponent extends Vue {
         return this.$store.getters[GeneralGetters.langLocale];
     }
 
+    get route() {
+        return this.$route;
+    }
+
     public closeMenu() {
         this.menuOpened = false;
     }
@@ -136,10 +140,16 @@ export default class MenuComponent extends Vue {
         this.routes = await MenuAPI.getMenu();
     }
 
+    @Watch('route')
+    private onRouteChange() {
+        this.closeMenu();
+    }
+
     private async mounted() {
         // const langLocale = this.langLocale !== '' ? this.langLocale : this.$cookies.get('GUEST_LANGUAGE_ID');
         // [, this.routes] = await to(GeneralApiService.getMenuItems(langLocale));
         this.routes = await MenuAPI.getMenu();
+        this.closeMenu();
     }
 }
 </script>
