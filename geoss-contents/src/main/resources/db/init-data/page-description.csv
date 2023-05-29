@@ -1,0 +1,37 @@
+page_id|description|locale
+1|"This is the General information page description."|en
+1|"Esta es la descripción de la página Información general."|es
+1|"Il s'agit de la description de la page d'informations générales."|fr
+1|"To jest opis strony Informacje ogólne."|pl
+1|"Это описание страницы общей информации."|ru
+1|"這是一般信息頁面的描述。"|zh
+2|"This is the Terms & Conditions page description."|en
+2|"Esta es la descripción de la página de Términos y Condiciones."|es
+2|"Ceci est la description de la page Termes & Conditions."|fr
+2|"To jest opis strony Regulaminu."|pl
+2|"Это описание страницы «Условия и положения»."|ru
+2|"這是條款和條件頁面描述。"|zh
+3|"This is the Release notes page description."|en
+3|"Esta es la descripción de la página de notas de la versión."|es
+3|"Il s'agit de la description de la page Notes de mise à jour."|fr
+3|"To jest opis strony Informacje o wydaniu."|pl
+3|"Это описание страницы примечаний к выпуску."|ru
+3|"這是發行說明頁面描述。"|zh
+4|"This is the Help desk page description."|en
+4|"Esta es la descripción de la página de la mesa de ayuda."|es
+4|"Il s'agit de la description de la page du service d'assistance."|fr
+4|"To jest opis strony pomocy technicznej."|pl
+4|"Это описание страницы службы поддержки."|ru
+4|"這是幫助台頁面描述。"|zh
+5|"This is the Documentation page description."|en
+5|"Esta es la descripción de la página de documentación."|es
+5|"Ceci est la description de la page Documentation."|fr
+5|"To jest opis strony Dokumentacja."|pl
+5|"Это описание страницы документации."|ru
+5|"這是文檔頁面描述。"|zh
+6|"This is the Tutorials page description."|en
+6|"Esta es la descripción de la página de Tutoriales."|es
+6|"Ceci est la description de la page Tutoriels."|fr
+6|"To jest opis strony Samouczki."|pl
+6|"Это описание страницы учебников."|ru
+6|"這是教程頁面描述。"|zh

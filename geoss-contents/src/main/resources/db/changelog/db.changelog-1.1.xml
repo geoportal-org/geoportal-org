@@ -5,24 +5,35 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="18" author="Eversis">
-        <addColumn tableName="folder">
-            <column name="path" type="VARCHAR(2048)"/>
-        </addColumn>
-        <renameColumn
-                columnDataType="VARCHAR(2048)"
-                newColumnName="path"
-                oldColumnName="url"
-                tableName="document"/>
+    <changeSet id="58" author="Eversis">
+        <loadData file="db/init-data/content.csv" tableName="content" separator="|" />
     </changeSet>
-    <changeSet id="19" author="Eversis">
-        <addColumn tableName="folder_aud">
-            <column name="path" type="VARCHAR(2048)"/>
-        </addColumn>
-        <renameColumn
-                columnDataType="VARCHAR(2048)"
-                newColumnName="path"
-                oldColumnName="url"
-                tableName="document_aud"/>
+    <changeSet id="59" author="Eversis">
+        <loadData file="db/init-data/content-title.csv" tableName="content_title" separator="|" />
+    </changeSet>
+    <changeSet id="60" author="Eversis">
+        <loadData file="db/init-data/content-data.csv" tableName="content_data" separator="|">
+            <column header="content_id" name="content_id" type="BIGINT(20)"/>
+            <column header="data" name="data" type="LONGTEXT"/>
+            <column header="locale" name="locale" type="VARCHAR(255)"/>
+        </loadData>
+    </changeSet>
+    <changeSet id="61" author="Eversis">
+        <loadData file="db/init-data/page.csv" tableName="page" separator="|" />
+    </changeSet>
+    <changeSet id="62" author="Eversis">
+        <loadData file="db/init-data/page-title.csv" tableName="page_title" separator="|" />
+    </changeSet>
+    <changeSet id="63" author="Eversis">
+        <loadData file="db/init-data/page-description.csv" tableName="page_description" separator="|" />
+    </changeSet>
+    <changeSet id="64" author="Eversis">
+        <loadData file="db/init-data/menu.csv" tableName="menu" separator="|" />
+    </changeSet>
+    <changeSet id="65" author="Eversis">
+        <loadData file="db/init-data/menu-title.csv" tableName="menu_title" separator="|" />
+    </changeSet>
+    <changeSet id="66" author="Eversis">
+        <loadData file="db/init-data/menu-image-title.csv" tableName="menu_image_title" separator="|" />
     </changeSet>
 </databaseChangeLog>

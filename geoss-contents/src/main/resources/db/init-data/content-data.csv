@@ -1,0 +1,37 @@
+content_id|data|locale
+1|"Here you can enter a description of your Portal for users."|en
+1|"Aquí puede ingresar una descripción de su Portal para los usuarios."|es
+1|"Ici, vous pouvez entrer une description de votre portail pour les utilisateurs."|fr
+1|"Tutaj możesz wprowadzić opis swojego Portalu dla użytkowników."|pl
+1|"Здесь вы можете ввести описание вашего Портала для пользователей."|ru
+1|"您可以在此處為用戶輸入您的門戶的描述。"|zh
+2|"<p>Here you should put the content of the Terms &amp; Conditions of your Portal. You might use templates with guidelines attached below.</p><p><br><a download="Cookie Notice" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Cookie Notice">Cookie Notice</a></p><p><br></p><p><a download="Privacy Notice" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="Privacy Notice">Privacy Notice</a><br></p>"|en
+2|"<p>Aquí deberá poner el contenido de los Términos y Condiciones de su Portal. Puede usar plantillas con pautas adjuntas a continuación.</p><p><br><a download="Aviso de cookies" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Aviso de cookies">Aviso de cookies</a></p><p><br></p><p><a download="Aviso de Privacidad" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="Aviso de Privacidad">Aviso de Privacidad</a><br></p>"|es
+2|"<p>Ici, vous devez mettre le contenu des termes et conditions de votre portail. Vous pouvez utiliser des modèles avec des directives jointes ci-dessous.</p><p><br><a download="Avis sur les cookies" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Avis sur les cookies">Avis sur les cookies</a></p><p><br></p><p><a download="Avis de confidentialité" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="Avis de confidentialité">Avis de confidentialité</a><br></p>"|fr
+2|"<p>W tym miejscu należy umieścić treść Regulaminu swojego Portalu. Możesz skorzystać z szablonów z wytycznymi załączonymi poniżej.</p><p><br><a download="Informacja o plikach cookie" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Informacja o plikach cookie">Informacja o plikach cookie</a></p><p><br></p><p><a download="Informacja o ochronie prywatności" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="Informacja o ochronie prywatności">Informacja o ochronie prywatności</a><br></p>"|pl
+2|"<p>Здесь вы должны разместить содержание Правил и условий вашего Портала. Вы можете использовать шаблоны с рекомендациями, приложенными ниже.</p><p><br><a download="Уведомление о файлах cookie" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Уведомление о файлах cookie">Уведомление о файлах cookie</a></p><p><br></p><p><a download="Уведомление о конфиденциальности" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="Уведомление о конфиденциальности">Уведомление о конфиденциальности</a><br></p>"|ru
+2|"<p>您應該在此處放置門戶網站條款和條件的內容。您可以使用下面附有指南的模板。</p><p><br><a download="Cookie 通知" target="_blank" href="https://cloud.eversis.com/index.php/s/5iPzFDWCNNhpCyX/download" alt="Cookie 通知">Cookie 通知</a></p><p><br></p><p><a download="隱私聲明" target="_blank" href="https://cloud.eversis.com/index.php/s/lujxS4vBPeGR4Sd/download" alt="隱私聲明">隱私聲明</a><br></p>"|zh
+3|"Here you can post updates regarding changes to the next published versions of your Portal. To hide this page, disable it in menu management."|en
+3|"Aquí puede publicar actualizaciones sobre cambios en las próximas versiones publicadas de su Portal. Para ocultar esta página, deshabilítela en la gestión del menú."|es
+3|"Ici, vous pouvez publier des mises à jour concernant les modifications apportées aux prochaines versions publiées de votre portail. Pour masquer cette page, désactivez-la dans la gestion des menus."|fr
+3|"Tutaj możesz publikować aktualizacje dotyczące zmian w kolejnych publikowanych wersjach Twojego Portalu. Aby ukryć tę stronę, wyłącz ją w zarządzaniu menu."|pl
+3|"Здесь вы можете публиковать обновления об изменениях в следующих опубликованных версиях вашего Портала. Чтобы скрыть эту страницу, отключите ее в управлении меню."|ru
+3|"在這裡，您可以發布有關您門戶的下一個發布版本的更改的更新。要隱藏此頁面，請在菜單管理中將其禁用。"|zh
+4|"Here you can place help materials, such as FAQs, to make it easier for users to use your Portal. To hide this page, disable it in menu management."|en
+4|"Aquí puede colocar materiales de ayuda, como preguntas frecuentes, para facilitar a los usuarios el uso de su Portal. Para ocultar esta página, deshabilítela en la gestión del menú."|es
+4|"Ici, vous pouvez placer des documents d'aide, tels que des FAQ, pour faciliter l'utilisation de votre portail par les utilisateurs. Pour masquer cette page, désactivez-la dans la gestion des menus."|fr
+4|"Tutaj możesz umieścić materiały pomocy, takie jak często zadawane pytania, aby ułatwić użytkownikom korzystanie z Twojego Portalu. Aby ukryć tę stronę, wyłącz ją w zarządzaniu menu."|pl
+4|"Здесь вы можете разместить справочные материалы, такие как часто задаваемые вопросы, чтобы облегчить пользователям использование вашего портала. Чтобы скрыть эту страницу, отключите ее в управлении меню."|ru
+4|"您可以在此處放置常見問題解答等幫助資料，以方便用戶使用您的 Portal。要隱藏此頁面，請在菜單管理中將其禁用。"|zh
+5|"Here you can share documents related to your organization's work with users. To hide this page, disable it in menu management."|en
+5|"Aquí puede compartir documentos relacionados con el trabajo de su organización con los usuarios. Para ocultar esta página, deshabilítela en la gestión del menú."|es
+5|"Ici, vous pouvez partager des documents liés au travail de votre organisation avec les utilisateurs. Pour masquer cette page, désactivez-la dans la gestion des menus."|fr
+5|"Tutaj możesz udostępniać użytkownikom dokumenty związane z pracą Twojej organizacji. Aby ukryć tę stronę, wyłącz ją w zarządzaniu menu."|pl
+5|"Здесь вы можете поделиться с пользователями документами, связанными с работой вашей организации. Чтобы скрыть эту страницу, отключите ее в управлении меню."|ru
+5|"在這裡您可以與用戶共享與您組織的工作相關的文檔。要隱藏此頁面，請在菜單管理中將其禁用。"|zh
+6|"Here you can post tutorials showing examples of how to use your Portal. To hide this page, disable it in menu management."|en
+6|"Aquí puede publicar tutoriales que muestren ejemplos de cómo usar su Portal. Para ocultar esta página, deshabilítela en la gestión del menú."|es
+6|"Ici, vous pouvez publier des didacticiels montrant des exemples d'utilisation de votre portail. Pour masquer cette page, désactivez-la dans la gestion des menus."|fr
+6|"Tutaj możesz publikować samouczki przedstawiające przykłady korzystania z portalu. Aby ukryć tę stronę, wyłącz ją w zarządzaniu menu."|pl
+6|"Здесь вы можете опубликовать учебные пособия, демонстрирующие примеры использования вашего портала. Чтобы скрыть эту страницу, отключите ее в управлении меню."|ru
+6|"您可以在這裡發布教程，展示如何使用您的門戶網站的示例。要隱藏此頁面，請在菜單管理中將其禁用。"|zh
