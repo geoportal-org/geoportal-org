@@ -1,8 +1,9 @@
 import { ILink, IPagination, IResponseLinks } from "@/types/models";
+import { TranslatedData } from "@/types";
 
 export interface IPage {
-    title: string;
-    description: string;
+    title: TranslatedData;
+    description: TranslatedData;
     contentId: number;
     slug: string;
     published: boolean;

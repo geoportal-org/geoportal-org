@@ -1,13 +1,14 @@
 import { ILink, IPagination, IResponseLinks } from "@/types/models";
+import { TranslatedData } from "@/types";
 
 export interface IContent {
-    content: string;
+    data: TranslatedData;
     createdBy: string;
     createdDate: string;
     modifiedBy: string;
     modifiedDate: string;
     published: boolean;
-    title: string;
+    title: TranslatedData;
     _links: {
         content: ILink;
         self: ILink;

@@ -23,7 +23,7 @@ import {
     setTableSorting,
 } from "@/utils/helpers";
 import { IContent } from "@/types/models";
-import { ButtonVariant, TableActionsSource, ToastStatus } from "@/types";
+import { ButtonVariant, LocaleNames, TableActionsSource, ToastStatus } from "@/types";
 import { initPagination, pagesRoutes } from "@/data";
 
 export const Contents = () => {
@@ -137,7 +137,7 @@ export const Contents = () => {
             }),
             columnHelper.accessor("title", {
                 header: translate("pages.contents.content-title"),
-                cell: ({ getValue }) => cutString(getValue(), 30),
+                cell: ({ getValue }) => cutString(getValue()[router.locale as LocaleNames], 30),
             }),
             columnHelper.accessor("createdDate", {
                 header: translate("pages.contents.creation-date"),

@@ -5,10 +5,10 @@ export interface IWebSetting {
     set: string;
     key: string;
     value: string;
-    created_by: string;
-    created_on: string;
-    modified_by: string;
-    modified_on: string;
+    createdBy: string;
+    createdOn: string;
+    modifiedBy: string;
+    modifiedOn: string;
     _links: {
         webSetting: ILink;
         self: ILink;

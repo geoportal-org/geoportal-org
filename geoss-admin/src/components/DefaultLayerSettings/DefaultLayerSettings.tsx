@@ -152,15 +152,15 @@ export const DefaultLayerSettings = () => {
                 header: translate("general.url"),
                 cell: ({ getValue }) => cutString(getValue(), 30),
             }),
-            columnHelper.accessor("created_on", {
+            columnHelper.accessor("createdOn", {
                 header: translate("general.creation-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
-            columnHelper.accessor("modified_on", {
+            columnHelper.accessor("modifiedOn", {
                 header: translate("general.modification-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
-            columnHelper.accessor("created_by", {
+            columnHelper.accessor("createdBy", {
                 header: translate("general.author"),
                 cell: ({ getValue }) => cutString(getValue(), 30),
             }),

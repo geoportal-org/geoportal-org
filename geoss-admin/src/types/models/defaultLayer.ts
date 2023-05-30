@@ -1,11 +1,11 @@
 import { ILink, IPagination, IResponseLinks } from "@/types/models";
 
 export interface ILayer {
-    created_by: string;
-    created_on: string;
+    createdBy: string;
+    createdOn: string;
     id: number;
-    modified_by: string;
-    modified_on: string;
+    modifiedBy: string;
+    modifiedOn: string;
     name: string;
     url: string;
     visible: boolean;

@@ -9,7 +9,7 @@ export interface IMenuItem {
     parentMenuId: number;
     levelId: number;
     createdBy: string;
-    reatedDate: string;
+    createdDate: string;
     modifiedBy: string;
     modifiedDate: string;
     _links: {

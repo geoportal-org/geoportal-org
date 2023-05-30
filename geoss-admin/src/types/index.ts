@@ -15,6 +15,7 @@ export type {
     FileRepositoryManageFileProps,
 } from "./components/FileRepository";
 export type { FormField, FormFieldSelect, SelectSettings, FormSection } from "./data/formField";
+export type { LocaleNames, TranslatedData } from "./data/localeData";
 export type { FormFieldProps } from "./components/FormField";
 export type { HeaderProps } from "./components/Header";
 export type { IconProps } from "./components/Icon";

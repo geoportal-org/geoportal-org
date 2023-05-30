@@ -7,10 +7,10 @@ export interface IView {
     value: string;
     defaultOption: boolean;
     subOptions: ISubView[];
-    created_by: string;
-    created_on: string;
-    modified_by: string;
-    modified_on: string;
+    createdBy: string;
+    createdOn: string;
+    modifiedBy: string;
+    modifiedOn: string;
     _links: {
         view: ILink;
         self: ILink;
@@ -22,10 +22,10 @@ export interface ISubView {
     label: string;
     title: string;
     value: string;
-    created_by: string;
-    created_on: string;
-    modified_by: string;
-    modified_on: string;
+    createdBy: string;
+    createdOn: string;
+    modifiedBy: string;
+    modifiedOn: string;
 }
 
 export interface IViewList {

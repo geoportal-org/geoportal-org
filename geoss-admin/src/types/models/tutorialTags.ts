@@ -8,10 +8,10 @@ export interface ITutorialTag {
     placement: TagPlacement;
     title: string; // to be changed for languages support
     description: string; // to be changed for languages support
-    created_by: string;
-    created_on: string;
-    modified_by: string;
-    modified_on: string;
+    createdBy: string;
+    createdOn: string;
+    modifiedBy: string;
+    modifiedOn: string;
     _links: {
         tag: ILink;
         self: ILink;
