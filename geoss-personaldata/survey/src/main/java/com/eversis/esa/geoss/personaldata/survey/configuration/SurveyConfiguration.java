@@ -31,7 +31,9 @@ import java.util.stream.Stream;
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.personaldata.survey.repository")
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.personaldata.survey.controller",
                 "com.eversis.esa.geoss.personaldata.survey.event",
+                "com.eversis.esa.geoss.personaldata.survey.service.internal",
         }
 )
 @Configuration(proxyBeanMethods = false)
@@ -63,7 +65,7 @@ public class SurveyConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("survey")) {
+                        if (tags.contains("surveys")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }
@@ -86,8 +88,6 @@ public class SurveyConfiguration {
                     CorsRegistry cors) {
                 ExposureConfiguration exposureConfiguration = repositoryRestConfiguration.getExposureConfiguration();
                 exposureConfiguration.forDomainType(Survey.class)
-                        .withAssociationExposure((metadata, httpMethods) -> httpMethods.disable(HttpMethod.GET))
-                        // .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(HttpMethod.POST))
                         .withItemExposure(
                                 (metadata, httpMethods) -> httpMethods.disable(HttpMethod.PATCH, HttpMethod.PUT));
             }

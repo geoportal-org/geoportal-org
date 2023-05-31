@@ -14,11 +14,13 @@ import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.PagedModel.PageMetadata;
 import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.server.core.EmbeddedWrapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -60,6 +62,28 @@ public class PageMapper {
     }
 
     /**
+     * To paged model paged model.
+     *
+     * @param <T> the type parameter
+     * @param page the page
+     * @param type the type
+     * @param entityLinks the entity links
+     * @param collectionLinks the collection links
+     * @return the paged model
+     */
+    public <T> PagedModel<EntityModel<T>> toPagedModel(Page<T> page, Class<T> type,
+            Function<T, List<Link>> entityLinks, Supplier<List<Link>> collectionLinks) {
+        PagedModel<EntityModel<T>> entityModels;
+        if (page.getContent().isEmpty()) {
+            entityModels = toEmptyModel(page, type, collectionLinks);
+        } else {
+            entityModels = toPagedModel(page, entityLinks, collectionLinks);
+        }
+        entityModels = addPaginationLinks(entityModels, page, Optional.empty());
+        return entityModels;
+    }
+
+    /**
      * Page to paged model.
      *
      * @param <T> the type parameter
@@ -77,6 +101,22 @@ public class PageMapper {
                 .stream()
                 .map(entity -> EntityModel.of(entity, entityLinks.apply(entity)))
                 .toList();
+        return PagedModel.of(entityModels, asPageMetadata(page), collectionLinks.get());
+    }
+
+    /**
+     * To empty model paged model.
+     *
+     * @param <T> the type parameter
+     * @param page the page
+     * @param type the type
+     * @param collectionLinks the collection links
+     * @return the paged model
+     */
+    public <T> PagedModel<EntityModel<T>> toEmptyModel(Page<T> page, Class<T> type,
+            Supplier<List<Link>> collectionLinks) {
+        List<EntityModel<T>> entityModels = Collections.singletonList(
+                EntityModelEmptyCollectionEmbeddedWrapper.of(type));
         return PagedModel.of(entityModels, asPageMetadata(page), collectionLinks.get());
     }
 
@@ -129,4 +169,69 @@ public class PageMapper {
         return Link.of(UriTemplate.of(builder.build().toString()), relation);
     }
 
+    private static class EntityModelEmptyCollectionEmbeddedWrapper<T> extends EntityModel<T> implements
+            EmbeddedWrapper {
+
+        private final Class<T> type;
+
+        private EntityModelEmptyCollectionEmbeddedWrapper(Class<T> type) {
+            this.type = type;
+        }
+
+        /**
+         * Of entity model.
+         *
+         * @param <T> the type parameter
+         * @param type the type
+         * @return the entity model
+         */
+        public static <T> EntityModel<T> of(Class<T> type) {
+            return new EntityModelEmptyCollectionEmbeddedWrapper<>(type);
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.hateoas.core.EmbeddedWrapper#getRel()
+         */
+        @Override
+        public Optional<LinkRelation> getRel() {
+            return Optional.empty();
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.hateoas.core.EmbeddedWrapper#getValue()
+         */
+        @Override
+        public Object getValue() {
+            return Collections.emptySet();
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.hateoas.core.EmbeddedWrapper#getRelTargetType()
+         */
+        @Override
+        public Class<?> getRelTargetType() {
+            return type;
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.hateoas.core.EmbeddedWrapper#isCollectionValue()
+         */
+        @Override
+        public boolean isCollectionValue() {
+            return true;
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.springframework.hateoas.core.EmbeddedWrapper#hasRel(org.springframework.hateoas.LinkRelation)
+         */
+        @Override
+        public boolean hasRel(LinkRelation rel) {
+            return false;
+        }
+    }
 }
