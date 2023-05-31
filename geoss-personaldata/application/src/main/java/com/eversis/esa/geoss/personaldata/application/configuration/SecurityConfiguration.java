@@ -1,6 +1,9 @@
 package com.eversis.esa.geoss.personaldata.application.configuration;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,55 +63,76 @@ public class SecurityConfiguration {
      * Users user details manager.
      *
      * @param dataSource the data source
-     * @param securityProperties the security properties
      * @return the user details manager
      */
     @Bean
-    UserDetailsManager users(DataSource dataSource, SecurityProperties securityProperties) {
+    UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(
                 "select username,password,enabled, acc_locked, acc_expired, creds_expired"
-                        + " from users where username = ?");
+                + " from users where username = ?");
         jdbcUserDetailsManager.setCreateUserSql(
                 "insert into users (username, password, enabled, acc_locked, acc_expired, creds_expired)"
-                        + " values (?,?,?,?,?,?)");
+                + " values (?,?,?,?,?,?)");
         jdbcUserDetailsManager.setUpdateUserSql(
                 "update users set password = ?, enabled = ?, acc_locked=?, acc_expired=?, creds_expired=?"
-                        + " where username = ?");
-
-        if (!jdbcUserDetailsManager.userExists(securityProperties.getUser().getName())) {
-            jdbcUserDetailsManager.createUser(defaultUser(securityProperties));
-        } else {
-            jdbcUserDetailsManager.updateUser(defaultUser(securityProperties));
-        }
+                + " where username = ?");
         return jdbcUserDetailsManager;
     }
 
-    private UserDetails defaultUser(SecurityProperties securityProperties) {
-        SecurityProperties.User user = securityProperties.getUser();
-        List<String> roles = user.getRoles();
-        if (roles.isEmpty()) {
-            roles.add(DEFAULT_ROLE_NAME);
-        }
-        return User.builder()
-                .username(user.getName())
-                .password(defaultUserPassword(user))
-                .roles(StringUtils.toStringArray(roles))
-                .build();
-    }
+    /**
+     * The type User details configuration.
+     */
+    @RequiredArgsConstructor
+    @Configuration(proxyBeanMethods = false)
+    static class UserDetailsConfiguration implements InitializingBean {
 
-    private String defaultUserPassword(SecurityProperties.User user) {
-        String password = user.getPassword();
-        if (user.isPasswordGenerated()) {
-            log.warn(String.format(
-                    "%n%nUsing generated security password: %s%n%nThis generated password is for development use only. "
-                            + "Your security configuration must be updated before running your application in "
-                            + "production.%n",
-                    user.getPassword()));
+        private final SecurityProperties securityProperties;
+
+        private final UserDetailsManager userDetailsManager;
+
+        private final ObjectProvider<PasswordEncoder> passwordEncoders;
+
+        @Override
+        public void afterPropertiesSet() throws Exception {
+            if (!userDetailsManager.userExists(securityProperties.getUser().getName())) {
+                userDetailsManager.createUser(defaultUser(securityProperties));
+            } else {
+                userDetailsManager.updateUser(defaultUser(securityProperties));
+            }
         }
-        if (PASSWORD_ALGORITHM_PATTERN.matcher(password).matches()) {
-            return password;
+
+        private UserDetails defaultUser(SecurityProperties securityProperties) {
+            SecurityProperties.User user = securityProperties.getUser();
+            List<String> roles = user.getRoles();
+            if (roles.isEmpty()) {
+                roles.add(DEFAULT_ROLE_NAME);
+            }
+            return User.builder()
+                    .username(user.getName())
+                    .password(defaultUserPassword(user))
+                    .roles(StringUtils.toStringArray(roles))
+                    .build();
         }
-        return NOOP_PASSWORD_PREFIX + password;
+
+        private String defaultUserPassword(SecurityProperties.User user) {
+            String password = user.getPassword();
+            if (user.isPasswordGenerated()) {
+                log.warn(String.format(
+                        "%n%nUsing generated security password: %s%n%nThis generated password is for development use"
+                        + " only. "
+                        + "Your security configuration must be updated before running your application in "
+                        + "production.%n",
+                        user.getPassword()));
+            }
+            if (PASSWORD_ALGORITHM_PATTERN.matcher(password).matches()) {
+                return password;
+            }
+            PasswordEncoder passwordEncoder = passwordEncoders.getIfAvailable();
+            if (passwordEncoder != null) {
+                return passwordEncoder.encode(password);
+            }
+            return NOOP_PASSWORD_PREFIX + password;
+        }
     }
 }

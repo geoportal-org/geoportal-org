@@ -27,7 +27,6 @@ subprojects {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
             mavenBom "net.javacrumbs.shedlock:shedlock-bom:${shedlockVersion}"
-            mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
         }
     }
 
