@@ -35,7 +35,7 @@ public enum WebSettingsSet {
     /**
      * The enum Logo.
      */
-    enum Logo implements WebSettingsKey {
+    public enum Logo implements WebSettingsKey {
         /**
          * Title logo.
          */
@@ -60,7 +60,7 @@ public enum WebSettingsSet {
     /**
      * The enum Source.
      */
-    enum Source implements WebSettingsKey {
+    public enum Source implements WebSettingsKey {
         /**
          * Geoss source.
          */
@@ -107,7 +107,7 @@ public enum WebSettingsSet {
     /**
      * The enum Map.
      */
-    enum Map implements WebSettingsKey {
+    public enum Map implements WebSettingsKey {
         /**
          * Longitude map.
          */

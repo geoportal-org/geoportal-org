@@ -13,6 +13,7 @@ pluginManagement {
 }
 rootProject.name = 'geoss-settings'
 include 'common'
-include 'application'
 include 'system-settings'
 include 'instance-settings'
+include 'dab'
+include 'application'

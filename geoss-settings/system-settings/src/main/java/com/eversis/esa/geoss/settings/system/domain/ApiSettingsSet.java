@@ -23,7 +23,7 @@ public enum ApiSettingsSet {
     /**
      * The Dab.
      */
-    DAB(new HashSet<>(EnumSet.allOf(DAB.class))),
+    DAB(new HashSet<>(EnumSet.allOf(Dab.class))),
 
     /**
      * The Knowledge producer.
@@ -40,7 +40,7 @@ public enum ApiSettingsSet {
     /**
      * The enum External.
      */
-    enum External implements ApiSettingsKey {
+    public enum External implements ApiSettingsKey {
 
         /**
          * Google maps api key external.
@@ -73,7 +73,7 @@ public enum ApiSettingsSet {
     /**
      * The enum Dab.
      */
-    enum DAB implements ApiSettingsKey {
+    public enum Dab implements ApiSettingsKey {
 
         /**
          * Base url dab.
@@ -97,7 +97,7 @@ public enum ApiSettingsSet {
 
         private final String value;
 
-        DAB(String value) {
+        Dab(String value) {
             this.value = value;
         }
 
@@ -116,7 +116,7 @@ public enum ApiSettingsSet {
     /**
      * The enum Knowledge producer.
      */
-    enum KnowledgeProducer implements ApiSettingsKey {
+    public enum KnowledgeProducer implements ApiSettingsKey {
 
         /**
          * Base url knowledge producer.
@@ -149,7 +149,7 @@ public enum ApiSettingsSet {
     /**
      * The enum Other.
      */
-    enum Other implements ApiSettingsKey {
+    public enum Other implements ApiSettingsKey {
 
         /**
          * Next geoss base url other.

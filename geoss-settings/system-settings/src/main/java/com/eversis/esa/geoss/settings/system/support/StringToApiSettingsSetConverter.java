@@ -15,6 +15,6 @@ public class StringToApiSettingsSetConverter implements Converter<String, ApiSet
             // It's an empty enum identifier: reset the enum value to null.
             return null;
         }
-        return ApiSettingsSet.fromString(source.trim());
+        return ApiSettingsSet.fromString(source.strip());
     }
 }

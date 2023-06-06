@@ -15,6 +15,6 @@ public class StringToWebSettingsSetConverter implements Converter<String, WebSet
             // It's an empty enum identifier: reset the enum value to null.
             return null;
         }
-        return WebSettingsSet.fromString(source.trim());
+        return WebSettingsSet.fromString(source.strip());
     }
 }

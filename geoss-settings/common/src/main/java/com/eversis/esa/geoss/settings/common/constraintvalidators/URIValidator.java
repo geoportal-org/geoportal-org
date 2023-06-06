@@ -32,7 +32,7 @@ public class URIValidator implements ConstraintValidator<URI, String> {
                 case OPAQUE -> uri.isOpaque();
                 case PROTOCOL_RELATIVE -> uri.toString().startsWith(PROTOCOL_RELATIVE_PREFIX);
                 case RELATIVE -> !uri.isAbsolute() && !uri.isOpaque() && uri.toString().startsWith(RELATIVE_PREFIX);
-                default -> throw new IllegalArgumentException("Unexpected uri type: " + type);
+                default -> throw new IllegalStateException("Unexpected uri type: " + type);
             };
         } catch (RuntimeException e) {
             return false;

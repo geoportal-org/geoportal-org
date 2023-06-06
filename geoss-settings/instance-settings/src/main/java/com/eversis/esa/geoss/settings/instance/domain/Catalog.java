@@ -72,6 +72,10 @@ public class Catalog extends AuditableEntity {
     @Column(name = "default_", nullable = false)
     private boolean defaultOption;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column
+    private String dabId;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonManagedReference

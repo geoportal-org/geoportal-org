@@ -15,6 +15,6 @@ public class StringToRegionalSettingsKeyConverter implements Converter<String, R
             // It's an empty enum identifier: reset the enum value to null.
             return null;
         }
-        return RegionalSettingsKey.fromString(source.trim());
+        return RegionalSettingsKey.fromString(source.strip());
     }
 }
