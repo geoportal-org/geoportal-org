@@ -348,7 +348,7 @@ uat_remove_all:
     - echo "Removing lan db persistent data"
     - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
     - echo "Removing lan elastic persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/* /opt/kibana/*"
+    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
     - echo "Removing uat environment - COMPLETED"
   when: manual
   only:
