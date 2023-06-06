@@ -12,11 +12,11 @@ module geoss.settings.common {
 
     opens com.eversis.esa.geoss.settings.common.hateoas to spring.core;
 
+    requires static lombok;
     requires com.fasterxml.jackson.annotation;
     requires jakarta.mail;
     requires jakarta.persistence;
     requires jakarta.validation;
-    requires lombok;
     requires org.apache.logging.log4j;
     requires org.hibernate.orm.envers;
     requires spring.beans;

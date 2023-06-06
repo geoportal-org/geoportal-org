@@ -12,6 +12,7 @@ module geoss.personaldata.application {
     opens com.eversis.esa.geoss.personaldata.application.configuration to spring.core;
     opens com.eversis.esa.geoss.personaldata.application.configuration.oauth2 to spring.core;
 
+    requires static lombok;
     requires com.fasterxml.jackson.annotation;
     requires com.zaxxer.hikari;
     requires io.swagger.v3.oas.annotations;
@@ -19,7 +20,6 @@ module geoss.personaldata.application {
     requires jakarta.persistence;
     requires jakarta.validation;
     requires java.sql;
-    requires lombok;
     requires net.javacrumbs.shedlock.core;
     requires net.javacrumbs.shedlock.provider.jdbctemplate;
     requires net.javacrumbs.shedlock.spring;

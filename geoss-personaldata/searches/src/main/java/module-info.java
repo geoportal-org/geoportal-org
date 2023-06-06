@@ -5,13 +5,13 @@ module geoss.personaldata.searches {
     exports com.eversis.esa.geoss.personaldata.searches.configuration to spring.beans, spring.boot, spring.context;
     exports com.eversis.esa.geoss.personaldata.searches.event to spring.beans, spring.context;
 
+    requires static lombok;
     requires geoss.personaldata.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;
     requires jakarta.validation;
-    requires lombok;
     requires org.apache.logging.log4j;
     requires org.hibernate.orm.core;
     requires org.hibernate.orm.envers;

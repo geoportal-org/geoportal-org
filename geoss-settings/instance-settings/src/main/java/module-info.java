@@ -5,6 +5,8 @@ module geoss.instance.settings {
 
     exports com.eversis.esa.geoss.settings.instance.configuration to spring.beans, spring.boot, spring.context;
 
+    requires static lombok;
+    requires static org.mapstruct;
     requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.core;
@@ -12,11 +14,9 @@ module geoss.instance.settings {
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;
     requires jakarta.validation;
-    requires lombok;
     requires org.apache.logging.log4j;
     requires org.hibernate.orm.envers;
     requires org.hibernate.validator;
-    requires org.mapstruct;
     requires org.springdoc.openapi.common;
     requires spring.beans;
     requires spring.boot;
