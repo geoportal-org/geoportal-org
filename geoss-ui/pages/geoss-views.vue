@@ -85,10 +85,10 @@
                     </div>
                     <div class="geoss-views__group__sub">
                         <span class="geoss-views__label">Where:</span>
-                        <input style="width: 50px" placeholder="south" v-model="south" type="number" />
-                        <input style="width: 50px" placeholder="west" v-model="west" type="number" />
-                        <input style="width: 50px" placeholder="north" v-model="north" type="number" />
-                        <input style="width: 50px" placeholder="east" v-model="east" type="number" />
+                        <label class="where_label">South:</label><input style="width: 50px" placeholder="-" v-model="south" type="number" />
+                        <label class="where_label">West:</label><input style="width: 50px" placeholder="-" v-model="west" type="number" />
+                        <label class="where_label">North:</label><input style="width: 50px" placeholder="-" v-model="north" type="number" />
+                        <label class="where_label">East:</label><input style="width: 50px" placeholder="-" v-model="east" type="number" />
                     </div>
                     <div class="geoss-views__group__sub">
                         <span class="geoss-views__label">When:</span>
@@ -123,10 +123,10 @@ export default {
             visible: false,
             keywords: '',
             parentView: '',
-            south: 0,
-            west: 0,
-            north: 0,
-            east: 0,
+            south: '',
+            west: '',
+            north: '',
+            east: '',
             from: '',
             to: '',
             apiMessage: '',
@@ -134,7 +134,7 @@ export default {
             availableViews: [],
             sources: [],
             availableSources: [],
-            token: 'geossWriteTest',
+            token: '',
             tokens: [{
                 value: 'geossWriteTest',
                 name: 'this can read/write and make a view visible'
@@ -161,14 +161,17 @@ export default {
             const viewData = {
                 id: this.id,
                 label: this.label,
-                visible: this.visible,
-                where: {
+                visible: this.visible
+            };
+
+            if (this.south !== '' && this.west !== '' && this.north !=='' && this.east != '') {
+                viewData.where = {
                     south: this.south,
                     west: this.west,
                     north: this.north,
                     east: this.east,
                 }
-            };
+            }
 
             if (this.sources.length) viewData.sources = this.sources;
             if (this.keywords !== '') viewData.keywords = this.keywords.split(',').map(e => e.trim());
@@ -240,6 +243,20 @@ export default {
                     body: JSON.stringify(data)
                 })
                     .then(async (r) => {
+                        if (!r.ok) {
+                            SpinnerService.hideSpinner();
+                            NotificationService.show(
+                                'Create View',
+                                `Error while creating view.
+                                Status: ${r.status}
+                                ${r.statusText}`,
+                                10000,
+                                null,
+                                9999,
+                                'error'
+                            );
+                            return;
+                        }
                         const response = await r.json()
                         if (response.err) this.apiMessage = response.err;
                         if (response.msg) this.apiMessage = response.msg;
@@ -256,6 +273,7 @@ export default {
                             r.err ? 'error' : 'success'
                         );
                     })
+                    .then(r => SpinnerService.hideSpinner())
             } catch (err) {
                 console.warn(err)
                 SpinnerService.hideSpinner()
@@ -326,9 +344,27 @@ export default {
                 console.warn(err)
                 SpinnerService.hideSpinner()
             }
+        },
+        async getGwpToken() {
+            await fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest/gpwtoken', {
+                headers: {
+                    mirrorsiteclient: 'GWP-748f4cca-bed0-4d1f-93f0-31eae3cf7c61'
+                }
+            })
+            .then(r => r.json())
+            .then(r => {
+                if (r.token) {
+                    this.token = r.token;
+                    this.tokens.splice(0, 0, {
+                        value: r.token,
+                        name: 'Auto generated token - ' + (new Date()).toISOString()
+                    })
+                }
+            })
         }
     },
-    mounted() {
+    async mounted() {
+        await this.getGwpToken();
         this.generateNewId();
         this.getSources();
         this.getViews();
@@ -382,6 +418,11 @@ export default {
             +li {
                 border-top: 1px solid grey;
             }
+
+            > span {
+               display: flex;
+               gap: 5px;
+            }
         }
     }
 
@@ -431,6 +472,11 @@ export default {
             input[type="text"],
             select {
                 width: 50% !important
+            }
+
+            .where_label {
+                font-size: 0.85em;
+                margin-right: -7px;
             }
         }
 
