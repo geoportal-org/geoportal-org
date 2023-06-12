@@ -17,7 +17,6 @@ services:
             - "33066:3306"
         networks:
           - geoss_net
-
     geoss-keycloak:
         container_name: geoss-keycloak
         build:
