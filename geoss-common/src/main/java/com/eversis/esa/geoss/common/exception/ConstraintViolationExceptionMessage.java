@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.personaldata.application.exception;
+package com.eversis.esa.geoss.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

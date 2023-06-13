@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.exception;
+package com.eversis.esa.geoss.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

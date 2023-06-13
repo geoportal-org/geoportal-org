@@ -4,9 +4,6 @@ module geoss.personaldata.application {
     exports com.eversis.esa.geoss.personaldata.application.configuration to spring.beans, spring.boot, spring.context;
     exports com.eversis.esa.geoss.personaldata.application.configuration.oauth2 to spring.beans, spring.boot;
     exports com.eversis.esa.geoss.personaldata.application.controller to spring.beans, spring.web;
-    exports com.eversis.esa.geoss.personaldata.application.exception to spring.beans;
-
-    opens com.eversis.esa.geoss.personaldata.application.exception;
 
     opens com.eversis.esa.geoss.personaldata.application to spring.core;
     opens com.eversis.esa.geoss.personaldata.application.configuration to spring.core;
