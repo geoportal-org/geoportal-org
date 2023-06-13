@@ -6,8 +6,9 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 configurations {
-    all {
+    configureEach {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'org.ow2.asm', module: 'asm'
     }
     compileOnly {
         extendsFrom annotationProcessor
