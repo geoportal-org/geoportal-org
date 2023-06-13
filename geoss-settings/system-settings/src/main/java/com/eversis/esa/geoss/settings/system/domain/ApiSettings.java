@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.system.domain;
 
-import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 import com.eversis.esa.geoss.settings.system.support.ApiSettingsKeyAttributeConverter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

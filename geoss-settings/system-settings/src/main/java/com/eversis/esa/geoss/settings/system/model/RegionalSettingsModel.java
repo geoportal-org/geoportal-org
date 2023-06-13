@@ -1,7 +1,7 @@
 package com.eversis.esa.geoss.settings.system.model;
 
+import com.eversis.esa.geoss.common.constraints.AvailableLocale;
 import com.eversis.esa.geoss.settings.common.constraints.AvailableLanguage;
-import com.eversis.esa.geoss.settings.common.constraints.AvailableLocale;
 import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 import com.eversis.esa.geoss.settings.common.model.VersionedModel;
 import com.eversis.esa.geoss.settings.system.domain.RegionalSettingsKey;

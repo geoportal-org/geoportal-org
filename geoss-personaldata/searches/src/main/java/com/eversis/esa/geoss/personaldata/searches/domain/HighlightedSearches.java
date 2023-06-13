@@ -1,7 +1,8 @@
 package com.eversis.esa.geoss.personaldata.searches.domain;
 
-import com.eversis.esa.geoss.personaldata.common.constraints.URI;
-import com.eversis.esa.geoss.personaldata.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.common.constraints.URI;
+import com.eversis.esa.geoss.common.constraints.URI.Type;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -55,7 +56,7 @@ public class HighlightedSearches {
     @Column(nullable = false)
     private String phrase;
 
-    @URI(absolute = false)
+    @URI(type = Type.RELATIVE)
     @NotNull
     @NotEmpty
     @NotBlank

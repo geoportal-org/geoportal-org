@@ -12,8 +12,10 @@ pluginManagement {
     }
 }
 rootProject.name = 'geoss-personaldata'
+include 'geoss-common'
 include 'common'
 include 'profile'
 include 'searches'
 include 'survey'
 include 'application'
+project(':geoss-common').projectDir = file("../geoss-common")

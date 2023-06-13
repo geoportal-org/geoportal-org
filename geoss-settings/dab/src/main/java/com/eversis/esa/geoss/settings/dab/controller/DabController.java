@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.dab.controller;
 
-import com.eversis.esa.geoss.settings.common.hateoas.PageMapper;
+import com.eversis.esa.geoss.common.hateoas.PageMapper;
 import com.eversis.esa.geoss.settings.dab.service.DabService;
 import com.eversis.esa.geoss.settings.instance.domain.Catalog;
 

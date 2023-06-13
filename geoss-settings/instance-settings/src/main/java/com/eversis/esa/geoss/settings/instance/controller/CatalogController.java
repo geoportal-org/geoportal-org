@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.instance.controller;
 
-import com.eversis.esa.geoss.settings.common.hateoas.PageMapper;
+import com.eversis.esa.geoss.common.hateoas.PageMapper;
 import com.eversis.esa.geoss.settings.instance.domain.Catalog;
 import com.eversis.esa.geoss.settings.instance.model.CatalogOptionModel;
 import com.eversis.esa.geoss.settings.instance.service.CatalogService;

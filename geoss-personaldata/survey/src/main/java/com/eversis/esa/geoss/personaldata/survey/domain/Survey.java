@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.personaldata.survey.domain;
 
-import com.eversis.esa.geoss.personaldata.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

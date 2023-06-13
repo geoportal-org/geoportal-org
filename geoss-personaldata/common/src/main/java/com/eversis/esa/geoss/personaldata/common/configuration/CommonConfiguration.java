@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 @ComponentScan(
         basePackages = {
-                "com.eversis.esa.geoss.personaldata.common.event",
-                "com.eversis.esa.geoss.personaldata.common.hateoas"
         }
 )
 @Configuration(proxyBeanMethods = false)

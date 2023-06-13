@@ -5,7 +5,7 @@ module geoss.personaldata.survey {
     exports com.eversis.esa.geoss.personaldata.survey.configuration to spring.beans, spring.boot, spring.context;
 
     requires static lombok;
-    requires geoss.personaldata.common;
+    requires geoss.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;

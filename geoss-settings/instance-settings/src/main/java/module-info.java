@@ -7,6 +7,7 @@ module geoss.instance.settings {
 
     requires static lombok;
     requires static org.mapstruct;
+    requires geoss.common;
     requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.core;

@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.common.support;
 
-import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 
 import org.springframework.core.convert.converter.Converter;

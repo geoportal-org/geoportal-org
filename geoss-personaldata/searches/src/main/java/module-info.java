@@ -6,7 +6,7 @@ module geoss.personaldata.searches {
     exports com.eversis.esa.geoss.personaldata.searches.event to spring.beans, spring.context;
 
     requires static lombok;
-    requires geoss.personaldata.common;
+    requires geoss.common;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;

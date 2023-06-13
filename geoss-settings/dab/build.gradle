@@ -25,6 +25,7 @@ dependencies {
     implementation "com.rometools:rome:${rometoolsVersion}"
     implementation "com.rometools:rome-modules:${rometoolsVersion}"
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
+    implementation project(':geoss-common')
     implementation project(':common')
     implementation project(':instance-settings')
     implementation project(':system-settings')

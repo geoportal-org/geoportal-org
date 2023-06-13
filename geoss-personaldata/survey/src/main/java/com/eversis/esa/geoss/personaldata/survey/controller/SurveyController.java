@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.personaldata.survey.controller;
 
-import com.eversis.esa.geoss.personaldata.common.hateoas.PageMapper;
+import com.eversis.esa.geoss.common.hateoas.PageMapper;
 import com.eversis.esa.geoss.personaldata.survey.domain.Survey;
 import com.eversis.esa.geoss.personaldata.survey.search.SearchQuery;
 import com.eversis.esa.geoss.personaldata.survey.search.SearchQueryParser;

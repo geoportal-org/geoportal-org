@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.instance.controller;
 
-import com.eversis.esa.geoss.settings.common.hateoas.PageMapper;
+import com.eversis.esa.geoss.common.hateoas.PageMapper;
 import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 import com.eversis.esa.geoss.settings.common.model.VersionedModel;
 import com.eversis.esa.geoss.settings.common.properties.GeossProperties;

@@ -6,6 +6,7 @@ module geoss.system.settings {
 
     requires static lombok;
     requires static org.mapstruct;
+    requires geoss.common;
     requires geoss.settings.common;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;

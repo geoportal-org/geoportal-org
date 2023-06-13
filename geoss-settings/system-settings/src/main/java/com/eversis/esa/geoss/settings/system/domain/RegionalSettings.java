@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.settings.system.domain;
 
+import com.eversis.esa.geoss.common.constraints.AvailableLocale;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 import com.eversis.esa.geoss.settings.common.constraints.AvailableLanguage;
-import com.eversis.esa.geoss.settings.common.constraints.AvailableLocale;
-import com.eversis.esa.geoss.settings.common.domain.AuditableEmbeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
