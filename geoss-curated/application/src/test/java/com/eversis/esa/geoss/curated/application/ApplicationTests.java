@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * The type application tests.
+ * The type Application tests.
  */
 @SpringBootTest
 class ApplicationTests {

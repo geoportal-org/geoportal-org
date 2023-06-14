@@ -51,7 +51,13 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
+    implementation project(':geoss-common')
     implementation project(':common')
+    implementation project(':dashboards')
+    implementation project(':extensions')
+    implementation project(':recommendations')
+    implementation project(':relations')
+    implementation project(':resources')
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'

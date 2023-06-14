@@ -14,5 +14,10 @@ pluginManagement {
 rootProject.name = 'geoss-curated'
 include 'geoss-common'
 include 'common'
+include 'dashboards'
+include 'extensions'
+include 'recommendations'
+include 'relations'
+include 'resources'
 include 'application'
 project(':geoss-common').projectDir = file("../geoss-common")

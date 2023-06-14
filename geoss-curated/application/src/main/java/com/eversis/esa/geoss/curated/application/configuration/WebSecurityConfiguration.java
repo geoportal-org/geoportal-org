@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.rest.webmvc.BaseUri;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -114,54 +113,6 @@ public class WebSecurityConfiguration {
         final String basePath = baseUri.getUri().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/comments/**")
-                    .hasAnyRole("COMMENT_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.DELETE, basePath + "/comments/**")
-                    .hasAnyRole("COMMENT_REMOVER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(basePath + "/comments/**")
-                    .hasAnyRole("COMMENT_WRITER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/highlighted-searches/search/enabled")
-                    .permitAll();
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/highlighted-searches/**")
-                    .hasAnyRole("HIGHLIGHTED_SEARCHES_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.DELETE, basePath + "/highlighted-searches/**")
-                    .hasAnyRole("HIGHLIGHTED_SEARCHES_REMOVER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(basePath + "/highlighted-searches/**")
-                    .hasAnyRole("HIGHLIGHTED_SEARCHES_WRITER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/search/current")
-                    .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/search/**")
-                    .hasAnyRole("SAVED_SEARCHES_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/saved-searches")
-                    .hasAnyRole("SAVED_SEARCHES_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/**")
-                    .hasAnyRole("SAVED_SEARCHES_MANAGER", "SAVED_SEARCHES_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.DELETE, basePath + "/saved-searches/**")
-                    .hasAnyRole("SAVED_SEARCHES_MANAGER", "SAVED_SEARCHES_REMOVER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(basePath + "/saved-searches/**")
-                    .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/surveys/**")
-                    .hasAnyRole("SURVEY_READER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.DELETE, basePath + "/surveys/**")
-                    .hasAnyRole("SURVEY_REMOVER", "ADMIN");
-            authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.POST, basePath + "/surveys/**")
-                    .permitAll();
             authorizationManagerRequestMatcherRegistry
                     .anyRequest().authenticated();
         });
