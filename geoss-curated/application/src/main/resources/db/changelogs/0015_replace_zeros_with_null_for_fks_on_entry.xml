@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="replace_zeros_with_null_for_fks_on_entry-1">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER replace_zeros_with_null_for_fks_on_entry BEFORE INSERT ON entry FOR EACH ROW BEGIN
+                IF (NEW.accessPolicyId = 0) THEN
+                    SET NEW.accessPolicyId = NULL;
+                END IF;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS replace_zeros_with_null_for_fks_on_entry;
+        </rollback>
+    </changeSet>
+
+
+</databaseChangeLog>

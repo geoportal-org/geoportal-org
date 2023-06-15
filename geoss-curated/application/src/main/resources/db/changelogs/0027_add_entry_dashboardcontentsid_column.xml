@@ -1,0 +1,23 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="add_entry_dashboardcontentsid_column-1">
+        <addColumn tableName="entry">
+            <column name="dashboardcontentsId" type="INT" afterColumn="typeId">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mmorawski" id="add_entry_dashboardcontentsid_column-2">
+        <renameColumn
+                columnDataType="INT"
+                newColumnName="dashboardContentsId"
+                oldColumnName="dashboardcontentsId"
+                tableName="entry"/>
+    </changeSet>
+
+</databaseChangeLog>

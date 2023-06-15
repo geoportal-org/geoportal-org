@@ -1,0 +1,215 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--table entryrelation-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entryrelation-1">
+        <addColumn tableName="entryrelation">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entryrelation-2">
+        <addColumn tableName="entryrelation">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entryrelation-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_entryrelation BEFORE UPDATE ON entryrelation FOR EACH ROW BEGIN
+                SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_entryrelation;
+        </rollback>
+    </changeSet>
+
+    <!--table entry-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entry-1">
+        <addColumn tableName="entry">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entry-2">
+        <addColumn tableName="entry">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-entry-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_entry BEFORE UPDATE ON entry FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_entry;
+        </rollback>
+    </changeSet>
+
+    <!--table endpoint-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-endpoint-1">
+        <addColumn tableName="endpoint">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-endpoint-2">
+        <addColumn tableName="endpoint">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-endpoint-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_endpoint BEFORE UPDATE ON endpoint FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_endpoint;
+        </rollback>
+    </changeSet>
+
+    <!--table protocol-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-protocol-1">
+        <addColumn tableName="protocol">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-protocol-2">
+        <addColumn tableName="protocol">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-protocol-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_protocol BEFORE UPDATE ON protocol FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_protocol;
+        </rollback>
+    </changeSet>
+
+    <!--table transferoptions-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-transferoptions-1">
+        <addColumn tableName="transferoptions">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-transferoptions-2">
+        <addColumn tableName="transferoptions">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-transferoptions-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_transferoptions BEFORE UPDATE ON transferoptions FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_transferoptions;
+        </rollback>
+    </changeSet>
+
+    <!--table organisation-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-organisation-1">
+        <addColumn tableName="organisation">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-organisation-2">
+        <addColumn tableName="organisation">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-organisation-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_organisation BEFORE UPDATE ON organisation FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_organisation;
+        </rollback>
+    </changeSet>
+
+    <!--table accesspolicy-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-accesspolicy-1">
+        <addColumn tableName="accesspolicy">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-accesspolicy-2">
+        <addColumn tableName="accesspolicy">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-accesspolicy-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_accesspolicy BEFORE UPDATE ON accesspolicy FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_accesspolicy;
+        </rollback>
+    </changeSet>
+
+    <!--table source-->
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-source-1">
+        <addColumn tableName="source">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-source-2">
+        <addColumn tableName="source">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="modified_and_created_date_columns-source-3">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_source BEFORE UPDATE ON source FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_source;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

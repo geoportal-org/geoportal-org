@@ -27,7 +27,7 @@ import javax.sql.DataSource;
  */
 @Log4j2
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-@Configuration(proxyBeanMethods = false)
+// @Configuration(proxyBeanMethods = false)
 public class SecurityConfiguration {
 
     private static final String DEFAULT_ROLE_NAME = "DEFAULT";

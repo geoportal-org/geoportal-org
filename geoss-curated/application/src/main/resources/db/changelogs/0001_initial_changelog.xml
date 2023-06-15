@@ -1,0 +1,263 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="jjablonski" id="1566998974281-1">
+        <createTable tableName="accesspolicy">
+            <column name="open" type="VARCHAR(50)"/>
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-2">
+        <createTable tableName="datasource">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-3">
+        <createTable tableName="endpoint">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="url" type="VARCHAR(1024)"/>
+            <column name="urlType" type="VARCHAR(1024)"/>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-4">
+        <createTable tableName="entry">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(200)"/>
+            <column name="summary" type="TEXT"/>
+            <column name="logo" type="VARCHAR(800)"/>
+            <column name="coverage" remarks="coverage can be normalised in the elk if better supports relations in search" type="VARCHAR(500)"/>
+            <column name="typeId" type="INT"/>
+            <column name="accessPolicyId" type="INT"/>
+            <column name="keywords" type="VARCHAR(2000)"/>
+            <column name="tags" type="VARCHAR(2000)"/>
+            <column name="code" type="VARCHAR(180)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="scoreWeight" type="DECIMAL(10, 2)"/>
+            <column name="organisationId" type="INT"/>
+            <column name="publishDate" type="datetime"/>
+            <column name="sourceId" type="INT"/>
+            <column name="dataSourceId" type="INT"/>
+            <column name="workflowInstanceId" type="BIGINT"/>
+            <column defaultValueBoolean="false" name="deleted" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-5">
+        <createTable tableName="entryrelation">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="srcId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="destId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="typeId" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-6">
+        <createTable tableName="organisation">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(200)"/>
+            <column name="contact" type="VARCHAR(200)"/>
+            <column name="email" type="VARCHAR(200)"/>
+            <column name="contact_email" type="VARCHAR(500)"/>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-7">
+        <createTable tableName="protocol">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="value" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-8">
+        <createTable tableName="relationtype">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-9">
+        <createTable tableName="source">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="term" type="VARCHAR(500)"/>
+            <column name="sourceId" type="VARCHAR(500)"/>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-10">
+        <createTable tableName="transferoptions">
+            <column name="name" type="VARCHAR(200)"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="title" type="VARCHAR(1000)"/>
+            <column name="entryId" type="INT"/>
+            <column name="endpointId" type="INT"/>
+            <column name="protocolId" type="INT"/>
+            <column defaultValueBoolean="false" name="deleted" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-11">
+        <createTable tableName="type">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="code" type="VARCHAR(50)"/>
+            <column defaultValueNumeric="0" name="isCustom" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-12">
+        <createIndex indexName="IXFK_EntryRelation_Entry" tableName="entryrelation">
+            <column name="srcId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-13">
+        <createIndex indexName="IXFK_EntryRelation_Entry_02" tableName="entryrelation">
+            <column name="destId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-14">
+        <createIndex indexName="IXFK_EntryRelation_RelationType" tableName="entryrelation">
+            <column name="typeId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-15">
+        <createIndex indexName="IXFK_Entry_AccessPolicy" tableName="entry">
+            <column name="accessPolicyId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-16">
+        <createIndex indexName="IXFK_Entry_DataSource" tableName="entry">
+            <column name="dataSourceId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-17">
+        <createIndex indexName="IXFK_Entry_Organisation" tableName="entry">
+            <column name="organisationId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-18">
+        <createIndex indexName="IXFK_Entry_Source" tableName="entry">
+            <column name="sourceId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-19">
+        <createIndex indexName="IXFK_Entry_Type" tableName="entry">
+            <column name="typeId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-20">
+        <createIndex indexName="IXFK_TransferOptions_Endpoint" tableName="transferoptions">
+            <column name="endpointId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-21">
+        <createIndex indexName="IXFK_TransferOptions_Entry" tableName="transferoptions">
+            <column name="entryId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-22">
+        <createIndex indexName="IXFK_TransferOptions_Protocol" tableName="transferoptions">
+            <column name="protocolId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-23">
+        <addForeignKeyConstraint baseColumnNames="srcId" baseTableName="entryrelation" constraintName="FK_EntryRelation_Entry" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="entry"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-24">
+        <addForeignKeyConstraint baseColumnNames="destId" baseTableName="entryrelation" constraintName="FK_EntryRelation_Entry_02" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="entry"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-25">
+        <addForeignKeyConstraint baseColumnNames="typeId" baseTableName="entryrelation" constraintName="FK_EntryRelation_RelationType"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="relationtype" />
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-26">
+        <addForeignKeyConstraint baseColumnNames="accessPolicyId" baseTableName="entry" constraintName="FK_Entry_AccessPolicy" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="accesspolicy"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-27">
+        <addForeignKeyConstraint baseColumnNames="dataSourceId" baseTableName="entry" constraintName="FK_Entry_DataSource" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="datasource"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-28">
+        <addForeignKeyConstraint baseColumnNames="organisationId" baseTableName="entry" constraintName="FK_Entry_Organisation" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="organisation"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-29">
+        <addForeignKeyConstraint baseColumnNames="sourceId" baseTableName="entry" constraintName="FK_Entry_Source" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="source"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-30">
+        <addForeignKeyConstraint baseColumnNames="typeId" baseTableName="entry" constraintName="FK_Entry_Type" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="SET NULL" referencedColumnNames="id" referencedTableName="type"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-31">
+        <addForeignKeyConstraint baseColumnNames="endpointId" baseTableName="transferoptions" constraintName="FK_TransferOptions_Endpoint"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="endpoint" />
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-32">
+        <addForeignKeyConstraint baseColumnNames="entryId" baseTableName="transferoptions" constraintName="FK_TransferOptions_Entry_02"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="entry" />
+    </changeSet>
+    <changeSet author="jjablonski" id="1566998974281-33">
+        <addForeignKeyConstraint baseColumnNames="protocolId" baseTableName="transferoptions" constraintName="FK_TransferOptions_Protocol"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="protocol" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="change_entry_fks_to_not_null-1">
+        <dropForeignKeyConstraint baseTableName="entry" constraintName="FK_Entry_Type"/>
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="typeId"
+                tableName="entry"/>
+        <addForeignKeyConstraint baseColumnNames="typeId" baseTableName="entry" constraintName="FK_Entry_Type" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="type"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="change_entry_fks_to_not_null-2">
+        <dropForeignKeyConstraint baseTableName="entry" constraintName="FK_Entry_DataSource"/>
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="dataSourceId"
+                tableName="entry"/>
+        <addForeignKeyConstraint baseColumnNames="dataSourceId" baseTableName="entry" constraintName="FK_Entry_DataSource" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="datasource"/>
+    </changeSet>
+
+</databaseChangeLog>

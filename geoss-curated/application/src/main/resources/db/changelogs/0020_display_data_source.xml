@@ -1,0 +1,48 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="jjablonski" id="display_data_source-1">
+        <addColumn tableName="entry">
+            <column name="displayDataSourceId" type="INT" afterColumn="dataSourceId">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="display_data_source-2">
+        <sql>
+            DROP PROCEDURE IF EXISTS add_or_update_wikipedia_entry
+        </sql>
+        <sqlFile path="stored_procedures/wikipedia_stored_procedure_v2.sql" endDelimiter="$$" />
+    </changeSet>
+    <changeSet author="jjablonski" id="display_data_source-3">
+        <sql>
+            UPDATE entry
+            SET displayDataSourceId = dataSourceId
+            WHERE definitionTypeId IN (SELECT id FROM definitiontype WHERE code = 0 OR code = 1)
+        </sql>
+        <sql>
+            UPDATE entry
+            SET displayDataSourceId = (SELECT id FROM datasource WHERE code = 'geoss_cr')
+            WHERE displayDataSourceId IS NULL AND definitionTypeId IN (SELECT id FROM definitiontype WHERE code = 2)
+        </sql>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="display_data_source-4">
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="displayDataSourceId"
+                tableName="entry"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="display_data_source-5">
+        <addForeignKeyConstraint baseColumnNames="displayDataSourceId" baseTableName="entry" constraintName="FK_Entry_DisplayDataSource" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="datasource"/>
+    </changeSet>
+
+    <!--    ADD NOT NULL AND FK constraint-->
+
+</databaseChangeLog>

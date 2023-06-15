@@ -1,0 +1,121 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="recommendations-1">
+        <createTable tableName="recommendation">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="VARCHAR(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-2">
+        <createTable tableName="recommendation_entity">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="VARCHAR(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="dataSourceId" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="code" type="VARCHAR(180)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="orderWeight" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recommendationId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-3">
+        <createTable tableName="recommendation_keyword">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="VARCHAR(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recommendationId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-4">
+        <addForeignKeyConstraint baseColumnNames="dataSourceId" baseTableName="recommendation_entity" constraintName="FK_RecommendationEntity_DataSource" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="datasource"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-5">
+        <addForeignKeyConstraint baseColumnNames="recommendationId" baseTableName="recommendation_entity" constraintName="FK_RecommendationEntity_Recommendation" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="recommendation"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-6">
+        <addForeignKeyConstraint baseColumnNames="recommendationId" baseTableName="recommendation_keyword" constraintName="FK_RecommendationKeyword_Recommendation" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="recommendation"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-7">
+        <addUniqueConstraint
+                columnNames="dataSourceId,code,recommendationId"
+                tableName="recommendation_entity"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-8">
+        <addUniqueConstraint
+                columnNames="name,recommendationId"
+                tableName="recommendation_keyword"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-9">
+        <dropUniqueConstraint
+                constraintName="name"
+                tableName="recommendation_keyword"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-10">
+        <addUniqueConstraint
+                columnNames="name"
+                tableName="recommendation_keyword"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="recommendations-11">
+        <addColumn tableName="recommendation_entity">
+            <column name="description" type="TEXT" afterColumn="name">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

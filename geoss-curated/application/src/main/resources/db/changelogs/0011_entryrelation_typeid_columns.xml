@@ -1,0 +1,51 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="entryrelation_typeid_columns-1">
+        <addColumn tableName="entryrelation">
+            <column name="srcTypeId" type="INT" afterColumn="srcDataSourceId">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="entryrelation">
+            <column name="destTypeId" type="INT" afterColumn="destDataSourceId">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="entryrelation_typeid_columns-2">
+        <sql>
+            UPDATE `entryrelation`
+            SET srcTypeId = (SELECT typeId FROM entry WHERE entry.code = entryrelation.srcId AND entry.dataSourceId = entryrelation.srcDataSourceId)
+            WHERE srcTypeId IS NULL
+        </sql>
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="srcTypeId"
+                tableName="entryrelation"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="entryrelation_typeid_columns-3">
+        <sql>
+            UPDATE `entryrelation`
+            SET destTypeId = (SELECT typeId FROM entry WHERE entry.code = entryrelation.destId AND entry.dataSourceId = entryrelation.destDataSourceId)
+            WHERE destTypeId IS NULL
+        </sql>
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="destTypeId"
+                tableName="entryrelation"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="entryrelation_typeid_columns-4">
+        <addForeignKeyConstraint baseColumnNames="srcTypeId" baseTableName="entryrelation" constraintName="FK_EntryRelation_Src_Type"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="type" />
+        <addForeignKeyConstraint baseColumnNames="destTypeId" baseTableName="entryrelation" constraintName="FK_EntryRelation_Dest_Type"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="type" />
+    </changeSet>
+
+</databaseChangeLog>

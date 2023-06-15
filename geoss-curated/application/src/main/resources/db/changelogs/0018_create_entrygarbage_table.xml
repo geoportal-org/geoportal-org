@@ -1,0 +1,42 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="jjablonski" id="create_entrygarbage_table-1">
+        <createTable tableName="entrygarbagelog">
+            <column autoIncrement="false" name="entryId" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="notFoundCounter" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_entrygarbage_table-2">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_entrygarbagelog BEFORE UPDATE ON entrygarbagelog FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_entrygarbagelog;
+        </rollback>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_entrygarbage_table-3">
+        <addForeignKeyConstraint baseColumnNames="entryId" baseTableName="entrygarbagelog" constraintName="FK_EntryGarbageLog_Entry" deferrable="false"
+                initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="entry"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>

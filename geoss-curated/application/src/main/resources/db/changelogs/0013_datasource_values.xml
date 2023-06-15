@@ -1,0 +1,29 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="datasource_values-1">
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('GEOSS Curated', 'geoss_cr', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('Wikipedia', 'wikipedia', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('AmeriGEO', 'amerigeoss_ckan', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('Zenodo', 'zenodo', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('NextGEOSS', 'nextgeoss', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO datasource (name, code, isCustom) VALUES ('GEO DAB', 'dab', 0)
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

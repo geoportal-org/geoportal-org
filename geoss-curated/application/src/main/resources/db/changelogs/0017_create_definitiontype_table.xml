@@ -1,0 +1,84 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-1">
+        <createTable tableName="definitiontype">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="code" type="INT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-2">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_definitiontype BEFORE UPDATE ON definitiontype FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_definitiontype;
+        </rollback>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-3">
+        <sql>
+            INSERT IGNORE INTO definitiontype (name, code) VALUES ('Predefined', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO definitiontype (name, code) VALUES ('User defined', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO definitiontype (name, code) VALUES ('External resource copy', 2)
+        </sql>
+
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-entry-4">
+        <addColumn tableName="entry" >
+            <column name="definitionTypeId" type="INT" afterColumn="workflowInstanceId">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-5">
+        <sql>
+            UPDATE entry
+            SET definitionTypeId = (SELECT id FROM definitiontype WHERE code = 0)
+            WHERE workflowInstanceId IS NULL
+        </sql>
+        <sql>
+            UPDATE entry
+            SET definitionTypeId = (SELECT id FROM definitiontype WHERE code = 1)
+            WHERE workflowInstanceId IS NOT NULL
+        </sql>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-6">
+        <addNotNullConstraint
+                columnDataType="INT"
+                columnName="definitionTypeId"
+                tableName="entry"/>
+    </changeSet>
+
+    <changeSet author="jjablonski" id="create_definitiontype_table-7">
+        <addForeignKeyConstraint baseColumnNames="definitionTypeId" baseTableName="entry" constraintName="FK_Entry_DefinitionType" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="definitiontype"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>
