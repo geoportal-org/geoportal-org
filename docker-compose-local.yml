@@ -17,6 +17,7 @@ services:
             - "33066:3306"
         networks:
           - geoss_net
+
     geoss-keycloak:
         container_name: geoss-keycloak
         build:
@@ -120,6 +121,9 @@ services:
             dockerfile: Dockerfile-local
         environment:
             SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
+            SPRING_PROFILES_ACTIVE: keycloak
+            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
         restart: always
         ports:
             - "8082:8082"
@@ -127,6 +131,7 @@ services:
             - geoss_net
         depends_on:
             - geoss-elasticsearch
+            - geoss-keycloak
 
     geoss-elasticsearch:
         container_name: geoss-elasticsearch
