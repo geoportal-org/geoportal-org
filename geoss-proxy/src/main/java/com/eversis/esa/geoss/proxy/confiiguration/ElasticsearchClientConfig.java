@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.proxy.confiiguration;
 
-import java.util.concurrent.TimeUnit;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +22,6 @@ public class ElasticsearchClientConfig extends ElasticsearchConfiguration {
     @Override
     public ClientConfiguration clientConfiguration() {
         log.info("Configuring Elasticsearch Client host: {}", connectionUrl);
-        try {
-            log.info("Waiting for Elasticsearch docker initialization...");
-            TimeUnit.SECONDS.sleep(30);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return ClientConfiguration.builder()
                 .connectedTo(connectionUrl)
                 .build();
