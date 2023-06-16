@@ -82,6 +82,25 @@ build_geoss-personaldata:
     - uat
     - /^release-.*/
 
+build_geoss-proxy:
+  stage: build
+  extends: .build_apps
+  tags:
+    - geoss-runner-1
+  script:
+    - echo "Building geoss-proxy app..."
+    - chmod u+x ./geoss-proxy/gradlew
+    - ./geoss-proxy/gradlew clean assemble -p ./geoss-proxy
+    - echo "Build geoss-proxy complete"
+  artifacts:
+    paths:
+      - ./geoss-proxy/application/build
+    expire_in: 4 weeks
+  only:
+    - develop
+    - uat
+    - /^release-.*/
+
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
 ########################################################################################################################
@@ -112,6 +131,7 @@ build_images:
     - build_geoss-settings
     - build_geoss-contents
     - build_geoss-personaldata
+    - build_geoss-proxy
   only:
     - develop
     - uat

@@ -245,6 +245,27 @@ services:
     networks:
       - geosslan
 
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:latest
+    hostname: geoss-proxy
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy,geoss-mariadb,geoss-keycloak,geoss-settings,geoss-admin,geoss-ui,geoss-postfix,geoss-maildev,geoss-elasticsearch-1,geoss-kibana
+    ports:
+      - "8082:8082"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-elasticsearch-1
+
   geoss-elasticsearch-1:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:latest
     hostname: geoss-elasticsearch-1
@@ -267,6 +288,7 @@ services:
       - "xpack.security.enabled=false"
     ports:
       - "9200:9200"
+      - "9300:9300"
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
     ulimits:

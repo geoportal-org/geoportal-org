@@ -113,6 +113,41 @@ services:
             - geoss-db
             - geoss-keycloak
 
+    geoss-proxy:
+        container_name: geoss-proxy
+        build:
+            context: ./geoss-proxy
+            dockerfile: Dockerfile-local
+        environment:
+            SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
+        ports:
+            - "8082:8082"
+        networks:
+            - geoss_net
+        depends_on:
+            - geoss-elasticsearch
+
+    geoss-elasticsearch:
+        container_name: geoss-elasticsearch
+        build:
+            context: ./geoss-els
+            dockerfile: Dockerfile
+        hostname: geoss-elasticsearch
+        environment:
+            - xpack.security.enabled=false
+            - discovery.type=single-node
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - elasticsearch_data:/usr/share/elasticsearch/data
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        networks:
+            - geoss_net
+
     geoss-maildev:
         container_name: geoss-maildev
         hostname: geoss-maildev
@@ -129,6 +164,7 @@ services:
 
 volumes:
     geoss_db:
+    elasticsearch_data:
 
 networks:
     geoss_net:
