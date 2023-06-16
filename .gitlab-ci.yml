@@ -94,7 +94,7 @@ build_geoss-proxy:
     - echo "Build geoss-proxy complete"
   artifacts:
     paths:
-      - ./geoss-proxy/application/build
+      - ./geoss-proxy/build
     expire_in: 4 weeks
   only:
     - develop
