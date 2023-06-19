@@ -47,7 +47,6 @@ public class PopularController {
     @GetMapping(value = "")
     public List<PopularWord> getPopularWords(@RequestParam("query") @NotNull @Size(min = 2) String query,
             @RequestParam("limit") @NotNull @Min(1) @Max(10) int limit) {
-        log.info("query:{}, limit:{}", query, limit);
         return popularService.getPopularWords(query, limit);
     }
 

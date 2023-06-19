@@ -20,6 +20,6 @@ public class PopularWord {
     /**
      * The Doc count.
      */
-    int docCount;
+    long docCount;
 
 }
