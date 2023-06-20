@@ -101,6 +101,12 @@ services:
       context: ./geoss-haproxy-lan
       dockerfile: Dockerfile
 
+  geoss-matomo:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-matomo
+      dockerfile: Dockerfile
+
   # geoss-matomo-db:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_db:${DOCKER_IMAGE_TAG}
   #   build:

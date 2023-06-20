@@ -15,14 +15,6 @@ upstream admin_upstream {
   ###ADMIN_UPSTREAM_CONFIG###
 }
 
-#upstream kibana_upstream {
-#  ###KIBANA_UPSTREAM_CONFIG###
-#}
-
-#upstream monitoring_upstream {
-#  ###MONITORING_UPSTREAM_CONFIG###
-#}
-
 ## Initial common setup of variables
 include conf.d/common/map_initial_setup.conf;
 
@@ -52,7 +44,7 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  include conf.d/cms_conf/location_monitoring.conf;
+  include conf.d/cms_conf/location_monitoring_gpp.conf;
 
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
@@ -176,7 +168,7 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  ##include conf.d/cms_conf/location_monitoring.conf;
+  ##include conf.d/cms_conf/location_monitoring_gpp_keycloak.conf;
 
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
@@ -236,7 +228,7 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  ##include conf.d/cms_conf/location_monitoring.conf;
+  ##include conf.d/cms_conf/location_monitoring_gpp_admin.conf;
 
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
@@ -328,29 +320,6 @@ server {
     include conf.d/utils/proxy_response_headers.conf;
 
     add_header X-Cache-Status $upstream_cache_status;
-  }
-
-  location = /kibana {
-      return 307 /kibana/;
-  }
-
-  location ~ /kibana {
-      include conf.d/common/maintenance_conditions.conf;
-
-      auth_basic "Restricted Access";
-      auth_basic_user_file /etc/nginx/passwords/.geoss_kibana;
-
-      #request headers
-      include conf.d/utils/proxy_request_headers.conf;
-      include conf.d/utils/proxy_request_headers_x.conf;
-
-      proxy_pass    http://admin_upstream;
-      proxy_no_cache 1;
-
-      #response headers
-      include conf.d/utils/proxy_response_headers.conf;
-
-      add_header X-Cache-Status $upstream_cache_status;
   }
 
   #Configuration of robots.txt file
