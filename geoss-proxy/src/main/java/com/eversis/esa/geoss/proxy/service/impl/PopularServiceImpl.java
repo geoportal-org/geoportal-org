@@ -1,19 +1,19 @@
 package com.eversis.esa.geoss.proxy.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
-import com.eversis.esa.geoss.proxy.document.SearchResultDoc;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.Buckets;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsAggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.eversis.esa.geoss.proxy.domain.PopularWord;
-import com.eversis.esa.geoss.proxy.repository.SearchResultRepository;
 import com.eversis.esa.geoss.proxy.service.PopularService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,34 +23,54 @@ import org.springframework.stereotype.Service;
 @Service
 public class PopularServiceImpl implements PopularService {
 
-    private ElasticsearchOperations operations;
+    public static final String FIELD_NAME = "ds_st";
+    public static final String AGGREGATION_NAME = "group_by_ds_st";
+    public static final String INDEX_NAME = "geoss_index";
+    private final ElasticsearchClient elasticsearchClient;
 
-    public PopularServiceImpl(ElasticsearchOperations operations) {
-        this.operations = operations;
+    public PopularServiceImpl(ElasticsearchClient elasticsearchClient) {
+        this.elasticsearchClient = elasticsearchClient;
     }
 
     @Override
-    public List<PopularWord> getPopularWords(String query, int limit) {
+    public List<PopularWord> getPopularWords(String queryStr, int limit) {
+        return extractPopularWords(queryStr, limit);
+    }
 
-        Query matchPhrasePrefixQuery = NativeQuery.builder()
-                .withAggregation("group_by_ds_st", Aggregation.of(a -> a
-                        .terms(ta -> ta.field("ds_st").size(limit))))
-                .withQuery(q -> q
-                        .matchPhrasePrefix(m -> m
-                                .field("ds_st")
-                                .query(query)
-                                .analyzer("standard")
-                                .maxExpansions(50)
-                                .slop(3)
-                        )
-                )
-                .build();
+    private List<PopularWord> extractPopularWords(String queryStr, int limit) {
+        List<PopularWord> popularWords = new ArrayList<>();
+        SearchResponse<Void> response;
+        try {
+            response = elasticsearchClient.search(b -> b
+                            .index(INDEX_NAME)
+                            .size(0)
+                            .query(q -> q
+                                    .matchPhrasePrefix(m -> m
+                                            .field(FIELD_NAME)
+                                            .query(queryStr)))
+                            .aggregations(AGGREGATION_NAME, a -> a
+                                    .terms(ta -> ta.field(FIELD_NAME).size(limit))
+                            ),
+                    Void.class
+            );
+            getPopularWordsFromBuckets(popularWords, response);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not get popular words. Error: " + e.getMessage());
+        }
+        return popularWords;
+    }
 
-        SearchHits<SearchResultDoc> searchHits = operations.search(matchPhrasePrefixQuery, SearchResultDoc.class,
-                IndexCoordinates.of("geoss_index"));
-        log.info("popularWords elements:{}", searchHits.getTotalHits());
-
-        return new ArrayList<>();
+    private void getPopularWordsFromBuckets(List<PopularWord> popularWords, SearchResponse<Void> response) {
+        Map<String, Aggregate> aggregations = response.aggregations();
+        for (Map.Entry<String, Aggregate> entry : aggregations.entrySet()) {
+            Aggregate aggregate = entry.getValue();
+            StringTermsAggregate sterms = aggregate.sterms();
+            Buckets<StringTermsBucket> sbuckets = sterms.buckets();
+            List<StringTermsBucket> bucArr = sbuckets.array();
+            for (StringTermsBucket bucObj : bucArr) {
+                     popularWords.add(new PopularWord(bucObj.key().stringValue(), bucObj.docCount()));
+            }
+        }
     }
 
 }

@@ -762,7 +762,35 @@
                     "attributes": {}
                 }
             ],
-            "geoss-proxy": [],
+            "geoss-proxy": [
+                {
+                    "id": "58b45374-5e5a-49b1-b86b-fb42332046e4",
+                    "name": "popular_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3f6420b2-ddf7-4394-a143-fd0c7d499124",
+                    "attributes": {}
+                },
+                {
+                    "id": "f45e1342-6608-4dd0-9d6b-394f71319420",
+                    "name": "log_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3f6420b2-ddf7-4394-a143-fd0c7d499124",
+                    "attributes": {}
+                },
+                {
+                    "id": "98ab734c-636c-45b4-ac7b-b4b05421f60b",
+                    "name": "statistics_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3f6420b2-ddf7-4394-a143-fd0c7d499124",
+                    "attributes": {}
+                }
+            ],
             "geoss-bookmarks": [],
             "admin-cli": [],
             "account": [
@@ -902,6 +930,11 @@
                     "content_writer",
                     "menu_writer",
                     "content_reader"
+                ],
+                "geoss-proxy": [
+                    "log_writer",
+                    "statistics_reader",
+                    "popular_reader"
                 ],
                 "geoss-settings": [
                     "api_writer",
@@ -1448,7 +1481,8 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins"
+                "web-origins",
+                "roles"
             ],
             "optionalClientScopes": [
                 "acr",
@@ -1457,7 +1491,6 @@
                 "offline_access",
                 "profile",
                 "organization",
-                "roles",
                 "microprofile-jwt",
                 "email"
             ]
@@ -1562,7 +1595,8 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins"
+                "web-origins",
+                "roles"
             ],
             "optionalClientScopes": [
                 "acr",
@@ -1571,7 +1605,6 @@
                 "offline_access",
                 "profile",
                 "organization",
-                "roles",
                 "microprofile-jwt",
                 "email"
             ]
