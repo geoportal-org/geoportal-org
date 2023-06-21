@@ -294,14 +294,14 @@ services:
 
     geoss-matomo:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:latest
-    hostname: geoss-kibana
+    hostname: geoss-matomo
     deploy:
       replicas: 1
       placement:
         constraints:
           - "node.labels.shared_tag==geoss-matomo"
     environment:
-      MATOMO_DATABASE_HOST: geoss-db
+      MATOMO_DATABASE_HOST: geoss-mariadb
       MATOMO_DATABASE_TABLES_PREFIX: ${MATOMO_DB_PREFIX}
       MATOMO_DATABASE_USERNAME: ${MATOMO_DB_USER_NAME}
       MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
