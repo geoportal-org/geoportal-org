@@ -242,6 +242,31 @@ services:
     networks:
       - geosslan
 
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:latest
+    hostname: geoss-proxy
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      http_proxy: ${SQUID_PROXY_URL}
+      https_proxy: ${SQUID_PROXY_URL}
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+    ports:
+      - "8084:8082"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-elasticsearch-1
+      - geoss-keycloak
+
   geoss-elasticsearch-1:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:latest
     hostname: geoss-elasticsearch-1
