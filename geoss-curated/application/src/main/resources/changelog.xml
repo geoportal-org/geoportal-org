@@ -19,7 +19,6 @@
     <include file="changelogs/0013_datasource_values.xml"/>
     <include file="changelogs/0014_change_entry_fks_to_not_null.xml"/>
     <include file="changelogs/0015_replace_zeros_with_null_for_fks_on_entry.xml"/>
-    <include file="changelogs/0015_replace_zeros_with_null_for_fks_on_entry.xml"/>
     <include file="changelogs/0016_increase_protocol_value_column_size.xml"/>
     <include file="changelogs/0017_create_definitiontype_table.xml"/>
     <include file="changelogs/0018_create_entrygarbage_table.xml"/>
@@ -28,7 +27,7 @@
     <include file="changelogs/0021_entryrelation_workflowinstanceid_column.xml"/>
     <include file="changelogs/0022_entryrelation_deleted_column.xml"/>
     <include file="changelogs/0023_update_wikipedia_stored_procedure.xml"/>
-    <include file="changelogs/0024_spring_batch_metadata.xml"/>
+<!--    <include file="changelogs/0024_spring_batch_metadata.xml"/>-->
     <include file="changelogs/0025_recommendations.xml"/>
     <include file="changelogs/0026_create_dashboardcontents_table.xml"/>
     <include file="changelogs/0027_add_entry_dashboardcontentsid_column.xml"/>

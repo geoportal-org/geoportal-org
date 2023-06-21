@@ -18,11 +18,6 @@
                 columnName="id"
                 tableName="entryrelation"/>
     </changeSet>
-    <changeSet author="jjablonski" id="entryrelation_composite_pk-2">
-        <dropColumn
-                columnName="id"
-                tableName="entryrelation"/>
-    </changeSet>
     <changeSet author="jjablonski" id="entryrelation_composite_pk-3">
         <renameColumn
                 columnDataType="int"
