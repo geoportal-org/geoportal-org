@@ -151,6 +151,9 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_contents_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
