@@ -43,9 +43,6 @@ server {
   ##  Handle ERROR pages
   include conf.d/common/location_maintenance.conf;
 
-  ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  include conf.d/cms_conf/location_monitoring_gpp.conf;
-
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
 
@@ -167,9 +164,6 @@ server {
   ##  Handle ERROR pages
   include conf.d/common/location_maintenance.conf;
 
-  ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  ##include conf.d/cms_conf/location_monitoring_gpp_keycloak.conf;
-
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
 
@@ -228,7 +222,7 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
-  ##include conf.d/cms_conf/location_monitoring_gpp_admin.conf;
+  include conf.d/cms_conf/location_monitoring_gpp_admin.conf;
 
   ## SCRIPTS TO CLEAR CACHE
   #include conf.d/common/location_cache_clear.conf;
