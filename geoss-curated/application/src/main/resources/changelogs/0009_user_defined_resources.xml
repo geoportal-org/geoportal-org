@@ -1,0 +1,128 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--table entryextension-->
+    <changeSet author="jjablonski" id="user_defined_resources-1">
+        <createTable tableName="entryextension">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataSourceId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(200)"/>
+            <column name="summary" type="TEXT"/>
+            <column name="keywords" type="VARCHAR(2000)"/>
+            <column name="tags" type="VARCHAR(2000)"/>
+            <column name="workflowInstanceId" type="BIGINT"/>
+            <column name="userId" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-2">
+        <addForeignKeyConstraint baseColumnNames="dataSourceId" baseTableName="entryextension" constraintName="FK_Entryextension_DataSource" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="datasource"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-3">
+        <addColumn tableName="entryextension">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-4">
+        <addColumn tableName="entryextension">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-5">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_entryextension BEFORE UPDATE ON entryextension FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_entryextension;
+        </rollback>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-6">
+        <createIndex indexName="IXFK_Entryextension_DataSource" tableName="entryextension">
+            <column name="dataSourceId"/>
+        </createIndex>
+    </changeSet>
+
+    <!--table transferoptionextension-->
+    <changeSet author="jjablonski" id="user_defined_resources-7">
+        <createTable tableName="transferoptionextension">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(200)"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="displayTitle" type="VARCHAR(1000)"/>
+            <column name="entryExtensionId" type="INT"/>
+            <column name="endpointId" type="INT"/>
+            <column name="protocolId" type="INT"/>
+            <column defaultValueBoolean="false" name="deleted" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-8">
+        <addForeignKeyConstraint baseColumnNames="entryExtensionId" baseTableName="transferoptionextension" constraintName="FK_Transferoptionextension_Entryextension" deferrable="false"
+                initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="entryextension"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-9">
+        <addColumn tableName="transferoptionextension">
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-10">
+        <addColumn tableName="transferoptionextension">
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-11">
+        <sql endDelimiter="$$">
+            CREATE TRIGGER update_modified_date_on_transferoptionextension BEFORE UPDATE ON transferoptionextension FOR EACH ROW BEGIN
+            SET new.modifiedDate = CURRENT_TIMESTAMP;
+            END
+        </sql>
+        <rollback>
+            DROP TRIGGER IF EXISTS update_modified_date_on_transferoptionextension;
+        </rollback>
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-12">
+        <addForeignKeyConstraint baseColumnNames="endpointId" baseTableName="transferoptionextension" constraintName="FK_TransferOptionsextension_Endpoint"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="endpoint" />
+    </changeSet>
+    <changeSet author="jjablonski" id="user_defined_resources-13">
+        <addForeignKeyConstraint baseColumnNames="protocolId" baseTableName="transferoptionextension" constraintName="FK_TransferOptionsextension_Protocol"
+                deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                referencedTableName="protocol" />
+    </changeSet>
+
+</databaseChangeLog>

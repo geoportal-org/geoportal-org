@@ -1,52 +1,29 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ -z "$MARIADB_ROOT_PASSWORD" ]]; then
+if [ -z "$MARIADB_ROOT_PASSWORD" ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') Missing MARIADB_ROOT_PASSWORD"
     exit 1
 fi
-if [[ -z "$MARIADB_USER" ]]; then
+if [ -z "$MARIADB_USER" ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') Missing MARIADB_USER"
     exit 1
 fi
 
-command="CREATE DATABASE IF NOT EXISTS geoss_bookmarks_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_bookmarks_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
+create_database()
+{
+    database=$1
+    command="CREATE DATABASE IF NOT EXISTS $database;"
+    echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: $command"
+    mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
+    command="GRANT ALL ON $database.* TO '$MARIADB_USER'@'%';"
+    echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: $command"
+    mysql -h localhost -u root -p"${MARIADB_ROOT_PASSWORD}" -e "$command"
+}
 
-command="CREATE DATABASE IF NOT EXISTS geoss_contents_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_contents_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
-
-command="CREATE DATABASE IF NOT EXISTS geoss_keycloak_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_keycloak_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
-
-command="CREATE DATABASE IF NOT EXISTS geoss_matomo_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_matomo_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
-
-command="CREATE DATABASE IF NOT EXISTS geoss_settings_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_settings_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
-
-command="CREATE DATABASE IF NOT EXISTS geoss_personaldata_db;"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
-command="GRANT ALL ON geoss_personaldata_db.* TO '$MARIADB_USER'@'%';"
-echo "$(date '+%Y-%m-%d %H:%M:%S') $command"
-mysql -h localhost -u root -p${MARIADB_ROOT_PASSWORD} -e "$command"
+create_database geoss_bookmarks_db
+create_database geoss_contents_db
+create_database geoss_keycloak_db
+create_database geoss_matomo_db
+create_database geoss_settings_db
+create_database geoss_personaldata_db
+create_database geoss_curated_db

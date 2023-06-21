@@ -1,0 +1,61 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="dcwiek" id="entryrelation_datasource_foreignkeys-1">
+        <sql>
+            ALTER TABLE `entryrelation`
+            ADD `srcDataSourceId` int(11) null;
+        </sql>
+        <sql>
+            ALTER TABLE `entryrelation`
+            ADD `destDataSourceId` int(11) null;
+        </sql>
+    </changeSet>
+    <changeSet author="dcwiek" id="entryrelation_datasource_foreignkeys-2">
+        <addForeignKeyConstraint
+                baseColumnNames="srcDataSourceId"
+                baseTableName="entryrelation"
+                constraintName="fk_entryrelation_datasource_src"
+                referencedColumnNames="id"
+                referencedTableName="datasource"/>
+        <addForeignKeyConstraint
+                baseColumnNames="destDataSourceId"
+                baseTableName="entryrelation"
+                constraintName="fk_entryrelation_datasource_dest"
+                referencedColumnNames="id"
+                referencedTableName="datasource"/>
+    </changeSet>
+    <changeSet author="dcwiek" id="entryrelation_datasource_foreignkeys-3">
+        <sql>
+            UPDATE entryrelation ER
+            SET srcDataSourceId = (SELECT dataSourceId FROM entry E WHERE E.code = ER.srcId)
+        </sql>
+        <sql>
+            UPDATE entryrelation ER
+            SET destDataSourceId = (SELECT dataSourceId FROM entry E WHERE E.code = ER.destId);
+        </sql>
+    </changeSet>
+    <changeSet author="jjablonski" id="entryrelation_datasource_foreignkeys-4">
+        <sql>
+            ALTER TABLE entryrelation
+            CHANGE srcDataSourceId srcDataSourceId int(11) NOT NULL AFTER srcId;
+        </sql>
+        <sql>
+            ALTER TABLE entryrelation
+            CHANGE destDataSourceId destDataSourceId int(11) NOT NULL AFTER destId;
+        </sql>
+    </changeSet>
+    <changeSet author="jjablonski" id="entryrelation_datasource_foreignkeys-5">
+        <sql>
+            ALTER TABLE `entryrelation`
+            DROP PRIMARY KEY
+        </sql>
+        <sql>
+            ALTER TABLE entryrelation ADD PRIMARY KEY (srcId, srcDataSourceId, destId, destDataSourceId, relationTypeId)
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="changelogs/0001_initial_changelog.xml"/>
+    <include file="changelogs/0002_wikipedia_stored_procedure.xml"/>
+    <include file="changelogs/0003_update_sdg_logo_stored_procedure.xml"/>
+    <include file="changelogs/0004_modified_and_created_date_columns.xml"/>
+    <include file="changelogs/0005_entryrelation_composite_pk.xml"/>
+    <include file="changelogs/0006_entryrelation_foreignkeys.xml"/>
+    <include file="changelogs/0007_entryrelation_datasource_foreignkeys.xml"/>
+    <include file="changelogs/0008_dictionary_tables_column_names.xml"/>
+    <include file="changelogs/0009_user_defined_resources.xml"/>
+    <include file="changelogs/0010_entryrelation_iscustom_column.xml"/>
+    <include file="changelogs/0011_entryrelation_typeid_columns.xml"/>
+    <include file="changelogs/0012_entryextension_comment_column.xml"/>
+    <include file="changelogs/0013_datasource_values.xml"/>
+    <include file="changelogs/0014_change_entry_fks_to_not_null.xml"/>
+    <include file="changelogs/0015_replace_zeros_with_null_for_fks_on_entry.xml"/>
+    <include file="changelogs/0016_increase_protocol_value_column_size.xml"/>
+    <include file="changelogs/0017_create_definitiontype_table.xml"/>
+    <include file="changelogs/0018_create_entrygarbage_table.xml"/>
+    <include file="changelogs/0019_update_transfer_options_constraint.xml"/>
+    <include file="changelogs/0020_display_data_source.xml"/>
+    <include file="changelogs/0021_entryrelation_workflowinstanceid_column.xml"/>
+    <include file="changelogs/0022_entryrelation_deleted_column.xml"/>
+    <include file="changelogs/0023_update_wikipedia_stored_procedure.xml"/>
+<!--    <include file="changelogs/0024_spring_batch_metadata.xml"/>-->
+    <include file="changelogs/0025_recommendations.xml"/>
+    <include file="changelogs/0026_create_dashboardcontents_table.xml"/>
+    <include file="changelogs/0027_add_entry_dashboardcontentsid_column.xml"/>
+</databaseChangeLog>

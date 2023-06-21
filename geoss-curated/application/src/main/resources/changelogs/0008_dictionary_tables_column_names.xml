@@ -1,0 +1,74 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-1">
+        <renameColumn
+                columnDataType="VARCHAR(50)"
+                newColumnName="name"
+                oldColumnName="open"
+                tableName="accesspolicy"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-2">
+        <addColumn tableName="accesspolicy">
+            <column name="code" type="VARCHAR(50)" afterColumn="name">
+                <constraints unique="true" nullable="true"/>
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE `accesspolicy`
+            SET code = name
+        </sql>
+        <addNotNullConstraint
+                columnDataType="VARCHAR(50)"
+                columnName="code"
+                tableName="accesspolicy"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-3">
+        <addColumn tableName="relationtype">
+            <column name="code" type="VARCHAR(100)" afterColumn="name">
+                <constraints unique="true" nullable="true"/>
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE `relationtype`
+            SET code = name
+        </sql>
+        <addNotNullConstraint
+                columnDataType="VARCHAR(100)"
+                columnName="code"
+                tableName="relationtype"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-4">
+        <renameColumn
+                columnDataType="VARCHAR(191)"
+                newColumnName="code"
+                oldColumnName="sourceId"
+                tableName="source"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-5">
+        <addNotNullConstraint
+                columnDataType="VARCHAR(191)"
+                columnName="code"
+                tableName="source"/>
+        <addUniqueConstraint
+                columnNames="code"
+                tableName="source"/>
+    </changeSet>
+    <changeSet author="jjablonski" id="dictionary_tables_column_names-6">
+        <sql>
+            UPDATE `type`
+            SET code = id
+            WHERE code IS NULL
+        </sql>
+        <addNotNullConstraint
+                columnDataType="VARCHAR(191)"
+                columnName="code"
+                tableName="type"/>
+        <addUniqueConstraint
+                columnNames="code"
+                tableName="type"/>
+    </changeSet>
+</databaseChangeLog>

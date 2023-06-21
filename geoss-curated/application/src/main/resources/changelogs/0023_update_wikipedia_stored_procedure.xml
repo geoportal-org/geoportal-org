@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet author="jjablonski" id="update_wikipedia_stored_procedure-1">
+        <sql>
+            DROP PROCEDURE IF EXISTS add_or_update_wikipedia_entry
+        </sql>
+        <sqlFile path="stored_procedures/wikipedia_stored_procedure_v3.sql" endDelimiter="$$" />
+    </changeSet>
+
+    <changeSet author="jjablonski" id="update_wikipedia_stored_procedure-2">
+        <sql>
+            DROP PROCEDURE IF EXISTS add_or_update_wikipedia_entry
+        </sql>
+        <sqlFile path="stored_procedures/wikipedia_stored_procedure_v4.sql" endDelimiter="$$" />
+    </changeSet>
+
+</databaseChangeLog>
