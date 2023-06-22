@@ -31,6 +31,9 @@ services:
       MARIADB_USER: admin
       MARIADB_PASSWORD: ${DB_ROOT_PASS}
       MARIADB_DATABASE: geoss_db
+        MATOMO_DATABASE_USERNAME: ${MATOMO_DB_USER_NAME}
+      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
+      MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
