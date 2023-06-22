@@ -39,4 +39,7 @@ RUN chmod +x /docker-entrypoint-initdb.d/3_try_restore_db_from_remote_db.sh
 COPY docker-entrypoint-initdb.d/4_create_additional_db.sh /docker-entrypoint-initdb.d/4_create_additional_db.sh
 RUN chmod +x /docker-entrypoint-initdb.d/4_create_additional_db.sh
 
+COPY docker-entrypoint-initdb.d/4_create_additional_db.sh /docker-entrypoint-initdb.d/5_create_matomo_db.sh
+RUN chmod +x /docker-entrypoint-initdb.d/5_create_matomo_db.sh
+
 EXPOSE 3306
