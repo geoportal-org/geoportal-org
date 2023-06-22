@@ -23,7 +23,6 @@ create_database()
 create_database geoss_bookmarks_db
 create_database geoss_contents_db
 create_database geoss_keycloak_db
-create_database geoss_matomo_db
 create_database geoss_settings_db
 create_database geoss_personaldata_db
 create_database geoss_curated_db
