@@ -38,7 +38,4 @@ fi
 
 chown -R www-data:www-data /var/www/html
 
-#source envvars - needed after upgrade form 4.5 to 4.14.2
-source /etc/apache2/envvars
-
 exec "$@"
