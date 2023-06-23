@@ -25,9 +25,6 @@ file_env() {
         unset "$fileVar"
 }
 
-#source envvars - needed after upgrade form 4.5 to 4.14.2
-source /etc/apache2/envvars
-
 file_env 'MATOMO_DATABASE_HOST'
 file_env 'MATOMO_DATABASE_USERNAME'
 file_env 'MATOMO_DATABASE_PASSWORD'
@@ -40,5 +37,8 @@ if [ ! -e matomo.php ]; then
 fi
 
 chown -R www-data:www-data /var/www/html
+
+#source envvars - needed after upgrade form 4.5 to 4.14.2
+source /etc/apache2/envvars
 
 exec "$@"
