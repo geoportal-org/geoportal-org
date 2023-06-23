@@ -1,4 +1,4 @@
-FROM matomo:4.5.0-apache
+FROM matomo:4.14.2-apache
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
