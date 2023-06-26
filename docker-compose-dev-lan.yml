@@ -260,6 +260,13 @@ services:
           - "node.labels.shared_tag==geoss-apps"
     environment:
       SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
+      # Authorization with basic auth
+      SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
+      SPRING_SECURITY_USER_ROLES: USER,ADMIN
+      SPRING_SECURITY_USER_EMAIL: user@geoss-settings
+      SPRING_SECURITY_USER_FIRST_NAME: User
+      SPRING_SECURITY_USER_LAST_NAME: User
+      # Authorization with keycloak
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}

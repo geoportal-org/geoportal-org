@@ -1,14 +1,29 @@
 package com.eversis.esa.geoss.proxy.security;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.StringUtils;
 
 /**
  * The type Web security configuration.
@@ -18,15 +33,42 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
+    private static final String NOOP_PASSWORD_PREFIX = "{noop}";
+
+    private static final Pattern PASSWORD_ALGORITHM_PATTERN = Pattern.compile("^\\{.+}.*$");
+
     private final JwtAuthConverter jwtAuthConverter;
+
+    private final SecurityProperties securityProperties;
 
     /**
      * Instantiates a new Web security configuration.
      *
      * @param jwtAuthConverter the jwt auth converter
+     * @param securityProperties the security properties
      */
-    public WebSecurityConfiguration(JwtAuthConverter jwtAuthConverter) {
+    public WebSecurityConfiguration(JwtAuthConverter jwtAuthConverter, SecurityProperties securityProperties) {
         this.jwtAuthConverter = jwtAuthConverter;
+        this.securityProperties = securityProperties;
+    }
+
+    /**
+     * Swagger ui security filter chain security filter chain.
+     *
+     * @param http the http
+     * @return the security filter chain
+     * @throws Exception the exception
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "springdoc.swagger-ui", name = "enabled", havingValue = "true")
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    SecurityFilterChain swaggerUiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher("/v3/api-docs/**", "/swagger-ui/**");
+        http.authorizeHttpRequests(
+                authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").authenticated());
+        http.httpBasic(Customizer.withDefaults());
+        return http.build();
     }
 
     /**
@@ -38,18 +80,71 @@ public class WebSecurityConfiguration {
      * @throws Exception the exception
      */
     @Bean
+    @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, RepositoryRestConfiguration repositoryRestConfiguration) throws Exception {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, basePath + "/log/**").hasAnyRole("log_writer")
-                .requestMatchers(HttpMethod.GET, basePath + "/popular/**").permitAll()
-                .requestMatchers(HttpMethod.GET, basePath + "/statistics/**").hasAnyRole("statistics_reader")
-                .anyRequest().authenticated();
+        http.securityMatcher(basePath + "/**");
+        http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+            authorizationManagerRequestMatcherRegistry
+                    .requestMatchers(HttpMethod.GET, basePath + "/popular/**")
+                    .permitAll();
+            authorizationManagerRequestMatcherRegistry
+                    .requestMatchers(HttpMethod.GET,basePath + "/statistics/**")
+                    .hasAnyRole("statistics_reader");
+            authorizationManagerRequestMatcherRegistry
+                    .requestMatchers(HttpMethod.POST,basePath + "/log/**")
+                    .hasAnyRole("log_writer");
+            authorizationManagerRequestMatcherRegistry
+                    .anyRequest().authenticated();
+        });
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthConverter);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.sessionManagement(
+                httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
+    /**
+     * Configure global.
+     *
+     * @param auth the auth
+     * @param passwordEncoder the password encoder
+     * @throws Exception the exception
+     */
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
+        auth.inMemoryAuthentication().withUser(defaultUser(securityProperties, passwordEncoder));
+    }
+
+    private UserDetails defaultUser(SecurityProperties securityProperties, PasswordEncoder passwordEncoder) {
+        SecurityProperties.User user = securityProperties.getUser();
+        List<String> roles = user.getRoles();
+        return User.builder()
+                .username(user.getName())
+                .password(defaultUserPassword(user, passwordEncoder))
+                .roles(StringUtils.toStringArray(roles))
+                .build();
+    }
+
+    private String defaultUserPassword(SecurityProperties.User user, PasswordEncoder passwordEncoder) {
+        String password = user.getPassword();
+        if (user.isPasswordGenerated()) {
+            log.warn(String.format(
+                    "%n%nUsing generated security password: %s%n%nThis generated password is for development use"
+                            + " only. "
+                            + "Your security configuration must be updated before running your application in "
+                            + "production.%n",
+                    user.getPassword()));
+        }
+        if (PASSWORD_ALGORITHM_PATTERN.matcher(password).matches()) {
+            return password;
+        }
+        if (passwordEncoder != null) {
+            return passwordEncoder.encode(password);
+        }
+        return NOOP_PASSWORD_PREFIX + password;
+    }
 }
