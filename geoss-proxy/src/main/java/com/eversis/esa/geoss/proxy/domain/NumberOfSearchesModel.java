@@ -7,23 +7,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Period.
+ * The type Number of searches model.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Period {
+public class NumberOfSearchesModel {
 
     /**
-     * The Min.
+     * The Ds sources group key.
      */
-    @NotNull
-    long min;
+    String dsSourcesGroupKey;
 
     /**
-     * The Max.
+     * The Period.
      */
     @NotNull
-    long max;
+    Period period;
+
+    /**
+     * The Interval.
+     */
+    @NotNull
+    String interval;
 
 }

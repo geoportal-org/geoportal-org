@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.proxy.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,6 @@ public class SessionProperties {
     /**
      * The Session date.
      */
-    String sessionDate;
+    Date sessionDate;
 
 }

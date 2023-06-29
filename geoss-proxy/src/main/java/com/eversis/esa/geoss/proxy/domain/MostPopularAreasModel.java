@@ -7,23 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Period.
+ * The type Most popular areas model.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Period {
+public class MostPopularAreasModel {
 
     /**
-     * The Min.
+     * The Ds sources group key.
      */
-    @NotNull
-    long min;
+    String dsSourcesGroupKey;
 
     /**
-     * The Max.
+     * The Period.
      */
     @NotNull
-    long max;
+    Period period;
 
 }

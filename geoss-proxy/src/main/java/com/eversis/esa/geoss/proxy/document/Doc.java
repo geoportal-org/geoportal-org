@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.proxy.document;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,8 +46,8 @@ public class Doc {
     /**
      * The Session date.
      */
-    @Field(type = FieldType.Keyword, name = "session_date")
-    String sessionDate;
+    @Field(type = FieldType.Date, name = "session_date")
+    Date sessionDate;
 
     /**
      * The Ua.

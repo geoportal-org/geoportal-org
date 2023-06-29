@@ -109,7 +109,7 @@ public class SearchResultDoc extends Doc {
     /**
      * The Ds parents group doc.
      */
-    @Field(type = FieldType.Auto, name = "ds_parents_group")
+    @Field(type = FieldType.Object, name = "ds_parents_group")
     DsParentsGroup dsParentsGroupDoc;
 
     /**
@@ -121,13 +121,13 @@ public class SearchResultDoc extends Doc {
     /**
      * The Ds sources group doc.
      */
-    @Field(type = FieldType.Auto, name = "ds_sources_group")
+    @Field(type = FieldType.Object, name = "ds_sources_group")
     DsSourcesGroup dsSourcesGroupDoc;
 
     /**
      * The Ds views group doc.
      */
-    @Field(type = FieldType.Auto, name = "ds_views_group")
+    @Field(type = FieldType.Object, name = "ds_views_group")
     DsViewsGroup dsViewsGroupDoc;
 
     /**

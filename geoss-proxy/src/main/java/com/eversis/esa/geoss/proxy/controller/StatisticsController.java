@@ -5,9 +5,13 @@ import jakarta.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.eversis.esa.geoss.proxy.domain.GetMostPopularModel;
-import com.eversis.esa.geoss.proxy.domain.GetNumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopular;
+import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularKeywordsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularOrganisationsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
+import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.Search;
 import com.eversis.esa.geoss.proxy.service.StatisticsService;
 import lombok.extern.log4j.Log4j2;
@@ -40,81 +44,83 @@ public class StatisticsController {
     }
 
     /**
-     * Get number of searches list.
+     * Gets number of searches.
      *
-     * @param getNumberOfSearchesModel the get number of searches model
-     * @return the list
+     * @param numberOfSearchesModel the number of searches model
+     * @return the number of searches
      */
     @GetMapping(value = "getNumberOfSearches")
     @ResponseStatus(HttpStatus.OK)
-    public List<Search> getNumberOfSearches(@Valid @RequestBody GetNumberOfSearchesModel getNumberOfSearchesModel) {
-        log.info("getNumberOfSearchesModel:{}", getNumberOfSearchesModel);
-        return statisticsService.getNumberOfSearches(getNumberOfSearchesModel);
+    public List<Search> getNumberOfSearches(@Valid @RequestBody NumberOfSearchesModel numberOfSearchesModel) {
+        log.info("numberOfSearchesModel:{}", numberOfSearchesModel);
+        return statisticsService.getNumberOfSearches(numberOfSearchesModel);
     }
 
     /**
-     * Get most popular resources list.
+     * Gets most popular resources.
      *
-     * @param getMostPopularModel the get most popular model
-     * @return the list
+     * @param mostPopularResourcesModel the most popular resources model
+     * @return the most popular resources
      */
     @GetMapping(value = "getMostPopularResources")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularResources(@Valid @RequestBody GetMostPopularModel getMostPopularModel) {
-        log.info("getMostPopularModel:{}", getMostPopularModel);
-        return statisticsService.getMostPopularResources(getMostPopularModel);
+    public List<MostPopular> getMostPopularResources(@Valid @RequestBody
+    MostPopularResourcesModel mostPopularResourcesModel) {
+        log.info("mostPopularResourcesModel:{}", mostPopularResourcesModel);
+        return statisticsService.getMostPopularResources(mostPopularResourcesModel);
     }
 
     /**
-     * Get most popular keywords list.
+     * Gets most popular keywords.
      *
-     * @param getMostPopularModel the get most popular model
-     * @return the list
+     * @param mostPopularKeywordsModel the most popular keywords model
+     * @return the most popular keywords
      */
     @GetMapping(value = "getMostPopularKeywords")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularKeywords(@Valid @RequestBody GetMostPopularModel getMostPopularModel) {
-        log.info("getMostPopularModel:{}", getMostPopularModel);
-        return statisticsService.getMostPopularKeywords(getMostPopularModel);
+    public List<MostPopular> getMostPopularKeywords(@Valid @RequestBody
+    MostPopularKeywordsModel mostPopularKeywordsModel) {
+        log.info("mostPopularKeywordsModel:{}", mostPopularKeywordsModel);
+        return statisticsService.getMostPopularKeywords(mostPopularKeywordsModel);
     }
 
     /**
-     * Get most popular catalogs list.
+     * Gets most popular catalogs.
      *
-     * @param getMostPopularModel the get most popular model
-     * @return the list
+     * @param mostPopularCatalogsModel the most popular catalogs model
+     * @return the most popular catalogs
      */
     @GetMapping(value = "getMostPopularCatalogs")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularCatalogs(@Valid @RequestBody GetMostPopularModel getMostPopularModel) {
-        log.info("getMostPopularModel:{}", getMostPopularModel);
-        return statisticsService.getMostPopularCatalogs(getMostPopularModel);
+    public List<MostPopular> getMostPopularCatalogs(@Valid @RequestBody MostPopularCatalogsModel mostPopularCatalogsModel) {
+        log.info("mostPopularCatalogsModel:{}", mostPopularCatalogsModel);
+        return statisticsService.getMostPopularCatalogs(mostPopularCatalogsModel);
     }
 
     /**
-     * Get most popular organizations list.
+     * Gets most popular organizations.
      *
-     * @param getMostPopularModel the get most popular model
-     * @return the list
+     * @param mostPopularOrganisationsModel the most popular organisations model
+     * @return the most popular organizations
      */
     @GetMapping(value = "getMostPopularOrganizations")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularOrganizations(@Valid @RequestBody GetMostPopularModel getMostPopularModel) {
-        log.info("getMostPopularModel:{}", getMostPopularModel);
-        return statisticsService.getMostPopularOrganizations(getMostPopularModel);
+    public List<MostPopular> getMostPopularOrganizations(@Valid @RequestBody MostPopularOrganisationsModel mostPopularOrganisationsModel) {
+        log.info("mostPopularOrganisationsModel:{}", mostPopularOrganisationsModel);
+        return statisticsService.getMostPopularOrganizations(mostPopularOrganisationsModel);
     }
 
     /**
-     * Get most popular areas list.
+     * Gets most popular areas.
      *
-     * @param getMostPopularModel the get most popular model
-     * @return the list
+     * @param mostPopularAreasModel the most popular areas model
+     * @return the most popular areas
      */
     @GetMapping(value = "getMostPopularAreas")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularAreas(@Valid @RequestBody GetMostPopularModel getMostPopularModel) {
-        log.info("getMostPopularModel:{}", getMostPopularModel);
-        return statisticsService.getMostPopularAreas(getMostPopularModel);
+    public List<MostPopular> getMostPopularAreas(@Valid @RequestBody MostPopularAreasModel mostPopularAreasModel) {
+        log.info("mostPopularAreasModel:{}", mostPopularAreasModel);
+        return statisticsService.getMostPopularAreas(mostPopularAreasModel);
     }
 
 }

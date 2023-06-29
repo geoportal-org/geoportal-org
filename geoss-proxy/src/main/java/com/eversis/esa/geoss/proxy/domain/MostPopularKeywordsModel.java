@@ -7,28 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Get most popular model.
+ * The type Most popular keywords model.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetMostPopularModel {
+public class MostPopularKeywordsModel {
 
     /**
-     * The Ds sources group.
+     * The Ds sources group key.
      */
-    DsSourcesGroup dsSourcesGroup;
+    String dsSourcesGroupKey;
 
     /**
      * The Period.
      */
     @NotNull
     Period period;
-
-    /**
-     * The Size.
-     */
-    @NotNull
-    int size;
 
 }

@@ -7,23 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Period.
+ * The type Most popular catalogs model.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Period {
+public class MostPopularCatalogsModel {
 
     /**
-     * The Min.
+     * The Period.
      */
     @NotNull
-    long min;
-
-    /**
-     * The Max.
-     */
-    @NotNull
-    long max;
+    Period period;
 
 }

@@ -7,17 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The type Get number of searches model.
+ * The type Most popular organisations model.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetNumberOfSearchesModel {
-
-    /**
-     * The Ds sources group.
-     */
-    DsSourcesGroup dsSourcesGroup;
+public class MostPopularOrganisationsModel {
 
     /**
      * The Period.
@@ -26,15 +21,9 @@ public class GetNumberOfSearchesModel {
     Period period;
 
     /**
-     * The Interval.
+     * The Size.
      */
     @NotNull
-    String interval;
-
-    /**
-     * The Min doc count.
-     */
-    @NotNull
-    int minDocCount;
+    int size;
 
 }

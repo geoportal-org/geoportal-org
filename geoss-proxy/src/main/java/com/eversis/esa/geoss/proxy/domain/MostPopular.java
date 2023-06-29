@@ -20,6 +20,6 @@ public class MostPopular {
     /**
      * The Doc count.
      */
-    int docCount;
+    long docCount;
 
 }
