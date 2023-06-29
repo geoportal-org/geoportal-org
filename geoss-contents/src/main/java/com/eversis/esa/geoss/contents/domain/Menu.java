@@ -59,7 +59,6 @@ public class Menu extends AuditableEntity {
     @Schema(ref = AnnotationsUtils.COMPONENTS_REF + "MenuLocalizedImageTitle")
     @Valid
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 255, message = "{validation.title}")
     @ElementCollection
     @CollectionTable(name = "menu_image_title")
     @MapKeyColumn(name = "locale")
