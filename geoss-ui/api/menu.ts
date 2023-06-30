@@ -48,17 +48,20 @@ interface MenuResponse {
 
 interface Level2Route {
     link: string
-    title: string
+    title: string | any
 }
 
 interface Level1Route {
     imgURL: string
     link: string | null
     links: Array<Level2Route>
-    title: string
+    title: string | any
 }
 
 interface Routes extends Array<Level1Route> {}
+
+type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh';
+const locale: Language = 'en';
 
 const getId = (element: MenuElement) => {
     return element._links.self.href.split('/').pop()
@@ -75,7 +78,7 @@ const buildMenu = (menu: Array<MenuElement>) => {
     for (const link of linksLevel1) {
         const routeLevel1: Level1Route = {
             imgURL: link.imageSource,
-            title: link.title,
+            title: link.title[locale as keyof Language],
             link: link.url || null,
             links: [],
         }
@@ -85,7 +88,7 @@ const buildMenu = (menu: Array<MenuElement>) => {
             for (const child of children) {
                 const routeLevel2: Level2Route = {
                     link: child.url,
-                    title: child.title,
+                    title: child.title[locale as keyof Language],
                 }
                 routeLevel1.links.push(routeLevel2)
             }

@@ -2,7 +2,7 @@ import apiClient from './apiClient'
 import geossContents from './module/geoss-contents'
 
 interface Page {
-    title: string
+    title: string | any
     description: string
     contentId: number
     slug: string
@@ -45,8 +45,8 @@ interface Pages {
 }
 
 interface Content {
-    title: string
-    data: string
+    title: string | any
+    data: string | any
     published: boolean
     createdBy: string
     createdDate: string
@@ -61,6 +61,9 @@ interface Content {
         }
     }
 }
+
+type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh';
+const locale: Language = 'en';
 
 const getPages = () => {
     return apiClient.$get(geossContents.page)
@@ -94,6 +97,9 @@ export default {
         const page: Page = pages._embedded.page.filter(
             (page: { slug: string }) => page.slug === slug
         )[0]
+        const title = page.title[locale as keyof Language];
+        page.title = title;
+
         return page
     },
 
@@ -101,6 +107,13 @@ export default {
         const content: Content = await apiClient.$get(
             geossContents.content + '/' + contentId
         )
+
+        const title = content.title[locale as keyof Language];
+        const data = content.data[locale as keyof Language];
+
+        content.title = title;
+        content.data = data;
+
         return content
     },
 
