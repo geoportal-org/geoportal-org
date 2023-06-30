@@ -412,117 +412,54 @@
         </createTable>
     </changeSet>
     <changeSet author="Eversis" id="24">
-        <addPrimaryKey columnNames="rev, id" constraintName="PRIMARY" tableName="content_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="25">
-        <addPrimaryKey columnNames="content_id, rev" constraintName="PRIMARY" tableName="content_data_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="26">
-        <addPrimaryKey columnNames="content_id, rev" constraintName="PRIMARY" tableName="content_title_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="27">
-        <addPrimaryKey columnNames="rev, id" constraintName="PRIMARY" tableName="document_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="28">
-        <addPrimaryKey columnNames="rev, id" constraintName="PRIMARY" tableName="folder_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="29">
-        <addPrimaryKey columnNames="rev, id" constraintName="PRIMARY" tableName="menu_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="30">
-        <addPrimaryKey columnNames="menu_id, rev" constraintName="PRIMARY" tableName="menu_image_title_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="31">
-        <addPrimaryKey columnNames="menu_id, rev" constraintName="PRIMARY" tableName="menu_title_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="32">
-        <addPrimaryKey columnNames="rev, id" constraintName="PRIMARY" tableName="page_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="33">
-        <addPrimaryKey columnNames="page_id, rev" constraintName="PRIMARY" tableName="page_description_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="34">
-        <addPrimaryKey columnNames="page_id, rev" constraintName="PRIMARY" tableName="page_title_aud"/>
-    </changeSet>
-    <changeSet author="Eversis" id="35">
-        <createIndex indexName="FK69uyuh29swqlngneqcpbsgvin" tableName="content_title_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="36">
-        <createIndex indexName="FK8rrb6qubkq757jgqpklfco1f6" tableName="menu_image_title_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="37">
-        <createIndex indexName="FKervvvaurd8xuxs1x24ky0hgbo" tableName="menu_title_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="38">
-        <createIndex indexName="FKjnsdemt6qgs3940fsmtdic9a0" tableName="content_data_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="39">
-        <createIndex indexName="FKqu8dls6a9sg41yy7okqp5k6ew" tableName="page_title_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="40">
-        <createIndex indexName="FKrvhqh3wnin27luwuvfmc17dkh" tableName="page_description_aud">
-            <column name="rev"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Eversis" id="41">
         <addForeignKeyConstraint baseColumnNames="menu_id" baseTableName="menu_title" constraintName="FK1al9t69xn6hb95wrvafp74tr5" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menu" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="42">
+    <changeSet author="Eversis" id="25">
         <addForeignKeyConstraint baseColumnNames="content_id" baseTableName="content_title" constraintName="FK3lk4hqrssuwn665emgw0emqyr" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="content" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="43">
+    <changeSet author="Eversis" id="26">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_aud" constraintName="FK4r7t931m6wx6g62rqs95ekvdy" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="44">
+    <changeSet author="Eversis" id="27">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_title_aud" constraintName="FK69uyuh29swqlngneqcpbsgvin" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="45">
+    <changeSet author="Eversis" id="28">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_image_title_aud" constraintName="FK8rrb6qubkq757jgqpklfco1f6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="46">
+    <changeSet author="Eversis" id="29">
         <addForeignKeyConstraint baseColumnNames="menu_id" baseTableName="menu_image_title" constraintName="FKb3lj1476d2ux89xhss8ttrbmm" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menu" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="47">
+    <changeSet author="Eversis" id="30">
         <addForeignKeyConstraint baseColumnNames="content_id" baseTableName="content_data" constraintName="FKc1y0cr4csmnvqjs419i1n5wnp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="content" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="48">
+    <changeSet author="Eversis" id="31">
         <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="page_description" constraintName="FKcf1mlr5nxcxirw83hfnagpyjq" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="page" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="49">
+    <changeSet author="Eversis" id="32">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_aud" constraintName="FKeka5ryqgigvtp51k8vaofd1w4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="50">
+    <changeSet author="Eversis" id="33">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_title_aud" constraintName="FKervvvaurd8xuxs1x24ky0hgbo" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="51">
+    <changeSet author="Eversis" id="34">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_aud" constraintName="FKfdfpl2qrgndrwh3f5wlmasi8a" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="52">
+    <changeSet author="Eversis" id="35">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_data_aud" constraintName="FKjnsdemt6qgs3940fsmtdic9a0" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="53">
+    <changeSet author="Eversis" id="36">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="document_aud" constraintName="FKnb1mvvdy2r5eufnxnwv45tu20" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="54">
+    <changeSet author="Eversis" id="37">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="folder_aud" constraintName="FKooxuwgiq2flx6hbh2mu3mco03" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="55">
+    <changeSet author="Eversis" id="38">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_title_aud" constraintName="FKqu8dls6a9sg41yy7okqp5k6ew" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="56">
+    <changeSet author="Eversis" id="39">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_description_aud" constraintName="FKrvhqh3wnin27luwuvfmc17dkh" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="57">
+    <changeSet author="Eversis" id="40">
         <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="page_title" constraintName="FKt0sfaar4jmjo09o8fginqpces" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="page" validate="true"/>
     </changeSet>
 </databaseChangeLog>
