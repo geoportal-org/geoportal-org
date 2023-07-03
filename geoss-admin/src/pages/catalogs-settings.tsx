@@ -1,9 +1,6 @@
 import { NextPage } from "next";
 import { CatalogsSettings as CatalogsSettingsPage } from "@/components";
-import { ProtectedNextPage } from "@/types";
 
-const CatalogsSettings: ProtectedNextPage = () => <CatalogsSettingsPage />;
-
-CatalogsSettings.auth = true;
+const CatalogsSettings: NextPage = () => <CatalogsSettingsPage />;
 
 export default CatalogsSettings;

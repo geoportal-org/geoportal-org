@@ -1,4 +1,5 @@
 import { FetcherData, QueryParams } from "@/types";
+import { getSession } from "next-auth/react";
 
 export const fetcher = async ({
     url,
@@ -8,12 +9,20 @@ export const fetcher = async ({
     headers = {},
     query,
 }: FetcherData): Promise<any> => {
+    const session = await getSession();
+
     const options: RequestInit = {
         method,
         ...(!(body instanceof FormData) && {
             headers: new Headers({
                 "Content-Type": "application/json",
-                Authorization: "Basic dXNlcjpxYXoxMjM=",
+                Authorization: `Bearer ${session?.accessToken}`,
+                ...headers,
+            }),
+        }),
+        ...(body instanceof FormData && {
+            headers: new Headers({
+                Authorization: `Bearer ${session?.accessToken}`,
                 ...headers,
             }),
         }),
@@ -40,7 +49,6 @@ export const fetcher = async ({
     const errorResponse =
         contentType && contentType.indexOf("application/json") !== -1 ? await response.json() : await response.text();
 
-    //return Promise.reject(errorResponse);
     return Promise.reject({ errorInfo: errorResponse, errorStatus: response.status });
 };
 

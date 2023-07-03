@@ -18,8 +18,8 @@ export interface IPage {
 }
 
 export interface IPageData {
-    title: string;
-    description: string;
+    title: TranslatedData;
+    description: TranslatedData;
     contentId: number;
     slug: string;
     published: boolean;

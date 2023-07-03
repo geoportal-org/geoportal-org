@@ -1,4 +1,5 @@
 export { ApiSettings } from "./ApiSettings/ApiSettings";
+export { AuthGuard } from "./AuthGuard/AuthGuard";
 export { CatalogsSettings } from "./CatalogsSettings/CatalogsSettings";
 export { Contents } from "./Contents/Contents";
 export { CustomError } from "./CustomError/CustomError";
@@ -31,6 +32,7 @@ export { TablePagination } from "./TablePagination/TablePagination";
 export { TextContent } from "./TextContent/TextContent";
 export { TextEditor } from "./TextEditor/TextEditor";
 export { TextInfo } from "./TextInfo/TextInfo";
+export { TranslationSwitcher } from "./TranslationSwitcher/TranslationSwitcher";
 export { TutorialTagsSettings } from "./TutorialTagsSettings/TutorialTagsSettings";
 export { Uploader } from "./Uploader/Uploader";
 export { ViewsSettings } from "./ViewsSettings/ViewsSettings";

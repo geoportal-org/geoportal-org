@@ -1,8 +1,9 @@
 import { ILink, IPagination, IResponseLinks } from "@/types/models";
+import { TranslatedData } from "@/types";
 
 export interface IMenuItem {
-    title: string;
-    imageTitle: string;
+    title: TranslatedData;
+    imageTitle: TranslatedData;
     imageSource: string;
     url: string;
     priority: number;
@@ -37,8 +38,8 @@ export interface IFoundMenuList {
 }
 
 export interface IMenuItemData {
-    title: string;
-    imageTitle: string;
+    title: TranslatedData;
+    imageTitle: TranslatedData;
     imageSource: string;
     url: string;
     priority: number;

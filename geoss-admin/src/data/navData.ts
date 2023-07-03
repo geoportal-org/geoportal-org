@@ -75,11 +75,11 @@ const navContentsData: NavItem[] = [
 ];
 
 const navProfileData: NavItem[] = [
-    {
+    /*{
         titleId: "nav.profile.section.profile",
         href: pagesRoutes.myProfile,
         Icon: ProfileIcon,
-    },
+    },*/
     {
         titleId: "nav.profile.section.logout",
         Icon: LogoutIcon,
@@ -93,7 +93,7 @@ const navProfileData: NavItem[] = [
 export const navData: NavSection[] = [
     { titleId: "nav.contents.title", items: navContentsData },
     { titleId: "nav.settings.title", items: navSettingsData },
-    /*{ titleId: "nav.profile.title", items: navProfileData },*/
+    { titleId: "nav.profile.title", items: navProfileData },
 ];
 
 export const navSectionsUrls = [

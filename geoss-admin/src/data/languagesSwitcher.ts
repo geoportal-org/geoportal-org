@@ -1,3 +1,5 @@
+import { LocaleNames } from "@/types";
+
 export const languagesSwitcher = [
     {
         title: "English (US)",
@@ -30,3 +32,5 @@ export const languagesSwitcher = [
         locale: "ru",
     },
 ];
+
+export const defaultUsedLang: LocaleNames = "en";

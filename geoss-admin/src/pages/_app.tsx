@@ -1,22 +1,18 @@
-import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { IntlProvider } from "react-intl";
 import { ChakraProvider } from "@chakra-ui/react";
-import { Fonts, Layout } from "@/components";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
+import { Fonts, Layout, AuthGuard } from "@/components";
 import { flattenMessages } from "@/utils/helpers";
 import { contentMessages } from "@/content";
 import geossTheme from "@/theme";
-//import { SessionProvider } from "next-auth/react";
-//import { Session } from "next-auth";
+import { CustomAppProps } from "@/types";
+import { defaultUsedLang } from "@/data";
 
-/*interface CustomAppProps<P = {}> {
-    Component: AppProps["Component"] & { auth: boolean };
-    pageProps: AppProps["pageProps"] & P;
-}*/
-
-const App = ({ Component, pageProps }: /*CustomAppProps<{ session: Session }>)*/ AppProps) => {
+const App = ({ Component, pageProps }: CustomAppProps<{ session: Session }>) => {
     const { locale } = useRouter();
     const [shortLocale] = locale ? locale.split("-") : ["en"];
 
@@ -33,21 +29,25 @@ const App = ({ Component, pageProps }: /*CustomAppProps<{ session: Session }>)*/
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <IntlProvider locale={shortLocale} messages={textContent} defaultLocale="en" onError={() => null}>
+            <IntlProvider
+                locale={shortLocale}
+                messages={textContent}
+                defaultLocale={defaultUsedLang}
+                onError={() => null}
+            >
                 <ChakraProvider theme={geossTheme}>
                     <Fonts />
-                    {/*<SessionProvider session={pageProps.session}>*/}
-                    <Layout>
-                        <Component {...pageProps} />
-                        {/*Component.auth ? (
+                    <SessionProvider session={pageProps.session}>
+                        <Layout>
+                            {!Component.nonAuth ? (
                                 <AuthGuard>
                                     <Component {...pageProps} />
                                 </AuthGuard>
                             ) : (
                                 <Component {...pageProps} />
-                            )*/}
-                    </Layout>
-                    {/*</SessionProvider>*/}
+                            )}
+                        </Layout>
+                    </SessionProvider>
                 </ChakraProvider>
             </IntlProvider>
         </>

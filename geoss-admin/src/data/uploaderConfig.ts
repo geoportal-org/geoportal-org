@@ -34,7 +34,7 @@ export const uploaderConfig = {
         "image/jpeg": [".jpeg", ".jpg"],
         "image/png": [".png"],
         "image/svg+xml": [".svg"],
-        "image/tiff": [".tiff", ".tif"],
+        //"image/tiff": [".tiff", ".tif"],
         "text/css": [".css"],
         "text/html": [".htm", ".html"],
         "text/javascript": [".js"],

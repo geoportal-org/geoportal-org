@@ -3,7 +3,7 @@ import { Formik, FormikValues } from "formik";
 import { Flex } from "@chakra-ui/react";
 import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent, TextInfo } from "@/components";
 import { FileRepositoryService, WebSettingsService } from "@/services/api";
-import { ButtonType, SelectSettings, ToastStatus } from "@/types";
+import { ButtonType, LocaleNames, SelectSettings, ToastStatus } from "@/types";
 import {
     areObjectsEqual,
     createWebSettingsKeyValues,
@@ -18,6 +18,7 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import { IWebSetting, IWebSettingData } from "@/types/models";
 import { acceptedLogoExtensions, initRepositoryPagination } from "@/data";
 import { webSettingsForm, webSettingsFormFields } from "@/data/forms";
+import { useIntl } from "react-intl";
 
 export const WebSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,7 @@ export const WebSettings = () => {
     const [documentsList, setDocumentsList] = useState<SelectSettings>();
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
+    const { locale } = useIntl();
 
     const getCurrentWebSettings = useCallback(async () => {
         try {
@@ -52,7 +54,9 @@ export const WebSettings = () => {
                     _embedded: { document },
                 } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
                 const selectDocumentsList = createSelectItemsList(
-                    document.filter(({ extension }) => acceptedLogoExtensions.includes(extension))
+                    document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
+                    false,
+                    locale as LocaleNames
                 );
                 setDocumentsList(() => selectDocumentsList);
             } catch (e) {
@@ -61,6 +65,7 @@ export const WebSettings = () => {
             }
         };
         getDocumentsList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

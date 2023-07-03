@@ -12,17 +12,19 @@ import { MenuService } from "@/services/api";
 import {
     areObjectsArraysEqual,
     getIdFromUrl,
+    isTranslatedValueAdded,
     setDecisionModalActions,
     setExistingFormValues,
     sortMenuList,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { ModalAction, MovedItemData, MovedItemInfo, ToastStatus } from "@/types";
+import { LocaleNames, ModalAction, MovedItemData, MovedItemInfo, ToastStatus } from "@/types";
 import { IMenuItem, IMenuItemData } from "@/types/models";
-import { initMenuPagination } from "@/data";
+import { defaultUsedLang, initMenuPagination } from "@/data";
 import { addChildMenuItemForm, addMenuItemForm } from "@/data/forms";
 import styles from "./MenuContent.module.css";
+import { useIntl } from "react-intl";
 
 export const MenuContent = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +44,7 @@ export const MenuContent = () => {
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
+    const { locale } = useIntl();
 
     useEffect(() => {
         getMenuList();
@@ -194,7 +197,7 @@ export const MenuContent = () => {
     };
 
     const onDeleteAction = (menuItem: NodeModel<IMenuItem>) => {
-        const title = menuItem.data ? menuItem.data.title : "";
+        const title = menuItem.data ? menuItem.data.title[(locale as LocaleNames) || defaultUsedLang] : "";
         setModalContent({
             header: translate("pages.menu.delete-title"),
             body: (
@@ -227,7 +230,12 @@ export const MenuContent = () => {
             }
         });
         const itemsIdToDelete = itemChildren.concat(menuItem).map((item) => +item.id);
-        deleteMenuItems(itemsIdToDelete, newItemList, menuItem.data.title, updatePromises);
+        deleteMenuItems(
+            itemsIdToDelete,
+            newItemList,
+            menuItem.data.title[(locale as LocaleNames) || defaultUsedLang],
+            updatePromises
+        );
     };
 
     const deleteMenuItems = async (
@@ -257,41 +265,57 @@ export const MenuContent = () => {
         values: FormikValues,
         actions: FormikHelpers<FormikValues>,
         setInitValues: Dispatch<SetStateAction<FormikValues>>,
+        currentLang: LocaleNames,
         menuItemId?: number
     ) =>
         menuItemId !== undefined
-            ? await updateMenuItem(values, menuItemId, setInitValues, parentMenuId)
-            : await createMenuItem(parentMenuId, values, actions);
+            ? await updateMenuItem(values, menuItemId, setInitValues, parentMenuId, currentLang)
+            : await createMenuItem(parentMenuId, values, actions, currentLang);
 
     const updateMenuItem = async (
         values: FormikValues,
         menuItemId: number,
         setInitValues: Dispatch<SetStateAction<FormikValues>>,
-        parentMenuId: number
+        parentMenuId: number,
+        currentLang: LocaleNames
     ) => {
         const isMainMenuItem = parentMenuId === 0;
-        const menuItemData = getUpdatedItemData(values);
+        const menuItemData = getUpdatedItemData(values, isMainMenuItem, currentLang);
+
         try {
             const updatedMenuItem = await MenuService.updateMenuItem(menuItemData, menuItemId);
             setMenuList((menuList) =>
                 menuList.map((menuItem) =>
                     menuItem.data && +getIdFromUrl(menuItem.data._links.self.href) === menuItemId
-                        ? { ...menuItem, text: updatedMenuItem.title, data: updatedMenuItem }
+                        ? {
+                              ...menuItem,
+                              text: updatedMenuItem.title[(locale as LocaleNames) || defaultUsedLang],
+                              data: updatedMenuItem,
+                          }
                         : menuItem
                 )
             );
-            setInitValues(setExistingFormValues(isMainMenuItem ? addMenuItemForm : addChildMenuItemForm, values));
+            setInitValues(setExistingFormValues(isMainMenuItem ? addMenuItemForm : addChildMenuItemForm, menuItemData));
             showToast({
                 title: translate("general.updated"),
-                description: translate("pages.menu.updated-item", { title: updatedMenuItem.title }),
+                description: translate("pages.menu.updated-item", {
+                    title: updatedMenuItem.title[(locale as LocaleNames) || defaultUsedLang],
+                }),
             });
         } catch (e) {
             showErrorInfo("pages.menu.update-item-error");
         }
     };
 
-    const createMenuItem = async (parentMenuId: number, values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        const menuItemData = getNewItemData(parentMenuId, values);
+    const createMenuItem = async (
+        parentMenuId: number,
+        values: FormikValues,
+        actions: FormikHelpers<FormikValues>,
+        currentLang: LocaleNames
+    ) => {
+        const isMainMenuItem = parentMenuId === 0;
+        const menuItemData = getNewItemData(parentMenuId, values, currentLang, isMainMenuItem);
+
         try {
             const addedMenuItem = await MenuService.createMenuItem(menuItemData);
             const newMenuItem = createMenuListItem(addedMenuItem, parentMenuId);
@@ -299,22 +323,57 @@ export const MenuContent = () => {
             actions.resetForm();
             showToast({
                 title: translate("general.created"),
-                description: translate("pages.menu.created", { title: addedMenuItem.title }),
+                description: translate("pages.menu.created", {
+                    title: addedMenuItem.title[(locale as LocaleNames) || defaultUsedLang],
+                }),
             });
         } catch (e) {
             showErrorInfo("pages.menu.create-error");
         }
     };
 
-    const getUpdatedItemData = (values: FormikValues): Omit<IMenuItemData, "levelId" | "priority" | "parentMenuId"> => {
+    const getUpdatedItemData = (
+        values: FormikValues,
+        isMainMenuItem: boolean,
+        currentLang: LocaleNames
+    ): Omit<IMenuItemData, "levelId" | "priority" | "parentMenuId"> => {
+        const currentForm = isMainMenuItem ? addMenuItemForm : addChildMenuItemForm;
+        currentForm.forEach(({ translationInfo, type }) => {
+            if (!translationInfo) {
+                return;
+            }
+            const { genericName, translation } = translationInfo;
+            const defaultTranslation = values[genericName][defaultUsedLang] ? defaultUsedLang : currentLang;
+            if (isTranslatedValueAdded(translationInfo, type, values)) {
+                return;
+            }
+            values[genericName][translation] = values[genericName][defaultTranslation];
+        });
         const { title, imageTitle, imageSource, url } = values;
         return { title, imageTitle, imageSource, url };
     };
 
-    const getNewItemData = (parentMenuId: number, values: FormikValues): IMenuItemData => {
-        const { title, imageTitle = "", imageSource = "", url } = values;
+    const getNewItemData = (
+        parentMenuId: number,
+        values: FormikValues,
+        currentLang: LocaleNames,
+        isMainMenuItem: boolean
+    ): IMenuItemData => {
+        const currentForm = isMainMenuItem ? addMenuItemForm : addChildMenuItemForm;
+        currentForm.forEach(({ translationInfo, type }) => {
+            if (!translationInfo) {
+                return;
+            }
+            const { genericName, translation } = translationInfo;
+            const defaultTranslation = values[genericName][defaultUsedLang] ? defaultUsedLang : currentLang;
+            if (isTranslatedValueAdded(translationInfo, type, values)) {
+                return;
+            }
+            values[genericName][translation] = values[genericName][defaultTranslation];
+        });
         const levelId = parentMenuId === 0 ? 0 : 1;
         const priority = getNewItemPriority(parentMenuId);
+        const { title, imageTitle = {}, imageSource = "", url } = values;
         return { title, imageTitle, imageSource, url, levelId, parentMenuId, priority };
     };
 
@@ -326,7 +385,7 @@ export const MenuContent = () => {
         return {
             id,
             parent,
-            text: menuItem.title,
+            text: menuItem.title[(locale as LocaleNames) || defaultUsedLang],
             droppable: parent === 0,
             data: menuItem,
         };

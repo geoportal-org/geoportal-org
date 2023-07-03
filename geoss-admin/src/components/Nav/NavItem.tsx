@@ -1,6 +1,6 @@
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-//import { signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Box, Button, Link, ListItem } from "@chakra-ui/react";
 import { TextContent } from "@/components";
 import { NavItemProps, ToastStatus } from "@/types";
@@ -15,7 +15,7 @@ export const NavItem = ({ item, onNavClose }: NavItemProps) => {
     const { showToast } = useCustomToast();
     const isActiveRoute = `/${router.pathname.split("/")[1]}` === href;
 
-    /*const setNavButtonAction = () => {
+    const setNavButtonAction = () => {
         switch (action?.name) {
             case "logout":
                 handleUserLogout();
@@ -34,7 +34,7 @@ export const NavItem = ({ item, onNavClose }: NavItemProps) => {
             title: translate("general.error"),
             description: translate("information.error.logout"),
             status: ToastStatus.ERROR,
-        });*/
+        });
 
     return (
         <Box
@@ -75,12 +75,12 @@ export const NavItem = ({ item, onNavClose }: NavItemProps) => {
                     <TextContent id={titleId} />
                 </Link>
             )}
-            {/*!href && action && (
+            {!href && action && (
                 <Button variant="geossNavButton" aria-label={translate(action.id)} onClick={setNavButtonAction}>
                     <Icon color="currentColor" />
                     <TextContent id={titleId} />
                 </Button>
-            )*/}
+            )}
         </Box>
     );
 };

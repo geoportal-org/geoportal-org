@@ -16,8 +16,8 @@ export interface IContent {
 }
 
 export interface IContentData {
-    title: string;
-    data: string;
+    title: TranslatedData;
+    data: TranslatedData;
     published: boolean;
 }
 

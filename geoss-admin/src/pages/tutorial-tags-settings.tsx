@@ -1,9 +1,6 @@
 import { NextPage } from "next";
 import { TutorialTagsSettings as TutorialTagsSettingsPage } from "@/components";
-import { ProtectedNextPage } from "@/types";
 
-const TutorialTagsSettings: ProtectedNextPage = () => <TutorialTagsSettingsPage />;
-
-TutorialTagsSettings.auth = true;
+const TutorialTagsSettings: NextPage = () => <TutorialTagsSettingsPage />;
 
 export default TutorialTagsSettings;

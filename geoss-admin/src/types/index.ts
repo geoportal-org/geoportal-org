@@ -14,7 +14,7 @@ export type {
     FileRepositoryFileInfoProps,
     FileRepositoryManageFileProps,
 } from "./components/FileRepository";
-export type { FormField, FormFieldSelect, SelectSettings, FormSection } from "./data/formField";
+export type { FormField, FormFieldSelect, SelectSettings, FormSection, TranslationInfo } from "./data/formField";
 export type { LocaleNames, TranslatedData } from "./data/localeData";
 export type { FormFieldProps } from "./components/FormField";
 export type { HeaderProps } from "./components/Header";
@@ -57,4 +57,7 @@ export type { TablePaginationProps } from "./components/TablePagination";
 export type { TextInfoProps } from "./components/TextInfo";
 export type { FormSectionProps } from "./components/FormSection";
 export type { ViewsSettingsExpandControllerProps, FormattedView, EditedViewInfo } from "./components/ViewsSettings";
-export type { ProtectedNextPage } from "./pages/ProtectedNextPage";
+export type { AuthGuardProps } from "./components/AuthGuard";
+export type { CustomAppProps } from "./pages/CustomAppProps";
+export type { TranslationSwitcherProps } from "./components/TranslationSwitcher";
+export type { NonProtectedNextPage } from "./pages/NonProtectedNextPage";

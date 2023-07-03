@@ -14,12 +14,13 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { TutorialTagsSettingsManage } from "./TutorialTagsSettingsManage";
 import { TutorialTagsService } from "@/services/api";
 import { TutorialTagsContext } from "@/context";
-import { cutString, setTableSorting } from "@/utils/helpers";
+import { cutString, isTranslatedValueAdded, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { TableActionsSource, ToastStatus } from "@/types";
+import { LocaleNames, TableActionsSource, ToastStatus } from "@/types";
 import { ITutorialTag, ITutorialTagData } from "@/types/models";
-import { initPagination } from "@/data";
+import { defaultUsedLang, initPagination } from "@/data";
+import { addTutorialTagForm } from "@/data/forms";
 
 export const TutorialTagsSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -77,8 +78,12 @@ export const TutorialTagsSettings = () => {
         onSideBarOpen();
     };
 
-    const addNewTag = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        const tagData = getTagData(values);
+    const addNewTag = async (
+        values: FormikValues,
+        actions: FormikHelpers<FormikValues>,
+        currentTranslation: LocaleNames
+    ) => {
+        const tagData = getTagData(values, currentTranslation);
         try {
             const {
                 title: { en: tagTitle },
@@ -92,14 +97,17 @@ export const TutorialTagsSettings = () => {
         } catch (e) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-tag-id" : "new-tag");
         }
     };
 
-    const updateTag = async (values: FormikValues, id: number, updateFormState: (values: FormikValues) => void) => {
-        const tagData = getTagData(values);
+    const updateTag = async (
+        values: FormikValues,
+        id: number,
+        updateFormState: (values: FormikValues) => void,
+        currentTranslation: LocaleNames
+    ) => {
+        const tagData = getTagData(values, currentTranslation);
         try {
             await TutorialTagsService.updateTag(id, tagData);
             const updatedTag = await TutorialTagsService.getTag(id);
@@ -112,13 +120,23 @@ export const TutorialTagsSettings = () => {
         } catch (e) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-tag-id-update" : "updated-tag");
         }
     };
 
-    const getTagData = (values: FormikValues): ITutorialTagData => {
+    const getTagData = (values: FormikValues, currentTranslation: LocaleNames): ITutorialTagData => {
+        addTutorialTagForm.forEach(({ translationInfo, type }) => {
+            if (!translationInfo) {
+                return;
+            }
+            const { genericName, translation } = translationInfo;
+            const defaultTranslation = values[genericName][defaultUsedLang] ? defaultUsedLang : currentTranslation;
+            if (isTranslatedValueAdded(translationInfo, type, values)) {
+                return;
+            }
+            values[genericName][translation] = values[genericName][defaultTranslation];
+        });
+
         const { name, show, type, placement, title, description } = values;
         const isVisible = show === "true";
         return {
@@ -126,15 +144,8 @@ export const TutorialTagsSettings = () => {
             show: isVisible,
             type,
             placement,
-            title: { ru: title, en: title, fr: title, pl: title, es: title, zh: title },
-            description: {
-                ru: description,
-                en: description,
-                fr: description,
-                pl: description,
-                es: description,
-                zh: description,
-            },
+            title,
+            description,
         };
     };
 

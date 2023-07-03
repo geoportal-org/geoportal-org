@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { DragHandleIcon } from "@chakra-ui/icons";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { menuItemControls } from "@/data";
-import { ControlType, MenuContentItemProps } from "@/types";
+import { defaultUsedLang, menuItemControls } from "@/data";
+import { ControlType, LocaleNames, MenuContentItemProps } from "@/types";
+import { useIntl } from "react-intl";
 
 export const MenuContentItem = ({
     node,
@@ -15,6 +16,7 @@ export const MenuContentItem = ({
     onEditAction,
 }: MenuContentItemProps) => {
     const { translate } = useFormatMsg();
+    const { locale } = useIntl();
 
     useEffect(() => {
         openAll();
@@ -60,7 +62,7 @@ export const MenuContentItem = ({
                 <DragHandleIcon boxSize={5} transitionDuration="normal" />
             </Flex>
             <Text flexGrow={1} textOverflow="ellipsis" whiteSpace="nowrap" overflow="hidden">
-                {node.text}
+                {node.data?.title[(locale as LocaleNames) || defaultUsedLang]}
             </Text>
             <Flex>
                 {menuItemControls.map((btn) => {

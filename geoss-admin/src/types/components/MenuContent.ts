@@ -3,6 +3,7 @@ import { FormikHelpers, FormikValues } from "formik";
 import { DragLayerMonitorProps } from "@minoru/react-dnd-treeview";
 import { NodeModel } from "@minoru/react-dnd-treeview/dist/types";
 import { IMenuItem } from "@/types/models";
+import { LocaleNames } from "@/types";
 
 export type MenuContentItemProps = {
     node: NodeModel<IMenuItem>;
@@ -26,6 +27,7 @@ export type MenuContentManageProps = {
         values: FormikValues,
         actions: FormikHelpers<FormikValues>,
         setInitValues: Dispatch<SetStateAction<FormikValues>>,
+        currentLang: LocaleNames,
         menuItemId?: number
     ) => Promise<void>;
     isMainMenuItem: boolean;

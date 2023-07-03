@@ -1,4 +1,4 @@
-import { FormikValues } from "formik";
+import { FormikTouched, FormikValues } from "formik";
 import { NodeModel } from "@minoru/react-dnd-treeview";
 import { SortingState, Table } from "@tanstack/react-table";
 import {
@@ -10,9 +10,11 @@ import {
     NestedMsgs,
     SelectSettings,
     FormattedView,
+    LocaleNames,
+    TranslationInfo,
 } from "@/types";
 import { IApiSetting, IContent, IDocument, IFolder, IMenuItem, IView, IWebSetting } from "@/types/models";
-import { navSectionsUrls } from "@/data";
+import { defaultUsedLang, navSectionsUrls } from "@/data";
 import { apiSettingsForm, webSettingsForm } from "@/data/forms";
 
 export const getActiveNavSection = (activeRoute: string): number => {
@@ -52,13 +54,22 @@ export const getIdFromUrl = (url: string): string => url.split("/").reverse()[0]
 export const cutString = (text: string, maxChars: number): string =>
     text.length > maxChars ? `${text.slice(0, maxChars)}...` : text;
 
-export const getFileInformation = (file: IDocument, locale: string): { labelId: string; value: string }[] => {
+export const generateFileLink = (fileId: string): string =>
+    `${process.env.NEXT_PUBLIC_APP_URL}/contents/rest/document/${fileId}/content`;
+
+export const getFileInformation = (
+    file: IDocument,
+    locale: string
+): { labelId: string; value: string; isLink: boolean }[] => {
     const { _links, modifiedBy, folderId, path, ...fileInfo } = file;
-    return Object.keys(fileInfo).map((key) => ({
+    const fileId = getIdFromUrl(_links.self.href);
+    const extendedFileInfo = { ...fileInfo, link: generateFileLink(fileId) };
+    return Object.keys(extendedFileInfo).map((key) => ({
         labelId: `pages.file-repository.file-${key}`,
         value: !key.toLowerCase().includes("date")
-            ? fileInfo[key as keyof typeof fileInfo]
-            : convertIsoDate(fileInfo[key as keyof typeof fileInfo], locale),
+            ? extendedFileInfo[key as keyof typeof extendedFileInfo]
+            : convertIsoDate(extendedFileInfo[key as keyof typeof extendedFileInfo], locale),
+        isLink: key === "link",
     }));
 };
 
@@ -79,13 +90,35 @@ export const setDecisionModalActions = (confirmAction: () => void, cancelAction:
 
 export const setFormInitialValues = (formFields: FormField[]): FormikValues => {
     const initialValues: FormikValues = {};
-    formFields.forEach((field) => (initialValues[field.name] = field.defaultValue || ""));
+    formFields.forEach((field) => {
+        const keys = field.name.includes(".") ? field.name.split(".") : [field.name];
+        if (keys.length === 1) {
+            initialValues[field.name] = field.defaultValue || "";
+        }
+        if (keys.length === 2) {
+            if (!initialValues[keys[0]]) {
+                initialValues[keys[0]] = {};
+            }
+            initialValues[keys[0]][keys[1]] = field.defaultValue || "";
+        }
+    });
     return initialValues;
 };
 
 export const setExistingFormValues = (formFields: FormField[], values: FormikValues): FormikValues => {
     const existingValues: FormikValues = {};
-    formFields.forEach((field) => (existingValues[field.name] = values[field.name].toString()));
+    formFields.forEach((field) => {
+        if (!field.translationInfo) {
+            existingValues[field.name] = values[field.name].toString();
+        }
+        if (field.translationInfo) {
+            const { translation, genericName } = field.translationInfo;
+            if (!existingValues[genericName]) {
+                existingValues[genericName] = {};
+            }
+            existingValues[genericName][translation] = values[genericName][translation].toString();
+        }
+    });
     return existingValues;
 };
 
@@ -103,12 +136,15 @@ export const generatePath = (breadcrumb: BreadcrumbItem[]): string =>
 
 export const createSelectItemsList = (
     items: IContent[] | IDocument[],
-    isMultiselect: boolean = false
+    isMultiselect: boolean = false,
+    currentLanguage: LocaleNames
 ): SelectSettings => {
     const options = items.map((item) => {
         const isDocument = "extension" in item;
         const itemId = getIdFromUrl(item._links.self.href);
-        const label = isDocument ? `${item.title} (${item.fileName})` : `${item.title} (ID: ${itemId})`;
+        const label = isDocument
+            ? `${item.title} (${item.fileName})`
+            : `${item.title[currentLanguage]} (ID: ${itemId})`;
         return {
             label,
             value: itemId,
@@ -121,14 +157,47 @@ export const createSelectItemsList = (
 };
 
 export const createSlug = (value: string): string =>
-    value.trim().toLowerCase().replace(/\s\s+/g, " ").replaceAll(" ", "-");
+    value
+        .trim()
+        .toLowerCase()
+        .replace(/\s\s+/g, " ")
+        .replaceAll(" ", "-")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replaceAll("ł", "l")
+        .replace(/-{2,}/g, "-");
 
 export const createRelativeUrl = (value: string): string => `/${createSlug(value)}`;
 
-export const createTouchedForm = (formFields: FormField[]): { [index: string]: boolean } => {
-    const touchedForm: { [index: string]: boolean } = {};
-    formFields.forEach((field) => (touchedForm[field.name] = true));
+export const createTouchedForm = (formFields: FormField[]): FormikTouched<FormikValues> => {
+    const touchedForm: FormikTouched<FormikValues> = {};
+    formFields.forEach((field) => {
+        if (!field.translationInfo) {
+            touchedForm[field.name] = true;
+        }
+        if (field.translationInfo) {
+            const { translation, genericName } = field.translationInfo;
+            if (!touchedForm[genericName]) {
+                touchedForm[genericName] = {};
+            }
+            (touchedForm[genericName] as any)[translation] = true;
+        }
+    });
     return touchedForm;
+};
+
+export const isTranslatedValueAdded = (
+    translationInfo: TranslationInfo,
+    fieldType: string | undefined,
+    values: FormikValues
+): boolean => {
+    const { genericName, translation } = translationInfo;
+    return (
+        (fieldType !== "editor" && values[genericName][translation]) ||
+        (fieldType === "editor" &&
+            values[genericName][translation] &&
+            values[genericName][translation] !== "<p><br></p>")
+    );
 };
 
 export const sortMenuList = (menuList: IMenuItem[]): NodeModel<IMenuItem>[] => {
@@ -155,7 +224,7 @@ export const sortMenuList = (menuList: IMenuItem[]): NodeModel<IMenuItem>[] => {
     return preparedMenu.map((menuItem) => ({
         id: +getIdFromUrl(menuItem._links.self.href),
         parent: menuItem.parentMenuId,
-        text: menuItem.title,
+        text: menuItem.title[defaultUsedLang],
         droppable: menuItem.parentMenuId === 0,
         data: menuItem,
     }));

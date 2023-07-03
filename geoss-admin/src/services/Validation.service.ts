@@ -1,4 +1,4 @@
-import { FormField } from "@/types";
+import { FormField, LocaleNames } from "@/types";
 import { regExp } from "@/data";
 
 export const ValidationService = {
@@ -147,12 +147,19 @@ export const ValidationService = {
         return !fieldValue || !fieldValue.toString().trim();
     },
 
-    validateTextEditorContent: (values: { [index: string]: string }): { [index: string]: string } | undefined => {
+    validateTextEditorContent: (
+        value: { [index: string]: string },
+        currentTranslation: LocaleNames
+    ): { data: { [index: string]: string } } | undefined => {
         let errors;
-        const isEditorFilled = !ValidationService.checkIsFieldEmpty(values.data);
-        const isEditorValidFilled = values.data !== "<p><br></p>";
+        const isEditorFilled = !ValidationService.checkIsFieldEmpty(value[currentTranslation]);
+        const isEditorValidFilled = value[currentTranslation] !== "<p><br></p>";
         if (!isEditorFilled || !isEditorValidFilled) {
-            errors = { data: "form.errors.required" };
+            errors = {
+                data: {
+                    [currentTranslation]: "form.errors.required",
+                },
+            };
         }
         return errors;
     },

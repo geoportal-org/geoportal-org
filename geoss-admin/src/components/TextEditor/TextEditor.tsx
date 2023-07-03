@@ -20,15 +20,18 @@ export const TextEditor = ({ onEditorChange, onEditorBlur, initialContent }: Tex
             setOptions={{
                 buttonList: [
                     ["fontSize", "formatBlock"],
-                    ["bold", "underline", "italic", "strike", "subscript", "superscript"],
-                    ["fontColor", "hiliteColor", "outdent", "indent", "align", "horizontalRule", "list", "table"],
-                    ["link", "fullScreen", "showBlocks", "codeView", "preview"],
+                    ["bold", "underline", "italic", "strike", "subscript", "superscript", "fontColor", "hiliteColor", "outdent", "indent", "align"],
+                    ["horizontalRule", "list", "table"],
+                    ["image", "link"],
+                    ["fullScreen", "showBlocks", "codeView", "preview"]
                 ],
+                imageFileInput: false,
                 charCounter: true,
                 defaultStyle: "font-size: 14px",
                 height: "auto",
                 linkTargetNewWindow: true,
-                minHeight: "200px",
+                minHeight: "250px",
+                historyStackDelayTime: 0,
             }}
             name="editorData"
             setContents={initialContent || ""}

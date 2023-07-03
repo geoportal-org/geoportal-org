@@ -1,17 +1,17 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { LanguageSwitcher } from "@/components";
 import { HeaderLogo } from "./HeaderLogo";
 import { HeaderMenuToggler } from "./HeaderMenuToggler";
 import { HeaderProps } from "@/types";
 import { useRouter } from "next/router";
 import { unauthenicatedRoutes } from "@/data";
-//import { useSession } from "next-auth/react";
 
 export const Header = ({ isMenuOpen, onMenuOpen, onMenuClose }: HeaderProps) => {
-    /*const { data: session } = useSession();
+    const { data: session } = useSession();
     const isUser = !!session?.user;
     const { pathname } = useRouter();
-    const isUnauthenticatedRoute = unauthenicatedRoutes.includes(pathname);*/
+    const isUnauthenticatedRoute = unauthenicatedRoutes.includes(pathname);
 
     return (
         <Flex
@@ -25,14 +25,13 @@ export const Header = ({ isMenuOpen, onMenuOpen, onMenuClose }: HeaderProps) => 
             align="center"
             fontSize="s"
         >
-            <HeaderMenuToggler isOpen={isMenuOpen} onOpen={onMenuOpen} onClose={onMenuClose} />
-            {/*{!isUnauthenticatedRoute && isUser ? (
-                <HeaderMenuToggler isOpen={isMenuOpen} onOpen={onMenuOpen} onClose={onMenuClose} />
-            ) : (
-                <Box w="52px"></Box>
-            )}*/}
-            <HeaderLogo />
-            <LanguageSwitcher onMenuClose={onMenuClose} />
+            {!isUnauthenticatedRoute && isUser ? (
+                <>
+                    <HeaderMenuToggler isOpen={isMenuOpen} onOpen={onMenuOpen} onClose={onMenuClose} />
+                    <HeaderLogo />
+                    <LanguageSwitcher onMenuClose={onMenuClose} />
+                </>
+            ) : null}
         </Flex>
     );
 };

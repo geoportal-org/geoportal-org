@@ -8,25 +8,29 @@ import {
     areObjectsEqual,
     createSelectItemsList,
     createTouchedForm,
+    isTranslatedValueAdded,
     setExistingFormValues,
     setFormInitialValues,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
-import { initContentsPagination, pagesRoutes } from "@/data";
+import { defaultUsedLang, initContentsPagination, pagesRoutes } from "@/data";
 import { addPageForm } from "@/data/forms";
-import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus } from "@/types";
-import { IPageData } from "@/types/models";
+import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus, LocaleNames } from "@/types";
+import { IContent, IPageData } from "@/types/models";
 import useFormatMsg from "@/utils/useFormatMsg";
+import { useIntl } from "react-intl";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
+    const [currentTranslation, setCurrentTranslation] = useState<LocaleNames>(defaultUsedLang);
     const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addPageForm));
-    const [contentsList, setContentsList] = useState<SelectSettings>();
+    const [contentsList, setContentsList] = useState<IContent[]>([]);
     const [pageId, setPageId] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDraft, setIsDraft] = useState<boolean>(false);
     const router = useRouter();
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
+    const { locale } = useIntl();
 
     useEffect(() => {
         if (router.isReady) {
@@ -40,8 +44,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             const {
                 _embedded: { content },
             } = await ContentService.getContentList(initContentsPagination);
-            const selectContentsList = createSelectItemsList(content);
-            setContentsList(() => selectContentsList);
+            setContentsList(() => content);
             if (isEditMode) {
                 const id = router.query.id as string;
                 setPageId(id);
@@ -53,49 +56,111 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
         } catch (e) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus } = err;
-            console.log(err);
             const is404Error = errorStatus === 404;
             showToast({
                 title: translate(is404Error ? "general.invalid-id" : "general.error"),
-                description: translate(is404Error ? "pages.page.not-exist" : "information.error.loading"),
+                description: translate(is404Error ? "pages.manage-page.not-exist" : "information.error.loading"),
                 status: is404Error ? ToastStatus.WARNING : ToastStatus.ERROR,
             });
             router.push(pagesRoutes.page);
         }
     };
 
+    const completeMissingTranslations = (
+        values: FormikValues,
+        setFieldValue: (field: string, value: FormikValues) => void,
+        setFieldTouched: (field: string, isTouched?: boolean | undefined, shouldValidate?: boolean) => void,
+        selectedLang: LocaleNames
+    ) => {
+        addPageForm.forEach(({ translationInfo, name, type }) => {
+            setFieldTouched(name, false, false);
+            if (!translationInfo) {
+                return;
+            }
+            const { genericName } = translationInfo;
+            const defaultTranslation = values[genericName][defaultUsedLang] ? defaultUsedLang : currentTranslation;
+            if (isTranslatedValueAdded(translationInfo, type, values)) {
+                return;
+            }
+            setFieldValue(name, values[genericName][defaultTranslation]);
+        });
+        setCurrentTranslation(selectedLang);
+    };
+
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        const pageData = { ...values, contentId: +values.contentId, published: true } as IPageData;
+        const pageData = getPageEditedData(values);
         try {
             const { title } = !isEditMode
                 ? await PageService.createPage(pageData)
                 : await PageService.updatePage(+pageId, pageData);
             !isEditMode && actions.resetForm();
-            isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
+            isEditMode && setInitValues(() => setExistingFormValues(addPageForm, pageData));
             setIsDraft(false);
             showToast({
-                title: isEditMode ? "Updated" : "Created",
-                description: `Page ${title} has been ${isEditMode ? "updated" : "created"}`,
+                title: translate(`pages.manage-page.${isEditMode ? "page-updated" : "page-created"}`),
+                description: translate(`pages.manage-page.${isEditMode ? "page-updated-info" : "page-created-info"}`, {
+                    title: title[(locale as LocaleNames) || defaultUsedLang],
+                }),
             });
         } catch (e) {
-            console.error(e);
             showToast({
-                title: "Error occured",
-                description: "Page has not been created - please try again",
+                title: translate("general.error"),
+                description: translate("information.error.page-submit"),
                 status: ToastStatus.ERROR,
             });
         }
     };
 
-    const renderFormFields = () => {
+    const getPageEditedData = (values: FormikValues, isPublished = true): IPageData => {
+        addPageForm.forEach(({ translationInfo, type }) => {
+            if (!translationInfo) {
+                return;
+            }
+            const { genericName, translation } = translationInfo;
+            const defaultTranslation = values[genericName][defaultUsedLang] ? defaultUsedLang : currentTranslation;
+            if (isTranslatedValueAdded(translationInfo, type, values)) {
+                return;
+            }
+            values[genericName][translation] = values[genericName][defaultTranslation];
+        });
+        const pageData = { ...values, contentId: +values.contentId, published: isPublished } as IPageData;
+        return pageData;
+    };
+
+    const renderFormFields = (
+        values: FormikValues,
+        setFieldValue: (field: string, value: FormikValues) => void,
+        setFieldTouched: (field: string, isTouched?: boolean | undefined, shouldValidate?: boolean) => void
+    ) => {
         const formFieldsData = isEditMode
             ? addPageForm.map((field) => ({ ...field, automaticFill: undefined }))
             : addPageForm;
         const formFields = formFieldsData.map((field) => {
+            const isInvisible = field.translationInfo
+                ? field.translationInfo.translation !== currentTranslation
+                : false;
+            const isRequired = field.isRequired && !isInvisible;
             if (field.name === "contentId") {
-                field.selectSettings = contentsList;
+                field.selectSettings = createSelectItemsList(
+                    contentsList,
+                    field.selectSettings?.isMultiselect,
+                    locale as LocaleNames
+                );
             }
-            return <FormField key={field.name} fieldData={field} />;
+            return (
+                <FormField
+                    key={field.name}
+                    fieldData={{ ...field, isRequired }}
+                    invisible={isInvisible}
+                    currentLang={currentTranslation}
+                    onInputTranslationChange={
+                        field.translationInfo
+                            ? (selectedLang) =>
+                                  completeMissingTranslations(values, setFieldValue, setFieldTouched, selectedLang)
+                            : undefined
+                    }
+                />
+            );
         });
         return (
             <Flex direction="column" gap={6} mb={6}>
@@ -111,22 +176,22 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
         resetForm: (nextState?: Partial<FormikState<FormikValues>>) => void
     ) => {
         const saveDraft = async () => {
-            const pageData = { ...values, contentId: +values.contentId, published: false } as IPageData;
+            const pageData = getPageEditedData(values, false);
             try {
                 const { title } = !isEditMode
                     ? await PageService.createPage(pageData)
                     : await PageService.updatePage(+pageId, pageData);
                 !isEditMode && resetForm();
-                isEditMode && setInitValues(() => setExistingFormValues(addPageForm, values));
+                isEditMode && setInitValues(() => setExistingFormValues(addPageForm, pageData));
                 setIsDraft(true);
                 showToast({
-                    title: isEditMode ? "Page updated" : "Page created",
-                    description: `Page ${title} has been saved as draft`,
+                    title: translate(`pages.manage-page.${isEditMode ? "page-updated" : "page-created"}`),
+                    description: `Page ${title[(locale as LocaleNames) || defaultUsedLang]} has been saved as draft`,
                 });
             } catch (error) {
                 showToast({
-                    title: "Error occured",
-                    description: "Page has not been saved - please try again",
+                    title: translate("general.error"),
+                    description: translate("information.error.page-save"),
                     status: ToastStatus.ERROR,
                 });
             }
@@ -166,16 +231,24 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
 
     return (
         <MainContent
-            titleId={isEditMode ? "pages.manage-page.edit-title" : "pages.manage-page.add-title"}
+            titleId={`pages.manage-page.${isEditMode ? "edit-title" : "add-title"}`}
             backPath={pagesRoutes.page}
         >
             <Flex direction="column" maxW="container.m" w="100%" m="0 auto">
                 <Formik initialValues={initValues} onSubmit={handleFormSubmit}>
                     {(formikProps) => {
-                        const { handleSubmit, values, setTouched, validateForm, resetForm } = formikProps;
+                        const {
+                            handleSubmit,
+                            values,
+                            setTouched,
+                            validateForm,
+                            resetForm,
+                            setFieldValue,
+                            setFieldTouched,
+                        } = formikProps;
                         return (
                             <form onSubmit={handleSubmit} noValidate>
-                                {renderFormFields()}
+                                {renderFormFields(values, setFieldValue, setFieldTouched)}
                                 {renderFormFooter(values, setTouched, validateForm, resetForm)}
                             </form>
                         );

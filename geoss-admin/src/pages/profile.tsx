@@ -1,8 +1,5 @@
-import { ProtectedNextPage } from "@/types";
 import { NextPage } from "next";
 
-const Profile: ProtectedNextPage = () => <div>Profile</div>;
-
-Profile.auth = true;
+const Profile: NextPage = () => <div>Profile</div>;
 
 export default Profile;

@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { Field, useFormikContext, FormikValues } from "formik";
-import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { FormControl, FormLabel, FormErrorMessage, Flex } from "@chakra-ui/react";
 import { chakraComponents } from "chakra-react-select";
-import { TextContent, TextEditor, Uploader } from "@/components";
+import { TextContent, TextEditor, TranslationSwitcher, Uploader } from "@/components";
 import { chakraSelectStyles } from "@/theme/commons";
 import { ValidationService } from "@/services";
 import { FormFieldProps, FormFieldSelect } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { createRelativeUrl, createSlug } from "@/utils/helpers";
+import { defaultUsedLang } from "@/data";
 
-export const FormField = ({ fieldData }: FormFieldProps) => {
+export const FormField = ({ fieldData, invisible, onInputTranslationChange, currentLang }: FormFieldProps) => {
     const { translate } = useFormatMsg();
     const {
         values: formValues,
@@ -29,18 +30,26 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
         isRequired,
         automaticFill,
         isReadOnly,
+        translationInfo,
     } = fieldData;
 
     const isDefaultField = inputType !== "select" && inputType !== "editor" && inputType !== "file";
     const isSelectField = inputType === "select" && selectSettings;
     const isTextEditor = inputType === "editor";
     const isFileUploader = inputType === "file";
-    const isFieldError = !!formErrors[fieldName];
-    const isFieldTouched = !!touched[fieldName];
+    const isFieldError = !translationInfo
+        ? !!formErrors[fieldName]
+        : !!formErrors[translationInfo.genericName] &&
+          !!(formErrors[translationInfo.genericName] as any)[translationInfo.translation];
+    const isFieldTouched = !translationInfo
+        ? !!touched[fieldName]
+        : !!touched[translationInfo.genericName] &&
+          !!(touched[translationInfo.genericName] as any)[translationInfo.translation];
 
     const automaticFieldFillTypes = {
-        slug: () => (automaticFill ? createSlug(formValues[automaticFill.superiorField]) : null),
-        "relative-url": () => (automaticFill ? createRelativeUrl(formValues[automaticFill.superiorField]) : null),
+        slug: () => (automaticFill ? createSlug(formValues[automaticFill.superiorField][defaultUsedLang]) : null),
+        "relative-url": () =>
+            automaticFill ? createRelativeUrl(formValues[automaticFill.superiorField][defaultUsedLang]) : null,
     };
 
     useEffect(
@@ -51,20 +60,19 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                 }
 
                 const { superiorField, fillType } = automaticFill;
-                const superiorValue = formValues[superiorField];
+                const superiorValue = formValues[superiorField][defaultUsedLang];
                 setFieldValue(fieldName, superiorValue ? automaticFieldFillTypes[fillType]() : "");
             };
             fillField();
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        !automaticFill ? [] : [formValues[automaticFill.superiorField], touched[automaticFill.superiorField]]
+        !automaticFill ? [] : [formValues[automaticFill.superiorField][defaultUsedLang]]
     );
 
     const setSelectValue = () => {
         if (!formValues[fieldName]) {
             return "";
         }
-
         const values: FormFieldSelect[] = [];
         if (Array.isArray(formValues[fieldName]) && selectSettings && selectSettings.isMultiselect) {
             formValues[fieldName].forEach((value: string) => {
@@ -74,7 +82,6 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
                 }
             });
         }
-
         if (values.length) {
             return values;
         }
@@ -91,37 +98,56 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
 
     const handleEditorChange = (text: string) => setFieldValue(fieldName, text);
 
-    const handleEditorOnBlur = () => markFieldTouched();
-
     const handleFileAdd = (file: File | "") => setFieldValue(fieldName, file);
 
     return (
-        <FormControl isRequired={isRequired} isInvalid={isFieldError && isFieldTouched} w="full">
-            <FormLabel
-                htmlFor={fieldName}
-                fontWeight="bold"
-                fontSize="sm"
-                m={isTextEditor || isFileUploader ? "0 0 10px 0" : 0}
-            >
-                <TextContent id={fieldLabelId} />:
-            </FormLabel>
+        <FormControl
+            isRequired={isRequired}
+            isInvalid={isFieldError && isFieldTouched}
+            w="full"
+            display={invisible ? "none" : "block"}
+        >
+            {!!isTextEditor && translationInfo && onInputTranslationChange ? (
+                <Flex align="center" justify="space-between" mb="10px">
+                    <FormLabel htmlFor={fieldName} fontWeight="bold" fontSize="sm" margin="0">
+                        <TextContent id={fieldLabelId} />:
+                    </FormLabel>
+                    <TranslationSwitcher
+                        currentLang={currentLang || defaultUsedLang}
+                        onTranslationChange={onInputTranslationChange}
+                    />
+                </Flex>
+            ) : (
+                <FormLabel htmlFor={fieldName} fontWeight="bold" fontSize="sm">
+                    <TextContent id={fieldLabelId} />:
+                </FormLabel>
+            )}
+
             {isDefaultField && (
-                <Field
-                    as={fieldType}
-                    validate={(value: string) => ValidationService.checkForErrors(fieldData, value)}
-                    id={fieldName}
-                    isReadOnly={isReadOnly}
-                    name={fieldName}
-                    type={inputType || null}
-                    borderColor="brand.dividerDark"
-                    focusBorderColor="brand.dark"
-                    fontSize="sm"
-                    p="0 10px"
-                    placeholder={placeholderId && translate(placeholderId)}
-                    size="sm"
-                    variant="flushed"
-                    _placeholder={{ opacity: 1, color: "brand.dividerDark", fontStyle: "italic" }}
-                />
+                <Flex align="flex-end">
+                    <Field
+                        as={fieldType}
+                        validate={(value: string) => ValidationService.checkForErrors(fieldData, value)}
+                        id={fieldName}
+                        isReadOnly={isReadOnly}
+                        name={fieldName}
+                        type={inputType || null}
+                        borderColor="brand.dividerDark"
+                        focusBorderColor="brand.dark"
+                        fontSize="sm"
+                        p="0 10px"
+                        placeholder={placeholderId && translate(placeholderId)}
+                        size="sm"
+                        variant="flushed"
+                        _placeholder={{ opacity: 1, color: "brand.dividerDark", fontStyle: "italic" }}
+                    />
+                    {translationInfo && onInputTranslationChange && (
+                        <TranslationSwitcher
+                            currentLang={currentLang || defaultUsedLang}
+                            onTranslationChange={onInputTranslationChange}
+                        />
+                    )}
+                </Flex>
             )}
             {isSelectField && (
                 <Field
@@ -157,8 +183,8 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
             {isTextEditor && (
                 <TextEditor
                     onEditorChange={handleEditorChange}
-                    onEditorBlur={handleEditorOnBlur}
-                    initialContent={formValues[fieldName]}
+                    onEditorBlur={markFieldTouched}
+                    initialContent={formValues[translationInfo?.genericName!][translationInfo?.translation!]}
                 />
             )}
             {isFileUploader && (
@@ -172,7 +198,15 @@ export const FormField = ({ fieldData }: FormFieldProps) => {
             )}
             {isFieldError && isFieldTouched && (
                 <FormErrorMessage mt="5px">
-                    <TextContent id={formErrors[fieldName] as string} />
+                    <TextContent
+                        id={
+                            (!translationInfo
+                                ? formErrors[fieldName]
+                                : (formErrors[translationInfo.genericName] as any)[
+                                      translationInfo.translation
+                                  ]) as string
+                        }
+                    />
                 </FormErrorMessage>
             )}
         </FormControl>

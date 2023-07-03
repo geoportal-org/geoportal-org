@@ -63,6 +63,7 @@ export const TableBody = <T extends object>({ tableData, isDisabled }: TableProp
                                     _last={{
                                         ...lastTableCellBorderStyles,
                                         borderColor: isSelectedRow ? "brand.dark" : "transparent",
+                                        ...(isSubRow && { "> div": { ml: "44px" } }),
                                     }}
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

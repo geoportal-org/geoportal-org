@@ -1,34 +1,27 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import { SignIn } from "@/components";
-import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
-import { BuiltInProviderType } from "next-auth/providers";
 import { pagesRoutes } from "@/data";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { NonProtectedNextPage } from "@/types";
 
-interface HomeProps {
-    providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null;
-}
+const Home: NonProtectedNextPage = () => <SignIn />;
 
-const Home: NextPage = () => {
-    return <SignIn />;
-};
+Home.nonAuth = true;
 
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { req, res } = context;
+    const session = await getServerSession(req, res, authOptions);
 
-    //const session = await getServerSession(req, res, authOptions);
-    ///const providers = await getProviders();
+    if (session) {
+        return {
+            redirect: { destination: pagesRoutes.website, permanent: false },
+        };
+    }
 
-    //if (session) {
     return {
-        redirect: { destination: pagesRoutes.website, permanent: false },
+        props: {},
     };
-    //}
-
-    /*return {
-        props: {
-            providers,
-        },
-    };*/
 };

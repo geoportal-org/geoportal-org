@@ -7,7 +7,7 @@ export {
     initContentsPagination,
     extendedViewsPagination,
 } from "./paginationData";
-export { languagesSwitcher } from "./languagesSwitcher";
+export { languagesSwitcher, defaultUsedLang } from "./languagesSwitcher";
 export { menuItemControls } from "./menuItemControls";
 export { navData, navSectionsUrls } from "./navData";
 export { pagesRoutes, unauthenicatedRoutes, authenticatedRoutes } from "./pagesRoutes";

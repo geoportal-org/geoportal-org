@@ -1,5 +1,6 @@
 import { CheckboxProps, ComponentWithAs, InputProps, TextareaProps } from "@chakra-ui/react";
 import { SelectComponent } from "chakra-react-select";
+import { LocaleNames } from "@/types";
 
 export type FormField = {
     fieldType?:
@@ -20,6 +21,7 @@ export type FormField = {
         superiorField: string;
         fillType: "slug" | "relative-url";
     };
+    translationInfo?: TranslationInfo;
 };
 
 export type SelectSettings = {
@@ -37,4 +39,9 @@ export type FormSection = {
     titleId: string;
     set: string;
     data: FormField[];
+};
+
+export type TranslationInfo = {
+    translation: LocaleNames;
+    genericName: string;
 };

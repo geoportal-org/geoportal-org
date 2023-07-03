@@ -1,9 +1,6 @@
 import { NextPage } from "next";
 import { DefaultLayerSettings as DefaultLayerSettingsPage } from "@/components";
-import { ProtectedNextPage } from "@/types";
 
-const DefaultLayerSettings: ProtectedNextPage = () => <DefaultLayerSettingsPage />;
-
-DefaultLayerSettings.auth = true;
+const DefaultLayerSettings: NextPage = () => <DefaultLayerSettingsPage />;
 
 export default DefaultLayerSettings;

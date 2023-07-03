@@ -4,12 +4,21 @@ import { Button, Flex, useDisclosure, Text, Divider } from "@chakra-ui/react";
 import { Modal, TextContent } from "@/components";
 import { ContentService, DefaultLayerService, PageService, TutorialTagsService, ViewsService } from "@/services/api";
 import { DefaultLayerContext, TutorialTagsContext, ViewsContext } from "@/context";
-import { pagesRoutes, tableActionsBtns } from "@/data";
-import { ModalAction, TableActionsProps, TableActionsSource, TableActionsType, ToastStatus } from "@/types";
+import { defaultUsedLang, pagesRoutes, tableActionsBtns } from "@/data";
+import {
+    ModalAction,
+    TableActionsProps,
+    TableActionsSource,
+    TableActionsType,
+    ToastStatus,
+    TranslatedData,
+    LocaleNames,
+} from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { setDecisionModalActions } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { ILayer, ITutorialTag } from "@/types/models";
+import { useIntl } from "react-intl";
 
 export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disabled }: TableActionsProps) => {
     const [modalContent, setModalContent] = useState<{
@@ -21,6 +30,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const router = useRouter();
+    const { locale } = useIntl();
     const { onLayerEditAction } = useContext(DefaultLayerContext);
     const { onTagEditAction } = useContext(TutorialTagsContext);
     const { onAddSubViewAction, onEditSubViewAction, onEditViewAction } = useContext(ViewsContext);
@@ -44,13 +54,22 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
     };
 
     const onPagesAction = (actionName: TableActionsType) => {
+        if (!("title" in item)) {
+            return;
+        }
+        const title = item.title as TranslatedData;
+
         switch (actionName) {
             case TableActionsType.DELETE:
                 setModalContent({
                     header: translate("pages.page.delete-page-title"),
                     body: (
                         <Text py={4}>
-                            <TextContent id="pages.page.delete-page-body" itemId={itemId} />
+                            <TextContent
+                                id="pages.page.delete-page-body"
+                                itemId={itemId}
+                                title={title[(locale as LocaleNames) || defaultUsedLang]}
+                            />
                         </Text>
                     ),
                     actions: setDecisionModalActions(
@@ -70,23 +89,24 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
         if (!("title" in item)) {
             return;
         }
-
+        const title = item.title as TranslatedData;
         try {
             await PageService.deletePage(+itemId);
             onDeleteAction();
             onCloseModal();
             showToast({
-                title: "Deleted",
-                description: `Page ${item.title} (ID: ${itemId}) has been deleted`,
+                title: translate("general.deleted"),
+                description: translate("pages.page.deleted", {
+                    title: title[(locale as LocaleNames) || defaultUsedLang],
+                    itemId,
+                }),
             });
         } catch (error) {
             const err = error as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             errorStatus &&
                 showToast({
-                    title: "Error occured",
+                    title: translate("general.error"),
                     description: `${errorStatus}`,
                     status: ToastStatus.ERROR,
                 });
@@ -100,11 +120,16 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
 
         switch (actionName) {
             case TableActionsType.DELETE:
+                const translatedTitle = item.title as TranslatedData;
                 setModalContent({
                     header: translate("pages.contents.delete-content-title"),
                     body: (
                         <Text py={4}>
-                            <TextContent id="pages.contents.delete-content-body" itemId={itemId} title={item.title} />
+                            <TextContent
+                                id="pages.contents.delete-content-body"
+                                itemId={itemId}
+                                title={translatedTitle[(locale as LocaleNames) || defaultUsedLang]}
+                            />
                         </Text>
                     ),
                     actions: setDecisionModalActions(
@@ -119,7 +144,6 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 break;
             case TableActionsType.PREVIEW:
                 const isContent = "content" in item;
-                const content = isContent && item.content;
                 setModalContent({
                     header: translate("pages.contents.preview-content-title", { id: itemId }),
                     body: translate("pages.contents.preview-content-body"),
@@ -133,24 +157,25 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
         if (!("title" in item)) {
             return;
         }
-
+        const title = item.title as TranslatedData;
         try {
             await ContentService.deleteContent(+itemId);
             onDeleteAction();
             onCloseModal();
             showToast({
-                title: "Deleted",
-                description: `Content ${item.title} (ID: ${itemId}) has been deleted`,
+                title: translate("general.deleted"),
+                description: translate("pages.contents.content-deleted", {
+                    title: title[(locale as LocaleNames) || defaultUsedLang],
+                    itemId,
+                }),
             });
         } catch (error) {
             const err = error as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             errorStatus &&
                 showToast({
-                    title: "Error occured",
-                    description: `${errorStatus}`,
+                    title: translate("general.error"),
+                    description: translate("information.error.general"),
                     status: ToastStatus.ERROR,
                 });
         }
@@ -322,7 +347,6 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 description: translate(successMsgId, { title: item.label }),
             });
         } catch (e) {
-            console.log(e);
             showToast({
                 title: translate("general.error"),
                 description: translate(errorMsgId, { title: item.label }),

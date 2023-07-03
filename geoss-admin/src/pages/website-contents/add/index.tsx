@@ -1,9 +1,6 @@
 import { NextPage } from "next";
 import { ManageContent } from "@/components";
-import { ProtectedNextPage } from "@/types";
 
-const AddContent: ProtectedNextPage = () => <ManageContent />;
-
-AddContent.auth = true;
+const AddContent: NextPage = () => <ManageContent />;
 
 export default AddContent;
