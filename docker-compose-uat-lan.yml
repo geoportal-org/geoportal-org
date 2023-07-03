@@ -188,6 +188,7 @@ services:
           - "node.labels.shared_tag==geoss-apps"
     environment:
       NEXT_PUBLIC_API: "https://gpp-admin.uat.esaportal.eu"
+      NEXT_PUBLIC_APP_URL: "https://gpp.uat.esaportal.eu"
       NEXT_PUBLIC_URL: "https://gpp-admin.uat.esaportal.eu"
       NEXTAUTH_URL: "https://gpp-admin.uat.esaportal.eu"
       NEXTAUTH_SECRET: "d3fa4c4ff9e3a252247fca2e74e5f585"
