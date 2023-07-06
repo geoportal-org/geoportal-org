@@ -14,7 +14,8 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type View option model to view option converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING, uses = ViewIdToViewConverter.class)
+@Mapper(componentModel = ComponentModel.SPRING, uses = ViewIdToViewConverter.class,
+        implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class ViewOptionModelToViewOptionConverter implements Converter<ViewOptionModel, ViewOption> {
 
     private ViewOptionRepository viewOptionRepository;
@@ -45,7 +46,7 @@ public abstract class ViewOptionModelToViewOptionConverter implements Converter<
      * @return the view option
      */
     @ObjectFactory
-    ViewOption createViewOption(ViewOptionModel viewOptionModel) {
+    protected ViewOption createViewOption(ViewOptionModel viewOptionModel) {
         if (viewOptionModel.getId() == null) {
             return new ViewOption();
         }

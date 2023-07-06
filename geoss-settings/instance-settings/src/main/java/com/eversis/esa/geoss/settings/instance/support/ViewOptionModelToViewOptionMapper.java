@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
 /**
  * The interface View option model to view option mapper.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public interface ViewOptionModelToViewOptionMapper {
 
     /**

@@ -7,6 +7,7 @@ import com.eversis.esa.geoss.settings.common.properties.GeossProperties;
 import com.eversis.esa.geoss.settings.common.web.HttpHeadersUtil;
 import com.eversis.esa.geoss.settings.instance.domain.Tag;
 import com.eversis.esa.geoss.settings.instance.model.LocalizedTagModel;
+import com.eversis.esa.geoss.settings.instance.model.TagModel;
 import com.eversis.esa.geoss.settings.instance.service.TagService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,19 @@ public class TagController {
     private final EntityLinks entityLinks;
 
     /**
+     * Gets tags.
+     *
+     * @param pageable the pageable
+     * @return the tags
+     */
+    @Operation(hidden = true)
+    @GetMapping(value = {"/tags", ""}, headers = ACCEPT_LANGUAGE + "=*")
+    PagedModel<EntityModel<TagModel>> getTags(@ParameterObject @PageableDefault Pageable pageable) {
+        Page<TagModel> tagModels = tagService.getTags(pageable);
+        return pageMapper.toPagedModel(tagModels, TagModel.class, this::tagLinks, this::tagLinks);
+    }
+
+    /**
      * Gets localized tags.
      *
      * @param pageable the pageable
@@ -63,13 +77,28 @@ public class TagController {
      */
     @Operation(hidden = true)
     @GetMapping(value = {"/tags", ""}, headers = ACCEPT_LANGUAGE)
-    ResponseEntity<PagedModel<EntityModel<LocalizedTagModel>>> getLocalizedTags(@ParameterObject @PageableDefault Pageable pageable,
+    ResponseEntity<PagedModel<EntityModel<LocalizedTagModel>>> getLocalizedTags(
+            @ParameterObject @PageableDefault Pageable pageable,
             @RequestHeader HttpHeaders headers) {
         Locale acceptLocale = HttpHeadersUtil.getSupportedAcceptLanguageAsLocale(headers,
                 geossProperties.getSupportedLanguages());
         log.debug("acceptLocale:{}", acceptLocale);
         Page<LocalizedTagModel> tagModels = tagService.getLocalizedTags(pageable, acceptLocale);
         return toPagedModel(tagModels, acceptLocale);
+    }
+
+    /**
+     * Gets tag.
+     *
+     * @param id the id
+     * @param headers the headers
+     * @return the tag
+     */
+    @Operation(hidden = true)
+    @GetMapping(value = {"/{id}"}, headers = ACCEPT_LANGUAGE + "=*")
+    ResponseEntity<EntityModel<TagModel>> getTag(@PathVariable Long id, @RequestHeader HttpHeaders headers) {
+        TagModel tagModel = tagService.getTag(id);
+        return toResponseEntity(tagModel, HttpMethod.GET, headers);
     }
 
     /**
@@ -81,7 +110,8 @@ public class TagController {
      */
     @Operation(hidden = true)
     @GetMapping(value = {"/{id}"}, headers = ACCEPT_LANGUAGE)
-    ResponseEntity<EntityModel<LocalizedTagModel>> getLocalizedTag(@PathVariable Long id, @RequestHeader HttpHeaders headers) {
+    ResponseEntity<EntityModel<LocalizedTagModel>> getLocalizedTag(@PathVariable Long id,
+            @RequestHeader HttpHeaders headers) {
         Locale acceptLocale = HttpHeadersUtil.getSupportedAcceptLanguageAsLocale(headers,
                 geossProperties.getSupportedLanguages());
         log.debug("acceptLocale:{}", acceptLocale);
@@ -89,13 +119,30 @@ public class TagController {
         return toResponseEntity(localizedTagModel, HttpMethod.GET, headers);
     }
 
-    private ResponseEntity<PagedModel<EntityModel<LocalizedTagModel>>> toPagedModel(Page<LocalizedTagModel> tagModels, Locale locale) {
+    private ResponseEntity<PagedModel<EntityModel<LocalizedTagModel>>> toPagedModel(Page<LocalizedTagModel> tagModels,
+            Locale locale) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentLanguage(locale);
 
-        PagedModel<EntityModel<LocalizedTagModel>> entityModels = pageMapper.toPagedModel(tagModels, LocalizedTagModel.class,
+        PagedModel<EntityModel<LocalizedTagModel>> entityModels = pageMapper.toPagedModel(tagModels,
+                LocalizedTagModel.class,
                 this::tagLinks, this::tagLinks);
         return new ResponseEntity<>(entityModels, responseHeaders, HttpStatus.OK);
+    }
+
+    private ResponseEntity<EntityModel<TagModel>> toResponseEntity(TagModel tagModel, HttpMethod httpMethod,
+            HttpHeaders requestHeaders) {
+        VersionedModel versionedModel = tagModel.getVersioned();
+        AuditableModel auditableModel = tagModel.getAuditable();
+
+        HttpHeaders responseHeaders = HttpHeadersUtil.responseHeaders(versionedModel, auditableModel);
+
+        return HttpHeadersUtil.isNotModified(versionedModel, auditableModel, httpMethod, requestHeaders) //
+                ? new ResponseEntity<>(responseHeaders, HttpStatus.NOT_MODIFIED) //
+                : new ResponseEntity<>(
+                        EntityModel.of(tagModel, tagLinks(tagModel)),
+                        responseHeaders, HttpStatus.OK) //
+                ;
     }
 
     private ResponseEntity<EntityModel<LocalizedTagModel>> toResponseEntity(
@@ -113,6 +160,15 @@ public class TagController {
                         EntityModel.of(localizedTagModel, tagLinks(localizedTagModel)),
                         responseHeaders, HttpStatus.OK) //
                 ;
+    }
+
+    private List<Link> tagLinks(TagModel tagModel) {
+        if (tagModel == null) {
+            return Collections.emptyList();
+        }
+        return List.of(
+                entityLinks.linkToItemResource(Tag.class, tagModel.getId())
+        );
     }
 
     private List<Link> tagLinks(LocalizedTagModel localizedTagModel) {

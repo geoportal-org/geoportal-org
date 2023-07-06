@@ -14,7 +14,8 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type Catalog option model to catalog option converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING, uses = CatalogIdToCatalogConverter.class)
+@Mapper(componentModel = ComponentModel.SPRING, uses = CatalogIdToCatalogConverter.class,
+        implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class CatalogOptionModelToCatalogOptionConverter implements
         Converter<CatalogOptionModel, CatalogOption> {
 
@@ -46,7 +47,7 @@ public abstract class CatalogOptionModelToCatalogOptionConverter implements
      * @return the catalog option
      */
     @ObjectFactory
-    CatalogOption createCatalogOption(CatalogOptionModel catalogOptionModel) {
+    protected CatalogOption createCatalogOption(CatalogOptionModel catalogOptionModel) {
         if (catalogOptionModel.getId() == null) {
             return new CatalogOption();
         }

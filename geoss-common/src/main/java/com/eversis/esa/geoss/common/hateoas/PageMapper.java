@@ -92,7 +92,7 @@ public class PageMapper {
      * @param collectionLinks the collection links
      * @return the paged model
      */
-    public <T> PagedModel<EntityModel<T>> toPagedModel(Page<T> page,
+    protected <T> PagedModel<EntityModel<T>> toPagedModel(Page<T> page,
             Function<T, List<Link>> entityLinks, Supplier<List<Link>> collectionLinks) {
         if (page == null) {
             return PagedModel.empty(collectionLinks.get());
@@ -113,7 +113,7 @@ public class PageMapper {
      * @param collectionLinks the collection links
      * @return the paged model
      */
-    public <T> PagedModel<EntityModel<T>> toEmptyModel(Page<T> page, Class<T> type,
+    protected <T> PagedModel<EntityModel<T>> toEmptyModel(Page<T> page, Class<T> type,
             Supplier<List<Link>> collectionLinks) {
         List<EntityModel<T>> entityModels = Collections.singletonList(
                 EntityModelEmptyCollectionEmbeddedWrapper.of(type));
@@ -129,7 +129,7 @@ public class PageMapper {
      * @param link the link
      * @return the paged model
      */
-    public <R> PagedModel<R> addPaginationLinks(PagedModel<R> resources, Page<?> page, Optional<Link> link) {
+    protected <R> PagedModel<R> addPaginationLinks(PagedModel<R> resources, Page<?> page, Optional<Link> link) {
         UriTemplate base = getUriTemplate(link);
         boolean isNavigable = page.hasPrevious() || page.hasNext();
         if (isNavigable) {

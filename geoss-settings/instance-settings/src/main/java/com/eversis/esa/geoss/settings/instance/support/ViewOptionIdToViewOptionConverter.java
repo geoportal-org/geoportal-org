@@ -15,7 +15,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type View option id to view option converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class ViewOptionIdToViewOptionConverter implements Converter<Long, ViewOption> {
 
     private ViewOptionRepository viewOptionRepository;
@@ -42,7 +42,7 @@ public abstract class ViewOptionIdToViewOptionConverter implements Converter<Lon
      * @return the view option
      */
     @ObjectFactory
-    ViewOption create(Long id) {
+    protected ViewOption create(Long id) {
         return viewOptionRepository.getReferenceById(id);
     }
 }

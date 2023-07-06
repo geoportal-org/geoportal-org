@@ -15,7 +15,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type View id to view converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class ViewIdToViewConverter implements Converter<Long, View> {
 
     private ViewRepository viewRepository;
@@ -42,7 +42,7 @@ public abstract class ViewIdToViewConverter implements Converter<Long, View> {
      * @return the view
      */
     @ObjectFactory
-    View create(Long id) {
+    protected View create(Long id) {
         return viewRepository.getReferenceById(id);
     }
 }

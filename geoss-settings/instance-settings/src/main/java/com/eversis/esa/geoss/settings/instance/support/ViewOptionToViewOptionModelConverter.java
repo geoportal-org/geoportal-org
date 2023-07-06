@@ -11,7 +11,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The interface View option to view option model converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public interface ViewOptionToViewOptionModelConverter extends Converter<ViewOption, ViewOptionModel> {
 
     @Mapping(target = "viewId", source = "view.id")

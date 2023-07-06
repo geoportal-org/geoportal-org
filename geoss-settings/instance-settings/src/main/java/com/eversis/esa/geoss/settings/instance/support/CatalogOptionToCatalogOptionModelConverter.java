@@ -11,7 +11,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The interface Catalog option to catalog option model converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public interface CatalogOptionToCatalogOptionModelConverter extends Converter<CatalogOption, CatalogOptionModel> {
 
     @Mapping(target = "catalogId", source = "catalog.id")

@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 import com.eversis.esa.geoss.settings.common.model.VersionedModel;
 import com.eversis.esa.geoss.settings.instance.domain.Tag;
 import com.eversis.esa.geoss.settings.instance.model.LocalizedTagModel;
+import com.eversis.esa.geoss.settings.instance.model.TagModel;
 import com.eversis.esa.geoss.settings.instance.repository.TagRepository;
 import com.eversis.esa.geoss.settings.instance.service.TagService;
 
@@ -46,14 +47,26 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public LocalizedTagModel getLocalizedTag(Long id, Locale locale) {
-        log.debug("id:{},locale:{}", id, locale);
+    public Page<TagModel> getTags(Pageable pageable) {
+        log.debug("pageable:{}", pageable);
+        Page<Tag> tags = tagRepository.findAll(pageable);
+        return tags.map(tag -> {
+            log.trace("tag:{}", tag);
+            TagModel tagModel = conversionService.convert(tag, TagModel.class);
+            log.trace("tagModel:{}", tagModel);
+            return tagModel;
+        });
+    }
+
+    @Override
+    public TagModel getTag(Long id) {
+        log.debug("id:{}", id);
         return tagRepository.findById(id)
                 .map(tag -> {
                     log.debug("tag:{}", tag);
-                    LocalizedTagModel localizedTagModel = tagToTagModel(tag, locale);
-                    log.debug("localizedTagModel:{}", localizedTagModel);
-                    return localizedTagModel;
+                    TagModel tagModel = conversionService.convert(tag, TagModel.class);
+                    log.debug("tagModel:{}", tagModel);
+                    return tagModel;
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
     }
@@ -64,13 +77,26 @@ public class TagServiceImpl implements TagService {
         Page<Tag> tags = tagRepository.findAll(pageable);
         return tags.map(tag -> {
             log.trace("tag:{}", tag);
-            LocalizedTagModel localizedTagModel = tagToTagModel(tag, locale);
+            LocalizedTagModel localizedTagModel = tagToLocalizedTagModel(tag, locale);
             log.trace("localizedTagModel:{}", localizedTagModel);
             return localizedTagModel;
         });
     }
 
-    private LocalizedTagModel tagToTagModel(Tag tag, Locale locale) {
+    @Override
+    public LocalizedTagModel getLocalizedTag(Long id, Locale locale) {
+        log.debug("id:{},locale:{}", id, locale);
+        return tagRepository.findById(id)
+                .map(tag -> {
+                    log.debug("tag:{}", tag);
+                    LocalizedTagModel localizedTagModel = tagToLocalizedTagModel(tag, locale);
+                    log.debug("localizedTagModel:{}", localizedTagModel);
+                    return localizedTagModel;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+    }
+
+    private LocalizedTagModel tagToLocalizedTagModel(Tag tag, Locale locale) {
         Locale language = Locale.forLanguageTag(locale.toLanguageTag());
         LocalizedTagModel localizedTagModel = new LocalizedTagModel();
         localizedTagModel.setId(tag.getId());

@@ -15,7 +15,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type Catalog option id to catalog option converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class CatalogOptionIdToCatalogOptionConverter implements Converter<Long, CatalogOption> {
 
     private CatalogOptionRepository catalogOptionRepository;
@@ -42,7 +42,7 @@ public abstract class CatalogOptionIdToCatalogOptionConverter implements Convert
      * @return the catalog option
      */
     @ObjectFactory
-    CatalogOption create(Long id) {
+    protected CatalogOption create(Long id) {
         return catalogOptionRepository.getReferenceById(id);
     }
 }

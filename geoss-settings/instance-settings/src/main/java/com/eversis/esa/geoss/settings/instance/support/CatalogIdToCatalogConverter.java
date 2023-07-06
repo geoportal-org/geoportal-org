@@ -15,7 +15,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * The type Catalog id to catalog converter.
  */
-@Mapper(componentModel = ComponentModel.SPRING)
+@Mapper(componentModel = ComponentModel.SPRING, implementationPackage = "<PACKAGE_NAME>.internal")
 public abstract class CatalogIdToCatalogConverter implements Converter<Long, Catalog> {
 
     private CatalogRepository catalogRepository;
@@ -42,7 +42,7 @@ public abstract class CatalogIdToCatalogConverter implements Converter<Long, Cat
      * @return the catalog
      */
     @ObjectFactory
-    Catalog create(Long id) {
+    protected Catalog create(Long id) {
         return catalogRepository.getReferenceById(id);
     }
 }
