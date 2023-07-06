@@ -72,7 +72,7 @@ public class DabServiceImpl implements DabService {
         }
     }
 
-    @Scheduled(cron = "${geoss.settings.catalog-sync-cron-expression}")
+    @Scheduled(cron = "${geoss.settings.dab.catalog-sync-cron-expression}")
     @SchedulerLock(name = "syncCatalogsFromDab")
     void syncCatalogsFromDab() {
         try {
