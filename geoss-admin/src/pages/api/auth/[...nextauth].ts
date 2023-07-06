@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
-import { pagesRoutes } from "@/data";
 import type { JWT } from "next-auth/jwt";
+import { pagesRoutes } from "@/data";
 
 async function refreshAccessToken(token: JWT) {
     try {
@@ -27,6 +27,8 @@ async function refreshAccessToken(token: JWT) {
             throw refreshedToken;
         }
 
+        console.log(token);
+
         return {
             ...token,
             accessToken: refreshedToken.access_token,
@@ -44,6 +46,7 @@ async function refreshAccessToken(token: JWT) {
 }
 
 export const authOptions: NextAuthOptions = {
+    debug: true,
     providers: [
         KeycloakProvider({
             clientId: process.env.KEYCLOAK_CLIENT_ID!,
@@ -60,6 +63,8 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account, user, profile }) => {
             if (account && user) {
                 // just fired first time - when signed in
+                console.log(account);
+                console.log(user);
 
                 token.accessToken = account.access_token;
                 token.refreshToken = account.refresh_token;
@@ -71,6 +76,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             if (Date.now() < token.accessTokenExpired!) {
+                console.log(token);
                 return token;
             }
 
@@ -79,6 +85,7 @@ export const authOptions: NextAuthOptions = {
         session: async ({ session, token }) => {
             session.accessToken = token.accessToken as string;
             session.tokenId = token.tokenId as string;
+            console.log(session);
             return session;
         },
     },
