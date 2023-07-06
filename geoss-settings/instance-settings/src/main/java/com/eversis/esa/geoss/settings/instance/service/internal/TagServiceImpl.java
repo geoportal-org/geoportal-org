@@ -4,7 +4,7 @@ import com.eversis.esa.geoss.common.constraints.AvailableLocale;
 import com.eversis.esa.geoss.settings.common.model.AuditableModel;
 import com.eversis.esa.geoss.settings.common.model.VersionedModel;
 import com.eversis.esa.geoss.settings.instance.domain.Tag;
-import com.eversis.esa.geoss.settings.instance.model.TagModel;
+import com.eversis.esa.geoss.settings.instance.model.LocalizedTagModel;
 import com.eversis.esa.geoss.settings.instance.repository.TagRepository;
 import com.eversis.esa.geoss.settings.instance.service.TagService;
 
@@ -46,51 +46,51 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagModel getLocalizedTag(Long id, Locale locale) {
+    public LocalizedTagModel getLocalizedTag(Long id, Locale locale) {
         log.debug("id:{},locale:{}", id, locale);
         return tagRepository.findById(id)
                 .map(tag -> {
                     log.debug("tag:{}", tag);
-                    TagModel tagModel = tagToTagModel(tag, locale);
-                    log.debug("tagModel:{}", tagModel);
-                    return tagModel;
+                    LocalizedTagModel localizedTagModel = tagToTagModel(tag, locale);
+                    log.debug("localizedTagModel:{}", localizedTagModel);
+                    return localizedTagModel;
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
     }
 
     @Override
-    public Page<TagModel> getLocalizedTags(Pageable pageable, Locale locale) {
+    public Page<LocalizedTagModel> getLocalizedTags(Pageable pageable, Locale locale) {
         log.debug("pageable:{},locale:{}", pageable, locale);
         Page<Tag> tags = tagRepository.findAll(pageable);
         return tags.map(tag -> {
             log.trace("tag:{}", tag);
-            TagModel tagModel = tagToTagModel(tag, locale);
-            log.trace("tagModel:{}", tagModel);
-            return tagModel;
+            LocalizedTagModel localizedTagModel = tagToTagModel(tag, locale);
+            log.trace("localizedTagModel:{}", localizedTagModel);
+            return localizedTagModel;
         });
     }
 
-    private TagModel tagToTagModel(Tag tag, Locale locale) {
+    private LocalizedTagModel tagToTagModel(Tag tag, Locale locale) {
         Locale language = Locale.forLanguageTag(locale.toLanguageTag());
-        TagModel tagModel = new TagModel();
-        tagModel.setId(tag.getId());
-        tagModel.setName(tag.getName());
-        tagModel.setShow(tag.isShow());
-        tagModel.setType(tag.getType());
-        tagModel.setPlacement(tag.getPlacement());
-        tagModel.setLocale(locale);
+        LocalizedTagModel localizedTagModel = new LocalizedTagModel();
+        localizedTagModel.setId(tag.getId());
+        localizedTagModel.setName(tag.getName());
+        localizedTagModel.setShow(tag.isShow());
+        localizedTagModel.setType(tag.getType());
+        localizedTagModel.setPlacement(tag.getPlacement());
+        localizedTagModel.setLocale(locale);
         Map<@AvailableLocale Locale, String> titles = tag.getTitle();
         if (titles != null) {
-            tagModel.setTitle(titles.get(language));
+            localizedTagModel.setTitle(titles.get(language));
         }
         Map<@AvailableLocale Locale, String> descriptions = tag.getDescription();
         if (descriptions != null) {
-            tagModel.setDescription(descriptions.get(language));
+            localizedTagModel.setDescription(descriptions.get(language));
         }
         VersionedModel versionedModel = conversionService.convert(tag.getVersion(), VersionedModel.class);
-        tagModel.setVersioned(versionedModel);
+        localizedTagModel.setVersioned(versionedModel);
         AuditableModel auditableModel = conversionService.convert(tag.getAuditable(), AuditableModel.class);
-        tagModel.setAuditable(auditableModel);
-        return tagModel;
+        localizedTagModel.setAuditable(auditableModel);
+        return localizedTagModel;
     }
 }

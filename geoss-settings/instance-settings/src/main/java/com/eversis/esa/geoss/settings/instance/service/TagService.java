@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.settings.instance.service;
 
-import com.eversis.esa.geoss.settings.instance.model.TagModel;
+import com.eversis.esa.geoss.settings.instance.model.LocalizedTagModel;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ public interface TagService {
      * @param locale the locale
      * @return the localized tags
      */
-    Page<TagModel> getLocalizedTags(Pageable pageable, Locale locale);
+    Page<LocalizedTagModel> getLocalizedTags(Pageable pageable, Locale locale);
 
     /**
      * Gets localized tag.
@@ -28,5 +28,5 @@ public interface TagService {
      * @param locale the locale
      * @return the localized tag
      */
-    TagModel getLocalizedTag(Long id, Locale locale);
+    LocalizedTagModel getLocalizedTag(Long id, Locale locale);
 }

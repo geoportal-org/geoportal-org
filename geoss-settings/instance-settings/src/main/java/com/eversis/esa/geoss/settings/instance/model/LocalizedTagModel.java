@@ -23,7 +23,7 @@ import java.util.Locale;
  */
 @Data
 @Relation(collectionRelation = "tags", itemRelation = "tag")
-public class TagModel {
+public class LocalizedTagModel {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
