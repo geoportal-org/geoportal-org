@@ -1,6 +1,8 @@
 package com.eversis.esa.geoss.curated.recommendations.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
@@ -47,6 +49,8 @@ public class Recommendation {
     @Column(name = "modifieddate", nullable = false)
     private LocalDateTime modifiedDate;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "recommendation",
             cascade = CascadeType.ALL,
@@ -54,6 +58,8 @@ public class Recommendation {
     )
     private List<RecommendedEntity> entities = new ArrayList<>();
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "recommendation",
             cascade = CascadeType.ALL,

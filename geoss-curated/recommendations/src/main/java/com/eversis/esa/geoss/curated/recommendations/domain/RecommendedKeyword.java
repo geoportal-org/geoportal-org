@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.sql.Types;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
  */
 @Data
 @Entity
+@Table(name = "recommendation_keyword")
 public class RecommendedKeyword {
 
     @Id
