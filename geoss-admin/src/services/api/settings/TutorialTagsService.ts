@@ -6,7 +6,7 @@ export const TutorialTagsService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/settings/rest/tags`,
 
     getTagList: async (query?: QueryParams): Promise<ITutorialTagList> =>
-        fetcher({ url: TutorialTagsService.baseUrl, query }),
+        fetcher({ url: TutorialTagsService.baseUrl, query, headers: { "Accept-Language": "*" } }),
 
     getTag: async (id: number): Promise<ITutorialTag> => fetcher({ url: `${TutorialTagsService.baseUrl}/${id}` }),
 

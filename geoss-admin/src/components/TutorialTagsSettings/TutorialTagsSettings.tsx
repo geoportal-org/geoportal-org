@@ -174,11 +174,11 @@ export const TutorialTagsSettings = () => {
             }),
             columnHelper.accessor("title", {
                 header: translate("general.title"),
-                cell: (info) => cutString(info.getValue(), 30),
+                cell: (info) => cutString(info.getValue()[router.locale as LocaleNames], 30),
             }),
             columnHelper.accessor("description", {
                 header: translate("general.description"),
-                cell: (info) => cutString(info.getValue(), 35),
+                cell: (info) => cutString(info.getValue()[router.locale as LocaleNames], 35),
             }),
             columnHelper.accessor("type", {
                 header: translate("pages.tags.type"),
