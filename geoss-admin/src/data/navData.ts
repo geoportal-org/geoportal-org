@@ -44,11 +44,13 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.defaultLayer,
         Icon: LayerIcon,
     },
+    // hidden tutorial tags in menu
+    /*
     {
         titleId: "nav.settings.section.tutorial",
         href: pagesRoutes.tutorialTags,
         Icon: TutorialIcon,
-    },
+    },*/
 ];
 
 const navContentsData: NavItem[] = [
