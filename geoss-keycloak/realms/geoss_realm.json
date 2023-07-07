@@ -1481,8 +1481,7 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins",
-                "roles"
+                "web-origins"
             ],
             "optionalClientScopes": [
                 "acr",
@@ -1491,6 +1490,7 @@
                 "offline_access",
                 "profile",
                 "organization",
+                "roles",
                 "microprofile-jwt",
                 "email"
             ]
@@ -1595,8 +1595,7 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins",
-                "roles"
+                "web-origins"
             ],
             "optionalClientScopes": [
                 "acr",
@@ -1605,6 +1604,7 @@
                 "offline_access",
                 "profile",
                 "organization",
+                "roles",
                 "microprofile-jwt",
                 "email"
             ]
