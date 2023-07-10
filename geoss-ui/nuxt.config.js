@@ -36,6 +36,7 @@ export default {
         '~/plugins/AppVueObj.ts',
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
+        { src: '~/plugins/MatomoPlugin.js', ssr: false },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -119,8 +120,11 @@ export default {
     },
 
     env: {
-        baseUrl: process.env.NUXT_ENV_BASE_URL || 'https://gpp.uat.esaportal.eu',
-        adminUrl: process.env.NUXT_ENV_ADMIN_URL || 'https://gpp-admin.uat.esaportal.eu'
+        baseUrl:
+            process.env.NUXT_ENV_BASE_URL || 'https://gpp.uat.esaportal.eu',
+        adminUrl:
+            process.env.NUXT_ENV_ADMIN_URL ||
+            'https://gpp-admin.uat.esaportal.eu',
     },
 
     // ssr: true,
