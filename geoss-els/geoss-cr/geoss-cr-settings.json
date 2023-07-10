@@ -1,0 +1,49 @@
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "shingle": {
+                    "max_shingle_size": "4",
+                    "min_shingle_size": "2",
+                    "type": "shingle"
+                }
+            },
+            "analyzer": {
+                "whitespace_analyzer": {
+                    "filter": [
+                        "lowercase",
+                        "asciifolding"
+                    ],
+                    "type": "custom",
+                    "tokenizer": "whitespace"
+                },
+                "trigram": {
+                    "filter": [
+                        "lowercase",
+                        "asciifolding",
+                        "shingle"
+                    ],
+                    "type": "custom",
+                    "tokenizer": "standard"
+                },
+                "reverse": {
+                    "filter": [
+                        "lowercase",
+                        "asciifolding",
+                        "reverse"
+                    ],
+                    "type": "custom",
+                    "tokenizer": "standard"
+                }
+            },
+            "normalizer": {
+                "keyword_lowercase": {
+                    "type": "custom",
+                    "filter": [
+                        "lowercase"
+                    ]
+                }
+            }
+        }
+    }
+}
