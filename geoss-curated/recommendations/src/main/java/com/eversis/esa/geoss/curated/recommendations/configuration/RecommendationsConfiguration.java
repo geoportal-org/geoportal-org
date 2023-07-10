@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.curated.recommendations.repository")
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.curated.recommendations.service.internal",
+                "com.eversis.esa.geoss.curated.recommendations.support.internal"
         }
 )
 @PropertySource("classpath:application-recommendations.properties")

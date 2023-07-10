@@ -16,24 +16,24 @@ import java.util.Optional;
 public interface RecommendedEntityRepository extends JpaRepository<RecommendedEntity, Long> {
 
     /**
-     * Exists by code and and data source and recommendation boolean.
+     * Exists by code and data source and recommendation boolean.
      *
      * @param code the code
      * @param dataSource the data source
      * @param recommendation the recommendation
      * @return the boolean
      */
-    boolean existsByCodeAndAndDataSourceAndRecommendation(String code, DataSource dataSource,
+    boolean existsByCodeAndDataSourceAndRecommendation(String code, DataSource dataSource,
             Recommendation recommendation);
 
     /**
-     * Find by code and and data source and recommendation optional.
+     * Find by code and data source and recommendation optional.
      *
      * @param code the code
      * @param dataSource the data source
      * @param recommendation the recommendation
      * @return the optional
      */
-    Optional<RecommendedEntity> findByCodeAndAndDataSourceAndRecommendation(String code, DataSource dataSource,
+    Optional<RecommendedEntity> findByCodeAndDataSourceAndRecommendation(String code, DataSource dataSource,
             Recommendation recommendation);
 }

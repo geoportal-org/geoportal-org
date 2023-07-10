@@ -66,4 +66,54 @@ public class Recommendation {
             orphanRemoval = true
     )
     private List<RecommendedKeyword> keywords = new ArrayList<>();
+
+    /**
+     * Add recommended entity.
+     *
+     * @param recommendedEntity the recommended entity
+     */
+    public void addRecommendedEntity(RecommendedEntity recommendedEntity) {
+        entities.add(recommendedEntity);
+        recommendedEntity.setRecommendation(this);
+    }
+
+    /**
+     * Remove recommended entity.
+     *
+     * @param recommendedEntity the recommended entity
+     */
+    public void removeRecommendedEntity(RecommendedEntity recommendedEntity) {
+        entities.remove(recommendedEntity);
+        recommendedEntity.setRecommendation(null);
+    }
+
+    /**
+     * Add recommended keyword.
+     *
+     * @param recommendedKeyword the recommended keyword
+     */
+    public void addRecommendedKeyword(RecommendedKeyword recommendedKeyword) {
+        keywords.add(recommendedKeyword);
+        recommendedKeyword.setRecommendation(this);
+    }
+
+    /**
+     * Remove recommended keyword.
+     *
+     * @param recommendedKeyword the recommended keyword
+     */
+    public void removeRecommendedKeyword(RecommendedKeyword recommendedKeyword) {
+        keywords.remove(recommendedKeyword);
+        recommendedKeyword.setRecommendation(null);
+    }
+
+    /**
+     * Clear recommended keywords.
+     */
+    public void clearRecommendedKeywords() {
+        for (RecommendedKeyword recommendedKeyword : keywords) {
+            recommendedKeyword.setRecommendation(null);
+        }
+        keywords.clear();
+    }
 }
