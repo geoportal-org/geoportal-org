@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.curated.recommendations.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import jakarta.validation.ConstraintViolationException;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 public class RecommendationModel {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Valid

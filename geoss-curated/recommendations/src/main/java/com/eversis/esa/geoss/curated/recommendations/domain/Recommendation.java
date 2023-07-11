@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.recommendations.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -36,6 +38,7 @@ public class Recommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native")
+    @JsonProperty(access = Access.READ_ONLY)
     private Long id;
 
     @JdbcTypeCode(Types.VARCHAR)

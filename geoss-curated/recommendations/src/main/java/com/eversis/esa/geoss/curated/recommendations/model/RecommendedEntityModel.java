@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.curated.recommendations.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RecommendedEntityModel {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @EqualsAndHashCode.Include
