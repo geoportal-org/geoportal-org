@@ -101,7 +101,11 @@ const buildMenu = (menu: Array<MenuElement>) => {
 
 export default {
     getMenu: async () => {
-        const menuRaw: MenuResponse = await apiClient.$get(geossContents.menu)
+        const menuRaw: MenuResponse = await apiClient.$get(geossContents.menu, {
+            headers: {
+                Authorization: '',
+            }
+        })
         const menu = buildMenu(menuRaw._embedded.menu)
         return menu
     },

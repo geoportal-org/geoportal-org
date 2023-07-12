@@ -1,7 +1,7 @@
 <template>
     <div>
         <client-only>
-            <!-- <UserWelcome /> -->
+            <UserWelcome />
             <Notification />
             <Spinner />
             <Popup />

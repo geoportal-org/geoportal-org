@@ -29,13 +29,13 @@
                     <p>In order to start a configuration, you need to log in as admin.</p>
                     <div class="creator__field required">
                         <label>Login: <span>*</span></label>
-                        <input placeholder="Type here..." type="text" ref="login" />
+                        <input v-model="username" placeholder="Type here..." type="text" ref="login" />
                     </div>
                     <div class="creator__field required">
                         <label>Password: <span>*</span></label>
-                        <input placeholder="Type here..." type="password" ref="password" />
+                        <input v-model="password" placeholder="Type here..." type="password" ref="password" />
                     </div>
-                    <button class="green-btn-default" @click="loginCheck()">Log in</button>
+                    <button class="green-btn-default" @click="signIn()">Log in</button>
                     <p>To get more information: <a href="/tutorials" target="_blank">View the manual</a></p>
                 </template>
 
@@ -113,6 +113,7 @@ import webSettingsAPI from '@/api/webSettings'
 import ContentAPI from '@/api/content'
 import defaultViews from '@/data/views'
 import NotificationService from '@/services/notification.service';
+import apiClient from '@/api/apiClient'
 
 export default {
     layout() {
@@ -123,33 +124,26 @@ export default {
             step: 0,
             settings: null,
             views: [],
+            username: '',
+            password: '',
             nameFieldId: null,
             logoFieldId: null,
             defaultView: null,
-            baseUrl: process.env.NUXT_ENV_BASE_URL,
-            adminUrl: process.env.NUXT_ENV_ADMIN_URL
+            baseUrl: this.$config.baseUrl,
+            adminUrl: this.$config.adminUrl
         }
     },
     methods: {
         next() {
             ++this.step
+            if (this.step === 1 && this.$auth.loggedIn) {
+                this.step = 2;
+            }
         },
         prev() {
             --this.step
-        },
-        loginCheck() {
-            if (!this.$refs.login || this.$refs.login.value === '' || !this.$refs.password || this.$refs.password.value === '') {
-                NotificationService.show(
-                    'Mirror Site Configuration',
-                    'Please provide correct credentials',
-                    10000,
-                    null,
-                    9999,
-                    'info'
-                );
-                return false
-            } else {
-                this.next();
+            if (this.step === 1 && this.$auth.loggedIn) {
+                this.step = 0;
             }
         },
         async saveSiteSettings() {
@@ -168,9 +162,9 @@ export default {
                     set: 'logo',
                     key: 'title',
                     value: this.$refs.site_name.value
-                })
+                }, this.$auth.getToken('keycloak'))
 
-                const logo = await ContentAPI.addContent(this.$refs.site_logo.files[0])
+                const logo = await ContentAPI.addContent(this.$refs.site_logo.files[0], this.$auth.getToken('keycloak'))
 
                 if (logo.errors && logo.errors.length || logo.error) {
                     NotificationService.show(
@@ -188,7 +182,7 @@ export default {
                     set: 'logo',
                     key: 'source',
                     value: `/contents/rest/document/${logo}/content`
-                })
+                }, this.$auth.getToken('keycloak'))
 
                 this.next();
             }
@@ -207,7 +201,7 @@ export default {
                     title: this.defaultView.title,
                     defaultOption: false,
                 }
-                await webSettingsAPI.updateView(this.defaultView.id, viewData);
+                await webSettingsAPI.updateView(this.defaultView.id, viewData, this.$auth.getToken('keycloak'));
             }
 
             const id = selectedView.attributes['data-id'].value
@@ -221,7 +215,7 @@ export default {
                     defaultOption: true,
                 }
 
-                await webSettingsAPI.updateView(id, viewData);
+                await webSettingsAPI.updateView(id, viewData, this.$auth.getToken('keycloak'));
                 this.next()
             }
         },
@@ -233,7 +227,7 @@ export default {
                     title: view.title,
                     defaultOption: false,
                 }
-                await webSettingsAPI.setView(viewData);
+                await webSettingsAPI.setView(viewData, this.$auth.getToken('keycloak'));
             }
         },
         getCurrentDefaultView() {
@@ -241,6 +235,51 @@ export default {
                 if (view.defaultOption) {
                     this.defaultView = view
                 }
+            }
+        },
+        async signIn() {
+            if (!this.$refs.login || this.$refs.login.value === '' || !this.$refs.password || this.$refs.password.value === '') {
+                NotificationService.show(
+                    'Mirror Site Configuration',
+                    'Please provide correct credentials',
+                    10000,
+                    null,
+                    9999,
+                    'info'
+                );
+                return false
+            }
+
+            const formData = new URLSearchParams();
+            formData.append('grant_type', 'password');
+            formData.append('client_id', this.$config.keycloakClientId);
+            formData.append('username', this.username);
+            formData.append('password', this.password);
+            formData.append('scope', 'openid profile email roles');
+
+            const response = await apiClient.$post(`${this.$config.keycloakBaseUrl}/protocol/openid-connect/token`, formData.toString(), {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                json: true,
+            }).catch(e => {
+                console.error('error ', e);
+                NotificationService.show(
+                    'Mirror Site Configuration',
+                    'Please provide correct credentials',
+                    10000,
+                    null,
+                    9999,
+                    'info'
+                );
+                return false;
+            })
+
+            if (response && response.access_token && response.access_token !== '') {
+                this.$auth.setToken(this.$store.state.auth.strategy, `Bearer ${response.access_token}`)
+                this.$auth.strategy._setToken(`Bearer ${response.access_token}`)
+
+                this.next();
             }
         }
     },

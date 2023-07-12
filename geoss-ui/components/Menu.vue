@@ -40,6 +40,17 @@
                     </NuxtLink>
                 </div>
             </template>
+            <div class="menu__separator"></div>
+            <div class="menu__item">
+                <a v-if="isSignedIn" class="menu__link" target="_blank" @click="signOff()">
+                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-out.svg" title="Sign off" />
+                    <span>Sign off</span>
+                </a>
+                <a v-else class="menu__link" target="_blank" @click="signIn()">
+                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-in.svg" title="Sign in" />
+                    <span>Sign in</span>
+                </a>
+            </div>
         </div>
         <div class="menu__inner-wrapper md-hidden-down">
             <div v-for="(route, index) of routes" :key="index" class="menu__item">
@@ -58,6 +69,8 @@
                     </div>
                 </CollapseTransition>
             </div>
+            <!-- Sign-in sub-menu expander -->
+            <div class="menu__item"></div>
         </div>
     </nav>
 </template>
@@ -70,7 +83,6 @@ import { MenuLinksWrapper } from '@/interfaces/Menu';
 import { MenuGetters } from '@/store/menu/menu-getters';
 import { MenuActions } from '@/store/menu/menu-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
-import { UserGetters } from '@/store/user/user-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
 
@@ -89,7 +101,7 @@ export default class MenuComponent extends Vue {
     public routes: any = []; // : Array<MenuLink | MenuLinksWrapper> = [];
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn];
+        return this.$auth.loggedIn;
     }
 
     get menuOpened() {
@@ -132,6 +144,15 @@ export default class MenuComponent extends Vue {
         } else {
             return false;
         }
+    }
+
+    public signOff() {
+        this.$auth.logout();
+        this.$auth.reset();
+    }
+
+    public signIn() {
+        this.$auth.loginWith('keycloak')
     }
 
     @Watch('langLocale')

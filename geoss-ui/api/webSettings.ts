@@ -174,46 +174,74 @@ const parseCatalogsResponse = (data: string): any => {
 export default {
     getSiteSettingsRaw: async () => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings
+            geossSettings.webSettings,
+            {
+                headers: {
+                    Authorization: '',
+                }
+            }
         )
         return webSettings._embedded.webSettings
     },
     getSiteSettings: async () => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings
+            geossSettings.webSettings,
+            {
+                headers: {
+                    Authorization: '',
+                }
+            }
         )
         const webSettingsData: WebSettingsData = parseWebSettings(webSettings)
         return parseSiteSettings(webSettingsData)
     },
     getSearchSettings: async () => {
         const apiSettings: WebSettings = await apiClient.$get(
-            geossSettings.apiSettings
+            geossSettings.apiSettings,
+            {
+                headers: {
+                    Authorization: '',
+                }
+            }
         )
         const apiSettingsData: any = parseApiSettings(apiSettings)
         return apiSettingsData
     },
     getCatalogs: async (catalogsUrl: string) => {
         if (process.browser) {
-            const catalogsResponse: any = await apiClient.$get(catalogsUrl)
+            const catalogsResponse: any = await apiClient.$get(catalogsUrl, {
+                headers: {
+                    Authorization: '',
+                }
+            })
             return parseCatalogsResponse(catalogsResponse)
         }
         return []
     },
     getViews: async () => {
-        const views: any = await apiClient.$get(geossSettings.views)
+        const views: any = await apiClient.$get(geossSettings.views, {
+            headers: {
+                Authorization: '',
+            }
+        })
         return views._embedded.views
     },
     getDataProviders: async (dataProvidersUrl: string) => {
         if (process.browser) {
             SpinnerService.showSpinner()
             const dataProvidersResponse: any = await apiClient.$get(
-                dataProvidersUrl
+                dataProvidersUrl,
+                {
+                    headers: {
+                        Authorization: '',
+                    }
+                }
             )
             SpinnerService.hideSpinner()
             return dataProvidersResponse
         }
     },
-    setSiteSetting: async (id: number, webSettingData: IWebSettingData) => {
+    setSiteSetting: async (id: number, webSettingData: IWebSettingData, token: any = null) => {
         let method = '$post'
         let url = `${geossSettings.webSettings}`
         if (id) {
@@ -223,26 +251,26 @@ export default {
         return apiClient[method](url, JSON.stringify(webSettingData), {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Basic dXNlcjpxYXoxMjM=',
+                Authorization: token ? token : '',
             },
         })
     },
-    setView: async (view: any) => {
+    setView: async (view: any, token: any = null) => {
         return apiClient.$post(`${geossSettings.views}`, JSON.stringify(view), {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Basic dXNlcjpxYXoxMjM=',
+                Authorization: token ? token : '',
             },
         })
     },
-    updateView: async (id: number, view: any) => {
+    updateView: async (id: number, view: any, token: any = null) => {
         return apiClient.$patch(
             `${geossSettings.views}/${id}`,
             JSON.stringify(view),
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Basic dXNlcjpxYXoxMjM=',
+                    Authorization: token ? token : '',
                 },
             }
         )

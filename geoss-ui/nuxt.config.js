@@ -65,9 +65,30 @@ export default {
     modules: [
         // https://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
+        '@nuxtjs/auth',
         '@nuxtjs/i18n',
         'cookie-universal-nuxt',
     ],
+
+    axios: {
+        proxy: true
+    },
+
+    auth: {
+        strategies: {
+            keycloak: {
+                _scheme: 'oauth2',
+                authorization_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/auth',
+                access_token_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/token',
+                userinfo_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/userinfo',
+                redirect_uri: undefined,
+                scope: ['openid', 'profile', 'email', 'roles'],
+                grant_type: 'authorization_code',
+                response_type: 'code',
+                client_id: process.env.KEYCLOAK_CLIENT_ID,
+            }
+        }
+    },
 
     i18n: {
         locales: [
@@ -119,12 +140,11 @@ export default {
         vendor: ['ol'],
     },
 
-    env: {
-        baseUrl:
-            process.env.NUXT_ENV_BASE_URL || 'https://gpp.uat.esaportal.eu',
-        adminUrl:
-            process.env.NUXT_ENV_ADMIN_URL ||
-            'https://gpp-admin.uat.esaportal.eu',
+    publicRuntimeConfig: {
+        baseUrl: process.env.BASE_URL,
+        adminUrl: process.env.ADMIN_URL,
+        keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
+        keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
     },
 
     // ssr: true,

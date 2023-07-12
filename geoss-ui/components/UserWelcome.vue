@@ -2,21 +2,21 @@
     <div class="user-welcome" v-if="isSignedIn">{{ $tc('general.hi') }}, {{ userFirstName }}</div>
 </template>
 
-<script lang="ts">
-// @ts-nocheck
+<script>
 import { Component, Vue } from 'nuxt-property-decorator';
-import { UserGetters } from '@/store/user/user-getters';
-import { Liferay } from '@/data/global';
 
 @Component
 export default class UserWelcomeComponent extends Vue {
     get isSignedIn() {
-        return !this.$store.getters[UserGetters.isSignedIn];
+        return this.$auth.loggedIn;
     }
 
     get userFirstName() {
-        return 'xxx'
-        // return (typeof Liferay !== 'undefined' ? Liferay.ThemeDisplay.getUserName().split(' ')[0] : '');
+        return this.$auth.user.given_name;
+    }
+
+    mounted() {
+        this.$auth.fetchUser();
     }
 }
 </script>

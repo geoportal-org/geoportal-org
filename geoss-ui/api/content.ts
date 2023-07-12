@@ -66,7 +66,11 @@ type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh';
 const locale: Language = 'en';
 
 const getPages = () => {
-    return apiClient.$get(geossContents.page)
+    return apiClient.$get(geossContents.page, {
+        headers: {
+            Authorization: '',
+        }
+    })
 }
 
 const prepareFileToUpload = (inputFile: any): FormData => {
@@ -105,7 +109,12 @@ export default {
 
     getContent: async (contentId: string) => {
         const content: Content = await apiClient.$get(
-            geossContents.content + '/' + contentId
+            geossContents.content + '/' + contentId,
+            {
+                headers: {
+                    Authorization: '',
+                }
+            }
         )
 
         const title = content.title[locale as keyof Language];
@@ -117,12 +126,17 @@ export default {
         return content
     },
 
-    addContent: async (inputFile: any) => {
+    addContent: async (inputFile: any, token: any = null) => {
         const fileData = prepareFileToUpload(inputFile)
         try {
-            const resp = await apiClient.$post(geossContents.document, fileData)
+            const resp = await apiClient.$post(geossContents.document, fileData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token ? token : '',
+                },
+            })
             return resp._links.document.href.split('/').slice(-1).pop()
-        } catch (e) {
+        } catch (e: any) {
             console.warn(e)
             return e.response.data
         }
