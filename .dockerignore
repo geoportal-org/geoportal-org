@@ -1,0 +1,36 @@
+### Hidden ###
+.*
+**/.*
+
+### Markdown ###
+*.md
+**/*.md
+
+### Docker ###
+Dockerfile
+**/Dockerfile
+Dockerfile*
+**/Dockerfile*
+
+### Gradle ###
+!.gradle
+!**/.gradle
+build/
+**/build/
+**/build/*
+
+### Maven ###
+target/
+**/target/
+**/target/*
+
+### IntelliJ IDEA ###
+out/
+**/out/
+**/out/*
+
+### Others ###
+*.log
+**/*.log
+tomcat/
+**/tomcat/

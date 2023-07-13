@@ -6,7 +6,8 @@ ENV GRADLE_USER_HOME=/opt/app/.gradle
 
 WORKDIR /opt/app
 
-COPY ./ ./
+COPY ./geoss-common ../geoss-common
+COPY ./geoss-curated ./
 
 RUN chmod u+x gradlew
 RUN ./gradlew --build-cache --no-daemon assemble
