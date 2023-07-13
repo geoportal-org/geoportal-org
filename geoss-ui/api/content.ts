@@ -101,6 +101,11 @@ export default {
         const page: Page = pages._embedded.page.filter(
             (page: { slug: string }) => page.slug === slug
         )[0]
+
+        if (!page) {
+            return false;
+        }
+
         const title = page.title[locale as keyof Language];
         page.title = title;
 

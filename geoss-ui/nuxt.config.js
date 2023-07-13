@@ -76,16 +76,12 @@ export default {
 
     auth: {
         strategies: {
+            local: false,
+            oauth2: {
+                _scheme: 'oauth2'
+            },
             keycloak: {
-                _scheme: 'oauth2',
-                authorization_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/auth',
-                access_token_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token',
-                userinfo_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/userinfo',
-                redirect_uri: undefined,
-                scope: ['openid', 'profile', 'email', 'roles'],
-                grant_type: 'authorization_code',
-                response_type: 'code',
-                client_id: process.env.KEYCLOAK_CLIENT_ID,
+                _scheme: '~/scheme/runtimeOauth2',
             }
         }
     },
@@ -145,6 +141,20 @@ export default {
         adminUrl: process.env.ADMIN_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
+        auth: {
+            strategies: {
+                keycloak: {
+                    authorization_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/auth',
+                    access_token_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/token',
+                    userinfo_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/userinfo',
+                    redirect_uri: undefined,
+                    scope: ['openid', 'profile', 'email', 'roles'],
+                    grant_type: 'authorization_code',
+                    response_type: 'code',
+                    client_id: process.env.KEYCLOAK_CLIENT_ID
+                }
+            }
+        }
     },
 
     // ssr: true,
