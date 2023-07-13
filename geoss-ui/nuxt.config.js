@@ -78,9 +78,9 @@ export default {
         strategies: {
             keycloak: {
                 _scheme: 'oauth2',
-                authorization_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/auth',
-                access_token_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/token',
-                userinfo_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/userinfo',
+                authorization_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/auth',
+                access_token_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token',
+                userinfo_endpoint: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/userinfo',
                 redirect_uri: undefined,
                 scope: ['openid', 'profile', 'email', 'roles'],
                 grant_type: 'authorization_code',
