@@ -7,8 +7,10 @@ plugins {
     id 'project-report'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 checkstyle {
     configFile "${project.rootDir}/eversis_checks.xml" as File
