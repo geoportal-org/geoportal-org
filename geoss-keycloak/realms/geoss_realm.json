@@ -793,7 +793,215 @@
             ],
             "geoss-bookmarks": [],
             "admin-cli": [],
-            "geoss-curated": [],
+            "geoss-curated": [
+                {
+                    "id": "3bee7647-196b-4bb0-90e8-6ae825fabe85",
+                    "name": "dashboard_deleter",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "f1bc6ea6-c4c7-414d-a24e-fcb480a7bb4a",
+                    "name": "extension_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "637dc825-ebbc-4ab3-a704-ced72913f458",
+                    "name": "dashboard_reviewer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "6e77af1c-b493-4e71-9d3d-092c98f2ef27",
+                    "name": "dashboard_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "d0487cc5-4a9b-45d1-b8a8-f604f5789f3f",
+                    "name": "dashboard_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "0bbfb8aa-0a69-4344-8e7e-956a9c521867",
+                    "name": "extension_deleter",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "7d295816-9ad7-4014-9de9-9eeb562b907f",
+                    "name": "recommendation_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "256c1419-7a41-4d77-9a47-1e4e6400f9f2",
+                    "name": "recommendation_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "2af50f9c-3406-4cbe-bb24-488626657b67",
+                    "name": "resource_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "3ce446ae-1a34-4811-97fc-3ffb4c6a42ec",
+                    "name": "recommendation_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "29011bee-c8b8-499e-ac65-abd6f15f9251",
+                    "name": "extension_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "2dacbbff-fc8b-4e99-bc9b-0c24a3cfd25d",
+                    "name": "relation_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "b274da50-cd34-42cc-9afb-4b2dcf728cff",
+                    "name": "resource_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "69af7737-65a1-4864-97aa-3b95648cd177",
+                    "name": "dashboard_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "dc5a96b6-d2c4-42dc-8b65-c931b913d3d2",
+                    "name": "extension_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "4aba503a-02a8-462e-9372-c900801829ad",
+                    "name": "resource_reviewer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "97ab08c7-df16-48bf-b5f6-77730a2ac0f6",
+                    "name": "relation_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "dcaa00b3-36de-4000-97f3-77c773efee71",
+                    "name": "resource_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "97a091c2-acaf-4599-b13a-b1e8328eaede",
+                    "name": "relation_deleter",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "650f068d-7370-41ed-ae73-e821b559092a",
+                    "name": "relation_reviewer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "938c0702-a3e0-4e42-8842-3fa0bc732a84",
+                    "name": "relation_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "2e74d5aa-6c38-451f-9930-fa51975bbef5",
+                    "name": "resource_deleter",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                },
+                {
+                    "id": "f93d219b-99c1-4e04-87ae-a9e1021120c2",
+                    "name": "extension_reviewer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "d2cc4d6c-7fd0-4d4a-a566-643fec400b1c",
+                    "attributes": {}
+                }
+            ],
             "account": [
                 {
                     "id": "af8e8f7a-aa36-476c-beb3-8c1ca2a8eed5",
@@ -916,16 +1124,16 @@
             ],
             "clientRoles": {
                 "geoss-contents": [
-                    "menu_remover",
-                    "directory_remover",
                     "directory_reader",
                     "directory_writer",
-                    "page_remover",
                     "content_remover",
                     "menu_reader",
                     "page_reader",
-                    "file_remover",
                     "file_reader",
+                    "menu_remover",
+                    "directory_remover",
+                    "page_remover",
+                    "file_remover",
                     "page_writer",
                     "file_writer",
                     "content_writer",
@@ -939,27 +1147,38 @@
                 ],
                 "geoss-settings": [
                     "api_writer",
+                    "view_reader",
+                    "api_remover",
+                    "web_remover",
+                    "layer_remover",
+                    "catalog_reader",
+                    "catalog_remover",
+                    "view_writer",
                     "api_reader",
                     "tag_writer",
                     "web_writer",
                     "tag_reader",
                     "tag_remover",
-                    "view_reader",
-                    "api_remover",
                     "web_reader",
                     "catalog_writer",
-                    "web_remover",
                     "layer_writer",
-                    "layer_remover",
-                    "catalog_reader",
-                    "catalog_remover",
                     "view_remover",
-                    "view_writer",
                     "layer_reader"
+                ],
+                "geoss-curated": [
+                    "dashboard_reviewer",
+                    "extension_reviewer",
+                    "dashboard_deleter",
+                    "recommendation_writer",
+                    "resource_reviewer",
+                    "relation_reviewer",
+                    "extension_deleter",
+                    "resource_deleter",
+                    "recommendation_remover",
+                    "relation_deleter"
                 ],
                 "geoss-personaldata": [
                     "comment_writer",
-                    "saved_searches_reader",
                     "survey_writer",
                     "survey_remover",
                     "highlighted_searches_reader",
@@ -967,6 +1186,7 @@
                     "comment_reader",
                     "highlighted_searches_writer",
                     "saved_searches_remover",
+                    "saved_searches_reader",
                     "highlighted_searches_remover",
                     "comment_remover"
                 ]
@@ -1014,6 +1234,14 @@
                 "geoss-personaldata": [
                     "survey_writer",
                     "survey_reader"
+                ],
+                "geoss-curated": [
+                    "dashboard_reviewer",
+                    "extension_reviewer",
+                    "recommendation_remover",
+                    "recommendation_writer",
+                    "resource_reviewer",
+                    "relation_reviewer"
                 ]
             },
             "subGroups": []
@@ -1057,23 +1285,38 @@
             "realmRoles": [],
             "clientRoles": {
                 "geoss-contents": [
+                    "directory_reader",
                     "menu_reader",
                     "page_reader",
                     "file_reader",
-                    "directory_reader",
                     "content_reader"
                 ],
                 "geoss-settings": [
                     "api_reader",
-                    "catalog_reader",
                     "tag_reader",
                     "view_reader",
                     "web_reader",
+                    "catalog_reader",
                     "layer_reader"
                 ],
                 "geoss-personaldata": [
                     "highlighted_searches_creator",
                     "saved_searches_manager"
+                ],
+                "geoss-curated": [
+                    "extension_reader",
+                    "dashboard_remover",
+                    "relation_reader",
+                    "resource_remover",
+                    "dashboard_writer",
+                    "extension_writer",
+                    "relation_remover",
+                    "resource_reader",
+                    "dashboard_reader",
+                    "recommendation_reader",
+                    "resource_writer",
+                    "extension_remover",
+                    "relation_writer"
                 ]
             },
             "subGroups": []
@@ -1101,9 +1344,9 @@
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
+        "totpAppFreeOTPName",
         "totpAppMicrosoftAuthenticatorName",
-        "totpAppGoogleName",
-        "totpAppFreeOTPName"
+        "totpAppGoogleName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
@@ -1527,9 +1770,10 @@
             "protocol": "openid-connect",
             "attributes": {
                 "oidc.ciba.grant.enabled": "false",
-                "oauth2.device.authorization.grant.enabled": "false",
                 "client.secret.creation.time": "1689165781",
                 "backchannel.logout.session.required": "true",
+                "post.logout.redirect.uris": "+",
+                "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
             "authenticationFlowBindingOverrides": {},
@@ -2535,14 +2779,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-full-name-mapper",
-                        "oidc-usermodel-property-mapper",
                         "oidc-sha256-pairwise-sub-mapper",
-                        "saml-user-attribute-mapper",
-                        "saml-user-property-mapper",
                         "saml-role-list-mapper",
+                        "oidc-usermodel-property-mapper",
+                        "saml-user-attribute-mapper",
                         "oidc-usermodel-attribute-mapper",
-                        "oidc-address-mapper"
+                        "oidc-address-mapper",
+                        "oidc-full-name-mapper",
+                        "saml-user-property-mapper"
                     ]
                 }
             },
@@ -2566,14 +2810,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
+                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-full-name-mapper",
-                        "oidc-address-mapper",
-                        "saml-role-list-mapper",
-                        "oidc-usermodel-property-mapper",
                         "saml-user-property-mapper",
                         "oidc-usermodel-attribute-mapper",
-                        "saml-user-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper"
+                        "saml-role-list-mapper",
+                        "oidc-address-mapper",
+                        "oidc-usermodel-property-mapper",
+                        "saml-user-attribute-mapper"
                     ]
                 }
             },
@@ -2698,7 +2942,7 @@
     "defaultLocale": "en",
     "authenticationFlows": [
         {
-            "id": "f9750639-253e-4217-be30-630f57e33639",
+            "id": "f0c4968e-096f-43eb-8c95-cbc785dfd787",
             "alias": "Account verification options",
             "description": "Method with which to verity the existing account",
             "providerId": "basic-flow",
@@ -2724,7 +2968,7 @@
             ]
         },
         {
-            "id": "a43baa6b-9cc8-4993-932e-58d7519f497a",
+            "id": "f185b0ff-99dd-4315-8393-beced2288b51",
             "alias": "Authentication Options",
             "description": "Authentication options.",
             "providerId": "basic-flow",
@@ -2758,7 +3002,7 @@
             ]
         },
         {
-            "id": "05edac37-1036-4198-a7b8-986e5745aa94",
+            "id": "0cf3b8f6-dcdb-4832-92f7-4916b024cd8d",
             "alias": "Browser - Conditional OTP",
             "description": "Flow to determine if the OTP is required for the authentication",
             "providerId": "basic-flow",
@@ -2784,7 +3028,7 @@
             ]
         },
         {
-            "id": "1c5e766b-3925-4b73-a669-4f32c3f0760f",
+            "id": "07118e7c-29dc-456e-907f-3a433ff64f1a",
             "alias": "Direct Grant - Conditional OTP",
             "description": "Flow to determine if the OTP is required for the authentication",
             "providerId": "basic-flow",
@@ -2810,7 +3054,7 @@
             ]
         },
         {
-            "id": "6e44de11-4b59-42a1-bae1-4b7e0ee76bfd",
+            "id": "efc074f6-6da3-4774-930a-f92c8720bfd5",
             "alias": "First broker login - Conditional OTP",
             "description": "Flow to determine if the OTP is required for the authentication",
             "providerId": "basic-flow",
@@ -2836,7 +3080,7 @@
             ]
         },
         {
-            "id": "446c8540-3d4a-48b8-b9c9-ee110f59ec86",
+            "id": "0b5629d8-75f1-4fc3-9e97-5cd2c4d888e6",
             "alias": "Handle Existing Account",
             "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
             "providerId": "basic-flow",
@@ -2862,7 +3106,7 @@
             ]
         },
         {
-            "id": "d6b63e3e-e806-4bb9-a166-8696d3140e03",
+            "id": "d7da8fa9-e307-46e9-8a91-044a7cbd8e70",
             "alias": "Reset - Conditional OTP",
             "description": "Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.",
             "providerId": "basic-flow",
@@ -2888,7 +3132,7 @@
             ]
         },
         {
-            "id": "f7626fb3-20f4-482d-9170-901fceb55fce",
+            "id": "c5234a23-f990-4476-8045-ef216ba85052",
             "alias": "User creation or linking",
             "description": "Flow for the existing/non-existing user alternatives",
             "providerId": "basic-flow",
@@ -2915,7 +3159,7 @@
             ]
         },
         {
-            "id": "09dd949b-77f7-448c-b18e-1783b6231b51",
+            "id": "0f2dec01-5fdf-45c3-87c6-75b30009dafb",
             "alias": "Verify Existing Account by Re-authentication",
             "description": "Reauthentication of existing account",
             "providerId": "basic-flow",
@@ -2941,7 +3185,7 @@
             ]
         },
         {
-            "id": "ccd6d4e8-7f63-4f1f-8b8e-e1045cec2a8e",
+            "id": "3d8ffabb-ac00-4a62-987a-898c5c7a90fc",
             "alias": "browser",
             "description": "browser based authentication",
             "providerId": "basic-flow",
@@ -2983,7 +3227,7 @@
             ]
         },
         {
-            "id": "9daa8995-6c9a-40e1-b8c5-90febb88db6c",
+            "id": "1c517af1-4484-429f-a0f0-5fb5c18a6938",
             "alias": "clients",
             "description": "Base authentication for clients",
             "providerId": "client-flow",
@@ -3025,7 +3269,7 @@
             ]
         },
         {
-            "id": "316e62a5-4be7-45c5-80d3-a57445de775d",
+            "id": "9463af14-ec00-4c9d-84d8-53849d1288ef",
             "alias": "direct grant",
             "description": "OpenID Connect Resource Owner Grant",
             "providerId": "basic-flow",
@@ -3059,7 +3303,7 @@
             ]
         },
         {
-            "id": "87f9f46d-288b-4ce5-a319-f3dcd99e3134",
+            "id": "3d1b6aa6-5bd6-458a-9c61-ff2a6c3eb5e8",
             "alias": "docker auth",
             "description": "Used by Docker clients to authenticate against the IDP",
             "providerId": "basic-flow",
@@ -3077,7 +3321,7 @@
             ]
         },
         {
-            "id": "fb05ac56-f91a-461f-9936-dfeb8519fc7d",
+            "id": "cff11916-3df7-4594-ac43-5190122bc6d3",
             "alias": "first broker login",
             "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
             "providerId": "basic-flow",
@@ -3104,7 +3348,7 @@
             ]
         },
         {
-            "id": "25923370-7889-45b1-bc62-813b79fc4096",
+            "id": "78c73bf4-0d40-4d7b-9670-7d703363ef35",
             "alias": "forms",
             "description": "Username, password, otp and other auth forms.",
             "providerId": "basic-flow",
@@ -3130,7 +3374,7 @@
             ]
         },
         {
-            "id": "f042a268-2c1e-4f4e-915d-943400c66af0",
+            "id": "7c3294b4-c67f-464d-8ec2-20479e100eda",
             "alias": "http challenge",
             "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
             "providerId": "basic-flow",
@@ -3156,7 +3400,7 @@
             ]
         },
         {
-            "id": "7d7f113c-f226-458d-988b-8bd9e8e9d37e",
+            "id": "86135489-e928-4b7a-8c3c-a64d39b22f23",
             "alias": "registration",
             "description": "registration flow",
             "providerId": "basic-flow",
@@ -3175,7 +3419,7 @@
             ]
         },
         {
-            "id": "b10efacd-c7e8-48bb-8592-e1b7a6ddcbc7",
+            "id": "6af46d6e-c1f4-4607-a494-86a834ebae02",
             "alias": "registration form",
             "description": "registration form",
             "providerId": "form-flow",
@@ -3217,7 +3461,7 @@
             ]
         },
         {
-            "id": "6ca40e2c-9215-406e-918b-1a7f04742251",
+            "id": "0c06dbc8-f9d4-437e-84ac-8c4d9773d6d7",
             "alias": "reset credentials",
             "description": "Reset credentials for a user if they forgot their password or something",
             "providerId": "basic-flow",
@@ -3259,7 +3503,7 @@
             ]
         },
         {
-            "id": "62bb6d0b-97ea-4b66-82a9-ac4a8359989f",
+            "id": "63aad24c-aefd-4f2c-aea8-580615777ee0",
             "alias": "saml ecp",
             "description": "SAML ECP Profile Authentication Flow",
             "providerId": "basic-flow",
@@ -3279,14 +3523,14 @@
     ],
     "authenticatorConfig": [
         {
-            "id": "bc8573e4-3e93-429b-a661-b3b2efc1e83d",
+            "id": "01df0934-b463-4164-a3d3-edf8a50466c7",
             "alias": "create unique user config",
             "config": {
                 "require.password.update.after.registration": "false"
             }
         },
         {
-            "id": "d1c56748-4e8b-480d-abd9-fc27718d7b9b",
+            "id": "3d566441-1c76-4746-9cd8-31fc5251210e",
             "alias": "review profile config",
             "config": {
                 "update.profile.on.first.login": "missing"
