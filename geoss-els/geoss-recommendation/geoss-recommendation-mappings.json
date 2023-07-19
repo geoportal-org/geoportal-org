@@ -1,0 +1,44 @@
+{
+    "mappings": {
+        "_doc": {
+            "properties": {
+                "term": {
+                    "type": "text",
+                    "fields": {
+                        "raw": {
+                            "type": "keyword",
+                            "normalizer": "keyword_lowercase"
+                        },
+                        "english": {
+                            "type": "text",
+                            "analyzer": "english"
+                        },
+                        "trigram": {
+                            "type": "text",
+                            "analyzer": "trigram"
+                        }
+                    }
+                },
+                "recommendationId": {
+                    "type": "keyword"
+                },
+                "entities": {
+                    "properties": {
+                        "title": {
+                            "type": "text"
+                        },
+                        "description": {
+                            "type": "text"
+                        },
+                        "code": {
+                            "type": "keyword"
+                        },
+                        "dataSource": {
+                            "type": "keyword"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
