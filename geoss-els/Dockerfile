@@ -13,9 +13,9 @@ RUN bin/elasticsearch-plugin install -b analysis-kuromoji
 RUN bin/elasticsearch-plugin install -b analysis-smartcn
 RUN bin/elasticsearch-plugin install -b analysis-stempel
 
-COPY geoss-cr /tmp/
-COPY geoss-cr-extensions /tmp/
-COPY geoss-recommendation /tmp/
+COPY geoss-cr/* /tmp/
+COPY geoss-cr-extensions/* /tmp/
+COPY geoss-recommendation/* /tmp/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
