@@ -174,7 +174,7 @@ services:
         image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
         environment:
           MAILDEV_INCOMING_USER: maildev
-          MAILDEV_INCOMING_PASS: qaz123
+          MAILDEV_INCOMING_PASS: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
           MAILDEV_WEB_USER: admin
           MAILDEV_WEB_PASS: qaz123
         ports:
