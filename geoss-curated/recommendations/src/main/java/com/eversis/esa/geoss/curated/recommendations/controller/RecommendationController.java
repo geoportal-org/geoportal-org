@@ -46,7 +46,7 @@ public class RecommendationController {
      * @param size the size
      * @return the page
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<RecommendationModel> findRecommendations(
@@ -61,7 +61,7 @@ public class RecommendationController {
      *
      * @param recommendationDto the recommendation dto
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void createRecommendation(@RequestBody @Valid RecommendationModel recommendationDto) {
@@ -73,7 +73,7 @@ public class RecommendationController {
      *
      * @param recommendationId the recommendation id
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_REMOVER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{recommendationId}")
     public void deleteRecommendation(@PathVariable long recommendationId) {
@@ -86,7 +86,7 @@ public class RecommendationController {
      * @param recommendationId the recommendation id
      * @param keywords the keywords
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{recommendationId}/keywords")
     public void updateRecommendedKeywords(
@@ -101,7 +101,7 @@ public class RecommendationController {
      * @param recommendationId the recommendation id
      * @param entities the entities
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{recommendationId}/entities")
     public void addRecommendedEntities(
@@ -116,7 +116,7 @@ public class RecommendationController {
      * @param recommendationId the recommendation id
      * @param entity the entity
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{recommendationId}/entities")
     public void updateRecommendedEntity(
@@ -132,7 +132,7 @@ public class RecommendationController {
      * @param dataSourceCode the data source code
      * @param entityCode the entity code
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PORTAL_CONTENT_REVIEWER')")
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{recommendationId}/entities")
     public void removeRecommendedEntity(

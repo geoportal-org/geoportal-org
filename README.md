@@ -105,7 +105,7 @@ Create user
 curl --location --request POST 'http://geoss-keycloak:8080/admin/realms/geoss/users' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer <access_token>' \
---data-raw '{"firstName":"Geoss","lastName":"Geoss","username":"geoss","email":"geoss@localhost","enabled":"true","emailVerified":"true","credentials":[{"type":"password","value":"geoss","temporary":false}],"groups":["administrator"]}'
+--data-raw '{"firstName":"Geoss","lastName":"Geoss","username":"geoss","email":"geoss@localhost","enabled":"true","emailVerified":"true","credentials":[{"type":"password","value":"geoss","temporary":false}],"groups":["administrator","realm-manager"]}'
 ```
 
 ### Keycloak
