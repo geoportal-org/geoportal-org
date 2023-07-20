@@ -25,6 +25,14 @@ public interface RecommendationService {
     Page<RecommendationModel> findAllRecommendations(@NotNull Pageable pageable);
 
     /**
+     * Gets recommendation.
+     *
+     * @param recommendationId the recommendation id
+     * @return the recommendation
+     */
+    RecommendationModel getRecommendation(long recommendationId);
+
+    /**
      * Create recommendation.
      *
      * @param recommendationDto the recommendation dto

@@ -73,6 +73,20 @@ public class RecommendationController {
     }
 
     /**
+     * Get recommendation.
+     *
+     * @param id the id
+     * @return the entity model
+     */
+    @PreAuthorize("permitAll()")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = {"/{id}"})
+    EntityModel<RecommendationModel> getRecommendation(@PathVariable Long id) {
+        RecommendationModel recommendationModel = recommendationService.getRecommendation(id);
+        return EntityModel.of(recommendationModel, recommendationLinks(recommendationModel));
+    }
+
+    /**
      * Create recommendation.
      *
      * @param recommendationDto the recommendation dto

@@ -69,6 +69,20 @@ public class RecommendationServiceImpl implements RecommendationService {
         return new PageImpl<>(recommendationModels, pageable, recommendations.getTotalElements());
     }
 
+    @Override
+    public RecommendationModel getRecommendation(long recommendationId) {
+        log.debug("Get recommendation with id: {}", recommendationId);
+        return recommendationRepository.findById(recommendationId)
+                .map(recommendation -> {
+                    log.debug("recommendation:{}", recommendation);
+                    RecommendationModel recommendationModel = conversionService.convert(recommendation,
+                            RecommendationModel.class);
+                    log.debug("regionalSettings:{}", recommendationModel);
+                    return recommendationModel;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Recommendation not found"));
+    }
+
     @Transactional
     @Override
     public void createRecommendation(@NotNull RecommendationModel recommendationModel) {
