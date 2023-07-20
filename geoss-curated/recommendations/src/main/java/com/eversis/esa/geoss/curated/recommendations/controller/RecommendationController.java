@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.recommendations.controller;
 
+import com.eversis.esa.geoss.common.hateoas.PageMapper;
+import com.eversis.esa.geoss.curated.recommendations.domain.Recommendation;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendationModel;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendedEntityModel;
 import com.eversis.esa.geoss.curated.recommendations.service.RecommendationService;
@@ -7,9 +9,16 @@ import com.eversis.esa.geoss.curated.recommendations.service.RecommendationServi
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +34,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,6 +43,7 @@ import java.util.Set;
  */
 @Log4j2
 @RequiredArgsConstructor
+@ExposesResourceFor(Recommendation.class)
 @BasePathAwareController("/recommendations")
 @ResponseBody
 @Tag(name = "recommendations")
@@ -39,21 +51,25 @@ public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
+    private final PageMapper pageMapper;
+
+    private final EntityLinks entityLinks;
+
     /**
      * Find recommendations page.
      *
-     * @param page the page
-     * @param size the size
+     * @param pageable the pageable
      * @return the page
      */
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public Page<RecommendationModel> findRecommendations(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        log.debug("Find recommendations page: {}, size: {}", page, size);
-        return recommendationService.findAllRecommendations(PageRequest.of(page, size));
+    public PagedModel<EntityModel<RecommendationModel>> findRecommendations(
+            @ParameterObject @PageableDefault Pageable pageable) {
+        log.debug("Find recommendations pageable: {}", pageable);
+        Page<RecommendationModel> allRecommendations = recommendationService.findAllRecommendations(pageable);
+        return pageMapper.toPagedModel(allRecommendations, RecommendationModel.class, this::recommendationLinks,
+                this::recommendationLinks);
     }
 
     /**
@@ -140,5 +156,20 @@ public class RecommendationController {
             @RequestParam @NotBlank String dataSourceCode,
             @RequestParam @NotBlank String entityCode) {
         recommendationService.removeEntity(recommendationId, dataSourceCode, entityCode);
+    }
+
+    private List<Link> recommendationLinks(RecommendationModel recommendationModel) {
+        if (recommendationModel == null) {
+            return Collections.emptyList();
+        }
+        return List.of(
+                entityLinks.linkToItemResource(Recommendation.class, recommendationModel.getId())
+        );
+    }
+
+    private List<Link> recommendationLinks() {
+        return List.of(
+                entityLinks.linkToCollectionResource(Recommendation.class)
+        );
     }
 }

@@ -9,6 +9,7 @@ module geoss.curated.recommendations {
     requires static lombok;
     requires static org.mapstruct;
     requires com.fasterxml.jackson.annotation;
+    requires geoss.common;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;
@@ -25,6 +26,7 @@ module geoss.curated.recommendations {
     requires spring.data.jpa;
     requires spring.data.rest.core;
     requires spring.data.rest.webmvc;
+    requires spring.hateoas;
     requires spring.security.core;
     requires spring.tx;
     requires spring.web;
