@@ -1,95 +1,93 @@
 {
     "mappings": {
-        "_doc": {
-            "properties": {
-                "dataSource": {
-                    "type": "keyword"
-                },
-                "entryCode": {
-                    "type": "keyword"
-                },
-                "relations": {
-                    "properties": {
-                        "srcDataSource": {
-                            "type": "keyword"
-                        },
-                        "srcEntryType": {
-                            "type": "keyword"
-                        },
-                        "srcEntryCode": {
-                            "type": "keyword"
-                        },
-                        "destDataSource": {
-                            "type": "keyword"
-                        },
-                        "destEntryType": {
-                            "type": "keyword"
-                        },
-                        "destEntryCode": {
-                            "type": "keyword"
-                        },
-                        "relationType": {
-                            "type": "keyword"
-                        },
-                        "modifiedDate": {
-                            "type": "date"
-                        },
-                        "createdDate": {
-                            "type": "date"
-                        }
+        "properties": {
+            "dataSource": {
+                "type": "keyword"
+            },
+            "entryCode": {
+                "type": "keyword"
+            },
+            "relations": {
+                "properties": {
+                    "srcDataSource": {
+                        "type": "keyword"
+                    },
+                    "srcEntryType": {
+                        "type": "keyword"
+                    },
+                    "srcEntryCode": {
+                        "type": "keyword"
+                    },
+                    "destDataSource": {
+                        "type": "keyword"
+                    },
+                    "destEntryType": {
+                        "type": "keyword"
+                    },
+                    "destEntryCode": {
+                        "type": "keyword"
+                    },
+                    "relationType": {
+                        "type": "keyword"
+                    },
+                    "modifiedDate": {
+                        "type": "date"
+                    },
+                    "createdDate": {
+                        "type": "date"
                     }
-                },
-                "extensions": {
-                    "properties": {
-                        "entryExtensionId": {
-                            "type": "keyword"
-                        },
-                        "summary": {
-                            "type": "text"
-                        },
-                        "username": {
-                            "type": "keyword"
-                        },
-                        "userId": {
-                            "type": "keyword"
-                        },
-                        "keywords": {
-                            "type": "keyword"
-                        },
-                        "modifiedDate": {
-                            "type": "date"
-                        },
-                        "createdDate": {
-                            "type": "date"
-                        }
+                }
+            },
+            "extensions": {
+                "properties": {
+                    "entryExtensionId": {
+                        "type": "keyword"
+                    },
+                    "summary": {
+                        "type": "text"
+                    },
+                    "username": {
+                        "type": "keyword"
+                    },
+                    "userId": {
+                        "type": "keyword"
+                    },
+                    "keywords": {
+                        "type": "keyword"
+                    },
+                    "modifiedDate": {
+                        "type": "date"
+                    },
+                    "createdDate": {
+                        "type": "date"
                     }
-                },
-                "transferOptions": {
-                    "properties": {
-                        "entryExtensionId": {
-                            "type": "keyword"
-                        },
-                        "title": {
-                            "type": "text"
-                        },
-                        "description": {
-                            "type": "text"
-                        },
-                        "id": {
-                            "type": "keyword"
-                        },
-                        "name": {
-                            "type": "text"
-                        },
-                        "protocol": {
-                            "type": "keyword"
-                        },
-                        "url": {
-                            "type": "keyword"
-                        },
-                        "urlType": {
-                            "type": "keyword"
-                        }
+                }
+            },
+            "transferOptions": {
+                "properties": {
+                    "entryExtensionId": {
+                        "type": "keyword"
+                    },
+                    "title": {
+                        "type": "text"
+                    },
+                    "description": {
+                        "type": "text"
+                    },
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "type": "text"
+                    },
+                    "protocol": {
+                        "type": "keyword"
+                    },
+                    "url": {
+                        "type": "keyword"
+                    },
+                    "urlType": {
+                        "type": "keyword"
                     }
                 }
             }

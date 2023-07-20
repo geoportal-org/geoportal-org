@@ -13,8 +13,16 @@ RUN bin/elasticsearch-plugin install -b analysis-kuromoji
 RUN bin/elasticsearch-plugin install -b analysis-smartcn
 RUN bin/elasticsearch-plugin install -b analysis-stempel
 
+COPY geoss-cr /tmp/
+COPY geoss-cr-extensions /tmp/
+COPY geoss-recommendation /tmp/
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 HEALTHCHECK \
 	--interval=30s \
 	--start-period=30s \
 	--timeout=1m \
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
