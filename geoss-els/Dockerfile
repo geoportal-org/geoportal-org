@@ -16,8 +16,8 @@ RUN bin/elasticsearch-plugin install -b analysis-stempel
 COPY geoss-cr/* /tmp/
 COPY geoss-cr-extensions/* /tmp/
 COPY geoss-recommendation/* /tmp/
-COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+#COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
 
 HEALTHCHECK \
 	--interval=30s \
@@ -25,4 +25,4 @@ HEALTHCHECK \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
-ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
