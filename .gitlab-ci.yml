@@ -101,6 +101,25 @@ build_geoss-proxy:
     - uat
     - /^release-.*/
 
+build_geoss-curated:
+  stage: build
+  extends: .build_apps
+  tags:
+    - geoss-runner-1
+  script:
+    - echo "Building geoss-curated app..."
+    - chmod u+x ./geoss-curated/gradlew
+    - ./geoss-curated/gradlew clean assemble -p ./geoss-curated
+    - echo "Build geoss-curated complete"
+  artifacts:
+    paths:
+      - ./geoss-curated/build
+    expire_in: 4 weeks
+  only:
+    - develop
+    - uat
+    - /^release-.*/
+
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
 ########################################################################################################################
@@ -132,6 +151,7 @@ build_images:
     - build_geoss-contents
     - build_geoss-personaldata
     - build_geoss-proxy
+    - build_geoss-curated
   only:
     - develop
     - uat
