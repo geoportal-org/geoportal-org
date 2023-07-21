@@ -1,0 +1,74 @@
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+<changeSet author="mmorawski" id="source_values">
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('United Nations Sustainable Development Goals (UN-SDG)', '1', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('ECOPotential Resources', '2', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('http://www.soda-pro.com/web-services/radiation/cams-radiation-service', '3', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('GEOEssential Resources', '4', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Wikipedia', 'wikipedia', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('GEO Knowledge Hub', 'geo knowledge hub', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('ESA', 'esa', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('GCOS', 'gcos', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('DLR', 'dlr', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('ERA-PLANET', 'era-planet', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('European Commisison', 'european commisison', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('GeoCodis Ltd.', 'geocodis ltd.', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Agricolus', 'agricolus', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('VisioTerra', 'visioterra', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Harris Geospatial Solutions', 'harris geospatial solutions', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Earth Starts Beating Project', 'earth starts beating project', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('NOA (National Observatory of Athens), Greece', 'noa (national observatory of athens), greece', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Interdisciplinary Centre of Competence for Geoinformatics (Z-GIS), Austria Spatial Services GmbH', 'interdisciplinary centre of competence for geoinformatics (z-gis), austria spatial services gmbh', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('SERCO', 'serco', 1)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('Zenodo', 'zenodo', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO source (term, code, isCustom) VALUES ('GEOSS', 'dab', 0)
+    </sql>
+</changeSet>
+
+</databaseChangeLog>
+

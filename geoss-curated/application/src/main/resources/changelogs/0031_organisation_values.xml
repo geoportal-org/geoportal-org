@@ -1,0 +1,136 @@
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="organisation_values">
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('United Nations Statistics Division', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('LAST-EBD (CSIC), CREAF', 'Diego García Díaz, Ricardo Díaz-Delgado, Isabel Afán, David Aragonés,  Joan Masó, Lluís Pesquer, Javier Bustamante', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Centre for Research and Technology Hella (CERTH) | Information Technologies Institute (ITI) (www.iti.gr)', 'Georgios Kordelas, Ioannis Manakos, Marios Bakratsas, Kalliroi Marini', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Centre for Research and Technology Hellas (CERTH) | Information Technologies Institute (ITI) (www.iti.gr)', 'Georgios Kordelas, Ioannis Manakos, Zisis Petrou, Marios Bakratsas, Kalliroi Marini, Georgios Chantziaras', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Helmholtz Centre for Environmental Research - UFZ', 'Anna Cord, Michael Ewald, Eckard Kasch, Andreas Dittrich', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('CNR IIA', 'Mattia Santoro', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('European Commission', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('CNR-IIA', 'Mattia Santoro, saverio.vicario, Cristina Tarantino, Maria Adamo', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('ICETA / InBIO - Instituto de Ciencias, Tecnologias e Agroambiente, University of Porto, Portugal', 'Joao Goncalves and Salvador Arenas-Castro', '', 'jfgoncalves@fc.up.pt', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Univ. South Wales', 'Richard Lucas', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('CNR-IAC', 'Angela Martiradonna, Fasma Diele, Carmela Marangi', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('EPFL', 'Jonathan Giezendanner', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('HZG', 'MattKarl', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('iecolab, UGR (http://www.iecolab.es/)', 'María Suárez-Muñoz; Francisco Bonet-García; José A. Hódar; Lucía Torres-Muros; Ramón Pérez-Pérez', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('University of Cordoba', 'Fluvial Dynamics and Hydrology Research Group', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('EuroGEOSS', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('MINES ParisTech - ARMINES - Transvalor', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('IspRA, Italian Environment Protection and Technical Services Agency - Monitoring Network', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Healthsites', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Webservice Energy Catalog', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Oak Ridge National Laboratory Distributed Active Archive Center (ORNL DAAC -WMS)', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('United Nations Sustainable Development Goals (UN-SDG)', '', '', '', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Remote sensing and Geospatial Analysis Section Agriculture Division, Statistics Canada', 'Yinsuo Zhang', '', 'yinsuo.zhang@canada.ca', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('European Commission, Joint Research Centre (JRC)', '', 'jrc-asap@ec.europa.eu', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('UCL', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('European Commission, Joint Research Centre, Directorate of Sustainable Resources', 'Ana Perez-Hoyos', '', 'Ana.Perez-Hoyos@ec.europa.eu', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('JRC', 'European Commission, Joint Research Centre, Directorate of Sustainable Resources', '', 'Ana.Perez-Hoyos@ec.europa.eu', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('European Space Agency', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('GCOS', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('DRL', '', '', 'mattia.marconcini@dlr.de', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('DLR', '', '', 'mattia.marconcini@dlr.de', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('National Observatory of Athens', 'Evangelos Gerasopoulos', '', 'egera@noa.gr', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('GeoCodis Ltd.', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Agricolus', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('ESA', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('VisioTerra', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Harris Geospatial Solutions', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Earth Starts Beating Project', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('NOA (National Observatory of Athens), Greece', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('Interdisciplinary Centre of Competence for Geoinformatics (Z-GIS), Austria Spatial Services GmbH', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('SERCO', '', '', '', 1)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO organisation (title, contact, email, contact_email, isCustom) VALUES ('GEOSS Portal Curated Relationships Broker', '', '', '', 1)
+        </sql>
+    </changeSet>
+</databaseChangeLog>
+
