@@ -26,3 +26,4 @@ HEALTHCHECK \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ['tail', '-f', '/dev/null']

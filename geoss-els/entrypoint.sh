@@ -17,6 +17,4 @@ curl -XPUT 'http://localhost:9200/geoss-cr' -H "Content-Type: application/json" 
 curl -XPUT 'http://localhost:9200/geoss-cr-extensions' -H "Content-Type: application/json" -d @/tmp/geoss-cr-extensions.json
 curl -XPUT 'http://localhost:9200/geoss-recommendation' -H "Content-Type: application/json" -d @/tmp/geoss-recommendation.json
 
-rm /tmp/*.json
-
 echo "ENTRYPOINT: Indexes created"
