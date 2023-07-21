@@ -25,4 +25,4 @@ HEALTHCHECK \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
-ENTRYPOINT ["/entrypoint.sh&;", "/bin/tini", "--", "/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh&", "/bin/tini", "--", "/usr/local/bin/docker-entrypoint.sh"]
