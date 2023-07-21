@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "ENTRYPOINT: Starting ealsticsearch..."
-/bin/tini -- /usr/local/bin/docker-entrypoint.sh eswrapper&
 
 until curl -sS "http://localhost:9200/_cat/health?h=status" | grep -q "green\|yellow"; do
         sleep 1
