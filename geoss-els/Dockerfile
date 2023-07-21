@@ -16,7 +16,7 @@ RUN bin/elasticsearch-plugin install -b analysis-stempel
 COPY geoss-cr/* /tmp/
 COPY geoss-cr-extensions/* /tmp/
 COPY geoss-recommendation/* /tmp/
-COPY entrypoint.sh /entrypoint.sh
+COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 HEALTHCHECK \
