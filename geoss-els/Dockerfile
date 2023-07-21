@@ -25,5 +25,5 @@ HEALTHCHECK \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
-CMD ["eswrapper &", "/entrypoint.sh"]
-#ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/docker-entrypoint.sh", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ['tail', '-f', '/dev/null']
