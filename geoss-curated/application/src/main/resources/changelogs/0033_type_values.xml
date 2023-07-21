@@ -1,0 +1,23 @@
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+<changeSet author="mmorawski" id="type_values">
+    <sql>
+        INSERT IGNORE INTO type (name, code, isCustom) VALUES ('Service', 'service_resource', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO type (name, code, isCustom) VALUES ('Data', 'data_resource', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO type (name, code, isCustom) VALUES ('Information', 'information_resource', 0)
+    </sql>
+    <sql>
+        INSERT IGNORE INTO type (name, code, isCustom) VALUES ('Download', 'download_resource', 0)
+    </sql>
+</changeSet>
+
+</databaseChangeLog>
+

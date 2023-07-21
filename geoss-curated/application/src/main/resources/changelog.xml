@@ -31,4 +31,11 @@
     <include file="changelogs/0025_recommendations.xml"/>
     <include file="changelogs/0026_create_dashboardcontents_table.xml"/>
     <include file="changelogs/0027_add_entry_dashboardcontentsid_column.xml"/>
+    <include file="changelogs/0028_create_user_resource_table.xml"/>
+    <include file="changelogs/0029_add_entry_id_foreign_key_constraint.xml"/>
+    <include file="changelogs/0030_accesspolicy_values.xml"/>
+    <include file="changelogs/0031_organisation_values.xml"/>
+    <include file="changelogs/0032_source_values.xml"/>
+    <include file="changelogs/0033_type_values.xml"/>
+    <include file="changelogs/0034_add_dashboard_contents_id_foreign_key_constraint.xml"/>
 </databaseChangeLog>

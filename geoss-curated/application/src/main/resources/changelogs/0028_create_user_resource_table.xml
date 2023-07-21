@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="create_user_resource_table">
+        <createTable tableName="user_resource">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="userId" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="entryName" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="taskType" type="TINYINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="entryId" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="TINYINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="createdDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

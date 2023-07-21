@@ -139,6 +139,7 @@ services:
             SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
             SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
             SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+        restart: always
         ports:
             - "8083:8080"
         networks:

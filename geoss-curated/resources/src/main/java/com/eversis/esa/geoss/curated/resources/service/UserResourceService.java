@@ -1,0 +1,76 @@
+package com.eversis.esa.geoss.curated.resources.service;
+
+import jakarta.validation.constraints.NotNull;
+
+import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+/**
+ * The interface User resource service.
+ */
+public interface UserResourceService {
+
+    /**
+     * Find all user resources page.
+     *
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<UserResource> findAllUserResources(@NotNull Pageable pageable);
+
+    /**
+     * Find user resource user resource.
+     *
+     * @param userResourceId the user resource id
+     * @return the user resource
+     */
+    UserResource findUserResource(long userResourceId);
+
+    /**
+     * Find all user resources page.
+     *
+     * @param userId the user id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<UserResource> findAllUserResources(long userId, @NotNull Pageable pageable);
+
+    /**
+     * Create user resource.
+     *
+     * @param userResourceDto the user resource dto
+     */
+    void createUserResource(UserResourceModel userResourceDto);
+
+    /**
+     * Update user resource.
+     *
+     * @param userResourceId the user resource id
+     * @param userResourceDto the user resource dto
+     */
+    void updateUserResource(long userResourceId, UserResourceModel userResourceDto);
+
+    /**
+     * Remove user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void removeUserResource(long userResourceId);
+
+    /**
+     * Delete user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void deleteUserResource(long userResourceId);
+
+    /**
+     * Restore user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void restoreUserResource(long userResourceId);
+
+}
