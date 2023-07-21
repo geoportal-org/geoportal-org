@@ -18,6 +18,8 @@ COPY geoss-cr-extensions/* /tmp/
 COPY geoss-recommendation/* /tmp/
 COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+COPY --chown=elasticsearch create_indexes.sh /create_indexes.sh
+RUN chmod +x /create_indexes.sh
 
 HEALTHCHECK \
 	--interval=30s \
