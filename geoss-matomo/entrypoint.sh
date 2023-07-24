@@ -29,6 +29,7 @@ file_env 'MATOMO_DATABASE_HOST'
 file_env 'MATOMO_DATABASE_USERNAME'
 file_env 'MATOMO_DATABASE_PASSWORD'
 file_env 'MATOMO_DATABASE_DBNAME'
+file_env 'MATOMO_DATABASE_TABLES_PREFIX'
 
 if [ ! -e matomo.php ]; then
         tar cf - --one-file-system -C /usr/src/matomo . | tar xf -
