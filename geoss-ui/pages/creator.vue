@@ -291,8 +291,8 @@ export default {
             this.getCurrentDefaultView();
         }
         this.settings = await webSettingsAPI.getSiteSettingsRaw()
-        this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title').id;
-        this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source').id;
+        this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title') ? this.settings.find(e => e.set === 'logo' && e.key === 'title').id : null;
+        this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source') ? this.settings.find(e => e.set === 'logo' && e.key === 'source').id : null;
     }
 }
 </script>

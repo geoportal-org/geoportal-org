@@ -77,12 +77,12 @@ export default {
     auth: {
         strategies: {
             local: false,
+            keycloak: {
+                _scheme: '~/scheme/runtimeOauth2',
+            },
             oauth2: {
                 _scheme: 'oauth2'
             },
-            keycloak: {
-                _scheme: '~/scheme/runtimeOauth2',
-            }
         }
     },
 
@@ -142,6 +142,7 @@ export default {
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
         auth: {
+            defaultStrategy: 'keycloak',
             strategies: {
                 keycloak: {
                     authorization_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/auth',
