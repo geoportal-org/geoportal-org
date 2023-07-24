@@ -38,4 +38,49 @@ fi
 
 chown -R www-data:www-data /var/www/html
 
+if [ -n "${MATOMO_DATABASE_HOST}" ]; then
+
+  mv /opt/matomo/config/config.ini.php.template /opt/matomo/config/config.ini.php.template.old
+  awk -v r="${MATOMO_DATABASE_HOST}" '{gsub(/###HOST###/,r)}1' /opt/matomo/config/config.ini.php.template.old > /opt/matomo/config/config.ini.php.template
+  rm /opt/matomo/config/config.ini.php.template.old
+else
+ echo "MATOMO_DATABASE_HOST env variable is not set"
+fi
+
+if [ -n "${MATOMO_DATABASE_TABLES_PREFIX}" ]; then
+
+  mv /opt/matomo/config/config.ini.php.template /opt/matomo/config/config.ini.php.template.old
+  awk -v r="${MATOMO_DATABASE_TABLES_PREFIX}" '{gsub(/###PREFIX###/,r)}1' /opt/matomo/config/config.ini.php.template.old > /opt/matomo/config/config.ini.php.template
+  rm /opt/matomo/config/config.ini.php.template.old
+else
+ echo "MATOMO_DATABASE_TABLES_PREFIX env variable is not set"
+fi
+
+if [ -n "${MATOMO_DATABASE_USERNAME}" ]; then
+
+  mv /opt/matomo/config/config.ini.php.template /opt/matomo/config/config.ini.php.template.old
+  awk -v r="${MATOMO_DATABASE_USERNAME}" '{gsub(/###USERNAME###/,r)}1' /opt/matomo/config/config.ini.php.template.old > /opt/matomo/config/config.ini.php.template
+  rm /opt/matomo/config/config.ini.php.template.old
+else
+ echo "MATOMO_DATABASE_USERNAME env variable is not set"
+fi
+
+if [ -n "${MATOMO_DATABASE_PASSWORD}" ]; then
+
+  mv /opt/matomo/config/config.ini.php.template /opt/matomo/config/config.ini.php.template.old
+  awk -v r="${MATOMO_DATABASE_PASSWORD}" '{gsub(/###PASSWORD###/,r)}1' /opt/matomo/config/config.ini.php.template.old > /opt/matomo/config/config.ini.php.template
+  rm /opt/matomo/config/config.ini.php.template.old
+else
+ echo "MATOMO_DATABASE_PASSWORD env variable is not set"
+fi
+
+if [ -n "${MATOMO_DATABASE_DBNAME}" ]; then
+
+  mv /opt/matomo/config/config.ini.php.template /opt/matomo/config/config.ini.php.template.old
+  awk -v r="${MATOMO_DATABASE_DBNAME}" '{gsub(/###DBNAME###/,r)}1' /opt/matomo/config/config.ini.php.template.old > /opt/matomo/config/config.ini.php.template
+  rm /opt/matomo/config/config.ini.php.template.old
+else
+ echo "MATOMO_DATABASE_DBNAME env variable is not set"
+fi
+
 exec "$@"

@@ -9,7 +9,7 @@ if [ -z "$MARIADB_USER" ]; then
     exit 1
 fi
 
-if [ -n "MATOMO_DATABASE_DBNAME" ] && [ -n "MATOMO_DATABASE_USERNAME" ] && [ -n "MATOMO_DATABASE_PASSWORD" ]; then
+if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -n "$MATOMO_DATABASE_PASSWORD" ]; then
     command="CREATE DATABASE IF NOT EXISTS $MATOMO_DATABASE_DBNAME;"
     echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: $command"
     mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
