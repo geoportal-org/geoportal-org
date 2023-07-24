@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class UserResourceController {
      * @param size the size
      * @return the page
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_READER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<UserResource> findAllUserResources(
@@ -56,6 +58,7 @@ public class UserResourceController {
      * @param userResourceId the user resource id
      * @return the user resource
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_READER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userResourceId}")
     public UserResource findUserResource(@PathVariable long userResourceId) {
@@ -71,6 +74,7 @@ public class UserResourceController {
      * @param size the size
      * @return the page
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_READER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/{userId}")
     public Page<UserResource> findUserResources(
@@ -86,6 +90,7 @@ public class UserResourceController {
      *
      * @param userResourceDto the user resource dto
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void createUserResource(@RequestBody @Valid UserResourceModel userResourceDto) {
@@ -99,6 +104,7 @@ public class UserResourceController {
      * @param userResourceId the user resource id
      * @param userResourceDto the user resource dto
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{userResourceId}")
     public void updateUserResource(
@@ -113,6 +119,7 @@ public class UserResourceController {
      *
      * @param userResourceId the user resource id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REMOVER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{userResourceId}")
     public void removeUserResource(@PathVariable long userResourceId) {
@@ -125,6 +132,7 @@ public class UserResourceController {
      *
      * @param userResourceId the user resource id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_DELETER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/delete/{userResourceId}")
     public void deleteUserResource(@PathVariable long userResourceId) {
@@ -137,6 +145,7 @@ public class UserResourceController {
      *
      * @param userResourceId the user resource id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REMOVER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/restore/{userResourceId}")
     public void restoreUserResource(@PathVariable long userResourceId) {

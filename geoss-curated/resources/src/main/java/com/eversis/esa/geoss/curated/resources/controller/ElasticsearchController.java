@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class ElasticsearchController {
      *
      * @param entryId the entry id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{entryId}")
     public void indexEntry(@PathVariable long entryId) {
@@ -42,6 +44,7 @@ public class ElasticsearchController {
      *
      * @param entryId the entry id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{entryId}")
     public void updateIndexEntry(@PathVariable long entryId) {
@@ -54,6 +57,7 @@ public class ElasticsearchController {
      *
      * @param entryId the entry id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{entryId}")
     public void removeEntryFromIndex(@PathVariable long entryId) {

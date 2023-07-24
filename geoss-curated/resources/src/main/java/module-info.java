@@ -21,4 +21,5 @@ module geoss.curated.resources {
     requires io.swagger.v3.oas.models;
     requires spring.core;
     requires spring.beans;
+    requires spring.security.core;
 }

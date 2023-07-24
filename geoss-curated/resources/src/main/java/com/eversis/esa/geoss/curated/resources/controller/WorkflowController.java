@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,7 @@ public class WorkflowController {
      *
      * @param userResourceId the user resource id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/approve/{userResourceId}")
     public void approveUserResource(@PathVariable long userResourceId) {
@@ -37,6 +39,7 @@ public class WorkflowController {
      *
      * @param userResourceId the user resource id
      */
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/deny/{userResourceId}")
     public void denyUserResource(@PathVariable long userResourceId) {
