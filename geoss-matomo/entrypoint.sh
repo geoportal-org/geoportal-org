@@ -75,6 +75,7 @@ else
 fi
 
 if [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ]; then
+        chown 33:www-data /tmp/config.ini.php.template
         mv /tmp/config.ini.php.template /var/www/html/config/config.ini.php
         echo "Config.ini.php loaded"
 else
