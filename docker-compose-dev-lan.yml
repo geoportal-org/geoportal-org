@@ -103,7 +103,7 @@ services:
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: ${SPRINGDOCSECURITY_OA_CSECRET}
       KEYTOOL_STOREPASS: notusedyet
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      DEBUG: "true"
+      #DEBUG: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
@@ -169,7 +169,7 @@ services:
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      DEBUG: "true"
+      #DEBUG: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
