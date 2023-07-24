@@ -74,4 +74,10 @@ else
  echo "MATOMO_DATABASE_DBNAME env variable is not set"
 fi
 
+if [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ]; then
+        mv /tmp/config.ini.php.template /var/www/html/config/config.ini.php
+        echo "Config.ini.php loaded"
+else
+        echo "Config.ini.php couldn't be loaded. One or more variables not set: MATOMO_DATABASE_HOST, MATOMO_DATABASE_USERNAME, MATOMO_DATABASE_PASSWORD, MATOMO_DATABASE_DBNAME."
+fi
 exec "$@"
