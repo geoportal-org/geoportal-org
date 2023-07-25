@@ -74,7 +74,7 @@ else
  echo "MATOMO_DATABASE_DBNAME env variable is not set"
 fi
 
-if [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_HOST" ]; then
+if [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -n "$MATOMO_DATABASE_PASSWORD" ] && [ -n "$MATOMO_DATABASE_DBNAME" ]; then
         chown 33:www-data /tmp/config.ini.php.template
         mv /tmp/config.ini.php.template /var/www/html/config/config.ini.php
         echo "Config.ini.php loaded"
