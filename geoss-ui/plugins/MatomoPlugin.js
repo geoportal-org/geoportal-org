@@ -1,11 +1,11 @@
 import VueMatomo from 'vue-matomo'
 import Vue from 'vue'
 
-export default ({ app }) => {
+export default ({ app, $config }) => {
     Vue.use(VueMatomo, {
         router: app.router,
-        host: 'https://gpp-admin.devel.esaportal.eu/matomo/',
-        siteId: 2,
+        host: `${$config.adminUrl}/matomo`,
+        siteId: $config.matomoSiteId,
         enableLinkTracking: true,
         requireConsent: false,
         trackInitialView: true,

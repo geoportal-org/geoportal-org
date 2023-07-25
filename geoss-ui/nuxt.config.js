@@ -36,7 +36,7 @@ export default {
         '~/plugins/AppVueObj.ts',
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
-        { src: '~/plugins/MatomoPlugin.js', ssr: false },
+        { src: '~/plugins/MatomoPlugin.js', ssr: false }
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -141,6 +141,8 @@ export default {
         adminUrl: process.env.ADMIN_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
+        matomoSiteId: process.env.MATOMO_SITE_ID,
+        matomoToken: process.env.MATOMO_TOKEN,
         auth: {
             defaultStrategy: 'keycloak',
             strategies: {
@@ -152,7 +154,7 @@ export default {
                     scope: ['openid', 'profile', 'email', 'roles'],
                     grant_type: 'authorization_code',
                     response_type: 'code',
-                    client_id: process.env.KEYCLOAK_CLIENT_ID
+                    client_id: process.env.KEYCLOAK_CLIENT_ID,
                 }
             }
         }

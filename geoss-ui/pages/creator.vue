@@ -278,22 +278,25 @@ export default {
             if (response && response.access_token && response.access_token !== '') {
                 this.$auth.setToken(this.$store.state.auth.strategy, `Bearer ${response.access_token}`)
                 this.$auth.strategy._setToken(`Bearer ${response.access_token}`)
-
                 this.next();
             }
         }
     },
-    async mounted() {
-        this.views = await GeossSearchApiService.getViewsOptions()
-        if (!this.views.length) {
-            this.addDefaultViews();
-        } else {
-            this.getCurrentDefaultView();
-        }
-        this.settings = await webSettingsAPI.getSiteSettingsRaw()
-        this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title') ? this.settings.find(e => e.set === 'logo' && e.key === 'title').id : null;
-        this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source') ? this.settings.find(e => e.set === 'logo' && e.key === 'source').id : null;
-    }
+    watch: {
+        async step() {
+            if (this.step === 2) {
+                this.views = await GeossSearchApiService.getViewsOptions()
+                if (!this.views.length) {
+                    this.addDefaultViews();
+                } else {
+                    this.getCurrentDefaultView();
+                }
+                this.settings = await webSettingsAPI.getSiteSettingsRaw()
+                this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title') ? this.settings.find(e => e.set === 'logo' && e.key === 'title').id : null;
+                this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source') ? this.settings.find(e => e.set === 'logo' && e.key === 'source').id : null;
+            }
+        },
+    },
 }
 </script>
 

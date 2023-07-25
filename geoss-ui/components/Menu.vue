@@ -146,9 +146,10 @@ export default class MenuComponent extends Vue {
         }
     }
 
-    public signOff() {
-        this.$auth.logout();
-        this.$auth.reset();
+    public async signOff() {
+        await this.$auth.logout();
+        this.$cookies.remove('auth._token.keycloak');
+        localStorage.removeItem('auth._token.keycloak');
     }
 
     public signIn() {

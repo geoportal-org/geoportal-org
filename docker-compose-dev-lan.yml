@@ -222,11 +222,13 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      API_URL: http://gpp.devel.esaportal.eu/
-      BASE_URL: https://gpp.devel.esaportal.eu/
-      ADMIN_URL: https://gpp-admin.devel.esaportal.eu/
-      KEYCLOAK_CLIENT_ID: "geoss-ui"
-      KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
+      API_URL: http://gpp.devel.esaportal.eu
+      BASE_URL: https://gpp.devel.esaportal.eu
+      ADMIN_URL: https://gpp-admin.devel.esaportal.eu
+      KEYCLOAK_CLIENT_ID: geoss-ui
+      KEYCLOAK_BASE_URL: https://gpp-idp.devel.esaportal.eu/realms/geoss
+      MATOMO_SITE_ID: 1
+      MATOMO_TOKEN: 0
       NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
