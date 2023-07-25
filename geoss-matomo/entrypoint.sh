@@ -81,4 +81,13 @@ if [ -n "$MATOMO_DATABASE_HOST" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -n 
 else
         echo "Config.ini.php couldn't be loaded. One or more variables not set: MATOMO_DATABASE_HOST, MATOMO_DATABASE_USERNAME, MATOMO_DATABASE_PASSWORD, MATOMO_DATABASE_DBNAME."
 fi
+
+#TEMPORARY - workaround for huge node geoss-admin headers/cookies
+if grep -Fq 'LimitRequestFieldSize' /etc/apache2/apache2.conf
+then
+        echo 'LimitRequestFieldSize config found';
+else
+        sed -i  '/^# Global configuration/a LimitRequestFieldSize 32768' /etc/apache2/apache2.conf
+        echo 'LimitRequestFieldSize increased';
+fi
 exec "$@"
