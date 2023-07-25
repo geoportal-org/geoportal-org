@@ -10,24 +10,25 @@ import lombok.Getter;
 public enum Status {
 
     /**
-     * Approved status.
+     * Draft status.
      */
-    APPROVED("approved", 0),
-
+    DRAFT("draft", 0),
     /**
      * Pending status.
      */
     PENDING("pending", 1),
-
+    /**
+     * Approved status.
+     */
+    APPROVED("approved", 2),
     /**
      * Denied status.
      */
-    DENIED("denied", 2),
-
+    DENIED("denied", 3),
     /**
      * In trash status.
      */
-    IN_TRASH("in-trash", 3);
+    IN_TRASH("in-trash", 4);
 
     private final String name;
 

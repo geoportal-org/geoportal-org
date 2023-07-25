@@ -21,6 +21,14 @@ public class WorkflowController {
 
     private final WorkflowService workflowService;
 
+    @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/pending/{userResourceId}")
+    public void pendingUserResource(@PathVariable long userResourceId) {
+        log.info("Pending user resource");
+        workflowService.pendingUserResource(userResourceId);
+    }
+
     /**
      * Approve user resource.
      *
@@ -45,6 +53,14 @@ public class WorkflowController {
     public void denyUserResource(@PathVariable long userResourceId) {
         log.info("Deny user resource");
         workflowService.denyUserResource(userResourceId);
+    }
+
+    @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/delete/{userResourceId}")
+    public void deleteUserResource(@PathVariable long userResourceId) {
+        log.info("Delete user resource");
+        workflowService.deleteUserResource(userResourceId);
     }
 
 }

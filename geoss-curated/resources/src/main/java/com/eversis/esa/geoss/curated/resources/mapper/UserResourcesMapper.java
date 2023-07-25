@@ -53,7 +53,7 @@ public class UserResourcesMapper {
         userResource.setEntryName(model.getEntryName());
         userResource.setTaskType(model.getTaskType());
         userResource.setEntry(entryService.getOrCreateEntry(model.getEntry()));
-        userResource.setStatus(Status.PENDING);
+        userResource.setStatus(Status.DRAFT);
         return userResource;
     }
 
