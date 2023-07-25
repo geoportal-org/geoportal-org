@@ -229,6 +229,7 @@ export default {
                 }
                 await webSettingsAPI.setView(viewData, this.$auth.getToken('keycloak'));
             }
+            this.views = await GeossSearchApiService.getViewsOptions()
         },
         getCurrentDefaultView() {
             for (const view of this.views) {
