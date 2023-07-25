@@ -19,4 +19,17 @@ public interface WorkflowService {
      */
     void denyUserResource(long userResourceId);
 
+    /**
+     * Pending user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void pendingUserResource(long userResourceId);
+
+    /**
+     * Delete user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void deleteUserResource(long userResourceId);
 }

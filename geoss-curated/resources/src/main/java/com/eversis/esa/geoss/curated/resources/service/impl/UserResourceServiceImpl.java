@@ -112,4 +112,41 @@ public class UserResourceServiceImpl implements UserResourceService {
         log.info("Restored user resource with id: {}", userResourceId);
     }
 
+    @Transactional
+    @Override
+    public UserResource approveUserResource(long userResourceId) {
+        log.info("Approving user resource with id {}", userResourceId);
+        final UserResource userResource = userResourceRepository.findById(userResourceId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Resource entity with id: " + userResourceId + " does not exist"));
+        userResource.setStatus(Status.APPROVED);
+        userResourceRepository.save(userResource);
+        log.info("Approved user resource.");
+        return userResource;
+    }
+
+    @Transactional
+    @Override
+    public void denyUserResource(long userResourceId) {
+        log.info("Denying user resource with id {}", userResourceId);
+        final UserResource userResource = userResourceRepository.findById(userResourceId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Resource entity with id: " + userResourceId + " does not exist"));
+        userResource.setStatus(Status.DENIED);
+        userResourceRepository.save(userResource);
+        log.info("Denied user resource.");
+    }
+
+    @Transactional
+    @Override
+    public void pendingUserResource(long userResourceId) {
+        log.info("Pending user resource with id {}", userResourceId);
+        final UserResource userResource = userResourceRepository.findById(userResourceId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Resource entity with id: " + userResourceId + " does not exist"));
+        userResource.setStatus(Status.PENDING);
+        userResourceRepository.save(userResource);
+        log.info("Pending user resource finished.");
+    }
+
 }

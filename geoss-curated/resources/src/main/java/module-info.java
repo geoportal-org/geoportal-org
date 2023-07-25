@@ -22,4 +22,5 @@ module geoss.curated.resources {
     requires spring.core;
     requires spring.beans;
     requires spring.security.core;
+    requires spring.data.elasticsearch;
 }

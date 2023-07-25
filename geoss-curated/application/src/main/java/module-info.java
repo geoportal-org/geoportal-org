@@ -46,4 +46,5 @@ module geoss.curated.application {
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;
+    requires spring.data.elasticsearch;
 }

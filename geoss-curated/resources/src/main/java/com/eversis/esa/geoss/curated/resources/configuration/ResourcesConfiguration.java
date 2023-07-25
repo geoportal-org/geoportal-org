@@ -15,17 +15,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * The type Resources configuration.
  */
+@EnableElasticsearchRepositories(basePackages = "com.eversis.esa.geoss.curated.resources.elasticsearch.repository")
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.curated.resources.repository")
 @ComponentScan(
         basePackages = {
                 "com.eversis.esa.geoss.curated.resources.controller",
                 "com.eversis.esa.geoss.curated.resources.service.impl",
-                "com.eversis.esa.geoss.curated.resources.mapper"
+                "com.eversis.esa.geoss.curated.resources.mapper",
+                "com.eversis.esa.geoss.curated.resources.elasticsearch.service.impl",
+                "com.eversis.esa.geoss.curated.resources.elasticsearch.mapper"
         }
 )
 @PropertySource("classpath:application-resources.properties")

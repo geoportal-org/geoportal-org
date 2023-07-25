@@ -73,4 +73,26 @@ public interface UserResourceService {
      */
     void restoreUserResource(long userResourceId);
 
+    /**
+     * Approve user resource user resource.
+     *
+     * @param userResourceId the user resource id
+     * @return the user resource
+     */
+    UserResource approveUserResource(long userResourceId);
+
+    /**
+     * Deny user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void denyUserResource(long userResourceId);
+
+    /**
+     * Pending user resource.
+     *
+     * @param userResourceId the user resource id
+     */
+    void pendingUserResource(long userResourceId);
+
 }
