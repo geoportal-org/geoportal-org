@@ -217,18 +217,10 @@ export default {
             return Math.random().toString(36).slice(2)
         },
         async getSources() {
-            SpinnerService.showSpinner();
-            await fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/sources?token=' + this.token)
-                .then(r => r.json())
-                .then(r => this.availableSources = r)
-                .then(r => SpinnerService.hideSpinner())
+            this.fetchWithToken('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/sources?', 'availableSources')
         },
         async getViews() {
-            SpinnerService.showSpinner();
-            await fetch('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?count=9999&token=' + this.token)
-                .then(r => r.json())
-                .then(r => this.availableViews = r.views)
-                .then(r => SpinnerService.hideSpinner())
+            this.fetchWithToken('https://gs-service-preproduction.geodab.eu/gs-service/services/essi/rest-views/views?count=9999', 'availableViews')
         },
         createView() {
             if (this.id === '' || this.label === '') return;
@@ -361,6 +353,38 @@ export default {
                     })
                 }
             })
+        },
+        fetchError(text) {
+            console.warn(text);
+            if (text.length >= 100) {
+                text = text.substr(0, 97) + '...';
+            }
+            NotificationService.show(
+                'Error',
+                text,
+                10000,
+                null,
+                9999,
+                'error'
+            );
+        },
+        async fetchWithToken(url, data) {
+            SpinnerService.showSpinner();
+            const response = await fetch(url + '&token=' + this.token)
+            if (response.ok) {
+                try {
+                    const json = await response.json();
+                    this[data] = data === 'availableSources' ? json : json.views;
+                } catch(error) {
+                    this[data] = [];
+                    this.fetchError(error)
+                }
+            } else {
+                this[data] = [];
+                const text = await response.text();
+                this.fetchError(text)
+            }
+            SpinnerService.hideSpinner();
         }
     },
     async mounted() {
