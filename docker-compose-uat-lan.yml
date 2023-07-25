@@ -197,7 +197,7 @@ services:
       NEXTAUTH_URL: "https://gpp-admin.uat.esaportal.eu"
       NEXTAUTH_SECRET: "d3fa4c4ff9e3a252247fca2e74e5f585"
       KEYCLOAK_CLIENT_ID: "geoss-admin"
-      KEYCLOAK_CLIENT_SECRET: "2vFGe1jWbGMbAEPt0Yiumryu01zcW8k8"
+      KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
       KEYCLOAK_BASE_URL: "https://gpp-idp.uat.esaportal.eu/realms/geoss"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -247,9 +247,9 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      MAILDEV_INCOMING_USER: ${MAILDEV_SMTP_USERNAME}
+      MAILDEV_INCOMING_USER: maildev
       MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
-      MAILDEV_WEB_USER: ${MAILDEV_WEB_USERNAME}
+      MAILDEV_WEB_USER: admin
       MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
     ports:
