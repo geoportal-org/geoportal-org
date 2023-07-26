@@ -312,6 +312,7 @@ services:
        SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
        SPRING_DATASOURCE_USERNAME: admin
        SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+       SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
        # Authorization with basic auth
        #SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
        #SPRING_SECURITY_USER_ROLES: USER,ADMIN
