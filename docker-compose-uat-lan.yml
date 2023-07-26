@@ -9,7 +9,7 @@ services:
     environment:
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "8087:8087"
       - "8088:8088"
@@ -36,7 +36,7 @@ services:
       MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     volumes:
       - /var/lib/mysql:/var/lib/mysql
       - /var/log/mysql:/var/log/mysql
@@ -69,7 +69,7 @@ services:
       PROXY_ADDRESS_FORWARDING: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       #- "8081:8080"
       - "8443:8443"
@@ -106,7 +106,7 @@ services:
       #DEBUG: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "8080:8080"
     networks:
@@ -136,7 +136,7 @@ services:
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "8083:8080"
     networks:
@@ -172,7 +172,7 @@ services:
       #DEBUG: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "8082:8081"
     networks:
@@ -203,7 +203,7 @@ services:
       KEYCLOAK_BASE_URL: "https://gpp-idp.uat.esaportal.eu/realms/geoss"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "3000:3000"
     networks:
@@ -232,7 +232,7 @@ services:
       NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "3001:3000"
     networks:
@@ -255,7 +255,7 @@ services:
       MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
       MAILDEV_WEB_USER: admin
       MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "1081:1080"
     logging:
@@ -290,7 +290,7 @@ services:
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     ports:
       - "8084:8082"
     networks:
@@ -298,6 +298,44 @@ services:
     depends_on:
       - geoss-elasticsearch-1
       - geoss-keycloak
+
+  geoss-curated:
+     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_curated:latest
+     hostname: geoss-curated
+     deploy:
+       replicas: 1
+       placement:
+         max_replicas_per_node: 1
+         constraints:
+           - "node.labels.shared_tag==geoss-apps"
+     environment:
+       SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+       SPRING_DATASOURCE_USERNAME: admin
+       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+       # Authorization with basic auth
+       #SPRING_SECURITY_USER_PASSWORD: ${SPRING_SEUSR_PASS}
+       #SPRING_SECURITY_USER_ROLES: USER,ADMIN
+       #SPRING_SECURITY_USER_EMAIL: user@geoss-settings
+       #SPRING_SECURITY_USER_FIRST_NAME: User
+       #SPRING_SECURITY_USER_LAST_NAME: User
+       # Authorization with keycloak
+       SPRING_PROFILES_ACTIVE: keycloak
+       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
+       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: ${SPRINGDOCSECURITY_OA_CSECRET}
+       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+       http_proxy: ${SQUID_PROXY_URL}
+       https_proxy: ${SQUID_PROXY_URL}
+       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
+     restart: always
+     ports:
+       - "8085:8080"
+     networks:
+       - geosslan
+     depends_on:
+       - geoss-db
+       - geoss-keycloak
+       - geoss-elasticsearch-1
 
   geoss-elasticsearch-1:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:latest
@@ -342,7 +380,7 @@ services:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
       KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     volumes:
       - /opt/kibana:/bitnami/kibana
     ports:
@@ -366,7 +404,7 @@ services:
       MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo
+      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     volumes:
       - /var/log/matomo:/var/log
       - /opt/matomo:/var/www/html

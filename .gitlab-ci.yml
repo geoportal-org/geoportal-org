@@ -113,7 +113,7 @@ build_geoss-curated:
     - echo "Build geoss-curated complete"
   artifacts:
     paths:
-      - ./geoss-curated/build
+      - ./geoss-curated/application/build
     expire_in: 4 weeks
   only:
     - develop
