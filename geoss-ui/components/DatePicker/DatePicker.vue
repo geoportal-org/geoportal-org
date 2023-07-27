@@ -1,8 +1,8 @@
 <template>
     <div class="date-picker">
-        <input type="text" @input="onInput" data-input :placeholder="placeholder">
+        <input type="text" @input="onInput" data-input :placeholder="placeholder" :disabled="disabled">
         <div class="custom-select__icons">
-            <button @click="clear()" class="custom-select__clear cross" v-show="value && clearable"></button>
+            <button type="button" @click="clear()" class="custom-select__clear cross" v-show="value && clearable"></button>
             <span class="date-picker__icon">
                 <slot name="icon"></slot>
             </span>
@@ -58,6 +58,10 @@ export default {
         placeholder: {
             default: '',
             type: String
+        },
+        disabled: {
+            default: false,
+            type: Boolean
         },
         clearable: {
             default: true,

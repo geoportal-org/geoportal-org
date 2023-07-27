@@ -1,4 +1,53 @@
 export default {
+    statistics : {
+        statistics: 'Statistics',
+        chartOptions: 'CHART OPTIONS:',
+        source: 'Source:',
+        dataUsage: 'Data usage',
+        siteUsage: 'Site usage',
+        dataset: 'Dataset:',  
+        type: 'Type:',
+        moreOptions: 'MORE OPTIONS:',
+        interval: 'Interval:',
+        resultsPresented: 'Results presented:',
+        analyzedPeriod: 'ANALYZED PERIOD:',
+        hideOptions: 'Collapse chart options',
+        showOptions: 'Show chart options',
+        showChart: 'Show chart',
+        lastWeek: 'Last week',
+        lastMonth: 'Last month',
+        lastYear: 'Last year',
+        exportButton: 'Save',
+        period: 'Analyzed period: ',
+        generated: 'Genereation date: ',
+        dataTypeOptions: {
+            numberOfSearches: 'Number of searches',
+            popularResources: 'Most popular resources',
+            popularKeywords: 'Most popular keywords',
+            popularCatalogs: 'Most popular catalogs',
+            popularOrganizations: 'Most popular organizations',
+            popularAreas: 'Most popular areas'
+        },
+        shortTypeOptions: {
+            numberOfSearches: 'Number of searches',
+            popularResources: 'Most popular resources',
+            popularAreas: 'Most popular areas'
+        },
+        siteTypeOptions: {
+            numberOfUsers: 'Number of users',
+            numberOfSessions: 'Number of sessions',
+            bounceRate: 'Bounce rate',
+            returningUsers: 'Returning users',
+            usersCountries: "Users' countries",
+            popularBrowsers: 'Most popular browsers'
+        },
+        timeUnits: {
+            day: 'Day',
+            week: 'Week',
+            month: 'Month',
+            year: 'Year'
+        }
+    },
     placeholders: {
         searchBar: 'Enter search words',
         googlePlaces: 'Enter location',

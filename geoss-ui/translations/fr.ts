@@ -1,4 +1,53 @@
 export default {
+    statistics : {
+        statistics : 'Statistiques',
+        chartOptions: 'OPTIONS DE GRAPHIQUE:',
+        source : 'Source :',
+        dataUsage: 'Utilisation des données',
+        siteUsage: 'Utilisation du site',
+        dataset: 'Jeu de données:',
+        type: 'Tapez:',
+        moreOptions: "PLUS D'OPTIONS:",
+        interval: 'Intervalle:',
+        resultsPresented: 'Résultats présentés:',
+        analyzedPeriod: 'PÉRIODE ANALYSÉE:',
+        hideOptions: 'Réduire les options du graphique',
+        showOptions: 'Afficher les options du graphique',
+        showChart: 'Afficher le graphique',
+        lastWeek: 'La semaine dernière',
+        lastMonth: 'Le mois dernier',
+        lastYear: "L'année dernière",
+        exportButton: 'Enregistrer',
+        period: 'Période analysée: ',
+        generated: 'Date de génération: ',
+        dataTypeOptions: {
+            numberOfSearches: 'Nombre de recherches',
+            popularResources: 'Ressources les plus populaires',
+            popularKeywords: "Mots clés les plus populaires",
+            popularCatalogs: 'Catalogues les plus populaires',
+            popularOrganizations: 'Organisations les plus populaires',
+            popularAreas: 'Zones les plus populaires'
+        },
+        shortTypeOptions: {
+            numberOfSearches: 'Nombre de recherches',
+            popularResources: 'Ressources les plus populaires',
+            popularAreas: 'Zones les plus populaires'
+        },
+        siteTypeOptions: {
+            numberOfUsers: "Nombre d'utilisateurs",
+            numberOfSessions: 'Nombre de sessions',
+            bounceRate: 'Taux de rebond',
+            returnUsers: 'Utilisateurs connus',
+            usersCountries: "Pays des utilisateurs",
+            popularBrowsers: 'Navigateurs les plus populaires'
+        },
+        timeUnits: {
+            day: 'Jour',
+            week : 'Semaine',
+            month : 'Mois',
+            year: 'Année'
+        }
+    },
     placeholders: {
         searchBar: 'Entrer des mots de recherche',
         googlePlaces: 'Entrez l`emplacement',

@@ -161,7 +161,7 @@ export default class MenuComponent extends Vue {
         // [, this.routes] = await to(GeneralApiService.getMenuItems(this.langLocale));
         this.routes = await MenuAPI.getMenu();
     }
-
+ 
     @Watch('route')
     private onRouteChange() {
         this.closeMenu();

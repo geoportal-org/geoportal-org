@@ -234,7 +234,7 @@ const LogService: any = {
                         'trackEvent',
                         'Search',
                         'phrase',
-                        entryIdVal || '',
+                        entryIdVal
                     ])
                 }
             }

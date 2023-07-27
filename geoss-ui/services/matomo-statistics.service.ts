@@ -1,0 +1,282 @@
+//to change
+import { getRandomColorsArray } from '~/utils/randomColorsArray'
+const baseMatomoURL = 'https://gpp-admin.devel.esaportal.eu/matomo/?'
+
+type matomoParams = {
+    module: string
+    method: string
+    idSite: string
+    period: string
+    date: string
+    format: string
+    filter_limit: string
+    token_auth: string
+}
+
+const MatomoDataService = {
+    parseParams(params: matomoParams) {
+        let parsedParams = ''
+
+        Object.keys(params).forEach((key, index) => {
+            parsedParams += `${!index ? '' : '&'}${key}=${
+                params[key as keyof matomoParams]
+            }`
+        })
+
+        return parsedParams
+    },
+
+    prepareRequestParams(
+        method: string,
+        unit: string,
+        dateFrom: string,
+        dateTo: string,
+        resultsNumber: string,
+        authToken: string
+    ) {
+        let currentDate = new Date().toJSON().slice(0, 10)
+        const start = dateFrom
+        const end = dateTo || currentDate
+        const dateRange = start + ',' + end
+
+        let params: matomoParams = {
+            module: 'API',
+            method: '',
+            idSite: '1',
+            period: unit.toLowerCase(),
+            date: dateRange,
+            format: 'json',
+            filter_limit: resultsNumber,
+            token_auth: authToken,
+        }
+
+        let chartType = ''
+        switch (method) {
+            case "Users' countries":
+                params.method = 'UserCountry.getCountry'
+                chartType = 'bar'
+                break
+            case 'Most popular browsers':
+                params.method = 'DevicesDetection.getBrowsers'
+                chartType = 'pie'
+                break
+            case 'Returning users':
+                params.method = 'VisitFrequency.get'
+                chartType = 'pie'
+                break
+            case 'Bounce rate':
+                params.method = 'VisitFrequency.get'
+                chartType = 'line'
+                break
+            case 'Number of users':
+                params.method = 'VisitsSummary.getUniqueVisitors'
+                chartType = 'line'
+                break
+            case 'Number of sessions':
+                params.method = 'VisitsSummary.getVisits'
+                chartType = 'line'
+                break
+            default:
+                params.method = ''
+        }
+        return [params, chartType]
+    },
+
+    async prepareChartData(
+        method: string,
+        unit: string,
+        dateFrom: string,
+        dateTo: string,
+        resultsNumber: string,
+        authToken: string
+    ) {
+        const [params, chartType]: any = this.prepareRequestParams(
+            method,
+            unit,
+            dateFrom,
+            dateTo,
+            resultsNumber,
+            authToken
+        )
+
+        const data = await this.fetchMatomoData(
+            baseMatomoURL + this.parseParams(params)
+        )
+
+        if (data) {
+            let label = method
+            let labels: string[] = []
+            let values: unknown[] = []
+            let colors: string[] = []
+            let options = {}
+            switch (chartType) {
+                case 'line':
+                    for (const [key, value] of Object.entries(data)) {
+                        if (unit.toLowerCase() === 'week') {
+                            labels.push(key.slice(11))
+                        } else {
+                            labels.push(key)
+                        }
+                        if (method === 'Bounce rate') {
+                            //@ts-ignore
+                            values.push(parseFloat(value.bounce_rate_new))
+                            label = 'Percent of visits leaving the website'
+                        } else {
+                            values.push(value)
+                        }
+                    }
+                    const lineChartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: label,
+                                data: values,
+                                fill: false,
+                                radius: '5',
+                                pointHoverRadius: '5',
+                                borderColor: '#f70707',
+                            },
+                        ],
+                    }
+                    return {
+                        type: chartType,
+                        data: lineChartData,
+                    }
+                case 'pie':
+                    if (method === 'Most popular browsers') {
+                        data?.forEach((element: any) => {
+                            labels.push(element.label)
+                            values.push(element.nb_actions)
+                        })
+                    } else {
+                        labels = ['New visitors', 'Returning visitors']
+                        values = [data.nb_visits_new, data.nb_visits_returning]
+                    }
+
+                    colors = getRandomColorsArray(labels.length)
+
+                    const pieChartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: label,
+                                data: values,
+                                backgroundColor: colors,
+                                hoverOffset: 4,
+                                spacing: 2,
+                                radius: '90%',
+                                borderWidth: '1',
+                            },
+                        ],
+                    }
+                    options = {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context: any) {
+                                        const sum = context.dataset.data.reduce(
+                                            (partialSum: any, a: any) =>
+                                                partialSum + a,
+                                            0
+                                        )
+                                        const value = context.formattedValue
+                                        const percentageValue = (
+                                            (value / sum) *
+                                            100
+                                        ).toFixed(1)
+                                        const label = context.label
+                                        const final =
+                                            label +
+                                            ': ' +
+                                            value +
+                                            ' [' +
+                                            percentageValue +
+                                            '%' +
+                                            ']'
+                                        return final
+                                    },
+                                },
+                            },
+                            title: {
+                                display: true,
+                                text:
+                                    method === 'Most popular browsers'
+                                        ? 'Most popular browsers based on number of actions'
+                                        : 'Visitor type',
+                            },
+                        },
+                    }
+
+                    return {
+                        type: chartType,
+                        data: pieChartData,
+                        options: options,
+                    }
+                case 'bar':
+                    const mapData: any[][] = []
+                    mapData.push(['Country', 'Number of users'])
+                    data?.forEach((element: any) => {
+                        labels.push(element.label)
+                        values.push(element.nb_visits)
+                        mapData.push([
+                            element.code.toUpperCase(),
+                            element.nb_visits,
+                        ])
+                    })
+                    colors = getRandomColorsArray(labels.length)
+                    const barChartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: label,
+                                data: values,
+                                backgroundColor: colors,
+                                borderColor: colors,
+                                borderWidth: '1',
+                            },
+                        ],
+                    }
+
+                    options = {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context: any) {
+                                        const value = context.formattedValue
+                                        const label = 'Number of visits'
+                                        const final = label + ': ' + value
+
+                                        return final
+                                    },
+                                },
+                            },
+                        },
+                    }
+
+                    return {
+                        type: chartType,
+                        data: barChartData,
+                        options: options,
+                        isCountries: true,
+                        mapData: mapData,
+                    }
+                default:
+                    break
+            }
+        }
+    },
+
+    async fetchMatomoData(url: string) {
+        try {
+            let response = await fetch(url)
+            let result = await response.json()
+            return result
+        } catch (error) {
+            console.log(error)
+        }
+    },
+}
+
+export default MatomoDataService

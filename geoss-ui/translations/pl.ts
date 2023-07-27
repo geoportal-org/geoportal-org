@@ -1,4 +1,53 @@
 export default {
+    statistics : {
+        statistics: 'Statystyki',
+        chartOptions: "OPCJE WYKRESU:",
+        source: "Źródło:",
+        dataUsage: 'Wykorzystanie danych',
+        siteUsage: 'Wykorzystanie witryny',
+        dataset: 'Zbiór danych:',
+        type: "Typ:",
+        moreOptions: 'WIĘCEJ OPCJI:',
+        interval: 'Interwał:',
+        resultsPresented: 'Wyniki prezentowane:',
+        analyzedPeriod: 'ANALIZOWANY OKRES:',
+        hideOptions: 'Zwiń opcje wykresu',
+        showOptions: 'Pokaż opcje wykresu',
+        showChart: 'Pokaż wykres',
+        lastWeek: 'Ostatni tydzień',
+        lastMonth: 'Ostatni miesiąc',
+        lastYear: "Ostatni rok",
+        exportButton: 'Zapisz',
+        period: 'Analizowany okres: ',
+        generated: 'Data wygenerowania: ',
+        dataTypeOptions: {
+            numberOfSearches: 'Liczba wyszukiwań',
+            popularResources: 'Najpopularniejsze zasoby',
+            popularKeywords: 'Najpopularniejsze słowa kluczowe',
+            popularCatalogs: 'Najpopularniejsze katalogi',
+            popularOrganizations: 'Najpopularniejsze organizacje',
+            popularAreas: "Najbardziej popularne obszary"
+        },
+        shortTypeOptions: {
+            numberOfSearches: 'Liczba wyszukiwań',
+            popularResources: 'Najpopularniejsze zasoby',
+            popularAreas: "Najbardziej popularne obszary"
+        },
+        siteTypeOptions: {
+            numberOfUsers: 'Liczba użytkowników',
+            numberOfSessions: 'Liczba sesji',
+            bounceRate: 'Współczynnik odrzuceń',
+            returningUsers: 'Powracający użytkownicy',
+            usersCountries: "Kraje użytkowników",
+            popularBrowsers: "Najpopularniejsze przeglądarki"
+        },
+        timeUnits: {
+            day: 'Dzień',
+            week: "Tydzień",
+            month: "Miesiąc",
+            year: "Rok"
+        }
+    },
     placeholders: {
         searchBar: 'Podaj szukaną frazę',
         googlePlaces: 'Wprowadź lokalizację',

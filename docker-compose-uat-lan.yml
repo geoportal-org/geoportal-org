@@ -228,7 +228,7 @@ services:
       KEYCLOAK_CLIENT_ID: geoss-ui
       KEYCLOAK_BASE_URL: https://gpp-idp.uat.esaportal.eu/realms/geoss
       MATOMO_SITE_ID: 1
-      MATOMO_TOKEN: 0
+      MATOMO_TOKEN: '5476ec8e5eec12f0fec9f0543ac9552c'
       NODE_OPTIONS: "--max-old-space-size=4096"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
