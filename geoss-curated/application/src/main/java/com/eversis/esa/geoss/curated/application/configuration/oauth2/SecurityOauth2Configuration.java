@@ -36,7 +36,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
                                                             description = "OpenID Connect scope profile"),
                                                 @OAuthScope(name = "roles",
                                                             description = "OpenID Connect scope for add user roles to "
-                                                                    + "the access token")
+                                                                          + "the access token")
                                         }
                                 ))
                 )
@@ -52,7 +52,6 @@ public class SecurityOauth2Configuration {
      *
      * @return the simple authority mapper
      */
-    @Bean
     SimpleAuthorityMapper simpleAuthorityMapper() {
         SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
         simpleAuthorityMapper.setPrefix("ROLE_");
@@ -64,16 +63,16 @@ public class SecurityOauth2Configuration {
     /**
      * Claim accessor granted authorities converter claim accessor granted authorities converter.
      *
-     * @param simpleAuthorityMapper the simple authority mapper
+     * @param securityOauth2Properties the security oauth 2 properties
      * @return the claim accessor granted authorities converter
      */
     @Bean
     ClaimAccessorGrantedAuthoritiesConverter claimAccessorGrantedAuthoritiesConverter(
-            SimpleAuthorityMapper simpleAuthorityMapper, SecurityOauth2Properties securityOauth2Properties) {
+            SecurityOauth2Properties securityOauth2Properties) {
         ClaimAccessorGrantedAuthoritiesConverter claimAccessorGrantedAuthoritiesConverter
                 = new ClaimAccessorGrantedAuthoritiesConverter();
         claimAccessorGrantedAuthoritiesConverter.setClientId(securityOauth2Properties.getClientId());
-        claimAccessorGrantedAuthoritiesConverter.setSimpleAuthorityMapper(simpleAuthorityMapper);
+        claimAccessorGrantedAuthoritiesConverter.setSimpleAuthorityMapper(simpleAuthorityMapper());
         return claimAccessorGrantedAuthoritiesConverter;
     }
 

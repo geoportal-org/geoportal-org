@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -60,13 +62,25 @@ public class SecurityConfiguration {
     }
 
     /**
+     * In memory user details manager user details manager.
+     *
+     * @return the user details manager
+     */
+    @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "memory")
+    @Bean
+    UserDetailsManager inMemoryUserDetailsManager() {
+        return new InMemoryUserDetailsManager();
+    }
+
+    /**
      * Users user details manager.
      *
      * @param dataSource the data source
      * @return the user details manager
      */
+    @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "jdbc")
     @Bean
-    UserDetailsManager userDetailsManager(DataSource dataSource) {
+    UserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(
                 "select username,password,enabled, acc_locked, acc_expired, creds_expired"
@@ -84,6 +98,7 @@ public class SecurityConfiguration {
      * The type User details configuration.
      */
     @RequiredArgsConstructor
+    @ConditionalOnProperty(prefix = "spring.security.user.details", name = "init", havingValue = "true")
     @Configuration(proxyBeanMethods = false)
     static class UserDetailsConfiguration implements InitializingBean {
 
