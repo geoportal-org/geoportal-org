@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +56,17 @@ public class RecommendationController {
     private final EntityLinks entityLinks;
 
     /**
+     * Data sources list.
+     *
+     * @return the list
+     */
+    @PreAuthorize("permitAll()")
+    @RequestMapping(path = "/data-sources-codes", method = RequestMethod.OPTIONS)
+    List<String> dataSources() {
+        return recommendationService.getDataSourcesCodes();
+    }
+
+    /**
      * Find recommendations page.
      *
      * @param pageable the pageable
@@ -64,7 +75,7 @@ public class RecommendationController {
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<EntityModel<RecommendationModel>> findRecommendations(
+    PagedModel<EntityModel<RecommendationModel>> findRecommendations(
             @ParameterObject @PageableDefault Pageable pageable) {
         log.debug("Find recommendations pageable: {}", pageable);
         Page<RecommendationModel> allRecommendations = recommendationService.findAllRecommendations(pageable);
@@ -75,27 +86,29 @@ public class RecommendationController {
     /**
      * Get recommendation.
      *
-     * @param id the id
+     * @param recommendationId the recommendation id
      * @return the entity model
      */
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = {"/{id}"})
-    EntityModel<RecommendationModel> getRecommendation(@PathVariable Long id) {
-        RecommendationModel recommendationModel = recommendationService.getRecommendation(id);
+    @GetMapping(value = {"/{recommendationId}"})
+    EntityModel<RecommendationModel> getRecommendation(@PathVariable Long recommendationId) {
+        RecommendationModel recommendationModel = recommendationService.getRecommendation(recommendationId);
         return EntityModel.of(recommendationModel, recommendationLinks(recommendationModel));
     }
 
     /**
      * Create recommendation.
      *
-     * @param recommendationDto the recommendation dto
+     * @param recommendationModel the recommendation model
+     * @return the entity model
      */
     @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createRecommendation(@RequestBody @Valid RecommendationModel recommendationDto) {
-        recommendationService.createRecommendation(recommendationDto);
+    EntityModel<RecommendationModel> createRecommendation(@RequestBody @Valid RecommendationModel recommendationModel) {
+        RecommendationModel recommendation = recommendationService.createRecommendation(recommendationModel);
+        return EntityModel.of(recommendation, recommendationLinks(recommendation));
     }
 
     /**
@@ -106,7 +119,7 @@ public class RecommendationController {
     @PreAuthorize("hasAnyRole('RECOMMENDATION_REMOVER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{recommendationId}")
-    public void deleteRecommendation(@PathVariable long recommendationId) {
+    void deleteRecommendation(@PathVariable long recommendationId) {
         recommendationService.removeRecommendation(recommendationId);
     }
 
@@ -119,7 +132,7 @@ public class RecommendationController {
     @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{recommendationId}/keywords")
-    public void updateRecommendedKeywords(
+    void updateRecommendedKeywords(
             @PathVariable long recommendationId,
             @RequestBody @NotEmpty Set<String> keywords) {
         recommendationService.updateKeywords(recommendationId, keywords);
@@ -134,7 +147,7 @@ public class RecommendationController {
     @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{recommendationId}/entities")
-    public void addRecommendedEntities(
+    void addRecommendedEntities(
             @PathVariable long recommendationId,
             @RequestBody @NotEmpty @Valid Set<RecommendedEntityModel> entities) {
         recommendationService.addEntities(recommendationId, entities);
@@ -144,32 +157,30 @@ public class RecommendationController {
      * Update recommended entity.
      *
      * @param recommendationId the recommendation id
-     * @param entity the entity
+     * @param entityId the entity id
+     * @param recommendedEntityModel the recommended entity model
      */
     @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{recommendationId}/entities")
-    public void updateRecommendedEntity(
-            @PathVariable long recommendationId,
-            @RequestBody @Valid RecommendedEntityModel entity) {
-        recommendationService.updateEntity(recommendationId, entity);
+    @PutMapping("/{recommendationId}/entities/{entityId}")
+    void updateRecommendedEntity(
+            @PathVariable long recommendationId, @PathVariable long entityId,
+            @RequestBody @Valid RecommendedEntityModel recommendedEntityModel) {
+        recommendationService.updateEntity(recommendationId, entityId, recommendedEntityModel);
     }
 
     /**
      * Remove recommended entity.
      *
      * @param recommendationId the recommendation id
-     * @param dataSourceCode the data source code
-     * @param entityCode the entity code
+     * @param entityId the entity id
      */
     @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{recommendationId}/entities")
-    public void removeRecommendedEntity(
-            @PathVariable long recommendationId,
-            @RequestParam @NotBlank String dataSourceCode,
-            @RequestParam @NotBlank String entityCode) {
-        recommendationService.removeEntity(recommendationId, dataSourceCode, entityCode);
+    @DeleteMapping("/{recommendationId}/entities/{entityId}")
+    void removeRecommendedEntity(
+            @PathVariable long recommendationId, @PathVariable long entityId) {
+        recommendationService.removeEntity(recommendationId, entityId);
     }
 
     private List<Link> recommendationLinks(RecommendationModel recommendationModel) {

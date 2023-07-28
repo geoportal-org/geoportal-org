@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,8 +37,9 @@ public interface RecommendationService {
      * Create recommendation.
      *
      * @param recommendationDto the recommendation dto
+     * @return the recommendation model
      */
-    void createRecommendation(@NotNull RecommendationModel recommendationDto);
+    RecommendationModel createRecommendation(@NotNull RecommendationModel recommendationDto);
 
     /**
      * Remove recommendation.
@@ -71,6 +73,16 @@ public interface RecommendationService {
     void updateEntity(long recommendationId, @NotNull RecommendedEntityModel recommendedEntityDto);
 
     /**
+     * Update entity.
+     *
+     * @param recommendationId the recommendation id
+     * @param recommendedEntityId the recommended entity id
+     * @param recommendedEntityDto the recommended entity dto
+     */
+    void updateEntity(long recommendationId, long recommendedEntityId,
+            @NotNull RecommendedEntityModel recommendedEntityDto);
+
+    /**
      * Remove entity.
      *
      * @param recommendationId the recommendation id
@@ -78,4 +90,19 @@ public interface RecommendationService {
      * @param entityCode the entity code
      */
     void removeEntity(long recommendationId, @NotBlank String dataSourceCode, @NotBlank String entityCode);
+
+    /**
+     * Remove entity.
+     *
+     * @param recommendationId the recommendation id
+     * @param recommendedEntityId the recommended entity id
+     */
+    void removeEntity(long recommendationId, long recommendedEntityId);
+
+    /**
+     * Gets data sources codes.
+     *
+     * @return the data sources codes
+     */
+    List<String> getDataSourcesCodes();
 }

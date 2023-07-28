@@ -23,7 +23,9 @@ import jakarta.persistence.Table;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -114,9 +116,27 @@ public class Recommendation {
      * Clear recommended keywords.
      */
     public void clearRecommendedKeywords() {
-        for (RecommendedKeyword recommendedKeyword : keywords) {
-            recommendedKeyword.setRecommendation(null);
-        }
+        keywords.forEach(recommendedKeyword -> recommendedKeyword.setRecommendation(null));
         keywords.clear();
+    }
+
+    /**
+     * Sets entities.
+     *
+     * @param entities the entities
+     */
+    public void setEntities(List<RecommendedEntity> entities) {
+        this.entities = Optional.ofNullable(entities).orElse(Collections.emptyList());
+        this.entities.forEach(recommendedEntity -> recommendedEntity.setRecommendation(this));
+    }
+
+    /**
+     * Sets keywords.
+     *
+     * @param keywords the keywords
+     */
+    public void setKeywords(List<RecommendedKeyword> keywords) {
+        this.keywords = Optional.ofNullable(keywords).orElse(Collections.emptyList());
+        this.keywords.forEach(recommendedKeyword -> recommendedKeyword.setRecommendation(this));
     }
 }

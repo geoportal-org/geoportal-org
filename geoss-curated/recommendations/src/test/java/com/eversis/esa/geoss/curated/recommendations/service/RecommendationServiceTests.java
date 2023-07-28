@@ -19,9 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.mapping.MappingException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
-import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -71,9 +71,7 @@ class RecommendationServiceTests {
         recommendationModel.setEntities(Collections.emptySet());
         recommendationModel.setKeywords(createDummyKeywords());
 
-        assertThrows(ConstraintViolationException.class, () -> {
-            recommendationService.createRecommendation(recommendationModel);
-        });
+        assertThrows(MappingException.class, () -> recommendationService.createRecommendation(recommendationModel));
     }
 
     /**
@@ -87,9 +85,7 @@ class RecommendationServiceTests {
         recommendationModel.setEntities(entities);
         recommendationModel.setKeywords(Collections.emptySet());
 
-        assertThrows(ConstraintViolationException.class, () -> {
-            recommendationService.createRecommendation(recommendationModel);
-        });
+        assertThrows(MappingException.class, () -> recommendationService.createRecommendation(recommendationModel));
     }
 
     /**
@@ -103,15 +99,11 @@ class RecommendationServiceTests {
         recommendationModel.setEntities(entities);
         Set<String> keywords = createDummyKeywords();
         recommendationModel.setKeywords(keywords);
+        Recommendation recommendation = createDummyRecommendation();
 
-        when(recommendationRepository.save(any(Recommendation.class))).thenReturn(createDummyRecommendation());
-        for (RecommendedEntityModel recommendedEntityModel : entities) {
-            when(conversionService.convert(recommendedEntityModel, RecommendedEntity.class)).thenReturn(
-                    map(recommendedEntityModel));
-        }
-        for (String keyword : keywords) {
-            when(conversionService.convert(keyword, RecommendedKeyword.class)).thenReturn(map(keyword));
-        }
+        when(conversionService.convert(recommendationModel, Recommendation.class)).thenReturn(recommendation);
+        when(recommendationRepository.save(any(Recommendation.class))).thenReturn(recommendation);
+        when(conversionService.convert(recommendation, RecommendationModel.class)).thenReturn(recommendationModel);
 
         assertDoesNotThrow(() -> recommendationService.createRecommendation(recommendationModel));
     }

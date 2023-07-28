@@ -10,6 +10,7 @@ import com.eversis.esa.geoss.curated.recommendations.repository.DataSourceReposi
 import com.eversis.esa.geoss.curated.recommendations.repository.RecommendationRepository;
 import com.eversis.esa.geoss.curated.recommendations.repository.RecommendedEntityRepository;
 import com.eversis.esa.geoss.curated.recommendations.service.RecommendationService;
+import com.eversis.esa.geoss.curated.recommendations.support.RecommendedEntityModelToRecommendedEntityMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.MappingException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final RecommendedEntityRepository recommendedEntityRepository;
 
     private final DataSourceRepository dataSourceRepository;
+
+    private final RecommendedEntityModelToRecommendedEntityMapper recommendedEntityModelToRecommendedEntityMapper;
 
     private ConversionService conversionService;
 
@@ -85,25 +90,17 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Transactional
     @Override
-    public void createRecommendation(@NotNull RecommendationModel recommendationModel) {
+    public RecommendationModel createRecommendation(@NotNull RecommendationModel recommendationModel) {
         log.debug("Creating new recommendation - {}", recommendationModel);
-        recommendationModel.validate();
-
-        final Recommendation entity = new Recommendation();
-        Recommendation recommendation = recommendationRepository.save(entity);
-
-        List<RecommendedEntity> entities = recommendationModel.getEntities().stream()
-                .map(recommendedEntityModel -> conversionService.convert(recommendedEntityModel,
-                        RecommendedEntity.class))
-                .toList();
-        entities.forEach(recommendation::addRecommendedEntity);
-
-        List<RecommendedKeyword> keywords = recommendationModel.getKeywords().stream()
-                .map(keyword -> conversionService.convert(keyword, RecommendedKeyword.class))
-                .toList();
-        keywords.forEach(recommendation::addRecommendedKeyword);
-
-        log.debug("Created new recommendation with id: {}", recommendation.getId());
+        return Optional.ofNullable(conversionService.convert(recommendationModel, Recommendation.class))
+                .map(recommendation -> {
+                    log.debug("recommendation:{}", recommendation);
+                    recommendation = recommendationRepository.save(recommendation);
+                    log.debug("recommendation:{}", recommendation);
+                    return Optional.ofNullable(conversionService.convert(recommendation, RecommendationModel.class))
+                            .orElseThrow(() -> new MappingException("Recommendation not converted"));
+                })
+                .orElseThrow(() -> new MappingException("Recommendation model not converted"));
     }
 
     @Transactional
@@ -178,6 +175,26 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Transactional
     @Override
+    public void updateEntity(long recommendationId, long recommendedEntityId,
+            RecommendedEntityModel recommendedEntityModel) {
+        recommendedEntityRepository.findById(recommendedEntityId)
+                .map(recommendedEntity -> {
+                    log.debug("recommendedEntity:{}", recommendedEntity);
+                    Recommendation recommendation = recommendedEntity.getRecommendation();
+                    if (!recommendation.getId().equals(recommendationId)) {
+                        throw new ResourceNotFoundException("Recommendation not found");
+                    }
+                    recommendedEntity = recommendedEntityModelToRecommendedEntityMapper.update(recommendedEntityModel,
+                            recommendedEntity);
+                    recommendedEntity = recommendedEntityRepository.save(recommendedEntity);
+                    log.debug("recommendedEntity:{}", recommendedEntity);
+                    return recommendedEntity;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Recommended entity not found"));
+    }
+
+    @Transactional
+    @Override
     public void removeEntity(long recommendationId, @NotBlank String dataSourceCode, @NotBlank String entityCode) {
         log.debug("Removing entity from recommendation with id: {}, entity: [dataSource: {}, entityCode: {}]",
                 recommendationId, dataSourceCode, entityCode);
@@ -197,5 +214,28 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         recommendedEntityRepository.delete(entity);
         log.debug("Deleted entity {} from recommendation with id: {}", recommendationId, entity);
+    }
+
+    @Transactional
+    @Override
+    public void removeEntity(long recommendationId, long recommendedEntityId) {
+        recommendedEntityRepository.findById(recommendedEntityId)
+                .map(recommendedEntity -> {
+                    log.debug("recommendedEntity:{}", recommendedEntity);
+                    Recommendation recommendation = recommendedEntity.getRecommendation();
+                    if (!recommendation.getId().equals(recommendationId)) {
+                        throw new ResourceNotFoundException("Recommendation not found");
+                    }
+                    recommendedEntityRepository.delete(recommendedEntity);
+                    return recommendedEntity;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Recommended entity not found"));
+    }
+
+    @Override
+    public List<String> getDataSourcesCodes() {
+        return dataSourceRepository.findAll().stream()
+                .map(DataSource::getCode)
+                .toList();
     }
 }
