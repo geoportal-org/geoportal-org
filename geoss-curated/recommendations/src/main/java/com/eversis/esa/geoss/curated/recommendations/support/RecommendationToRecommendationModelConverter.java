@@ -30,8 +30,8 @@ public interface RecommendationToRecommendationModelConverter extends Converter<
      * @param recommendedEntity the recommended entity
      * @return the recommended entity model
      */
-    @Mapping(target = "dataSourceCode", ignore = true)
-    @Mapping(target = "entityCode", ignore = true)
+    @Mapping(target = "dataSourceCode", source = "dataSource.code")
+    @Mapping(target = "entityCode", source = "code")
     RecommendedEntityModel recommendedEntityToRecommendedEntityModel(RecommendedEntity recommendedEntity);
 
     /**
