@@ -2,11 +2,20 @@ package com.eversis.esa.geoss.curatedrelationships.search.model.common.impl;
 
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Facet;
 
+/**
+ * The type Simple term facet.
+ */
 public class SimpleTermFacet implements Facet {
 
     private final String termId;
     private final long count;
 
+    /**
+     * Instantiates a new Simple term facet.
+     *
+     * @param termId the term id
+     * @param count the count
+     */
     public SimpleTermFacet(String termId, long count) {
         if (termId == null) {
             throw new IllegalArgumentException("Term id cannot be null");

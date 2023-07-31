@@ -17,21 +17,50 @@ import org.elasticsearch.search.sort.SortOrder;
 import java.io.IOException;
 import java.util.stream.StreamSupport;
 
+/**
+ * The type Elasticsearch repository.
+ *
+ * @param <T> the type parameter
+ */
 @Slf4j
 abstract class ElasticsearchRepository<T> {
 
     private final RestHighLevelClient client;
     private final ElasticsearchResponseMapper<T> responseMapper;
 
+    /**
+     * Index name string.
+     *
+     * @return the string
+     */
     abstract String indexName();
+
+    /**
+     * Index type string.
+     *
+     * @return the string
+     */
     abstract String indexType();
 
+    /**
+     * Instantiates a new Elasticsearch repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     */
     public ElasticsearchRepository(RestHighLevelClient client,
             ElasticsearchResponseMapper<T> responseMapper) {
         this.client = client;
         this.responseMapper = responseMapper;
     }
 
+    /**
+     * Search page.
+     *
+     * @param pageable the pageable
+     * @param query the query
+     * @return the page
+     */
     public Page<T> search(Pageable pageable, QueryBuilder query) {
         SearchSourceBuilder sourceBuilder = getSearchSourceBuilder(pageable, query);
         SearchResponse response = search(sourceBuilder);

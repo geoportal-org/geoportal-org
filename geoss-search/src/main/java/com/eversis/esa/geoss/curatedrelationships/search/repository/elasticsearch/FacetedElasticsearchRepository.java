@@ -12,10 +12,21 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.util.List;
 
+/**
+ * The type Faceted elasticsearch repository.
+ *
+ * @param <T> the type parameter
+ */
 abstract class FacetedElasticsearchRepository<T> extends ElasticsearchRepository<T> {
 
     private final FacetedElasticsearchResponseMapper<T> responseMapper;
 
+    /**
+     * Instantiates a new Faceted elasticsearch repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     */
     public FacetedElasticsearchRepository(
             RestHighLevelClient client,
             FacetedElasticsearchResponseMapper<T> responseMapper) {
@@ -23,6 +34,14 @@ abstract class FacetedElasticsearchRepository<T> extends ElasticsearchRepository
         this.responseMapper = responseMapper;
     }
 
+    /**
+     * Search faceted page.
+     *
+     * @param pageable the pageable
+     * @param query the query
+     * @param aggregations the aggregations
+     * @return the faceted page
+     */
     public FacetedPage<T> search(
             Pageable pageable,
             QueryBuilder query,
@@ -32,7 +51,8 @@ abstract class FacetedElasticsearchRepository<T> extends ElasticsearchRepository
         return responseMapper.mapFacetedSearchResponse(response, pageable);
     }
 
-    private SearchSourceBuilder getSearchSourceBuilder(Pageable pageable, QueryBuilder query, List<AggregationBuilder> aggregations) {
+    private SearchSourceBuilder getSearchSourceBuilder(Pageable pageable, QueryBuilder query,
+            List<AggregationBuilder> aggregations) {
         SearchSourceBuilder sourceBuilder = getPaginatedSearchSourceBuilder(pageable);
         sourceBuilder.query(query);
         aggregations.forEach(sourceBuilder::aggregation);

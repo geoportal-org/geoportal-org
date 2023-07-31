@@ -18,20 +18,30 @@ import java.util.Map;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Entry ckan repository.
+ */
 @Repository("ckanRepository")
 class EntryCkanRepository extends CkanRepository<Entry, Map> {
 
-    private static final Map<String, Facets> facetFields;
+    private static final Map<String, Facets> FACET_FIELDS;
 
     static {
-        facetFields = new HashMap<>();
-        facetFields.put("tags", Facets.KEYWORDS);
-        facetFields.put("organization", Facets.ORGANISATION);
-        facetFields.put("format", Facets.FORMAT);
+        FACET_FIELDS = new HashMap<>();
+        FACET_FIELDS.put("tags", Facets.KEYWORDS);
+        FACET_FIELDS.put("organization", Facets.ORGANISATION);
+        FACET_FIELDS.put("format", Facets.FORMAT);
     }
 
     private final CkanQueryFactory queryFactory;
 
+    /**
+     * Instantiates a new Entry ckan repository.
+     *
+     * @param queryFactory the query factory
+     * @param responseMapper the response mapper
+     * @param client the client
+     */
     public EntryCkanRepository(
             CkanQueryFactory queryFactory,
             CkanResponseMapper<Entry, Map> responseMapper,
@@ -45,8 +55,8 @@ class EntryCkanRepository extends CkanRepository<Entry, Map> {
         String query = queryFactory.buildSearchQuery(
                 searchParameters,
                 pageable,
-                facetFields);
-        return search(pageable, query, facetFields);
+                FACET_FIELDS);
+        return search(pageable, query, FACET_FIELDS);
     }
 
     @Override

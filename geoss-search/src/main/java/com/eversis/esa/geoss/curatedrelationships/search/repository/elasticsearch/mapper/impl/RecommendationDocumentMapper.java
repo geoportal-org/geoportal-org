@@ -19,9 +19,17 @@ import java.util.stream.Collectors;
 
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.recommendation.RecommendationElasticsearchFields.ENTITIES_FIELD;
 
+/**
+ * The type Recommendation document mapper.
+ */
 @Component
 public class RecommendationDocumentMapper extends BaseElasticsearchDocumentMapper<Recommendation> {
 
+    /**
+     * Instantiates a new Recommendation document mapper.
+     *
+     * @param objectMapper the object mapper
+     */
     @Autowired
     public RecommendationDocumentMapper(ObjectMapper objectMapper) {
         super(objectMapper);
@@ -30,7 +38,8 @@ public class RecommendationDocumentMapper extends BaseElasticsearchDocumentMappe
     @Override
     public Recommendation mapToObject(SearchHit searchHit) throws IOException {
         Map source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
-        RecommendedResourceElk[] resources = objectMapper.convertValue(source.get(ENTITIES_FIELD), RecommendedResourceElk[].class);
+        RecommendedResourceElk[] resources = objectMapper.convertValue(source.get(ENTITIES_FIELD),
+                RecommendedResourceElk[].class);
         return mapResources(resources);
     }
 

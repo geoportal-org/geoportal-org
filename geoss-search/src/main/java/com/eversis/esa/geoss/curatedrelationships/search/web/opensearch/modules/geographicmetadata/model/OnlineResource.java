@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.util.Collections;
 
+/**
+ * The type Online resource.
+ */
 @Getter
 @Setter
 @ToString

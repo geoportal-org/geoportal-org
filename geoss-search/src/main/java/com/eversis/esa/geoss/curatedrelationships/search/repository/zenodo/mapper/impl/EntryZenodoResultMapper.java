@@ -20,11 +20,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Entry zenodo result mapper.
+ */
 @Component
 class EntryZenodoResultMapper extends BaseZenodoResultMapper<Entry, ZenodoResult> {
 
     private final TransferOptionZenodoMapper transferOptionMapper;
 
+    /**
+     * Instantiates a new Entry zenodo result mapper.
+     *
+     * @param objectMapper the object mapper
+     * @param transferOptionMapper the transfer option mapper
+     */
     @Autowired
     EntryZenodoResultMapper(
             ObjectMapper objectMapper,
@@ -55,7 +64,7 @@ class EntryZenodoResultMapper extends BaseZenodoResultMapper<Entry, ZenodoResult
                 .organisation(mapOrganisation(result.getCreators()))
                 .coverage(null) // TODO
                 .isParent(false)  // TODO
-                .childrenTypes(null) //TODO
+                .childrenTypes(null) // TODO
                 .parentIds(Collections.emptyList())
                 .types(Collections.singletonList(EntryType.INFORMATION))
                 .keywords(result.getKeywords().stream().map(Keyword::new).collect(Collectors.toList()))
@@ -81,7 +90,6 @@ class EntryZenodoResultMapper extends BaseZenodoResultMapper<Entry, ZenodoResult
         return organisation;
     }
 
-
     private List<TransferOption> mapTransferOptions(ZenodoResult result) {
         if (result == null) {
             return Collections.emptyList();
@@ -89,8 +97,10 @@ class EntryZenodoResultMapper extends BaseZenodoResultMapper<Entry, ZenodoResult
 
         List<TransferOption> transferOptions = new ArrayList<>();
 
-        transferOptions.add(transferOptionMapper.mapTransferOptionFromSelfLink(result.getTitle(), result.getHtmlPageLink()));
-        result.getFiles().forEach(zenodoFile -> transferOptions.add(transferOptionMapper.mapTransferOptionFromSelfLink(zenodoFile)));
+        transferOptions.add(
+                transferOptionMapper.mapTransferOptionFromSelfLink(result.getTitle(), result.getHtmlPageLink()));
+        result.getFiles().forEach(
+                zenodoFile -> transferOptions.add(transferOptionMapper.mapTransferOptionFromSelfLink(zenodoFile)));
 
         return transferOptions;
     }

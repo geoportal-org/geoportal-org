@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The type Detailed extension dto.
+ */
 @Data
 public class DetailedExtensionDto implements Serializable {
 

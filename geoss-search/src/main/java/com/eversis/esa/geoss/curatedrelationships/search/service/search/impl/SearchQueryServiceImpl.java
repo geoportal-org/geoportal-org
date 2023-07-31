@@ -10,6 +10,9 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Search query service.
+ */
 @Service
 @Validated
 class SearchQueryServiceImpl implements SearchQueryService {

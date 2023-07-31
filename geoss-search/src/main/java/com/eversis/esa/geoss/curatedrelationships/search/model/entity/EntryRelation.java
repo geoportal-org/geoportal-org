@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * The type Entry relation.
+ */
 @Data
 @EqualsAndHashCode(of = {"srcDataSource", "srcEntryCode", "destDataSource", "destEntryCode", "relationType"})
 @Builder

@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Overriden {@link org.springframework.data.domain.PageImpl} to support pagination using startIndex instead of page* number.
+ * Overriden {@link org.springframework.data.domain.PageImpl} to support pagination using startIndex instead of page*
+ * number.
+ *
+ * @param <T> the type parameter
  */
 public class PageImpl<T> implements Page<T> {
 
@@ -37,41 +40,51 @@ public class PageImpl<T> implements Page<T> {
     }
 
     /**
-     * Creates a new {@link PageImpl} with the given content. This will result in the created {@link Page} being identical to the entire {@link
-     * List}.
+     * Creates a new {@link PageImpl} with the given content. This will result in the created {@link Page} being
+     * identical to the entire {@link List}*.
+     *
+     * @param content the content
      */
     public PageImpl(List<T> content) {
         this(content, null, (null == content) ? 0 : content.size());
     }
 
+    @Override
     public int getStartIndex() {
         return pageable == null ? 0 : pageable.getStartIndex();
     }
 
+    @Override
     public int getSize() {
         return pageable == null ? content.size() : pageable.getPageSize();
     }
 
+    @Override
     public int getNumberOfElements() {
         return content.size();
     }
 
+    @Override
     public long getTotalElements() {
         return total;
     }
 
+    @Override
     public Iterator<T> iterator() {
         return content.iterator();
     }
 
+    @Override
     public List<T> getContent() {
         return Collections.unmodifiableList(content);
     }
 
+    @Override
     public boolean hasContent() {
         return !content.isEmpty();
     }
 
+    @Override
     public Sort getSort() {
         return pageable == null ? null : pageable.getSort();
     }
@@ -84,7 +97,8 @@ public class PageImpl<T> implements Page<T> {
             contentType = content.get(0).getClass().getName();
         }
 
-        return String.format("Page with startIndex %s of %d containing %s instances", getStartIndex(), getTotalElements(), contentType);
+        return String.format("Page with startIndex %s of %d containing %s instances", getStartIndex(),
+                getTotalElements(), contentType);
     }
 
     @Override

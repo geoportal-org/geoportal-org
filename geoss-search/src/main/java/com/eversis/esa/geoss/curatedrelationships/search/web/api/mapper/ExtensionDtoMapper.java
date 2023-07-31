@@ -15,15 +15,29 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Extension dto mapper.
+ */
 @Component
 public class ExtensionDtoMapper {
 
     private final EntryTypeMapper entryTypeMapper;
 
+    /**
+     * Instantiates a new Extension dto mapper.
+     *
+     * @param entryTypeMapper the entry type mapper
+     */
     public ExtensionDtoMapper(EntryTypeMapper entryTypeMapper) {
         this.entryTypeMapper = entryTypeMapper;
     }
 
+    /**
+     * Map extension extension dto.
+     *
+     * @param extension the extension
+     * @return the extension dto
+     */
     public ExtensionDto mapExtension(Extension extension) {
         if (extension == null) {
             return null;
@@ -33,7 +47,8 @@ public class ExtensionDtoMapper {
         extensionDto.setEntryExtensions(mapEntryExtensions(extension.getEntryExtensions()));
         extensionDto.setTransferOptions(extension.getTransferOptions());
         extensionDto.setRelations(extension.getRelations());
-        extensionDto.setDataHubTypes(getSubRelationTypes(extension.getCode(), extension.getDataSource(), extension.getRelations()));
+        extensionDto.setDataHubTypes(
+                getSubRelationTypes(extension.getCode(), extension.getDataSource(), extension.getRelations()));
         return extensionDto;
     }
 
@@ -47,12 +62,14 @@ public class ExtensionDtoMapper {
                 .collect(Collectors.toSet());
     }
 
-    private Set<String> getSubRelationTypes(@NotNull String entryCode, @NotNull DataSource dataSource, Set<EntryRelation> relations) {
+    private Set<String> getSubRelationTypes(@NotNull String entryCode, @NotNull DataSource dataSource,
+            Set<EntryRelation> relations) {
         if (relations == null) {
             return Collections.emptySet();
         }
         return relations.stream()
-                .filter(entryRelation -> entryRelation.getSrcDataSource() == dataSource && entryRelation.getSrcEntryCode().equals(entryCode))
+                .filter(entryRelation -> entryRelation.getSrcDataSource() == dataSource
+                                         && entryRelation.getSrcEntryCode().equals(entryCode))
                 .map(EntryRelation::getDestType)
                 .map(entryTypeMapper::getHubType)
                 .filter(Objects::nonNull)

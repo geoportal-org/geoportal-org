@@ -44,41 +44,87 @@ public class Contributor implements Cloneable, Serializable, Extendable {
         return ToStringBean.toString(this.getClass(), this);
     }
 
+    /**
+     * Gets org name.
+     *
+     * @return the org name
+     */
     public String getOrgName() {
         return orgName;
     }
 
+    /**
+     * Sets org name.
+     *
+     * @param orgName the org name
+     */
     public void setOrgName(String orgName) {
         this.orgName = orgName;
     }
 
+    /**
+     * Gets ind name.
+     *
+     * @return the ind name
+     */
     public String getIndName() {
         return indName;
     }
 
+    /**
+     * Sets ind name.
+     *
+     * @param indName the ind name
+     */
     public void setIndName(String indName) {
         this.indName = indName;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
     public void setEmail(final String email) {
         this.email = email;
     }
 
+    /**
+     * Gets modules.
+     *
+     * @return the modules
+     */
     @Override
     public List<Module> getModules() {
         modules = Lists.createWhenNull(modules);
         return modules;
     }
 
+    /**
+     * Sets modules.
+     *
+     * @param modules the modules
+     */
     @Override
     public void setModules(final List<Module> modules) {
         this.modules = modules;
     }
 
+    /**
+     * Gets module.
+     *
+     * @param uri the uri
+     * @return the module
+     */
     @Override
     public Module getModule(final String uri) {
         return ModuleUtils.getModule(modules, uri);

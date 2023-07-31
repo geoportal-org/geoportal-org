@@ -10,10 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Data model module.
+ */
 public class DataModelModuleImpl extends ModuleImpl implements DataModelModule {
 
     private transient Map<String, List<Facet>> facets = new HashMap<>();
 
+    /**
+     * Instantiates a new Data model module.
+     */
     public DataModelModuleImpl() {
         super(DataModelModule.class, DataModelModuleConstants.URI);
     }
@@ -28,11 +34,21 @@ public class DataModelModuleImpl extends ModuleImpl implements DataModelModule {
         this.facets = facets;
     }
 
+    /**
+     * Gets interface.
+     *
+     * @return the interface
+     */
     @Override
     public Class<? extends CopyFrom> getInterface() {
         return DataModelModule.class;
     }
 
+    /**
+     * Copy from.
+     *
+     * @param obj the obj
+     */
     @Override
     public void copyFrom(CopyFrom obj) {
         final DataModelModule contributorModule = (DataModelModule) obj;

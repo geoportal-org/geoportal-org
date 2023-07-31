@@ -21,11 +21,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * The type Entry document mapper.
+ */
 @Component
 public class EntryDocumentMapper extends BaseElasticsearchDocumentMapper<Entry> {
 
     private final TransferOptionElasticsearchMapper transferOptionMapper;
 
+    /**
+     * Instantiates a new Entry document mapper.
+     *
+     * @param objectMapper the object mapper
+     * @param transferOptionMapper the transfer option mapper
+     */
     @Autowired
     public EntryDocumentMapper(ObjectMapper objectMapper, TransferOptionElasticsearchMapper transferOptionMapper) {
         super(objectMapper);

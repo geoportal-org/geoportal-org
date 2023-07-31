@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Extension query factory.
+ */
 @Component
 public class ExtensionQueryFactory {
 
@@ -17,6 +20,7 @@ public class ExtensionQueryFactory {
      *
      * @param ids list of document ids
      * @param dataSource dataSource of provided ids
+     * @return the query builder
      */
     public QueryBuilder buildIdsQuery(@NotNull Set<String> ids, @NotNull String dataSource) {
         String[] formattedIds = ids.stream()

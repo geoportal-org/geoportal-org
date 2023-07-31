@@ -13,11 +13,19 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Zenodo search strategy.
+ */
 @Component("zenodoSearchStrategy")
 class ZenodoSearchStrategy implements SearchStrategy {
 
     private final CRRepository<Entry> dataRepository;
 
+    /**
+     * Instantiates a new Zenodo search strategy.
+     *
+     * @param dataRepository the data repository
+     */
     public ZenodoSearchStrategy(@Qualifier("entryZenodoRepository") CRRepository<Entry> dataRepository) {
         this.dataRepository = dataRepository;
     }

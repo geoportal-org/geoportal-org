@@ -8,6 +8,9 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Extension;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Extension repository.
+ */
 public interface ExtensionRepository {
 
     /**
@@ -16,7 +19,9 @@ public interface ExtensionRepository {
      * @param ids set of entry's ids filter parameters
      * @param dataSource source which should
      * @param pageable pagination information
+     * @return the page
      */
-    Page<Extension> findExtensions(@NotNull Set<String> ids, @NotNull DataSource dataSource, @NotNull Pageable pageable);
+    Page<Extension> findExtensions(@NotNull Set<String> ids, @NotNull DataSource dataSource,
+            @NotNull Pageable pageable);
 
 }

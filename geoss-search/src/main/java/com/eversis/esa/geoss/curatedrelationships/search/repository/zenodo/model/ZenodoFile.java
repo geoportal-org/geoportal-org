@@ -2,6 +2,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mode
 
 import lombok.Data;
 
+/**
+ * The type Zenodo file.
+ */
 @Data
 public class ZenodoFile {
 
@@ -10,6 +13,11 @@ public class ZenodoFile {
     private String key;
     private ZenodoLinks links;
 
+    /**
+     * Gets file link.
+     *
+     * @return the file link
+     */
     public String getFileLink() {
         if (links != null) {
             return links.getSelf();

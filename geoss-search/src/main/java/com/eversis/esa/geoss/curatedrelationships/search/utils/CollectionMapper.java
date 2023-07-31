@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Collection mapper.
+ */
 public class CollectionMapper {
 
     private CollectionMapper() {
@@ -13,6 +16,8 @@ public class CollectionMapper {
     }
 
     /**
+     * Map set set.
+     *
      * @param values Comma separated list of string values
      * @return Set of values
      */
@@ -27,6 +32,8 @@ public class CollectionMapper {
     }
 
     /**
+     * Map list list.
+     *
      * @param values Comma separated list of string values
      * @return List of values
      */

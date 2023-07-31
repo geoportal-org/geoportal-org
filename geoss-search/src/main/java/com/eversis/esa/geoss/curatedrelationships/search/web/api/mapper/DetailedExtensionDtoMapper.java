@@ -11,9 +11,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Detailed extension dto mapper.
+ */
 @Component
 public class DetailedExtensionDtoMapper {
 
+    /**
+     * Map extension detailed extension dto.
+     *
+     * @param extension the extension
+     * @return the detailed extension dto
+     */
     public DetailedExtensionDto mapExtension(Extension extension) {
         if (extension == null) {
             return null;
@@ -38,7 +47,8 @@ public class DetailedExtensionDtoMapper {
                         .keywords(entryExtension.getKeywords())
                         .transferOptions(extension.getTransferOptions()
                                 .stream()
-                                .filter(transferOption -> transferOption.getEntryExtensionId().equals(entryExtension.getEntryExtensionId()))
+                                .filter(transferOption -> transferOption.getEntryExtensionId()
+                                        .equals(entryExtension.getEntryExtensionId()))
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());

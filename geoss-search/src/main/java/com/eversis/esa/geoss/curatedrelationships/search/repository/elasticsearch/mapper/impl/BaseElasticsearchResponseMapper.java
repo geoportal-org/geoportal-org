@@ -18,11 +18,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * The type Base elasticsearch response mapper.
+ *
+ * @param <T> the type parameter
+ */
 @Slf4j
 abstract class BaseElasticsearchResponseMapper<T> implements ElasticsearchResponseMapper<T> {
 
     protected ElasticsearchDocumentMapper<T> documentMapper;
 
+    /**
+     * Instantiates a new Base elasticsearch response mapper.
+     *
+     * @param documentMapper the document mapper
+     */
     public BaseElasticsearchResponseMapper(ElasticsearchDocumentMapper<T> documentMapper) {
         this.documentMapper = documentMapper;
     }

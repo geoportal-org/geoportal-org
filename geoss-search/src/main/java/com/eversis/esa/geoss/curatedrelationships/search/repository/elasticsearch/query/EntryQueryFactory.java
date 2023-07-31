@@ -22,12 +22,21 @@ import static com.eversis.esa.geoss.curatedrelationships.search.repository.elast
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TAGS_RAW_FIELD;
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TITLE_RAW_FIELD;
 
+/**
+ * The type Entry query factory.
+ */
 @Component
 public class EntryQueryFactory {
 
     private final EntryFilterQueryFactory filterQueryFactory;
     private final EntryFilterFunctionFactory filterFunctionFactory;
 
+    /**
+     * Instantiates a new Entry query factory.
+     *
+     * @param filterQueryFactory the filter query factory
+     * @param filterFunctionFactory the filter function factory
+     */
     public EntryQueryFactory(
             EntryFilterQueryFactory filterQueryFactory,
             EntryFilterFunctionFactory filterFunctionFactory) {
@@ -39,24 +48,27 @@ public class EntryQueryFactory {
      * Creates Elasticsearch query, which will match only specific document ids.
      *
      * @param ids list of document ids
+     * @return the query builder
      */
     public QueryBuilder buildIdsQuery(@NotNull Set<String> ids) {
         return QueryBuilders.idsQuery().addIds(ids.toArray(new String[0]));
     }
 
     /**
-     * Creates Elasticsearch query from provided parameters. It is responsible only for search query, which means that it limits search results by
-     * using search phrase and provided filter parameters. It does not handle any kind of pagination and aggregations.
+     * Creates Elasticsearch query from provided parameters. It is responsible only for search query, which means that
+     * it limits search results by using search phrase and provided filter parameters. It does not handle any kind of
+     * pagination and aggregations.
      *
      * @param searchParameters parameters which should be mapped to elasticsearch query
+     * @return the query builder
      */
     public QueryBuilder buildSearchQuery(@NotNull SearchQuery searchParameters) {
         BoolQueryBuilder searchQueryBuilder = createSearchQuery(searchParameters);
 
         if (searchParameters.getOptionalPhrase().isPresent() || !searchParameters.getParents().isEmpty()) {
-            return QueryBuilders.functionScoreQuery(
-                    searchQueryBuilder,
-                    createScoreFilterFunctions(searchParameters.getOptionalPhrase(), searchParameters.getParents()))
+            return QueryBuilders.functionScoreQuery(searchQueryBuilder,
+                            createScoreFilterFunctions(
+                                    searchParameters.getOptionalPhrase(), searchParameters.getParents()))
                     .boostMode(CombineFunction.MAX);
         }
 
@@ -81,11 +93,13 @@ public class EntryQueryFactory {
         });
 
         mainQueryBuilder.filter(filterQueryFactory.createDataSourceQuery(searchParams.getDataSource().getName()));
-        searchParams.getOptionalDateRange().ifPresent(dateRange -> mainQueryBuilder.filter(filterQueryFactory.createDateQuery(dateRange)));
+        searchParams.getOptionalDateRange()
+                .ifPresent(dateRange -> mainQueryBuilder.filter(filterQueryFactory.createDateQuery(dateRange)));
         if (!searchParams.getEntryTypes().isEmpty()) {
             mainQueryBuilder.filter(filterQueryFactory.createResourceEntryTypeQuery(searchParams.getEntryTypes()));
         }
-        if (searchParams.getOptionalBoundingBoxRelation().isPresent() && searchParams.getOptionalBoundingBox().isPresent()) {
+        if (searchParams.getOptionalBoundingBoxRelation().isPresent() && searchParams.getOptionalBoundingBox()
+                .isPresent()) {
             mainQueryBuilder.filter(filterQueryFactory.createGeoShapeQuery(
                     searchParams.getOptionalBoundingBoxRelation().get(),
                     searchParams.getOptionalBoundingBox().get()
@@ -98,14 +112,18 @@ public class EntryQueryFactory {
             mainQueryBuilder.filter(filterQueryFactory.createSourcesQuery(searchParams.getSources()));
         }
 
-        searchParams.getOptionalOrganizationName().ifPresent(orgName -> mainQueryBuilder.filter(filterQueryFactory.createOrganizationQuery(orgName)));
-        searchParams.getOptionalProtocol().ifPresent(protocol -> mainQueryBuilder.filter(filterQueryFactory.createProtocolQuery(protocol)));
-        searchParams.getOptionalKeyword().ifPresent(keyword -> mainQueryBuilder.filter(filterQueryFactory.createKeywordQuery(keyword)));
+        searchParams.getOptionalOrganizationName()
+                .ifPresent(orgName -> mainQueryBuilder.filter(filterQueryFactory.createOrganizationQuery(orgName)));
+        searchParams.getOptionalProtocol()
+                .ifPresent(protocol -> mainQueryBuilder.filter(filterQueryFactory.createProtocolQuery(protocol)));
+        searchParams.getOptionalKeyword()
+                .ifPresent(keyword -> mainQueryBuilder.filter(filterQueryFactory.createKeywordQuery(keyword)));
 
         return mainQueryBuilder;
     }
 
-    private FilterFunctionBuilder[] createScoreFilterFunctions(@NotNull Optional<String> searchPhrase, Set<String> parentIds) {
+    private FilterFunctionBuilder[] createScoreFilterFunctions(@NotNull Optional<String> searchPhrase,
+            Set<String> parentIds) {
         if (!parentIds.isEmpty()) {
             return filterFunctionFactory.createParentsFilterScoreFunctionBuilder(parentIds);
         }

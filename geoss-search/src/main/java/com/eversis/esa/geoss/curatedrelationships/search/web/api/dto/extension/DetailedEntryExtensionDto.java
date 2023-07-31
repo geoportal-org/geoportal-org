@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The type Detailed entry extension dto.
+ */
 @Data
 @EqualsAndHashCode(of = {"entryExtensionId"})
 @Builder

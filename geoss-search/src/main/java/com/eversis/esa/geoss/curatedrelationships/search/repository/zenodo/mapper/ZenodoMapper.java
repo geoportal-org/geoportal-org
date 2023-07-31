@@ -2,6 +2,11 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mapp
 
 import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.model.ZenodoResult;
 
+/**
+ * The interface Zenodo mapper.
+ *
+ * @param <T> the type parameter
+ */
 public interface ZenodoMapper<T> {
 
     /**

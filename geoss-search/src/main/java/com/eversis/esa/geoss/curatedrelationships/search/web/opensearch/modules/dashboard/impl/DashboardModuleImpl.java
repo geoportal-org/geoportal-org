@@ -6,10 +6,16 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.
 import com.rometools.rome.feed.CopyFrom;
 import com.rometools.rome.feed.module.ModuleImpl;
 
+/**
+ * The type Dashboard module.
+ */
 public class DashboardModuleImpl extends ModuleImpl implements DashboardModule {
 
     private Dashboard dashboard;
 
+    /**
+     * Instantiates a new Dashboard module.
+     */
     public DashboardModuleImpl() {
         super(DashboardModule.class, DashboardModuleConstants.MODULE_IDENTIFIER);
     }
@@ -24,11 +30,21 @@ public class DashboardModuleImpl extends ModuleImpl implements DashboardModule {
         this.dashboard = dashboard;
     }
 
+    /**
+     * Gets interface.
+     *
+     * @return the interface
+     */
     @Override
     public Class<DashboardModule> getInterface() {
         return DashboardModule.class;
     }
 
+    /**
+     * Copy from.
+     *
+     * @param obj the obj
+     */
     @Override
     public void copyFrom(CopyFrom obj) {
         final DashboardModule dashboardModule = (DashboardModule) obj;

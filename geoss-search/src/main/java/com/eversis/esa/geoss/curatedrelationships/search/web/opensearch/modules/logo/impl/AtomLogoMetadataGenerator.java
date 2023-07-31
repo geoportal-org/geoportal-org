@@ -13,8 +13,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The type Atom logo metadata generator.
+ */
 public class AtomLogoMetadataGenerator implements ModuleGenerator {
 
+    /**
+     * The Ns.
+     */
     static final Namespace NS = Namespace.getNamespace("atom", AtomLinkModule.URI);
     private static final Set<Namespace> NAMESPACES;
 
@@ -24,16 +30,32 @@ public class AtomLogoMetadataGenerator implements ModuleGenerator {
         NAMESPACES = Collections.unmodifiableSet(nss);
     }
 
+    /**
+     * Gets namespace uri.
+     *
+     * @return the namespace uri
+     */
     @Override
     public String getNamespaceUri() {
         return AtomLogoModuleConstants.URI;
     }
 
+    /**
+     * Gets namespaces.
+     *
+     * @return the namespaces
+     */
     @Override
     public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 
+    /**
+     * Generate.
+     *
+     * @param module the module
+     * @param element the element
+     */
     @Override
     public void generate(Module module, Element element) {
         if (module instanceof AtomLogoModule) {

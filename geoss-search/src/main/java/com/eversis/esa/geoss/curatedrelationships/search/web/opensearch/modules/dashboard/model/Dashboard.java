@@ -7,12 +7,18 @@ import lombok.ToString;
 
 import java.util.Collections;
 
+/**
+ * The type Dashboard.
+ */
 @Getter
 @Setter
 @ToString
 public class Dashboard implements Cloneable {
 
     private int id;
+    /**
+     * The Content.
+     */
     String content;
 
     @Override

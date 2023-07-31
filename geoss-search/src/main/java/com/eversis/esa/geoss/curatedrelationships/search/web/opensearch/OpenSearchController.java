@@ -36,6 +36,9 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import javax.validation.constraints.Min;
 
+/**
+ * The type Open search controller.
+ */
 @Api(tags = {"OPENSEARCH"})
 @Slf4j
 @RestController
@@ -45,12 +48,27 @@ public class OpenSearchController {
     private SearchService searchService;
     private OpenSearchResponseMapper responseMapper;
 
+    /**
+     * Instantiates a new Open search controller.
+     *
+     * @param searchService the search service
+     * @param responseMapper the response mapper
+     */
     @Autowired
     public OpenSearchController(SearchService searchService, OpenSearchResponseMapper responseMapper) {
         this.searchService = searchService;
         this.responseMapper = responseMapper;
     }
 
+    /**
+     * Find by id feed.
+     *
+     * @param startIndex the start index
+     * @param size the size
+     * @param targetIds the target ids
+     * @param dataSource the data source
+     * @return the feed
+     */
     @ApiOperation(value = "Find resource by their id using opensearch server")
     @ResponseBody
     @GetMapping(produces = MediaType.APPLICATION_ATOM_XML_VALUE, params = "targetIds")
@@ -72,6 +90,26 @@ public class OpenSearchController {
         return responseMapper.createSearchResultsFeed(resourceEntries);
     }
 
+    /**
+     * Find resources feed.
+     *
+     * @param startIndex the start index
+     * @param size the size
+     * @param phrase the phrase
+     * @param resourceEntryTypes the resource entry types
+     * @param parents the parents
+     * @param dataSource the data source
+     * @param bbox the bbox
+     * @param bboxRelation the bbox relation
+     * @param startDateTime the start date time
+     * @param endDateTime the end date time
+     * @param sources the sources
+     * @param protocol the protocol
+     * @param organisationName the organisation name
+     * @param keyword the keyword
+     * @param format the format
+     * @return the feed
+     */
     @ApiOperation(value = "Search for resources using opensearch server")
     @ResponseBody
     @GetMapping(produces = MediaType.APPLICATION_ATOM_XML_VALUE)
@@ -82,20 +120,25 @@ public class OpenSearchController {
             @RequestParam(name = "ct", defaultValue = "10") @Min(1) int size,
             @ApiParam(value = "Phrase. Use to full text search on content.")
             @RequestParam(name = "st", required = false) String phrase,
-            @ApiParam(value = "Filter by geoss_cr_type", allowableValues = "data_resource, service_resource, information_resource")
+            @ApiParam(value = "Filter by geoss_cr_type",
+                      allowableValues = "data_resource, service_resource, information_resource")
             @RequestParam(name = "geoss_cr_type", required = false) String resourceEntryTypes,
             @ApiParam(value = "Specify ids of parent entries. Use to get descendants of specified resources.")
             @RequestParam(name = "parents", required = false) String parents,
             @ApiParam(value = "Name of the datasource.", allowableValues = "geoss_cr, amerigeoss_ckan")
             @RequestParam(name = "ds") String dataSource,
-            @ApiParam(value = "Filter by geo coordinates. <br/>Format: leftTopLatitude,leftTopLongitude,rightBottomLatitude,rightBottomLongitude")
+            @ApiParam(
+                    value = "Filter by geo coordinates. <br/>Format: leftTopLatitude,leftTopLongitude,"
+                            + "rightBottomLatitude,rightBottomLongitude")
             @RequestParam(name = "bbox", required = false) String bbox,
             @ApiParam(value = "Defines bbox relation.", allowableValues = "CONTAINS, OVERLAPS, DISJOINT")
             @RequestParam(name = "rel", required = false) String bboxRelation,
             @ApiParam(value = "Filter by startDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
-            @RequestParam(name = "ts", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime startDateTime,
+            @RequestParam(name = "ts", required = false) @DateTimeFormat(
+                    pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime startDateTime,
             @ApiParam(value = "Filter by endDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
-            @RequestParam(name = "te", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime endDateTime,
+            @RequestParam(name = "te", required = false) @DateTimeFormat(
+                    pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime endDateTime,
             @ApiParam(value = "Filter by source of the resource.")
             @RequestParam(name = "sources", required = false) String sources,
             @ApiParam(value = "Filter by protocol of the resource.")
@@ -127,6 +170,12 @@ public class OpenSearchController {
         return responseMapper.createFacetedSearchResultsFeed(resourceEntries);
     }
 
+    /**
+     * Handle not found error response entity.
+     *
+     * @param e the e
+     * @return the response entity
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFoundError(ResourceNotFoundException e) {
         log.warn("Failed to find requested resources: " + e.getMessage());
@@ -135,6 +184,12 @@ public class OpenSearchController {
                 .body(new ApiError(LocalDateTime.now(), e.getMessage(), HttpStatus.NOT_FOUND.value()));
     }
 
+    /**
+     * Handle error response entity.
+     *
+     * @param e the e
+     * @return the response entity
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleError(Exception e) {
         log.error("Error occurred during opensearch", e);

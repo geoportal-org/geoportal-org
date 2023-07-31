@@ -17,15 +17,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Entry aggregation factory.
+ */
 @Component
 public class EntryAggregationFactory {
 
     /**
-     * Creates list of Elasticsearch aggregation's builders. Each key in provided Map is mapped to single aggregation, which results in single bucket.
-     * Although by default Elasticsearch does not enable creation of single bucket from multiple fields, it is possible to omit this restriction by
-     * using script query or by adding additional field in index mapping.
+     * Creates list of Elasticsearch aggregation's builders. Each key in provided Map is mapped to single aggregation,
+     * which results in single bucket. Although by default Elasticsearch does not enable creation of single bucket from
+     * multiple fields, it is possible to omit this restriction by using script query or by adding additional field in
+     * index mapping.
      *
      * @param facetFields each entry corresponds to single aggregation
+     * @return the list
      */
     public List<AggregationBuilder> buildAggregations(Map<Facets, List<String>> facetFields) {
         if (facetFields == null) {
@@ -33,7 +38,8 @@ public class EntryAggregationFactory {
         }
 
         return facetFields.entrySet().stream()
-                .map(stringListEntry -> createAggregation(stringListEntry.getKey().getName(), stringListEntry.getValue()))
+                .map(stringListEntry -> createAggregation(stringListEntry.getKey().getName(),
+                        stringListEntry.getValue()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
@@ -58,7 +64,8 @@ public class EntryAggregationFactory {
     private Script createScriptForFields(@NotNull List<String> fields) {
         String scriptString = fields.stream()
                 .map(field -> "doc['" + field + "'].value")
-                .collect(Collectors.joining(" + '" + GeossCrEntryElasticsearchQueryConstansts.MUTLI_FIELD_AGGREGATIONS_SEPARAOTR + "' + "));
+                .collect(Collectors.joining(
+                        " + '" + GeossCrEntryElasticsearchQueryConstansts.MUTLI_FIELD_AGGREGATIONS_SEPARAOTR + "' + "));
 
         return new Script(scriptString);
     }

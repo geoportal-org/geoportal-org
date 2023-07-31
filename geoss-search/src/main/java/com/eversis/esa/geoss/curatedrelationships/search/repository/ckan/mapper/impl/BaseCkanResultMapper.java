@@ -5,10 +5,21 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.mapper.
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * The type Base ckan result mapper.
+ *
+ * @param <T> the type parameter
+ * @param <S> the type parameter
+ */
 abstract class BaseCkanResultMapper<T, S> implements CkanResultMapper<T, S> {
 
     protected ObjectMapper objectMapper;
 
+    /**
+     * Instantiates a new Base ckan result mapper.
+     *
+     * @param objectMapper the object mapper
+     */
     public BaseCkanResultMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

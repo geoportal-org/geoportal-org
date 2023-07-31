@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Bounding box mapper.
+ */
 public class BoundingBoxMapper {
 
     private BoundingBoxMapper() {
@@ -15,9 +18,10 @@ public class BoundingBoxMapper {
     }
 
     /**
-     * Creates bounding box which consists of 2 points: left upper corner, bottom right corner
+     * Creates bounding box which consists of 2 points: left upper corner, bottom right corner.
      *
      * @param bbox Coordinates in format: W,S,E,N
+     * @return the bounding box
      */
     public static BoundingBox mapFromString(String bbox) {
         if (StringUtils.isBlank(bbox)) {

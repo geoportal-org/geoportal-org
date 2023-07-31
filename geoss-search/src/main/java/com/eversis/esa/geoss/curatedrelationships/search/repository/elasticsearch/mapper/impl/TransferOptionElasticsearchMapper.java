@@ -5,9 +5,18 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearc
 
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Transfer option elasticsearch mapper.
+ */
 @Component
 public class TransferOptionElasticsearchMapper {
 
+    /**
+     * Map transfer option transfer option.
+     *
+     * @param transferOptionELK the transfer option elk
+     * @return the transfer option
+     */
     TransferOption mapTransferOption(TransferOptionELK transferOptionELK) {
         if (transferOptionELK == null) {
             return null;

@@ -5,6 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * The type Entry relation elk.
+ */
 @Data
 public class EntryRelationELK implements Serializable {
 

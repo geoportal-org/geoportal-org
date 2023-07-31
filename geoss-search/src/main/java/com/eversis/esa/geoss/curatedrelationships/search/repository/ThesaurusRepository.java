@@ -6,6 +6,9 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Concept;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Thesaurus repository.
+ */
 public interface ThesaurusRepository {
 
     /**
@@ -13,6 +16,7 @@ public interface ThesaurusRepository {
      *
      * @param searchPhrase search phrase
      * @param pageable pagination information
+     * @return the page
      */
     Page<Concept> findConcepts(@NotNull String searchPhrase, @NotNull Pageable pageable);
 

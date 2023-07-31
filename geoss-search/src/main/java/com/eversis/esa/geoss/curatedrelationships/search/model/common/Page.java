@@ -6,7 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Overriden {@link org.springframework.data.domain.Page} to support pagination using startIndex instead of page number.
+ * Overriden {@link org.springframework.data.domain.Page} to support pagination using startIndex instead of page
+ * number.
+ *
+ * @param <T> the type parameter
  */
 public interface Page<T> extends Iterable<T> {
 
@@ -38,25 +41,27 @@ public interface Page<T> extends Iterable<T> {
      */
     long getTotalElements();
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Iterable#iterator()
-     */
+    @Override
     Iterator<T> iterator();
 
     /**
      * Returns the page content as {@link List}.
+     *
+     * @return the content
      */
     List<T> getContent();
 
     /**
      * Returns whether the {@link org.springframework.data.domain.Page} has content at all.
+     *
+     * @return the boolean
      */
     boolean hasContent();
 
     /**
      * Returns the sorting parameters for the page.
+     *
+     * @return the sort
      */
     Sort getSort();
 

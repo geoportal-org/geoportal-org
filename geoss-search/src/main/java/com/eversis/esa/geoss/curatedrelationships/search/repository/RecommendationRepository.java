@@ -7,13 +7,17 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.recommendation.Re
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Recommendation repository.
+ */
 public interface RecommendationRepository {
 
     /**
-     * Find recommendations for provided term
+     * Find recommendations for provided term.
      *
      * @param term search term
      * @param pageable pagination information
+     * @return the page
      */
     Page<Recommendation> findRecommendations(@NotBlank String term, @NotNull Pageable pageable);
 

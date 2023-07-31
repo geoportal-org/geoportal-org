@@ -14,14 +14,23 @@ import org.springframework.stereotype.Component;
 
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.thesaurus.ThesaurusElasticsearchFields.WEIGHT;
 
+/**
+ * The type Concept query factory.
+ */
 @Component
 public class ConceptQueryFactory {
 
+    /**
+     * Build search query query builder.
+     *
+     * @param searchPhrase the search phrase
+     * @return the query builder
+     */
     public QueryBuilder buildSearchQuery(String searchPhrase) {
         QueryBuilder contentQuery = buildContentQuery(searchPhrase);
         return QueryBuilders.functionScoreQuery(
-                contentQuery,
-                createFieldValueScoreFunctionBuilder(contentQuery))
+                        contentQuery,
+                        createFieldValueScoreFunctionBuilder(contentQuery))
                 .boostMode(CombineFunction.MULTIPLY);
     }
 
@@ -36,7 +45,8 @@ public class ConceptQueryFactory {
     }
 
     private FilterFunctionBuilder[] createFieldValueScoreFunctionBuilder(QueryBuilder queryBuilder) {
-        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction(WEIGHT).missing(1.0).modifier(Modifier.SQRT);
+        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction(WEIGHT).missing(1.0)
+                .modifier(Modifier.SQRT);
         return new FilterFunctionBuilder[]{new FilterFunctionBuilder(queryBuilder, scoreFunctionBuilder)};
     }
 

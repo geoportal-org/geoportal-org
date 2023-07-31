@@ -21,23 +21,46 @@ import java.util.Set;
 import static com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.geographicmetadata.impl.GeographicMetaDataResponseConstants.CHARACTER_STRING;
 import static com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.geographicmetadata.impl.GeographicMetaDataResponseConstants.DECIMAL;
 
+/**
+ * The type Geographic meta data generator.
+ */
 public class GeographicMetaDataGenerator implements ModuleGenerator {
 
-    private static final Namespace GMD_NAMESPACE = Namespace.getNamespace("gmd", GeographicMetaDataModuleConstants.GMD_URI);
-    private static final Namespace GCO_NAMESPACE = Namespace.getNamespace("gco", GeographicMetaDataModuleConstants.GCO_URI);
-    private static final Namespace GMX_NAMESPACE = Namespace.getNamespace("gmx", GeographicMetaDataModuleConstants.GMX_URI);
-    private static final Namespace XLINK_NAMESPACE = Namespace.getNamespace("xlink", GeographicMetaDataModuleConstants.XLINK_URI);
+    private static final Namespace GMD_NAMESPACE = Namespace.getNamespace("gmd",
+            GeographicMetaDataModuleConstants.GMD_URI);
+    private static final Namespace GCO_NAMESPACE = Namespace.getNamespace("gco",
+            GeographicMetaDataModuleConstants.GCO_URI);
+    private static final Namespace GMX_NAMESPACE = Namespace.getNamespace("gmx",
+            GeographicMetaDataModuleConstants.GMX_URI);
+    private static final Namespace XLINK_NAMESPACE = Namespace.getNamespace("xlink",
+            GeographicMetaDataModuleConstants.XLINK_URI);
 
+    /**
+     * Gets namespace uri.
+     *
+     * @return the namespace uri
+     */
     @Override
     public String getNamespaceUri() {
         return GeographicMetaDataModuleConstants.GMD_URI;
     }
 
+    /**
+     * Gets namespaces.
+     *
+     * @return the namespaces
+     */
     @Override
     public Set<Namespace> getNamespaces() {
         return Collections.singleton(GMD_NAMESPACE);
     }
 
+    /**
+     * Generate.
+     *
+     * @param module the module
+     * @param element the element
+     */
     @Override
     public void generate(final Module module, final Element element) {
         GeographicMetaDataModule geographicMetaDataModule = (GeographicMetaDataModule) module;
@@ -70,22 +93,25 @@ public class GeographicMetaDataGenerator implements ModuleGenerator {
         Element ciResponsiblePartyElement = new Element("CI_ResponsibleParty", GMD_NAMESPACE);
         if (StringUtils.isNotBlank(contact.getContact())) {
             Element individualNameElement = new Element("individualName", GMD_NAMESPACE);
-            individualNameElement.addContent(ElementFactory.createElement(CHARACTER_STRING, contact.getContact(), GCO_NAMESPACE));
+            individualNameElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, contact.getContact(), GCO_NAMESPACE));
             ciResponsiblePartyElement.addContent(individualNameElement);
         }
         if (StringUtils.isNotBlank(contact.getTitle())) {
             Element organisationNameElement = new Element("organisationName", GMD_NAMESPACE);
-            organisationNameElement.addContent(ElementFactory.createElement(CHARACTER_STRING, contact.getTitle(), GCO_NAMESPACE));
+            organisationNameElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, contact.getTitle(), GCO_NAMESPACE));
             ciResponsiblePartyElement.addContent(organisationNameElement);
         }
         if (StringUtils.isNotBlank(contact.getContactEmail())) {
-            Element contactInfoElement = new Element("contactInfo", GMD_NAMESPACE);
-            Element ciContactElement = new Element("CI_Contact", GMD_NAMESPACE);
-            Element addressElement = new Element("address", GMD_NAMESPACE);
-            Element ciAddressElement = new Element("CI_Address", GMD_NAMESPACE);
-            Element emailAddressElement = new Element("electronicMailAddress", GMD_NAMESPACE);
+            final Element contactInfoElement = new Element("contactInfo", GMD_NAMESPACE);
+            final Element ciContactElement = new Element("CI_Contact", GMD_NAMESPACE);
+            final Element addressElement = new Element("address", GMD_NAMESPACE);
+            final Element ciAddressElement = new Element("CI_Address", GMD_NAMESPACE);
+            final Element emailAddressElement = new Element("electronicMailAddress", GMD_NAMESPACE);
 
-            emailAddressElement.addContent(ElementFactory.createElement(CHARACTER_STRING, contact.getContactEmail(), GCO_NAMESPACE));
+            emailAddressElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, contact.getContactEmail(), GCO_NAMESPACE));
             ciAddressElement.addContent(emailAddressElement);
             addressElement.addContent(ciAddressElement);
             ciContactElement.addContent(addressElement);
@@ -102,12 +128,13 @@ public class GeographicMetaDataGenerator implements ModuleGenerator {
         identificationInfoElement.addNamespaceDeclaration(GMX_NAMESPACE);
         identificationInfoElement.addNamespaceDeclaration(GCO_NAMESPACE);
         identificationInfoElement.addNamespaceDeclaration(XLINK_NAMESPACE);
-        Element mdDataIdentificationElement = new Element("MD_DataIdentification", GMD_NAMESPACE);
-        Element extentElement = new Element("extent", GMD_NAMESPACE);
-        Element exExtentElement = new Element("EX_Extent", GMD_NAMESPACE);
-        Element geographicElement = new Element("geographicElement", GMD_NAMESPACE);
+        final Element mdDataIdentificationElement = new Element("MD_DataIdentification", GMD_NAMESPACE);
+        final Element extentElement = new Element("extent", GMD_NAMESPACE);
+        final Element exExtentElement = new Element("EX_Extent", GMD_NAMESPACE);
+        final Element geographicElement = new Element("geographicElement", GMD_NAMESPACE);
 
-        boundingBoxes.forEach(boundingBox -> geographicElement.addContent(generateGeographicBoundingBoxElement(boundingBox)));
+        boundingBoxes.forEach(
+                boundingBox -> geographicElement.addContent(generateGeographicBoundingBoxElement(boundingBox)));
         exExtentElement.addContent(geographicElement);
         extentElement.addContent(exExtentElement);
         mdDataIdentificationElement.addContent(extentElement);
@@ -116,11 +143,11 @@ public class GeographicMetaDataGenerator implements ModuleGenerator {
     }
 
     protected Element generateGeographicBoundingBoxElement(BoundingBox boundingBox) {
-        Element exGeographicBoundingBoxElement = new Element("EX_GeographicBoundingBox", GMD_NAMESPACE);
-        Element eastBoundLongitudeElement = new Element("eastBoundLongitude", GMD_NAMESPACE);
-        Element northBoundLatitudeElement = new Element("northBoundLatitude", GMD_NAMESPACE);
-        Element southBoundLatitudeElement = new Element("southBoundLatitude", GMD_NAMESPACE);
-        Element westBoundLongitudeElement = new Element("westBoundLongitude", GMD_NAMESPACE);
+        final Element exGeographicBoundingBoxElement = new Element("EX_GeographicBoundingBox", GMD_NAMESPACE);
+        final Element eastBoundLongitudeElement = new Element("eastBoundLongitude", GMD_NAMESPACE);
+        final Element northBoundLatitudeElement = new Element("northBoundLatitude", GMD_NAMESPACE);
+        final Element southBoundLatitudeElement = new Element("southBoundLatitude", GMD_NAMESPACE);
+        final Element westBoundLongitudeElement = new Element("westBoundLongitude", GMD_NAMESPACE);
 
         eastBoundLongitudeElement.addContent(ElementFactory.createElement(DECIMAL,
                 String.valueOf(boundingBox.getRightBottomPoint().getLongitude()), GCO_NAMESPACE));
@@ -174,17 +201,20 @@ public class GeographicMetaDataGenerator implements ModuleGenerator {
         }
         if (StringUtils.isNotBlank(onlineResource.getProtocol())) {
             Element protocolElement = new Element("protocol", GMD_NAMESPACE);
-            protocolElement.addContent(ElementFactory.createElement(CHARACTER_STRING, onlineResource.getProtocol(), GCO_NAMESPACE));
+            protocolElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, onlineResource.getProtocol(), GCO_NAMESPACE));
             onlineResourceElement.addContent(protocolElement);
         }
         if (StringUtils.isNotBlank(onlineResource.getName())) {
             Element nameElement = new Element("name", GMD_NAMESPACE);
-            nameElement.addContent(ElementFactory.createElement(CHARACTER_STRING, onlineResource.getName(), GCO_NAMESPACE));
+            nameElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, onlineResource.getName(), GCO_NAMESPACE));
             onlineResourceElement.addContent(nameElement);
         }
         if (StringUtils.isNotBlank(onlineResource.getDescription())) {
             Element descriptionElement = new Element("description", GMD_NAMESPACE);
-            descriptionElement.addContent(ElementFactory.createElement(CHARACTER_STRING, onlineResource.getDescription(), GCO_NAMESPACE));
+            descriptionElement.addContent(
+                    ElementFactory.createElement(CHARACTER_STRING, onlineResource.getDescription(), GCO_NAMESPACE));
 
             if (StringUtils.isNotBlank(onlineResource.getDescriptionURL())) {
                 Element anchorLinkElement = new Element("Anchor", GMX_NAMESPACE);

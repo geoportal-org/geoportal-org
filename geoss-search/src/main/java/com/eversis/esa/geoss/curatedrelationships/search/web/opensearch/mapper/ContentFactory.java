@@ -2,12 +2,21 @@ package com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.mapper;
 
 import com.rometools.rome.feed.atom.Content;
 
+/**
+ * The type Content factory.
+ */
 public class ContentFactory {
 
     private ContentFactory() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Create text content content.
+     *
+     * @param text the text
+     * @return the content
+     */
     public static Content createTextContent(String text) {
         return createContent(Content.TEXT, text);
     }

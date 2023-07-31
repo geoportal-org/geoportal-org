@@ -36,23 +36,35 @@ import static com.eversis.esa.geoss.curatedrelationships.search.repository.elast
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TITLE_RAW_FIELD;
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TRANSFER_OPTIONS_PROTOCOL_FIELD;
 
+/**
+ * The type Entry elasticsearch repository.
+ */
 @Repository("geossRepository")
 public class EntryElasticsearchRepository extends FacetedElasticsearchRepository<Entry> implements CRRepository<Entry> {
 
-    private static final Map<Facets, List<String>> facetFields;
+    private static final Map<Facets, List<String>> FACET_FIELDS;
 
     static {
-        facetFields = new HashMap<>();
-        facetFields.put(Facets.SOURCE, Arrays.asList(SOURCE_ID_FIELD, SOURCE_TERM_FIELD));
-        facetFields.put(Facets.ORGANISATION, Collections.singletonList(ORGANIZATION_TITLE_RAW_FIELD));
-        facetFields.put(Facets.PROTOCOL, Collections.singletonList(TRANSFER_OPTIONS_PROTOCOL_FIELD));
-        facetFields.put(Facets.KEYWORDS, Collections.singletonList(KEYWORDS_FIELD));
+        FACET_FIELDS = new HashMap<>();
+        FACET_FIELDS.put(Facets.SOURCE, Arrays.asList(SOURCE_ID_FIELD, SOURCE_TERM_FIELD));
+        FACET_FIELDS.put(Facets.ORGANISATION, Collections.singletonList(ORGANIZATION_TITLE_RAW_FIELD));
+        FACET_FIELDS.put(Facets.PROTOCOL, Collections.singletonList(TRANSFER_OPTIONS_PROTOCOL_FIELD));
+        FACET_FIELDS.put(Facets.KEYWORDS, Collections.singletonList(KEYWORDS_FIELD));
     }
 
     private final EntryQueryFactory queryFactory;
     private final EntryAggregationFactory aggregationFactory;
     private final ElasticsearchConfigurationProperties elasticsearchConfigurationProperties;
 
+    /**
+     * Instantiates a new Entry elasticsearch repository.
+     *
+     * @param client the client
+     * @param elasticsearchConfigurationProperties the elasticsearch configuration properties
+     * @param searchResponseMapper the search response mapper
+     * @param queryFactory the query factory
+     * @param aggregationFactory the aggregation factory
+     */
     @Autowired
     public EntryElasticsearchRepository(
             RestHighLevelClient client,
@@ -74,7 +86,7 @@ public class EntryElasticsearchRepository extends FacetedElasticsearchRepository
     @Override
     public FacetedPage<Entry> findResources(SearchQuery searchParameters, Pageable pageable) {
         QueryBuilder mainQueryBuilder = queryFactory.buildSearchQuery(searchParameters);
-        List<AggregationBuilder> aggregations = aggregationFactory.buildAggregations(facetFields);
+        List<AggregationBuilder> aggregations = aggregationFactory.buildAggregations(FACET_FIELDS);
         Sort sort = getSortOrdering().and(pageable.getSort());
         Pageable queryPageable = new PageRequest(pageable.getStartIndex(), pageable.getPageSize(), sort);
         return search(queryPageable, mainQueryBuilder, aggregations);

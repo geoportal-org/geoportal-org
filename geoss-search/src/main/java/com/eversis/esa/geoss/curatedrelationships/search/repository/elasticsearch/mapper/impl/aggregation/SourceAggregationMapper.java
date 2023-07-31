@@ -11,9 +11,18 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * The type Source aggregation mapper.
+ */
 @Component
 public class SourceAggregationMapper {
 
+    /**
+     * Collect source facets from string facets list.
+     *
+     * @param source the source
+     * @return the list
+     */
     List<Facet> collectSourceFacetsFromStringFacets(List<Facet> source) {
         return source.stream()
                 .map(i -> getSourceFacet(i.getTermId(), i.getCount()))
@@ -26,8 +35,10 @@ public class SourceAggregationMapper {
         if (value == null) {
             return Optional.empty();
         }
-        String[] splited = value.split(Pattern.quote(GeossCrEntryElasticsearchQueryConstansts.MUTLI_FIELD_AGGREGATIONS_SEPARAOTR));
-        if (splited == null || splited.length != 2 || ("null".equalsIgnoreCase(splited[0]) && "null".equalsIgnoreCase(splited[1]))) {
+        String[] splited = value.split(
+                Pattern.quote(GeossCrEntryElasticsearchQueryConstansts.MUTLI_FIELD_AGGREGATIONS_SEPARAOTR));
+        if (splited == null || splited.length != 2 || ("null".equalsIgnoreCase(splited[0]) && "null".equalsIgnoreCase(
+                splited[1]))) {
             return Optional.empty();
         }
         return Optional.of(new CompoundTermFacet(splited[0], splited[1], count));

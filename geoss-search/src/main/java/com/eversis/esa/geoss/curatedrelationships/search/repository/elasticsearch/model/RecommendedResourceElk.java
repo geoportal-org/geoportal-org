@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The type Recommended resource elk.
+ */
 @Data
 public class RecommendedResourceElk implements Serializable {
 

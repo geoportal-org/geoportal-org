@@ -5,11 +5,15 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.constants.ResponseC
 
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Entry type mapper.
+ */
 @Component
 public class EntryTypeMapper {
 
     /**
-     * Maps type to corresponding hub type name. If provided type does not match any known types, null value is returned.
+     * Maps type to corresponding hub type name. If provided type does not match any known types, null value is
+     * returned.
      *
      * @param entryType entry type to map
      * @return hub type name. Null value in case of null or unknown parameter value.
@@ -26,9 +30,8 @@ public class EntryTypeMapper {
                 return ResponseConstants.SERVICE_HUB;
             case INFORMATION:
                 return ResponseConstants.INFORMATION_HUB;
+            default:
+                throw new IllegalStateException("Unexpected value: " + entryType);
         }
-
-        return null;
     }
-
 }

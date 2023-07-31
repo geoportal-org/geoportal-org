@@ -7,10 +7,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+/**
+ * The type Base elasticsearch document mapper.
+ *
+ * @param <T> the type parameter
+ */
 abstract class BaseElasticsearchDocumentMapper<T> implements ElasticsearchDocumentMapper<T> {
 
     protected ObjectMapper objectMapper;
 
+    /**
+     * Instantiates a new Base elasticsearch document mapper.
+     *
+     * @param objectMapper the object mapper
+     */
     public BaseElasticsearchDocumentMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

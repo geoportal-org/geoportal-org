@@ -9,9 +9,19 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Ckan query factory.
+ */
 @Component
 public class CkanQueryFactory {
 
+    /**
+     * Build id query string.
+     *
+     * @param ids the ids
+     * @param pageable the pageable
+     * @return the string
+     */
     public String buildIdQuery(@NotNull Iterable<String> ids, @NotNull Pageable pageable) {
         CkanQueryBuilder queryBuilder = new CkanQueryBuilder();
         CkanFilterQueryBuilder filterQueryBuilder = new CkanFilterQueryBuilder();
@@ -26,10 +36,18 @@ public class CkanQueryFactory {
         return queryBuilder.build();
     }
 
+    /**
+     * Build search query string.
+     *
+     * @param searchParameters the search parameters
+     * @param pageable the pageable
+     * @return the string
+     */
     public String buildSearchQuery(@NotNull SearchQuery searchParameters, @NotNull Pageable pageable) {
         CkanQueryBuilder queryBuilder = new CkanQueryBuilder();
 
-        searchParameters.getOptionalPhrase().ifPresent(phrase -> queryBuilder.query(searchParameters.getQueryType(), phrase));
+        searchParameters.getOptionalPhrase()
+                .ifPresent(phrase -> queryBuilder.query(searchParameters.getQueryType(), phrase));
         CkanFilterQueryBuilder filterQueryBuilder = createFilterQueryBuilder(searchParameters);
 
         queryBuilder.startIndex(pageable.getStartIndex())
@@ -39,11 +57,21 @@ public class CkanQueryFactory {
         return queryBuilder.build();
     }
 
-    public String buildSearchQuery(@NotNull SearchQuery searchParameters, @NotNull Pageable pageable, @NotNull Map<String, Facets> facetFields) {
+    /**
+     * Build search query string.
+     *
+     * @param searchParameters the search parameters
+     * @param pageable the pageable
+     * @param facetFields the facet fields
+     * @return the string
+     */
+    public String buildSearchQuery(@NotNull SearchQuery searchParameters, @NotNull Pageable pageable,
+            @NotNull Map<String, Facets> facetFields) {
         CkanQueryBuilder queryBuilder = new CkanQueryBuilder();
 
         CkanFilterQueryBuilder filterQueryBuilder = createFilterQueryBuilder(searchParameters);
-        searchParameters.getOptionalPhrase().ifPresent(phrase -> queryBuilder.query(searchParameters.getQueryType(), phrase));
+        searchParameters.getOptionalPhrase()
+                .ifPresent(phrase -> queryBuilder.query(searchParameters.getQueryType(), phrase));
 
         queryBuilder.startIndex(pageable.getStartIndex())
                 .rows(pageable.getPageSize())

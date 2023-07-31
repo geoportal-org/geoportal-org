@@ -11,6 +11,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+/**
+ * The type Zenodo repository.
+ *
+ * @param <T> the type parameter
+ */
 @Slf4j
 abstract class ZenodoRepository<T> implements CRRepository<T> {
 
@@ -18,6 +23,13 @@ abstract class ZenodoRepository<T> implements CRRepository<T> {
     protected final ZenodoMapper<T> mapper;
     private final WebClient client;
 
+    /**
+     * Instantiates a new Zenodo repository.
+     *
+     * @param client the client
+     * @param queryFactory the query factory
+     * @param mapper the mapper
+     */
     public ZenodoRepository(WebClient client, ZenodoQueryFactory queryFactory,
             ZenodoMapper<T> mapper) {
         this.client = client;

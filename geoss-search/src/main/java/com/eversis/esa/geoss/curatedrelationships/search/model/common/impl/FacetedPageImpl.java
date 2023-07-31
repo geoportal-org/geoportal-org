@@ -8,18 +8,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Faceted page.
+ *
+ * @param <T> the type parameter
+ */
 public class FacetedPageImpl<T> extends PageImpl<T> implements FacetedPage<T> {
 
     private Map<String, List<Facet>> facets = new HashMap<>();
 
+    /**
+     * Instantiates a new Faceted page.
+     *
+     * @param content the content
+     */
     public FacetedPageImpl(List<T> content) {
         super(content);
     }
 
+    /**
+     * Instantiates a new Faceted page.
+     *
+     * @param content the content
+     * @param pageable the pageable
+     * @param total the total
+     */
     public FacetedPageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }
 
+    /**
+     * Instantiates a new Faceted page.
+     *
+     * @param content the content
+     * @param pageable the pageable
+     * @param total the total
+     * @param facets the facets
+     */
     public FacetedPageImpl(List<T> content, Pageable pageable, long total, Map<String, List<Facet>> facets) {
         super(content, pageable, total);
         this.facets = facets;

@@ -11,9 +11,17 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * The type Concept document mapper.
+ */
 @Component
 public class ConceptDocumentMapper extends BaseElasticsearchDocumentMapper<Concept> {
 
+    /**
+     * Instantiates a new Concept document mapper.
+     *
+     * @param objectMapper the object mapper
+     */
     @Autowired
     public ConceptDocumentMapper(ObjectMapper objectMapper) {
         super(objectMapper);

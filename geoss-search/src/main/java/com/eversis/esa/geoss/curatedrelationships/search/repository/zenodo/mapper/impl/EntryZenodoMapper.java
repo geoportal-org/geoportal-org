@@ -9,11 +9,19 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * The type Entry zenodo mapper.
+ */
 @Component
 class EntryZenodoMapper implements ZenodoMapper<Entry> {
 
     private final ZenodoResultMapper<Entry, ZenodoResult> resultMapper;
 
+    /**
+     * Instantiates a new Entry zenodo mapper.
+     *
+     * @param resultMapper the result mapper
+     */
     public EntryZenodoMapper(ZenodoResultMapper<Entry, ZenodoResult> resultMapper) {
         this.resultMapper = resultMapper;
     }

@@ -20,10 +20,20 @@ import reactor.core.publisher.Flux;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Entry zenodo repository.
+ */
 @Slf4j
 @Repository("entryZenodoRepository")
 class EntryZenodoRepository extends ZenodoRepository<Entry> {
 
+    /**
+     * Instantiates a new Entry zenodo repository.
+     *
+     * @param client the client
+     * @param queryFactory the query factory
+     * @param mapper the mapper
+     */
     public EntryZenodoRepository(
             @Qualifier("zenodoClient") WebClient client,
             ZenodoQueryFactory queryFactory,
@@ -53,7 +63,8 @@ class EntryZenodoRepository extends ZenodoRepository<Entry> {
 
     private void handleMissingResource(Throwable throwable, Object object) {
         if (throwable instanceof WebClientResponseException) {
-            log.warn("Failed to fetch resource object. HTTP Code: " + ((WebClientResponseException) throwable).getRawStatusCode());
+            log.warn("Failed to fetch resource object. HTTP Code: "
+                     + ((WebClientResponseException) throwable).getRawStatusCode());
         } else {
             log.error("Failed to fetch resource object.", throwable);
         }

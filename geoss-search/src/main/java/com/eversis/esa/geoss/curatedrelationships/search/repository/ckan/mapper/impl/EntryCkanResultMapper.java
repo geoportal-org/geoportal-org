@@ -20,11 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The type Entry ckan result mapper.
+ */
 @Component
 class EntryCkanResultMapper extends BaseCkanResultMapper<Entry, Map> {
 
     private final TransferOptionCkanMapper transferOptionMapper;
 
+    /**
+     * Instantiates a new Entry ckan result mapper.
+     *
+     * @param objectMapper the object mapper
+     * @param transferOptionMapper the transfer option mapper
+     */
     @Autowired
     public EntryCkanResultMapper(
             ObjectMapper objectMapper,
@@ -55,10 +64,11 @@ class EntryCkanResultMapper extends BaseCkanResultMapper<Entry, Map> {
                 .dataSource(DataSource.AMERIGEOSS_CKAN)
                 .displayDataSource(DataSource.AMERIGEOSS_CKAN)
                 .publishDate(dataset.getModifiedDate())
-                .organisation(mapOrganisation(dataset.getOrganization(), dataset.getMaintainer(), dataset.getMaintainerEmail()))
+                .organisation(mapOrganisation(dataset.getOrganization(), dataset.getMaintainer(),
+                        dataset.getMaintainerEmail()))
                 .coverage(null) // TODO
                 .isParent(false)  // TODO
-                .childrenTypes(null) //TODO
+                .childrenTypes(null) // TODO
                 .parentIds(Collections.emptyList())
                 .types(Collections.singletonList(EntryType.DATA))
                 .keywords(mapKeywords(dataset.getTags()))

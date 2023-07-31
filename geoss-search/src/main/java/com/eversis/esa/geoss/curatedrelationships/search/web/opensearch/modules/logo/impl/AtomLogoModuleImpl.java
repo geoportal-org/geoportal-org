@@ -6,10 +6,16 @@ import com.rometools.rome.feed.CopyFrom;
 import com.rometools.rome.feed.atom.Link;
 import com.rometools.rome.feed.module.ModuleImpl;
 
+/**
+ * The type Atom logo module.
+ */
 public class AtomLogoModuleImpl extends ModuleImpl implements AtomLogoModule {
 
     private Link link;
 
+    /**
+     * Instantiates a new Atom logo module.
+     */
     public AtomLogoModuleImpl() {
         super(AtomLogoModule.class, AtomLogoModuleConstants.MODULE_IDENTIFIER);
     }
@@ -24,6 +30,11 @@ public class AtomLogoModuleImpl extends ModuleImpl implements AtomLogoModule {
         this.link = link;
     }
 
+    /**
+     * Gets uri.
+     *
+     * @return the uri
+     */
     @Override
     public String getUri() {
         return AtomLogoModuleConstants.URI;
@@ -36,11 +47,21 @@ public class AtomLogoModuleImpl extends ModuleImpl implements AtomLogoModule {
         return cloned;
     }
 
+    /**
+     * Gets interface.
+     *
+     * @return the interface
+     */
     @Override
     public Class<? extends CopyFrom> getInterface() {
         return AtomLogoModule.class;
     }
 
+    /**
+     * Copy from.
+     *
+     * @param obj the obj
+     */
     @Override
     public void copyFrom(CopyFrom obj) {
         AtomLogoModule logoModule = (AtomLogoModule) obj;

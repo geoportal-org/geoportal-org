@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * The type Geographic meta data module.
+ */
 @Slf4j
 public class GeographicMetaDataModuleImpl extends ModuleImpl implements GeographicMetaDataModule {
 
@@ -21,6 +24,9 @@ public class GeographicMetaDataModuleImpl extends ModuleImpl implements Geograph
     private transient List<Contact> contacts;
     private transient List<BoundingBox> boundingBoxes;
 
+    /**
+     * Instantiates a new Geographic meta data module.
+     */
     public GeographicMetaDataModuleImpl() {
         super(GeographicMetaDataModule.class, GeographicMetaDataModuleConstants.GMD_URI);
     }
@@ -55,11 +61,21 @@ public class GeographicMetaDataModuleImpl extends ModuleImpl implements Geograph
         return this.boundingBoxes;
     }
 
+    /**
+     * Gets interface.
+     *
+     * @return the interface
+     */
     @Override
     public Class<? extends CopyFrom> getInterface() {
         return GeographicMetaDataModule.class;
     }
 
+    /**
+     * Copy from.
+     *
+     * @param obj the obj
+     */
     @Override
     public void copyFrom(CopyFrom obj) {
         final GeographicMetaDataModule gmdModule = (GeographicMetaDataModule) obj;

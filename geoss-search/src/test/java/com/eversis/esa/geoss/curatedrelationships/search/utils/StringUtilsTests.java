@@ -9,8 +9,16 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 
+/**
+ * The type String utils tests.
+ */
 public class StringUtilsTests {
 
+    /**
+     * When string is null or empty then do not wrap in quotes and return original string.
+     *
+     * @param input the input
+     */
     @ParameterizedTest
     @ValueSource(strings = {"", "  ", "   "})
     void whenStringIsNullOrEmpty_thenDoNotWrapInQuotesAndReturnOriginalString(String input) {
@@ -19,6 +27,11 @@ public class StringUtilsTests {
         assertThat(output, is(equalTo(input)));
     }
 
+    /**
+     * When string contains only alphanumeric chars then wrap in double quotes.
+     *
+     * @param input the input
+     */
     @ParameterizedTest
     @ValueSource(strings = {"text", " text", "text ", " long text ", "\"text\""})
     void whenStringContainsOnlyAlphanumericChars_thenWrapInDoubleQuotes(String input) {

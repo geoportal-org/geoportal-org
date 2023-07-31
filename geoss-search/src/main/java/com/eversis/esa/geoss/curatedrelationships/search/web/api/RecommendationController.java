@@ -19,6 +19,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The type Recommendation controller.
+ */
 @Slf4j
 @Api(tags = {"RECOMMENDATION"})
 @RequestMapping("/api/recommendations")
@@ -27,10 +30,22 @@ class RecommendationController {
 
     private final RecommendationService recommendationService;
 
+    /**
+     * Instantiates a new Recommendation controller.
+     *
+     * @param recommendationService the recommendation service
+     */
     public RecommendationController(RecommendationService recommendationService) {
         this.recommendationService = recommendationService;
     }
 
+    /**
+     * Gets recommended resources.
+     *
+     * @param phrase the phrase
+     * @param size the size
+     * @return the recommended resources
+     */
     @ApiOperation(value = "Get recommended resources related to search phrase")
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<RecommendedResourceDto> getRecommendedResources(

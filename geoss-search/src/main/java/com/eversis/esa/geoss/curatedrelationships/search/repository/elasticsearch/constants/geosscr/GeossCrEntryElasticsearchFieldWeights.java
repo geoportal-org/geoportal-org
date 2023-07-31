@@ -16,8 +16,14 @@ import static com.eversis.esa.geoss.curatedrelationships.search.repository.elast
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TRANSFER_OPTIONS_NAME_FIELD;
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.constants.geosscr.GeossCrEntryElasticsearchFields.TRANSFER_OPTIONS_TITLE_FIELD;
 
+/**
+ * The type Geoss cr entry elasticsearch field weights.
+ */
 public class GeossCrEntryElasticsearchFieldWeights {
 
+    /**
+     * The constant SEARCH_PHRASE_FIELDS_WEIGHTS.
+     */
     public static final Map<String, Float> SEARCH_PHRASE_FIELDS_WEIGHTS = new HashMap<>();
 
     static {

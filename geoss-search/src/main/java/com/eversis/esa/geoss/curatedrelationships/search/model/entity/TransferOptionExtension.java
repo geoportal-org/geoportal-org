@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The type Transfer option extension.
+ */
 @Data
 @Builder
 public class TransferOptionExtension implements Serializable {

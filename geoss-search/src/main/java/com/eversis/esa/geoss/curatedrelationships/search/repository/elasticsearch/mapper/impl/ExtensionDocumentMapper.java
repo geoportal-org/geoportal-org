@@ -25,9 +25,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Extension document mapper.
+ */
 @Component
 public class ExtensionDocumentMapper extends BaseElasticsearchDocumentMapper<Extension> {
 
+    /**
+     * Instantiates a new Extension document mapper.
+     *
+     * @param objectMapper the object mapper
+     */
     @Autowired
     public ExtensionDocumentMapper(ObjectMapper objectMapper) {
         super(objectMapper);
@@ -45,7 +53,8 @@ public class ExtensionDocumentMapper extends BaseElasticsearchDocumentMapper<Ext
             return null;
         }
 
-        Extension extension = new Extension(extensionELK.getEntryCode(), DataSource.fromString(extensionELK.getDataSource()));
+        Extension extension = new Extension(extensionELK.getEntryCode(),
+                DataSource.fromString(extensionELK.getDataSource()));
         extension.setEntryExtensions(mapEntryExtensions(extensionELK.getExtensions()));
         extension.setRelations(mapRelations(extensionELK.getRelations()));
         extension.setTransferOptions(mapExtendedTransferOptions(extensionELK.getTransferOptions()));
@@ -99,7 +108,8 @@ public class ExtensionDocumentMapper extends BaseElasticsearchDocumentMapper<Ext
                 .collect(Collectors.toSet());
     }
 
-    private Set<TransferOptionExtension> mapExtendedTransferOptions(List<TransferOptionExtensionELK> transferOptionExtensionElasticsearchList) {
+    private Set<TransferOptionExtension> mapExtendedTransferOptions(
+            List<TransferOptionExtensionELK> transferOptionExtensionElasticsearchList) {
         if (CollectionUtils.isEmpty(transferOptionExtensionElasticsearchList)) {
             return Collections.emptySet();
         }

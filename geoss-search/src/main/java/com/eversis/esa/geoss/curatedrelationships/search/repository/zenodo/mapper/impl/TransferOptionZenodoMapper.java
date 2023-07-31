@@ -6,9 +6,19 @@ import com.eversis.esa.geoss.curatedrelationships.search.utils.StringUtils;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Transfer option zenodo mapper.
+ */
 @Component
 class TransferOptionZenodoMapper {
 
+    /**
+     * Map transfer option from self link transfer option.
+     *
+     * @param resultName the result name
+     * @param simpleUrl the simple url
+     * @return the transfer option
+     */
     TransferOption mapTransferOptionFromSelfLink(String resultName, String simpleUrl) {
         if (StringUtils.isBlank(resultName) || StringUtils.isBlank(simpleUrl)) {
             return null;
@@ -23,6 +33,12 @@ class TransferOptionZenodoMapper {
                 .build();
     }
 
+    /**
+     * Map transfer option from self link transfer option.
+     *
+     * @param zenodoFile the zenodo file
+     * @return the transfer option
+     */
     TransferOption mapTransferOptionFromSelfLink(ZenodoFile zenodoFile) {
         if (zenodoFile == null) {
             return null;

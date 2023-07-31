@@ -6,6 +6,11 @@ import lombok.Data;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Ckan search result.
+ *
+ * @param <T> the type parameter
+ */
 @Data
 public class CkanSearchResult<T> {
 

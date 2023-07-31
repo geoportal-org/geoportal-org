@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Extension search service.
+ */
 @Slf4j
 @Service
 @Validated
@@ -21,6 +24,11 @@ class ExtensionSearchServiceImpl implements ExtensionSearchService {
 
     private final ExtensionElasticsearchRepository extensionElasticsearchRepository;
 
+    /**
+     * Instantiates a new Extension search service.
+     *
+     * @param extensionElasticsearchRepository the extension elasticsearch repository
+     */
     public ExtensionSearchServiceImpl(ExtensionElasticsearchRepository extensionElasticsearchRepository) {
         this.extensionElasticsearchRepository = extensionElasticsearchRepository;
     }

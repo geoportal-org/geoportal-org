@@ -12,12 +12,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Geographic module factory.
+ */
 public class GeographicModuleFactory {
 
     private GeographicModuleFactory() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Create geographic meta data module geographic meta data module.
+     *
+     * @param transferOptions the transfer options
+     * @param organisation the organisation
+     * @param boundingBox the bounding box
+     * @return the geographic meta data module
+     */
     public static GeographicMetaDataModule createGeographicMetaDataModule(List<TransferOption> transferOptions,
             Organisation organisation,
             BoundingBox boundingBox) {

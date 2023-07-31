@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * The type Entry.
+ */
 @Getter
 @Setter
 @ToString

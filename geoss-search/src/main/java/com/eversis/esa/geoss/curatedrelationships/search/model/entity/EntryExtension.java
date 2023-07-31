@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * The type Entry extension.
+ */
 @Getter
 @EqualsAndHashCode(of = {"entryExtensionId"})
 @ToString

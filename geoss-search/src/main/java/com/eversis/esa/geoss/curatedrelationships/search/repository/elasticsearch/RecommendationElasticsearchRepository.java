@@ -16,12 +16,24 @@ import org.springframework.stereotype.Repository;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Recommendation elasticsearch repository.
+ */
 @Repository("recommendationRepository")
-class RecommendationElasticsearchRepository extends ElasticsearchRepository<Recommendation> implements RecommendationRepository {
+class RecommendationElasticsearchRepository extends ElasticsearchRepository<Recommendation> implements
+        RecommendationRepository {
 
     private final ElasticsearchConfigurationProperties elasticsearchConfigurationProperties;
     private final RecommendationQueryFactory queryFactory;
 
+    /**
+     * Instantiates a new Recommendation elasticsearch repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     * @param elasticsearchConfigurationProperties the elasticsearch configuration properties
+     * @param queryFactory the query factory
+     */
     public RecommendationElasticsearchRepository(RestHighLevelClient client,
             ElasticsearchResponseMapper<Recommendation> responseMapper,
             ElasticsearchConfigurationProperties elasticsearchConfigurationProperties,

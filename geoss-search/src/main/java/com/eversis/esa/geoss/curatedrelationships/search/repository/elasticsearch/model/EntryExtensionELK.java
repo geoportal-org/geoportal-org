@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Entry extension elk.
+ */
 @Data
 public class EntryExtensionELK implements Serializable {
 

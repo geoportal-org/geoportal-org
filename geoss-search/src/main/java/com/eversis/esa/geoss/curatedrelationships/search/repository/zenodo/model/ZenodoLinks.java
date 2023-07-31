@@ -3,6 +3,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mode
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/**
+ * The type Zenodo links.
+ */
 @Data
 class ZenodoLinks {
 

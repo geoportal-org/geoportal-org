@@ -17,6 +17,9 @@ import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The type Concept controller.
+ */
 @Slf4j
 @Api(tags = {"CONCEPTS"})
 @RequestMapping("/api/concepts")
@@ -25,11 +28,23 @@ class ConceptController {
 
     private final ConceptSearchService conceptSearchService;
 
+    /**
+     * Instantiates a new Concept controller.
+     *
+     * @param conceptSearchService the concept search service
+     */
     @Autowired
     public ConceptController(ConceptSearchService conceptSearchService) {
         this.conceptSearchService = conceptSearchService;
     }
 
+    /**
+     * Find concept names list.
+     *
+     * @param phrase the phrase
+     * @param size the size
+     * @return the list
+     */
     @ApiOperation(value = "Search for concepts related to search phrase")
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<String> findConceptNames(

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.eversis.esa.geoss.curatedrelationships.search.model.common.impl;
 
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
@@ -21,7 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 /**
- * Reimplementation of Spring {@link org.springframework.data.domain.PageRequest} to support pagination using startIndex instead of page number.
+ * Reimplementation of Spring {@link org.springframework.data.domain.PageRequest} to support pagination using startIndex
+ * instead of page number.
  *
  * @author Oliver Gierke
  */
@@ -33,6 +35,9 @@ public class PageRequest implements Pageable {
 
     /**
      * Creates a new {@link PageRequest}.
+     *
+     * @param startIndex the start index
+     * @param size the size
      */
     public PageRequest(int startIndex, int size) {
         this(startIndex, size, null);
@@ -40,6 +45,11 @@ public class PageRequest implements Pageable {
 
     /**
      * Creates a new {@link PageRequest} with sort parameters applied.
+     *
+     * @param startIndex the start index
+     * @param size the size
+     * @param direction the direction
+     * @param properties the properties
      */
     public PageRequest(int startIndex, int size, Direction direction, String... properties) {
         this(startIndex, size, new Sort(direction, properties));
@@ -47,6 +57,10 @@ public class PageRequest implements Pageable {
 
     /**
      * Creates a new {@link PageRequest} with sort parameters applied.
+     *
+     * @param startIndex the start index
+     * @param size the size
+     * @param sort the sort
      */
     public PageRequest(int startIndex, int size, Sort sort) {
         if (0 > startIndex) {
@@ -62,14 +76,17 @@ public class PageRequest implements Pageable {
         this.sort = sort;
     }
 
+    @Override
     public int getPageSize() {
         return size;
     }
 
+    @Override
     public int getStartIndex() {
         return startIndex;
     }
 
+    @Override
     public Sort getSort() {
         return sort;
     }

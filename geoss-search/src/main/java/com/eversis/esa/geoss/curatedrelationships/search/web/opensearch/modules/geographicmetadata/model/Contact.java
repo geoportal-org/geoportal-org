@@ -3,6 +3,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The type Contact.
+ */
 @Getter
 @Setter
 public class Contact {

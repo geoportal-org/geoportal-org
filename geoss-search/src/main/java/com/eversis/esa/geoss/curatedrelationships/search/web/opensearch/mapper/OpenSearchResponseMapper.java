@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Open search response mapper.
+ */
 @Component
 public class OpenSearchResponseMapper {
 
@@ -22,11 +25,22 @@ public class OpenSearchResponseMapper {
 
     private OpenSearchEntryFactory entryFactory;
 
+    /**
+     * Instantiates a new Open search response mapper.
+     *
+     * @param entryFactory the entry factory
+     */
     @Autowired
     public OpenSearchResponseMapper(OpenSearchEntryFactory entryFactory) {
         this.entryFactory = entryFactory;
     }
 
+    /**
+     * Create search results feed feed.
+     *
+     * @param searchResults the search results
+     * @return the feed
+     */
     public Feed createSearchResultsFeed(Page<? extends Entry> searchResults) {
         Feed feed = new Feed(FEED_TYPE);
         int opensearchStartIndex = searchResults.getStartIndex() + 1;
@@ -40,6 +54,12 @@ public class OpenSearchResponseMapper {
         return feed;
     }
 
+    /**
+     * Create faceted search results feed feed.
+     *
+     * @param searchResults the search results
+     * @return the feed
+     */
     public Feed createFacetedSearchResultsFeed(FacetedPage<? extends Entry> searchResults) {
         Feed feed = createSearchResultsFeed(searchResults);
         DataModelModule dataModelModule = new DataModelModuleImpl();

@@ -16,12 +16,24 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * The type Ckan repository.
+ *
+ * @param <T> the type parameter
+ * @param <S> the type parameter
+ */
 @Slf4j
 abstract class CkanRepository<T, S> implements CRRepository<T> {
 
     private final WebClient client;
     private final CkanResponseMapper<T, S> responseMapper;
 
+    /**
+     * Instantiates a new Ckan repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     */
     public CkanRepository(
             WebClient client,
             CkanResponseMapper<T, S> responseMapper) {
@@ -29,11 +41,26 @@ abstract class CkanRepository<T, S> implements CRRepository<T> {
         this.responseMapper = responseMapper;
     }
 
+    /**
+     * Search page.
+     *
+     * @param pageable the pageable
+     * @param query the query
+     * @return the page
+     */
     public Page<T> search(Pageable pageable, String query) {
         CkanResponse<S> searchResponse = search(query);
         return responseMapper.mapPackageSearchResponse(searchResponse, pageable);
     }
 
+    /**
+     * Search faceted page.
+     *
+     * @param pageable the pageable
+     * @param query the query
+     * @param facetFields the facet fields
+     * @return the faceted page
+     */
     public FacetedPage<T> search(Pageable pageable, String query, Map<String, Facets> facetFields) {
         CkanResponse<S> searchResponse = search(query);
         return responseMapper.mapFacetedPackageSearchResponse(searchResponse, pageable, facetFields);

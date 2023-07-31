@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The type Extension.
+ */
 @Data
 public class Extension implements Serializable {
 

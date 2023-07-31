@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Extension controller.
+ */
 @Slf4j
 @Api(tags = {"EXTENSIONS"})
 @RequestMapping("/api/extensions")
@@ -32,6 +35,13 @@ class ExtensionController {
     private final ExtensionDtoMapper extensionMapper;
     private final DetailedExtensionDtoMapper detailedExtensionMapper;
 
+    /**
+     * Instantiates a new Extension controller.
+     *
+     * @param extensionSearchService the extension search service
+     * @param extensionMapper the extension mapper
+     * @param detailedExtensionMapper the detailed extension mapper
+     */
     public ExtensionController(ExtensionSearchService extensionSearchService,
             ExtensionDtoMapper extensionMapper,
             DetailedExtensionDtoMapper detailedExtensionMapper) {
@@ -40,12 +50,20 @@ class ExtensionController {
         this.detailedExtensionMapper = detailedExtensionMapper;
     }
 
+    /**
+     * Gets extensions.
+     *
+     * @param ids the ids
+     * @param dataSourceParam the data source param
+     * @return the extensions
+     */
     @ApiOperation(value = "Search for extensions related to specified resources")
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<ExtensionDto> getExtensions(
             @ApiParam(value = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
-            @ApiParam(value = "Name of the datasource.", allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
+            @ApiParam(value = "Name of the datasource.",
+                      allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);
@@ -55,12 +73,20 @@ class ExtensionController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gets detailed extensions.
+     *
+     * @param ids the ids
+     * @param dataSourceParam the data source param
+     * @return the detailed extensions
+     */
     @ApiOperation(value = "Search for detailed extensions related to specified resources")
     @GetMapping(path = "/details", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<DetailedExtensionDto> getDetailedExtensions(
             @ApiParam(value = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
-            @ApiParam(value = "Name of the datasource.", allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
+            @ApiParam(value = "Name of the datasource.",
+                      allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);

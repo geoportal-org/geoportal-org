@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The type Recommended resource.
+ */
 @Data
 public class RecommendedResource implements Serializable {
 

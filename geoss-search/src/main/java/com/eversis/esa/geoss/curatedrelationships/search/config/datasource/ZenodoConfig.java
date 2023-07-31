@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * The type Zenodo config.
+ */
 @Configuration
 public class ZenodoConfig {
 
@@ -15,6 +18,11 @@ public class ZenodoConfig {
     @Value("${datasource.zenodo.base-url}")
     private String baseUrl;
 
+    /**
+     * Zenodo client web client.
+     *
+     * @return the web client
+     */
     @Bean("zenodoClient")
     public WebClient zenodoClient() {
         log.info("Configuring Zenodo client - baseUrl: {}", baseUrl);

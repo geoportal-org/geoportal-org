@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Extension search service.
+ */
 public interface ExtensionSearchService {
 
     /**
@@ -14,6 +17,7 @@ public interface ExtensionSearchService {
      *
      * @param ids set of entry's ids filter parameters
      * @param dataSource source which should
+     * @return the list
      */
     List<Extension> findExtensions(@NotNull Set<String> ids, @NotNull DataSource dataSource);
 

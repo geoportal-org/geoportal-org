@@ -11,8 +11,14 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+/**
+ * The type Geo shape mapper tests.
+ */
 public class GeoShapeMapperTests {
 
+    /**
+     * When bbox is null then resized bbox is null.
+     */
     @Test
     void whenBboxIsNull_thenResizedBboxIsNull() {
         BoundingBox boundingBox = null;
@@ -22,6 +28,9 @@ public class GeoShapeMapperTests {
         assertThat(resizedBoundingBox, is(nullValue()));
     }
 
+    /**
+     * When bbox is shrunken then return shrunken bbox.
+     */
     @Test
     void whenBboxIsShrunken_thenReturnShrunkenBbox() {
         double w = 0.0010;
@@ -33,12 +42,19 @@ public class GeoShapeMapperTests {
         BoundingBox resizedBoundingBox = GeoShapeMapper.resizeBoundingBox(originalBoundingBox, w, s, e, n);
 
         assertThat(resizedBoundingBox, is(notNullValue()));
-        assertThat(resizedBoundingBox.getLeftTopPoint().getLatitude(), equalTo(originalBoundingBox.getLeftTopPoint().getLatitude() + n));
-        assertThat(resizedBoundingBox.getLeftTopPoint().getLongitude(), equalTo(originalBoundingBox.getLeftTopPoint().getLongitude() + w));
-        assertThat(resizedBoundingBox.getRightBottomPoint().getLatitude(), equalTo(originalBoundingBox.getRightBottomPoint().getLatitude() + s));
-        assertThat(resizedBoundingBox.getRightBottomPoint().getLongitude(), equalTo(originalBoundingBox.getRightBottomPoint().getLongitude() + e));
+        assertThat(resizedBoundingBox.getLeftTopPoint().getLatitude(),
+                equalTo(originalBoundingBox.getLeftTopPoint().getLatitude() + n));
+        assertThat(resizedBoundingBox.getLeftTopPoint().getLongitude(),
+                equalTo(originalBoundingBox.getLeftTopPoint().getLongitude() + w));
+        assertThat(resizedBoundingBox.getRightBottomPoint().getLatitude(),
+                equalTo(originalBoundingBox.getRightBottomPoint().getLatitude() + s));
+        assertThat(resizedBoundingBox.getRightBottomPoint().getLongitude(),
+                equalTo(originalBoundingBox.getRightBottomPoint().getLongitude() + e));
     }
 
+    /**
+     * When bbox is expanded then return expanded bbox.
+     */
     @Test
     void whenBboxIsExpanded_thenReturnExpandedBbox() {
         double w = -0.0010;
@@ -50,10 +66,14 @@ public class GeoShapeMapperTests {
         BoundingBox resizedBoundingBox = GeoShapeMapper.resizeBoundingBox(originalBoundingBox, w, s, e, n);
 
         assertThat(resizedBoundingBox, is(notNullValue()));
-        assertThat(resizedBoundingBox.getLeftTopPoint().getLatitude(), equalTo(originalBoundingBox.getLeftTopPoint().getLatitude() + n));
-        assertThat(resizedBoundingBox.getLeftTopPoint().getLongitude(), equalTo(originalBoundingBox.getLeftTopPoint().getLongitude() + w));
-        assertThat(resizedBoundingBox.getRightBottomPoint().getLatitude(), equalTo(originalBoundingBox.getRightBottomPoint().getLatitude() + s));
-        assertThat(resizedBoundingBox.getRightBottomPoint().getLongitude(), equalTo(originalBoundingBox.getRightBottomPoint().getLongitude() + e));
+        assertThat(resizedBoundingBox.getLeftTopPoint().getLatitude(),
+                equalTo(originalBoundingBox.getLeftTopPoint().getLatitude() + n));
+        assertThat(resizedBoundingBox.getLeftTopPoint().getLongitude(),
+                equalTo(originalBoundingBox.getLeftTopPoint().getLongitude() + w));
+        assertThat(resizedBoundingBox.getRightBottomPoint().getLatitude(),
+                equalTo(originalBoundingBox.getRightBottomPoint().getLatitude() + s));
+        assertThat(resizedBoundingBox.getRightBottomPoint().getLongitude(),
+                equalTo(originalBoundingBox.getRightBottomPoint().getLongitude() + e));
     }
 
 }

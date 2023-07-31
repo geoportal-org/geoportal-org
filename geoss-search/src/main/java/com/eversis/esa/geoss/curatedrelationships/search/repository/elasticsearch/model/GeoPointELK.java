@@ -5,18 +5,29 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * The type Geo point elk.
+ */
 @Getter
 public class GeoPointELK {
 
     private double latitude;
     private double longitude;
 
+    /**
+     * Instantiates a new Geo point elk.
+     *
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
     public GeoPointELK(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     /**
+     * Instantiates a new Geo point elk.
+     *
      * @param coordinates Elasticsearch stores coordinates in arrays in following order: longitude, latitude
      */
     @JsonCreator

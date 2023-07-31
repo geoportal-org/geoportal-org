@@ -8,6 +8,11 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Cr repository.
+ *
+ * @param <T> the type parameter
+ */
 public interface CRRepository<T> {
 
     /**
@@ -15,6 +20,7 @@ public interface CRRepository<T> {
      *
      * @param query optional filter parameters
      * @param pageable pagination information
+     * @return the faceted page
      */
     FacetedPage<T> findResources(@NotNull SearchQuery query, @NotNull Pageable pageable);
 
@@ -23,6 +29,7 @@ public interface CRRepository<T> {
      *
      * @param ids required parameter
      * @param pageable pagination information
+     * @return the page
      */
     Page<T> findResourcesById(@NotNull Set<String> ids, @NotNull Pageable pageable);
 

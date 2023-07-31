@@ -19,9 +19,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The type Data model module generator.
+ */
 @Slf4j
 public class DataModelModuleGenerator implements ModuleGenerator {
 
+    /**
+     * The Ns.
+     */
     static final Namespace NS = Namespace.getNamespace("dm", DataModelModuleConstants.URI);
     private static final Set<Namespace> NAMESPACES;
 
@@ -31,16 +37,32 @@ public class DataModelModuleGenerator implements ModuleGenerator {
         NAMESPACES = Collections.unmodifiableSet(nss);
     }
 
+    /**
+     * Gets namespace uri.
+     *
+     * @return the namespace uri
+     */
     @Override
     public String getNamespaceUri() {
         return DataModelModuleConstants.URI;
     }
 
+    /**
+     * Gets namespaces.
+     *
+     * @return the namespaces
+     */
     @Override
     public Set<Namespace> getNamespaces() {
         return NAMESPACES;
     }
 
+    /**
+     * Generate.
+     *
+     * @param module the module
+     * @param element the element
+     */
     @Override
     public void generate(Module module, Element element) {
         if (module instanceof DataModelModule) {
@@ -57,14 +79,16 @@ public class DataModelModuleGenerator implements ModuleGenerator {
                     item.addContent(freq);
 
                     try {
-                        String encodedTerm = URLEncoder.encode(facetItem.getDisplayName(), StandardCharsets.UTF_8.name());
+                        String encodedTerm = URLEncoder.encode(facetItem.getDisplayName(),
+                                StandardCharsets.UTF_8.name());
                         Element termElement = ElementFactory.createElement("term", encodedTerm, NS);
                         item.addContent(termElement);
                     } catch (UnsupportedEncodingException e) {
                         log.warn("Unable to encode term due to unsupported encoding. Reason: {}", e.getMessage());
                     }
 
-                    Element decodedTermElement = ElementFactory.createElement("decodedTerm", facetItem.getDisplayName(), NS);
+                    Element decodedTermElement = ElementFactory.createElement("decodedTerm", facetItem.getDisplayName(),
+                            NS);
                     item.addContent(decodedTermElement);
 
                     if (facetItem.containsIdentifier()) {

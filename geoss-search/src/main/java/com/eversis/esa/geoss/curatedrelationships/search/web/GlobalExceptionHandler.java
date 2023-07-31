@@ -11,10 +11,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 
+/**
+ * The type Global exception handler.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handle error response entity.
+     *
+     * @param e the e
+     * @return the response entity
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleError(Exception e) {
         log.error("Internal server error occurred ", e);

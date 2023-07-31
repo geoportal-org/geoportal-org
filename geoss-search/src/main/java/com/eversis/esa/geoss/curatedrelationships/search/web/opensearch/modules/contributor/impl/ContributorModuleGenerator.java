@@ -13,18 +13,37 @@ import org.jdom2.Namespace;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * The type Contributor module generator.
+ */
 public class ContributorModuleGenerator implements ModuleGenerator {
 
+    /**
+     * Gets namespace uri.
+     *
+     * @return the namespace uri
+     */
     @Override
     public String getNamespaceUri() {
         return ContributorModuleConstants.MODULE_IDENTIFIER;
     }
 
+    /**
+     * Gets namespaces.
+     *
+     * @return the namespaces
+     */
     @Override
     public Set<Namespace> getNamespaces() {
         return Collections.emptySet();
     }
 
+    /**
+     * Generate.
+     *
+     * @param module the module
+     * @param element the element
+     */
     @Override
     public void generate(final Module module, final Element element) {
         Element root = element;

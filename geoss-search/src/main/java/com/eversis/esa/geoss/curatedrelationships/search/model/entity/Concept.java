@@ -5,6 +5,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Concept.
+ */
 @Data
 public class Concept {
 

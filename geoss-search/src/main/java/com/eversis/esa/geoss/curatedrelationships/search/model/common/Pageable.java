@@ -3,7 +3,8 @@ package com.eversis.esa.geoss.curatedrelationships.search.model.common;
 import org.springframework.data.domain.Sort;
 
 /**
- * Overriden {@link org.springframework.data.domain.Pageable} to support pagination using startIndex instead of page number.
+ * Overriden {@link org.springframework.data.domain.Pageable} to support pagination using startIndex instead of page
+ * number.
  */
 public interface Pageable {
 
@@ -23,6 +24,8 @@ public interface Pageable {
 
     /**
      * Returns the sorting parameters.
+     *
+     * @return the sort
      */
     Sort getSort();
 }

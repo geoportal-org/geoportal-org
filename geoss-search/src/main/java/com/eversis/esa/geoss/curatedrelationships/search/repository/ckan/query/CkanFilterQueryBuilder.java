@@ -11,11 +11,20 @@ import static com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.query.CkanFields.ORGANIZATION;
 import static com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.query.CkanFields.TAGS;
 
+/**
+ * The type Ckan filter query builder.
+ */
 class CkanFilterQueryBuilder {
 
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_INSTANT;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private StringBuilder filterQueryBuilder = new StringBuilder();
 
+    /**
+     * Ids ckan filter query builder.
+     *
+     * @param ids the ids
+     * @return the ckan filter query builder
+     */
     CkanFilterQueryBuilder ids(Iterable<String> ids) {
         StringBuilder idsQueryBuilder = new StringBuilder();
         idsQueryBuilder.append('(');
@@ -29,17 +38,23 @@ class CkanFilterQueryBuilder {
         return this;
     }
 
+    /**
+     * Date range ckan filter query builder.
+     *
+     * @param dateRange the date range
+     * @return the ckan filter query builder
+     */
     CkanFilterQueryBuilder dateRange(DateRange dateRange) {
         StringBuilder dateRangeQueryBuilder = new StringBuilder();
         dateRangeQueryBuilder.append('[');
         dateRangeQueryBuilder.append(dateRange.getStartDateTime()
                 .map(dateTime -> dateTime.atZone(ZoneOffset.UTC))
-                .map(dateTime -> dateTime.format(dateFormatter))
+                .map(dateTime -> dateTime.format(DATE_FORMATTER))
                 .orElse("*"));
         dateRangeQueryBuilder.append(" TO ");
         dateRangeQueryBuilder.append(dateRange.getEndDateTime()
                 .map(dateTime -> dateTime.atZone(ZoneOffset.UTC))
-                .map(dateTime -> dateTime.format(dateFormatter))
+                .map(dateTime -> dateTime.format(DATE_FORMATTER))
                 .orElse("*"));
         dateRangeQueryBuilder.append(']');
 
@@ -50,6 +65,12 @@ class CkanFilterQueryBuilder {
         return this;
     }
 
+    /**
+     * Format ckan filter query builder.
+     *
+     * @param format the format
+     * @return the ckan filter query builder
+     */
     CkanFilterQueryBuilder format(String format) {
         filterQueryBuilder
                 .append(getQueryFieldsDelimiter())
@@ -58,6 +79,12 @@ class CkanFilterQueryBuilder {
         return this;
     }
 
+    /**
+     * Keyword ckan filter query builder.
+     *
+     * @param keyword the keyword
+     * @return the ckan filter query builder
+     */
     CkanFilterQueryBuilder keyword(String keyword) {
         filterQueryBuilder
                 .append(getQueryFieldsDelimiter())
@@ -66,6 +93,12 @@ class CkanFilterQueryBuilder {
         return this;
     }
 
+    /**
+     * Organization ckan filter query builder.
+     *
+     * @param organizationName the organization name
+     * @return the ckan filter query builder
+     */
     CkanFilterQueryBuilder organization(String organizationName) {
         filterQueryBuilder
                 .append(getQueryFieldsDelimiter())
@@ -74,6 +107,11 @@ class CkanFilterQueryBuilder {
         return this;
     }
 
+    /**
+     * Build string.
+     *
+     * @return the string
+     */
     String build() {
         return filterQueryBuilder.toString();
     }

@@ -5,9 +5,18 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.D
 
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Transfer option ckan mapper.
+ */
 @Component
 class TransferOptionCkanMapper {
 
+    /**
+     * Map transfer option transfer option.
+     *
+     * @param resource the resource
+     * @return the transfer option
+     */
     TransferOption mapTransferOption(DatasetResourceCkan resource) {
         if (resource == null) {
             return null;

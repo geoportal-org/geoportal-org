@@ -15,12 +15,24 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Extension elasticsearch repository.
+ */
 @Repository
-public class ExtensionElasticsearchRepository extends ElasticsearchRepository<Extension> implements ExtensionRepository {
+public class ExtensionElasticsearchRepository extends ElasticsearchRepository<Extension> implements
+        ExtensionRepository {
 
     private final ExtensionQueryFactory queryFactory;
     private final ElasticsearchConfigurationProperties elasticsearchConfigurationProperties;
 
+    /**
+     * Instantiates a new Extension elasticsearch repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     * @param queryFactory the query factory
+     * @param elasticsearchConfigurationProperties the elasticsearch configuration properties
+     */
     public ExtensionElasticsearchRepository(RestHighLevelClient client,
             ElasticsearchResponseMapper<Extension> responseMapper,
             ExtensionQueryFactory queryFactory,

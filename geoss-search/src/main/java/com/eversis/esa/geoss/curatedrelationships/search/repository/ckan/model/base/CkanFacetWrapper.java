@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * The type Ckan facet wrapper.
+ */
 @Data
 public class CkanFacetWrapper {
 

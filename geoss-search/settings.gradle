@@ -4,6 +4,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
+        id "io.spring.dependency-management" version '1.0.15.RELEASE'
+        id 'org.springframework.boot' version "${springBootVersion}"
         id 'org.sonarqube' version '2.7'
     }
 }

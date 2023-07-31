@@ -18,23 +18,38 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * The type Aggregations mapper.
+ */
 @Slf4j
 @Component
 public class AggregationsMapper {
 
     private final SourceAggregationMapper sourceAggregationMapper;
 
+    /**
+     * Instantiates a new Aggregations mapper.
+     *
+     * @param sourceAggregationMapper the source aggregation mapper
+     */
     @Autowired
     public AggregationsMapper(SourceAggregationMapper sourceAggregationMapper) {
         this.sourceAggregationMapper = sourceAggregationMapper;
     }
 
+    /**
+     * Collect facets map.
+     *
+     * @param aggregations the aggregations
+     * @return the map
+     */
     public Map<String, List<Facet>> collectFacets(Aggregations aggregations) {
         Map<String, List<Facet>> facets = new HashMap<>();
         facets.put(Facets.ORGANISATION.getName(), collectStringFacets(aggregations, Facets.ORGANISATION.getName()));
         facets.put(Facets.PROTOCOL.getName(), collectStringFacets(aggregations, Facets.PROTOCOL.getName()));
         facets.put(Facets.KEYWORDS.getName(), collectStringFacets(aggregations, Facets.KEYWORDS.getName()));
-        facets.put(Facets.SOURCE.getName(), sourceAggregationMapper.collectSourceFacetsFromStringFacets(collectStringFacets(aggregations, Facets.SOURCE.getName())));
+        facets.put(Facets.SOURCE.getName(), sourceAggregationMapper.collectSourceFacetsFromStringFacets(
+                collectStringFacets(aggregations, Facets.SOURCE.getName())));
         return facets;
     }
 

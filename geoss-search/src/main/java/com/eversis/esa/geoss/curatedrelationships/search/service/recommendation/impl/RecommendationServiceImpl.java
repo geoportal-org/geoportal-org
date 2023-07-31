@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The type Recommendation service.
+ */
 @Slf4j
 @Service
 @Validated
@@ -26,6 +29,11 @@ class RecommendationServiceImpl implements RecommendationService {
 
     private final RecommendationRepository recommendationRepository;
 
+    /**
+     * Instantiates a new Recommendation service.
+     *
+     * @param recommendationRepository the recommendation repository
+     */
     public RecommendationServiceImpl(RecommendationRepository recommendationRepository) {
         this.recommendationRepository = recommendationRepository;
     }

@@ -7,9 +7,18 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Component;
 
+/**
+ * The type Recommendation query factory.
+ */
 @Component
 public class RecommendationQueryFactory {
 
+    /**
+     * Build search query query builder.
+     *
+     * @param searchPhrase the search phrase
+     * @return the query builder
+     */
     public QueryBuilder buildSearchQuery(String searchPhrase) {
         return buildContentQuery(searchPhrase);
     }

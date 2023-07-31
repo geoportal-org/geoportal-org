@@ -9,13 +9,18 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Entry;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Search strategy.
+ */
 public interface SearchStrategy {
 
     /**
-     * Search for curated relationships resources using specified strategy. Each strategy should be bound to each datasource.
+     * Search for curated relationships resources using specified strategy. Each strategy should be bound to each
+     * datasource.
      *
      * @param query query filter parameters
      * @param pageable pagination information
+     * @return the faceted page
      */
     FacetedPage<Entry> search(@NotNull SearchQuery query, @NotNull Pageable pageable);
 
@@ -24,6 +29,7 @@ public interface SearchStrategy {
      *
      * @param ids set of entry's ids filter parameters
      * @param pageable pagination information
+     * @return the page
      */
     Page<Entry> findResourcesById(@NotNull Set<String> ids, @NotNull Pageable pageable);
 

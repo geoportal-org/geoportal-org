@@ -3,6 +3,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsear
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The type Transfer option extension elk.
+ */
 @Getter
 @Setter
 public class TransferOptionExtensionELK {

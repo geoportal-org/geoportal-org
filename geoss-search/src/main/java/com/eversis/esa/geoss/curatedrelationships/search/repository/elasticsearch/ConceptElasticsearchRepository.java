@@ -13,12 +13,23 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
+/**
+ * The type Concept elasticsearch repository.
+ */
 @Repository
 public class ConceptElasticsearchRepository extends ElasticsearchRepository<Concept> implements ThesaurusRepository {
 
     private final ConceptQueryFactory queryFactory;
     private final ElasticsearchConfigurationProperties elasticsearchConfigurationProperties;
 
+    /**
+     * Instantiates a new Concept elasticsearch repository.
+     *
+     * @param client the client
+     * @param responseMapper the response mapper
+     * @param queryFactory the query factory
+     * @param elasticsearchConfigurationProperties the elasticsearch configuration properties
+     */
     public ConceptElasticsearchRepository(RestHighLevelClient client,
             ElasticsearchResponseMapper<Concept> responseMapper,
             ConceptQueryFactory queryFactory,

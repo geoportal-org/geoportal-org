@@ -8,6 +8,9 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * The type Entry extension dto.
+ */
 @Getter
 @EqualsAndHashCode(of = {"entryExtensionId"})
 @ToString

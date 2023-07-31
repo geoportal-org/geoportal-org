@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * The type Zenodo result metadata.
+ */
 @Data
 class ZenodoResultMetadata {
 

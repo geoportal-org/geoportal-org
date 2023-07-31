@@ -9,6 +9,9 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
+/**
+ * The type Transfer option.
+ */
 @Getter
 @Setter
 @ToString

@@ -14,11 +14,19 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Geoss search strategy.
+ */
 @Component("geossSearchStrategy")
 class GeossSearchStrategy implements SearchStrategy {
 
     private final CRRepository<Entry> dataRepository;
 
+    /**
+     * Instantiates a new Geoss search strategy.
+     *
+     * @param dataRepository the data repository
+     */
     @Autowired
     public GeossSearchStrategy(@Qualifier("geossRepository") CRRepository<Entry> dataRepository) {
         this.dataRepository = dataRepository;

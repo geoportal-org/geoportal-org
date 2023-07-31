@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Concept search service.
+ */
 @Slf4j
 @Service
 @Validated
@@ -22,6 +25,11 @@ class ConceptSearchServiceImpl implements ConceptSearchService {
 
     private final ConceptElasticsearchRepository thesaurusRepository;
 
+    /**
+     * Instantiates a new Concept search service.
+     *
+     * @param thesaurusRepository the thesaurus repository
+     */
     @Autowired
     public ConceptSearchServiceImpl(ConceptElasticsearchRepository thesaurusRepository) {
         this.thesaurusRepository = thesaurusRepository;

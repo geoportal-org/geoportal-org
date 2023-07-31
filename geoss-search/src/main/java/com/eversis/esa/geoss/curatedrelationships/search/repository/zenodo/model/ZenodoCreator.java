@@ -2,6 +2,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mode
 
 import lombok.Data;
 
+/**
+ * The type Zenodo creator.
+ */
 @Data
 public class ZenodoCreator {
 

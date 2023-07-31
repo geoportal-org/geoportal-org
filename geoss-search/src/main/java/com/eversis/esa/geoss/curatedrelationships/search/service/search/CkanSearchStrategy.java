@@ -13,11 +13,19 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Ckan search strategy.
+ */
 @Component("ckanSearchStrategy")
 class CkanSearchStrategy implements SearchStrategy {
 
     private final CRRepository<Entry> dataRepository;
 
+    /**
+     * Instantiates a new Ckan search strategy.
+     *
+     * @param dataRepository the data repository
+     */
     public CkanSearchStrategy(@Qualifier("ckanRepository") CRRepository<Entry> dataRepository) {
         this.dataRepository = dataRepository;
     }

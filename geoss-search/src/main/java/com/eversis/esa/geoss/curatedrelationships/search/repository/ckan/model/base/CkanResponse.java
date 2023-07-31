@@ -2,6 +2,11 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.
 
 import lombok.Data;
 
+/**
+ * The type Ckan response.
+ *
+ * @param <T> the type parameter
+ */
 @Data
 public class CkanResponse<T> {
 

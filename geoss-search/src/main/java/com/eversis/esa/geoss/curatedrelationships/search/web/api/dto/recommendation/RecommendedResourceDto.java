@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The type Recommended resource dto.
+ */
 @Data
 public class RecommendedResourceDto implements Serializable {
 
@@ -15,6 +18,12 @@ public class RecommendedResourceDto implements Serializable {
     private final String title;
     private final String description;
 
+    /**
+     * Of recommended resource dto.
+     *
+     * @param resource the resource
+     * @return the recommended resource dto
+     */
     public static RecommendedResourceDto of(RecommendedResource resource) {
         return new RecommendedResourceDto(
                 resource.getDataSource(),

@@ -2,6 +2,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model;
 
 import lombok.Data;
 
+/**
+ * The type Tag ckan.
+ */
 @Data
 public class TagCkan {
 

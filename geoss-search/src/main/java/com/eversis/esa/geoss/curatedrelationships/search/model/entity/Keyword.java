@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+/**
+ * The type Keyword.
+ */
 @Getter
 @AllArgsConstructor
 public class Keyword implements Serializable {

@@ -13,11 +13,19 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Wikipedia search strategy.
+ */
 @Component("wikipediaSearchStrategy")
 class WikipediaSearchStrategy implements SearchStrategy {
 
     private final CRRepository<Entry> dataRepository;
 
+    /**
+     * Instantiates a new Wikipedia search strategy.
+     *
+     * @param dataRepository the data repository
+     */
     public WikipediaSearchStrategy(@Qualifier("geossRepository") CRRepository<Entry> dataRepository) {
         this.dataRepository = dataRepository;
     }

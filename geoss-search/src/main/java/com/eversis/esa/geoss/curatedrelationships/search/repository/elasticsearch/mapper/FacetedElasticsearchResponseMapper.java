@@ -5,6 +5,11 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 
 import org.elasticsearch.action.search.SearchResponse;
 
+/**
+ * The interface Faceted elasticsearch response mapper.
+ *
+ * @param <T> the type parameter
+ */
 public interface FacetedElasticsearchResponseMapper<T> extends ElasticsearchResponseMapper<T> {
 
     /**
@@ -12,6 +17,7 @@ public interface FacetedElasticsearchResponseMapper<T> extends ElasticsearchResp
      *
      * @param searchResponse Elasticsearch response
      * @param pageable pagination information
+     * @return the faceted page
      */
     FacetedPage<T> mapFacetedSearchResponse(SearchResponse searchResponse, Pageable pageable);
 

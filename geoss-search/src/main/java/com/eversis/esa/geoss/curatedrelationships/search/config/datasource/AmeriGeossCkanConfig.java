@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * The type Ameri geoss ckan config.
+ */
 @Configuration
 public class AmeriGeossCkanConfig {
 
@@ -15,6 +18,11 @@ public class AmeriGeossCkanConfig {
     @Value("${datasource.amerigeoss-ckan.base-url}")
     private String baseUrl;
 
+    /**
+     * Amerigeoss ckan client web client.
+     *
+     * @return the web client
+     */
     @Bean("amerigeossCkanClient")
     public WebClient amerigeossCkanClient() {
         log.info("Configuring AmeriGeoss CKAN client - baseUrl: {}", baseUrl);

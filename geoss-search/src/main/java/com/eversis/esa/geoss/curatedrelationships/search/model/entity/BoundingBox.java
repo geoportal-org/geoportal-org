@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+/**
+ * The type Bounding box.
+ */
 @Getter
 @AllArgsConstructor
 public class BoundingBox implements Serializable {

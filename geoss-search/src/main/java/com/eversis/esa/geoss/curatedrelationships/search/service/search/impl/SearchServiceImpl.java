@@ -20,6 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Search service.
+ */
 @Slf4j
 @Service
 @Validated
@@ -28,6 +31,12 @@ class SearchServiceImpl implements SearchService {
     private SearchStrategyFactory searchStrategyFactory;
     private SearchQueryService queryService;
 
+    /**
+     * Instantiates a new Search service.
+     *
+     * @param searchStrategyFactory the search strategy factory
+     * @param queryService the query service
+     */
     @Autowired
     public SearchServiceImpl(SearchStrategyFactory searchStrategyFactory, SearchQueryService queryService) {
         this.searchStrategyFactory = searchStrategyFactory;
@@ -51,7 +60,8 @@ class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Page<Entry> findResourcesById(@NotNull Set<String> ids, @NotNull DataSource dataSource, @NotNull Pageable pageable) {
+    public Page<Entry> findResourcesById(@NotNull Set<String> ids, @NotNull DataSource dataSource,
+            @NotNull Pageable pageable) {
         if (log.isDebugEnabled()) {
             log.debug("Searching for CR resources entries, using ids: {}, startIndex: {}, pageSize: {}, order: {}",
                     ids, pageable.getStartIndex(), pageable.getPageSize(), pageable.getSort());
@@ -59,7 +69,8 @@ class SearchServiceImpl implements SearchService {
         SearchStrategy searchStrategy = searchStrategyFactory.getSearchStrategy(dataSource);
         Page<Entry> entries = searchStrategy.findResourcesById(ids, pageable);
         if (ids.size() == 1 && !entries.hasContent()) {
-            throw new ResourceNotFoundException("Unable to find resource with id: " + ids.stream().findFirst().orElse(""));
+            throw new ResourceNotFoundException(
+                    "Unable to find resource with id: " + ids.stream().findFirst().orElse(""));
         }
 
         return entries;

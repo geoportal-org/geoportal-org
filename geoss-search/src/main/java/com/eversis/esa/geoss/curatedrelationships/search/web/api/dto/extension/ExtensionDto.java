@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The type Extension dto.
+ */
 @Data
 public class ExtensionDto implements Serializable {
 

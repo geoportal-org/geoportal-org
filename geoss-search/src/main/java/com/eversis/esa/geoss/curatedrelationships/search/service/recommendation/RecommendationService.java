@@ -5,8 +5,18 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.recommendation.Re
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The interface Recommendation service.
+ */
 public interface RecommendationService {
 
+    /**
+     * Gets recommendations.
+     *
+     * @param term the term
+     * @param count the count
+     * @return the recommendations
+     */
     Page<RecommendedResource> getRecommendations(@NotBlank String term, int count);
 
 }

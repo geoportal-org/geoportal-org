@@ -8,19 +8,34 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearc
 import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
 import org.locationtech.jts.geom.Coordinate;
 
+/**
+ * The type Geo shape mapper.
+ */
 public class GeoShapeMapper {
 
     private GeoShapeMapper() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Resize bounding box bounding box.
+     *
+     * @param boundingBox the bounding box
+     * @param w the w
+     * @param s the s
+     * @param e the e
+     * @param n the n
+     * @return the bounding box
+     */
     public static BoundingBox resizeBoundingBox(BoundingBox boundingBox, double w, double s, double e, double n) {
         if (boundingBox != null) {
             GeoPoint originalLeftTopPoint = boundingBox.getLeftTopPoint();
             GeoPoint originalRightBottomPoint = boundingBox.getRightBottomPoint();
             if (originalLeftTopPoint != null && originalRightBottomPoint != null) {
-                GeoPoint newLeftTopPoint = new GeoPoint(originalLeftTopPoint.getLongitude() + w, originalLeftTopPoint.getLatitude() + n);
-                GeoPoint newRightTopPoint = new GeoPoint(originalRightBottomPoint.getLongitude() + e, originalRightBottomPoint.getLatitude() + s);
+                GeoPoint newLeftTopPoint = new GeoPoint(originalLeftTopPoint.getLongitude() + w,
+                        originalLeftTopPoint.getLatitude() + n);
+                GeoPoint newRightTopPoint = new GeoPoint(originalRightBottomPoint.getLongitude() + e,
+                        originalRightBottomPoint.getLatitude() + s);
 
                 return new BoundingBox(newLeftTopPoint, newRightTopPoint);
             }
@@ -29,9 +44,14 @@ public class GeoShapeMapper {
         return null;
     }
 
+    /**
+     * Map bounding box elk bounding box.
+     *
+     * @param boundingBoxELK the bounding box elk
+     * @return the bounding box
+     */
     public static BoundingBox mapBoundingBoxELK(BoundingBoxELK boundingBoxELK) {
-        if (boundingBoxELK != null
-                && boundingBoxELK.getCoordinates() != null
+        if (boundingBoxELK != null && boundingBoxELK.getCoordinates() != null
                 && boundingBoxELK.getCoordinates().size() == 2) {
             GeoPoint leftTopPoint = mapGeoPointELK(boundingBoxELK.getCoordinates().get(0));
             GeoPoint rightBottomPoint = mapGeoPointELK(boundingBoxELK.getCoordinates().get(1));
@@ -50,9 +70,14 @@ public class GeoShapeMapper {
         return new GeoPoint(geoPointELK.getLongitude(), geoPointELK.getLatitude());
     }
 
+    /**
+     * Map envelope from bounding box envelope builder.
+     *
+     * @param boundingBox the bounding box
+     * @return the envelope builder
+     */
     public static EnvelopeBuilder mapEnvelopeFromBoundingBox(BoundingBox boundingBox) {
-        return new EnvelopeBuilder(
-                mapCoordinateFromGeoPoint(boundingBox.getLeftTopPoint()),
+        return new EnvelopeBuilder(mapCoordinateFromGeoPoint(boundingBox.getLeftTopPoint()),
                 mapCoordinateFromGeoPoint(boundingBox.getRightBottomPoint()));
     }
 

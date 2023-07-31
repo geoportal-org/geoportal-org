@@ -5,12 +5,21 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.
 import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.contributor.impl.ContributorModuleImpl;
 import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.contributor.model.Contributor;
 
+/**
+ * The type Contributor factory.
+ */
 public class ContributorFactory {
 
     private ContributorFactory() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Create contributor module contributor module.
+     *
+     * @param organisation the organisation
+     * @return the contributor module
+     */
     public static ContributorModule createContributorModule(Organisation organisation) {
         Contributor contributor = new Contributor();
         contributor.setOrgName(organisation.getTitle());

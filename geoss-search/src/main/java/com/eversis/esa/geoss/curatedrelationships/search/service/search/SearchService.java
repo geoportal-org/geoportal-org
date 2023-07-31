@@ -10,6 +10,9 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Entry;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The interface Search service.
+ */
 public interface SearchService {
 
     /**
@@ -17,6 +20,7 @@ public interface SearchService {
      *
      * @param query filter parameters
      * @param pageable pagination information
+     * @return the faceted page
      */
     FacetedPage<Entry> findResources(@NotNull SearchQuery query, @NotNull Pageable pageable);
 
@@ -26,6 +30,7 @@ public interface SearchService {
      * @param ids list of entry's ids filter parameters
      * @param dataSource source which should
      * @param pageable pagination information
+     * @return the page
      */
     Page<Entry> findResourcesById(@NotNull Set<String> ids, @NotNull DataSource dataSource, @NotNull Pageable pageable);
 

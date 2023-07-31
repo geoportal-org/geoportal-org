@@ -23,11 +23,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * The type Base ckan response mapper.
+ *
+ * @param <T> the type parameter
+ * @param <S> the type parameter
+ */
 @Slf4j
 abstract class BaseCkanResponseMapper<T, S> implements CkanResponseMapper<T, S> {
 
     protected CkanResultMapper<T, S> resultMapper;
 
+    /**
+     * Instantiates a new Base ckan response mapper.
+     *
+     * @param resultMapper the result mapper
+     */
     public BaseCkanResponseMapper(CkanResultMapper<T, S> resultMapper) {
         this.resultMapper = resultMapper;
     }
@@ -48,7 +59,8 @@ abstract class BaseCkanResponseMapper<T, S> implements CkanResponseMapper<T, S> 
     }
 
     @Override
-    public FacetedPage<T> mapFacetedPackageSearchResponse(CkanResponse<S> searchResponse, Pageable pageable, Map<String, Facets> facetFields) {
+    public FacetedPage<T> mapFacetedPackageSearchResponse(CkanResponse<S> searchResponse, Pageable pageable,
+            Map<String, Facets> facetFields) {
         Page<T> page = mapPackageSearchResponse(searchResponse, pageable);
         Map<String, List<Facet>> facets = collectFacets(searchResponse.getResult().getSearchFacets(), facetFields);
 
@@ -74,7 +86,8 @@ abstract class BaseCkanResponseMapper<T, S> implements CkanResponseMapper<T, S> 
                         e -> facetFields.get(e.getKey()).getName(),
                         e -> e.getValue().getItems()
                                 .stream()
-                                .map(ckanFacet -> new CompoundTermFacet(ckanFacet.getName(), ckanFacet.getDisplayName(), ckanFacet.getCount()))
+                                .map(ckanFacet -> new CompoundTermFacet(ckanFacet.getName(), ckanFacet.getDisplayName(),
+                                        ckanFacet.getCount()))
                                 .collect(Collectors.toList())
                 ));
     }

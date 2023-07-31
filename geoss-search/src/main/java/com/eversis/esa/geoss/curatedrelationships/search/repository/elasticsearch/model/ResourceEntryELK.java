@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Resource entry elk.
+ */
 @Getter
 @Setter
 public class ResourceEntryELK {
