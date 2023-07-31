@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.spring.io/milestone' }
+        gradlePluginPortal()
+    }
+    plugins {
+        id 'org.sonarqube' version '2.7'
+    }
+}
+rootProject.name = 'geoss-search'

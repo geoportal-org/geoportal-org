@@ -1,0 +1,27 @@
+server:
+    port: 8888
+
+datasource:
+    amerigeoss-ckan:
+        base-url: https://data.amerigeoss.org/api/3/action
+    zenodo:
+        base-url: https://zenodo.org
+    elasticsearch:
+        host: 10.254.2.138
+        port: 9200
+        geoss:
+            index: geoss-cr
+            type: _doc
+        thesaurus:
+            index: thesaurus-vocabulary
+            type: vocabulary
+        extensions:
+            index: geoss-cr-extensions
+            type: _doc
+        recommendation:
+            index: geoss-recommendation
+            type: _doc
+
+
+logging:
+    config: classpath:log4j2-local.xml

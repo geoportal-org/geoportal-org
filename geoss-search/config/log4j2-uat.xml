@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="FILEPATH">${sys:logging.path:-/opt/esa/geoss-cr-search/logs}</Property>
+        <Property name="FILENAME">${sys:logging.file:-geoss-cr-search}</Property>
+        <Property name="FILE_LEVEL">${sys:logging.file.level:-info}</Property>
+        <Property name="CONSOLE_LEVEL">${sys:logging.console.level:-debug}</Property>
+    </Properties>
+
+    <Appenders>
+
+        <Console follow="true" name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" disableAnsi="false"
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} [%t] \(%c\) : %m%ex%n"/>
+            <ThresholdFilter level="${CONSOLE_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <RollingFile fileName="${FILEPATH}/${FILENAME}.log" filePattern="${FILEPATH}/${FILENAME}-%d{yyyy-MM-dd}-%i.log.gz"
+                name="FILE">
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} [%t] \(%c\) : %m%ex%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+            <ThresholdFilter level="${FILE_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger additivity="false" level="trace" name="com.eversis.esa.geoss.curatedrelationships">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
