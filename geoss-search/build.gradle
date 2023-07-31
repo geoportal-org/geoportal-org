@@ -9,8 +9,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 ext {
@@ -65,6 +65,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:2.28.2'
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+}
+
 springBoot {
     buildInfo()
 }
@@ -76,7 +80,7 @@ test {
 }
 
 checkstyle {
-    configFile "${project.rootDir}/eversis_checks.xml" as File
+    configFile "${project.rootDir}/../eversis_checks.xml" as File
 }
 
 sonarqube {
