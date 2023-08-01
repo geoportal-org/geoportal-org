@@ -6,7 +6,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Extension;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.ExtensionElasticsearchRepository;
 import com.eversis.esa.geoss.curatedrelationships.search.service.extension.ExtensionSearchService;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 /**
  * The type Extension search service.
  */
-@Slf4j
+@Log4j2
 @Service
 @Validated
 class ExtensionSearchServiceImpl implements ExtensionSearchService {

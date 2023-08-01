@@ -10,7 +10,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.exception.SearchF
 import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mapper.ZenodoMapper;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.query.ZenodoQueryFactory;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 /**
  * The type Entry zenodo repository.
  */
-@Slf4j
+@Log4j2
 @Repository("entryZenodoRepository")
 class EntryZenodoRepository extends ZenodoRepository<Entry> {
 

@@ -4,7 +4,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.Facets;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Facet;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.impl.SimpleTermFacet;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * The type Aggregations mapper.
  */
-@Slf4j
+@Log4j2
 @Component
 public class AggregationsMapper {
 

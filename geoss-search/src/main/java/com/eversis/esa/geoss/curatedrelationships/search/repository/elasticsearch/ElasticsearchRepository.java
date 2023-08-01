@@ -4,7 +4,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.mapper.ElasticsearchResponseMapper;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
  *
  * @param <T> the type parameter
  */
-@Slf4j
+@Log4j2
 abstract class ElasticsearchRepository<T> {
 
     private final RestHighLevelClient client;

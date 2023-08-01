@@ -2,7 +2,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.web;
 
 import com.eversis.esa.geoss.curatedrelationships.search.web.model.ApiError;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 /**
  * The type Global exception handler.
  */
-@Slf4j
+@Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 

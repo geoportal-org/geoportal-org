@@ -6,7 +6,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.
 
 import com.rometools.rome.feed.module.Module;
 import com.rometools.rome.io.ModuleGenerator;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 
@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * The type Data model module generator.
  */
-@Slf4j
+@Log4j2
 public class DataModelModuleGenerator implements ModuleGenerator {
 
     /**

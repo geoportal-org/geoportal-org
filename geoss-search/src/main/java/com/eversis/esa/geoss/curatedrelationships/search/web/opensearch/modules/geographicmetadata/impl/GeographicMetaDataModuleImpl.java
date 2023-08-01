@@ -7,7 +7,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.modules.
 
 import com.rometools.rome.feed.CopyFrom;
 import com.rometools.rome.feed.module.ModuleImpl;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * The type Geographic meta data module.
  */
-@Slf4j
+@Log4j2
 public class GeographicMetaDataModuleImpl extends ModuleImpl implements GeographicMetaDataModule {
 
     private transient List<OnlineResource> onlineResources;

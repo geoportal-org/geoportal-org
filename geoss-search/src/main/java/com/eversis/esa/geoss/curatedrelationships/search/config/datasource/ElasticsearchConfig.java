@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.curatedrelationships.search.config.datasource;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Primary;
 /**
  * The type Elasticsearch config.
  */
-@Slf4j
+@Log4j2
 @Configuration
 public class ElasticsearchConfig {
 

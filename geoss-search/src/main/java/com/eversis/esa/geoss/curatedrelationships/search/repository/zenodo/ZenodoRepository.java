@@ -5,7 +5,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.mappe
 import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.model.ZenodoResult;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.query.ZenodoQueryFactory;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -16,7 +16,7 @@ import java.time.Duration;
  *
  * @param <T> the type parameter
  */
-@Slf4j
+@Log4j2
 abstract class ZenodoRepository<T> implements CRRepository<T> {
 
     protected final ZenodoQueryFactory queryFactory;

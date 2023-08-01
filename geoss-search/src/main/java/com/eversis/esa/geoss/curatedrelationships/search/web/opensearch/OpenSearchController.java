@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,7 @@ import javax.validation.constraints.Min;
  * The type Open search controller.
  */
 @Tag(name = "OPENSEARCH")
-@Slf4j
+@Log4j2
 @RestController
 @RequestMapping("/opensearch")
 public class OpenSearchController {

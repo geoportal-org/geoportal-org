@@ -15,7 +15,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.b
 import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.base.CkanResponse;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.base.CkanSearchResult;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @param <T> the type parameter
  * @param <S> the type parameter
  */
-@Slf4j
+@Log4j2
 abstract class BaseCkanResponseMapper<T, S> implements CkanResponseMapper<T, S> {
 
     protected CkanResultMapper<T, S> resultMapper;

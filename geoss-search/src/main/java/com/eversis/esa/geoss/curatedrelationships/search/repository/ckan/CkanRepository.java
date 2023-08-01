@@ -9,7 +9,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.CRRepository
 import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.mapper.CkanResponseMapper;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.ckan.model.base.CkanResponse;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * @param <T> the type parameter
  * @param <S> the type parameter
  */
-@Slf4j
+@Log4j2
 abstract class CkanRepository<T, S> implements CRRepository<T> {
 
     private final WebClient client;
@@ -75,7 +75,8 @@ abstract class CkanRepository<T, S> implements CRRepository<T> {
                     .get()
                     .uri(uriQuery)
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<CkanResponse<S>>() { })
+                    .bodyToMono(new ParameterizedTypeReference<CkanResponse<S>>() {
+                    })
                     .timeout(Duration.ofSeconds(10))
                     .block();
 

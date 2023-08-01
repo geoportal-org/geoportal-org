@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * The type Extension controller.
  */
-@Slf4j
+@Log4j2
 @Tag(name = "EXTENSIONS")
 @RequestMapping("/api/extensions")
 @RestController
@@ -64,7 +64,7 @@ class ExtensionController {
             @Parameter(description = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
             @Parameter(description = "Name of the datasource.",
-                      schema = @Schema(implementation = DataSource.class))
+                       schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);
@@ -87,7 +87,7 @@ class ExtensionController {
             @Parameter(description = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
             @Parameter(description = "Name of the datasource.",
-                      schema = @Schema(implementation = DataSource.class))
+                       schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);

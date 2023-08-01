@@ -6,7 +6,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.api.dto.recommendat
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * The type Recommendation controller.
  */
-@Slf4j
+@Log4j2
 @Tag(name = "RECOMMENDATION")
 @RequestMapping("/api/recommendations")
 @RestController
