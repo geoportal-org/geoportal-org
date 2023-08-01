@@ -71,7 +71,7 @@ build_geoss-curated:
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - geoss-curated/build/libs/*-boot.jar
+      - geoss-curated/application/build/libs/*-boot.jar
     expire_in: 4 weeks
 
 build_geoss-personaldata:
@@ -91,7 +91,7 @@ build_geoss-personaldata:
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - geoss-personaldata/build/libs/*-boot.jar
+      - geoss-personaldata/application/build/libs/*-boot.jar
     expire_in: 4 weeks
 
 build_geoss-proxy:
@@ -151,7 +151,7 @@ build_geoss-settings:
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - geoss-settings/build/libs/*-boot.jar
+      - geoss-settings/application/build/libs/*-boot.jar
     expire_in: 4 weeks
 
 ########################################################################################################################
