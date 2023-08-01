@@ -134,7 +134,7 @@ build_geoss-search:
       - geoss-search/build/libs/*-boot.jar
     expire_in: 4 weeks
 
-build_geoss-seettings:
+build_geoss-settings:
   extends: .gradle_build_base
   stage: build
   before_script:
@@ -181,11 +181,12 @@ build_images:
     - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
     - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
   dependencies:
-    - build_geoss-settings
     - build_geoss-contents
+    - build_geoss-curated
     - build_geoss-personaldata
     - build_geoss-proxy
-    - build_geoss-curated
+    - build_geoss-search
+    - build_geoss-settings
   only:
     - develop
     - uat
