@@ -138,20 +138,20 @@ build_geoss-settings:
   extends: .gradle_build_base
   stage: build
   before_script:
-    - cd ./geoss-seettings
-    - echo "Building geoss-seettings app..."
+    - cd ./geoss-settings
+    - echo "Building geoss-settings app..."
   after_script:
-    - echo "Build geoss-seettings complete"
+    - echo "Build geoss-settings complete"
     - cd ..
   cache:
     paths:
-      - geoss-seettings/.gradle
-      - geoss-seettings/build
-      - geoss-seettings/*/build
+      - geoss-settings/.gradle
+      - geoss-settings/build
+      - geoss-settings/*/build
     key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - geoss-seettings/build/libs/*-boot.jar
+      - geoss-settings/build/libs/*-boot.jar
     expire_in: 4 weeks
 
 ########################################################################################################################
