@@ -81,6 +81,12 @@ services:
       context: ./geoss-curated
       dockerfile: Dockerfile
 
+  geoss-search:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-search
+      dockerfile: Dockerfile
+
   geoss-els:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:${DOCKER_IMAGE_TAG}
     build:
