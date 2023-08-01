@@ -6,23 +6,17 @@ variables:
   image: openjdk:17-jdk-slim-buster
   tags:
     - geoss-runner-1
-  after_script:
-    - cd ..
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod u+x ./gradlew
+    - ./gradlew $GRADLE_CLI_OPTS assemble
+    - ls -l .gradle
   cache: { }
   only:
     - develop
     - uat
     - /^release-.*/
     - /^GPP-.*/
-
-.build_apps:
-  image: gradle:jdk17-jammy
-  tags:
-    - geoss-runner-1
-  cache: { }
-  only:
-    - develop
-    - /^release-.*/
 
 ###########################
 #         STAGES          #
@@ -40,18 +34,95 @@ stages:  # List of stages for jobs, and their order of execution
 ########################################################################################################################
 #                                                     BUILD                                                            #
 ########################################################################################################################
-build_geoss_search:
+build_geoss-contents:
+  extends: .gradle_build_base
+  stage: build
+  before_script:
+    - cd ./geoss-contents
+    - echo "Building geoss-contents app..."
+  after_script:
+    - echo "Build geoss-contents complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-contents/.gradle
+      - geoss-contents/build
+      - geoss-contents/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  artifacts:
+    paths:
+      - geoss-contents/build/libs/*-boot.jar
+    expire_in: 4 weeks
+
+build_geoss-curated:
+  extends: .gradle_build_base
+  stage: build
+  before_script:
+    - cd ./geoss-curated
+    - echo "Building geoss-curated app..."
+  after_script:
+    - echo "Build geoss-curated complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-curated/.gradle
+      - geoss-curated/build
+      - geoss-curated/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  artifacts:
+    paths:
+      - geoss-curated/build/libs/*-boot.jar
+    expire_in: 4 weeks
+
+build_geoss-personaldata:
+  extends: .gradle_build_base
+  stage: build
+  before_script:
+    - cd ./geoss-personaldata
+    - echo "Building geoss-personaldata app..."
+  after_script:
+    - echo "Build geoss-personaldata complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-personaldata/.gradle
+      - geoss-personaldata/build
+      - geoss-personaldata/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  artifacts:
+    paths:
+      - geoss-personaldata/build/libs/*-boot.jar
+    expire_in: 4 weeks
+
+build_geoss-proxy:
+  extends: .gradle_build_base
+  stage: build
+  before_script:
+    - cd ./geoss-proxy
+    - echo "Building geoss-proxy app..."
+  after_script:
+    - echo "Build geoss-proxy complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-proxy/.gradle
+      - geoss-proxy/build
+      - geoss-proxy/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  artifacts:
+    paths:
+      - geoss-proxy/build/libs/*-boot.jar
+    expire_in: 4 weeks
+
+build_geoss-search:
   extends: .gradle_build_base
   stage: build
   before_script:
     - cd ./geoss-search
-    - export GRADLE_USER_HOME=`pwd`/.gradle
-  script:
     - echo "Building geoss-search app..."
-    - chmod u+x ./gradlew
-    - ./gradlew $GRADLE_CLI_OPTS assemble
-    - ls -l .gradle
+  after_script:
     - echo "Build geoss-search complete"
+    - cd ..
   cache:
     paths:
       - geoss-search/.gradle
@@ -63,100 +134,25 @@ build_geoss_search:
       - geoss-search/build/libs/*-boot.jar
     expire_in: 4 weeks
 
-build_geoss-settings:
+build_geoss-seettings:
+  extends: .gradle_build_base
   stage: build
-  extends: .build_apps
-  tags:
-    - geoss-runner-1
-  script:
-    - echo "Building geoss-settings app..."
-    - chmod u+x ./geoss-settings/gradlew
-    - ./geoss-settings/gradlew clean assemble -p ./geoss-settings
-    - echo "Build geoss-settings complete"
+  before_script:
+    - cd ./geoss-seettings
+    - echo "Building geoss-seettings app..."
+  after_script:
+    - echo "Build geoss-seettings complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-seettings/.gradle
+      - geoss-seettings/build
+      - geoss-seettings/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
   artifacts:
     paths:
-      - ./geoss-settings/application/build
+      - geoss-seettings/build/libs/*-boot.jar
     expire_in: 4 weeks
-  only:
-    - develop
-    - uat
-    - /^release-.*/
-
-build_geoss-contents:
-  stage: build
-  extends: .build_apps
-  tags:
-    - geoss-runner-1
-  script:
-    - echo "Building geoss-contents app..."
-    - chmod u+x ./geoss-contents/gradlew
-    - ./geoss-contents/gradlew clean assemble -p ./geoss-contents
-    - echo "Build geoss-contents complete"
-  artifacts:
-    paths:
-      - ./geoss-contents/build
-    expire_in: 4 weeks
-  only:
-    - develop
-    - uat
-    - /^release-.*/
-
-build_geoss-personaldata:
-  stage: build
-  extends: .build_apps
-  tags:
-    - geoss-runner-1
-  script:
-    - echo "Building geoss-personaldata app..."
-    - chmod u+x ./geoss-personaldata/gradlew
-    - ./geoss-personaldata/gradlew clean assemble -p ./geoss-personaldata
-    - echo "Build geoss-personaldata complete"
-  artifacts:
-    paths:
-      - ./geoss-personaldata/application/build
-    expire_in: 4 weeks
-  only:
-    - develop
-    - uat
-    - /^release-.*/
-
-build_geoss-proxy:
-  stage: build
-  extends: .build_apps
-  tags:
-    - geoss-runner-1
-  script:
-    - echo "Building geoss-proxy app..."
-    - chmod u+x ./geoss-proxy/gradlew
-    - ./geoss-proxy/gradlew clean assemble -p ./geoss-proxy
-    - echo "Build geoss-proxy complete"
-  artifacts:
-    paths:
-      - ./geoss-proxy/build
-    expire_in: 4 weeks
-  only:
-    - develop
-    - uat
-    - /^release-.*/
-
-build_geoss-curated:
-  stage: build
-  extends: .build_apps
-  tags:
-    - geoss-runner-1
-  script:
-    - echo "Building geoss-curated app..."
-    - chmod u+x ./geoss-curated/gradlew
-    - ./geoss-curated/gradlew clean assemble -p ./geoss-curated
-    - echo "Build geoss-curated complete"
-  artifacts:
-    paths:
-      - ./geoss-curated/application/build
-    expire_in: 4 weeks
-  only:
-    - develop
-    - uat
-    - /^release-.*/
 
 ########################################################################################################################
 #                                                 BUILD IMAGES                                                         #
