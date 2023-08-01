@@ -11,9 +11,7 @@
             <div class="statistics_control" :class="{ closedStyle: !isOpen }">
                 <div v-if="isOpen">
                     <h1>{{ $tc('statistics.chartOptions') }}</h1>
-                    <div
-                        class="statistics_element statistics_element-start"
-                    >
+                    <div class="statistics_element statistics_element-start">
                         <p>{{ $tc('statistics.source') }}</p>
 
                         <input
@@ -140,9 +138,7 @@
                         ></DatePicker>
                     </div>
 
-                    <div
-                        class="statistics_element statistics_element-start"
-                    >
+                    <div class="statistics_element statistics_element-start">
                         <input
                             v-model="form.period"
                             type="radio"
@@ -192,9 +188,17 @@
                 >
                     {{ $tc('statistics.showOptions') }}
                 </button>
-                <div
-                    class="statistics_element statistics_element-end"
-                >
+                <div class="statistics_element statistics_element-end">
+                    <div v-if="chartInstance" class="dropdown">
+                        <button type="button" @click="toggleDropdown()" class="dropbtn">
+                            {{ $tc('statistics.exportButton') }}
+                        </button>
+                        <div v-if="dropDownOpen" id="myDropdown" class="dropdown-content">
+                            <a @click="downloadChartJsPDF()">PDF</a>
+                            <a @click="downloadChartJsCSV()">CSV</a>
+                        </div>
+                    </div>
+                    <!-- 
                     <div v-if="chartInstance" class="dropdown">
                         <button type="button" class="dropbtn">
                             {{ $tc('statistics.exportButton') }}
@@ -204,7 +208,7 @@
                             <a @click="downloadChartJsPDF()">PDF</a>
                             <a @click="downloadChartJsCSV()">CSV</a>
                         </div>
-                    </div>
+                    </div> -->
                     <button class="statistics_submit_button">
                         {{ $tc('statistics.showChart') }}
                     </button>
@@ -304,6 +308,7 @@ export default {
             chartInstance: null,
             chartData: null,
             isCountires: false,
+            dropDownOpen: false,
             mapData: [],
             mapOptions: {
                 responsive: true,
@@ -371,6 +376,9 @@ export default {
         },
         toggleIsOpen() {
             this.isOpen = !this.isOpen
+        },
+        toggleDropdown() {
+            this.dropDownOpen = !this.dropDownOpen
         },
         onSourceRadioChange(value) {
             this.form.dataset = this.datasetOptions[0]
@@ -506,45 +514,50 @@ export default {
 
 <style lang="scss" scoped>
 .gchart {
-    width: 90%
+    width: 90%;
 }
-.dropdown .dropbtn {
+
+.sub-page__content {
+    height: 75vh;
+    margin: 15vh auto 0;
+    width: 50%;
+    min-width: 400px;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: white;
+    padding: 16px;
     font-size: 16px;
     border: none;
-    outline: none;
-    color: white;
-    padding: 14px 14px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 0;
-    font-size: 16px;
-    height: 50px;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
 
 .dropdown-content {
-    display: none;
+    display: block;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
     min-width: 80px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    text-align: center;
 }
 
+/* Links inside the dropdown */
 .dropdown-content a {
-    float: none;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    text-align: center;
 }
 
 .dropdown-content a:hover {
     background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
 }
 
 .chart_container {
@@ -561,14 +574,7 @@ export default {
 }
 
 .chart {
-    max-height: 30vh;
-}
-
-.sub-page__content {
-    height: 75vh;
-    margin: 15vh auto 0;
-    width: 50%;
-    min-width: 400px;
+    max-height: 30rem;
 }
 
 .cross {
@@ -578,13 +584,15 @@ export default {
 .statistics_main {
     height: 100%;
     min-height: 500px;
+    width: 100%;
 }
 
 .statistics_select {
     border-radius: 4px;
-    min-width: 80px;
+    min-width: 2rem;
     width: 80%;
-    height: 2.5vh;
+    height: 2rem;
+    min-height: 30px;
     border: none;
 }
 
@@ -597,25 +605,25 @@ export default {
     border-color: rgba(66, 161, 149, 0.94);
     background-color: rgba(6, 97, 169, 0.75);
     height: 30vh;
-    min-height: 300px;
-    padding: 0vh 2vh 1vh;
+    min-height: 30rem;
+    padding: 0rem 2rem 1rem;
     color: white;
 
     h1 {
         font-size: 20px;
-        margin: 2vh 0vh 2vh;
+        margin: 2rem 0rem 2rem;
     }
 }
 
 .closedStyle {
-    min-height: 70px;
+    min-height: 6rem;
     height: 0px;
 }
 
 .statistics_element {
     display: flex;
-    gap: 2vh;
-    margin-top: 1vh;
+    gap: 1rem;
+    margin-top: 1rem;
     font-size: 14px;
     align-items: center;
     justify-content: space-between;
@@ -629,7 +637,8 @@ export default {
         border-radius: 4px;
         outline: none;
         padding: none;
-        height: 2.5vh;
+        height: 2rem;
+        min-height: 30px;
         width: 20%;
     }
 
@@ -653,7 +662,7 @@ export default {
 .statistics_datepicker_wrapper {
     display: flex;
     flex-direction: row;
-    gap: 1vh;
+    gap: 1rem;
 }
 
 .statistics_submit_button {
@@ -661,12 +670,12 @@ export default {
     background-color: rgba(66, 161, 149, 0.94);
     color: white;
     grid-column: 2;
-    height: 35px;
+    height: 2rem;
     width: 50%;
-    align-self: flex-end;
+    align-self: center;
     justify-self: flex-end;
     font-size: 20px;
-    margin: 1vh 0vh 1vh;
+    margin: 1rem 0rem 1rem;
 }
 
 .statistics_menu_button {
@@ -674,12 +683,12 @@ export default {
     background-color: transparent;
     color: white;
     grid-column: 1;
-    height: 35px;
+    height: 2rem;
     width: 50%;
-    align-self: flex-end;
+    align-self: center;
     justify-self: flex-start;
     font-size: 16px;
-    margin: 1vh 0vh 1vh;
+    margin: 1rem 0rem 1rem;
 }
 
 .statistics_submit_button:hover {
@@ -692,15 +701,12 @@ export default {
     border-color: rgba(66, 161, 149, 0.94);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $breakpoint-md) {
     .statistics_control {
         grid-template-columns: 1fr;
-        height: 60vh;
+        height: 100%;
     }
-    .closedStyle {
-        min-height: 100px;
-        height: 0px;
-    }
+
     .statistics_submit_button {
         grid-column: 1;
         width: 100%;
@@ -712,26 +718,6 @@ export default {
         width: 100%;
         align-self: center;
         justify-self: center;
-    }
-}
-
-@media (max-height: 750px) {
-    .statistics_control {
-        grid-template-columns: 1fr;
-        height: 60vh;
-    }
-    .closedStyle {
-        min-height: 100px;
-        height: 0px;
-    }
-    .sub-page__content {
-        height: 90vh;
-        margin: 15vh auto 0;
-        width: 50%;
-        min-width: 300px;
-    }
-    .statistics_control {
-        height: 70vh;
     }
 }
 </style>
