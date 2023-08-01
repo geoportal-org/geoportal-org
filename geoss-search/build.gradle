@@ -14,14 +14,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-ext {
-    set('elasticsearch.version', '6.6.2')
-}
-
 configurations {
     configureEach {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        exclude group: 'junit', module: 'junit'
     }
     compileOnly {
         extendsFrom annotationProcessor
@@ -41,18 +36,20 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.data:spring-data-commons:2.7.14'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:6.6.2'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:6.8.23'
+    implementation 'org.elasticsearch:elasticsearch:6.8.23'
     implementation 'org.locationtech.spatial4j:spatial4j:0.7'
     implementation 'org.locationtech.jts:jts-core:1.16.1'
-    implementation 'com.rometools:rome:1.12.0'
-    implementation 'com.rometools:rome-modules:1.12.0'
+    implementation "com.rometools:rome:${rometoolsRomeVersion}"
+    implementation "com.rometools:rome-modules:${rometoolsRomeVersion}"
     implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiVersion}"
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocOpenapiVersion}"
     implementation "org.springdoc:springdoc-openapi-javadoc:${springdocOpenapiVersion}"
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -63,6 +60,7 @@ dependencies {
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
@@ -75,12 +73,24 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-gitProperties {
-    failOnNoGitDirectory = false
+tasks.named('jar') {
+    archiveClassifier = ''
+    exclude('application-local*.properties')
+    exclude("application*.yml")
+}
+
+tasks.named('bootJar') {
+    archiveClassifier = 'boot'
+    exclude('application-local*.properties')
+    exclude("application*.yml")
 }
 
 springBoot {
     buildInfo()
+}
+
+gitProperties {
+    failOnNoGitDirectory = false
 }
 
 checkstyle {
@@ -91,9 +101,4 @@ sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
     }
-}
-
-bootJar {
-    exclude("application*.yml")
-    exclude("log4j2-*.xml")
 }
