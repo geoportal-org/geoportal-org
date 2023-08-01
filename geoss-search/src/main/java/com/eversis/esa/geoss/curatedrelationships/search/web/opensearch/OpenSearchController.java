@@ -7,6 +7,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.FacetedPag
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.impl.PageRequest;
 import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Entry;
+import com.eversis.esa.geoss.curatedrelationships.search.model.entity.EntryType;
 import com.eversis.esa.geoss.curatedrelationships.search.model.exception.ResourceNotFoundException;
 import com.eversis.esa.geoss.curatedrelationships.search.service.search.SearchService;
 import com.eversis.esa.geoss.curatedrelationships.search.utils.CollectionMapper;
@@ -16,9 +17,11 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.query.Bo
 import com.eversis.esa.geoss.curatedrelationships.search.web.opensearch.query.EntryTypeMapper;
 
 import com.rometools.rome.feed.atom.Feed;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,7 +42,7 @@ import javax.validation.constraints.Min;
 /**
  * The type Open search controller.
  */
-@Api(tags = {"OPENSEARCH"})
+@Tag(name = "OPENSEARCH")
 @Slf4j
 @RestController
 @RequestMapping("/opensearch")
@@ -69,17 +72,19 @@ public class OpenSearchController {
      * @param dataSource the data source
      * @return the feed
      */
-    @ApiOperation(value = "Find resource by their id using opensearch server")
+    @Hidden
+    @Operation(summary = "Find resource by their id using opensearch server")
     @ResponseBody
     @GetMapping(produces = MediaType.APPLICATION_ATOM_XML_VALUE, params = "targetIds")
     public Feed findById(
-            @ApiParam(value = "Pagination parameter, defines startIndex.", defaultValue = "1")
+            @Parameter(description = "Pagination parameter, defines startIndex.")
             @RequestParam(name = "si", defaultValue = "1", required = false) @Min(1) Integer startIndex,
-            @ApiParam(value = "Pagination parameter, defines items per page.", defaultValue = "10")
+            @Parameter(description = "Pagination parameter, defines items per page.")
             @RequestParam(name = "ct", defaultValue = "10", required = false) @Min(1) Integer size,
-            @ApiParam(value = "List of entry's ids.")
+            @Parameter(description = "List of entry's ids.")
             @RequestParam(name = "targetIds", required = true) String targetIds,
-            @ApiParam(value = "Name of the datasource.", allowableValues = "geoss_cr, amerigeoss_ckan")
+            @Parameter(description = "Name of the datasource.",
+                       schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSource) {
 
         Set<String> ids = CollectionMapper.mapSet(targetIds);
@@ -110,44 +115,46 @@ public class OpenSearchController {
      * @param format the format
      * @return the feed
      */
-    @ApiOperation(value = "Search for resources using opensearch server")
+    @Operation(summary = "Search for resources using opensearch server")
     @ResponseBody
     @GetMapping(produces = MediaType.APPLICATION_ATOM_XML_VALUE)
     public Feed findResources(
-            @ApiParam(value = "Pagination parameter, defines startIndex.", defaultValue = "1")
+            @Parameter(description = "Pagination parameter, defines startIndex.")
             @RequestParam(name = "si", defaultValue = "1") @Min(1) int startIndex,
-            @ApiParam(value = "Pagination parameter, defines items per page.", defaultValue = "10")
+            @Parameter(description = "Pagination parameter, defines items per page.")
             @RequestParam(name = "ct", defaultValue = "10") @Min(1) int size,
-            @ApiParam(value = "Phrase. Use to full text search on content.")
+            @Parameter(description = "Phrase. Use to full text search on content.")
             @RequestParam(name = "st", required = false) String phrase,
-            @ApiParam(value = "Filter by geoss_cr_type",
-                      allowableValues = "data_resource, service_resource, information_resource")
+            @Parameter(description = "Filter by geoss_cr_type",
+                       schema = @Schema(implementation = EntryType.class))
             @RequestParam(name = "geoss_cr_type", required = false) String resourceEntryTypes,
-            @ApiParam(value = "Specify ids of parent entries. Use to get descendants of specified resources.")
+            @Parameter(description = "Specify ids of parent entries. Use to get descendants of specified resources.")
             @RequestParam(name = "parents", required = false) String parents,
-            @ApiParam(value = "Name of the datasource.", allowableValues = "geoss_cr, amerigeoss_ckan")
+            @Parameter(description = "Name of the datasource.",
+                       schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSource,
-            @ApiParam(
-                    value = "Filter by geo coordinates. <br/>Format: leftTopLatitude,leftTopLongitude,"
-                            + "rightBottomLatitude,rightBottomLongitude")
+            @Parameter(
+                    description = "Filter by geo coordinates. <br/>Format: leftTopLatitude,leftTopLongitude,"
+                                  + "rightBottomLatitude,rightBottomLongitude")
             @RequestParam(name = "bbox", required = false) String bbox,
-            @ApiParam(value = "Defines bbox relation.", allowableValues = "CONTAINS, OVERLAPS, DISJOINT")
+            @Parameter(description = "Defines bbox relation.",
+                       schema = @Schema(implementation = BoundingBoxRelation.class))
             @RequestParam(name = "rel", required = false) String bboxRelation,
-            @ApiParam(value = "Filter by startDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
+            @Parameter(description = "Filter by startDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
             @RequestParam(name = "ts", required = false) @DateTimeFormat(
                     pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime startDateTime,
-            @ApiParam(value = "Filter by endDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
+            @Parameter(description = "Filter by endDateTime. <br/>Format: yyyy-MM-dd'T'HH:mm:ss'Z'")
             @RequestParam(name = "te", required = false) @DateTimeFormat(
                     pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") LocalDateTime endDateTime,
-            @ApiParam(value = "Filter by source of the resource.")
+            @Parameter(description = "Filter by source of the resource.")
             @RequestParam(name = "sources", required = false) String sources,
-            @ApiParam(value = "Filter by protocol of the resource.")
+            @Parameter(description = "Filter by protocol of the resource.")
             @RequestParam(name = "prot", required = false) String protocol,
-            @ApiParam(value = "Filter by protocol of the resource.")
+            @Parameter(description = "Filter by protocol of the resource.")
             @RequestParam(name = "organisationName", required = false) String organisationName,
-            @ApiParam(value = "Filter by keywords.")
+            @Parameter(description = "Filter by keywords.")
             @RequestParam(name = "kwd", required = false) String keyword,
-            @ApiParam(value = "Filter by format.")
+            @Parameter(description = "Filter by format.")
             @RequestParam(name = "frmt", required = false) String format
     ) {
         SearchQuery searchQuery = new SearchQuery.SearchQueryBuilder()

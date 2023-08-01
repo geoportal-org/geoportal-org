@@ -52,7 +52,7 @@ public class PageRequest implements Pageable {
      * @param properties the properties
      */
     public PageRequest(int startIndex, int size, Direction direction, String... properties) {
-        this(startIndex, size, new Sort(direction, properties));
+        this(startIndex, size, Sort.by(direction, properties));
     }
 
     /**

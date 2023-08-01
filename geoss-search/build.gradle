@@ -6,11 +6,12 @@ plugins {
     id 'project-report'
     id 'org.springframework.boot'
     id "io.spring.dependency-management"
+    id 'com.gorylenko.gradle-git-properties'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 ext {
@@ -44,39 +45,42 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-    implementation 'org.springframework.data:spring-data-commons-core:1.4.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.data:spring-data-commons:2.7.14'
     implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:6.6.2'
     implementation 'org.locationtech.spatial4j:spatial4j:0.7'
     implementation 'org.locationtech.jts:jts-core:1.16.1'
-
     implementation 'com.rometools:rome:1.12.0'
     implementation 'com.rometools:rome-modules:1.12.0'
-
+    implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiVersion}"
+    implementation "org.springdoc:springdoc-openapi-javadoc:${springdocOpenapiVersion}"
     compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.springframework.boot:spring-boot-properties-migrator'
+    runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     annotationProcessor 'org.projectlombok:lombok'
-
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-    testImplementation 'org.mockito:mockito-core:2.28.2'
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.28.2'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-parameters'
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+gitProperties {
+    failOnNoGitDirectory = false
 }
 
 springBoot {
     buildInfo()
-}
-
-test {
-    useJUnitPlatform() {
-        includeEngines 'junit-jupiter'
-    }
 }
 
 checkstyle {

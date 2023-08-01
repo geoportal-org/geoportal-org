@@ -8,9 +8,10 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.api.dto.extension.E
 import com.eversis.esa.geoss.curatedrelationships.search.web.api.mapper.DetailedExtensionDtoMapper;
 import com.eversis.esa.geoss.curatedrelationships.search.web.api.mapper.ExtensionDtoMapper;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
  * The type Extension controller.
  */
 @Slf4j
-@Api(tags = {"EXTENSIONS"})
+@Tag(name = "EXTENSIONS")
 @RequestMapping("/api/extensions")
 @RestController
 class ExtensionController {
@@ -57,13 +58,13 @@ class ExtensionController {
      * @param dataSourceParam the data source param
      * @return the extensions
      */
-    @ApiOperation(value = "Search for extensions related to specified resources")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Operation(summary = "Search for extensions related to specified resources")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ExtensionDto> getExtensions(
-            @ApiParam(value = "Collection of entry's ids.")
+            @Parameter(description = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
-            @ApiParam(value = "Name of the datasource.",
-                      allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
+            @Parameter(description = "Name of the datasource.",
+                      schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);
@@ -80,13 +81,13 @@ class ExtensionController {
      * @param dataSourceParam the data source param
      * @return the detailed extensions
      */
-    @ApiOperation(value = "Search for detailed extensions related to specified resources")
-    @GetMapping(path = "/details", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Operation(summary = "Search for detailed extensions related to specified resources")
+    @GetMapping(path = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DetailedExtensionDto> getDetailedExtensions(
-            @ApiParam(value = "Collection of entry's ids.")
+            @Parameter(description = "Collection of entry's ids.")
             @RequestParam(name = "ids") String ids,
-            @ApiParam(value = "Name of the datasource.",
-                      allowableValues = "geoss_cr, amerigeoss_ckan, wikipedia, zenodo")
+            @Parameter(description = "Name of the datasource.",
+                      schema = @Schema(implementation = DataSource.class))
             @RequestParam(name = "ds") String dataSourceParam) {
         DataSource dataSource = DataSource.fromString(dataSourceParam);
         Set<String> idsCollection = CollectionMapper.mapSet(ids);

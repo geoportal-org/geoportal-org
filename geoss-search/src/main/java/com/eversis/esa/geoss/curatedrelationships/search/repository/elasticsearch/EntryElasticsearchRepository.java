@@ -87,16 +87,19 @@ public class EntryElasticsearchRepository extends FacetedElasticsearchRepository
     public FacetedPage<Entry> findResources(SearchQuery searchParameters, Pageable pageable) {
         QueryBuilder mainQueryBuilder = queryFactory.buildSearchQuery(searchParameters);
         List<AggregationBuilder> aggregations = aggregationFactory.buildAggregations(FACET_FIELDS);
-        Sort sort = getSortOrdering().and(pageable.getSort());
+        Sort sort = getSortOrdering();
+        if (pageable.getSort() != null) {
+            sort = sort.and(pageable.getSort());
+        }
         Pageable queryPageable = new PageRequest(pageable.getStartIndex(), pageable.getPageSize(), sort);
         return search(queryPageable, mainQueryBuilder, aggregations);
     }
 
     private Sort getSortOrdering() {
         Sort.Order scoreOrder = new Sort.Order(Sort.Direction.DESC, SCORE_FIELD);
-        Sort.Order titleOrder = new Order(TITLE_RAW_FIELD);
+        Sort.Order titleOrder = new Order(Sort.Direction.DESC, TITLE_RAW_FIELD);
 
-        return new Sort(scoreOrder, titleOrder);
+        return Sort.by(scoreOrder, titleOrder);
     }
 
     @Override

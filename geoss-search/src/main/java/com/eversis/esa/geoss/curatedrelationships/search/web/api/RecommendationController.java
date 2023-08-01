@@ -3,9 +3,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.web.api;
 import com.eversis.esa.geoss.curatedrelationships.search.service.recommendation.RecommendationService;
 import com.eversis.esa.geoss.curatedrelationships.search.web.api.dto.recommendation.RecommendedResourceDto;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ import javax.validation.constraints.NotBlank;
  * The type Recommendation controller.
  */
 @Slf4j
-@Api(tags = {"RECOMMENDATION"})
+@Tag(name = "RECOMMENDATION")
 @RequestMapping("/api/recommendations")
 @RestController
 class RecommendationController {
@@ -46,16 +46,16 @@ class RecommendationController {
      * @param size the size
      * @return the recommended resources
      */
-    @ApiOperation(value = "Get recommended resources related to search phrase")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Operation(summary = "Get recommended resources related to search phrase")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecommendedResourceDto> getRecommendedResources(
-            @ApiParam(value = "Search term") @RequestParam(name = "st") @Valid @NotBlank String phrase,
-            @ApiParam(value = "Max items count") @RequestParam(name = "ct", defaultValue = "10") @Min(1) Integer size) {
+            @Parameter(description = "Search term") @RequestParam(name = "st") @Valid @NotBlank String phrase,
+            @Parameter(description = "Max items count") @RequestParam(name = "ct", defaultValue = "10") @Min(
+                    1) Integer size) {
         log.debug("Getting recommendations related to phrase: {} with max size: {}", phrase, size);
         return recommendationService.getRecommendations(phrase, size).getContent()
                 .stream()
                 .map(RecommendedResourceDto::of)
                 .collect(Collectors.toList());
     }
-
 }

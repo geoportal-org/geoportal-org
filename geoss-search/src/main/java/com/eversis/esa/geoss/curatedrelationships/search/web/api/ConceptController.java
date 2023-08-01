@@ -2,9 +2,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.web.api;
 
 import com.eversis.esa.geoss.curatedrelationships.search.service.concept.ConceptSearchService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ import javax.validation.constraints.NotBlank;
  * The type Concept controller.
  */
 @Slf4j
-@Api(tags = {"CONCEPTS"})
+@Tag(name = "CONCEPTS")
 @RequestMapping("/api/concepts")
 @RestController
 class ConceptController {
@@ -45,15 +45,15 @@ class ConceptController {
      * @param size the size
      * @return the list
      */
-    @ApiOperation(value = "Search for concepts related to search phrase")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Operation(summary = "Search for concepts related to search phrase")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> findConceptNames(
-            @ApiParam(value = "Search phrase") @RequestParam(name = "st") @NotBlank String phrase,
-            @ApiParam(value = "Max items count") @RequestParam(name = "ct", defaultValue = "10") @Min(1) Integer size) {
+            @Parameter(description = "Search phrase") @RequestParam(name = "st") @NotBlank String phrase,
+            @Parameter(description = "Max items count") @RequestParam(name = "ct", defaultValue = "10") @Min(
+                    1) Integer size) {
         if (log.isDebugEnabled()) {
             log.debug("Searching for concepts related to phrase: {} with max size: {}", phrase, size);
         }
         return conceptSearchService.findConceptNames(phrase, size);
     }
-
 }
