@@ -9,6 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GeossCRApplication {
 
+    static {
+        // if you want to use log4j logger in this class then set this property from command line
+        System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.selector.BasicContextSelector");
+    }
+
     /**
      * The entry point of application.
      *
@@ -17,5 +22,4 @@ public class GeossCRApplication {
     public static void main(String[] args) {
         SpringApplication.run(GeossCRApplication.class, args);
     }
-
 }

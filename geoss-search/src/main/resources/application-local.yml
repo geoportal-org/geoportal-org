@@ -21,7 +21,3 @@ datasource:
         recommendation:
             index: geoss-recommendation
             type: _doc
-
-
-logging:
-    config: classpath:log4j2-local.xml
