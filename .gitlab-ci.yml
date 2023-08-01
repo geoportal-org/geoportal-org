@@ -1,4 +1,19 @@
 variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_CLI_OPTS: "--build-cache"
+
+.gradle_build_base:
+  image: openjdk:17-jdk-slim-buster
+  tags:
+    - geoss-runner-1
+  after_script:
+    - cd ..
+  cache: { }
+  only:
+    - develop
+    - uat
+    - /^release-.*/
+    - /^GPP-.*/
 
 .build_apps:
   image: gradle:jdk17-jammy
@@ -25,6 +40,29 @@ stages:  # List of stages for jobs, and their order of execution
 ########################################################################################################################
 #                                                     BUILD                                                            #
 ########################################################################################################################
+build_geoss_search:
+  extends: .gradle_build_base
+  stage: build
+  before_script:
+    - cd ./geoss-search
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+  script:
+    - echo "Building geoss-search app..."
+    - chmod u+x ./gradlew
+    - ./gradlew $GRADLE_CLI_OPTS assemble
+    - ls -l .gradle
+    - echo "Build geoss-search complete"
+  cache:
+    paths:
+      - geoss-search/.gradle
+      - geoss-search/build
+      - geoss-search/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+  artifacts:
+    paths:
+      - geoss-search/build/libs/*-boot.jar
+    expire_in: 4 weeks
+
 build_geoss-settings:
   stage: build
   extends: .build_apps
