@@ -1,11 +1,11 @@
 export default {
-    statistics : {
+    statistics: {
         statistics: 'Statistics',
         chartOptions: 'CHART OPTIONS:',
         source: 'Source:',
         dataUsage: 'Data usage',
         siteUsage: 'Site usage',
-        dataset: 'Dataset:',  
+        dataset: 'Dataset:',
         type: 'Type:',
         moreOptions: 'MORE OPTIONS:',
         interval: 'Interval:',
@@ -26,12 +26,12 @@ export default {
             popularKeywords: 'Most popular keywords',
             popularCatalogs: 'Most popular catalogs',
             popularOrganizations: 'Most popular organizations',
-            popularAreas: 'Most popular areas'
+            popularAreas: 'Most popular areas',
         },
         shortTypeOptions: {
             numberOfSearches: 'Number of searches',
             popularResources: 'Most popular resources',
-            popularAreas: 'Most popular areas'
+            popularAreas: 'Most popular areas',
         },
         siteTypeOptions: {
             numberOfUsers: 'Number of users',
@@ -39,14 +39,14 @@ export default {
             bounceRate: 'Bounce rate',
             returningUsers: 'Returning users',
             usersCountries: "Users' countries",
-            popularBrowsers: 'Most popular browsers'
+            popularBrowsers: 'Most popular browsers',
         },
         timeUnits: {
             day: 'Day',
             week: 'Week',
             month: 'Month',
-            year: 'Year'
-        }
+            year: 'Year',
+        },
     },
     placeholders: {
         searchBar: 'Enter search words',
@@ -85,6 +85,8 @@ export default {
     menu: {
         toggle: 'Toggle menu',
         languageToggle: 'Toggle language selector',
+        signIn: 'Sign in',
+        signOff: 'Sign off',
     },
     general: {
         error: 'Error',

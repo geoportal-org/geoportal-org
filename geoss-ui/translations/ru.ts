@@ -84,6 +84,8 @@ export default {
     menu: {
         toggle: 'Переключить меню',
         languageToggle: 'Переключить язык выбора',
+        signIn: 'Войти',
+        signOff: 'выйти',
     },
     general: {
         error: 'ошибка',

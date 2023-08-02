@@ -41,6 +41,7 @@ export const Liferay = {
 interface AppVueObj {
     [key: string]: any
 }
+
 export const AppVueObj: AppVueObj = {
     app: null,
     storeStateBackup: null,

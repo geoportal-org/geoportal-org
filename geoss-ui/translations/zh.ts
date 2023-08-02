@@ -82,6 +82,8 @@ export default {
     menu: {
         toggle: '切换菜单',
         languageToggle: '切换语言选择器',
+        signIn: '登入',
+        signOff: '搁笔',
     },
     general: {
         error: '错误',

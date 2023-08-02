@@ -13,11 +13,13 @@
 
 <script>
 import ContentAPI from '@/api/content'
+import { GeneralGetters } from '@/store/general/general-getters'
 
 export default {
     layout() {
         return 'static'
     },
+
     data() {
         return {
             page: {
@@ -29,14 +31,28 @@ export default {
         }
     },
 
-    async asyncData({ params, page, content }) {
-        const slug = params.slug;
-        const receivedPage = await ContentAPI.getPage(slug);
+    computed: {
+        langLocale() {
+            return this.$store.getters[GeneralGetters.langLocale];
+        }
+    },
 
-        page = receivedPage || { title: 'Missing page' };
-        content = receivedPage ? await ContentAPI.getContent(receivedPage.contentId) : {
-            data: 'No page found for slug: ' + slug
-        };
+    watch: {
+        async langLocale(newVal) {
+            const slug = this.$route.params.slug;
+            const locale = newVal;
+            const { generatedPage, generatedContent } = await ContentAPI.generatePage(slug, locale)
+            this.page = generatedPage;
+            this.content = generatedContent;
+        }
+    },
+
+    async asyncData({ params, page, content, i18n }) {
+        const slug = params.slug;
+        const locale = i18n.getLocaleCookie()
+        const { generatedPage, generatedContent } = await ContentAPI.generatePage(slug, locale)
+        page = generatedPage;
+        content = generatedContent;
 
         return { slug, page, content }
     }

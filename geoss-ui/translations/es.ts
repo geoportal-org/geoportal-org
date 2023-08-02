@@ -86,6 +86,8 @@ export default {
     menu: {
         toggle: 'Alternar menú',
         languageToggle: 'Seleccionar selector de idioma',
+        signIn: 'Iniciar sesión',
+        signOff: 'cerrar sesión',
     },
     general: {
         error: 'Error',

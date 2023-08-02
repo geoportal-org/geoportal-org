@@ -13,7 +13,7 @@
             </a>
         </div>
         <div class="header__middle">
-            <NuxtLink :title="siteName" :to="siteUrl" data-tutorial-tag="header-logo-main">
+            <NuxtLink :title="siteName" to="/" data-tutorial-tag="header-logo-main">
                 <img :src="siteLogo" :alt="siteName" />
             </NuxtLink>
         </div>
@@ -25,7 +25,7 @@
                 <img :src="`/img/ESA-logo-51-white.png`" alt="ESA logo" />
             </a>
 
-            <!-- <div class="header__language-switcher" v-click-outside="closeLangContainer"
+            <div class="header__language-switcher" v-click-outside="closeLangContainer"
                 data-tutorial-tag="header-language-switch">
                 <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')"
                     :aria-label="$tc('menu.languageToggle')">
@@ -39,22 +39,16 @@
                 <div class="options">
                     <CollapseTransition>
                         <div v-show="langContainerActive" class="options__wrapper">
-                            <span :class="{ active: (langLocale === 'en_US') }"
-                                @click="changeLangLocale('en_US')">English</span>
-                            <span :class="{ active: (langLocale === 'pl_PL') }"
-                                @click="changeLangLocale('pl_PL')">Polish</span>
-                            <span :class="{ active: (langLocale === 'es_ES') }"
-                                @click="changeLangLocale('es_ES')">Spanish</span>
-                            <span :class="{ active: (langLocale === 'zh_CN') }"
-                                @click="changeLangLocale('zh_CN')">Chinese</span>
-                            <span :class="{ active: (langLocale === 'fr_FR') }"
-                                @click="changeLangLocale('fr_FR')">French</span>
-                            <span :class="{ active: (langLocale === 'ru_RU') }"
-                                @click="changeLangLocale('ru_RU')">Russian</span>
+                            <span :class="{ active: (langLocale === 'en') }" @click="changeLangLocale('en')">English</span>
+                            <span :class="{ active: (langLocale === 'pl') }" @click="changeLangLocale('pl')">Polish</span>
+                            <span :class="{ active: (langLocale === 'es') }" @click="changeLangLocale('es')">Spanish</span>
+                            <span :class="{ active: (langLocale === 'zh') }" @click="changeLangLocale('zh')">Chinese</span>
+                            <span :class="{ active: (langLocale === 'fr') }" @click="changeLangLocale('fr')">French</span>
+                            <span :class="{ active: (langLocale === 'ru') }" @click="changeLangLocale('ru')">Russian</span>
                         </div>
                     </CollapseTransition>
                 </div>
-            </div> -->
+            </div>
         </div>
     </header>
 </template>
@@ -66,8 +60,6 @@ import { MenuGetters } from '@/store/menu/menu-getters';
 import { GeneralActions } from '@/store/general/general-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters';
-import SpinnerService from '@/services/spinner.service';
-import axios from 'axios';
 import CollapseTransition from '@/plugins/CollapseTransition';
 
 @Component({
@@ -77,13 +69,13 @@ import CollapseTransition from '@/plugins/CollapseTransition';
 })
 export default class HeaderComponent extends Vue {
 
-    public languageMap = {
-        en_US: 'English',
-        pl_PL: 'Polish',
-        es_ES: 'Spanish',
-        fr_FR: 'French',
-        zh_CN: 'Chinese',
-        ru_RU: 'Russian'
+    public languageMap: { [key: string]: string } = {
+        en: 'English',
+        pl: 'Polish',
+        es: 'Spanish',
+        fr: 'French',
+        zh: 'Chinese',
+        ru: 'Russian'
     };
 
     get menuOpened() {
@@ -130,34 +122,18 @@ export default class HeaderComponent extends Vue {
 
     public changeLangLocale(locale: string) {
         if (this.langLocale !== locale) {
-            if (!this.isWidget) {
-                const requestUrl = `${location.origin}${location.pathname}?p_p_id=82&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_82_struts_action=%2Flanguage%2Fview&_82_redirect=${location.pathname}`;
-                const requestHeaders = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
-                const requestData = new FormData();
-                requestData.set('_82_formDate', `${new Date().getTime()}`);
-                requestData.set('_82_languageId', locale);
-                axios({
-                    method: 'post',
-                    url: requestUrl,
-                    headers: requestHeaders,
-                    data: requestData
-                }).then(() => {
-                    if (!document.querySelector('.liferay-essentials') || document.querySelector('.dockbar-ready')) {
-                        SpinnerService.showSpinner(null, false);
-                        location.reload();
-                    }
-                });
-            }
+            this.$i18n.setLocale(locale)
+            this.$i18n.setLocaleCookie(locale)
             this.$store.dispatch(GeneralActions.setLangLocale, locale);
         }
         this.toggleLangContainer();
     }
 
     private mounted() {
-        if (this.$cookies.get('GUEST_LANGUAGE_ID')) {
-            this.$store.dispatch(GeneralActions.setLangLocale, this.$cookies.get('GUEST_LANGUAGE_ID'));
+        if (this.$cookies.get('i18n_redirected')) {
+            this.$store.dispatch(GeneralActions.setLangLocale, this.$cookies.get('i18n_redirected'));
         } else {
-            this.$store.dispatch(GeneralActions.setLangLocale, 'en_US');
+            this.$store.dispatch(GeneralActions.setLangLocale, 'en');
         }
     }
 }

@@ -1,8 +1,8 @@
 export default {
-    statistics : {
-        statistics : 'Statistiques',
+    statistics: {
+        statistics: 'Statistiques',
         chartOptions: 'OPTIONS DE GRAPHIQUE:',
-        source : 'Source :',
+        source: 'Source :',
         dataUsage: 'Utilisation des données',
         siteUsage: 'Utilisation du site',
         dataset: 'Jeu de données:',
@@ -23,30 +23,30 @@ export default {
         dataTypeOptions: {
             numberOfSearches: 'Nombre de recherches',
             popularResources: 'Ressources les plus populaires',
-            popularKeywords: "Mots clés les plus populaires",
+            popularKeywords: 'Mots clés les plus populaires',
             popularCatalogs: 'Catalogues les plus populaires',
             popularOrganizations: 'Organisations les plus populaires',
-            popularAreas: 'Zones les plus populaires'
+            popularAreas: 'Zones les plus populaires',
         },
         shortTypeOptions: {
             numberOfSearches: 'Nombre de recherches',
             popularResources: 'Ressources les plus populaires',
-            popularAreas: 'Zones les plus populaires'
+            popularAreas: 'Zones les plus populaires',
         },
         siteTypeOptions: {
             numberOfUsers: "Nombre d'utilisateurs",
             numberOfSessions: 'Nombre de sessions',
             bounceRate: 'Taux de rebond',
             returnUsers: 'Utilisateurs connus',
-            usersCountries: "Pays des utilisateurs",
-            popularBrowsers: 'Navigateurs les plus populaires'
+            usersCountries: 'Pays des utilisateurs',
+            popularBrowsers: 'Navigateurs les plus populaires',
         },
         timeUnits: {
             day: 'Jour',
-            week : 'Semaine',
-            month : 'Mois',
-            year: 'Année'
-        }
+            week: 'Semaine',
+            month: 'Mois',
+            year: 'Année',
+        },
     },
     placeholders: {
         searchBar: 'Entrer des mots de recherche',
@@ -86,6 +86,8 @@ export default {
     menu: {
         toggle: 'Basculer le menu',
         languageToggle: 'Basculer le sélecteur de langue',
+        signIn: 'S`identifier',
+        signOff: 'Approuver',
     },
     general: {
         error: 'Erreur',

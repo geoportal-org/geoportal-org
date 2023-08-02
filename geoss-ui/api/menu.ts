@@ -60,14 +60,14 @@ interface Level1Route {
 
 interface Routes extends Array<Level1Route> {}
 
-type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh';
-const locale: Language = 'en';
+type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh'
 
 const getId = (element: MenuElement) => {
     return element._links.self.href.split('/').pop()
 }
 
 const buildMenu = (menu: Array<MenuElement>) => {
+    const locale: Language = window.$nuxt.$i18n.getLocaleCookie() as Language
     const routes: Routes = []
     const linksLevel1 = menu.filter((e) => e.levelId === 0)
     const linksLevel2 = menu.filter((e) => e.levelId === 1)
@@ -104,7 +104,7 @@ export default {
         const menuRaw: MenuResponse = await apiClient.$get(geossContents.menu, {
             headers: {
                 Authorization: '',
-            }
+            },
         })
         const menu = buildMenu(menuRaw._embedded.menu)
         return menu

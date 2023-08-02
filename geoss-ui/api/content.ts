@@ -62,14 +62,13 @@ interface Content {
     }
 }
 
-type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh';
-const locale: Language = 'en';
+type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh'
 
 const getPages = () => {
     return apiClient.$get(geossContents.page, {
         headers: {
             Authorization: '',
-        }
+        },
     })
 }
 
@@ -95,38 +94,51 @@ const getNewFileData = (inputFile: any) => {
     }
 }
 
-export default {
-    getPage: async (slug: string) => {
+const ContentAPI = {
+    generatePage: async (slug: string, locale: Language) => {
+        const receivedPage = await ContentAPI.getPage(slug, locale)
+
+        const generatedPage = receivedPage || { title: 'Missing page' }
+        const generatedContent = receivedPage
+            ? await ContentAPI.getContent(receivedPage.contentId as any, locale)
+            : {
+                  data: 'No page found for slug: ' + slug,
+              }
+
+        return { generatedPage, generatedContent }
+    },
+
+    getPage: async (slug: string, locale: string = 'en') => {
         const pages: Pages = await getPages()
         const page: Page = pages._embedded.page.filter(
             (page: { slug: string }) => page.slug === slug
         )[0]
 
         if (!page) {
-            return false;
+            return false
         }
 
-        const title = page.title[locale as keyof Language];
-        page.title = title;
+        const title = page.title[locale as keyof Language]
+        page.title = title
 
         return page
     },
 
-    getContent: async (contentId: string) => {
+    getContent: async (contentId: string, locale: string = 'en') => {
         const content: Content = await apiClient.$get(
             geossContents.content + '/' + contentId,
             {
                 headers: {
                     Authorization: '',
-                }
+                },
             }
         )
 
-        const title = content.title[locale as keyof Language];
-        const data = content.data[locale as keyof Language];
+        const title = content.title[locale as keyof Language]
+        const data = content.data[locale as keyof Language]
 
-        content.title = title;
-        content.data = data;
+        content.title = title
+        content.data = data
 
         return content
     },
@@ -134,12 +146,16 @@ export default {
     addContent: async (inputFile: any, token: any = null) => {
         const fileData = prepareFileToUpload(inputFile)
         try {
-            const resp = await apiClient.$post(geossContents.document, fileData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token ? token : '',
-                },
-            })
+            const resp = await apiClient.$post(
+                geossContents.document,
+                fileData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: token ? token : '',
+                    },
+                }
+            )
             return resp._links.document.href.split('/').slice(-1).pop()
         } catch (e: any) {
             console.warn(e)
@@ -147,3 +163,5 @@ export default {
         }
     },
 }
+
+export default ContentAPI

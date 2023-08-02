@@ -178,7 +178,7 @@ export default {
             {
                 headers: {
                     Authorization: '',
-                }
+                },
             }
         )
         return webSettings._embedded.webSettings
@@ -189,7 +189,7 @@ export default {
             {
                 headers: {
                     Authorization: '',
-                }
+                },
             }
         )
         const webSettingsData: WebSettingsData = parseWebSettings(webSettings)
@@ -201,7 +201,7 @@ export default {
             {
                 headers: {
                     Authorization: '',
-                }
+                },
             }
         )
         const apiSettingsData: any = parseApiSettings(apiSettings)
@@ -212,7 +212,7 @@ export default {
             const catalogsResponse: any = await apiClient.$get(catalogsUrl, {
                 headers: {
                     Authorization: '',
-                }
+                },
             })
             return parseCatalogsResponse(catalogsResponse)
         }
@@ -222,26 +222,31 @@ export default {
         const views: any = await apiClient.$get(geossSettings.views, {
             headers: {
                 Authorization: '',
-            }
+            },
         })
         return views._embedded.views
     },
     getDataProviders: async (dataProvidersUrl: string) => {
         if (process.browser) {
             SpinnerService.showSpinner()
+            console.log(dataProvidersUrl)
             const dataProvidersResponse: any = await apiClient.$get(
                 dataProvidersUrl,
                 {
                     headers: {
                         Authorization: '',
-                    }
+                    },
                 }
             )
             SpinnerService.hideSpinner()
             return dataProvidersResponse
         }
     },
-    setSiteSetting: async (id: number, webSettingData: IWebSettingData, token: any = null) => {
+    setSiteSetting: async (
+        id: number,
+        webSettingData: IWebSettingData,
+        token: any = null
+    ) => {
         let method = '$post'
         let url = `${geossSettings.webSettings}`
         if (id) {

@@ -43,12 +43,14 @@
             <div class="menu__separator"></div>
             <div class="menu__item">
                 <a v-if="isSignedIn" class="menu__link" target="_blank" @click="signOff()">
-                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-out.svg" title="Sign off" />
-                    <span>Sign off</span>
+                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-out.svg"
+                        :title="$tc('menu.signOff')" />
+                    <span>{{ $tc('menu.signOff') }}</span>
                 </a>
                 <a v-else class="menu__link" target="_blank" @click="signIn()">
-                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-in.svg" title="Sign in" />
-                    <span>Sign in</span>
+                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-in.svg"
+                        :title="$tc('menu.signIn')" />
+                    <span>{{ $tc('menu.signIn') }}</span>
                 </a>
             </div>
         </div>
@@ -158,18 +160,15 @@ export default class MenuComponent extends Vue {
 
     @Watch('langLocale')
     private async onLangLocaleChange() {
-        // [, this.routes] = await to(GeneralApiService.getMenuItems(this.langLocale));
         this.routes = await MenuAPI.getMenu();
     }
- 
+
     @Watch('route')
     private onRouteChange() {
         this.closeMenu();
     }
 
     private async mounted() {
-        // const langLocale = this.langLocale !== '' ? this.langLocale : this.$cookies.get('GUEST_LANGUAGE_ID');
-        // [, this.routes] = await to(GeneralApiService.getMenuItems(langLocale));
         this.routes = await MenuAPI.getMenu();
         this.closeMenu();
     }

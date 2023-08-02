@@ -1,12 +1,12 @@
 export default {
-    statistics : {
+    statistics: {
         statistics: 'Statystyki',
-        chartOptions: "OPCJE WYKRESU:",
-        source: "Źródło:",
+        chartOptions: 'OPCJE WYKRESU:',
+        source: 'Źródło:',
         dataUsage: 'Wykorzystanie danych',
         siteUsage: 'Wykorzystanie witryny',
         dataset: 'Zbiór danych:',
-        type: "Typ:",
+        type: 'Typ:',
         moreOptions: 'WIĘCEJ OPCJI:',
         interval: 'Interwał:',
         resultsPresented: 'Wyniki prezentowane:',
@@ -16,7 +16,7 @@ export default {
         showChart: 'Pokaż wykres',
         lastWeek: 'Ostatni tydzień',
         lastMonth: 'Ostatni miesiąc',
-        lastYear: "Ostatni rok",
+        lastYear: 'Ostatni rok',
         exportButton: 'Zapisz',
         period: 'Analizowany okres: ',
         generated: 'Data wygenerowania: ',
@@ -26,27 +26,27 @@ export default {
             popularKeywords: 'Najpopularniejsze słowa kluczowe',
             popularCatalogs: 'Najpopularniejsze katalogi',
             popularOrganizations: 'Najpopularniejsze organizacje',
-            popularAreas: "Najbardziej popularne obszary"
+            popularAreas: 'Najbardziej popularne obszary',
         },
         shortTypeOptions: {
             numberOfSearches: 'Liczba wyszukiwań',
             popularResources: 'Najpopularniejsze zasoby',
-            popularAreas: "Najbardziej popularne obszary"
+            popularAreas: 'Najbardziej popularne obszary',
         },
         siteTypeOptions: {
             numberOfUsers: 'Liczba użytkowników',
             numberOfSessions: 'Liczba sesji',
             bounceRate: 'Współczynnik odrzuceń',
             returningUsers: 'Powracający użytkownicy',
-            usersCountries: "Kraje użytkowników",
-            popularBrowsers: "Najpopularniejsze przeglądarki"
+            usersCountries: 'Kraje użytkowników',
+            popularBrowsers: 'Najpopularniejsze przeglądarki',
         },
         timeUnits: {
             day: 'Dzień',
-            week: "Tydzień",
-            month: "Miesiąc",
-            year: "Rok"
-        }
+            week: 'Tydzień',
+            month: 'Miesiąc',
+            year: 'Rok',
+        },
     },
     placeholders: {
         searchBar: 'Podaj szukaną frazę',
@@ -85,6 +85,8 @@ export default {
     menu: {
         toggle: 'Przełącz menu',
         languageToggle: 'Przełączanie języka wybierak',
+        signIn: 'Zaloguj się',
+        signOff: 'Wyloguj się',
     },
     general: {
         error: 'Błąd',

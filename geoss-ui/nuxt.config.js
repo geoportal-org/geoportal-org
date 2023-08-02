@@ -92,30 +92,31 @@ export default {
                 code: 'en',
                 file: 'en.ts',
             },
-            // {
-            //     code: 'es',
-            //     file: 'es.ts',
-            // },
-            // {
-            //     code: 'fr',
-            //     file: 'fr.ts',
-            // },
-            // {
-            //     code: 'pl',
-            //     file: 'pl.ts',
-            // },
-            // {
-            //     code: 'ru',
-            //     file: 'ru.ts',
-            // },
-            // {
-            //     code: 'zh',
-            //     file: 'zh.ts',
-            // },
+            {
+                code: 'es',
+                file: 'es.ts',
+            },
+            {
+                code: 'fr',
+                file: 'fr.ts',
+            },
+            {
+                code: 'pl',
+                file: 'pl.ts',
+            },
+            {
+                code: 'ru',
+                file: 'ru.ts',
+            },
+            {
+                code: 'zh',
+                file: 'zh.ts',
+            },
         ],
         lazy: false,
         langDir: 'translations/',
         defaultLocale: 'en',
+        strategy: 'no_prefix',
         vueI18n: {
             fallbackLocale: 'en',
         },
@@ -134,8 +135,6 @@ export default {
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         vendor: ['ol'],
-        transpile: [/google-chart/, /zrender/]
-
     },
 
     publicRuntimeConfig: {
