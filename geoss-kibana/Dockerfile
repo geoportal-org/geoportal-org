@@ -19,3 +19,4 @@ HEALTHCHECK \
 CMD curl -fsS "http://localhost:5601/" || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/opt/bitnami/scripts/kibana/run.sh"]
