@@ -14,3 +14,4 @@ for filename in /etc/kibana-data/*.json; do
 done
 
 echo "ENTRYPOINT: Creating index-patterns finished."
+/opt/bitnami/scripts/kibana/entrypoint.sh $1
