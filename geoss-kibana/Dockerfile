@@ -11,6 +11,8 @@ COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 COPY index-patterns/ /etc/kibana-data/
 COPY --chown=1001 entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+COPY --chown=1001 create_index_patterns.sh /create_index_patterns.sh
+RUN chmod +x /create_index_patterns.sh
 
 HEALTHCHECK \
 	--interval=30s \
