@@ -9,7 +9,7 @@ LABEL image="geoss-kibana"
 COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
 COPY index-patterns/ /etc/kibana-data/
-COPY entrypoint.sh /entrypoint.sh
+COPY --chown=1001 entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 HEALTHCHECK \
