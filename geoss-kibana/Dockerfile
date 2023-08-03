@@ -8,8 +8,14 @@ LABEL image="geoss-kibana"
 
 COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
+COPY index-patterns/ /etc/kibana-data/
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 HEALTHCHECK \
 	--interval=30s \
 	--start-period=30s \
 	--timeout=1m \
 CMD curl -fsS "http://localhost:5601/" || exit 1
+
+ENTRYPOINT ["/entrypoint.sh"]
