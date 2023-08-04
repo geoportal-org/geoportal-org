@@ -5,8 +5,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.GeoPoint;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.model.BoundingBoxELK;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.model.GeoPointELK;
 
-import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
-import org.locationtech.jts.geom.Coordinate;
+import org.elasticsearch.geometry.Geometry;
+import org.elasticsearch.geometry.Rectangle;
 
 /**
  * The type Geo shape mapper.
@@ -71,21 +71,19 @@ public class GeoShapeMapper {
     }
 
     /**
-     * Map envelope from bounding box envelope builder.
+     * Map geometry from bounding box envelope builder.
      *
      * @param boundingBox the bounding box
      * @return the envelope builder
      */
-    public static EnvelopeBuilder mapEnvelopeFromBoundingBox(BoundingBox boundingBox) {
-        return new EnvelopeBuilder(mapCoordinateFromGeoPoint(boundingBox.getLeftTopPoint()),
-                mapCoordinateFromGeoPoint(boundingBox.getRightBottomPoint()));
+    public static Geometry mapGeometryFromBoundingBox(BoundingBox boundingBox) {
+        GeoPoint leftTopPoint = boundingBox.getLeftTopPoint();
+        GeoPoint rightBottomPoint = boundingBox.getRightBottomPoint();
+        return new Rectangle(
+                leftTopPoint.getLongitude(),
+                rightBottomPoint.getLongitude(),
+                leftTopPoint.getLatitude(),
+                rightBottomPoint.getLatitude()
+        );
     }
-
-    private static Coordinate mapCoordinateFromGeoPoint(GeoPoint geoPoint) {
-        if (geoPoint == null) {
-            return new Coordinate();
-        }
-        return new Coordinate(geoPoint.getLongitude(), geoPoint.getLatitude());
-    }
-
 }

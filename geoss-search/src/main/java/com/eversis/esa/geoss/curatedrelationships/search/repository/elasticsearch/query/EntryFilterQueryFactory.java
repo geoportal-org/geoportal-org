@@ -7,8 +7,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.entity.EntryType;
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.mapper.impl.GeoShapeMapper;
 
 import org.elasticsearch.ElasticsearchGenerationException;
-import org.elasticsearch.common.geo.builders.EnvelopeBuilder;
-import org.elasticsearch.geometry.Rectangle;
+import org.elasticsearch.geometry.Geometry;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoShapeQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -75,22 +74,21 @@ public class EntryFilterQueryFactory {
      * @return the geo shape query builder
      */
     GeoShapeQueryBuilder createGeoShapeQuery(BoundingBoxRelation boxRelation, BoundingBox boundingBox) {
-        GeoShapeQueryBuilder geoShapeQueryBuilder = null;
+        GeoShapeQueryBuilder geoShapeQueryBuilder;
         BoundingBox shrunkenBoundingBox = GeoShapeMapper.resizeBoundingBox(boundingBox, -0.0001, -0.0001, 0.0001,
                 0.0001);
-        EnvelopeBuilder envelopeBuilder = GeoShapeMapper.mapEnvelopeFromBoundingBox(shrunkenBoundingBox);
-        Rectangle rectangle = envelopeBuilder.buildGeometry();
+        Geometry geometry = GeoShapeMapper.mapGeometryFromBoundingBox(shrunkenBoundingBox);
         try {
             switch (boxRelation) {
                 case CONTAINS:
-                    geoShapeQueryBuilder = QueryBuilders.geoWithinQuery(COVERAGE_FIELD, rectangle);
+                    geoShapeQueryBuilder = QueryBuilders.geoWithinQuery(COVERAGE_FIELD, geometry);
                     break;
                 case DISJOINT:
-                    geoShapeQueryBuilder = QueryBuilders.geoDisjointQuery(COVERAGE_FIELD, rectangle);
+                    geoShapeQueryBuilder = QueryBuilders.geoDisjointQuery(COVERAGE_FIELD, geometry);
                     break;
                 case OVERLAPS:
                 default:
-                    geoShapeQueryBuilder = QueryBuilders.geoIntersectionQuery(COVERAGE_FIELD, rectangle);
+                    geoShapeQueryBuilder = QueryBuilders.geoIntersectionQuery(COVERAGE_FIELD, geometry);
                     break;
             }
         } catch (IOException e) {
