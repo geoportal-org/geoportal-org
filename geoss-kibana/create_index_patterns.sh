@@ -4,7 +4,7 @@ until curl -s -f -o /dev/null "http://localhost:5601"; do
         sleep 2
 done
 
-while curl -sS "http://localhost:5601" | grep -q "Kibana server is not ready yet"; do
+until curl "http://localhost:5601/api/saved_objects/_find?type=index-pattern" | grep -q "saved_objects"; do
         sleep 2
 done
 
