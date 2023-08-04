@@ -36,13 +36,6 @@ abstract class ElasticsearchRepository<T> {
     abstract String indexName();
 
     /**
-     * Index type string.
-     *
-     * @return the string
-     */
-    abstract String indexType();
-
-    /**
      * Instantiates a new Elasticsearch repository.
      *
      * @param client the client
@@ -69,7 +62,6 @@ abstract class ElasticsearchRepository<T> {
 
     protected SearchResponse search(SearchSourceBuilder sourceBuilder) {
         SearchRequest searchRequest = new SearchRequest(indexName());
-        searchRequest.types(indexType());
         searchRequest.source(sourceBuilder);
         return search(searchRequest);
     }

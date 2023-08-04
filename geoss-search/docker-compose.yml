@@ -1,22 +1,38 @@
-version: '2.2'
+version: "3.8"
+
 services:
-    elk:
-        image: geoss-cr-elk:6.6.1.0
-        ports:
-            - "9200:9200"
-            - "5601:5601"
-        networks:
-            - geoss-cr-network
-        volumes:
-            - elk-data:/var/lib/elasticsearch
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
-            interval: 15s
-            timeout: 10s
-            retries: 40
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - elk-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.3.2
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - elk-network
+    depends_on:
+      - elasticsearch
+
 networks:
-    geoss-cr-network:
+  elk-network:
+
 volumes:
-    elk-data:
-
-
+  elasticsearch-data:

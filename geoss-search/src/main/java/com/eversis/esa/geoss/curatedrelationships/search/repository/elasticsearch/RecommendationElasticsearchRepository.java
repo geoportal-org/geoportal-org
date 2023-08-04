@@ -56,9 +56,4 @@ class RecommendationElasticsearchRepository extends ElasticsearchRepository<Reco
     String indexName() {
         return elasticsearchConfigurationProperties.getRecommendationIndex();
     }
-
-    @Override
-    String indexType() {
-        return elasticsearchConfigurationProperties.getExtensionsType();
-    }
 }

@@ -39,7 +39,7 @@ abstract class BaseElasticsearchResponseMapper<T> implements ElasticsearchRespon
 
     @Override
     public Page<T> mapSearchResponse(SearchResponse searchResponse, Pageable pageable) {
-        long totalHits = searchResponse.getHits().totalHits;
+        long totalHits = searchResponse.getHits().getTotalHits().value;
         List<T> elements = Arrays.stream(searchResponse.getHits().getHits())
                 .map(this::mapSearchHit)
                 .filter(Objects::nonNull)

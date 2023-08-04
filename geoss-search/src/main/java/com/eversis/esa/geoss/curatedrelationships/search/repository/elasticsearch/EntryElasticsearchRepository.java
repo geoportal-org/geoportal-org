@@ -106,9 +106,4 @@ public class EntryElasticsearchRepository extends FacetedElasticsearchRepository
     String indexName() {
         return elasticsearchConfigurationProperties.getGeossIndex();
     }
-
-    @Override
-    String indexType() {
-        return elasticsearchConfigurationProperties.getGeossType();
-    }
 }

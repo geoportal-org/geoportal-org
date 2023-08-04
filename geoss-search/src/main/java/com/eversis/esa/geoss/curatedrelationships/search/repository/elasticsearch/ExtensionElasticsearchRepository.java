@@ -54,9 +54,4 @@ public class ExtensionElasticsearchRepository extends ElasticsearchRepository<Ex
     String indexName() {
         return elasticsearchConfigurationProperties.getExtensionsIndex();
     }
-
-    @Override
-    String indexType() {
-        return elasticsearchConfigurationProperties.getExtensionsType();
-    }
 }

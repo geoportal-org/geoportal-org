@@ -1,7 +1,7 @@
 # GEOSS Curated Relationships Search Server
 
 Project aims to provide search capabilities for GEOSS Curated relationships resources.
-For the sake of brevity, this project is referenced as *geoss-cr-search* server.
+For the sake of brevity, this project is referenced as *geoss-search* server.
 Currently resources are provided by Opensearch API.
 
 Search server has 3 main usages:
@@ -17,28 +17,28 @@ These instructions will get you a copy of the project up and running on your loc
 
 To run this server on your local machine you need to have installed:
 
-*  JDK 1.8
-*  Elasticsearch 6.6
+- `Java 17`
+- `Elasticsearch 7.3.2`
 
 ### Installing
 
 In order to run this server, Elasticsearch cluster should be running.
-Two main steps are required to run *geoss-cr-search* server.
+Two main steps are required to run *geoss-search* server.
 
 1. Configure elasticsearch instance using proper settings and mappings.
-2. Provide elasticsearch parameters to *geoss-cr-search* configuration file.
+2. Provide elasticsearch parameters to *geoss-search* configuration file.
 
 #### Elasticsearch configuration
 
 For development purposes it is advised to use Docker to run Elasticsearch database.
-Elasticsearch settings and mappings, which should be used are stored in *config/elasticsearch* in root directory.
+Elasticsearch settings and mappings, which should be used are stored in *geoss-els* in root directory.
 ```
 $ cd ..
-$ cd config/elasticsearch
+$ cd geoss-els
 ```
 
 Each directory corresponds to separate index, e.g. `geoss-cr` directory contains settings and mapping of `geoss-cr` index.
-All indices must be properly configured in order to run _geoss-cr-search_ component.
+All indices must be properly configured in order to run _geoss-search_ component.
 
 In order to create index you can use Elasticsearch Index API for example:
 ```
@@ -61,7 +61,7 @@ Note that for debugging purposes you can connect to external Elasticsearch (e.g.
 You just need to provide proper IP and port values in your configuration file.
 
 #### Search server
-Project uses Spring Boot 2.x with Gradle 5.x as a build tool, so minimal or no configuration is required to make this application up and running.
+Project uses Spring Boot 2.7.x with Gradle 8.x as a build tool, so minimal or no configuration is required to make this application up and running.
 Before running server Elasticsearch cluster should be up.
 
 Create runnable JAR
@@ -69,16 +69,16 @@ Create runnable JAR
 $ gradlew bootJar
 ```
 
-Run *geoss-cr-search* server using generated JAR
+Run *geoss-search* server using generated JAR
 ```
 $ cd build/libs
-$ java -jar -Dspring.profiles.active=local geoss-cr-search-0.0.1.jar
+$ java -jar -Dspring.profiles.active=local geoss-search-0.0.1.jar
 ```
 
 
 ##### Configuration
 
-General configuration for *geoss-cr-search* server is stored in [application.yml](src/main/resources/application.yml).
+General configuration for *geoss-search* server is stored in [application.yml](src/main/resources/application.yml).
 Profile specific configurations are located in *application-{PROFILE}.yml* files.
 
 You should use **local** profile on your local environment - [application-local.yml](src/main/resources/application-local.yml)
@@ -91,7 +91,7 @@ should be placed outside deployed JAR file in config directory, which should be 
 Configuration files are deployed by Ansible, which configuration is on separate Git repository. In order to change value of some property
 you should edit this value in Ansible configuration, which is stored in mentioned Git repository.
 
-In order to provide secondary backup of configuration values of **geoss-cr-search** and in order to speed-up development process all configuration files are also stored in [config directory](config).
+In order to provide secondary backup of configuration values of **geoss-search** and in order to speed-up development process all configuration files are also stored in [config directory](config).
 All changes which are made in Ansible repository should also be done within this directory.
 
 ## Versioning
@@ -103,9 +103,4 @@ Check Versioning section in [README file](../README.md) located root directory f
 
 Deployment strategy is compatible with deployment strategy described on project root-level.
 Check Deployment section in [README file](../README.md) located root directory for more information.
-
-
-
-
-
 

@@ -50,10 +50,4 @@ public class ConceptElasticsearchRepository extends ElasticsearchRepository<Conc
     String indexName() {
         return elasticsearchConfigurationProperties.getThesaurusIndex();
     }
-
-    @Override
-    String indexType() {
-        return elasticsearchConfigurationProperties.getThesaurusType();
-    }
-
 }
