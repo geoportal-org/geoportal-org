@@ -113,6 +113,12 @@ services:
       context: ./geoss-matomo
       dockerfile: Dockerfile
 
+  geoss-matomo-bitnami:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_bitnami:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-matomo-bitnami
+      dockerfile: Dockerfile
+
   # geoss-matomo-db:
   #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_db:${DOCKER_IMAGE_TAG}
   #   build:
