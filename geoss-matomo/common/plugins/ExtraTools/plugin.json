@@ -1,0 +1,27 @@
+{
+    "name": "ExtraTools",
+    "description": "Adds automatic installation from the console, db backups etc.",
+    "version": "4.1.0-beta5",
+    "theme": false,
+    "require": {
+        "matomo": ">=4.0.0-b1,<5.0.0-b1"
+    },
+    "authors": [
+        {
+            "name": "Digitalist",
+            "email": "se.support@digitalistgroup.com",
+            "homepage": "https://digitalist.se"
+        },
+        {
+            "name": "Mikke Schirén",
+            "email": "mikke.schiren@digitalistgroup.com",
+            "homepage": "https://digitalist.se"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/digitalist-se/extratools/issues"
+    },
+    "homepage": "https://www.digitalist.se/matomo",
+    "license": "GPL v3+",
+    "keywords": []
+}
