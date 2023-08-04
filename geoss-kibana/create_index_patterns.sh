@@ -1,6 +1,10 @@
 #!/bin/bash
 
-while curl -sS "http://localhost:5601" | grep -q "Kibana server is not ready yet\|Connection refused"; do
+until curl -s -f -o /dev/null "http://localhost:5601"; do
+        sleep 2
+done
+
+while curl -sS "http://localhost:5601" | grep -q "Kibana server is not ready yet"; do
         sleep 2
 done
 
