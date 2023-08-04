@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 To run this server on your local machine you need to have installed:
 
 - `Java 17`
-- `Elasticsearch 7.3.2`
+- `Elasticsearch 8.9.0`
 
 ### Installing
 

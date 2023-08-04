@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
  */
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
-class GeossCRApplicationTests {
+class SearchApplicationTests {
 
     /**
      * Context loads.

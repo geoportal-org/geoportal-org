@@ -24,7 +24,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Log4j2
 @Tag(name = "RECOMMENDATION")
-@RequestMapping("/api/recommendations")
+@RequestMapping("${spring.data.rest.base-path}/api/recommendations")
 @RestController
 class RecommendationController {
 

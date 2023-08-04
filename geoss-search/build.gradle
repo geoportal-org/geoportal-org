@@ -37,25 +37,27 @@ dependencyManagement {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.data:spring-data-commons:2.7.14'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'co.elastic.clients:elasticsearch-java:8.9.0'
     implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.12'
-    implementation 'org.locationtech.spatial4j:spatial4j:0.7'
-    implementation 'org.locationtech.jts:jts-core:1.16.1'
+    implementation 'org.locationtech.jts:jts-core:1.19.0'
+    implementation 'org.locationtech.spatial4j:spatial4j:0.8'
     implementation "com.rometools:rome:${rometoolsRomeVersion}"
     implementation "com.rometools:rome-modules:${rometoolsRomeVersion}"
     implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiVersion}"
     implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocOpenapiVersion}"
     implementation "org.springdoc:springdoc-openapi-javadoc:${springdocOpenapiVersion}"
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.springframework.boot:spring-boot-properties-migrator'
-    runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     runtimeOnly 'jakarta.json:jakarta.json-api:2.1.2'
+    runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"

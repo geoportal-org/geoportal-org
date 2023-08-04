@@ -22,7 +22,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Log4j2
 @Tag(name = "CONCEPTS")
-@RequestMapping("/api/concepts")
+@RequestMapping("${spring.data.rest.base-path}/api/concepts")
 @RestController
 class ConceptController {
 
