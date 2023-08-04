@@ -1,7 +1,7 @@
 #!/bin/bash
 
-until curl -sS "http://localhost:5601/status" -I | grep -q "kbn-name"; do
-        sleep 1
+while curl -sS "http://localhost:5601" | grep -q "Kibana server is not ready yet"; do
+        sleep 2
 done
 
 echo "ENTRYPOINT: Creating index-patterns"
