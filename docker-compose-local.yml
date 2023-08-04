@@ -1,193 +1,194 @@
 version: "3.8"
 
 services:
-    geoss-db:
-        container_name: geoss-db
-        build:
-            context: ./geoss-db
-            dockerfile: Dockerfile
-        environment:
-            MARIADB_ROOT_PASSWORD: qaz123
-            MARIADB_USER: admin
-            MARIADB_PASSWORD: qaz123
-            MARIADB_DATABASE: geoss_db
-        volumes:
-            - "geoss_db:/var/lib/mysql"
-        ports:
-            - "33066:3306"
-        networks:
-          - geoss_net
+  geoss-contents:
+    container_name: geoss-contents
+    build:
+      context: ./geoss-contents
+      dockerfile: Dockerfile-local
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_contents_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: qaz123
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    ports:
+      - "8081:8081"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
 
-    geoss-keycloak:
-        container_name: geoss-keycloak
-        build:
-            context: ./geoss-keycloak
-            dockerfile: Dockerfile
-            args:
-                KC_DB: mariadb
-        command: ["start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss"]
-        environment:
-            KC_DB: mariadb
-            KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-            KC_DB_USERNAME: admin
-            KC_DB_PASSWORD:  qaz123
-            KEYCLOAK_ADMIN: admin
-            KEYCLOAK_ADMIN_PASSWORD: qaz123
-            KC_HOSTNAME: geoss-keycloak
-            KC_HOSTNAME_STRICT: "false"
-            KC_SPI_THEME_CACHE_THEMES: "false"
-            KC_SPI_THEME_CACHE_TEMPLATES: "false"
-            KC_SPI_THEME_STATIC_MAX_AGE: "-1"
-#        volumes:
-#            - "./geoss-keycloak/themes/geoss:/opt/keycloak/themes/geoss"
-        ports:
-            - "8080:8080"
-        networks:
-            - geoss_net
+  geoss-curated:
+    container_name: geoss-curated
+    build:
+      context: .
+      dockerfile: ./geoss-curated/Dockerfile-local
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: qaz123
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
+    restart: always
+    ports:
+      - "8083:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+      - geoss-elasticsearch
 
-    geoss-settings:
-        container_name: geoss-settings
-        build:
-            context: .
-            dockerfile: ./geoss-settings/Dockerfile-local
-        environment:
-            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-            SPRING_DATASOURCE_USERNAME: admin
-            SPRING_DATASOURCE_PASSWORD: qaz123
-            SPRING_PROFILES_ACTIVE: keycloak
-            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
-            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-            SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-        ports:
-            - "8088:8080"
-        networks:
-            - geoss_net
-        depends_on:
-            - geoss-db
-            - geoss-keycloak
+  geoss-db:
+    container_name: geoss-db
+    build:
+      context: ./geoss-db
+      dockerfile: Dockerfile
+    environment:
+      MARIADB_ROOT_PASSWORD: qaz123
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: qaz123
+      MARIADB_DATABASE: geoss_db
+    volumes:
+      - "geoss_db:/var/lib/mysql"
+    ports:
+      - "33066:3306"
+    networks:
+      - geoss_net
 
-    geoss-personaldata:
-        container_name: geoss-personaldata
-        build:
-            context: .
-            dockerfile: ./geoss-personaldata/Dockerfile-local
-        environment:
-            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_personaldata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-            SPRING_DATASOURCE_USERNAME: admin
-            SPRING_DATASOURCE_PASSWORD: qaz123
-            SPRING_PROFILES_ACTIVE: keycloak
-            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
-            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-            SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-        ports:
-            - "8089:8080"
-        networks:
-            - geoss_net
-        depends_on:
-            - geoss-db
-            - geoss-keycloak
+  geoss-elasticsearch:
+    container_name: geoss-elasticsearch
+    build:
+      context: ./geoss-els
+      dockerfile: Dockerfile
+    hostname: geoss-elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "elasticsearch_data:/usr/share/elasticsearch/data"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - geoss_net
 
-    geoss-contents:
-        container_name: geoss-contents
-        build:
-            context: ./geoss-contents
-            dockerfile: Dockerfile-local
-        environment:
-            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_contents_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-            SPRING_DATASOURCE_USERNAME: admin
-            SPRING_DATASOURCE_PASSWORD: qaz123
-            SPRING_PROFILES_ACTIVE: keycloak
-            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
-            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-        ports:
-            - "8081:8081"
-        networks:
-            - geoss_net
-        depends_on:
-            - geoss-db
-            - geoss-keycloak
+  geoss-keycloak:
+    container_name: geoss-keycloak
+    build:
+      context: ./geoss-keycloak
+      dockerfile: Dockerfile
+      args:
+        KC_DB: mariadb
+    command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss" ]
+    environment:
+      KC_DB: mariadb
+      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: qaz123
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: qaz123
+      KC_HOSTNAME: geoss-keycloak
+      KC_HOSTNAME_STRICT: "false"
+      KC_SPI_THEME_CACHE_THEMES: "false"
+      KC_SPI_THEME_CACHE_TEMPLATES: "false"
+      KC_SPI_THEME_STATIC_MAX_AGE: "-1"
+#    volumes:
+#      - "./geoss-keycloak/themes/geoss:/opt/keycloak/themes/geoss"
+    ports:
+      - "8080:8080"
+    networks:
+      - geoss_net
 
-    geoss-proxy:
-        container_name: geoss-proxy
-        build:
-            context: ./geoss-proxy
-            dockerfile: Dockerfile-local
-        environment:
-            SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
-            SPRING_PROFILES_ACTIVE: keycloak
-            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
-            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-        restart: always
-        ports:
-            - "8082:8082"
-        networks:
-            - geoss_net
-        depends_on:
-            - geoss-elasticsearch
-            - geoss-keycloak
+  geoss-personaldata:
+    container_name: geoss-personaldata
+    build:
+      context: .
+      dockerfile: ./geoss-personaldata/Dockerfile-local
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_personaldata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: qaz123
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    ports:
+      - "8089:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
 
-    geoss-curated:
-        container_name: geoss-curated
-        build:
-            context: .
-            dockerfile: ./geoss-curated/Dockerfile-local
-        environment:
-            SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-            SPRING_DATASOURCE_USERNAME: admin
-            SPRING_DATASOURCE_PASSWORD: qaz123
-            SPRING_PROFILES_ACTIVE: keycloak
-            SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
-            SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-            SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-            SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
-        restart: always
-        ports:
-            - "8083:8080"
-        networks:
-            - geoss_net
-        depends_on:
-            - geoss-db
-            - geoss-keycloak
-            - geoss-elasticsearch
+  geoss-proxy:
+    container_name: geoss-proxy
+    build:
+      context: ./geoss-proxy
+      dockerfile: Dockerfile-local
+    environment:
+      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    restart: always
+    ports:
+      - "8082:8082"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-elasticsearch
+      - geoss-keycloak
 
-    geoss-elasticsearch:
-        container_name: geoss-elasticsearch
-        build:
-            context: ./geoss-els
-            dockerfile: Dockerfile
-        hostname: geoss-elasticsearch
-        environment:
-            - xpack.security.enabled=false
-            - discovery.type=single-node
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
-        volumes:
-            - elasticsearch_data:/usr/share/elasticsearch/data
-        ports:
-            - "9200:9200"
-            - "9300:9300"
-        networks:
-            - geoss_net
+  geoss-settings:
+    container_name: geoss-settings
+    build:
+      context: .
+      dockerfile: ./geoss-settings/Dockerfile-local
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: qaz123
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    ports:
+      - "8088:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
 
-    geoss-maildev:
-        container_name: geoss-maildev
-        hostname: geoss-maildev
-        image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
-        environment:
-          MAILDEV_INCOMING_USER: maildev
-          MAILDEV_INCOMING_PASS: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-          MAILDEV_WEB_USER: admin
-          MAILDEV_WEB_PASS: qaz123
-        ports:
-          - "1081:1080"
-        networks:
-          - geoss_net
+  geoss-maildev:
+    container_name: geoss-maildev
+    hostname: geoss-maildev
+    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
+    environment:
+      MAILDEV_INCOMING_USER: maildev
+      MAILDEV_INCOMING_PASS: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      MAILDEV_WEB_USER: admin
+      MAILDEV_WEB_PASS: qaz123
+    ports:
+      - "1081:1080"
+      - "1025:1025"
+    networks:
+      - geoss_net
 
 volumes:
-    geoss_db:
-    elasticsearch_data:
+  geoss_db:
+  elasticsearch_data:
 
 networks:
-    geoss_net:
+  geoss_net:

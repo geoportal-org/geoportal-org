@@ -21,7 +21,7 @@ variables:
 ###########################
 #         STAGES          #
 ###########################
-stages:  # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - build
   - build_docker_images
   - docker_stack_deploy
