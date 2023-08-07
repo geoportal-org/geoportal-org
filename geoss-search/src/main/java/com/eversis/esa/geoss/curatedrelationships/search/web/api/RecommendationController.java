@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 @Tag(name = "RECOMMENDATION")
-@RequestMapping("${spring.data.rest.base-path}/api/recommendations")
+@RequestMapping("${spring.data.rest.base-path}/recommendations")
 @RestController
 class RecommendationController {
 

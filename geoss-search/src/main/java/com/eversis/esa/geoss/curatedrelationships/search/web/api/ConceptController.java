@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Log4j2
 @Tag(name = "CONCEPTS")
-@RequestMapping("${spring.data.rest.base-path}/api/concepts")
+@RequestMapping("${spring.data.rest.base-path}/concepts")
 @RestController
 class ConceptController {
 

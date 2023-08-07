@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 @Tag(name = "EXTENSIONS")
-@RequestMapping("${spring.data.rest.base-path}/api/extensions")
+@RequestMapping("${spring.data.rest.base-path}/extensions")
 @RestController
 class ExtensionController {
 
