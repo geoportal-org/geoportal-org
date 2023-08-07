@@ -87,11 +87,11 @@ class CkanQueryBuilder {
     CkanQueryBuilder facetFields(Map<String, Facets> facetFields) {
         if (!CollectionUtils.isEmpty(facetFields)) {
             String jsonArray = "["
-                    + facetFields.keySet()
-                    .stream()
-                    .map(StringUtils::wrapWithDoubleQuotes)
-                    .collect(Collectors.joining(","))
-                    + "]";
+                               + facetFields.keySet()
+                                       .stream()
+                                       .map(StringUtils::wrapWithDoubleQuotes)
+                                       .collect(Collectors.joining(","))
+                               + "]";
 
             urlBuilder.queryParam(FACET_FIELD, jsonArray);
         }

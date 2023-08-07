@@ -10,9 +10,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Extension search service.

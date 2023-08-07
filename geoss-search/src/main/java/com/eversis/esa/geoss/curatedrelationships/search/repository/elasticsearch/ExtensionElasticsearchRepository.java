@@ -12,8 +12,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearc
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.stereotype.Repository;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Extension elasticsearch repository.

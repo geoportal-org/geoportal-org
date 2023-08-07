@@ -10,8 +10,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.CRRepository
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Ckan search strategy.

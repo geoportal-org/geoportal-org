@@ -10,12 +10,12 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Entry aggregation factory.

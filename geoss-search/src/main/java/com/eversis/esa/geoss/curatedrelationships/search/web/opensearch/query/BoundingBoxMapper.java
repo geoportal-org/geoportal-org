@@ -44,16 +44,16 @@ public class BoundingBoxMapper {
 
     private static boolean longitudeIsNotInRange(List<Double> convertedToNumbers) {
         return Double.compare(convertedToNumbers.get(0), -180.0) < 0
-                || Double.compare(convertedToNumbers.get(0), 180.0) > 0
-                || Double.compare(convertedToNumbers.get(2), -180.0) < 0
-                || Double.compare(convertedToNumbers.get(2), 180.0) > 0;
+               || Double.compare(convertedToNumbers.get(0), 180.0) > 0
+               || Double.compare(convertedToNumbers.get(2), -180.0) < 0
+               || Double.compare(convertedToNumbers.get(2), 180.0) > 0;
     }
 
     private static boolean latitudeIsNotInRange(List<Double> convertedToNumbers) {
         return Double.compare(convertedToNumbers.get(1), -90.0) < 0
-                || Double.compare(convertedToNumbers.get(1), 90.0) > 0
-                || Double.compare(convertedToNumbers.get(3), -90.0) < 0
-                || Double.compare(convertedToNumbers.get(3), 90.0) > 0;
+               || Double.compare(convertedToNumbers.get(1), 90.0) > 0
+               || Double.compare(convertedToNumbers.get(3), -90.0) < 0
+               || Double.compare(convertedToNumbers.get(3), 90.0) > 0;
     }
 
 }

@@ -61,7 +61,7 @@ public class GeossCrEntryElasticsearchFields {
     /**
      * The constant TAGS_RAW_FIELD.
      */
-    public static final String TAGS_RAW_FIELD = TAGS_FIELD +  ".raw";
+    public static final String TAGS_RAW_FIELD = TAGS_FIELD + ".raw";
     /**
      * The constant TAGS_SEARCH_FIELD.
      */

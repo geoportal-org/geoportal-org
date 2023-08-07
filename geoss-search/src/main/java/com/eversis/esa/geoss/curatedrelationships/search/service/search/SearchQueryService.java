@@ -3,7 +3,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.service.search;
 import com.eversis.esa.geoss.curatedrelationships.search.model.SearchQuery;
 import com.eversis.esa.geoss.curatedrelationships.search.model.SearchQueryType;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Search query service.

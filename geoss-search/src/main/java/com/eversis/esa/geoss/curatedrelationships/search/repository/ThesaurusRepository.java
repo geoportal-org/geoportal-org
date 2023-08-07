@@ -4,7 +4,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Concept;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Thesaurus repository.

@@ -1,7 +1,7 @@
 package com.eversis.esa.geoss.curatedrelationships.search.service.concept;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 
 /**
  * The interface Concept search service.

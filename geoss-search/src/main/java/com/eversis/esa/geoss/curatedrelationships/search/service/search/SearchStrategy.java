@@ -6,8 +6,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Entry;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The interface Search strategy.

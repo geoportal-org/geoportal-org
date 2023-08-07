@@ -6,8 +6,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Ckan query factory.

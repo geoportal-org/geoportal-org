@@ -2,7 +2,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.zenodo.quer
 
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type Zenodo query factory.

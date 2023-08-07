@@ -3,7 +3,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.service.recommendation
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.recommendation.RecommendedResource;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * The interface Recommendation service.

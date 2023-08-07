@@ -17,8 +17,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Entry zenodo repository.
@@ -64,10 +64,9 @@ class EntryZenodoRepository extends ZenodoRepository<Entry> {
     private void handleMissingResource(Throwable throwable, Object object) {
         if (throwable instanceof WebClientResponseException) {
             log.warn("Failed to fetch resource object. HTTP Code: "
-                     + ((WebClientResponseException) throwable).getRawStatusCode());
+                     + ((WebClientResponseException) throwable).getStatusCode().value());
         } else {
             log.error("Failed to fetch resource object.", throwable);
         }
     }
-
 }

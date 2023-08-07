@@ -39,29 +39,32 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
     implementation 'co.elastic.clients:elasticsearch-java:8.9.0'
     implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.12'
     implementation 'org.locationtech.jts:jts-core:1.19.0'
     implementation 'org.locationtech.spatial4j:spatial4j:0.8'
     implementation "com.rometools:rome:${rometoolsRomeVersion}"
     implementation "com.rometools:rome-modules:${rometoolsRomeVersion}"
-    implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiVersion}"
-    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocOpenapiVersion}"
-    implementation "org.springdoc:springdoc-openapi-javadoc:${springdocOpenapiVersion}"
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${springdocOpenapiVersion}"
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'jakarta.json:jakarta.json-api:2.1.2'
     runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -79,13 +82,11 @@ tasks.named('test') {
 tasks.named('jar') {
     archiveClassifier = ''
     exclude('application-local*.properties')
-    exclude("application*.yml")
 }
 
 tasks.named('bootJar') {
     archiveClassifier = 'boot'
     exclude('application-local*.properties')
-    exclude("application*.yml")
 }
 
 springBoot {
@@ -104,4 +105,8 @@ sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
     }
+}
+
+clean {
+    delete 'tomcat'
 }

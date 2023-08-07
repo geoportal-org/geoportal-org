@@ -6,10 +6,10 @@ import com.eversis.esa.geoss.curatedrelationships.search.web.api.dto.extension.D
 
 import org.springframework.stereotype.Component;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Detailed extension dto mapper.

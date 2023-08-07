@@ -5,8 +5,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.FacetedPag
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The interface Cr repository.

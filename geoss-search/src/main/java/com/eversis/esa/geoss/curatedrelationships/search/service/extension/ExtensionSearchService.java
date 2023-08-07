@@ -3,9 +3,9 @@ package com.eversis.esa.geoss.curatedrelationships.search.service.extension;
 import com.eversis.esa.geoss.curatedrelationships.search.model.DataSource;
 import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Extension;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
 
 /**
  * The interface Extension search service.

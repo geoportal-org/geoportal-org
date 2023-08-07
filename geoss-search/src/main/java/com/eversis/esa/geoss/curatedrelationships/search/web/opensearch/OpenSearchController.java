@@ -35,9 +35,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.validation.constraints.Min;
 
 /**
  * The type Open search controller.

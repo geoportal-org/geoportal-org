@@ -7,8 +7,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.service.search.SearchQu
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Search query service.

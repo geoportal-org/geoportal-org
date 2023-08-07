@@ -11,7 +11,8 @@ Search server has 3 main usages:
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -19,6 +20,9 @@ To run this server on your local machine you need to have installed:
 
 - `Java 17`
 - `Elasticsearch 8.9.0`
+
+Currently, the connection to Elasticsearch 8 is provided through RestHighLevelClient with API compatibility mode.
+This should be rewritten to the new Java Elasticsearch Client in the future.
 
 ### Installing
 
@@ -61,7 +65,7 @@ Note that for debugging purposes you can connect to external Elasticsearch (e.g.
 You just need to provide proper IP and port values in your configuration file.
 
 #### Search server
-Project uses Spring Boot 2.7.x with Gradle 8.x as a build tool, so minimal or no configuration is required to make this application up and running.
+Project uses Spring Boot 3.1.x with Gradle 8.x as a build tool, so minimal or no configuration is required to make this application up and running.
 Before running server Elasticsearch cluster should be up.
 
 Create runnable JAR
@@ -75,13 +79,11 @@ $ cd build/libs
 $ java -jar -Dspring.profiles.active=local geoss-search-0.0.1.jar
 ```
 
-
 ##### Configuration
 
-General configuration for *geoss-search* server is stored in [application.yml](src/main/resources/application.yml).
-Profile specific configurations are located in *application-{PROFILE}.yml* files.
+General configuration for *geoss-search* server is stored in [application.properties](src/main/resources/application.properties).
 
-You should use **local** profile on your local environment - [application-local.yml](src/main/resources/application-local.yml)
+You should use **local** profile on your local environment - [application-local.properties](src/main/resources/application-local.properties)
 
 Elasticsearch server parameters (like address or index name) are stored in profile specific configuration files.
 
@@ -93,14 +95,3 @@ you should edit this value in Ansible configuration, which is stored in mentione
 
 In order to provide secondary backup of configuration values of **geoss-search** and in order to speed-up development process all configuration files are also stored in [config directory](config).
 All changes which are made in Ansible repository should also be done within this directory.
-
-## Versioning
-
-Versioning strategy is compatible with versioning described on project root-level.
-Check Versioning section in [README file](../README.md) located root directory for more information.
-
-## Deployment
-
-Deployment strategy is compatible with deployment strategy described on project root-level.
-Check Deployment section in [README file](../README.md) located root directory for more information.
-

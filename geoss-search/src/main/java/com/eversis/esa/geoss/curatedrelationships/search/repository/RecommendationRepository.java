@@ -4,8 +4,8 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.common.Page;
 import com.eversis.esa.geoss.curatedrelationships.search.model.common.Pageable;
 import com.eversis.esa.geoss.curatedrelationships.search.model.recommendation.Recommendation;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Recommendation repository.

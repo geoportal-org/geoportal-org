@@ -3,7 +3,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.config;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,7 @@ public class OpenApiConfiguration {
      * @return the open api customizer
      */
     @Bean
-    OpenApiCustomiser sortSchemasOpenApiCustomizer() {
+    OpenApiCustomizer sortSchemasOpenApiCustomizer() {
         return openApi -> {
             Components components = openApi.getComponents();
             if (components != null && components.getSchemas() != null) {
