@@ -6,5 +6,4 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-matomo"
 
-COPY conf/global.ini.php /bitnami/matomo/config/global.ini.php
-RUN chmod 777 /bitnami/matomo/config/global.ini.php
+COPY --chown=1001 conf/global.ini.php /bitnami/matomo/config/global.ini.php
