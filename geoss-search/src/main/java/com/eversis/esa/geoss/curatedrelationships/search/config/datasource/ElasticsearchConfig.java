@@ -27,7 +27,7 @@ public class ElasticsearchConfig {
     @Value("${datasource.elasticsearch.port}")
     private int elasticsearchPort;
 
-    @Value("${datasource.elasticsearch.compatibilityMode}")
+    @Value("${datasource.elasticsearch.compatibility-mode}")
     private boolean elasticsearchCompatibilityMode;
 
     /**

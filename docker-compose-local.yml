@@ -37,7 +37,7 @@ services:
       SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
     restart: always
     ports:
-      - "8083:8080"
+      - "8082:8080"
     networks:
       - geoss_net
     depends_on:
@@ -110,6 +110,20 @@ services:
     networks:
       - geoss_net
 
+  geoss-kibana:
+    container_name: geoss-kibana
+    build:
+      context: ./geoss-kibana
+      dockerfile: Dockerfile
+    environment:
+      KIBANA_ELASTICSEARCH_URL: "geoss-elasticsearch"
+    ports:
+      - "5601:5601"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-elasticsearch
+
   geoss-personaldata:
     container_name: geoss-personaldata
     build:
@@ -124,7 +138,7 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
     ports:
-      - "8089:8080"
+      - "8083:8080"
     networks:
       - geoss_net
     depends_on:
@@ -143,7 +157,31 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
     restart: always
     ports:
-      - "8082:8082"
+      - "8084:8082"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-elasticsearch
+      - geoss-keycloak
+
+  geoss-search:
+    container_name: geoss-search
+    build:
+      context: ./geoss-search
+      dockerfile: Dockerfile-local
+    environment:
+      DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "https://data.amerigeoss.org/api/3/action"
+      DATASOURCE_ZENODO_BASE_URL: "https://zenodo.org"
+      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch"
+      DATASOURCE_ELASTICSEARCH_PORT: "9200"
+      DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: true
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    restart: always
+    ports:
+      - "8085:8080"
     networks:
       - geoss_net
     depends_on:
@@ -164,7 +202,7 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
     ports:
-      - "8088:8080"
+      - "8086:8080"
     networks:
       - geoss_net
     depends_on:
