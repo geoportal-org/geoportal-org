@@ -423,23 +423,21 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-matomo"
     environment:
-      MATOMO_DATABASE_HOST: geoss-mariadb
-      MATOMO_DATABASE_PORT_NUMBER: 3306
-      MATOMO_DATABASE_USER: ${MATOMO_DB_USER_NAME}
-      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_NAME: ${MATOMO_DB_NAME}
-      MATOMO_USERNAME: admin
+      MATOMO_DATABASE_HOST: "geoss-mariadb"
+      MATOMO_DATABASE_PORT_NUMBER: "3306"
+      MATOMO_DATABASE_USER: "${MATOMO_DB_USER_NAME}"
+      MATOMO_DATABASE_PASSWORD: "${MATOMO_DB_USER_PASS}"
+      MATOMO_DATABASE_NAME: "${MATOMO_DB_NAME}"
+      MATOMO_USERNAME: "admin"
       MATOMO_PASSWORD: "qaz123"
       MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
-      MATOMO_DATABASE_TABLE_PREFIX: ${MATOMO_DB_PREFIX}
-      http_proxy: ${SQUID_PROXY_URL}
+      MATOMO_DATABASE_TABLE_PREFIX: "${MATOMO_DB_PREFIX}"
+      http_proxy: ${SQUID_PROXY_URL}"
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
     volumes:
       - /var/log/matomo:/var/log
-    ports:
-      - "81:80"
     networks:
       - geosslan
 
