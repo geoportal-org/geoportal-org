@@ -429,11 +429,12 @@ services:
       MATOMO_DATABASE_USER: ${MATOMO_DB_USER_NAME}
       MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
       MATOMO_DATABASE_NAME: ${MATOMO_DB_NAME}
-      MATOMO_USERNAME: ""admin""
+      MATOMO_USERNAME: "admin"
       MATOMO_PASSWORD: "qaz123"
       MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
       MATOMO_DATABASE_TABLE_PREFIX: "${MATOMO_DB_PREFIX}"
+      BITNAMI_DEBUG: "true"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
