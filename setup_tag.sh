@@ -2,6 +2,9 @@
 
 search_for="release-"
 
+echo "ref_name: $CI_COMMIT_REF_NAME"
+echo "short_sha: $CI_COMMIT_SHORT_SHA"
+
 if [ "develop" = "$CI_COMMIT_REF_NAME" ]
 then
   export DOCKER_IMAGE_TAG=latest
