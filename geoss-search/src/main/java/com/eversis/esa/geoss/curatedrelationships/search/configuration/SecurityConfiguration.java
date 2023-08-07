@@ -14,15 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.sql.DataSource;
 
 /**
  * The type Security configuration.
@@ -49,17 +47,15 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Persistent token repository persistent token repository.
+     * In memory token repository persistent token repository.
      *
-     * @param dataSource the data source
      * @return the persistent token repository
      */
-    // @Bean
-    // PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
-    //     JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
-    //     persistentTokenRepository.setDataSource(dataSource);
-    //     return persistentTokenRepository;
-    // }
+    @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "memory")
+    @Bean
+    PersistentTokenRepository inMemoryTokenRepository() {
+        return new InMemoryTokenRepositoryImpl();
+    }
 
     /**
      * In memory user details manager user details manager.
@@ -70,28 +66,6 @@ public class SecurityConfiguration {
     @Bean
     UserDetailsManager inMemoryUserDetailsManager() {
         return new InMemoryUserDetailsManager();
-    }
-
-    /**
-     * Users user details manager.
-     *
-     * @param dataSource the data source
-     * @return the user details manager
-     */
-    @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "jdbc")
-    @Bean
-    UserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select username,password,enabled, acc_locked, acc_expired, creds_expired"
-                + " from users where username = ?");
-        jdbcUserDetailsManager.setCreateUserSql(
-                "insert into users (username, password, enabled, acc_locked, acc_expired, creds_expired)"
-                + " values (?,?,?,?,?,?)");
-        jdbcUserDetailsManager.setUpdateUserSql(
-                "update users set password = ?, enabled = ?, acc_locked=?, acc_expired=?, creds_expired=?"
-                + " where username = ?");
-        return jdbcUserDetailsManager;
     }
 
     /**
