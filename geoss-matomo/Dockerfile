@@ -5,3 +5,5 @@ LABEL maintainer="Eversis"
 LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-matomo"
+
+COPY conf/global.ini.php /bitnami/matomo/config/global.ini.php
