@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   geoss-haproxy:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy:${DOCKER_IMAGE_TAG}
     hostname: geoss-dmz-haproxy
     deploy:
       replicas: 1
@@ -31,7 +31,7 @@ services:
       - geossdmz
 
   geoss-nginx:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_nginx:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_nginx:${DOCKER_IMAGE_TAG}
     hostname: geoss-dmz-nginx
     deploy:
       replicas: 1
@@ -62,7 +62,7 @@ services:
       - geossdmz
 
   # postfix:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:latest
+  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_postfix_relay:${DOCKER_IMAGE_TAG}
   #   hostname: geoss-dmz-postfix
   #   deploy:
   #     replicas: 1
@@ -79,7 +79,7 @@ services:
   #     - geossdmz
 
   squid:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:latest
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_squid:${DOCKER_IMAGE_TAG}
     hostname: geoss-dmz-squid
     deploy:
       replicas: 1
