@@ -398,31 +398,6 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-matomo"
     environment:
-      MATOMO_DATABASE_HOST: geoss-mariadb
-      MATOMO_DATABASE_TABLES_PREFIX: ${MATOMO_DB_PREFIX}
-      MATOMO_DATABASE_USERNAME: ${MATOMO_DB_USER_NAME}
-      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME}
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated
-    volumes:
-      - /var/log/matomo:/var/log
-      - /opt/matomo:/var/www/html
-    ports:
-      - "80:80"
-    networks:
-      - geosslan
-
-  geoss-matomo-bitnami:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_bitnami:latest
-    hostname: geoss-matomo
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - "node.labels.shared_tag==geoss-matomo"
-    environment:
       MATOMO_DATABASE_HOST: "geoss-mariadb"
       MATOMO_DATABASE_PORT_NUMBER: 3306
       MATOMO_DATABASE_ADAPTER: mysql

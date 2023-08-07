@@ -1,14 +1,7 @@
-FROM matomo:4.14.2-apache
+FROM bitnami/matomo:4.15.1
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
 LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-matomo"
-
-COPY --chown=www-data common/plugins/ /opt/plugins
-COPY --chown=www-data common/config.ini.php.template /tmp/config.ini.php.template
-COPY apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod 644 /etc/apache2/sites-available/000-default.conf
-RUN chmod 755 /entrypoint.sh
