@@ -1004,6 +1004,7 @@
                     "attributes": {}
                 }
             ],
+            "geoss-matomo": [],
             "account": [
                 {
                     "id": "af8e8f7a-aa36-476c-beb3-8c1ca2a8eed5",
@@ -1832,6 +1833,61 @@
                 "oauth2.device.authorization.grant.enabled": "false",
                 "client.secret.creation.time": "1691489877",
                 "backchannel.logout.session.required": "true",
+                "backchannel.logout.revoke.offline.tokens": "false"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": true,
+            "nodeReRegistrationTimeout": -1,
+            "defaultClientScopes": [
+                "web-origins",
+                "acr",
+                "profile",
+                "roles",
+                "email"
+            ],
+            "optionalClientScopes": [
+                "address",
+                "phone",
+                "offline_access",
+                "organization",
+                "microprofile-jwt"
+            ]
+        },
+        {
+            "id": "ed709126-5fc9-443a-a3f2-b63c156cf4e3",
+            "clientId": "geoss-matomo",
+            "name": "Geoss Matomo",
+            "description": "Geoss Matomo application",
+            "rootUrl": "",
+            "adminUrl": "",
+            "baseUrl": "",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": false,
+            "publicClient": false,
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "attributes": {
+                "oidc.ciba.grant.enabled": "false",
+                "client.secret.creation.time": "1691490345",
+                "backchannel.logout.session.required": "true",
+                "display.on.consent.screen": "false",
+                "oauth2.device.authorization.grant.enabled": "false",
                 "backchannel.logout.revoke.offline.tokens": "false"
             },
             "authenticationFlowBindingOverrides": {},
