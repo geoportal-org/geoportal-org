@@ -1839,18 +1839,18 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins",
-                "acr",
-                "profile",
-                "roles",
-                "email"
+                "web-origins"
             ],
             "optionalClientScopes": [
+                "acr",
                 "address",
                 "phone",
                 "offline_access",
+                "profile",
                 "organization",
-                "microprofile-jwt"
+                "roles",
+                "microprofile-jwt",
+                "email"
             ]
         },
         {
@@ -1894,18 +1894,18 @@
             "fullScopeAllowed": true,
             "nodeReRegistrationTimeout": -1,
             "defaultClientScopes": [
-                "web-origins",
-                "acr",
-                "profile",
-                "roles",
-                "email"
+                "web-origins"
             ],
             "optionalClientScopes": [
+                "acr",
                 "address",
                 "phone",
                 "offline_access",
+                "profile",
                 "organization",
-                "microprofile-jwt"
+                "roles",
+                "microprofile-jwt",
+                "email"
             ]
         },
         {
