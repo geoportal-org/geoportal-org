@@ -419,6 +419,7 @@ services:
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
     volumes:
       - /var/log/matomo:/var/log
+      - /opt/bitnami/apache/conf:/opt/bitnami/apache/conf
     networks:
       - geosslan
     depends_on:
