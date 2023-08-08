@@ -1,8 +1,5 @@
 package com.eversis.esa.geoss.proxy.security;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * The type Web security configuration.
@@ -67,7 +67,7 @@ public class WebSecurityConfiguration {
         http.authorizeHttpRequests(
                 authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").authenticated());
-        http.httpBasic(Customizer.withDefaults());
+        http.formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -81,7 +81,8 @@ public class WebSecurityConfiguration {
      */
     @Bean
     @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, RepositoryRestConfiguration repositoryRestConfiguration) throws Exception {
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http,
+            RepositoryRestConfiguration repositoryRestConfiguration) throws Exception {
         final String basePath = repositoryRestConfiguration.getBasePath().toString();
         http.securityMatcher(basePath + "/**");
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
@@ -89,21 +90,40 @@ public class WebSecurityConfiguration {
                     .requestMatchers(HttpMethod.GET, basePath + "/popular/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET,basePath + "/statistics/**")
+                    .requestMatchers(HttpMethod.GET, basePath + "/statistics/**")
                     .hasAnyRole("statistics_reader");
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.POST,basePath + "/log/**")
+                    .requestMatchers(HttpMethod.POST, basePath + "/log/**")
                     .hasAnyRole("log_writer");
             authorizationManagerRequestMatcherRegistry
                     .anyRequest().authenticated();
         });
-        http.oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthConverter);
+        http.oauth2ResourceServer(
+                httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer
+                        .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthConverter)));
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(
                 httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
+    }
+
+    /**
+     * Default security filter chain security filter chain.
+     *
+     * @param http the http
+     * @return the security filter chain
+     * @throws Exception the exception
+     */
+    @Bean
+    @Order(SecurityProperties.BASIC_AUTH_ORDER)
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(
+                authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+                        .anyRequest().authenticated());
+        http.oauth2Login(Customizer.withDefaults());
+        http.oauth2Client(Customizer.withDefaults());
+        http.logout(Customizer.withDefaults());
         return http.build();
     }
 
@@ -134,9 +154,9 @@ public class WebSecurityConfiguration {
         if (user.isPasswordGenerated()) {
             log.warn(String.format(
                     "%n%nUsing generated security password: %s%n%nThis generated password is for development use"
-                            + " only. "
-                            + "Your security configuration must be updated before running your application in "
-                            + "production.%n",
+                    + " only. "
+                    + "Your security configuration must be updated before running your application in "
+                    + "production.%n",
                     user.getPassword()));
         }
         if (PASSWORD_ALGORITHM_PATTERN.matcher(password).matches()) {
