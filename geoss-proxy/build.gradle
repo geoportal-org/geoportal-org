@@ -50,6 +50,11 @@ springBoot {
     mainClass = 'com.eversis.esa.geoss.proxy.GeossProxyApplication'
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

@@ -54,6 +54,11 @@ springBoot {
     mainClass = 'com.eversis.esa.geoss.contents.GeossContentsApplication'
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
