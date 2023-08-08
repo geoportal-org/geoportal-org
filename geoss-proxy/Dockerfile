@@ -16,7 +16,7 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 -Duser.language=en \
 -Duser.timezone=GMT \
 "
-ENV JDK_JAVA_OPTIONS=""
+ENV JDK_JAVA_OPTIONS=$JAVA_OPTS
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
 WORKDIR /opt/app
@@ -32,4 +32,5 @@ RUN keytool -importcert -file ./certs/server.crt -noprompt -alias server -storep
 
 EXPOSE 8082
 
-ENTRYPOINT exec java $JAVA_OPTS -jar ./application-boot.jar
+ENTRYPOINT ["java", "-jar", "application-boot.jar"]
+CMD [""]

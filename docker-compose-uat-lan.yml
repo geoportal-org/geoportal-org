@@ -73,6 +73,9 @@ services:
       - "8443:8443"
     networks:
       - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-maildev
 
   geoss-settings:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
@@ -386,6 +389,8 @@ services:
       - "5601:5601"
     networks:
       - geosslan
+    depends_on:
+      - geoss-elasticsearch-1
 
   geoss-matomo:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
@@ -411,6 +416,8 @@ services:
       - "80:80"
     networks:
       - geosslan
+    depends_on:
+      - geoss-db
 
   #######################################
   #          HELPER CONTAINERS          #
