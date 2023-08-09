@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.contents.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import java.util.Arrays;
 import java.util.List;
 

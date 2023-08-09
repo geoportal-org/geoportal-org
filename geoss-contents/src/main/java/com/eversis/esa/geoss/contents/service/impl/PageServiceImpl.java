@@ -1,12 +1,13 @@
 package com.eversis.esa.geoss.contents.service.impl;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.repository.PageRepository;
 import com.eversis.esa.geoss.contents.service.PageService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * The type Page service.

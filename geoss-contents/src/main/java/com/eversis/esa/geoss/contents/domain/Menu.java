@@ -1,7 +1,18 @@
 package com.eversis.esa.geoss.contents.domain;
 
-import java.util.Locale;
-import java.util.Map;
+import com.eversis.esa.geoss.contents.validation.AvailableLocale;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -15,18 +26,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import com.eversis.esa.geoss.contents.validation.AvailableLocale;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.envers.Audited;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The type Menu.

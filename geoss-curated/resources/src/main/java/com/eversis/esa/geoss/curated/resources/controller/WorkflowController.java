@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
 import com.eversis.esa.geoss.curated.resources.service.WorkflowService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * The type Workflow controller.
+ */
 @Log4j2
 @RequiredArgsConstructor
 @BasePathAwareController("/workflow")
@@ -21,6 +25,11 @@ public class WorkflowController {
 
     private final WorkflowService workflowService;
 
+    /**
+     * Pending user resource.
+     *
+     * @param userResourceId the user resource id
+     */
     @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/pending/{userResourceId}")
@@ -55,6 +64,11 @@ public class WorkflowController {
         workflowService.denyUserResource(userResourceId);
     }
 
+    /**
+     * Delete user resource.
+     *
+     * @param userResourceId the user resource id
+     */
     @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/delete/{userResourceId}")

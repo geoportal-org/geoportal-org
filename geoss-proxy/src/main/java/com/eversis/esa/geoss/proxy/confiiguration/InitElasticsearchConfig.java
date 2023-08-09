@@ -1,12 +1,10 @@
 package com.eversis.esa.geoss.proxy.confiiguration;
 
-import com.eversis.esa.geoss.proxy.document.DsParentsGroup;
-import com.eversis.esa.geoss.proxy.document.DsSourcesGroup;
-import com.eversis.esa.geoss.proxy.document.DsViewsGroup;
 import com.eversis.esa.geoss.proxy.document.ElementClickDoc;
 import com.eversis.esa.geoss.proxy.document.ResourceErrorDoc;
 import com.eversis.esa.geoss.proxy.document.SearchResultDoc;
 import com.eversis.esa.geoss.proxy.document.SignInDoc;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

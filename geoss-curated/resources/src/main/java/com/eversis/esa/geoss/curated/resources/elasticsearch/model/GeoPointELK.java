@@ -1,9 +1,9 @@
 package com.eversis.esa.geoss.curated.resources.elasticsearch.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+
+import java.util.List;
 
 /**
  * The type Geo point elk.

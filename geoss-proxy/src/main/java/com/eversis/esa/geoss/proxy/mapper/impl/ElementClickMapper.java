@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.proxy.mapper.impl;
 import com.eversis.esa.geoss.proxy.document.ElementClickDoc;
 import com.eversis.esa.geoss.proxy.domain.LoggedElementClickModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
+
 import org.springframework.stereotype.Component;
 
 /**

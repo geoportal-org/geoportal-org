@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.resources.mapper.TypeMapper;
 import com.eversis.esa.geoss.curated.resources.model.TypeModel;
 import com.eversis.esa.geoss.curated.resources.repository.TypeRepository;
 import com.eversis.esa.geoss.curated.resources.service.TypeService;
+
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,9 +1,10 @@
 package com.eversis.esa.geoss.curated.resources.model;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.TaskType;
+
 import lombok.Data;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type User resource model.

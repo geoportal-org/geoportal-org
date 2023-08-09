@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.resources.mapper.DashboardContentsMapper;
 import com.eversis.esa.geoss.curated.resources.model.DashboardContentsModel;
 import com.eversis.esa.geoss.curated.resources.repository.DashboardContentsRepository;
 import com.eversis.esa.geoss.curated.resources.service.DashboardContentsService;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,9 +27,10 @@ public class DashboardContentsServiceImpl implements DashboardContentsService {
 
     @Override
     public DashboardContents getOrCreateDashboardContents(DashboardContentsModel dashboardContents) {
-        if ((dashboardContents.getContent() != null) && (!dashboardContents.getContent().isEmpty())){
+        if ((dashboardContents.getContent() != null) && (!dashboardContents.getContent().isEmpty())) {
             return dashboardContentsRepository.findByContent(dashboardContents.getContent())
-                    .orElseGet(() -> dashboardContentsRepository.save(DashboardContentsMapper.mapDashboardContents(dashboardContents)));
+                    .orElseGet(() -> dashboardContentsRepository.save(
+                            DashboardContentsMapper.mapDashboardContents(dashboardContents)));
         } else {
             return null;
         }

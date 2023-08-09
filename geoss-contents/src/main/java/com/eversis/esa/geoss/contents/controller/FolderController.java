@@ -1,12 +1,8 @@
 package com.eversis.esa.geoss.contents.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.contents.domain.Folder;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
@@ -19,6 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.validation.Valid;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The type Folder controller.

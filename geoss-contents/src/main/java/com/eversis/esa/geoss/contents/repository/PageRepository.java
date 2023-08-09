@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.contents.repository;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.domain.Page;
 
 import org.springframework.data.domain.Pageable;
@@ -11,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * The interface Page repository.
@@ -43,7 +43,8 @@ public interface PageRepository extends JpaRepository<Page, Long> {
      * @param pageable the pageable
      * @return the org . springframework . data . domain . page
      */
-    org.springframework.data.domain.Page<Page> findByPublished(@Param("published") boolean published, Pageable pageable);
+    org.springframework.data.domain.Page<Page> findByPublished(@Param("published") boolean published,
+            Pageable pageable);
 
     /**
      * Delete by ids in.

@@ -1,9 +1,14 @@
 package com.eversis.esa.geoss.proxy.service.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.eversis.esa.geoss.proxy.domain.MostPopular;
+import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularKeywordsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularOrganisationsModel;
+import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
+import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
+import com.eversis.esa.geoss.proxy.domain.Search;
+import com.eversis.esa.geoss.proxy.service.StatisticsService;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
@@ -18,17 +23,13 @@ import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.json.JsonData;
-import com.eversis.esa.geoss.proxy.domain.MostPopular;
-import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
-import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
-import com.eversis.esa.geoss.proxy.domain.MostPopularKeywordsModel;
-import com.eversis.esa.geoss.proxy.domain.MostPopularOrganisationsModel;
-import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
-import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
-import com.eversis.esa.geoss.proxy.domain.Search;
-import com.eversis.esa.geoss.proxy.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Statistics service.
@@ -37,19 +38,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final String INDEX_NAME = "geoss_index";
-    private final String AGGREGATION_DATE_HISTOGRAM_NAME = "aggr_date_histogram";
-    private final String AGGREGATION_TERMS_NAME = "aggr_terms";
-    private final String SESSION_DATE_FIELD_NAME = "session_date";
-    private final String SESSION_TIMESTAMP_FIELD_NAME = "session_timestamp";
-    private final String UI_RESOURCE_NAME_FIELD_NAME = "ui_resource_name";
-    private final String UI_ORGANISATION_FIELD_NAME = "ui_organisation";
-    private final String DS_ST_NAME_FIELD_NAME = "ds_st";
-    private final String DS_BBOX_NAME_FIELD_NAME = "ds_bbox";
-    private final String DS_SOURCES_GROUP_KEY_FIELD_NAME = "ds_sources_group.key";
-    private final String DS_SOURCES_GROUP_VALUE_FIELD_NAME = "ds_sources_group.value";
-    private final int MIN_DOC_COUNT_VALUE = 0;
-    private final String DATE_FORMAT = "yyyy-MM-dd HH:mm.SSS";
+    private static final String INDEX_NAME = "geoss_index";
+    private static final String AGGREGATION_DATE_HISTOGRAM_NAME = "aggr_date_histogram";
+    private static final String AGGREGATION_TERMS_NAME = "aggr_terms";
+    private static final String SESSION_DATE_FIELD_NAME = "session_date";
+    private static final String SESSION_TIMESTAMP_FIELD_NAME = "session_timestamp";
+    private static final String UI_RESOURCE_NAME_FIELD_NAME = "ui_resource_name";
+    private static final String UI_ORGANISATION_FIELD_NAME = "ui_organisation";
+    private static final String DS_ST_NAME_FIELD_NAME = "ds_st";
+    private static final String DS_BBOX_NAME_FIELD_NAME = "ds_bbox";
+    private static final String DS_SOURCES_GROUP_KEY_FIELD_NAME = "ds_sources_group.key";
+    private static final String DS_SOURCES_GROUP_VALUE_FIELD_NAME = "ds_sources_group.value";
+    private static final int MIN_DOC_COUNT_VALUE = 0;
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm.SSS";
     /**
      * The Elasticsearch client.
      */

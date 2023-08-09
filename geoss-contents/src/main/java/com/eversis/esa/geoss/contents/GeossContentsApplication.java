@@ -1,13 +1,14 @@
 package com.eversis.esa.geoss.contents;
 
-import jakarta.annotation.Resource;
-
 import com.eversis.esa.geoss.contents.configuration.RepositoryProperties;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import jakarta.annotation.Resource;
 
 /**
  * The type Geoss contents application.

@@ -1,11 +1,8 @@
 package com.eversis.esa.geoss.contents.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.domain.Document;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The type Document controller.

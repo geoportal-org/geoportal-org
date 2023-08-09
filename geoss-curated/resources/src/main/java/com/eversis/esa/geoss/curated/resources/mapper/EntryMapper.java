@@ -9,9 +9,8 @@ import com.eversis.esa.geoss.curated.resources.service.DefinitionTypeService;
 import com.eversis.esa.geoss.curated.resources.service.OrganisationService;
 import com.eversis.esa.geoss.curated.resources.service.SourceService;
 import com.eversis.esa.geoss.curated.resources.service.TypeService;
-import com.eversis.esa.geoss.curated.resources.service.impl.DataSourcesServiceImpl;
-import com.eversis.esa.geoss.curated.resources.service.impl.SourceServiceImpl;
 import com.eversis.esa.geoss.curated.resources.util.CodeGeneratorUtil;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,19 +19,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntryMapper {
 
-    private DataSourcesService dataSourceService;
+    private final DataSourcesService dataSourceService;
 
-    private SourceService sourceService;
+    private final SourceService sourceService;
 
-    private AccessPolicyService accessPolicyService;
+    private final AccessPolicyService accessPolicyService;
 
-    private TypeService typeService;
+    private final TypeService typeService;
 
-    private DefinitionTypeService definitionTypeService;
+    private final DefinitionTypeService definitionTypeService;
 
-    private OrganisationService organisationService;
+    private final OrganisationService organisationService;
 
-    private DashboardContentsService dashboardContentsService;
+    private final DashboardContentsService dashboardContentsService;
 
     /**
      * Instantiates a new Entry mapper.

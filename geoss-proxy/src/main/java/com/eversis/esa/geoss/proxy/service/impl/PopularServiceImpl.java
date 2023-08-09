@@ -1,9 +1,7 @@
 package com.eversis.esa.geoss.proxy.service.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.eversis.esa.geoss.proxy.domain.PopularWord;
+import com.eversis.esa.geoss.proxy.service.PopularService;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
@@ -11,10 +9,13 @@ import co.elastic.clients.elasticsearch._types.aggregations.Buckets;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsAggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.eversis.esa.geoss.proxy.domain.PopularWord;
-import com.eversis.esa.geoss.proxy.service.PopularService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Popular service.
@@ -23,11 +24,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class PopularServiceImpl implements PopularService {
 
-    public static final String FIELD_NAME = "ds_st";
-    public static final String AGGREGATION_NAME = "group_by_ds_st";
-    public static final String INDEX_NAME = "geoss_index";
+    private static final String FIELD_NAME = "ds_st";
+    private static final String AGGREGATION_NAME = "group_by_ds_st";
+    private static final String INDEX_NAME = "geoss_index";
     private final ElasticsearchClient elasticsearchClient;
 
+    /**
+     * Instantiates a new Popular service.
+     *
+     * @param elasticsearchClient the elasticsearch client
+     */
     public PopularServiceImpl(ElasticsearchClient elasticsearchClient) {
         this.elasticsearchClient = elasticsearchClient;
     }
@@ -68,7 +74,7 @@ public class PopularServiceImpl implements PopularService {
             Buckets<StringTermsBucket> sbuckets = sterms.buckets();
             List<StringTermsBucket> bucArr = sbuckets.array();
             for (StringTermsBucket bucObj : bucArr) {
-                     popularWords.add(new PopularWord(bucObj.key().stringValue(), bucObj.docCount()));
+                popularWords.add(new PopularWord(bucObj.key().stringValue(), bucObj.docCount()));
             }
         }
     }

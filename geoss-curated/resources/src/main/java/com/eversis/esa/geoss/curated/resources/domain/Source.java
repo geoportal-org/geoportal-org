@@ -1,18 +1,18 @@
 package com.eversis.esa.geoss.curated.resources.domain;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NaturalId;
+import java.util.Objects;
 
 /**
  * The type Source.

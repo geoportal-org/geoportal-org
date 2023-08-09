@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.proxy.mapper;
 
-import java.io.IOException;
-
 import com.eversis.esa.geoss.proxy.document.Doc;
+
+import java.io.IOException;
 
 /**
  * The interface Elasticsearch document mapper.
@@ -18,6 +18,6 @@ public interface ElasticsearchDocumentMapper<T> {
      * @return the doc
      * @throws IOException the io exception
      */
-    public Doc mapToDocument(T model) throws IOException;
+    Doc mapToDocument(T model) throws IOException;
 
 }

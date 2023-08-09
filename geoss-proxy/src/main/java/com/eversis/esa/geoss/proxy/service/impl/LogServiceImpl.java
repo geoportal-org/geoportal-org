@@ -17,6 +17,7 @@ import com.eversis.esa.geoss.proxy.repository.ResourceErrorRepository;
 import com.eversis.esa.geoss.proxy.repository.SearchResultRepository;
 import com.eversis.esa.geoss.proxy.repository.SignInRepository;
 import com.eversis.esa.geoss.proxy.service.LogService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

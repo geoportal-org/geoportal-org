@@ -14,7 +14,7 @@ public class CodeGeneratorUtil {
      * @return the string
      */
     public static String generateCode(String title, long userId) {
-        String titleTransformation = title.toLowerCase().replace(' ','_');
+        String titleTransformation = title.toLowerCase().replace(' ', '_');
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return titleTransformation + "_" + userId + "_" + timestamp.getTime();
     }

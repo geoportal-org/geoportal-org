@@ -1,12 +1,5 @@
 package com.eversis.esa.geoss.contents.service.impl;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.configuration.RepositoryProperties;
 import com.eversis.esa.geoss.contents.domain.Document;
 import com.eversis.esa.geoss.contents.domain.Folder;
@@ -14,6 +7,7 @@ import com.eversis.esa.geoss.contents.exception.FileNameNotUniqueException;
 import com.eversis.esa.geoss.contents.repository.DocumentRepository;
 import com.eversis.esa.geoss.contents.repository.FolderRepository;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -26,6 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 /**
  * The type Repository service.
  */
@@ -33,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class RepositoryServiceImpl implements RepositoryService {
 
-    private static final int rootFolderId = 0;
+    private static final int ROOT_FOLDER_ID = 0;
     private final Path rootDirectory;
     private final FolderRepository folderRepository;
     private final DocumentRepository documentRepository;
@@ -57,7 +58,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     public void init() {
         try {
             log.info("Creating the root directory for uploaded files storage.");
-            Path rootFolderDirectory = rootDirectory.resolve(String.valueOf(rootFolderId));
+            Path rootFolderDirectory = rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID));
             Files.createDirectories(rootFolderDirectory);
             log.info("Root folder directory created at path {}", rootFolderDirectory);
         } catch (IOException e) {
@@ -91,6 +92,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         log.info("Removed folder at path {}", removeDirectory);
     }
 
+    @Override
     @Transactional
     public void deleteDocumentsAndFoldersRecursively(Long folderId) {
         Folder folder = folderRepository.findById(folderId).orElse(null);

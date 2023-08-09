@@ -1,8 +1,7 @@
 package com.eversis.esa.geoss.contents.controller;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.service.ContentService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.List;
 
 /**
  * The type Content controller.

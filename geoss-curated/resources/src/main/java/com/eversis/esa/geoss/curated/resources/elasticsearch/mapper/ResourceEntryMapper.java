@@ -1,18 +1,19 @@
 package com.eversis.esa.geoss.curated.resources.elasticsearch.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.model.AccessPolicyELK;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.model.DashboardContentsELK;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.model.OrganisationELK;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.model.ResourceEntryELK;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.model.SourceELK;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Resource entry mapper.
@@ -133,7 +134,7 @@ public class ResourceEntryMapper {
 
         // Loop through the coordinate strings and create Point objects
         for (int i = 0; i < coordinateStrings.length; i += 2) {
-            double longitude = Double.parseDouble(coordinateStrings[i+1]);
+            double longitude = Double.parseDouble(coordinateStrings[i + 1]);
             double latitude = Double.parseDouble(coordinateStrings[i]);
             geoPoints.add(new Point(latitude, longitude));
         }

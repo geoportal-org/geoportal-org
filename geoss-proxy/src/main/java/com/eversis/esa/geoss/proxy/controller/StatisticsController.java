@@ -1,10 +1,5 @@
 package com.eversis.esa.geoss.proxy.controller;
 
-import java.util.List;
-import jakarta.validation.Valid;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 import com.eversis.esa.geoss.proxy.domain.MostPopular;
 import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
@@ -14,6 +9,7 @@ import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
 import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.Search;
 import com.eversis.esa.geoss.proxy.service.StatisticsService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * The type Statistics controller.
@@ -64,8 +65,8 @@ public class StatisticsController {
      */
     @GetMapping(value = "getMostPopularResources")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularResources(@Valid @RequestBody
-    MostPopularResourcesModel mostPopularResourcesModel) {
+    public List<MostPopular> getMostPopularResources(
+            @Valid @RequestBody MostPopularResourcesModel mostPopularResourcesModel) {
         log.info("mostPopularResourcesModel:{}", mostPopularResourcesModel);
         return statisticsService.getMostPopularResources(mostPopularResourcesModel);
     }
@@ -78,8 +79,8 @@ public class StatisticsController {
      */
     @GetMapping(value = "getMostPopularKeywords")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularKeywords(@Valid @RequestBody
-    MostPopularKeywordsModel mostPopularKeywordsModel) {
+    public List<MostPopular> getMostPopularKeywords(
+            @Valid @RequestBody MostPopularKeywordsModel mostPopularKeywordsModel) {
         log.info("mostPopularKeywordsModel:{}", mostPopularKeywordsModel);
         return statisticsService.getMostPopularKeywords(mostPopularKeywordsModel);
     }
@@ -92,7 +93,8 @@ public class StatisticsController {
      */
     @GetMapping(value = "getMostPopularCatalogs")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularCatalogs(@Valid @RequestBody MostPopularCatalogsModel mostPopularCatalogsModel) {
+    public List<MostPopular> getMostPopularCatalogs(
+            @Valid @RequestBody MostPopularCatalogsModel mostPopularCatalogsModel) {
         log.info("mostPopularCatalogsModel:{}", mostPopularCatalogsModel);
         return statisticsService.getMostPopularCatalogs(mostPopularCatalogsModel);
     }
@@ -105,7 +107,8 @@ public class StatisticsController {
      */
     @GetMapping(value = "getMostPopularOrganizations")
     @ResponseStatus(HttpStatus.OK)
-    public List<MostPopular> getMostPopularOrganizations(@Valid @RequestBody MostPopularOrganisationsModel mostPopularOrganisationsModel) {
+    public List<MostPopular> getMostPopularOrganizations(
+            @Valid @RequestBody MostPopularOrganisationsModel mostPopularOrganisationsModel) {
         log.info("mostPopularOrganisationsModel:{}", mostPopularOrganisationsModel);
         return statisticsService.getMostPopularOrganizations(mostPopularOrganisationsModel);
     }

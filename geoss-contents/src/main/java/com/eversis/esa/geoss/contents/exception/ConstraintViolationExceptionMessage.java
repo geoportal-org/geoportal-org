@@ -1,11 +1,11 @@
 package com.eversis.esa.geoss.contents.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import org.springframework.data.rest.webmvc.support.RepositoryConstraintViolationExceptionMessage.ValidationError;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.proxy.service;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.proxy.domain.PopularWord;
+
+import java.util.List;
 
 /**
  * The interface Popular service.

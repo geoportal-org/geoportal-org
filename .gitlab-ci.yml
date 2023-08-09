@@ -2,6 +2,41 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   GRADLE_CLI_OPTS: "--build-cache"
 
+.npm_lint_base:
+  image: node:16-alpine
+  tags:
+    - geoss-runner-1
+  script:
+    - npm ci install
+    - npm ci run lint
+  cache: { }
+  only:
+    - branches
+
+.yarn_lint_base:
+  image: node:16-alpine
+  tags:
+    - geoss-runner-1
+  script:
+    - yarn install --frozen-lockfile
+    - yarn lint
+  cache: { }
+  only:
+    - branches
+
+.gradle_checkstyle_base:
+  image: openjdk:17-jdk-slim-buster
+  tags:
+    - geoss-runner-1
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod u+x ./gradlew
+    - ./gradlew $GRADLE_CLI_OPTS checkstyleMain checkstyleTest -x compileJava -x compileTestJava
+    - ls -l .gradle
+  cache: { }
+  only:
+    - branches
+
 .gradle_build_base:
   image: openjdk:17-jdk-slim-buster
   tags:
@@ -22,6 +57,7 @@ variables:
 #         STAGES          #
 ###########################
 stages: # List of stages for jobs, and their order of execution
+  - code_analysis
   - build
   - build_docker_images
   - docker_stack_deploy
@@ -30,6 +66,134 @@ stages: # List of stages for jobs, and their order of execution
 ###########################
 #          STEPS          #
 ###########################
+
+########################################################################################################################
+#                                                STATIC CODE ANALYSIS                                                  #
+########################################################################################################################
+check_geoss-admin:
+  extends: .npm_lint_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-admin
+    - echo "Check geoss-admin app..."
+  after_script:
+    - echo "Check geoss-admin complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-admin/.next
+      - geoss-admin/node_modules
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+#check_geoss-ui:
+#  extends: .yarn_lint_base
+#  stage: code_analysis
+#  before_script:
+#    - cd ./geoss-ui
+#    - echo "Check geoss-ui app..."
+#  after_script:
+#    - echo "Check geoss-ui complete"
+#    - cd ..
+#  cache:
+#    paths:
+#      - geoss-ui/node_modules
+#    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-contents:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-contents
+    - echo "Check geoss-contents app..."
+  after_script:
+    - echo "Check geoss-contents complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-contents/.gradle
+      - geoss-contents/build
+      - geoss-contents/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-curated:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-curated
+    - echo "Building geoss-curated app..."
+  after_script:
+    - echo "Build geoss-curated complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-curated/.gradle
+      - geoss-curated/build
+      - geoss-curated/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-personaldata:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-personaldata
+    - echo "Building geoss-personaldata app..."
+  after_script:
+    - echo "Build geoss-personaldata complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-personaldata/.gradle
+      - geoss-personaldata/build
+      - geoss-personaldata/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-proxy:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-proxy
+    - echo "Building geoss-proxy app..."
+  after_script:
+    - echo "Build geoss-proxy complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-proxy/.gradle
+      - geoss-proxy/build
+      - geoss-proxy/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-search:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-search
+    - echo "Building geoss-search app..."
+  after_script:
+    - echo "Build geoss-search complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-search/.gradle
+      - geoss-search/build
+      - geoss-search/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+
+check_geoss-settings:
+  extends: .gradle_checkstyle_base
+  stage: code_analysis
+  before_script:
+    - cd ./geoss-settings
+    - echo "Building geoss-settings app..."
+  after_script:
+    - echo "Build geoss-settings complete"
+    - cd ..
+  cache:
+    paths:
+      - geoss-settings/.gradle
+      - geoss-settings/build
+      - geoss-settings/*/build
+    key: ${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
 
 ########################################################################################################################
 #                                                     BUILD                                                            #

@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.proxy.mapper.impl;
 import com.eversis.esa.geoss.proxy.document.SignInDoc;
 import com.eversis.esa.geoss.proxy.domain.LoggedSignInModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SignInMapper implements ElasticsearchDocumentMapper<LoggedSignInModel> {
 
-    private final static String result = "Successfully logged in";
+    private static final String RESULT = "Successfully logged in";
 
-    private final static String operation = "Login attempt";
+    private static final String OPERATION = "Login attempt";
 
+    @Override
     public SignInDoc mapToDocument(LoggedSignInModel model) {
         return getSignInDoc(model);
     }
@@ -24,8 +26,8 @@ public class SignInMapper implements ElasticsearchDocumentMapper<LoggedSignInMod
             return null;
         }
         SignInDoc doc = new SignInDoc();
-        doc.setResult(result);
-        doc.setOperation(operation);
+        doc.setResult(RESULT);
+        doc.setOperation(OPERATION);
         doc.setSessionSiteUrl(model.getSessionSiteUrl());
         doc.setSessionLogin(model.getCommonProperties().getSessionProperties().getSessionLogin());
         doc.setSessionId(model.getCommonProperties().getSessionProperties().getSessionId());

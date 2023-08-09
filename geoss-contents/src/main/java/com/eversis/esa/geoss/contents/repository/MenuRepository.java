@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.contents.repository;
 
 import com.eversis.esa.geoss.contents.domain.Menu;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

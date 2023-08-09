@@ -1,11 +1,5 @@
 package com.eversis.esa.geoss.contents.exception;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-import jakarta.validation.ConstraintViolationException;
-
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +8,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import jakarta.validation.ConstraintViolationException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Rest response entity exception handler.
@@ -56,18 +56,25 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ExceptionResponseMessage> handleMaxSizeException(MaxUploadSizeExceededException ex) {
-        List<String> errors = Arrays.asList(new String[] {ex.getMessage()});
+        List<String> errors = Arrays.asList(new String[]{ex.getMessage()});
         ExceptionResponseMessage responseMessage =
                 new ExceptionResponseMessage("File is too large. Max file size is 10MB.",
                         HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
         return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }
 
+    /**
+     * Handle file name not unique exception response entity.
+     *
+     * @param ex the ex
+     * @return the response entity
+     */
     @ExceptionHandler(FileNameNotUniqueException.class)
     public ResponseEntity<ExceptionResponseMessage> handleFileNameNotUniqueException(FileNameNotUniqueException ex) {
-        List<String> errors = Arrays.asList(new String[] {ex.getMessage()});
+        List<String> errors = Arrays.asList(new String[]{ex.getMessage()});
         ExceptionResponseMessage responseMessage =
-                new ExceptionResponseMessage("fileName is not unique. File with the same name is already in upload folder. Change file name",
+                new ExceptionResponseMessage(
+                        "fileName is not unique. File with the same name is already in upload folder. Change file name",
                         HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
         return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }

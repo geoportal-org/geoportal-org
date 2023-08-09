@@ -6,6 +6,7 @@ import com.eversis.esa.geoss.proxy.document.DsViewsGroup;
 import com.eversis.esa.geoss.proxy.document.SearchResultDoc;
 import com.eversis.esa.geoss.proxy.domain.LoggedSearchResultModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SearchResultMapper implements ElasticsearchDocumentMapper<LoggedSearchResultModel> {
 
+    @Override
     public SearchResultDoc mapToDocument(LoggedSearchResultModel model) {
         return getSearchResultDoc(model);
     }
@@ -39,18 +41,21 @@ public class SearchResultMapper implements ElasticsearchDocumentMapper<LoggedSea
         doc.setDsRel(model.getDsRel());
         doc.setDsKwd(model.getDsKwd());
         if (model.getDsParentsGroup() != null) {
-            doc.setDsParentsGroupDoc(new DsParentsGroup(model.getDsParentsGroup().getKey(), model.getDsParentsGroup().getValue()));
+            doc.setDsParentsGroupDoc(
+                    new DsParentsGroup(model.getDsParentsGroup().getKey(), model.getDsParentsGroup().getValue()));
         } else {
             doc.setDsParentsGroupDoc(new DsParentsGroup("", ""));
         }
         doc.setDsSba(model.getDsSba());
         if (model.getDsSourcesGroup() != null) {
-            doc.setDsSourcesGroupDoc(new DsSourcesGroup(model.getDsSourcesGroup().getKey(), model.getDsSourcesGroup().getValue()));
+            doc.setDsSourcesGroupDoc(
+                    new DsSourcesGroup(model.getDsSourcesGroup().getKey(), model.getDsSourcesGroup().getValue()));
         } else {
             doc.setDsSourcesGroupDoc(new DsSourcesGroup("", ""));
         }
         if (model.getDsViewsGroup() != null) {
-            doc.setDsViewsGroupDoc(new DsViewsGroup(model.getDsViewsGroup().getKey(), model.getDsViewsGroup().getValue()));
+            doc.setDsViewsGroupDoc(
+                    new DsViewsGroup(model.getDsViewsGroup().getKey(), model.getDsViewsGroup().getValue()));
         } else {
             doc.setDsViewsGroupDoc(new DsViewsGroup("", ""));
         }

@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Resource service.

@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.proxy.mapper.impl;
 import com.eversis.esa.geoss.proxy.document.ResourceErrorDoc;
 import com.eversis.esa.geoss.proxy.domain.LoggedResourceErrorModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResourceErrorMapper implements ElasticsearchDocumentMapper<LoggedResourceErrorModel> {
 
+    @Override
     public ResourceErrorDoc mapToDocument(LoggedResourceErrorModel model) {
         return getResourceErrorDoc(model);
     }

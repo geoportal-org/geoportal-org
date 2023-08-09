@@ -1,10 +1,10 @@
 package com.eversis.esa.geoss.proxy.domain;
 
-import jakarta.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type Logged model.

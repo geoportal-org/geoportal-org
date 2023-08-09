@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.mapper.ResourceEntryMapper;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.repository.ResourceRepository;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.service.ElasticsearchService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,12 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
     private final ResourceEntryMapper resourceEntryMapper;
 
+    /**
+     * Instantiates a new Elasticsearch service.
+     *
+     * @param resourceRepository the resource repository
+     * @param resourceEntryMapper the resource entry mapper
+     */
     public ElasticsearchServiceImpl(ResourceRepository resourceRepository, ResourceEntryMapper resourceEntryMapper) {
         this.resourceRepository = resourceRepository;
         this.resourceEntryMapper = resourceEntryMapper;

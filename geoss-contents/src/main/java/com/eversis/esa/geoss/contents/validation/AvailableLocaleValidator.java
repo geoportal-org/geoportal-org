@@ -1,11 +1,11 @@
 package com.eversis.esa.geoss.contents.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The type Available locale validator.

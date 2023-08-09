@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.proxy.service;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.proxy.domain.MostPopular;
 import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
@@ -10,6 +8,8 @@ import com.eversis.esa.geoss.proxy.domain.MostPopularOrganisationsModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
 import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.Search;
+
+import java.util.List;
 
 /**
  * The interface Statistics service.

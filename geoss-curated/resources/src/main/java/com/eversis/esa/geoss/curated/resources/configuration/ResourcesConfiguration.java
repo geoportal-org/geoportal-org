@@ -1,12 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.configuration;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -17,6 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * The type Resources configuration.
@@ -36,12 +36,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration(proxyBeanMethods = false)
 public class ResourcesConfiguration {
 
-        /**
-         * Resources open api customizer open api customizer.
-         *
-         * @return the open api customizer
-         */
-        @Bean
+    /**
+     * Resources open api customizer open api customizer.
+     *
+     * @return the open api customizer
+     */
+    @Bean
     OpenApiCustomizer resourcesOpenApiCustomizer() {
         return openApi -> {
             List<SecurityRequirement> securityRequirements = Optional.ofNullable(openApi.getComponents())

@@ -1,9 +1,5 @@
 package com.eversis.esa.geoss.proxy.controller;
 
-import jakarta.validation.Valid;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 import com.eversis.esa.geoss.proxy.document.ElementClickDoc;
 import com.eversis.esa.geoss.proxy.document.ResourceErrorDoc;
 import com.eversis.esa.geoss.proxy.document.SearchResultDoc;
@@ -13,6 +9,7 @@ import com.eversis.esa.geoss.proxy.domain.LoggedResourceErrorModel;
 import com.eversis.esa.geoss.proxy.domain.LoggedSearchResultModel;
 import com.eversis.esa.geoss.proxy.domain.LoggedSignInModel;
 import com.eversis.esa.geoss.proxy.service.LogService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * The type Log controller.
