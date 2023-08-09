@@ -13,11 +13,11 @@ import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { makeRequest, GeneralApiService } from './general.api.service'
 
 const _PAQ: string = '_paq'
+
 const LogService: any = {
     /*------------------------------------*/
     /*----- elastic client init ----------*/
     /*------------------------------------*/
-
     portalLogIndice: 'geoss_index',
     portalLogType: 'geoss_data',
     client: undefined,
@@ -26,7 +26,6 @@ const LogService: any = {
     /*-----------------------------------------------*/
     /*--- log query action/event to elastic & MATOMO ----*/
     /*-----------------------------------------------*/
-
     friendlySiteUrl() {
         let friendlySideUrl = ''
         let url =
@@ -55,286 +54,145 @@ const LogService: any = {
         entryDbVal?: string,
         uiActionVal?: string
     ) {
-        return new Promise((resolve, reject) => {
-            if (LogService.elasticsearch_live) {
-                let queryUrl = null
-                if (pOperation === 'search_query') {
-                    queryUrl = SearchEngineService.getDabOpenSearchUrl() + '?'
-                    const filtersParams =
-                        AppVueObj.app.$store.getters[
-                            SearchGetters.filtersParams
-                        ]
-                    for (const key of Object.keys(filtersParams)) {
-                        if (key) {
-                            queryUrl += '&'
-                        }
-                        queryUrl += `${key}=${filtersParams[key]}`
-                    }
+        let queryUrl = null
+        if (pOperation === 'search_query') {
+            queryUrl = SearchEngineService.getDabOpenSearchUrl() + '?'
+            const filtersParams =
+                AppVueObj.app.$store.getters[SearchGetters.filtersParams]
+            for (const key of Object.keys(filtersParams)) {
+                if (key) {
+                    queryUrl += '&'
                 }
-
-                let bbox = ''
-                const { S, W, N, E }: MapCoordinate =
-                    AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
-                        .selectedAreaCoordinates
-                if (S && W && N && W) {
-                    bbox = `${S} ${W} ${N} ${E}`
-                }
-
-                //@ts-ignore
-                LogService.client.bulk(
-                    {
-                        body: [
-                            // action description
-                            {
-                                index: {
-                                    _index: LogService.portalLogIndice,
-                                    _type: LogService.portalLogType,
-                                },
-                            },
-                            // the document to index
-                            LogService.addCommonProperties({
-                                ui_object_id: id,
-                                ui_object_class: className,
-                                session_site_url: LogService.friendlySiteUrl(),
-                                ui_source:
-                                    pOperation === 'search_query' &&
-                                    AppVueObj.app.$store.getters[
-                                        GeneralFiltersGetters.state
-                                    ].requestId
-                                        ? 'dab'
-                                        : entryDbVal,
-                                ui_entry_id: entryIdVal,
-                                ui_action: uiActionVal,
-                                ds_query_url: queryUrl,
-                                ds_reqID:
-                                    AppVueObj.app.$store.getters[
-                                        GeneralFiltersGetters.state
-                                    ].requestId,
-                                ds_si:
-                                    pOperation === 'search_query' &&
-                                    AppVueObj.app.$store.getters[
-                                        SearchGetters.startIndex
-                                    ]
-                                        ? AppVueObj.app.$store.getters[
-                                              SearchGetters.startIndex
-                                          ].toString()
-                                        : null,
-                                ds_ct:
-                                    pOperation === 'search_query' &&
-                                    AppVueObj.app.$store.getters[
-                                        GeneralFiltersGetters.state
-                                    ]
-                                        ? AppVueObj.app.$store.getters[
-                                              GeneralFiltersGetters.state
-                                          ].resultsPerPage.toString()
-                                        : null,
-                                ds_ts: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].dateFrom,
-                                ds_te: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].dateTo,
-                                ds_st: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].phrase,
-                                ds_rel: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].boundingBoxRelation,
-                                ds_kwd:
-                                    pOperation === 'search_query'
-                                        ? AppVueObj.app.$store.getters[
-                                              FacetedFiltersGetters.keyword
-                                          ]
-                                        : null,
-                                ds_parents_group: {
-                                    key: AppVueObj.app.$store.getters[
-                                        MyWorkspaceGetters.search
-                                    ].folder
-                                        ? AppVueObj.app.$store.getters[
-                                              MyWorkspaceGetters.search
-                                          ].folder.value
-                                        : '',
-                                    value: AppVueObj.app.$store.getters[
-                                        MyWorkspaceGetters.search
-                                    ].folder
-                                        ? AppVueObj.app.$store.getters[
-                                              MyWorkspaceGetters.search
-                                          ].folder.label
-                                        : '',
-                                },
-                                ds_sba: null,
-                                ds_sources_group: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].sources.lenth
-                                    ? {
-                                          key: AppVueObj.app.$store.getters[
-                                              GeneralFiltersGetters.state
-                                          ].sources,
-                                          value: AppVueObj.app.$store.getters[
-                                              GeneralFiltersGetters.state
-                                          ].sources,
-                                      }
-                                    : {},
-                                ds_views_group: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].viewId
-                                    ? {
-                                          key: AppVueObj.app.$store.getters[
-                                              GeneralFiltersGetters.state
-                                          ].viewId,
-                                          value: AppVueObj.app.$store.getters[
-                                              GeneralFiltersGetters.state
-                                          ].viewId,
-                                      }
-                                    : {},
-                                ds_bbox: bbox,
-                                ds_gdc: AppVueObj.app.$store.getters[
-                                    GeneralFiltersGetters.state
-                                ].geossDataCore,
-                                ds_w3w: null,
-                                ds_frmt:
-                                    pOperation === 'search_query'
-                                        ? AppVueObj.app.$store.getters[
-                                              FacetedFiltersGetters.format
-                                          ]
-                                        : null,
-                                ds_prot:
-                                    pOperation === 'search_query'
-                                        ? AppVueObj.app.$store.getters[
-                                              FacetedFiltersGetters.protocol
-                                          ]
-                                        : null,
-                                ds_score:
-                                    pOperation === 'search_query'
-                                        ? AppVueObj.app.$store.getters[
-                                              FacetedFiltersGetters.score
-                                          ]
-                                        : null,
-                                operation: pOperation,
-                            }),
-                        ],
-                        ...UtilsService.getAccessKeyObject(),
-                    },
-                    (err: any, resp: any) => {
-                        if (err) {
-                            reject(err)
-                        } else if (resp.items[0].create.status === 201) {
-                            resolve(resp.items[0].create._id)
-                        } else {
-                            reject(resp)
-                        }
-                    }
-                )
+                queryUrl += `${key}=${filtersParams[key]}`
             }
-        }).finally(() => {
-            if (!UtilsService.isWidget()) {
-                const paq: Array<any> = (<any>window)[_PAQ]
-                if (paq) {
-                    paq.push([
-                        'trackEvent',
-                        'Search',
-                        'phrase',
-                        entryIdVal
-                    ])
-                }
-            }
-        })
-    },
-
-    /*-----------------------------------------------*/
-    /*--- log error to elastic  -----------------*/
-    /*-----------------------------------------------*/
-    logResourceError(
-        attachUrl: boolean,
-        result: any,
-        pMessage: string,
-        pOperation: string,
-        pResult: string,
-        pResultDetails: string
-    ) {
-        let linkUrlToShort = ''
-        if (attachUrl) {
-            linkUrlToShort =
-                window.location.protocol +
-                '//' +
-                window.location.host +
-                window.location.pathname +
-                '?'
-            linkUrlToShort +=
-                AppVueObj.app.$store.getters[GeneralFiltersGetters.shareParams]
-            linkUrlToShort +=
-                AppVueObj.app.$store.getters[FacetedFiltersGetters.shareParams]
-            linkUrlToShort +=
-                AppVueObj.app.$store.getters[GranulaFiltersGetters.shareParams]
-            linkUrlToShort +=
-                AppVueObj.app.$store.getters[IrisFiltersGetters.shareParams]
-            linkUrlToShort +=
-                AppVueObj.app.$store.getters[MyWorkspaceGetters.shareParams]
         }
 
-        const bulkObject = {
-            body: [
-                {
-                    index: {
-                        _index: LogService.portalLogIndice,
-                        _type: LogService.portalLogType,
-                    },
-                },
-                LogService.addCommonProperties({
-                    ui_entry_id: result ? result.id : null,
-                    result: pResult,
-                    operation: pOperation,
-                    message: pMessage,
-                    result_details: pResultDetails,
-                    session_site_url: LogService.friendlySiteUrl(),
-                    short_url: null,
-                }),
-            ],
+        let bbox = ''
+        const { S, W, N, E }: MapCoordinate =
+            AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .selectedAreaCoordinates
+        if (S && W && N && W) {
+            bbox = `${S} ${W} ${N} ${E}`
         }
 
-        GeneralApiService.shortenLink(linkUrlToShort).then(
-            (response: any) => {
-                if (response.data && response.data.id) {
-                    bulkObject.body[1].short_url = response.data.id
-                }
-                return new Promise((resolve, reject) => {
-                    LogService.client.bulk(
-                        {
-                            ...bulkObject,
-                            ...UtilsService.getAccessKeyObject(),
-                        },
-                        (err: any, resp: any) => {
-                            if (err) {
-                                reject(err)
-                            } else if (resp.items[0].create.status === 201) {
-                                resolve(resp.items[0].create._id)
-                            } else {
-                                reject(resp)
-                            }
-                        }
-                    )
-                })
+        const body = LogService.addCommonProperties({
+            operation: pOperation,
+            uiObjectId: id,
+            uiObjectClass: className,
+            sessionSiteUrl: LogService.friendlySiteUrl(),
+            uiSource:
+                pOperation === 'search_query' &&
+                AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                    .requestId
+                    ? 'dab'
+                    : entryDbVal,
+            uiEntryid: entryIdVal,
+            uiAction: uiActionVal,
+            dsQueryUrl: queryUrl,
+            dsReqId:
+                AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                    .requestId,
+            dsSi:
+                pOperation === 'search_query' &&
+                AppVueObj.app.$store.getters[SearchGetters.startIndex]
+                    ? AppVueObj.app.$store.getters[
+                          SearchGetters.startIndex
+                      ].toString()
+                    : null,
+            dsCt:
+                pOperation === 'search_query' &&
+                AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                    ? AppVueObj.app.$store.getters[
+                          GeneralFiltersGetters.state
+                      ].resultsPerPage.toString()
+                    : null,
+            dsTs: AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .dateFrom,
+            dsTe: AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .dateTo,
+
+            dsSt: AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .phrase,
+            dsRel: AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .boundingBoxRelation,
+            dsKwd:
+                pOperation === 'search_query'
+                    ? AppVueObj.app.$store.getters[
+                          FacetedFiltersGetters.keyword
+                      ]
+                    : null,
+            dsParentsGroup: {
+                key: AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
+                    .folder
+                    ? AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
+                          .folder.value
+                    : '',
+                value: AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
+                    .folder
+                    ? AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
+                          .folder.label
+                    : '',
             },
-            () => {
-                return new Promise((resolve, reject) => {
-                    LogService.client.bulk(
-                        {
-                            ...bulkObject,
-                            ...UtilsService.getAccessKeyObject(),
-                        },
-                        (err: any, resp: any) => {
-                            if (err) {
-                                reject(err)
-                            } else if (resp.items[0].create.status === 201) {
-                                resolve(resp.items[0].create._id)
-                            } else {
-                                reject(resp)
-                            }
-                        }
-                    )
-                })
+            dsSba: null,
+            dsSourcesGroup: AppVueObj.app.$store.getters[
+                GeneralFiltersGetters.state
+            ].sources.lenth
+                ? {
+                      key: AppVueObj.app.$store.getters[
+                          GeneralFiltersGetters.state
+                      ].sources,
+                      value: AppVueObj.app.$store.getters[
+                          GeneralFiltersGetters.state
+                      ].sources,
+                  }
+                : {},
+            dsViewsGroup: AppVueObj.app.$store.getters[
+                GeneralFiltersGetters.state
+            ].viewId
+                ? {
+                      key: AppVueObj.app.$store.getters[
+                          GeneralFiltersGetters.state
+                      ].viewId,
+                      value: AppVueObj.app.$store.getters[
+                          GeneralFiltersGetters.state
+                      ].viewId,
+                  }
+                : {},
+            dsBbox: bbox,
+            dsGdc: AppVueObj.app.$store.getters[GeneralFiltersGetters.state]
+                .geossDataCore,
+            dsW3w: null,
+            dsFrmt:
+                pOperation === 'search_query'
+                    ? AppVueObj.app.$store.getters[FacetedFiltersGetters.format]
+                    : null,
+            dsProt:
+                pOperation === 'search_query'
+                    ? AppVueObj.app.$store.getters[
+                          FacetedFiltersGetters.protocol
+                      ]
+                    : null,
+            dsScore:
+                pOperation === 'search_query'
+                    ? AppVueObj.app.$store.getters[FacetedFiltersGetters.score]
+                    : null,
+        })
+        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logSearchResult', {
+            method: 'POST',
+            headers: {
+                Authorization:
+                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (!UtilsService.isWidget()) {
+            const paq: Array<any> = (<any>window)[_PAQ]
+            if (paq) {
+                paq.push(['trackEvent', 'Search', 'phrase', entryIdVal])
             }
-        )
+        }
     },
 
     /*-----------------------------------------------*/
@@ -351,67 +209,79 @@ const LogService: any = {
         uiResourceNameVal: string,
         pOperation?: string
     ) {
-        return new Promise((resolve, reject) => {
-            if (LogService.elasticsearch_live) {
-                if (uiOrganisationVal) {
-                    uiOrganisationVal = uiOrganisationVal.replace(/\s\s+/g, '')
-                }
-                if (uiOrganisationVal) {
-                    uiOrganisationVal = uiOrganisationVal.replace(/\s\s+/g, '')
-                }
+        if (uiOrganisationVal) {
+            uiOrganisationVal = uiOrganisationVal.replace(/\s\s+/g, '')
+        }
 
-                LogService.client.bulk(
-                    {
-                        body: [
-                            // action description
-                            {
-                                index: {
-                                    _index: LogService.portalLogIndice,
-                                    _type: LogService.portalLogType,
-                                },
-                            },
-                            // the document to index
-                            LogService.addCommonProperties({
-                                ui_object_id: id,
-                                ui_object_class: className,
-                                ui_source: entryDbVal,
-                                session_site_url: LogService.friendlySiteUrl(),
-                                ui_entry_id: entryIdVal,
-                                ui_action: uiActionVal,
-                                ui_label: uiLabelVal, // never in use (?)
-                                ui_organisation: uiOrganisationVal,
-                                ui_resource_name: uiResourceNameVal,
-                                operation: pOperation,
-                            }),
-                        ],
-                        ...UtilsService.getAccessKeyObject(),
-                    },
-                    (err: any, resp: any) => {
-                        if (err) {
-                            reject(err)
-                        } else if (resp.items[0].create.status === 201) {
-                            resolve(resp.items[0].create._id)
-                        } else {
-                            reject(resp)
-                        }
-                    }
-                )
-            } else {
-                resolve
-            }
-        }).finally(() => {
-            if (!UtilsService.isWidget()) {
-                const paq: Array<any> = (<any>window)[_PAQ]
-                if (paq) {
-                    paq.push([
-                        'trackEvent',
-                        'Click',
-                        uiActionVal,
-                        uiResourceNameVal,
-                    ])
-                }
-            }
+        const body = LogService.addCommonProperties({
+            uiObjectId: id,
+            uiObjectClass: className,
+            uiSource: entryDbVal,
+            sessionSiteUrl: LogService.friendlySiteUrl(),
+            uiEntryId: entryIdVal,
+            uiAction: uiActionVal,
+            uiLabel: uiLabelVal,
+            uiOrganisation: uiOrganisationVal,
+            uiResourceName: uiResourceNameVal,
+            operation: pOperation,
         })
+
+        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logElementClick', {
+            method: 'POST',
+            headers: {
+                Authorization:
+                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (!UtilsService.isWidget()) {
+            const paq: Array<any> = (<any>window)[_PAQ]
+            if (paq) {
+                paq.push([
+                    'trackEvent',
+                    'Click',
+                    uiActionVal,
+                    uiResourceNameVal,
+                ])
+            }
+        }
+    },
+
+    /*-----------------------------------------------*/
+    /*--- log error to elastic  -----------------*/
+    /*-----------------------------------------------*/
+    logResourceError(
+        result: any,
+        pMessage: string,
+        pOperation: string,
+        pResult: string,
+        pResultDetails: string
+    ) {
+        const body = LogService.addCommonProperties({
+            uiEntryId: result ? result.id : '',
+            result: pResult,
+            operation: pOperation,
+            message: pMessage,
+            resultDetails: pResultDetails,
+            sessionSiteUrl: LogService.friendlySiteUrl(),
+            shortUrl: 'test',
+        })
+
+        fetch(
+            'https://gpp.devel.esaportal.eu/proxy/rest/log/logResourceError',
+            {
+                method: 'POST',
+                headers: {
+                    Authorization:
+                        'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            }
+        )
     },
 
     /*-----------------------------------------------*/
@@ -430,60 +300,66 @@ const LogService: any = {
         }
     },
 
-    otherFacetedParams(facetedFiltersObject: any) {
-        let otherFacetedParams = ''
-        for (const param of ['format', 'protocol', 'score']) {
-            if (facetedFiltersObject[param]) {
-                otherFacetedParams += `&${param}=${facetedFiltersObject[param]}`
-            }
-        }
-        if (!otherFacetedParams) {
-            return null
-        } else {
-            otherFacetedParams = otherFacetedParams.substring(1)
-        }
-        return otherFacetedParams
-    },
-
     /*-----------------------------------------------*/
     /*--- log user sign-in to elastic  --------------*/
     /*-----------------------------------------------*/
     logSignIn() {
-        return new Promise((resolve, reject) => {
-            if (window.$nuxt.$cookies.get('geoss_justSignedIn')) {
-                LogService.client.bulk(
-                    {
-                        body: [
-                            {
-                                index: {
-                                    _index: LogService.portalLogIndice,
-                                    _type: LogService.portalLogType,
-                                },
-                            },
-                            LogService.addCommonProperties({
-                                result: 'Successfully logged in',
-                                operation: 'Login attempt',
-                                session_site_url: LogService.friendlySiteUrl(),
-                            }),
-                        ],
-                        ...UtilsService.getAccessKeyObject(),
-                    },
-                    (err: any, resp: any) => {
-                        if (err) {
-                            reject(err)
-                        } else if (resp.items[0].create.status === 201) {
-                            resolve(resp.items[0].create._id)
-                        } else {
-                            reject(resp)
-                        }
-                    }
-                )
-                window.$nuxt.$cookies.remove('geoss_justSignedIn')
-            } else {
-                resolve
-            }
+        // if(window.$nuxt.$cookies.get('geoss_justSignedIn'))
+        const body = LogService.addCommonProperties({
+            sessionSiteUrl: LogService.friendlySiteUrl(),
+        })
+        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logSignIn', {
+            method: 'POST',
+            headers: {
+                Authorization:
+                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
         })
     },
+
+    addCommonProperties(document: any) {
+        document.commonProperties = {
+            sessionProperties: {
+                sessionLogin:
+                    typeof Liferay !== 'undefined'
+                        ? Liferay.ThemeDisplay.getUserId().toString()
+                        : null,
+                sessionId:
+                    typeof Liferay !== 'undefined'
+                        ? window.$nuxt.$cookies.get(
+                              'LFR_SESSION_STATE_' +
+                                  Liferay.ThemeDisplay.getUserId().toString()
+                          )
+                        : null,
+                sessionTimestamp: Date.now(),
+                sessionDate: new Date().toISOString(),
+            },
+            userAgentProperties: {
+                ua: LogService.userAgent.ua,
+                uaBrowserName: LogService.userAgent.browser.name,
+                uaBrowserVersion: LogService.userAgent.browser.version,
+                uaEngineName: LogService.userAgent.engine.name,
+                uaEngineVersion: LogService.userAgent.engine.version,
+                uaOsName: LogService.userAgent.os.name,
+                uaOsVersion: LogService.userAgent.os.version,
+                uaDeviceModel: LogService.userAgent.device.model,
+                uaDeviceVendor: LogService.userAgent.device.vendor,
+                uaDeviceType: LogService.userAgent.device.type,
+                uaCpuArchitecture: LogService.userAgent.cpu.architecture,
+            },
+            otherProperties: {
+                winWidth: window.innerWidth,
+                winHeight: window.innerHeight,
+            },
+        }
+        return document
+    },
+
+    /*------------------------------------*/
+    /*-----  LEGACY ----------*/
+    /*------------------------------------*/
 
     /*------------------------------------*/
     /*----- elastic log for last actions per resource entries ----------*/
@@ -639,23 +515,36 @@ const LogService: any = {
                 })
         }),
 
-    getAllSuggestions(
+    async getAllSuggestions(
         queryString: string,
-        lenList: string | number,
-        lenRelated: string | number
+        limit: string | number,
     ) {
-        const promises = [
-            LogService.getPopularWords(queryString, lenList).catch(
-                (error: any) => error
-            ),
-            LogService.getSeeAlsoWords(queryString, lenRelated, false).catch(
-                (error: any) => error
-            ),
-        ]
 
-        return Promise.all(promises).then(([suggested, related]) => {
-            return [suggested, related]
-        })
+        let response = await fetch(
+            `https://gpp.devel.esaportal.eu/proxy/rest/popular?query=${queryString}&limit=${limit}`,
+            {
+                headers: {
+                    accept: 'application/json'
+                },
+            }
+        )
+
+        let rJson = await response.json()
+
+        return rJson
+
+        // const promises = [
+        //     LogService.getPopularWords(queryString, lenList).catch(
+        //         (error: any) => error
+        //     ),
+        //     LogService.getSeeAlsoWords(queryString, lenRelated, false).catch(
+        //         (error: any) => error
+        //     ),
+        // ]
+
+        // return Promise.all(promises).then(([suggested, related]) => {
+        //     return [suggested, related]
+        // })
     },
 
     /*------------------------------------*/
@@ -697,72 +586,6 @@ const LogService: any = {
                 }
             )
         })
-    },
-
-    dateInUTCFullYear() {
-        const d = new Date()
-
-        const month = d.getUTCMonth() + 1
-        const day = d.getUTCDate()
-        const hour = d.getUTCHours()
-        const minute = d.getUTCMinutes()
-        const second = d.getUTCSeconds()
-        const milisecond = d.getUTCMilliseconds()
-
-        return (
-            d.getUTCFullYear() +
-            '-' +
-            ('' + month).padStart(2, '0') +
-            '-' +
-            ('' + day).padStart(2, '0') +
-            ' ' +
-            ('' + hour).padStart(2, '0') +
-            ':' +
-            ('' + minute).padStart(2, '0') +
-            ':' +
-            ('' + second).padStart(2, '0') +
-            '.' +
-            ('' + milisecond).padStart(3, '0')
-        )
-    },
-
-    addCommonProperties(document: any) {
-        // session properties
-        document.session_login =
-            typeof Liferay !== 'undefined'
-                ? Liferay.ThemeDisplay.getUserId()
-                : null
-        document.session_user_email =
-            typeof Liferay !== 'undefined' && Liferay.ThemeDisplay.isSignedIn()
-                ? window.$nuxt.$cookies.get('geoss_email')
-                : null
-        document.session_id =
-            typeof Liferay !== 'undefined'
-                ? window.$nuxt.$cookies.get(
-                      'LFR_SESSION_STATE_' + Liferay.ThemeDisplay.getUserId()
-                  )
-                : null
-        document.session_timestamp = Date.now()
-        document.session_date = LogService.dateInUTCFullYear()
-
-        // user agent properties
-        document.ua = LogService.userAgent.ua
-        document.ua_browser_name = LogService.userAgent.browser.name
-        document.ua_browser_version = LogService.userAgent.browser.version
-        document.ua_engine_name = LogService.userAgent.engine.name
-        document.ua_engine_version = LogService.userAgent.engine.version
-        document.ua_os_name = LogService.userAgent.os.name
-        document.ua_os_version = LogService.userAgent.os.version
-        document.ua_device_model = LogService.userAgent.device.model
-        document.ua_device_vendor = LogService.userAgent.device.vendor
-        document.ua_device_type = LogService.userAgent.device.type
-        document.ua_cpu_architecture = LogService.userAgent.cpu.architecture
-
-        // other properties
-        document.win_width = window.innerWidth
-        document.win_height = window.innerHeight
-
-        return document
     },
 }
 

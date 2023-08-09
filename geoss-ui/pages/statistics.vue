@@ -190,25 +190,22 @@
                 </button>
                 <div class="statistics_element statistics_element-end">
                     <div v-if="chartInstance" class="dropdown">
-                        <button type="button" @click="toggleDropdown()" class="dropbtn">
+                        <button
+                            type="button"
+                            @click="toggleDropdown()"
+                            class="dropbtn"
+                        >
                             {{ $tc('statistics.exportButton') }}
                         </button>
-                        <div v-if="dropDownOpen" id="myDropdown" class="dropdown-content">
+                        <div
+                            v-if="dropDownOpen"
+                            id="myDropdown"
+                            class="dropdown-content"
+                        >
                             <a @click="downloadChartJsPDF()">PDF</a>
                             <a @click="downloadChartJsCSV()">CSV</a>
                         </div>
                     </div>
-                    <!-- 
-                    <div v-if="chartInstance" class="dropdown">
-                        <button type="button" class="dropbtn">
-                            {{ $tc('statistics.exportButton') }}
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <a @click="downloadChartJsPDF()">PDF</a>
-                            <a @click="downloadChartJsCSV()">CSV</a>
-                        </div>
-                    </div> -->
                     <button class="statistics_submit_button">
                         {{ $tc('statistics.showChart') }}
                     </button>
@@ -233,6 +230,7 @@
 
 <script type="module">
 import MatomoDataService from '@/services/matomo-statistics.service.ts'
+import UtilsService from '@/services/utils.service';
 import Chart from 'chart.js/auto'
 import { GChart } from 'vue-google-charts/legacy'
 import { jsPDF } from 'jspdf'
@@ -335,7 +333,9 @@ export default {
                 this.form.type ===
                     this.$tc('statistics.siteTypeOptions.numberOfSessions') ||
                 this.form.type ===
-                    this.$tc('statistics.siteTypeOptions.bounceRate')
+                    this.$tc('statistics.siteTypeOptions.bounceRate') ||
+                this.form.type ===
+                    this.$tc('statistics.dataTypeOptions.numberOfSearches')
             )
         },
         isAllCatalogsSelected() {
@@ -344,34 +344,45 @@ export default {
     },
     methods: {
         async onSubmit() {
-            let result = await MatomoDataService.prepareChartData(
-                this.form.type,
-                this.isTypeNumeric ? this.form.unit : 'range',
-                this.form.dateFrom,
-                this.form.dateTo,
-                this.form.resultsNumber.toString(),
-                this.$config.matomoToken
-            )
-            if (this.chartInstance) {
-                this.chartInstance.destroy()
-            }
-
-            //redraw chart
-            const chrt = document.getElementById('chart')
-            const chart = new Chart(chrt, {
-                type: result.type,
-                data: result.data,
-                options: result.options,
-            })
-            this.chartInstance = chart
-            this.chartData = result
-
-            //draw map if countires
-            if (result.isCountries) {
-                this.isCountires = true
-                this.mapData = result.mapData
+            if (this.form.source === this.$tc('statistics.dataUsage')) {
+                // let result = await ElasticDataService.fetchElasticData(
+                //     this.form.dataset,
+                //     this.form.dateFrom,
+                //     this.form.dateTo,
+                //     this.form.interval,
+                //     this.form.unit,
+                //     this.form.type
+                // )
             } else {
-                this.isCountires = false
+                let result = await MatomoDataService.prepareChartData(
+                    this.form.type,
+                    this.isTypeNumeric ? this.form.unit : 'range',
+                    this.form.dateFrom,
+                    this.form.dateTo,
+                    this.form.resultsNumber.toString(),
+                    this.$config.matomoToken
+                )
+                if (this.chartInstance) {
+                    this.chartInstance.destroy()
+                }
+
+                //redraw chart
+                const chrt = document.getElementById('chart')
+                const chart = new Chart(chrt, {
+                    type: result.type,
+                    data: result.data,
+                    options: result.options,
+                })
+                this.chartInstance = chart
+                this.chartData = result
+
+                //draw map if countires
+                if (result.isCountries) {
+                    this.isCountires = true
+                    this.mapData = result.mapData
+                } else {
+                    this.isCountires = false
+                }
             }
         },
         toggleIsOpen() {
@@ -502,6 +513,7 @@ export default {
         },
     },
     mounted() {
+        UtilsService.setElkApiToken()
         const now = new Date()
         this.form.dateFrom = new Date(
             now.getFullYear(),

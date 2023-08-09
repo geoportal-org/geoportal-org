@@ -585,6 +585,29 @@ const actions = {
             'viewed'
         )
 
+        //test, to delete later ----------
+        LogService.logElementClick(
+            'test',
+            'test',
+            'test',
+            'test',
+            'Test-log-search-click',
+            'test',
+            'test',
+            'test'
+        )
+
+        LogService.logResourceError(
+            false,
+            'test',
+            'test',
+            'test',
+            'test'
+        )
+
+        LogService.logSignIn()
+        //test, to delete later ----------
+
         let lastPhrase = null
         if (AppVueObj.storeStateBackup) {
             lastPhrase = JSON.parse(AppVueObj.storeStateBackup).generalFilters

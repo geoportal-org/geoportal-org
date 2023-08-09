@@ -43,7 +43,7 @@ const MatomoDataService = {
             module: 'API',
             method: '',
             idSite: '1',
-            period: unit.toLowerCase(),
+            period: MatomoDataService.getPeriod(unit),
             date: dateRange,
             format: 'json',
             filter_limit: resultsNumber,
@@ -52,27 +52,27 @@ const MatomoDataService = {
 
         let chartType = ''
         switch (method) {
-            case "Users' countries":
+            case window.$nuxt.$tc('statistics.siteTypeOptions.usersCountries'):
                 params.method = 'UserCountry.getCountry'
                 chartType = 'bar'
                 break
-            case 'Most popular browsers':
+            case window.$nuxt.$tc('statistics.siteTypeOptions.popularBrowsers'):
                 params.method = 'DevicesDetection.getBrowsers'
                 chartType = 'pie'
                 break
-            case 'Returning users':
+            case window.$nuxt.$tc('statistics.siteTypeOptions.returningUsers'):
                 params.method = 'VisitFrequency.get'
                 chartType = 'pie'
                 break
-            case 'Bounce rate':
+            case window.$nuxt.$tc('statistics.siteTypeOptions.bounceRate'):
                 params.method = 'VisitFrequency.get'
                 chartType = 'line'
                 break
-            case 'Number of users':
+            case window.$nuxt.$tc('statistics.siteTypeOptions.numberOfUsers'):
                 params.method = 'VisitsSummary.getUniqueVisitors'
                 chartType = 'line'
                 break
-            case 'Number of sessions':
+            case window.$nuxt.$tc('statistics.siteTypeOptions.numberOfSessions'):
                 params.method = 'VisitsSummary.getVisits'
                 chartType = 'line'
                 break
@@ -277,6 +277,21 @@ const MatomoDataService = {
             console.log(error)
         }
     },
+    getPeriod(period : string){
+        console.log(period)
+        switch (period){
+            case window.$nuxt.$tc('statistics.timeUnits.day'):
+                return 'day'
+            case window.$nuxt.$tc('statistics.timeUnits.week'):
+                return 'week'
+            case window.$nuxt.$tc('statistics.timeUnits.month'):
+                return 'month'
+            case window.$nuxt.$tc('statistics.timeUnits.year'):
+                return 'year'
+            default:
+                return 'range'
+        }
+    }
 }
 
 export default MatomoDataService

@@ -418,6 +418,50 @@ const UtilsService = {
         }
         return ''
     },
+    setElkApiToken() {
+        if (
+            !window.$nuxt.$cookies.get('elkAuthToken') ||
+            window.$nuxt.$cookies.get('elkAuthToken') === ''
+        ) {
+            let tokenBody = ''
+            if (
+                !window.$nuxt.$cookies.get('elkAuthRefreshToken') ||
+                window.$nuxt.$cookies.get('elkAuthRefreshToken') === ''
+            ) {
+                tokenBody =
+                    'client_id=geoss-proxy&client_secret=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs&grant_type=password&username=geoss&password=geoss&scope=roles'
+            } else {
+                tokenBody = `client_id=geoss-proxy&client_secret=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs&grant_type=refresh_token&scope=roles&refresh_token=${window.$nuxt.$cookies.get(
+                    'elkAuthRefreshToken'
+                )}`
+            }
+            fetch(
+                'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: tokenBody,
+                }
+            )
+                .then((r) => {
+                    return r.json()
+                })
+                .then((data) => {
+                    window.$nuxt.$cookies.set(
+                        'elkAuthToken',
+                        data.access_token,
+                        { maxAge: data.expires_in }
+                    )
+                    window.$nuxt.$cookies.set(
+                        'elkAuthRefreshToken',
+                        data?.refresh_token,
+                        { maxAge: data?.refresh_expires_in }
+                    )
+                })
+        }
+    },
 }
 
 // window.onpopstate = async (event: any) => {

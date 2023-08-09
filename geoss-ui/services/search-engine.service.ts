@@ -211,7 +211,7 @@ const SearchEngineService = {
     },
 
     getDabBaseUrl() {
-        let baseUrl
+        let baseUrl = ''
         if (AppVueObj.app.$store.getters[SearchEngineGetters.userDabBaseUrl]) {
             baseUrl =
                 AppVueObj.app.$store.getters[SearchEngineGetters.userDabBaseUrl]
@@ -225,7 +225,7 @@ const SearchEngineService = {
                 AppVueObj.app.$store.getters[SearchEngineGetters.dabBaseUrl]
         }
         // Make sure trailing slash is removed from the end
-        return baseUrl.replace(/\/+$/, '')
+        return baseUrl?.replace(/\/+$/, '')
     },
 
     getKpBaseUrl() {
