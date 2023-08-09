@@ -11,6 +11,8 @@ import SearchEngineService from '@/services/search-engine.service'
 import UtilsService from '@/services/utils.service'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { makeRequest, GeneralApiService } from './general.api.service'
+import apiClient from '@/api/apiClient'
+import geossProxy from '@/api/module/geoss-proxy'
 
 const _PAQ: string = '_paq'
 
@@ -177,14 +179,13 @@ const LogService: any = {
                     ? AppVueObj.app.$store.getters[FacetedFiltersGetters.score]
                     : null,
         })
-        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logSearchResult', {
-            method: 'POST',
+
+        apiClient.$post(`${geossProxy.logSearch}`, JSON.stringify(body), {
             headers: {
                 Authorization:
                     'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body),
         })
 
         if (!UtilsService.isWidget()) {
@@ -226,15 +227,13 @@ const LogService: any = {
             operation: pOperation,
         })
 
-        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logElementClick', {
-            method: 'POST',
+        apiClient.$post(`${geossProxy.logElementClick}`, JSON.stringify(body), {
             headers: {
                 Authorization:
                     'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
                 'Content-Type': 'application/json',
-                'accept': 'application/json'
+                accept: 'application/json',
             },
-            body: JSON.stringify(body),
         })
 
         if (!UtilsService.isWidget()) {
@@ -270,16 +269,16 @@ const LogService: any = {
             shortUrl: 'test',
         })
 
-        fetch(
-            'https://gpp.devel.esaportal.eu/proxy/rest/log/logResourceError',
+        apiClient.$post(
+            `${geossProxy.logResourceError}`,
+            JSON.stringify(body),
             {
-                method: 'POST',
                 headers: {
                     Authorization:
                         'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
                     'Content-Type': 'application/json',
+                    accept: 'application/json',
                 },
-                body: JSON.stringify(body),
             }
         )
     },
@@ -308,14 +307,14 @@ const LogService: any = {
         const body = LogService.addCommonProperties({
             sessionSiteUrl: LogService.friendlySiteUrl(),
         })
-        fetch('https://gpp.devel.esaportal.eu/proxy/rest/log/logSignIn', {
-            method: 'POST',
+
+        apiClient.$post(`${geossProxy.logSignIn}`, JSON.stringify(body), {
             headers: {
                 Authorization:
                     'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
                 'Content-Type': 'application/json',
+                accept: 'application/json',
             },
-            body: JSON.stringify(body),
         })
     },
 
@@ -409,51 +408,63 @@ const LogService: any = {
 
     getPopularWords: (queryString: string, limit: string | number) =>
         new Promise((resolve, reject) => {
-            if (LogService.elasticsearch_live) {
-                const elasticesearchSearchQuery = {
-                    query: {
-                        match_phrase_prefix: {
-                            ds_st: {
-                                query: queryString,
-                            },
-                        },
+            const url = `${geossProxy.popular}?query=${queryString}&limit=${limit}`
+            try {
+                const popular = apiClient.$get(url, {
+                    headers: {
+                        Authorization: '',
                     },
-                    size: 0,
-                    aggs: {
-                        group_by_ds_st: {
-                            terms: {
-                                field: 'ds_st',
-                                size: limit,
-                            },
-                        },
-                    },
-                }
-
-                const elasticesearchSearchQueryString = JSON.stringify(
-                    elasticesearchSearchQuery
-                )
-                LogService.client.search(
-                    {
-                        size: 0,
-                        index: 'geoss_index',
-                        body: elasticesearchSearchQueryString,
-                        ...UtilsService.getAccessKeyObject(),
-                    },
-                    (error: any, response: any) => {
-                        if (error) {
-                            reject(error)
-                        } else {
-                            if (response.aggregations) {
-                                resolve(
-                                    response.aggregations.group_by_ds_st.buckets
-                                )
-                            }
-                        }
-                    }
-                )
-            } else {
-                reject(new Error('Elasticsearch error.'))
+                })
+                resolve(popular)
+            } catch (error) {
+                reject(error)
             }
+
+            // if (LogService.elasticsearch_live) {
+            //     const elasticesearchSearchQuery = {
+            //         query: {
+            //             match_phrase_prefix: {
+            //                 ds_st: {
+            //                     query: queryString,
+            //                 },
+            //             },
+            //         },
+            //         size: 0,
+            //         aggs: {
+            //             group_by_ds_st: {
+            //                 terms: {
+            //                     field: 'ds_st',
+            //                     size: limit,
+            //                 },
+            //             },
+            //         },
+            //     }
+
+            //     const elasticesearchSearchQueryString = JSON.stringify(
+            //         elasticesearchSearchQuery
+            //     )
+            //     LogService.client.search(
+            //         {
+            //             size: 0,
+            //             index: 'geoss_index',
+            //             body: elasticesearchSearchQueryString,
+            //             ...UtilsService.getAccessKeyObject(),
+            //         },
+            //         (error: any, response: any) => {
+            //             if (error) {
+            //                 reject(error)
+            //             } else {
+            //                 if (response.aggregations) {
+            //                     resolve(
+            //                         response.aggregations.group_by_ds_st.buckets
+            //                     )
+            //                 }
+            //             }
+            //         }
+            //     )
+            // } else {
+            //     reject(new Error('Elasticsearch error.'))
+            // }
         }),
 
     getSeeAlsoWords: (
@@ -517,34 +528,17 @@ const LogService: any = {
 
     async getAllSuggestions(
         queryString: string,
-        limit: string | number,
+        lenList: string | number,
+        lenRelated: string | number
     ) {
+        const promises = [
+            LogService.getPopularWords(queryString, lenList),
+            LogService.getSeeAlsoWords(queryString, lenRelated, false),
+        ]
 
-        let response = await fetch(
-            `https://gpp.devel.esaportal.eu/proxy/rest/popular?query=${queryString}&limit=${limit}`,
-            {
-                headers: {
-                    accept: 'application/json'
-                },
-            }
-        )
-
-        let rJson = await response.json()
-
-        return rJson
-
-        // const promises = [
-        //     LogService.getPopularWords(queryString, lenList).catch(
-        //         (error: any) => error
-        //     ),
-        //     LogService.getSeeAlsoWords(queryString, lenRelated, false).catch(
-        //         (error: any) => error
-        //     ),
-        // ]
-
-        // return Promise.all(promises).then(([suggested, related]) => {
-        //     return [suggested, related]
-        // })
+        return Promise.all(promises).then(([suggested, related]) => {
+            return [suggested, related]
+        })
     },
 
     /*------------------------------------*/

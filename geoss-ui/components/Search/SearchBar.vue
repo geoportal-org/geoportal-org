@@ -308,7 +308,6 @@ export default class SearchBarComponent extends Vue {
     }
 
     public async getSuggestions() {
-        return false;
         if (this.phrase) {
             this.suggestionsActiveCalls++;
             const [, [suggested, related]] = await to(LogService.getAllSuggestions(this.phrase, 4, 10));
