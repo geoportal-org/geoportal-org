@@ -92,7 +92,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SETTINGS_OA2_KCSECRET}
       KEYTOOL_STOREPASS: notusedyet
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
@@ -121,7 +121,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PERSONALDATA_OA2_KCSECRET}
       KEYTOOL_STOREPASS: notusedyet
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
@@ -150,7 +150,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CONTENTS_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -181,7 +181,7 @@ services:
       NEXTAUTH_URL: "https://gpp-admin.devel.esaportal.eu"
       NEXTAUTH_SECRET: "d3fa4c4ff9e3a252247fca2e74e5f585"
       KEYCLOAK_CLIENT_ID: "geoss-admin"
-      KEYCLOAK_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      KEYCLOAK_CLIENT_SECRET: ${GEOSS_ADMIN_OA2_KCSECRET}
       KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -261,7 +261,7 @@ services:
       SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PROXY_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -290,7 +290,7 @@ services:
       SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CURATED_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -322,7 +322,7 @@ services:
       DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: "true"
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${SPRINGSECURITY_OA2_KCSECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -379,6 +379,7 @@ services:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
       KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${KIBANA_OA2_KCSECRET}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
     volumes:
       - /opt/kibana:/bitnami/kibana
@@ -409,7 +410,7 @@ services:
       MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
       MATOMO_DATABASE_TABLE_PREFIX: "${MATOMO_DB_PREFIX}"
-      BITNAMI_DEBUG: "true"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${MATOMO_OA2_KCSECRET}
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
       no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
