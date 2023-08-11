@@ -8,6 +8,8 @@ LABEL image="geoss-kibana"
 
 COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
+COPY --chown=1001 conf/kibana.yml /bitnami/kibana/conf/kibana.yml
+
 COPY index-patterns/ /etc/kibana-data/
 COPY --chown=1001 entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
