@@ -1246,6 +1246,7 @@ Plugins[] = CustomJsTracker
 Plugins[] = Tour
 Plugins[] = PagePerformance
 Plugins[] = CustomDimensions
+Plugins[] = LoginOIDC
 
 [PluginsInstalled]
 PluginsInstalled[] = Diagnostics
