@@ -176,6 +176,8 @@ server:
 elasticsearch:
   hosts: http://geoss-elasticsearch-1:9200
 
+xpack.reporting.roles.enabled: true 
+
 xpack.security.authc.providers:
   oidc.geoss: 
     order: 0 
