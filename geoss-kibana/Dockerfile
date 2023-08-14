@@ -21,7 +21,7 @@ HEALTHCHECK \
 	--interval=30s \
 	--start-period=30s \
 	--timeout=1m \
-CMD curl -fsS "http://localhost:5601/" || exit 1
+CMD curl -kfsS "https://localhost:5601/" || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/opt/bitnami/scripts/kibana/run.sh"]
