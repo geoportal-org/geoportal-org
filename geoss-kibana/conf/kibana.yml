@@ -177,6 +177,11 @@ elasticsearch:
   hosts: http://geoss-elasticsearch-1:9200
 
 xpack.reporting.roles.enabled: true 
+elasticsearch.ssl.verificationMode: certificate
+
+server.ssl.enabled: true
+server.ssl.certificate: /etc/kibana-data/ca.crt
+server.ssl.key: /etc/kibana-data/ca.key
 
 xpack.security.authc.providers:
   oidc.geoss: 
@@ -185,3 +190,4 @@ xpack.security.authc.providers:
     description: “Keycloak” 
   basic.basic: 
     order: 1
+
