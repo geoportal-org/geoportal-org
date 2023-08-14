@@ -175,3 +175,11 @@ server:
   rewriteBasePath: false
 elasticsearch:
   hosts: http://geoss-elasticsearch-1:9200
+
+xpack.security.authc.providers:
+  oidc.geoss: 
+    order: 0 
+    realm: geoss 
+    description: “Keycloak” 
+  basic.basic: 
+    order: 1

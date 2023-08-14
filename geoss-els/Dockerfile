@@ -14,6 +14,7 @@ RUN bin/elasticsearch-plugin install -b analysis-smartcn
 RUN bin/elasticsearch-plugin install -b analysis-stempel
 
 COPY --chown=elasticsearch conf/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+COPY --chown=elasticsearch conf/jwkset.json /usr/share/elasticsearch/config/jwkset.json
 
 COPY indices/ /indices/
 COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
