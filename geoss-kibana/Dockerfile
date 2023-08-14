@@ -8,7 +8,7 @@ LABEL image="geoss-kibana"
 
 COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
-COPY --chown=1001 conf/kibana.yml /opt/bitnami/kibana/conf/kibana.yml
+COPY --chown=1001 conf/kibana.yml /opt/bitnami/kibana/config/kibana.yml
 COPY --chown=1001 ca/ /etc/kibana-data/
 
 COPY index-patterns/ /etc/kibana-data/
