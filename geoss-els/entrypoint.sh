@@ -1,30 +1,10 @@
 #!/bin/bash
-# Copyright VMware, Inc.
-# SPDX-License-Identifier: APACHE-2.0
-
-# shellcheck disable=SC1091
-
-set -o errexit
-set -o nounset
-set -o pipefail
-#set -o xtrace
-
-# Load libraries
-. /opt/bitnami/scripts/libbitnami.sh
-. /opt/bitnami/scripts/libelasticsearch.sh
-
-# Load environment
-. /opt/bitnami/scripts/elasticsearch-env.sh
-
-print_welcome_page
 
 /create_indexes.sh&
 
-if [[ "$1" = "/opt/bitnami/scripts/elasticsearch/run.sh" ]]; then
-    info "** Starting Elasticsearch setup **"
-    /opt/bitnami/scripts/elasticsearch/setup.sh
-    info "** Elasticsearch setup finished! **"
-fi
+echo "Adding keystore value"
+echo -n "xTUIINx6U7qe6lcTcrRUdgYqVKo08dXs" | bin/elasticsearch-keystore add --stdin xpack.security.authc.realms.oidc.geoss.rp.client_secret
+bin/elasticsearch-keystore show xpack.security.authc.realms.oidc.geoss.rp.client_secret
+echo "Added keystore value"
 
-echo ""
-exec "$@"
+/bin/tini -- /usr/local/bin/docker-entrypoint.sh $1
