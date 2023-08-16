@@ -28,6 +28,3 @@ HEALTHCHECK \
 	--start-period=30s \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
-
-ENTRYPOINT [ "/opt/bitnami/scripts/elasticsearch/entrypoint.sh" ]
-CMD [ "/opt/bitnami/scripts/elasticsearch/run.sh" ]
