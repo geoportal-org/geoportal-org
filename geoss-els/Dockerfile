@@ -18,8 +18,8 @@ COPY --chown=elasticsearch conf/jwkset.json /usr/share/elasticsearch/config/jwks
 COPY --chown=elasticsearch ca/ /usr/share/elasticsearch/config/
 
 COPY indices/ /indices/
-COPY --chown=elasticsearch entrypoint.sh /opt/bitnami/scripts/elasticsearch/entrypoint.sh
-RUN chmod +x /opt/bitnami/scripts/elasticsearch/entrypoint.sh
+#COPY --chown=elasticsearch entrypoint.sh /opt/bitnami/scripts/elasticsearch/entrypoint.sh
+#RUN chmod +x /opt/bitnami/scripts/elasticsearch/entrypoint.sh
 COPY --chown=elasticsearch create_indexes.sh /create_indexes.sh
 RUN chmod +x /create_indexes.sh
 
