@@ -356,7 +356,7 @@ services:
       http.max_content_length: 1000mb
       ES_JAVA_OPTS: "-Xms4g -Xmx4g"
       ELASTICSEARCH_KEYS: "xpack.security.authc.realms.oidc.geoss.rp.client_secret=xTUIINx6U7qe6lcTcrRUdgYqVKo08dXs"
-      BITNAMI_DEBUG: true
+      BITNAMI_DEBUG: "true"
     ports:
       - "9200:9200"
       - "9300:9300"
