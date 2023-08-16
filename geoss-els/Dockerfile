@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+FROM bitnami/elasticsearch:8.9.0
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -6,16 +6,16 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-els"
 
-WORKDIR /usr/share/elasticsearch
+#WORKDIR /opt/bitnami/elasticsearch
 
-RUN bin/elasticsearch-plugin install -b analysis-icu
-RUN bin/elasticsearch-plugin install -b analysis-kuromoji
-RUN bin/elasticsearch-plugin install -b analysis-smartcn
-RUN bin/elasticsearch-plugin install -b analysis-stempel
+#RUN bin/elasticsearch-plugin install -b analysis-icu
+#RUN bin/elasticsearch-plugin install -b analysis-kuromoji
+#RUN bin/elasticsearch-plugin install -b analysis-smartcn
+#RUN bin/elasticsearch-plugin install -b analysis-stempel
 
-COPY --chown=elasticsearch conf/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
-COPY --chown=elasticsearch conf/jwkset.json /usr/share/elasticsearch/config/jwkset.json
-COPY --chown=elasticsearch ca/ /usr/share/elasticsearch/config/
+COPY --chown=elasticsearch conf/elasticsearch.yml /opt/bitnami/elasticsearch/config/elasticsearch.yml
+COPY --chown=elasticsearch conf/jwkset.json /opt/bitnami/elasticsearch/config/jwkset.json
+COPY --chown=elasticsearch ca/ /opt/bitnami/elasticsearch/config/
 
 COPY indices/ /indices/
 COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
@@ -29,5 +29,5 @@ HEALTHCHECK \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
-ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
 
