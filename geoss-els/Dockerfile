@@ -18,10 +18,10 @@ COPY --chown=elasticsearch conf/jwkset.json /opt/bitnami/elasticsearch/config/jw
 COPY --chown=elasticsearch ca/ /opt/bitnami/elasticsearch/config/
 
 COPY indices/ /indices/
-COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-COPY --chown=elasticsearch create_indexes.sh /create_indexes.sh
-RUN chmod +x /create_indexes.sh
+#COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
+#COPY --chown=elasticsearch create_indexes.sh /create_indexes.sh
+#RUN chmod +x /create_indexes.sh
 
 HEALTHCHECK \
 	--interval=30s \
