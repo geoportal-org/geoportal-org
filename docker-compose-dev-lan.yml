@@ -346,17 +346,17 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      - node.name=geoss-elasticsearch-1
-      - cluster.name=geoss-elasticsearch
+      node.name: geoss-elasticsearch-1
+      cluster.name: geoss-elasticsearch
       #      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - bootstrap.memory_lock=true
-      - network.publish_host=geoss-elasticsearch-1
-      - discovery.type=single-node
-      - http.max_content_length=1000mb
-      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
-      - ELASTICSEARCH_KEYS="xpack.security.authc.realms.oidc.geoss.rp.client_secret=xTUIINx6U7qe6lcTcrRUdgYqVKo08dXs"
-#      - "xpack.security.enabled=false"
+      network.publish_host: geoss-elasticsearch-1
+      discovery.type: single-node
+      http.max_content_length: 1000mb
+      ES_JAVA_OPTS: "-Xms4g -Xmx4g"
+      ELASTICSEARCH_KEYS: "xpack.security.authc.realms.oidc.geoss.rp.client_secret=xTUIINx6U7qe6lcTcrRUdgYqVKo08dXs"
+      BITNAMI_DEBUG: true
     ports:
       - "9200:9200"
       - "9300:9300"
