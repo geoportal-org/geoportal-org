@@ -183,7 +183,7 @@ server.ssl.enabled: true
 server.ssl.certificate: /etc/kibana-data/ca.crt
 server.ssl.key: /etc/kibana-data/ca.key
 
-xpack.security.encryptionKey: "something_at_least_32_characters"
+xpack.security.encryptionKey: "xTUIINx6U7qe6lcTcrRUdgYqVKo08dXs"
 
 xpack.security.authc.providers:
   oidc.geoss: 
