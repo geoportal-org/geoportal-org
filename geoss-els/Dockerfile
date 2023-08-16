@@ -18,7 +18,7 @@ COPY --chown=elasticsearch conf/jwkset.json /usr/share/elasticsearch/config/jwks
 COPY --chown=elasticsearch ca/ /usr/share/elasticsearch/config/
 
 COPY indices/ /indices/
-COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
+COPY --chown=elasticsearch entrypoint.sh /opt/bitnami/scripts/elasticsearch/entrypoint.sh
 RUN chmod +x /entrypoint.sh
 COPY --chown=elasticsearch create_indexes.sh /create_indexes.sh
 RUN chmod +x /create_indexes.sh
@@ -29,5 +29,5 @@ HEALTHCHECK \
 	--timeout=1m \
 CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/opt/bitnami/scripts/elasticsearch/run.sh"]
+ENTRYPOINT [ "/opt/bitnami/scripts/elasticsearch/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/elasticsearch/run.sh" ]
