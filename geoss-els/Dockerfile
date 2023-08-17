@@ -13,9 +13,9 @@ LABEL image="geoss-els"
 #RUN bin/elasticsearch-plugin install -b analysis-smartcn
 #RUN bin/elasticsearch-plugin install -b analysis-stempel
 
-COPY --chown=elasticsearch conf/elasticsearch.yml /opt/bitnami/elasticsearch/config/elasticsearch.yml
-COPY --chown=elasticsearch conf/jwkset.json /opt/bitnami/elasticsearch/config/jwkset.json
-COPY --chown=elasticsearch ca/ /opt/bitnami/elasticsearch/config/
+COPY --chown=1001 conf/elasticsearch.yml /opt/bitnami/elasticsearch/config/elasticsearch.yml
+COPY --chown=1001 conf/jwkset.json /opt/bitnami/elasticsearch/config/jwkset.json
+COPY --chown=1001 ca/ /opt/bitnami/elasticsearch/config/
 
 COPY indices/ /indices/
 #COPY --chown=elasticsearch entrypoint.sh /entrypoint.sh
