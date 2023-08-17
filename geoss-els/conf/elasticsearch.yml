@@ -1,6 +1,7 @@
 cluster.name: "docker-cluster"
 network.host: 0.0.0.0
 
+xpack.ml.enabled: false
 xpack.security.enabled: true
 xpack.security.transport.ssl.enabled: true
 xpack.security.transport.ssl.certificate: /opt/bitnami/elasticsearch/config/ca.crt
