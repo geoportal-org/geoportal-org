@@ -3,8 +3,8 @@ network.host: 0.0.0.0
 
 xpack.security.enabled: true
 xpack.security.transport.ssl.enabled: true
-xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/ca.crt
-xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/ca.key
+xpack.security.transport.ssl.certificate: /opt/bitnami/elasticsearch/config/ca.crt
+xpack.security.transport.ssl.key: /opt/bitnami/elasticsearch/config/ca.key
 xpack.security.authc.token.enabled: true
 
 discovery.type: single-node
@@ -17,7 +17,7 @@ xpack.security.authc.realms.oidc.geoss:
   op.issuer: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
   op.authorization_endpoint: "https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/auth"
   op.token_endpoint: "https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token"
-  op.jwkset_path: "/usr/share/elasticsearch/config/jwkset.json"
+  op.jwkset_path: "/opt/bitnami/elasticsearch/config/jwkset.json"
   op.userinfo_endpoint: "https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/userinfo"
   op.endsession_endpoint: "https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/logout"
   rp.post_logout_redirect_uri: "https://geoss-kibana:5601/logged_out"
