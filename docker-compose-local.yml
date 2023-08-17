@@ -70,14 +70,15 @@ services:
       dockerfile: Dockerfile
     hostname: geoss-elasticsearch
     environment:
-      - xpack.security.enabled=false
-      - discovery.type=single-node
+      discovery.type: single-node
+      http.max_content_length: 1000mb
+      ES_JAVA_OPTS: "-Xms4g -Xmx4g"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
-      - "elasticsearch_data:/usr/share/elasticsearch/data"
+      - "elasticsearch_data:/opt/bitnami/elasticsearch/data"
     ports:
       - "9200:9200"
       - "9300:9300"
