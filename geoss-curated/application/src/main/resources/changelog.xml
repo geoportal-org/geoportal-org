@@ -38,4 +38,5 @@
     <include file="changelogs/0032_source_values.xml"/>
     <include file="changelogs/0033_type_values.xml"/>
     <include file="changelogs/0034_add_dashboard_contents_id_foreign_key_constraint.xml"/>
+    <include file="changelogs/0035_add_protocol_values.xml"/>
 </databaseChangeLog>

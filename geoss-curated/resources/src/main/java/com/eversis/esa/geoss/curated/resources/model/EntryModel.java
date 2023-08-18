@@ -1,5 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 import jakarta.validation.constraints.NotNull;
@@ -50,5 +53,7 @@ public class EntryModel {
 
     private String userId;
 
+    @NotNull
+    private List<TransferOptionModel> transferOptions = new ArrayList<>();
 
 }

@@ -1,0 +1,52 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="protocol_values">
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('download', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('information', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('information-html', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('OGC WMS 1.3.0', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('urn:ogc:serviceType:WebMapService:1.1.1:HTTP', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('urn:ogc:serviceType:WebMapService:1.3.0:HTTP', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('urn:ogc:serviceType:WebMapService:HTTP', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('gwp_un_sd_/v1/sdg', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('ecopotential_workflow_api', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('armines-cams-gridded-data', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('HTTP', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('GWIS', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('jpg', 0)
+        </sql>
+        <sql>
+            INSERT IGNORE INTO protocol (value, isCustom) VALUES ('kml', 0)
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
