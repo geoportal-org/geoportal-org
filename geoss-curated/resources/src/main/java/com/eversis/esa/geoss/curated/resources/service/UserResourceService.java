@@ -36,7 +36,7 @@ public interface UserResourceService {
      * @param pageable the pageable
      * @return the page
      */
-    Page<UserResource> findAllUserResources(long userId, @NotNull Pageable pageable);
+    Page<UserResource> findAllUserResources(String userId, @NotNull Pageable pageable);
 
     /**
      * Create user resource.

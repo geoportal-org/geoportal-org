@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 public class UserResourceModel {
 
     @NotNull
-    private Long userId;
+    private String userId;
 
     @NotNull
     private String entryName;

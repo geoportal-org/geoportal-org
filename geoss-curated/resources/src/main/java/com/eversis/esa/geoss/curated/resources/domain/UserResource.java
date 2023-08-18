@@ -37,7 +37,7 @@ public class UserResource {
     private Long id;
 
     @Column(name = "userid", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "entryname", nullable = false)
     private String entryName;

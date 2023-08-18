@@ -79,7 +79,7 @@ public class UserResourceController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/{userId}")
     public Page<UserResource> findUserResources(
-            @PathVariable long userId,
+            @PathVariable String userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         log.info("Find user resources");

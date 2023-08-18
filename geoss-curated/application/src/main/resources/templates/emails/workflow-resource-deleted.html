@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Workflow resource deleted</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="#{resource.deleted.body.greeting}">Dear User,</p>
+<p><span th:text="#{resource.deleted.body.span1}">Your published resource </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{resource.deleted.body.span2}"> has been removed from the system by the Administrator.</span></p>
+<p th:text="#{resource.deleted.body.closing}">Thank you,</p>
+<p th:text="#{resource.deleted.body.signature}">GEOSS Administrator</p>
+</body>
+</html>

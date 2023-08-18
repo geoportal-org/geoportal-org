@@ -48,6 +48,7 @@ public class EntryModel {
     @NotNull
     private DefinitionTypeModel definitionType;
 
-    private Long userId;
+    private String userId;
+
 
 }

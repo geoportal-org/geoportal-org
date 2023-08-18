@@ -21,6 +21,6 @@ public interface UserResourceRepository extends JpaRepository<UserResource, Long
      * @param pageable the pageable
      * @return the page
      */
-    Page<UserResource> findByUserId(@Param("userId") long userId, Pageable pageable);
+    Page<UserResource> findByUserId(@Param("userId") String userId, Pageable pageable);
 
 }

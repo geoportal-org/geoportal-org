@@ -57,7 +57,7 @@ public class UserResourceServiceImpl implements UserResourceService {
     }
 
     @Override
-    public Page<UserResource> findAllUserResources(long userId, @NotNull Pageable pageable) {
+    public Page<UserResource> findAllUserResources(String userId, @NotNull Pageable pageable) {
         log.info("Finding all resource for userId {}", userId);
         return userResourceRepository.findByUserId(userId, pageable);
     }

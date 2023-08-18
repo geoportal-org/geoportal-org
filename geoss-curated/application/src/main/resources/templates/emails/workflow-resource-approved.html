@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Workflow resource approved</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="#{resource.approved.body.greeting}">Dear User,</p>
+<p><span th:text="#{resource.approved.body.span1}">The resource </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{resource.approved.body.span2}"> that you have submitted has been reviewed and accepted by the Administrator. It has been published on the Portal.</span></p>
+<a th:href="@{${resourceUrl}}" href="#"><span th:text="${resourceUrl}"></span></a>
+<p th:text="#{resource.approved.body.closing}">Thank you,</p>
+<p th:text="#{resource.approved.body.signature}">GEOSS Administrator</p>
+</body>
+</html>

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.curated.common.email"
         }
 )
 @Configuration(proxyBeanMethods = false)

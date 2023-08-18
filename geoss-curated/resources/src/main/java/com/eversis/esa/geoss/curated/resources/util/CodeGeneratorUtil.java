@@ -13,7 +13,7 @@ public class CodeGeneratorUtil {
      * @param userId the user id
      * @return the string
      */
-    public static String generateCode(String title, long userId) {
+    public static String generateCode(String title, String userId) {
         String titleTransformation = title.toLowerCase().replace(' ', '_');
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return titleTransformation + "_" + userId + "_" + timestamp.getTime();

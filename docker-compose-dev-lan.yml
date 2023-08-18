@@ -291,6 +291,13 @@ services:
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CURATED_OA2_KCSECRET}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
+      SPRING_MAIL_HOST: geoss-maildev
+      SPRING_MAIL_PORT: 1025
+      SPRING_MAIL_USERNAME: maildev
+      SPRING_MAIL_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
+      SPRING_MAIL_PROPERTIES_MAIL_DEBUG: 'true'
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       http_proxy: ${SQUID_PROXY_URL}
       https_proxy: ${SQUID_PROXY_URL}
@@ -304,6 +311,7 @@ services:
       - geoss-db
       - geoss-keycloak
       - geoss-elasticsearch-1
+      - geoss-maildev
 
   geoss-search:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
