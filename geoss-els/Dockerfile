@@ -6,6 +6,9 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-els"
 
+ENV TZ=UTC
+ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
+
 WORKDIR /opt/bitnami/elasticsearch
 
 RUN bin/elasticsearch-plugin install -b analysis-icu

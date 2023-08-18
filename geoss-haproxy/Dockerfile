@@ -6,5 +6,8 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-dmz-haproxy"
 
+ENV TZ=UTC
+ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
+
 COPY etc/haproxy/ /usr/local/etc/haproxy
 
