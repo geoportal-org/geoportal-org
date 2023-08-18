@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.mapper.UserResourcesMapper;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
+import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 
 import lombok.extern.log4j.Log4j2;
@@ -30,16 +31,20 @@ public class UserResourceServiceImpl implements UserResourceService {
 
     private final UserResourcesMapper userResourcesMapper;
 
+    private final TransferOptionService transferOptionService;
+
     /**
      * Instantiates a new User resource service.
      *
      * @param userResourceRepository the user resource repository
      * @param userResourcesMapper the user resources mapper
+     * @param transferOptionService the transfer option service
      */
     public UserResourceServiceImpl(UserResourceRepository userResourceRepository,
-            UserResourcesMapper userResourcesMapper) {
+            UserResourcesMapper userResourcesMapper, TransferOptionService transferOptionService) {
         this.userResourceRepository = userResourceRepository;
         this.userResourcesMapper = userResourcesMapper;
+        this.transferOptionService = transferOptionService;
     }
 
     @Override
@@ -67,6 +72,7 @@ public class UserResourceServiceImpl implements UserResourceService {
     public void createUserResource(UserResourceModel userResourceDto) {
         log.info("Creating new user resource - {}", userResourceDto);
         UserResource userResource = userResourceRepository.save(userResourcesMapper.mapToUserResource(userResourceDto));
+        transferOptionService.saveTransferOptions(userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
         log.info("Created new user resource with id: {}", userResource.getId());
     }
 
@@ -78,6 +84,7 @@ public class UserResourceServiceImpl implements UserResourceService {
                 () -> new ResourceNotFoundException(
                         "User Resource entity with id: " + userResourceId + " does not exist"));
         userResourceRepository.save(userResourcesMapper.mapToUserResource(userResourceDto, userResource));
+        transferOptionService.saveTransferOptions(userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
         log.info("Updated user resource with id: {}", userResource.getId());
     }
 

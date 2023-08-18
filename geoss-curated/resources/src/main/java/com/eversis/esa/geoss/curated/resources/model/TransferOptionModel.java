@@ -18,6 +18,4 @@ public class TransferOptionModel {
 
     private EndpointModel endpoint;
 
-    private EntryModel entry;
-
 }
