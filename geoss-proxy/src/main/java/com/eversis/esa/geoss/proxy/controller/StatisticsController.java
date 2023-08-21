@@ -1,5 +1,10 @@
 package com.eversis.esa.geoss.proxy.controller;
 
+import java.util.List;
+import jakarta.validation.Valid;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import com.eversis.esa.geoss.proxy.domain.MostPopular;
 import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
@@ -9,20 +14,14 @@ import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
 import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.Search;
 import com.eversis.esa.geoss.proxy.service.StatisticsService;
-
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
-import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * The type Statistics controller.
@@ -50,7 +49,7 @@ public class StatisticsController {
      * @param numberOfSearchesModel the number of searches model
      * @return the number of searches
      */
-    @GetMapping(value = "getNumberOfSearches")
+    @PostMapping(value = "getNumberOfSearches")
     @ResponseStatus(HttpStatus.OK)
     public List<Search> getNumberOfSearches(@Valid @RequestBody NumberOfSearchesModel numberOfSearchesModel) {
         log.info("numberOfSearchesModel:{}", numberOfSearchesModel);
@@ -63,7 +62,7 @@ public class StatisticsController {
      * @param mostPopularResourcesModel the most popular resources model
      * @return the most popular resources
      */
-    @GetMapping(value = "getMostPopularResources")
+    @PostMapping(value = "getMostPopularResources")
     @ResponseStatus(HttpStatus.OK)
     public List<MostPopular> getMostPopularResources(
             @Valid @RequestBody MostPopularResourcesModel mostPopularResourcesModel) {
@@ -77,7 +76,7 @@ public class StatisticsController {
      * @param mostPopularKeywordsModel the most popular keywords model
      * @return the most popular keywords
      */
-    @GetMapping(value = "getMostPopularKeywords")
+    @PostMapping(value = "getMostPopularKeywords")
     @ResponseStatus(HttpStatus.OK)
     public List<MostPopular> getMostPopularKeywords(
             @Valid @RequestBody MostPopularKeywordsModel mostPopularKeywordsModel) {
@@ -91,7 +90,7 @@ public class StatisticsController {
      * @param mostPopularCatalogsModel the most popular catalogs model
      * @return the most popular catalogs
      */
-    @GetMapping(value = "getMostPopularCatalogs")
+    @PostMapping(value = "getMostPopularCatalogs")
     @ResponseStatus(HttpStatus.OK)
     public List<MostPopular> getMostPopularCatalogs(
             @Valid @RequestBody MostPopularCatalogsModel mostPopularCatalogsModel) {
@@ -105,7 +104,7 @@ public class StatisticsController {
      * @param mostPopularOrganisationsModel the most popular organisations model
      * @return the most popular organizations
      */
-    @GetMapping(value = "getMostPopularOrganizations")
+    @PostMapping(value = "getMostPopularOrganizations")
     @ResponseStatus(HttpStatus.OK)
     public List<MostPopular> getMostPopularOrganizations(
             @Valid @RequestBody MostPopularOrganisationsModel mostPopularOrganisationsModel) {
@@ -119,7 +118,7 @@ public class StatisticsController {
      * @param mostPopularAreasModel the most popular areas model
      * @return the most popular areas
      */
-    @GetMapping(value = "getMostPopularAreas")
+    @PostMapping(value = "getMostPopularAreas")
     @ResponseStatus(HttpStatus.OK)
     public List<MostPopular> getMostPopularAreas(@Valid @RequestBody MostPopularAreasModel mostPopularAreasModel) {
         log.info("mostPopularAreasModel:{}", mostPopularAreasModel);
