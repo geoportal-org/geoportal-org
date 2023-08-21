@@ -90,7 +90,7 @@ public class WebSecurityConfiguration {
                     .requestMatchers(HttpMethod.GET, basePath + "/popular/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/statistics/**")
+                    .requestMatchers(HttpMethod.POST, basePath + "/statistics/**")
                     .hasAnyRole("statistics_reader");
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers(HttpMethod.POST, basePath + "/log/**")
