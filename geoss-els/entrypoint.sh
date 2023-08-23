@@ -1,4 +1,4 @@
 #!/bin/bash
 
 /create_indexes.sh&
-/opt/bitnami/scripts/elasticsearch/entrypoint.sh $1
+/bin/tini -- /usr/local/bin/docker-entrypoint.sh $1
