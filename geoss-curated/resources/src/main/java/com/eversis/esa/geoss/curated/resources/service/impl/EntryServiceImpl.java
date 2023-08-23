@@ -22,6 +22,7 @@ public class EntryServiceImpl implements EntryService {
      * Instantiates a new Entry service.
      *
      * @param entryRepository the entry repository
+     * @param entryMapper the entry mapper
      */
     public EntryServiceImpl(EntryRepository entryRepository, EntryMapper entryMapper) {
         this.entryRepository = entryRepository;

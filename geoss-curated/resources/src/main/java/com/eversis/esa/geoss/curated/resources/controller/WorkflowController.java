@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Log4j2
 @RequiredArgsConstructor
-@BasePathAwareController("/workflow")
+@BasePathAwareController("/workflow/resource")
 @ResponseBody
 @Tag(name = "workflow")
 public class WorkflowController {

@@ -39,4 +39,6 @@
     <include file="changelogs/0033_type_values.xml"/>
     <include file="changelogs/0034_add_dashboard_contents_id_foreign_key_constraint.xml"/>
     <include file="changelogs/0035_add_protocol_values.xml"/>
+    <include file="changelogs/0036_create_user_relation_table.xml"/>
+    <include file="changelogs/0037_add_relationtype_values.xml"/>
 </databaseChangeLog>

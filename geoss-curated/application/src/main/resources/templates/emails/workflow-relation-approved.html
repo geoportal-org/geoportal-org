@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Workflow relation approved</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="#{relation.approved.body.greeting}">Dear User,</p>
+<p><span th:text="#{relation.approved.body.span1}">The relation </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{relation.approved.body.span2}"> that you have submitted has been reviewed and accepted by the Administrator. It has been published on the Portal.</span></p>
+<a th:href="@{${relationUrl}}" href="#"><span th:text="${relationUrl}"></span></a>
+<p th:text="#{relation.approved.body.closing}">Thank you,</p>
+<p th:text="#{relation.approved.body.signature}">GEOSS Administrator</p>
+</body>
+</html>

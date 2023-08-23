@@ -17,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +52,7 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param keycloak the keycloak
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, ElasticsearchService elasticsearchService,
-            EmailSender emailSender, Keycloak keycloak) {
+            EmailSender emailSender, @Qualifier("keycloakClient") Keycloak keycloak) {
         this.userResourceService = userResourceService;
         this.elasticsearchService = elasticsearchService;
         this.emailSender = emailSender;
