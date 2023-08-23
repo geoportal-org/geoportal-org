@@ -359,9 +359,6 @@ services:
       #      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - bootstrap.memory_lock=true
-      ELASTIC_PASSWORD: "test123"
-      KIBANA_PASSWORD: "test123!"
-      xpack.security.enabled: "true"
       network.publish_host: geoss-elasticsearch-1
       discovery.type: single-node
       http.max_content_length: 1000mb

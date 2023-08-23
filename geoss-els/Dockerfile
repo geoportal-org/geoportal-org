@@ -16,6 +16,8 @@ RUN bin/elasticsearch-plugin install -b analysis-kuromoji
 RUN bin/elasticsearch-plugin install -b analysis-smartcn
 RUN bin/elasticsearch-plugin install -b analysis-stempel
 
+COPY --chown=1001 conf/elasticsearch.yml /opt/bitnami/elasticsearch/config/elasticsearch.yml
+
 COPY indices/ /indices/
 COPY --chown=1001 entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
