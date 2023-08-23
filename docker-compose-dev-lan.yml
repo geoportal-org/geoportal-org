@@ -354,17 +354,17 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      node.name: geoss-elasticsearch-1
-      cluster.name: geoss-elasticsearch
+      - node.name=geoss-elasticsearch-1
+      - cluster.name=geoss-elasticsearch
       #      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - bootstrap.memory_lock=true
-      network.publish_host: geoss-elasticsearch-1
-      ELASTIC_PASSWORD: "test123"
-      discovery.type: single-node
-      bootstrap.memory_lock: "true"
-      xpack.security.enabled: "true"
-      ES_JAVA_OPTS: "-Xms4g -Xmx4g"
+      - network.publish_host=geoss-elasticsearch-1
+      - ELASTIC_PASSWORD=test123
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -387,11 +387,10 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      KIBANA_ELASTICSEARCH_URL: geoss-elasticsearch-1
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${KIBANA_OA2_KCSECRET}
-      ELASTIC_USERNAME: "elastic"
-      ELASTIC_PASSWORD: "test123"
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
+      - KIBANA_ELASTICSEARCH_URL=geoss-elasticsearch-1
+      - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=${KIBANA_OA2_KCSECRET}
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=test123
     volumes:
       - /opt/kibana:/bitnami/kibana
     ports:
