@@ -20,4 +20,10 @@ public class MostPopularCatalogsModel {
     @NotNull
     Period period;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

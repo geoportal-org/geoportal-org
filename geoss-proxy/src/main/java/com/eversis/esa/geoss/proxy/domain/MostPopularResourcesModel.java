@@ -26,4 +26,10 @@ public class MostPopularResourcesModel {
     @NotNull
     int size;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

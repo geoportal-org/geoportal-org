@@ -25,4 +25,10 @@ public class MostPopularAreasModel {
     @NotNull
     Period period;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

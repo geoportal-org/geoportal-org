@@ -25,4 +25,10 @@ public class MostPopularKeywordsModel {
     @NotNull
     Period period;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

@@ -31,4 +31,10 @@ public class NumberOfSearchesModel {
     @NotNull
     String interval;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

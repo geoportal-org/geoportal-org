@@ -26,4 +26,10 @@ public class MostPopularOrganisationsModel {
     @NotNull
     int size;
 
+    /**
+     * The Results.
+     */
+    @NotNull
+    int results;
+
 }

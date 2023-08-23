@@ -122,7 +122,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             SearchResponse<Void> response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(numberOfSearchesModel.getResults())
                             .query(filterQuery)
                             .aggregations(AGGREGATION_DATE_HISTOGRAM_NAME, a -> a
                                     .dateHistogram(h -> h
@@ -169,7 +169,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(mostPopularResourcesModel.getResults())
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(ta -> ta.field(UI_RESOURCE_NAME_FIELD_NAME)
@@ -210,7 +210,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             SearchResponse<Void> response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(mostPopularKeywordsModel.getResults())
                             .query(filterQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_ST_NAME_FIELD_NAME)
@@ -237,7 +237,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             SearchResponse<Void> response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(mostPopularCatalogsModel.getResults())
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_SOURCES_GROUP_VALUE_FIELD_NAME)
@@ -265,7 +265,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             SearchResponse<Void> response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(mostPopularOrganisationsModel.getResults())
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(UI_ORGANISATION_FIELD_NAME)
@@ -306,7 +306,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             SearchResponse<Void> response = elasticsearchClient.search(b -> b
                             .index(INDEX_NAME)
-                            .size(0)
+                            .size(mostPopularAreasModel.getResults())
                             .query(filterQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_BBOX_NAME_FIELD_NAME)
