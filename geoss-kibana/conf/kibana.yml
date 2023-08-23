@@ -178,4 +178,3 @@ elasticsearch:
 
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "test123!"
-xpack.security.transport.ssl.enabled: true
