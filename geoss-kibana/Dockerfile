@@ -9,6 +9,7 @@ LABEL image="geoss-kibana"
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
+COPY --chown=1001 conf/kibana.yml /opt/bitnami/kibana/config/kibana.yml
 COPY opt/bitnami/scripts/ /opt/bitnami/scripts
 
 COPY index-patterns/ /etc/kibana-data/
