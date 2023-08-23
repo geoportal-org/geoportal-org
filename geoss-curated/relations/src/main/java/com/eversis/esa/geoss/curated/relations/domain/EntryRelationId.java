@@ -46,7 +46,8 @@ public class EntryRelationId implements Serializable {
      * @param destDataSourceId the dest data source id
      * @param relationTypeId the relation type id
      */
-    public EntryRelationId(String srcId, Integer srcDataSourceId, String destId, Integer destDataSourceId, Integer relationTypeId) {
+    public EntryRelationId(String srcId, Integer srcDataSourceId, String destId,
+            Integer destDataSourceId, Integer relationTypeId) {
         this.srcId = srcId;
         this.srcDataSourceId = srcDataSourceId;
         this.destId = destId;
@@ -72,7 +73,8 @@ public class EntryRelationId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSrcId(), getSrcDataSourceId(), getDestId(), getDestDataSourceId(), getRelationTypeId());
+        return Objects.hash(getSrcId(), getSrcDataSourceId(), getDestId(),
+                getDestDataSourceId(), getRelationTypeId());
     }
 
     @Override

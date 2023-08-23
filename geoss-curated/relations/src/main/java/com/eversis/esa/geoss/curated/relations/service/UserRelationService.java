@@ -21,14 +21,6 @@ public interface UserRelationService {
     Page<UserRelation> findAllUserRelations(@NotNull Pageable pageable);
 
     /**
-     * Find user relation.
-     *
-     * @param userRelationId the user relation id
-     * @return the user relation
-     */
-    UserRelation findUserRelation(long userRelationId);
-
-    /**
      * Find all user relations page.
      *
      * @param userId the user id
@@ -36,6 +28,14 @@ public interface UserRelationService {
      * @return the page
      */
     Page<UserRelation> findAllUserRelations(String userId, Pageable pageable);
+
+    /**
+     * Find user relation.
+     *
+     * @param userRelationId the user relation id
+     * @return the user relation
+     */
+    UserRelation findUserRelation(long userRelationId);
 
     /**
      * Create user relation.

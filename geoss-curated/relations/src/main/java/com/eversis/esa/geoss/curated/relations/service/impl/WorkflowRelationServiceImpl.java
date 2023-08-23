@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.ws.rs.NotFoundException;
 
 import com.eversis.esa.geoss.curated.common.email.EmailSender;
@@ -50,7 +49,8 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
      * @param emailSender the email sender
      * @param keycloak the keycloak
      */
-    public WorkflowRelationServiceImpl(UserRelationService userRelationService, ElasticsearchRelationService elasticsearchService,
+    public WorkflowRelationServiceImpl(UserRelationService userRelationService,
+            ElasticsearchRelationService elasticsearchService,
             EmailSender emailSender, @Qualifier("keycloakRelationClient") Keycloak keycloak) {
         this.userRelationService = userRelationService;
         this.elasticsearchService = elasticsearchService;

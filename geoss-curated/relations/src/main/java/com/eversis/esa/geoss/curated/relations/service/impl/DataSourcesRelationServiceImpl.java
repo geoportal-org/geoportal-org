@@ -26,8 +26,8 @@ public class DataSourcesRelationServiceImpl implements DataSourcesRelationServic
 
     @Override
     public RelationDataSources getOrCreateDataSource(DataSourceModel dataSource) {
-            return dataSourceRepository.findByCode(dataSource.getCode())
-                    .orElseGet(() -> dataSourceRepository.save(DataSourcesRelationMapper.mapDataSource(dataSource)));
+        return dataSourceRepository.findByCode(dataSource.getCode())
+                .orElseGet(() -> dataSourceRepository.save(DataSourcesRelationMapper.mapDataSource(dataSource)));
     }
 
 }

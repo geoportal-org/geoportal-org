@@ -1,10 +1,8 @@
 package com.eversis.esa.geoss.curated.relations.controller;
 
-import jakarta.persistence.Column;
 import jakarta.validation.Valid;
 
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
-import com.eversis.esa.geoss.curated.relations.domain.EntryRelationId;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
 import com.eversis.esa.geoss.curated.relations.service.EntryRelationService;
@@ -17,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

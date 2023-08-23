@@ -35,7 +35,8 @@ public class UserRelationServiceImpl implements UserRelationService {
      * @param userRelationRepository the user relation repository
      * @param userRelationMapper the user relation mapper
      */
-    public UserRelationServiceImpl(UserRelationRepository userRelationRepository, UserRelationMapper userRelationMapper) {
+    public UserRelationServiceImpl(UserRelationRepository userRelationRepository,
+            UserRelationMapper userRelationMapper) {
         this.userRelationRepository = userRelationRepository;
         this.userRelationMapper = userRelationMapper;
     }
@@ -64,7 +65,8 @@ public class UserRelationServiceImpl implements UserRelationService {
     @Override
     public void createUserRelation(UserRelationModel userRelationDto) {
         log.info("Creating new user relation - {}", userRelationDto);
-        UserRelation userRelation  = userRelationRepository.save(userRelationMapper.mapToUserRelation(userRelationDto));
+        UserRelation userRelation  = userRelationRepository
+                .save(userRelationMapper.mapToUserRelation(userRelationDto));
         log.info("Created new user relation with id: {}", userRelation.getId());
     }
 

@@ -28,8 +28,8 @@ public class EntryRelationMapper {
      * @param relationTypeService the relation type service
      * @param typesService the types service
      */
-    public EntryRelationMapper(DataSourcesRelationService dataSourceService, RelationTypeService relationTypeService,
-            TypesService typesService) {
+    public EntryRelationMapper(DataSourcesRelationService dataSourceService,
+            RelationTypeService relationTypeService, TypesService typesService) {
         this.dataSourceService = dataSourceService;
         this.relationTypeService = relationTypeService;
         this.typesService = typesService;
