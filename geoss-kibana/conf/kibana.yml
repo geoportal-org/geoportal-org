@@ -178,3 +178,8 @@ elasticsearch:
 
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "test123!"
+
+xpack.security.authc:
+  providers:
+    basic.basic1: 
+      order: 0 
