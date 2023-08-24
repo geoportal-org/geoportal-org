@@ -11,13 +11,13 @@ curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/thesaurus-voc
 echo "ENTRYPOINT: Indexes created."
 
 echo "ENTRYPOINT: Setting password for kibana_system user ..."
-curl --user elastic:$ELASTIC_PASSWORD -XPUT -H 'Content-Type: application/json' 'http://localhost:9200/_security/user/kibana_system/_password' -d '{ "password":"test123" }'
+curl --user elastic:$ELASTIC_PASSWORD -XPUT -H 'Content-Type: application/json' 'http://localhost:9200/_security/user/kibana_system/_password' -d '{ "password":"'"$KIBANA_PASSWORD"'" }'
 echo "ENTRYPOINT: Password for kibana_system has been set."
 
 echo "ENTRYPOINT: Creating kibana GEOSS ADMIN user ..."
 curl --user elastic:$ELASTIC_PASSWORD -XPOST "localhost:9200/_security/user/geoss?pretty" -H 'Content-Type: application/json' -d'
 {
-  "password" : "test123",
+  "password" : "'"$GEOSS_PASSWORD"'",
   "roles" : [ "superuser", "kibana_system" ],
   "full_name" : "GEOSS ADMIN",
   "email" : null
