@@ -176,6 +176,9 @@ server:
 elasticsearch:
   hosts: http://geoss-elasticsearch-1:9200
 
+elasticsearch.username: "elastic"
+elasticsearch.password: "test123"
+
 xpack.security.authc:
   providers:
     basic.basic1: 
