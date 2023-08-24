@@ -18,7 +18,7 @@ echo "ENTRYPOINT: Creating kibana GEOSS ADMIN user ..."
 curl --user elastic:$ELASTIC_PASSWORD -XPOST "localhost:9200/_security/user/geoss?pretty" -H 'Content-Type: application/json' -d'
 {
   "password" : "'"$GEOSS_PASSWORD"'",
-  "roles" : [ "superuser", "kibana_system" ],
+  "roles" : [ "superuser", "kibana_admin" ],
   "full_name" : "GEOSS ADMIN",
   "email" : null
 }
