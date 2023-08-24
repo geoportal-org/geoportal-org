@@ -1,6 +1,6 @@
 #!/bin/bash
 
-until curl -s -f -o /dev/null "http://localhost:5601"; do
+until curl --user kibana_system:$KIBANA_PASSWORD -s -f -o /dev/null "http://localhost:5601"; do
         sleep 2
 done
 
@@ -14,7 +14,7 @@ for filename in /etc/kibana-data/*.json; do
         index_pattern_name=$(basename ${filename::-5})
         echo "ENTRYPOINT: Creating index-pattern: ${index_pattern_name}..."
 
-        curl --user kibana_system:$KIBANA_PASSWORD -X POST \
+        curl --user geoss:$GEOSS_PASSWORD -X POST \
     "localhost:5601/api/saved_objects/index-pattern/${index_pattern_name}" \
     --header "kbn-xsrf: true" \
     --header "Content-Type: application/json" \

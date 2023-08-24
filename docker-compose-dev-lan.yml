@@ -360,9 +360,9 @@ services:
       #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
       #      - bootstrap.memory_lock=true
       - network.publish_host=geoss-elasticsearch-1
-      - ELASTIC_PASSWORD=test123
-      - KIBANA_PASSWORD=test1234
-      - GEOSS_PASSWORD=test12345
+      - ELASTIC_PASSWORD=${ENV_ELASTIC_PASSWORD}
+      - KIBANA_PASSWORD=${ENV_KIBANA_PASSWORD}
+      - GEOSS_PASSWORD=${ENV_GEOSS_PASSWORD}
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
@@ -391,7 +391,8 @@ services:
     environment:
       - KIBANA_ELASTICSEARCH_URL=geoss-elasticsearch-1
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=${KIBANA_OA2_KCSECRET}
-      - KIBANA_PASSWORD=test1234
+      - KIBANA_PASSWORD=${ENV_KIBANA_PASSWORD}
+      - GEOSS_PASSWORD=${ENV_GEOSS_PASSWORD}
     volumes:
       - /opt/kibana:/bitnami/kibana
     ports:
