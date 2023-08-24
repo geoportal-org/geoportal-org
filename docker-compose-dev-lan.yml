@@ -361,6 +361,7 @@ services:
       #      - bootstrap.memory_lock=true
       - network.publish_host=geoss-elasticsearch-1
       - ELASTIC_PASSWORD=test123
+      - KIBANA_PASSWORD=test123
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true

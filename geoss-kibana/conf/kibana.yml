@@ -176,7 +176,7 @@ server:
 elasticsearch:
   hosts: http://geoss-elasticsearch-1:9200
 
-elasticsearch.username: "elastic"
+elasticsearch.username: "kibana_system"
 elasticsearch.password: "test123"
 
 xpack.security.authc:
