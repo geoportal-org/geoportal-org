@@ -1,4 +1,4 @@
 #!/bin/bash
 
-/create_indexes.sh&
+/initialize_els.sh&
 /bin/tini -- /usr/local/bin/docker-entrypoint.sh $1

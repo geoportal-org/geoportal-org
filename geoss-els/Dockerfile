@@ -19,8 +19,8 @@ RUN bin/elasticsearch-plugin install -b analysis-stempel
 COPY indices/ /indices/
 COPY --chown=elasticsearch  entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-COPY --chown=elasticsearch  create_indexes.sh /create_indexes.sh
-RUN chmod +x /create_indexes.sh
+COPY --chown=elasticsearch  initialize_els.sh /initialize_els.sh
+RUN chmod +x /initialize_els.sh
 
 HEALTHCHECK \
 	--interval=30s \
