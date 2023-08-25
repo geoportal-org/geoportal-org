@@ -371,7 +371,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /var/lib/elasticsearch/data:/opt/bitnami/elasticsearch/data
+      - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
