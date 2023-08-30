@@ -325,7 +325,7 @@ services:
     environment:
       DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "https://data.amerigeoss.org/api/3/action"
       DATASOURCE_ZENODO_BASE_URL: "https://zenodo.org"
-      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch"
+      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch-1"
       DATASOURCE_ELASTICSEARCH_USERNAME: "elastic"
       DATASOURCE_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
       DATASOURCE_ELASTICSEARCH_PORT: "9200"
