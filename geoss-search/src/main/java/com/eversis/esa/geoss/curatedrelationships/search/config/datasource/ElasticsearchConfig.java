@@ -6,6 +6,10 @@ import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.RestHighLevelClientBuilder;
@@ -27,6 +31,12 @@ public class ElasticsearchConfig {
     @Value("${datasource.elasticsearch.port}")
     private int elasticsearchPort;
 
+    @Value("${datasource.elasticsearch.username}")
+    private String elasticsearchUsername;
+
+    @Value("${datasource.elasticsearch.password}")
+    private String elasticsearchPassword;
+
     @Value("${datasource.elasticsearch.compatibility-mode}")
     private boolean elasticsearchCompatibilityMode;
 
@@ -40,7 +50,13 @@ public class ElasticsearchConfig {
     RestClient restClient() {
         log.info("Configuring Elasticsearch RestClient host: {}, port: {}",
                 elasticsearchHost, elasticsearchPort);
-        return RestClient.builder(new HttpHost(elasticsearchHost, elasticsearchPort)).build();
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(elasticsearchUsername, elasticsearchPassword));
+        return RestClient.builder(new HttpHost(elasticsearchHost, elasticsearchPort))
+                .setHttpClientConfigCallback(
+                        httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+                .build();
     }
 
     /**
