@@ -113,3 +113,27 @@ menu_id|title|locale
 19|Ogłoszenia|pl
 19|объявления|ru
 19|公告|zh
+20|"Highlighted searches"|en
+20|"Búsquedas destacadas"|es
+20|"Recherches en surbrillance"|fr
+20|"Wyróżnione wyszukiwania"|pl
+20|"重点搜索"|zh
+20|"Популярные запросы"|ru
+21|"Statistics"|en
+21|"Estadística"|es
+21|"Statistiques"|fr
+21|"Statystyki"|pl
+21|"统计"|zh
+21|"Статистика"|ru
+22|"My workspace"|en
+22|"Mi espacio de trabajo"|es
+22|"Mon espace de travail"|fr
+22|"Moja przestrzeń robocza"|pl
+22|"我的工作区"|zh
+22|"Мое рабочее пространство"|ru
+23|"Your Saved Searches"|en
+23|"Tus búsquedas guardadas"|es
+23|"Vos recherches enregistrées"|fr
+23|"Twoje zapisane wyszukiwania"|pl
+23|"您保存的搜索"|zh
+23|"Ваши сохраненные поиски"|ru

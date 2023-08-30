@@ -3,11 +3,25 @@
         <RocketSpinner />
         <Header />
         <Menu />
+
+        <UserWelcome />
+        <Notification />
+        <Spinner />
+        <Popup />
+        <ImagePreview />
+        <PrivacyPolicy />
+        <!-- <SendFeedback /> -->
+        <TakeATour />
+        <!-- <TutorialTags /> -->
+
         <div class="sub-page">
             <div class="sub-page__content">
                 <Nuxt />
             </div>
         </div>
+
+        <div class="geoss-data-pickers"></div>
+        <portal-target name="custom-select-container"></portal-target>
     </main>
 </template>
 

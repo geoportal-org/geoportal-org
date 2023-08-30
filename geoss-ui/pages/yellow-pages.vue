@@ -1,24 +1,13 @@
 <template>
-    <div class="yellow-pages">
-        <client-only>
-            <UserWelcome />
-            <Notification />
-            <Spinner />
-            <Popup />
-            <ImagePreview />
-            <PrivacyPolicy />
-            <!-- <SendFeedback /> -->
-            <TakeATour />
-            <!-- <TutorialTags /> -->
+    <client-only>
+        <div class="yellow-pages">
             <div class="yellow-pages__sub" v-if="storeInitialized">
                 <YellowPagesHeader />
                 <YellowPagesProviders />
                 <YellowPagesPagination />
             </div>
-            <div class="geoss-data-pickers"></div>
-            <portal-target name="custom-select-container"></portal-target>
-        </client-only>
-    </div>
+        </div>
+    </client-only>
 </template>
 
 <script>

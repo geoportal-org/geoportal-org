@@ -625,14 +625,14 @@ const GeossSearchApiService = {
                 }
 
                 // Load SeeAlso and Recommendations
-                // LogService.getSeeAlsoWords(requestParams.st, 10, true)
-                //     .catch((error: any) => error)
-                //     .then((result: any) => {
-                //         AppVueObj.app.$store.dispatch(
-                //             SearchActions.setRecentSeeAlsoPhrases,
-                //             result
-                //         )
-                //     })
+                LogService.getSeeAlsoWords(requestParams.st, 10, true)
+                    .catch((error: any) => error)
+                    .then((result: any) => {
+                        AppVueObj.app.$store.dispatch(
+                            SearchActions.setRecentSeeAlsoPhrases,
+                            result
+                        )
+                    })
                 // LogService.getSeeAlsoRecommendations(requestParams.st)
                 //     .catch((error: any) => error)
                 //     .then((result: any) => {

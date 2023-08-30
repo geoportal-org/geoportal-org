@@ -40,7 +40,6 @@
                     </NuxtLink>
                 </div>
             </template>
-            <div class="menu__separator"></div>
             <div class="menu__item">
                 <a v-if="isSignedIn" class="menu__link" target="_blank" @click="signOff()">
                     <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-out.svg"

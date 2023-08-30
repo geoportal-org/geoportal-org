@@ -13,6 +13,7 @@ import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { makeRequest, GeneralApiService } from './general.api.service'
 import apiClient from '@/api/apiClient'
 import geossProxy from '@/api/module/geoss-proxy'
+import geossSearch from '@/api/module/geoss-search'
 
 const _PAQ: string = '_paq'
 
@@ -407,112 +408,66 @@ const LogService: any = {
     },
 
     getPopularWords: (queryString: string, limit: string | number) =>
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
             const url = `${geossProxy.popular}?query=${queryString}&limit=${limit}`
-            try {
-                const popular = apiClient.$get(url, {
-                    headers: {
-                        Authorization: '',
-                    },
-                })
+            apiClient.$get(url, {
+                headers: {
+                    Authorization: '',
+                },
+            })
+            .then((popular: Array<string>) => {
                 resolve(popular)
-            } catch (error) {
-                reject(error)
-            }
-
-            // if (LogService.elasticsearch_live) {
-            //     const elasticesearchSearchQuery = {
-            //         query: {
-            //             match_phrase_prefix: {
-            //                 ds_st: {
-            //                     query: queryString,
-            //                 },
-            //             },
-            //         },
-            //         size: 0,
-            //         aggs: {
-            //             group_by_ds_st: {
-            //                 terms: {
-            //                     field: 'ds_st',
-            //                     size: limit,
-            //                 },
-            //             },
-            //         },
-            //     }
-
-            //     const elasticesearchSearchQueryString = JSON.stringify(
-            //         elasticesearchSearchQuery
-            //     )
-            //     LogService.client.search(
-            //         {
-            //             size: 0,
-            //             index: 'geoss_index',
-            //             body: elasticesearchSearchQueryString,
-            //             ...UtilsService.getAccessKeyObject(),
-            //         },
-            //         (error: any, response: any) => {
-            //             if (error) {
-            //                 reject(error)
-            //             } else {
-            //                 if (response.aggregations) {
-            //                     resolve(
-            //                         response.aggregations.group_by_ds_st.buckets
-            //                     )
-            //                 }
-            //             }
-            //         }
-            //     )
-            // } else {
-            //     reject(new Error('Elasticsearch error.'))
-            // }
+            })
+            .catch((error: any) => {
+                console.log('Error while getting POPULAR in getPopularWords()');
+                resolve([])
+            })
         }),
 
     getSeeAlsoWords: (
         queryString: string,
         limit: string | number,
         addMixedTerms: boolean
-    ) => {
-        return
-    },
-    // new Promise((resolve, reject) => {
-    //     if (limit) {
-    //         const relatedUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/concepts?st=${queryString}&ct=${limit}${UtilsService.getAccessKeyString()}`
-    //         makeRequest('get', relatedUrl, null, true, null, true)
-    //             .then((data: Array<any>) => {
-    //                 if (addMixedTerms) {
-    //                     let queryArray = queryString.split(' ')
-    //                     const forbiddenWords = [
-    //                         'and',
-    //                         'or',
-    //                         'a',
-    //                         'an',
-    //                         'the',
-    //                         'of',
-    //                         'for',
-    //                         'in',
-    //                         'to',
-    //                     ]
-    //                     queryArray = queryArray.filter(
-    //                         (item) =>
-    //                             !forbiddenWords.includes(item.toLowerCase())
-    //                     )
-    //                     if (
-    //                         queryArray.length === 2 ||
-    //                         queryArray.length === 3
-    //                     ) {
-    //                         data.unshift(`${queryArray.join(' AND ')}`)
-    //                         data.unshift(`${queryArray.join(' OR ')}`)
-    //                     }
-    //                 }
-    //                 resolve(data)
-    //             })
-    //             .catch((error: any) => {
-    //                 reject(error)
-    //             })
-    //     } else {
-    //         reject(new Error('Related phrases are off.'))
-    //     }
-    // }),
+    ) => new Promise((resolve) => {
+            const url = `${geossSearch.concepts}?st=${queryString}&ct=${limit}`
+            apiClient.$get(url, {
+                headers: {
+                    Authorization: '',
+                },
+            })
+            .then((concepts: Array<string>) => {
+                if (addMixedTerms) {
+                    let queryArray = queryString.split(' ')
+                    const forbiddenWords = [
+                        'and',
+                        'or',
+                        'a',
+                        'an',
+                        'the',
+                        'of',
+                        'for',
+                        'in',
+                        'to',
+                    ]
+                    queryArray = queryArray.filter(
+                        (item) =>
+                            !forbiddenWords.includes(item.toLowerCase())
+                    )
+                    if (
+                        queryArray.length === 2 ||
+                        queryArray.length === 3
+                    ) {
+                        concepts.unshift(`${queryArray.join(' AND ')}`)
+                        concepts.unshift(`${queryArray.join(' OR ')}`)
+                    }
+                }
+                resolve(concepts)
+            })
+            .catch(() => {
+                console.log('Error while getting CONCEPTS in getSeeAlsoWords()');
+                resolve([])
+            })
+        }),
 
     getSeeAlsoRecommendations: (queryString: string) =>
         new Promise((resolve, reject) => {

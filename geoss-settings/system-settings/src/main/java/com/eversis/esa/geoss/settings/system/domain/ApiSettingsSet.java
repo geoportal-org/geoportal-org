@@ -50,7 +50,12 @@ public enum ApiSettingsSet {
         /**
          * W 3 w key external.
          */
-        EXT_W3W_KEY("w3wKey");
+        EXT_W3W_KEY("w3wKey"),
+
+        /**
+         * Tour URL external
+         */
+        EXT_TOUR_URL("tourUrl");
 
         private final String value;
 
