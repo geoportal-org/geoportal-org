@@ -14,6 +14,7 @@ import {
 } from "@/components/Icons";
 import { pagesRoutes } from "./pagesRoutes";
 import { NavItem, NavSection } from "@/types";
+import RecommendationsIcon from "@/components/Icons/RecommendationsIcon";
 
 const navSettingsData: NavItem[] = [
     {
@@ -44,6 +45,11 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.defaultLayer,
         Icon: LayerIcon,
     },
+    {
+        titleId: "nav.settings.section.recommendations",
+        href: pagesRoutes.recommendations,
+        Icon: RecommendationsIcon
+    }
     // hidden tutorial tags in menu
     /*
     {

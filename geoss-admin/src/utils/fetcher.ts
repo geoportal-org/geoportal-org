@@ -42,7 +42,12 @@ export const fetcher = async ({
     }
 
     if (response.ok) {
-        return response.json();
+        const contentType = response.headers.get("content-type");
+        if(contentType === null){
+            return response.text()
+        }else {
+            return response.json();
+        }
     }
 
     const contentType = response.headers.get("content-type");

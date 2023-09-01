@@ -23,6 +23,7 @@ export { Nav } from "./Nav/Nav";
 export { Pages } from "./Pages/Pages";
 export { Pagination } from "./Pagination/Pagination";
 export { PrimaryButton } from "./PrimaryButton/PrimaryButton";
+export { RecommendationsConfig } from "./Recommendations/Recommendations"
 export { SearchBar } from "./SearchBar/SearchBar";
 export { SideBar } from "./SideBar/SideBar";
 export { SignIn } from "./SignIn/SignIn";
