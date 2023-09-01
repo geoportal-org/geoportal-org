@@ -428,7 +428,8 @@ export default class App extends Vue {
                     if (searchSettings) {
                         this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
                         this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
-                        this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
+                        // this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
+                        this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, 'https://opensearch-geoportal.devel.esaportal.eu/');
 
                         this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
                         this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);

@@ -129,37 +129,38 @@ export default class SeeOtherSourcesComponent extends Vue {
     }
 
     // :deep(.custom-select) {
-    //     &__trigger {
-    //         background: $blue-dark;
-    //         border-radius: 4px;
-    //         color: white;
-    //         padding: 2px 15px;
-    //         white-space: nowrap;
+    ::v-deep .custom-select {
+        &__trigger {
+            background: $blue-dark;
+            border-radius: 4px;
+            color: white;
+            padding: 2px 15px;
+            white-space: nowrap;
 
-    //         &:after {
-    //             border-top: unset;
-    //             border-bottom: 4px solid white;
-    //         }
-    //     }
+            &:after {
+                border-top: unset;
+                border-bottom: 4px solid white;
+            }
+        }
 
-    //     &__container {
-    //         border: none;
-    //         overflow: hidden;
-    //         top: unset;
-    //         bottom: calc(100% + 3px);
-    //         max-width: none;
-    //     }
+        &__container {
+            border: none;
+            overflow: hidden;
+            top: unset;
+            bottom: calc(100% + 3px);
+            max-width: none;
+        }
 
-    //     &__option {
-    //         color: $blue-dark;
-    //         min-width: 200px;
+        &__option {
+            color: $blue-dark;
+            min-width: 200px;
 
-    //         &.selected {
-    //             background: $blue-dark;
-    //             color: white;
-    //         }
-    //     }
-    // }
+            &.selected {
+                background: $blue-dark;
+                color: white;
+            }
+        }
+    }
 
 }
 </style>
