@@ -10,13 +10,15 @@
                             v-image-preview />
                     </div>
                     <div class="amerigeoss-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="amerigeoss-result__title">{{ result.title }}
+                        <div v-if="result.title" class="amerigeoss-result__title line-clamp--2">{{ result.title }}
                         </div>
-                        <div v-if="result.contributor && result.contributor.orgName" class="amerigeoss-result__contributor">
+                        <div v-if="result.contributor && result.contributor.orgName"
+                            class="amerigeoss-result__contributor line-clamp--1">
                             ({{ $tc('dabResult.organisation') }}: {{ result.contributor.orgName }})
                         </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'" class="amerigeoss-result__summary"
-                            :class="{ 'checkbox-active': checkboxActive }" v-html-to-text="result.summary"></div>
+                        <div v-if="result.summary && typeof result.summary === 'string'"
+                            class="amerigeoss-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
+                            v-html-to-text="result.summary"></div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>

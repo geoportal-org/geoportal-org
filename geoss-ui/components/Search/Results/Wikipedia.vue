@@ -10,10 +10,11 @@
                             v-image-preview />
                     </div>
                     <div class="wikipedia-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="wikipedia-result__title">{{ result.title }}
+                        <div v-if="result.title" class="wikipedia-result__title line-clamp--2">{{ result.title }}
                         </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'" class="wikipedia-result__summary"
-                            :class="{ 'checkbox-active': checkboxActive }" v-html-to-text="result.summary"></div>
+                        <div v-if="result.summary && typeof result.summary === 'string'"
+                            class="wikipedia-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
+                            v-html-to-text="result.summary"></div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>

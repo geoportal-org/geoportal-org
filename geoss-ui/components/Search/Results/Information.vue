@@ -10,14 +10,15 @@
                             v-image-preview />
                     </div>
                     <div class="information-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="information-result__title">{{ result.title }}
+                        <div v-if="result.title" class="information-result__title line-clamp--2">{{ result.title }}
                         </div>
                         <div v-if="result.contributor && result.contributor.orgName"
-                            class="information-result__contributor">({{ $tc('dabResult.organisation') }}: {{
+                            class="information-result__contributor line-clamp--1">({{ $tc('dabResult.organisation') }}: {{
                                 result.contributor.orgName }})
                         </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'" class="information-result__summary"
-                            :class="{ 'checkbox-active': checkboxActive }" v-html-to-text="result.summary"></div>
+                        <div v-if="result.summary && typeof result.summary === 'string'"
+                            class="information-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
+                            v-html-to-text="result.summary"></div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>

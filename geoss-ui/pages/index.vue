@@ -539,9 +539,6 @@ export default class App extends Vue {
         if (spinnerElem) {
             spinnerElem.classList.add('inactive');
         }
-
-
-
     }
 }
 </script>

@@ -17,6 +17,7 @@ import { FeatureClass } from 'ol/Feature'
 import Layer from 'ol/layer/Layer'
 import VectorLayer from 'ol/layer/Vector'
 import TileLayer from 'ol/layer/Tile'
+import { $tc } from '~/plugins/i18n'
 
 // @ts-ignore
 const ol = Vue.ol
@@ -489,7 +490,7 @@ const LayersUtils = {
                     mapLayer = LayersUtils.createKML(layer.url)
                 } else {
                     const props = {
-                        title: AppVueObj.app.$tc('general.error'),
+                        title: $tc('general.error'),
                         subtitle: err,
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
@@ -506,7 +507,7 @@ const LayersUtils = {
                     mapLayer = LayersUtils.createKMZ(layer.url)
                 } else {
                     const props = {
-                        title: AppVueObj.app.$tc('general.error'),
+                        title: $tc('general.error'),
                         subtitle: err,
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
@@ -550,18 +551,16 @@ const LayersUtils = {
                 }
 
                 const props = {
-                    title: AppVueObj.app.$tc('general.backendError'),
-                    subtitle: AppVueObj.app.$tc(
-                        'popupContent.mapLayerUnavailable'
-                    ),
+                    title: $tc('general.backendError'),
+                    subtitle: $tc('popupContent.mapLayerUnavailable'),
                     actions: [
                         {
                             event: 'ignore',
-                            label: AppVueObj.app.$tc('general.ignore'),
+                            label: $tc('general.ignore'),
                         },
                         {
                             event: 'disable',
-                            label: AppVueObj.app.$tc('general.disable'),
+                            label: $tc('general.disable'),
                         },
                     ],
                 }

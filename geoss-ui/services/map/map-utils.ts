@@ -22,6 +22,7 @@ import to from '@/utils/to'
 // import { Units } from 'ol/control/ScaleLine'
 import { FeatureClass } from 'ol/Feature'
 import Map from 'ol/Map'
+import { $tc } from '~/plugins/i18n'
 
 declare let loadshp: any
 
@@ -438,15 +439,13 @@ const MapUtils = {
 
                                 keys.forEach((item) => {
                                     const label =
-                                        AppVueObj.app.$tc(
-                                            `wms.${item.toLowerCase()}`
-                                        ) || item
+                                        $tc(`wms.${item.toLowerCase()}`) || item
                                     message += `${label}: ${
                                         data[item] || '-'
                                     }<br>`
                                 })
                             } else {
-                                message += AppVueObj.app.$tc('general.noData')
+                                message += $tc('general.noData')
                             }
 
                             AppVueObj.app.$store.dispatch(
@@ -459,7 +458,7 @@ const MapUtils = {
                         .catch((e: any) =>
                             AppVueObj.app.$store.dispatch(
                                 MapActions.setMapTooltipMessage,
-                                AppVueObj.app.$tc('general.errorOccurred')
+                                $tc('general.errorOccurred')
                             )
                         )
                 }
@@ -504,8 +503,8 @@ const MapUtils = {
         )
 
         NotificationService.show(
-            `${AppVueObj.app.$tc('notifications.basemapUnavailableTitle')}`,
-            `${AppVueObj.app.$tc('notifications.basemapUnavailable')}`,
+            `${$tc('notifications.basemapUnavailableTitle')}`,
+            `${$tc('notifications.basemapUnavailable')}`,
             30000,
             'basemap-unvailable',
             undefined,

@@ -36,7 +36,7 @@ export default {
         '~/plugins/AppVueObj.ts',
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
-        { src: '~/plugins/MatomoPlugin.js', ssr: false }
+        { src: '~/plugins/MatomoPlugin.js', ssr: false },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,6 +52,7 @@ export default {
         '@/components/Search/Results',
         '@/components/Slider',
         '@/components/YellowPages',
+        '@/icons',
     ],
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -71,7 +72,7 @@ export default {
     ],
 
     axios: {
-        proxy: true
+        proxy: true,
     },
 
     auth: {
@@ -81,9 +82,9 @@ export default {
                 _scheme: '~/scheme/runtimeOauth2',
             },
             oauth2: {
-                _scheme: 'oauth2'
+                _scheme: 'oauth2',
             },
-        }
+        },
     },
 
     i18n: {
@@ -148,17 +149,26 @@ export default {
             defaultStrategy: 'keycloak',
             strategies: {
                 keycloak: {
-                    authorization_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/auth',
-                    access_token_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/token',
-                    userinfo_endpoint: process.env.KEYCLOAK_BASE_URL + '/protocol/openid-connect/userinfo',
+                    authorization_endpoint:
+                        process.env.KEYCLOAK_BASE_URL +
+                        '/protocol/openid-connect/auth',
+                    access_token_endpoint:
+                        process.env.KEYCLOAK_BASE_URL +
+                        '/protocol/openid-connect/token',
+                    userinfo_endpoint:
+                        process.env.KEYCLOAK_BASE_URL +
+                        '/protocol/openid-connect/userinfo',
+                    logout_endpoint:
+                        process.env.KEYCLOAK_BASE_URL +
+                        '/protocol/openid-connect/logout',
                     redirect_uri: undefined,
                     scope: ['openid', 'profile', 'email', 'roles'],
                     grant_type: 'authorization_code',
                     response_type: 'code',
                     client_id: process.env.KEYCLOAK_CLIENT_ID,
-                }
-            }
-        }
+                },
+            },
+        },
     },
 
     // ssr: true,

@@ -5,14 +5,15 @@
                 <div class="zenodo-result__wrapper"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'zenodo-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
                     <div class="zenodo-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.metadata.title" class="zenodo-result__title">
+                        <div v-if="result.metadata.title" class="zenodo-result__title line-clamp--2">
                             {{ result.metadata.title }}</div>
-                        <div v-if="result.metadata && result.metadata.creators" class="zenodo-result__contributor">
+                        <div v-if="result.metadata && result.metadata.creators"
+                            class="zenodo-result__contributor line-clamp--1">
                             ({{ $tc('dabResult.creators') }}: <span v-for="(creator, index) of result.metadata.creators"
                                 :key="index">{{ creator.name }}</span>)
                         </div>
                         <div v-if="result.metadata.description && typeof result.metadata.description === 'string'"
-                            class="zenodo-result__summary" :class="{ 'checkbox-active': checkboxActive }"
+                            class="zenodo-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
                             v-html-to-text="result.metadata.description">
                         </div>
                     </div>

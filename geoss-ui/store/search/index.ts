@@ -25,6 +25,8 @@ import { ParentRef } from '@/interfaces/ParentRef'
 import ConfirmSearchPopup from '@/components/Search/ConfirmSearchPopup.vue'
 import ErrorPopup from '@/components/ErrorPopup.vue'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
+import Vue from 'vue'
+import { $tc } from '~/plugins/i18n'
 
 declare global {
     interface Window {
@@ -597,13 +599,7 @@ const actions = {
             'test'
         )
 
-        LogService.logResourceError(
-            false,
-            'test',
-            'test',
-            'test',
-            'test'
-        )
+        LogService.logResourceError(false, 'test', 'test', 'test', 'test')
 
         LogService.logSignIn()
         //test, to delete later ----------
@@ -719,9 +715,9 @@ const actions = {
         if (!results && err) {
             const errorInfo = {
                 title: (
-                    AppVueObj.app.$tc('general.backendError') as string
+                    AppVueObj.app.$txs('general.backendError') as string
                 ).toUpperCase(),
-                subtitle: AppVueObj.app.$tc('general.errorOccurred'),
+                subtitle: $tc('general.errorOccurred'),
                 description: err.toString(),
             }
             dispatch(
@@ -788,11 +784,11 @@ const actions = {
                         }
                         if (!otherAvailableSourceResults.length) {
                             errorInfo.title = (
-                                AppVueObj.app.$tc(
+                                Vue.prototype.$nuxt.$options.i18n.t(
                                     'general.noResourcesFound'
                                 ) as string
                             ).toUpperCase()
-                            errorInfo.subtitle = AppVueObj.app.$tc(
+                            errorInfo.subtitle = $tc(
                                 'general.unableToFindAnyResources'
                             )
                         } else {
@@ -823,9 +819,9 @@ const actions = {
                     }
                     case 'timeout': {
                         errorInfo.title = (
-                            AppVueObj.app.$tc('general.warning') as string
+                            $tc('general.warning') as string
                         ).toUpperCase()
-                        errorInfo.subtitle = AppVueObj.app.$tc(
+                        errorInfo.subtitle = $tc(
                             'general.loadingResourcesIsTakingTooLong'
                         )
                         break
@@ -836,11 +832,9 @@ const actions = {
                     }
                     default: {
                         errorInfo.title = (
-                            AppVueObj.app.$tc('general.backendError') as string
+                            $tc('general.backendError') as string
                         ).toUpperCase()
-                        errorInfo.subtitle = AppVueObj.app.$tc(
-                            'general.errorOccurred'
-                        )
+                        errorInfo.subtitle = $tc('general.errorOccurred')
                         errorInfo.description = currentResults.error
                     }
                 }

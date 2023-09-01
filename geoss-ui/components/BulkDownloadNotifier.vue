@@ -31,7 +31,7 @@ export default class BulkDownloadNotifierComponent extends Vue {
         this.pulsate = false;
         this.popupOpened = true;
 
-        const title = AppVueObj.app.$tc('popupTitles.downloadsList');
+        const title = this.$tc('popupTitles.downloadsList');
         // await this.$store.dispatch(PopupActions.openPopup, { contentId: 'bulk-download', title, component: BulkDownloadPopup });
         this.popupOpened = false;
     }

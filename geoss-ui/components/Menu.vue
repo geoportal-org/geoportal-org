@@ -6,11 +6,26 @@
                 <div :key="route.title + '-separator'" v-if="index === 4" class="menu__separator"></div>
                 <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
-                    <div v-if="route.links && route.links.length" class="menu__links-expander"
-                        @click="toggleMenuSublinks(route)">
-                        <img :src="route.imgURL" :alt="route.title" />
-                        <span>{{ route.title.toUpperCase() }}</span>
-                    </div>
+
+                    <template v-if="!isMyWorkspace(route)">
+                        <div v-if="route.links && route.links.length" class="menu__links-expander"
+                            @click="toggleMenuSublinks(route)">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div v-if="isSignedIn && route.links && route.links.length" class="menu__links-expander"
+                            @click="toggleMenuSublinks(route)">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                        <div v-else class="menu__link" @click="signIn()">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                    </template>
+
                     <div v-if="route.links" :key="route.title" class="md-hidden-up">
                         <CollapseTransition>
                             <div v-show="route === activeLinksExpander">
@@ -28,13 +43,13 @@
                             </div>
                         </CollapseTransition>
                     </div>
-                    <a v-if="(!route.links || !route.links.length) && isExternal(route.link)"
-                        :href="route.link || '/c/portal/login'" class="menu__link" target="_blank">
+                    <a v-if="(!route.links || !route.links.length) && isExternal(route.link)" :href="route.link"
+                        class="menu__link" target="_blank">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </a>
-                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)"
-                        :to="route.link || '/c/portal/login'" class="menu__link">
+                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="route.link"
+                        class="menu__link">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </NuxtLink>
@@ -42,13 +57,11 @@
             </template>
             <div class="menu__item">
                 <a v-if="isSignedIn" class="menu__link" target="_blank" @click="signOff()">
-                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-out.svg"
-                        :title="$tc('menu.signOff')" />
+                    <img src="/svg/sign-out.svg" :title="$tc('menu.signOff')" />
                     <span>{{ $tc('menu.signOff') }}</span>
                 </a>
                 <a v-else class="menu__link" target="_blank" @click="signIn()">
-                    <img src="https://www.geoportal.org/geoss-portlet/website/static/svg/sign-in.svg"
-                        :title="$tc('menu.signIn')" />
+                    <img src="/svg/sign-in.svg" :title="$tc('menu.signIn')" />
                     <span>{{ $tc('menu.signIn') }}</span>
                 </a>
             </div>
@@ -88,6 +101,7 @@ import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
 
 import MenuAPI from '@/api/menu'
+import apiClient from '@/api/apiClient'
 
 @Component({
     components: {
@@ -148,6 +162,17 @@ export default class MenuComponent extends Vue {
     }
 
     public async signOff() {
+        const logoutUrl = new URL(this.$auth.strategies.keycloak.options.logout_endpoint);
+        const refreshToken = this.$auth.getRefreshToken('keycloak').replace('Bearer ', '')
+        const formData = new URLSearchParams();
+        formData.append('refresh_token', refreshToken);
+        formData.append('client_id', this.$config.keycloakClientId);
+        await apiClient.$post(logoutUrl, formData.toString(), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            json: true,
+        })
         await this.$auth.logout();
         this.$cookies.remove('auth._token.keycloak');
         localStorage.removeItem('auth._token.keycloak');
@@ -155,6 +180,10 @@ export default class MenuComponent extends Vue {
 
     public signIn() {
         this.$auth.loginWith('keycloak')
+    }
+
+    public isMyWorkspace(route) {
+        return route.imgURL.indexOf('my-workspace') > 0
     }
 
     @Watch('langLocale')

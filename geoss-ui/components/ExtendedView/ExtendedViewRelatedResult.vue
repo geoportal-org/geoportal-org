@@ -9,8 +9,8 @@
                 <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="title" v-image-preview />
             </div>
             <div class="ev-related-result__text-data" @click="changeMainResult()">
-                <div v-if="title" v-line-clamp:20="2" class="ev-related-result__title">{{ title }}</div>
-                <div v-if="summary && typeof summary === 'string'" v-line-clamp:20="2" class="ev-related-result__summary"
+                <div v-if="title" class="ev-related-result__title line-clamp--2">{{ title }}</div>
+                <div v-if="summary && typeof summary === 'string'" class="ev-related-result__summary line-clamp--2"
                     v-html-to-text="summary"></div>
             </div>
         </div>

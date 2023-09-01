@@ -1,13 +1,13 @@
 <template>
-	<div>
-		Logging in...
-	</div>
+    <div>
+        Logging in...
+    </div>
 </template>
 
 <script lang="ts">
-	export default {
-		layout() {
-			return 'default'
-		}
-	}
+export default {
+    layout() {
+        return 'full'
+    }
+}
 </script>

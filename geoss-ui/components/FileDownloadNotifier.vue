@@ -28,7 +28,7 @@ export default class FileDownloadNotifierComponent extends Vue {
         this.pulsate = false;
         this.popupOpened = true;
 
-        const title = AppVueObj.app.$tc('popupTitles.yourDownloads');
+        const title = this.$tc('popupTitles.yourDownloads');
         // await this.$store.dispatch(PopupActions.openPopup, {contentId: 'custom-downloads', title, component: FileDownloadPopup});
         this.popupOpened = false;
     }

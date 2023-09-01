@@ -4,7 +4,7 @@
             <img :src="imagePreviewUrl" :style="initialImageDimensions" :alt="sourceImageTitle || 'Preview'" />
         </div>
         <button @click="close()" class="image-preview__close-btn cross" :aria-label="$tc('general.close')"></button>
-        <div class="image-preview__title">{{ sourceImageTitle }}</div>
+        <div class="image-preview__title line-clamp--3">{{ sourceImageTitle }}</div>
     </div>
 </template>
 

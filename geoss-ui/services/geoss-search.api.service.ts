@@ -30,6 +30,8 @@ import { DownloadFile } from '@/interfaces/DownloadFile'
 import TutorialTagsService from './tutorial-tags.service'
 import webSettingsAPI from '@/api/webSettings'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
+import UserAPI from '@/api/user'
+import { $tc } from '~/plugins/i18n'
 
 interface Window {
     URL?: any
@@ -1062,8 +1064,8 @@ const GeossSearchApiService = {
                         `Status code: ${thrown.status}, Status text: ${thrown.statusText}`
                     )
                     const props = {
-                        title: AppVueObj.app.$tc('general.error'),
-                        subtitle: AppVueObj.app.$tc('errors.noMetadata'),
+                        title: $tc('general.error'),
+                        subtitle: $tc('errors.noMetadata'),
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
@@ -1658,19 +1660,16 @@ const GeossSearchApiService = {
         groupId: number
         dataSource: string
     }) {
-        return sendLiferayRequest(
-            '/geoss-service-portlet.savedsearch/add-saved-search',
-            searchData
-        )
-            .then((data: { id: any }) => {
-                if (typeof data === 'object' && data.id) {
-                    return true
-                }
-                return false
-            })
-            .catch(() => {
-                return false
-            })
+        return new Promise((resolve) => {
+            UserAPI.addSavedSearch(searchData)
+                .then((result: any) => {
+                    resolve(result)
+                })
+                .catch(() => {
+                    resolve(null)
+                    console.log('Error while adding SAVED SEARCH')
+                })
+        })
     },
 
     addSavedRun(runName: string, workflow: any, runId: string) {

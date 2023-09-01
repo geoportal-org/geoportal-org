@@ -5,7 +5,7 @@
             v-click-outside="{ fn: closeContainer, excludeSelectors: '.custom-select__container' }"
             :class="{ active: opened }">
             <slot name="trigger" v-bind:selectedOption="selectedOption">
-                <span>{{ title }}</span>
+                <span class="line-clamp--2">{{ title }}</span>
             </slot>
         </button>
         <div class="custom-select__icons">

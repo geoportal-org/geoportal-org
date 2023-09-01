@@ -34,7 +34,7 @@
                                         <ViewsAndRatings :result="result" />
                                     </div>
                                     <div v-if="summary && typeof summary === 'string'" class="dab-result-details__summary">
-                                        <div v-if="isParentRef && separated" v-html-to-text="summary">
+                                        <div v-if="isParentRef && separated" v-html-to-text="summary" class="line-clamp--2">
                                         </div>
                                         <div v-else v-html-to-text="summary"></div>
                                     </div>

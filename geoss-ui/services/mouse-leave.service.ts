@@ -2,6 +2,7 @@ import { PopupActions } from '@/store/popup/popup-actions'
 import { AppVueObj } from '~/data/global'
 import { GeneralGetters } from '@/store/general/general-getters'
 import Survey from '@/components/Survey.vue'
+import { $tc } from '~/plugins/i18n'
 
 const glio: any = {
     config: {
@@ -178,7 +179,7 @@ const MouseLeaveService = {
                 () => {
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'survey',
-                        title: AppVueObj.app.$tc('popupTitles.quickSurvey'),
+                        title: $tc('popupTitles.quickSurvey'),
                         component: Survey,
                     })
                 },

@@ -325,7 +325,7 @@ const UtilsService = {
         }
         const urlParams = []
         for (const param of params) {
-            const paramName = param.split('=')[0]
+            const paramName = decodeURIComponent(param.split('=')[0]);
             const paramValue: any = UtilsService.nativeType(
                 decodeURIComponent(param.split('=')[1])
             )
