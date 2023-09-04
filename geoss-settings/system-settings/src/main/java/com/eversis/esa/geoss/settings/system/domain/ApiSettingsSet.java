@@ -30,7 +30,10 @@ public enum ApiSettingsSet {
      */
     KNOWLEDGE_PRODUCER(new HashSet<>(EnumSet.allOf(KnowledgeProducer.class))),
 
-    // CURATED(new HashSet<>(EnumSet.allOf(Curated.class))),
+    /**
+     * The Curated.
+     */
+    CURATED(new HashSet<>(EnumSet.allOf(Curated.class))),
 
     /**
      * The Other.
@@ -152,6 +155,34 @@ public enum ApiSettingsSet {
     }
 
     /**
+     * The enum Curated.
+     */
+    public enum Curated implements ApiSettingsKey {
+
+        /**
+         * Cr opensearch url curated.
+         */
+        CR_OPENSEARCH_URL("geossCrOpensearchUrl");
+
+        private final String value;
+
+        Curated(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String key() {
+            return name();
+        }
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    /**
      * The enum Other.
      */
     public enum Other implements ApiSettingsKey {
@@ -206,7 +237,7 @@ public enum ApiSettingsSet {
         }
         throw new IllegalArgumentException(
                 "Invalid key `" + key + "` for set `" + this + "`: not one of the values accepted for " + this
-                        + " set: " + this.keys);
+                + " set: " + this.keys);
     }
 
     /**
@@ -247,7 +278,7 @@ public enum ApiSettingsSet {
         }
         throw new IllegalArgumentException(
                 "Cannot deserialize value of type `" + ApiSettingsKey.class.getCanonicalName() + "` from String `" + key
-                        + "`: not one of the values accepted for " + ApiSettingsKey.class.getCanonicalName()
-                        + " class: " + keys());
+                + "`: not one of the values accepted for " + ApiSettingsKey.class.getCanonicalName()
+                + " class: " + keys());
     }
 }

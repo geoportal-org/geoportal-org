@@ -40,7 +40,7 @@ public class DabController {
     private final EntityLinks entityLinks;
 
     /**
-     * Search paged model.
+     * Get catalogs from dab.
      *
      * @param pageable the pageable
      * @return the paged model

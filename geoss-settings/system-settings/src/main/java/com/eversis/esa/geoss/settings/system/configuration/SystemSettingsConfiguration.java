@@ -10,6 +10,7 @@ import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConve
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -69,7 +70,8 @@ public class SystemSettingsConfiguration {
                     }).toList();
             // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream());
+                    .flatMap(pathItem -> Stream.of(pathItem.getOptions(), pathItem.getPost(), pathItem.getPut(),
+                            pathItem.getDelete(), pathItem.getPatch()));
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
@@ -79,7 +81,11 @@ public class SystemSettingsConfiguration {
                             operation.setSecurity(securityRequirements);
                         }
                     }
-                    // override params
+                }
+            });
+            // override params
+            openApi.getPaths().values().stream().map(PathItem::getGet).forEach(operation -> {
+                if (operation != null) {
                     String operationId = operation.getOperationId();
                     if ("executeSearch-apisettings-get".equals(operationId)) {
                         List<Parameter> parameters = operation.getParameters();

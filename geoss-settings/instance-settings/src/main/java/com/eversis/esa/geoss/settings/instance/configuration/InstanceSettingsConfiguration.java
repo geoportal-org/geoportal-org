@@ -68,7 +68,8 @@ public class InstanceSettingsConfiguration {
                     }).toList();
             // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream());
+                    .flatMap(pathItem -> Stream.of(pathItem.getPost(), pathItem.getPut(), pathItem.getDelete(),
+                            pathItem.getPatch()));
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
