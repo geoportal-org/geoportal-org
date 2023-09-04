@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -50,6 +51,13 @@ public class SavedSearches {
     @NotBlank
     @Column(name = "user_", nullable = false)
     private String user;
+
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @NaturalId(mutable = true)
+    @Column(nullable = false, unique = true)
+    private String name;
 
     @NotNull
     @NotEmpty

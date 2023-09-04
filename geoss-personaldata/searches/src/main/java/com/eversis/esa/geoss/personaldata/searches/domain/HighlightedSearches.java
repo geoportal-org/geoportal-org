@@ -46,7 +46,10 @@ public class HighlightedSearches {
     @Column
     private Long version;
 
-    @NaturalId
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @NaturalId(mutable = true)
     @Column(nullable = false, unique = true)
     private String name;
 
