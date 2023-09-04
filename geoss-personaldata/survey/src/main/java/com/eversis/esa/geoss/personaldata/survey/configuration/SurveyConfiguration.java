@@ -69,7 +69,9 @@ public class SurveyConfiguration {
                             operation.setSecurity(securityRequirements);
                         }
                     }
-
+                    if ("postCollectionResource-survey-post".equals(operation.getOperationId())) {
+                        operation.setSecurity(null);
+                    }
                 }
             });
         };

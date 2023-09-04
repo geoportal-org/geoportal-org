@@ -61,8 +61,10 @@ public class SearchesConfiguration {
                         if (tags.contains("saved-searches") || tags.contains("highlighted-searches")) {
                             operation.setSecurity(securityRequirements);
                         }
+                        if ("search-enabled-highlightedsearches-get".equals(operation.getOperationId())) {
+                            operation.setSecurity(null);
+                        }
                     }
-
                 }
             });
         };

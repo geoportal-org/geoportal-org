@@ -25,6 +25,7 @@ public interface HighlightedSearchesRepository extends JpaRepository<Highlighted
      * @return the page
      */
     @Operation(
+            operationId = "search-enabled-highlightedsearches-get",
             description = "Get enabled highlighted searches.",
             summary = "Get enabled highlighted searches.")
     @RestResource(path = "enabled")
