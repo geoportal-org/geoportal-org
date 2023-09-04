@@ -125,6 +125,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                         "Recommendation entity with id: " + recommendationId + " does not exist"));
 
         recommendation.clearRecommendedKeywords();
+        recommendationRepository.saveAndFlush(recommendation);
 
         keywords.stream()
                 .map(keyword -> conversionService.convert(keyword, RecommendedKeyword.class))

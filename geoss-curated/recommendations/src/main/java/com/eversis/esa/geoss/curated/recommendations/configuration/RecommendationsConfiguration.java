@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.curated.recommendations.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +54,7 @@ public class RecommendationsConfiguration {
                     }).toList();
 
             Stream<Operation> operations = openApi.getPaths().values().stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream());
+                    .flatMap(pathItem -> Stream.of(pathItem.getPost(), pathItem.getPut(), pathItem.getDelete()));
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
