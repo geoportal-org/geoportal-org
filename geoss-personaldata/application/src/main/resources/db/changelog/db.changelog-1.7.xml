@@ -16,7 +16,7 @@
         <comment>Saved searches</comment>
         <addColumn tableName="saved_searches">
             <column name="name" type="varchar(254)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
         </addColumn>
         <addColumn tableName="saved_searches_aud">
