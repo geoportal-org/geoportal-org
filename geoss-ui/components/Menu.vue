@@ -7,13 +7,13 @@
                 <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
 
-                    <template v-if="!isMyWorkspace(route)">
-                        <div v-if="route.links && route.links.length" class="menu__links-expander"
-                            @click="toggleMenuSublinks(route)">
-                            <img :src="route.imgURL" :alt="route.title" />
-                            <span>{{ route.title.toUpperCase() }}</span>
-                        </div>
-                    </template>
+                    <!-- <template v-if="!isMyWorkspace(route)"> -->
+                    <div v-if="route.links && route.links.length" class="menu__links-expander"
+                        @click="toggleMenuSublinks(route)">
+                        <img :src="route.imgURL" :alt="route.title" />
+                        <span>{{ route.title.toUpperCase() }}</span>
+                    </div>
+                    <!-- </template>
                     <template v-else>
                         <div v-if="isSignedIn && route.links && route.links.length" class="menu__links-expander"
                             @click="toggleMenuSublinks(route)">
@@ -24,7 +24,7 @@
                             <img :src="route.imgURL" :alt="route.title" />
                             <span>{{ route.title.toUpperCase() }}</span>
                         </div>
-                    </template>
+                    </template> -->
 
                     <div v-if="route.links" :key="route.title" class="md-hidden-up">
                         <CollapseTransition>
@@ -35,7 +35,8 @@
                                             :to="subroute.link" target="_blank">
                                             {{ subroute.title }}
                                         </a>
-                                        <NuxtLink v-else class="menu__sublink" :key="subroute.link" :to="subroute.link">
+                                        <NuxtLink v-else class="menu__sublink" :key="subroute.link"
+                                            :to="subroute.link || ''">
                                             {{ subroute.title }}
                                         </NuxtLink>
                                     </template>
@@ -48,7 +49,7 @@
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </a>
-                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="route.link"
+                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="route.link || ''"
                         class="menu__link">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
@@ -154,7 +155,7 @@ export default class MenuComponent extends Vue {
     }
 
     public isExternal(link: string) {
-        if (link.indexOf('/') !== 0 && link.indexOf('http') === 0) {
+        if (link && link.indexOf('/') !== 0 && link.indexOf('http') === 0) {
             return true;
         } else {
             return false;

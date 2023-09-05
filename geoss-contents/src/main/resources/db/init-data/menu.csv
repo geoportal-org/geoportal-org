@@ -21,4 +21,4 @@ id|image_source|url|priority|parent_menu_id|level_id|created_by|created_on|modif
 20||"/highlighted-searches"|4|5|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
 21|"/svg/statistics.svg"|"/statistics"|5|0|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
 22|"/svg/my-workspace.svg"||6|0|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-23||"/saved-searches"|1|6|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+23||"/saved-searches"|1|22|1|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
