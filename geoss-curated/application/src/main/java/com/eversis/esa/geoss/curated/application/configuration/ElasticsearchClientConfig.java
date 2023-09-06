@@ -19,11 +19,24 @@ public class ElasticsearchClientConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.rest.uris}")
     String connectionUrl;
 
+    /**
+     * The Elasticsearch username.
+     */
+    @Value("${elasticsearch.username}")
+    String elasticsearchUsername;
+
+    /**
+     * The Elasticsearch password.
+     */
+    @Value("${elasticsearch.password}")
+    String elasticsearchPassword;
+
     @Override
     public ClientConfiguration clientConfiguration() {
         log.info("Configuring Elasticsearch Client host: {}", connectionUrl);
         return ClientConfiguration.builder()
                 .connectedTo(connectionUrl)
+                .withBasicAuth(elasticsearchUsername, elasticsearchPassword)
                 .build();
     }
 
