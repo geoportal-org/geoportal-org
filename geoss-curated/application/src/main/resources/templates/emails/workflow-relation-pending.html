@@ -5,10 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p th:text="#{relation.pending.body.greeting}">Dear Admin,</p>
+<p th:text="#{admin.body.greeting}">Dear Admin,</p>
 <p><span th:text="#{relation.pending.body.span1}">A new relation </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{relation.pending.body.span2}"> has been submitted for your verification.</span></p>
 <a th:href="@{${relationsVerifyUrl}}" href="#"><span th:text="${relationsVerifyUrl}"></span></a>
-<p th:text="#{relation.pending.body.closing}">Thank you,</p>
-<p th:text="#{relation.pending.body.signature}">GEOSS Administrator</p>
+<p th:text="#{body.closing}">Thank you,</p>
+<p th:text="#{body.signature}">GEOSS Administrator</p>
 </body>
 </html>

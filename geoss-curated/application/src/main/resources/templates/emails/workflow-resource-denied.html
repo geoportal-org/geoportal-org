@@ -5,10 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p th:text="#{resource.denied.body.greeting}">Dear User,</p>
+<p th:text="#{user.body.greeting}">Dear User,</p>
 <p><span th:text="#{resource.denied.body.span1}">The resource </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{resource.denied.body.span2}"> that you have submitted has been reviewed and rejected with a comment by the Administrator. You can apply corrections and submit the resource again or remove it from the system.</span></p>
 <a th:href="@{${resourceUrl}}" href="#"><span th:text="${resourceUrl}"></span></a>
-<p th:text="#{resource.denied.body.closing}">Thank you,</p>
-<p th:text="#{resource.denied.body.signature}">GEOSS Administrator</p>
+<p th:text="#{body.closing}">Thank you,</p>
+<p th:text="#{body.signature}">GEOSS Administrator</p>
 </body>
 </html>
