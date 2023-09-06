@@ -7,7 +7,7 @@
                 <div class="line-2"></div>
             </NuxtLink>
         </div>
-        <div class="my-workspace-tab my-workspace-content your-saved-searches">
+        <div class="my-workspace-tab my-workspace-content saved-searches">
             <div v-if="!savedSearches">Loading...</div>
             <div v-if="savedSearches && !savedSearches.length">You have no Saved Searches yet.</div>
             <ul v-else>
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.your-saved-searches {
+.saved-searches {
     ul {
         li {
             padding: 5px 15px;

@@ -7,13 +7,13 @@
                 <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
 
-                    <!-- <template v-if="!isMyWorkspace(route)"> -->
-                    <div v-if="route.links && route.links.length" class="menu__links-expander"
-                        @click="toggleMenuSublinks(route)">
-                        <img :src="route.imgURL" :alt="route.title" />
-                        <span>{{ route.title.toUpperCase() }}</span>
-                    </div>
-                    <!-- </template>
+                    <template v-if="!isMyWorkspace(route)">
+                        <div v-if="route.links && route.links.length" class="menu__links-expander"
+                            @click="toggleMenuSublinks(route)">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                    </template>
                     <template v-else>
                         <div v-if="isSignedIn && route.links && route.links.length" class="menu__links-expander"
                             @click="toggleMenuSublinks(route)">
@@ -24,7 +24,7 @@
                             <img :src="route.imgURL" :alt="route.title" />
                             <span>{{ route.title.toUpperCase() }}</span>
                         </div>
-                    </template> -->
+                    </template>
 
                     <div v-if="route.links" :key="route.title" class="md-hidden-up">
                         <CollapseTransition>
