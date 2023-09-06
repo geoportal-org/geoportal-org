@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Workflow extension pending</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="#{admin.body.greeting}">Dear Admin,</p>
+<p><span th:text="#{extension.pending.body.span1}">A new extension </span><span th:text="${id}"></span> <span th:text="${name}"></span> <span th:text="#{extension.pending.body.span2}"> has been submitted for your verification.</span></p>
+<a th:href="@{${extensionsVerifyUrl}}" href="#"><span th:text="${extensionsVerifyUrl}"></span></a>
+<p th:text="#{body.closing}">Thank you,</p>
+<p th:text="#{body.signature}">GEOSS Administrator</p>
+</body>
+</html>
