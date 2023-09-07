@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 
-import com.eversis.esa.geoss.curated.common.email.EmailSender;
+import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.elasticsearch.service.ElasticsearchRelationService;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
@@ -37,7 +37,7 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
 
     private final ElasticsearchRelationService elasticsearchService;
 
-    private final EmailSender emailSender;
+    private final EmailEventPublisher emailEventPublisher;
 
     private final Keycloak keycloak;
 
@@ -46,15 +46,15 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
      *
      * @param userRelationService the user relation service
      * @param elasticsearchService the elasticsearch service
-     * @param emailSender the email sender
+     * @param emailEventPublisher the email sender
      * @param keycloak the keycloak
      */
     public WorkflowRelationServiceImpl(UserRelationService userRelationService,
             ElasticsearchRelationService elasticsearchService,
-            EmailSender emailSender, @Qualifier("keycloakRelationClient") Keycloak keycloak) {
+            EmailEventPublisher emailEventPublisher, @Qualifier("keycloakRelationClient") Keycloak keycloak) {
         this.userRelationService = userRelationService;
         this.elasticsearchService = elasticsearchService;
-        this.emailSender = emailSender;
+        this.emailEventPublisher = emailEventPublisher;
         this.keycloak = keycloak;
     }
 
@@ -64,7 +64,7 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
         log.info("Workflow approving user relation with id {}", userRelationId);
         UserRelation userRelation = userRelationService.approveUserResource(userRelationId);
         elasticsearchService.indexEntryRelation(userRelation.getEntryRelation());
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userRelationService.findUserRelation(userRelationId).getUserId())
                         .toRepresentation().getEmail(),
@@ -84,7 +84,7 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
     public void denyUserRelation(long userRelationId, String host) {
         log.info("Workflow denying user relation with id {}", userRelationId);
         userRelationService.denyUserRelation(userRelationId);
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userRelationService.findUserRelation(userRelationId).getUserId())
                         .toRepresentation().getEmail(),
@@ -110,7 +110,7 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
                 groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
         List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
         users.forEach(userRepresentation ->
-                emailSender.send(
+                emailEventPublisher.send(
                         userRepresentation.getEmail(),
                         Locale.getDefault(),
                         "relation.pending.title",
@@ -135,7 +135,7 @@ public class WorkflowRelationServiceImpl implements WorkflowRelationService {
         );
         String userId = userRelationService.findUserRelation(userRelationId).getUserId();
         userRelationService.deleteUserRelation(userRelationId);
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userId)
                         .toRepresentation().getEmail(), Locale.getDefault(),

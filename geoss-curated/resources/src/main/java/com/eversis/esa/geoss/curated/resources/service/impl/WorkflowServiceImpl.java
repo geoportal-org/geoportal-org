@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
 
-import com.eversis.esa.geoss.curated.common.email.EmailSender;
+import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.elasticsearch.service.ElasticsearchService;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
@@ -39,7 +39,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final ElasticsearchService elasticsearchService;
 
-    private final EmailSender emailSender;
+    private final EmailEventPublisher emailEventPublisher;
 
     private final Keycloak keycloak;
 
@@ -48,14 +48,14 @@ public class WorkflowServiceImpl implements WorkflowService {
      *
      * @param userResourceService the user resource service
      * @param elasticsearchService the elasticsearch service
-     * @param emailSender the email sender
+     * @param emailEventPublisher the email sender
      * @param keycloak the keycloak
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, ElasticsearchService elasticsearchService,
-            EmailSender emailSender, @Qualifier("keycloakClient") Keycloak keycloak) {
+            EmailEventPublisher emailEventPublisher, @Qualifier("keycloakClient") Keycloak keycloak) {
         this.userResourceService = userResourceService;
         this.elasticsearchService = elasticsearchService;
-        this.emailSender = emailSender;
+        this.emailEventPublisher = emailEventPublisher;
         this.keycloak = keycloak;
     }
 
@@ -65,7 +65,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         log.info("Workflow approving user resource with id {}", userResourceId);
         UserResource userResource = userResourceService.approveUserResource(userResourceId);
         elasticsearchService.indexEntry(userResource.getEntry());
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userResourceService.findUserResource(userResourceId).getUserId())
                         .toRepresentation().getEmail(),
@@ -85,7 +85,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void denyUserResource(long userResourceId, String host) {
         log.info("Workflow denying user resource with id {}", userResourceId);
         userResourceService.denyUserResource(userResourceId);
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userResourceService.findUserResource(userResourceId).getUserId())
                         .toRepresentation().getEmail(),
@@ -111,7 +111,7 @@ public class WorkflowServiceImpl implements WorkflowService {
                 groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
         List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
         users.forEach(userRepresentation ->
-                emailSender.send(
+                emailEventPublisher.send(
                         userRepresentation.getEmail(),
                         Locale.getDefault(),
                         "resource.pending.title",
@@ -136,7 +136,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         );
         String userId = userResourceService.findUserResource(userResourceId).getUserId();
         userResourceService.deleteUserResource(userResourceId);
-        emailSender.send(
+        emailEventPublisher.send(
                 keycloak.realm(REALM_NAME).users()
                         .get(userId)
                         .toRepresentation().getEmail(), Locale.getDefault(),

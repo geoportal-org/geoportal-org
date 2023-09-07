@@ -12,11 +12,11 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 /**
- * The type Email sender.
+ * The type Email event publisher.
  */
 @Log4j2
 @Component
-public class EmailSender {
+public class EmailEventPublisher {
 
     private final MessageSource messageSource;
 
@@ -25,13 +25,13 @@ public class EmailSender {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
-     * Instantiates a new Email sender.
+     * Instantiates a new Email event publisher.
      *
      * @param messageSource the message source
      * @param templateEngine the template engine
      * @param applicationEventPublisher the application event publisher
      */
-    public EmailSender(MessageSource messageSource, SpringTemplateEngine templateEngine,
+    public EmailEventPublisher(MessageSource messageSource, SpringTemplateEngine templateEngine,
             ApplicationEventPublisher applicationEventPublisher) {
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;

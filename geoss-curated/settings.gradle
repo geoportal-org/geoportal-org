@@ -19,4 +19,6 @@ include 'recommendations'
 include 'relations'
 include 'resources'
 include 'application'
+include 'workflow'
+include 'elasticsearch'
 project(':geoss-common').projectDir = file("../geoss-common")
