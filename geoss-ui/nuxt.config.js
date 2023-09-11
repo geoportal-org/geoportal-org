@@ -136,15 +136,23 @@ export default {
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         vendor: ['ol'],
+        transpile: [/google-chart/, /zrender/]
     },
 
     publicRuntimeConfig: {
         baseUrl: process.env.BASE_URL,
         adminUrl: process.env.ADMIN_URL,
+        matomoUrl: process.env.MATOMO_URL,
+        elkUrl: process.env.ELK_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
         matomoSiteId: process.env.MATOMO_SITE_ID,
         matomoToken: process.env.MATOMO_TOKEN,
+        elsTokenUrl: process.env.ELS_TOKEN_URL,
+        elsClientId: process.env.ELS_CLIENT_ID,
+        elsClientSecret: process.env.ELS_CLIENT_SECRET,
+        elsUsername: process.env.ELS_USERNAME,
+        elsPassword: process.env.ELS_PASSWORD,
         auth: {
             defaultStrategy: 'keycloak',
             strategies: {

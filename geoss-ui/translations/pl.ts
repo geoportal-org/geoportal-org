@@ -28,11 +28,6 @@ export default {
             popularOrganizations: 'Najpopularniejsze organizacje',
             popularAreas: 'Najbardziej popularne obszary',
         },
-        shortTypeOptions: {
-            numberOfSearches: 'Liczba wyszukiwań',
-            popularResources: 'Najpopularniejsze zasoby',
-            popularAreas: 'Najbardziej popularne obszary',
-        },
         siteTypeOptions: {
             numberOfUsers: 'Liczba użytkowników',
             numberOfSessions: 'Liczba sesji',
@@ -47,6 +42,15 @@ export default {
             month: 'Miesiąc',
             year: 'Rok',
         },
+        bounceRateLabel: 'Procent odwiedzających opuszczających witrynę',
+        dateLabel: 'Data',
+        newVisitorsLabel: 'Nowi odwiedzający',
+        returningVisitorsLabel: 'Powracający odwiedzający',
+        popularBrowsersTitle: 'Najpopularniejsze przeglądarki na podstawie liczby działań',
+        visitorTypeTitle: 'Typ gościa',
+        country: 'Kraj',
+        numberOfVisits: 'Liczba odwiedzin',
+        numberOfSearches: 'Liczba wyszukiwań'
     },
     placeholders: {
         searchBar: 'Podaj szukaną frazę',

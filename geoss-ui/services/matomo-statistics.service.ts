@@ -1,6 +1,5 @@
 //to change
 import { getRandomColorsArray } from '~/utils/randomColorsArray'
-const baseMatomoURL = 'https://gpp-admin.devel.esaportal.eu/matomo/?'
 
 type matomoParams = {
     module: string
@@ -32,7 +31,6 @@ const MatomoDataService = {
         dateFrom: string,
         dateTo: string,
         resultsNumber: string,
-        authToken: string
     ) {
         let currentDate = new Date().toJSON().slice(0, 10)
         const start = dateFrom
@@ -47,7 +45,7 @@ const MatomoDataService = {
             date: dateRange,
             format: 'json',
             filter_limit: resultsNumber,
-            token_auth: authToken,
+            token_auth: window.$nuxt.$config.matomoToken,
         }
 
         let chartType = ''
@@ -72,7 +70,9 @@ const MatomoDataService = {
                 params.method = 'VisitsSummary.getUniqueVisitors'
                 chartType = 'line'
                 break
-            case window.$nuxt.$tc('statistics.siteTypeOptions.numberOfSessions'):
+            case window.$nuxt.$tc(
+                'statistics.siteTypeOptions.numberOfSessions'
+            ):
                 params.method = 'VisitsSummary.getVisits'
                 chartType = 'line'
                 break
@@ -88,7 +88,6 @@ const MatomoDataService = {
         dateFrom: string,
         dateTo: string,
         resultsNumber: string,
-        authToken: string
     ) {
         const [params, chartType]: any = this.prepareRequestParams(
             method,
@@ -96,11 +95,10 @@ const MatomoDataService = {
             dateFrom,
             dateTo,
             resultsNumber,
-            authToken
         )
 
         const data = await this.fetchMatomoData(
-            baseMatomoURL + this.parseParams(params)
+            window.$nuxt.$config.matomoUrl + this.parseParams(params)
         )
 
         if (data) {
@@ -117,10 +115,17 @@ const MatomoDataService = {
                         } else {
                             labels.push(key)
                         }
-                        if (method === 'Bounce rate') {
+                        if (
+                            method ===
+                            window.$nuxt.$tc(
+                                'statistics.siteTypeOptions.bounceRate'
+                            )
+                        ) {
                             //@ts-ignore
                             values.push(parseFloat(value.bounce_rate_new))
-                            label = 'Percent of visits leaving the website'
+                            label = window.$nuxt.$tc(
+                                'statistics.bounceRateLabel'
+                            )
                         } else {
                             values.push(value)
                         }
@@ -138,18 +143,50 @@ const MatomoDataService = {
                             },
                         ],
                     }
+                    options = {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: window.$nuxt.$tc(
+                                        'statistics.dateLabel'
+                                    ),
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: label,
+                                },
+                            },
+                        },
+                    }
                     return {
                         type: chartType,
                         data: lineChartData,
+                        options: options,
                     }
                 case 'pie':
-                    if (method === 'Most popular browsers') {
-                        data?.forEach((element: any) => {
-                            labels.push(element.label)
-                            values.push(element.nb_actions)
-                        })
+                    if (
+                        method ===
+                        window.$nuxt.$tc(
+                            'statistics.siteTypeOptions.popularBrowsers'
+                        )
+                    ) {
+                        if (data.length) {
+                            data.forEach((element: any) => {
+                                labels.push(element.label)
+                                values.push(element.nb_actions)
+                            })
+                        }
                     } else {
-                        labels = ['New visitors', 'Returning visitors']
+                        labels = [
+                            window.$nuxt.$tc('statistics.newVisitorsLabel'),
+                            window.$nuxt.$tc(
+                                'statistics.returningVisitorsLabel'
+                            ),
+                        ]
                         values = [data.nb_visits_new, data.nb_visits_returning]
                     }
 
@@ -201,9 +238,16 @@ const MatomoDataService = {
                             title: {
                                 display: true,
                                 text:
-                                    method === 'Most popular browsers'
-                                        ? 'Most popular browsers based on number of actions'
-                                        : 'Visitor type',
+                                    method ===
+                                    window.$nuxt.$tc(
+                                        'statistics.siteTypeOptions.popularBrowsers'
+                                    )
+                                        ? window.$nuxt.$tc(
+                                              'statistics.popularBrowsersTitle'
+                                          )
+                                        : window.$nuxt.$tc(
+                                              'statistics.visitorTypeTitle'
+                                          ),
                             },
                         },
                     }
@@ -215,15 +259,23 @@ const MatomoDataService = {
                     }
                 case 'bar':
                     const mapData: any[][] = []
-                    mapData.push(['Country', 'Number of users'])
-                    data?.forEach((element: any) => {
-                        labels.push(element.label)
-                        values.push(element.nb_visits)
-                        mapData.push([
-                            element.code.toUpperCase(),
-                            element.nb_visits,
-                        ])
-                    })
+                    mapData.push([
+                        window.$nuxt.$tc('statistics.country'),
+                        window.$nuxt.$tc(
+                            'statistics.siteTypeOptions.numberOfUsers'
+                        ),
+                    ])
+                    if (data.length) {
+                        data.forEach((element: any) => {
+                            labels.push(element.label)
+                            values.push(element.nb_visits)
+                            mapData.push([
+                                element.code.toUpperCase(),
+                                element.nb_visits,
+                            ])
+                        })
+                    }
+
                     colors = getRandomColorsArray(labels.length)
                     const barChartData = {
                         labels: labels,
@@ -245,12 +297,31 @@ const MatomoDataService = {
                                 callbacks: {
                                     label: function (context: any) {
                                         const value = context.formattedValue
-                                        const label = 'Number of visits'
+                                        const label = window.$nuxt.$tc(
+                                            'statistics.numberOfVisits'
+                                        )
                                         const final = label + ': ' + value
 
                                         return final
                                     },
                                 },
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: window.$nuxt.$tc(
+                                        'statistics.country'
+                                    ),
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: window.$nuxt.$tc(
+                                        'statistics.numberOfVisits'
+                                    ),                                },
                             },
                         },
                     }
@@ -277,9 +348,8 @@ const MatomoDataService = {
             console.log(error)
         }
     },
-    getPeriod(period : string){
-        console.log(period)
-        switch (period){
+    getPeriod(period: string) {
+        switch (period) {
             case window.$nuxt.$tc('statistics.timeUnits.day'):
                 return 'day'
             case window.$nuxt.$tc('statistics.timeUnits.week'):
@@ -291,7 +361,7 @@ const MatomoDataService = {
             default:
                 return 'range'
         }
-    }
+    },
 }
 
 export default MatomoDataService

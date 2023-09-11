@@ -28,11 +28,6 @@ export default {
             popularOrganizations: '最受欢迎的组织',
             popularAreas: '最受欢迎的区域',
         },
-        shortTypeOptions: {
-            numberOfSearches: '搜索次数',
-            popularResources: '最受欢迎的资源',
-            popularAreas: '最受欢迎的区域',
-        },
         siteTypeOptions: {
             numberOfUsers: '用户数量',
             numberOfSessions: '会话数',
@@ -47,6 +42,15 @@ export default {
             month: '月份',
             year: '年份',
         },
+        bounceRateLabel: '离开网站的访问百分比',
+        dateLabel: '日期',
+        newVisitorsLabel: '新访客',
+        returningVisitorsLabel: '回访者',
+        popularBrowsersTitle: '基于操作数量的最受欢迎的浏览器',
+        visitorTypeTitle: '访客类型',
+        country: '国家',
+        numberOfVisits: '访问次数',
+        numberOfSearches: '搜索次数'
     },
     placeholders: {
         searchBar: '输入搜索词',

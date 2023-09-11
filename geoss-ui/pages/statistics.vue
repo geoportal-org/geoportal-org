@@ -230,11 +230,11 @@
 
 <script type="module">
 import MatomoDataService from '@/services/matomo-statistics.service.ts'
-import UtilsService from '@/services/utils.service';
+import ElasticDataService from '@/services/elastic-statistics.service.ts'
+import UtilsService from '@/services/utils.service'
 import Chart from 'chart.js/auto'
 import { GChart } from 'vue-google-charts/legacy'
 import { jsPDF } from 'jspdf'
-
 export default {
     components: {
         GChart,
@@ -267,9 +267,9 @@ export default {
             this.$tc('statistics.dataTypeOptions.popularAreas'),
         ]
         let shortTypeOptions = [
-            this.$tc('statistics.shortTypeOptions.numberOfSearches'),
-            this.$tc('statistics.shortTypeOptions.popularResources'),
-            this.$tc('statistics.shortTypeOptions.popularAreas'),
+            this.$tc('statistics.dataTypeOptions.numberOfSearches'),
+            this.$tc('statistics.dataTypeOptions.popularKeywords'),
+            this.$tc('statistics.dataTypeOptions.popularAreas'),
         ]
         let siteTypeOptions = [
             this.$tc('statistics.siteTypeOptions.numberOfUsers'),
@@ -344,28 +344,31 @@ export default {
     },
     methods: {
         async onSubmit() {
+            let result = {}
             if (this.form.source === this.$tc('statistics.dataUsage')) {
-                // let result = await ElasticDataService.fetchElasticData(
-                //     this.form.dataset,
-                //     this.form.dateFrom,
-                //     this.form.dateTo,
-                //     this.form.interval,
-                //     this.form.unit,
-                //     this.form.type
-                // )
+                result = await ElasticDataService.fetchElasticData(
+                    this.form.dataset,
+                    this.form.dateFrom,
+                    this.form.dateTo,
+                    this.form.interval,
+                    this.form.unit,
+                    this.form.type,
+                    this.form.resultsNumber
+                )
             } else {
-                let result = await MatomoDataService.prepareChartData(
+                result = await MatomoDataService.prepareChartData(
                     this.form.type,
                     this.isTypeNumeric ? this.form.unit : 'range',
                     this.form.dateFrom,
                     this.form.dateTo,
                     this.form.resultsNumber.toString(),
-                    this.$config.matomoToken
                 )
-                if (this.chartInstance) {
-                    this.chartInstance.destroy()
-                }
+            }
+            if (this.chartInstance) {
+                this.chartInstance.destroy()
+            }
 
+            if (result) {
                 //redraw chart
                 const chrt = document.getElementById('chart')
                 const chart = new Chart(chrt, {
@@ -435,7 +438,7 @@ export default {
             const height = doc.internal.pageSize.getHeight()
 
             doc.text('GEOSS Statistics', width / 2, 10, { align: 'center' })
-            doc.addImage(img, 0, 15)
+            doc.addImage(img, 'png', 0, 15, width, 100)
             doc.setFontSize(12)
             doc.text(
                 this.$tc('statistics.period') + dateRange,

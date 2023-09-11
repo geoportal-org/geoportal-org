@@ -28,11 +28,6 @@ export default {
             popularOrganizations: 'Самые популярные организации',
             popularAreas: 'Самые популярные районы',
         },
-        shortTypeOptions: {
-            numberOfSearches: 'Количество поисков',
-            PopularResources: 'Самые популярные ресурсы',
-            PopularAreas: 'Самые популярные районы',
-        },
         siteTypeOptions: {
             numberOfUsers: 'Количество пользователей',
             numberOfSessions: 'Количество сеансов',
@@ -47,6 +42,16 @@ export default {
             month: 'Месяц',
             year: 'Год',
         },
+        bounceRateLabel: 'Процент посетителей, покидающих веб-сайт',
+        dateLabel: 'Дата',
+        newVisitorsLabel: 'Новые посетители',
+        returningVisitorsLabel: 'Вернувшиеся посетители',
+        popularBrowsersTitle:
+            'Самые популярные браузеры по количеству действий',
+        visitorTypeTitle: 'Тип посетителя',
+        country: 'Страна',
+        numberOfVisits: 'Количество посещений',
+        numberOfSearches: 'Количество поисков'
     },
     placeholders: {
         searchBar: 'Введите слова для поиска',

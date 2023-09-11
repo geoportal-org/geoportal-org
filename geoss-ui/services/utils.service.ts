@@ -428,23 +428,23 @@ const UtilsService = {
                 !window.$nuxt.$cookies.get('elkAuthRefreshToken') ||
                 window.$nuxt.$cookies.get('elkAuthRefreshToken') === ''
             ) {
-                tokenBody =
-                    'client_id=geoss-proxy&client_secret=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs&grant_type=password&username=geoss&password=geoss&scope=roles'
+                tokenBody = `client_id=${window.$nuxt.$config.elsClientId}&client_secret=${window.$nuxt.$config.elsClientSecret}&grant_type=password&username=${window.$nuxt.$config.elsUsername}&password=${window.$nuxt.$config.elsPassword}&scope=roles`
             } else {
-                tokenBody = `client_id=geoss-proxy&client_secret=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs&grant_type=refresh_token&scope=roles&refresh_token=${window.$nuxt.$cookies.get(
+                tokenBody = `client_id=${
+                    window.$nuxt.$config.elsClientId
+                }&client_secret=${
+                    window.$nuxt.$config.elsClientSecret
+                }&grant_type=refresh_token&scope=roles&refresh_token=${window.$nuxt.$cookies.get(
                     'elkAuthRefreshToken'
                 )}`
             }
-            fetch(
-                'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: tokenBody,
-                }
-            )
+            fetch(window.$nuxt.$config.elsTokenUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: tokenBody,
+            })
                 .then((r) => {
                     return r.json()
                 })
