@@ -56,9 +56,6 @@ server {
   include conf.d/cms_conf/location_signed.conf;
 
   location / {
-    #to be removed after KK local test
-    add_header 'Access-Control-Allow-Origin' '*' always;
-
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -196,9 +193,6 @@ server {
   include conf.d/cms_conf/location_signed.conf;
 
   location / {
-    #to be removed after KK local test
-    add_header 'Access-Control-Allow-Origin' '*' always;
-
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -259,9 +253,6 @@ server {
   include conf.d/cms_conf/location_signed.conf;
 
   location / {
-    #to be removed after KK local test
-    add_header 'Access-Control-Allow-Origin' '*' always;
-
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
