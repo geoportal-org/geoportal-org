@@ -18,6 +18,15 @@ const externalForm: FormField[] = [
         placeholderId: "form.placeholders.type",
         type: "text",
     },
+    {
+        fieldType: Input,
+        isRequired: true,
+        labelId: "pages.api.tourUrl",
+        name: "tourUrl",
+        placeholderId: "form.placeholders.type",
+        type: "text",
+        validationSchema: "url",
+    },
 ];
 
 const dabForm: FormField[] = [
@@ -88,39 +97,39 @@ const geossForm: FormField[] = [
         type: "text",
         validationSchema: "url",
     },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.api.geoss-sync-manager",
-        name: "geossCrSyncManagerUrl",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-        validationSchema: "url",
-    },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.api.geoss-sync-manager-key",
-        name: "geossCrSyncManagerSecretKey",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-    },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.api.geoss-relations-limit",
-        name: "geossCrEntryRelationsLimit",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-    },
-    {
-        fieldType: Input,
-        isRequired: true,
-        labelId: "pages.api.geoss-transfer-limit",
-        name: "geossCrTransferOptionsLimit",
-        placeholderId: "form.placeholders.type",
-        type: "text",
-    },
+    // {
+    //     fieldType: Input,
+    //     isRequired: true,
+    //     labelId: "pages.api.geoss-sync-manager",
+    //     name: "geossCrSyncManagerUrl",
+    //     placeholderId: "form.placeholders.type",
+    //     type: "text",
+    //     validationSchema: "url",
+    // },
+    // {
+    //     fieldType: Input,
+    //     isRequired: true,
+    //     labelId: "pages.api.geoss-sync-manager-key",
+    //     name: "geossCrSyncManagerSecretKey",
+    //     placeholderId: "form.placeholders.type",
+    //     type: "text",
+    // },
+    // {
+    //     fieldType: Input,
+    //     isRequired: true,
+    //     labelId: "pages.api.geoss-relations-limit",
+    //     name: "geossCrEntryRelationsLimit",
+    //     placeholderId: "form.placeholders.type",
+    //     type: "text",
+    // },
+    // {
+    //     fieldType: Input,
+    //     isRequired: true,
+    //     labelId: "pages.api.geoss-transfer-limit",
+    //     name: "geossCrTransferOptionsLimit",
+    //     placeholderId: "form.placeholders.type",
+    //     type: "text",
+    // },
 ];
 
 const otherForm: FormField[] = [
@@ -139,7 +148,7 @@ export const apiSettingsForm: FormSection[] = [
     { titleId: "pages.api.external", set: "external", data: externalForm },
     { titleId: "pages.api.dab", set: "dab", data: dabForm },
     { titleId: "pages.api.knowledge-producer", set: "knowledge_producer", data: knowledgeProducerForm },
-    //{ titleId: "pages.api.geoss", set: "geoss", data: geossForm }, GEOSS CR not included yet
+    { titleId: "pages.api.geoss", set: "curated", data: geossForm },
     { titleId: "pages.api.other", set: "other", data: otherForm },
 ];
 

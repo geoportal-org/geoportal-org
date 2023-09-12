@@ -235,6 +235,7 @@ export const en = {
             "kp-base": "Base URL",
             "other-next-geoss-base": "Next GEOSS base URL",
             w3w: "w3w key",
+            tourUrl: "Tour URL",
             external: "External",
             dab: "DAB",
             "knowledge-producer": "Knowledge producer",
