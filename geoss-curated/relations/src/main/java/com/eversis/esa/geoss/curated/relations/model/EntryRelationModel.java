@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.relations.model;
 
+import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
+import com.eversis.esa.geoss.curated.common.model.TypeModel;
 import lombok.Data;
 import lombok.NonNull;
 

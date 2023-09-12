@@ -2,7 +2,7 @@ package com.eversis.esa.geoss.curated.relations.service.impl;
 
 import jakarta.validation.constraints.NotNull;
 
-import com.eversis.esa.geoss.curated.relations.domain.Status;
+import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.mapper.UserRelationMapper;
 import com.eversis.esa.geoss.curated.relations.model.UserRelationModel;

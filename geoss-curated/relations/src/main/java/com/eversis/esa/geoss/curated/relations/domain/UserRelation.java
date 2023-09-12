@@ -15,6 +15,8 @@ import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import com.eversis.esa.geoss.curated.common.domain.Status;
+import com.eversis.esa.geoss.curated.common.domain.TaskType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

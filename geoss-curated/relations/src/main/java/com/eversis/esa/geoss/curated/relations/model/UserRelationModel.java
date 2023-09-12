@@ -2,7 +2,7 @@ package com.eversis.esa.geoss.curated.relations.model;
 
 import jakarta.validation.constraints.NotNull;
 
-import com.eversis.esa.geoss.curated.relations.domain.TaskType;
+import com.eversis.esa.geoss.curated.common.domain.TaskType;
 import lombok.Data;
 
 /**

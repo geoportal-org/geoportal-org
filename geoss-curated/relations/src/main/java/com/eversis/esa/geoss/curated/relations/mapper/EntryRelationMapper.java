@@ -1,12 +1,12 @@
 package com.eversis.esa.geoss.curated.relations.mapper;
 
+import com.eversis.esa.geoss.curated.common.service.DataSourceService;
+import com.eversis.esa.geoss.curated.common.service.TypeService;
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelationId;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
-import com.eversis.esa.geoss.curated.relations.service.DataSourcesRelationService;
 import com.eversis.esa.geoss.curated.relations.service.RelationTypeService;
-import com.eversis.esa.geoss.curated.relations.service.TypesService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,24 +15,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntryRelationMapper {
 
-    private final DataSourcesRelationService dataSourceService;
+    private final DataSourceService dataSourceService;
 
     private final RelationTypeService relationTypeService;
 
-    private final TypesService typesService;
+    private final TypeService typeService;
 
     /**
      * Instantiates a new Entry relation mapper.
      *
      * @param dataSourceService the data source service
      * @param relationTypeService the relation type service
-     * @param typesService the types service
+     * @param typeService the types service
      */
-    public EntryRelationMapper(DataSourcesRelationService dataSourceService,
-            RelationTypeService relationTypeService, TypesService typesService) {
+    public EntryRelationMapper(DataSourceService dataSourceService,
+            RelationTypeService relationTypeService, TypeService typeService) {
         this.dataSourceService = dataSourceService;
         this.relationTypeService = relationTypeService;
-        this.typesService = typesService;
+        this.typeService = typeService;
     }
 
     /**
@@ -67,8 +67,8 @@ public class EntryRelationMapper {
                 dataSourceService.getOrCreateDataSource(model.getDestDataSource()).getId().intValue(),
                 relationTypeService.getOrCreateRelationType(model.getRelationType()).getId());
         entryRelation.setId(entryRelationId);
-        entryRelation.setSrcType(typesService.getOrCreateType(model.getSrcType()));
-        entryRelation.setDestType(typesService.getOrCreateType(model.getDestType()));
+        entryRelation.setSrcType(typeService.getOrCreateType(model.getSrcType()));
+        entryRelation.setDestType(typeService.getOrCreateType(model.getDestType()));
         entryRelation.setWorkflowInstanceId(0L);
         entryRelation.setIsCustom(0);
         entryRelation.setDeleted(0);
@@ -93,8 +93,8 @@ public class EntryRelationMapper {
                 dataSourceService.getOrCreateDataSource(model.getDestDataSource()).getId().intValue(),
                 relationTypeService.getOrCreateRelationType(model.getRelationType()).getId());
         entryRelation.setId(entryRelationId);
-        entryRelation.setSrcType(typesService.getOrCreateType(model.getSrcType()));
-        entryRelation.setDestType(typesService.getOrCreateType(model.getDestType()));
+        entryRelation.setSrcType(typeService.getOrCreateType(model.getSrcType()));
+        entryRelation.setDestType(typeService.getOrCreateType(model.getDestType()));
         return entryRelation;
     }
 

@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
-import com.eversis.esa.geoss.curated.resources.domain.Status;
+import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.service.EntryService;

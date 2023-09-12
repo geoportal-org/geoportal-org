@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
+import com.eversis.esa.geoss.curated.common.domain.Type;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -29,11 +31,11 @@ public class EntryRelation {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "srcdatasourceid", insertable = false, updatable = false)
-    private RelationDataSources srcDataSource;
+    private DataSource srcDataSource;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "destdatasourceid", insertable = false, updatable = false)
-    private RelationDataSources destDataSource;
+    private DataSource destDataSource;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "relationtypeid", insertable = false, updatable = false)
@@ -41,11 +43,11 @@ public class EntryRelation {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "srctypeid")
-    private Types srcType;
+    private Type srcType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "desttypeid")
-    private Types destType;
+    private Type destType;
 
     @Column(name = "iscustom")
     private Integer isCustom = 0;

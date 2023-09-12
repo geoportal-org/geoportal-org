@@ -4,11 +4,11 @@ import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.service.AccessPolicyService;
 import com.eversis.esa.geoss.curated.resources.service.DashboardContentsService;
-import com.eversis.esa.geoss.curated.resources.service.DataSourcesService;
+import com.eversis.esa.geoss.curated.common.service.DataSourceService;
 import com.eversis.esa.geoss.curated.resources.service.DefinitionTypeService;
 import com.eversis.esa.geoss.curated.resources.service.OrganisationService;
 import com.eversis.esa.geoss.curated.resources.service.SourceService;
-import com.eversis.esa.geoss.curated.resources.service.TypeService;
+import com.eversis.esa.geoss.curated.common.service.TypeService;
 import com.eversis.esa.geoss.curated.resources.util.CodeGeneratorUtil;
 
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntryMapper {
 
-    private final DataSourcesService dataSourceService;
+    private final DataSourceService dataSourceService;
 
     private final SourceService sourceService;
 
@@ -44,7 +44,7 @@ public class EntryMapper {
      * @param organisationService the organisation service
      * @param dashboardContentsService the dashboard contents service
      */
-    public EntryMapper(DataSourcesService dataSourceService, SourceService sourceService,
+    public EntryMapper(DataSourceService dataSourceService, SourceService sourceService,
             AccessPolicyService accessPolicyService, TypeService typeService,
             DefinitionTypeService definitionTypeService, OrganisationService organisationService,
             DashboardContentsService dashboardContentsService) {
@@ -95,8 +95,8 @@ public class EntryMapper {
         entry.setCode(CodeGeneratorUtil.generateCode(model.getTitle(), model.getUserId()));
         entry.setOrganisation(organisationService.getOrCreateOrganisation(model.getOrganisation()));
         entry.setSource(sourceService.getOrCreateSource(model.getSource()));
-        entry.setDataSources(dataSourceService.getOrCreateDataSource(model.getDataSources()));
-        entry.setDisplayDataSources(dataSourceService.getOrCreateDataSource(model.getDisplayDataSources()));
+        entry.setDataSource(dataSourceService.getOrCreateDataSource(model.getDataSource()));
+        entry.setDisplayDataSource(dataSourceService.getOrCreateDataSource(model.getDisplayDataSource()));
         entry.setDefinitionType(definitionTypeService.getOrCreateDefinitionType(model.getDefinitionType()));
         entry.setScoreWeight(1.0);
         entry.setDeleted(0);
@@ -118,8 +118,8 @@ public class EntryMapper {
         entry.setTags(model.getTags());
         entry.setOrganisation(organisationService.getOrCreateOrganisation(model.getOrganisation()));
         entry.setSource(sourceService.getOrCreateSource(model.getSource()));
-        entry.setDataSources(dataSourceService.getOrCreateDataSource(model.getDataSources()));
-        entry.setDisplayDataSources(dataSourceService.getOrCreateDataSource(model.getDisplayDataSources()));
+        entry.setDataSource(dataSourceService.getOrCreateDataSource(model.getDataSource()));
+        entry.setDisplayDataSource(dataSourceService.getOrCreateDataSource(model.getDisplayDataSource()));
         entry.setDefinitionType(definitionTypeService.getOrCreateDefinitionType(model.getDefinitionType()));
         return entry;
     }

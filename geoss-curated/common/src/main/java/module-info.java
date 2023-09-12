@@ -11,5 +11,14 @@ module geoss.curated.common {
     requires thymeleaf;
     requires thymeleaf.spring6;
     requires org.apache.logging.log4j;
+    requires com.fasterxml.jackson.annotation;
+    requires org.hibernate.orm.core;
+    requires jakarta.persistence;
+    requires spring.data.rest.core;
+    requires spring.data.jpa;
+    requires spring.data.rest.webmvc;
+    requires spring.web;
+    requires io.swagger.v3.oas.annotations;
+    requires spring.security.core;
 
 }

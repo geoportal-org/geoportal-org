@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.curated.resources.model;
 
-import com.eversis.esa.geoss.curated.resources.domain.TaskType;
+import com.eversis.esa.geoss.curated.common.domain.TaskType;
 
 import lombok.Data;
 
