@@ -3,14 +3,14 @@
     <div class="community-portal-configuration">
         <Notification />
         <div class="my-workspace-header">
-            Mirror Site Setup
+            Community Portal Setup
         </div>
         <div class="community-portal-configuration__wrapper">
             <div class="my-workspace-tab my-workspace-content community-portal-configuration__sub">
 
                 <template v-if="step === 0">
                     <img class="creator__logo" src="/img/geoss-logo-blue.png" />
-                    <h1 class="creator__header">Mirror Site Setup</h1>
+                    <h1 class="creator__header">Community Portal Setup</h1>
                     <p>
                         Welcome to the Community portal configuration tool. Please follow the displayed steps to perform the
                         configuration correcty.
@@ -43,7 +43,7 @@
                     <img class="creator__logo" src="/img/geoss-logo-blue.png" />
                     <h1 class="creator__header">Configuration</h1>
                     <div class="creator__field required">
-                        <label>Name of the Mirror Site: <span>*</span></label>
+                        <label>Name of the Community Portal: <span>*</span></label>
                         <input placeholder="Type here..." type="text" ref="site_name" />
                     </div>
                     <div class="creator__field required">
@@ -149,7 +149,7 @@ export default {
         async saveSiteSettings() {
             if (!this.$refs.site_name || this.$refs.site_name === '' || !this.$refs.site_logo || !this.$refs.site_logo.files[0]) {
                 NotificationService.show(
-                    'Mirror Site Configuration',
+                    'Community Portal Configuration',
                     'Please provide both: Site name and Site logo',
                     10000,
                     null,
@@ -168,7 +168,7 @@ export default {
 
                 if (logo.errors && logo.errors.length || logo.error) {
                     NotificationService.show(
-                        'Mirror Site Configuration',
+                        'Community Portal Configuration',
                         logo.message || logo.error,
                         10000,
                         null,
@@ -241,7 +241,7 @@ export default {
         async signIn() {
             if (!this.$refs.login || this.$refs.login.value === '' || !this.$refs.password || this.$refs.password.value === '') {
                 NotificationService.show(
-                    'Mirror Site Configuration',
+                    'Community Portal Configuration',
                     'Please provide correct credentials',
                     10000,
                     null,
@@ -266,7 +266,7 @@ export default {
             }).catch(e => {
                 console.error('error ', e);
                 NotificationService.show(
-                    'Mirror Site Configuration',
+                    'Community Portal Configuration',
                     'Please provide correct credentials',
                     10000,
                     null,
