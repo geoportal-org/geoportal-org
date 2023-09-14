@@ -222,7 +222,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (IOException e) {
             throw new RuntimeException("Could not get most popular keywords. Error: " + e.getMessage());
         }
-        return mostPopular;
+        return mostPopular.subList(0, mostPopularKeywordsModel.getResults());
     }
 
     private List<MostPopular> extractMostPopularCatalogs(MostPopularCatalogsModel mostPopularCatalogsModel) {
@@ -249,7 +249,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (IOException e) {
             throw new RuntimeException("Could not get most popular catalogs. Error: " + e.getMessage());
         }
-        return mostPopular;
+        return mostPopular.subList(0, mostPopularCatalogsModel.getResults());
     }
 
     private List<MostPopular> extractMostPopularOrganisations(
