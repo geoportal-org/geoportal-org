@@ -117,6 +117,7 @@
                         <input
                             type="number"
                             min="1"
+                            max="10"
                             v-model="form.resultsNumber"
                             :disabled="form.type === 'Returning users'"
                         />
