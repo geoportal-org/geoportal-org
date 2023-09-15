@@ -121,7 +121,6 @@ Account console for geoss realm is available at
 http://geoss-keycloak:8080/realms/geoss/account/
 
 # Installation guide
-[[_TOC_]]
 
 ## Prerequisites
 Prerequisites: 
