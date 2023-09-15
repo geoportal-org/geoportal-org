@@ -173,7 +173,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(ta -> ta.field(UI_RESOURCE_NAME_FIELD_NAME)
-                                            .size(mostPopularResourcesModel.getSize()))
+                                            .size(mostPopularResourcesModel.getResults()))
                             ),
                     Void.class
             );
@@ -214,7 +214,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .query(filterQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_ST_NAME_FIELD_NAME)
-                                            .size(1000))
+                                            .size(mostPopularKeywordsModel.getResults()))
                             ),
                     Void.class
             );
@@ -222,7 +222,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (IOException e) {
             throw new RuntimeException("Could not get most popular keywords. Error: " + e.getMessage());
         }
-        return mostPopular.subList(0, mostPopularKeywordsModel.getResults());
+        return mostPopular;
     }
 
     private List<MostPopular> extractMostPopularCatalogs(MostPopularCatalogsModel mostPopularCatalogsModel) {
@@ -241,7 +241,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_SOURCES_GROUP_VALUE_FIELD_NAME)
-                                            .size(1000))
+                                            .size(mostPopularCatalogsModel.getResults()))
                             ),
                     Void.class
             );
@@ -249,7 +249,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (IOException e) {
             throw new RuntimeException("Could not get most popular catalogs. Error: " + e.getMessage());
         }
-        return mostPopular.subList(0, mostPopularCatalogsModel.getResults());
+        return mostPopular;
     }
 
     private List<MostPopular> extractMostPopularOrganisations(
@@ -269,7 +269,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .query(rangeQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(UI_ORGANISATION_FIELD_NAME)
-                                            .size(mostPopularOrganisationsModel.getSize()))
+                                            .size(mostPopularOrganisationsModel.getResults()))
                             ),
                     Void.class
             );
@@ -310,7 +310,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                             .query(filterQuery)
                             .aggregations(AGGREGATION_TERMS_NAME, a -> a
                                     .terms(t -> t.field(DS_BBOX_NAME_FIELD_NAME)
-                                            .size(1000))
+                                            .size(mostPopularAreasModel.getResults()))
                             ),
                     Void.class
             );
