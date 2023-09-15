@@ -119,3 +119,35 @@ http://geoss-keycloak:8080/admin/geoss/console/
 
 Account console for geoss realm is available at
 http://geoss-keycloak:8080/realms/geoss/account/
+
+# Installation guide
+[[_TOC_]]
+
+## Prerequisites
+Prerequisites: 
+- Open network communication between servers
+- Servers should be configured as working docker swarm network
+- Active domains SSL certificates and keys
+## System requirements for each server
+## Deployment process
+Eversis CI/CD pipeline will build and upload images into external images server available for clients. We will also prepare docker-compose template files available for downloads. Users will be able to download docker-compose configuration templates, edit variables and deploy application on their servers using uploaded by Eversis images.
+## Deployment guide
+1. Download docker-compose files
+2. Edit each of the environment variables inside docker-compose-dmz.yml and docker-compose-lan.yml files
+	- Variable1
+	- Variable2
+	- ...
+3. Copy SSL files(certificate+key) into listed directories:
+	- Path1
+	- Path2
+	- ...
+4. Copy docker-compose files into docker swarm manager servers
+```
+scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE_DMZ $VAR_MANAGER_SSH_CONNECTION_DMZ:/tmp/$VAR_DOCKER_COMPOSE_FILE_DMZ
+scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE_LAN $VAR_MANAGER_SSH_CONNECTION_LAN:/tmp/$VAR_DOCKER_COMPOSE_FILE_LAN
+```
+5. Set environments over ssh and deploy stack to servers
+```
+ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "export ... && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE_DMZ geoss"
+ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "export ... && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE_LAN geoss"
+```
