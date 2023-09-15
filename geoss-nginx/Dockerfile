@@ -1,6 +1,6 @@
 FROM debian:10.12 as builder
 
-ENV NGINX_VERSION="1.23.0"
+ENV NGINX_VERSION="1.23.3"
 
 RUN apt-get update
 
@@ -32,7 +32,7 @@ RUN ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx --add-dy
 RUN make modules
 
 
-FROM nginx:1.23.0 as runner
+FROM nginx:1.23.3 as runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
