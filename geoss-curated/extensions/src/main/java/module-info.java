@@ -11,4 +11,5 @@ module geoss.curated.extensions {
     requires com.fasterxml.jackson.annotation;
     requires geoss.curated.common;
     requires spring.data.commons;
+    requires jakarta.validation;
 }
