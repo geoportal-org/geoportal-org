@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.curated.extensions.properties.ExtensionsProperties;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Import;
                 ExtensionsProperties.class
         }
 )
+@EntityScan(basePackages = "com.eversis.esa.geoss.curated.extensions.domain")
 @Import(ExtensionsConfiguration.class)
 public class ExtensionsAutoConfiguration {
 

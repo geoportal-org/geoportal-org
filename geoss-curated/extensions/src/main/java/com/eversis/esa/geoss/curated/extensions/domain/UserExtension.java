@@ -1,9 +1,11 @@
-package com.eversis.esa.geoss.curated.resources.domain;
+package com.eversis.esa.geoss.curated.extensions.domain;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.eversis.esa.geoss.curated.common.domain.Endpoint;
-import com.eversis.esa.geoss.curated.common.domain.Protocol;
+import com.eversis.esa.geoss.curated.common.domain.Status;
+import com.eversis.esa.geoss.curated.common.domain.TaskType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,13 +24,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * The type Transfer option.
+ * The type User extension.
  */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "transferoptions")
-public class TransferOption {
+@Table(name = "user_extension")
+public class UserExtension {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -36,29 +38,25 @@ public class TransferOption {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @Column(name = "name", nullable = true)
-    private String name;
+    @Column(name = "userid", nullable = false)
+    private String userId;
 
-    @Column(name = "description", nullable = true)
+    @Column(name = "entryname", nullable = false)
+    private String entryName;
+
+    @Column(name = "description", columnDefinition = "TEXT", nullable = true)
     private String description;
 
-    @Column(name = "title", nullable = true)
-    private String title;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "tasktype", nullable = false)
+    private TaskType taskType;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "protocolid")
-    private Protocol protocol;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "endpointid")
-    private Endpoint endpoint;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "entryid")
-    private Entry entry;
-
-    @Column(name = "deleted", nullable = false)
-    private Integer deleted = 0;
+    @JoinColumn(name = "entryextensionid")
+    private EntryExtension entryExtension;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @CreatedDate
     @Column(name = "createddate", nullable = false)

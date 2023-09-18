@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.curated.resources.model;
+package com.eversis.esa.geoss.curated.common.model;
 
 import lombok.Data;
 

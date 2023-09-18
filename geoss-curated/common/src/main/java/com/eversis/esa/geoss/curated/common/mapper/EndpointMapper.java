@@ -1,7 +1,7 @@
-package com.eversis.esa.geoss.curated.resources.mapper;
+package com.eversis.esa.geoss.curated.common.mapper;
 
-import com.eversis.esa.geoss.curated.resources.domain.Endpoint;
-import com.eversis.esa.geoss.curated.resources.model.EndpointModel;
+import com.eversis.esa.geoss.curated.common.domain.Endpoint;
+import com.eversis.esa.geoss.curated.common.model.EndpointModel;
 
 /**
  * The type Endpoint mapper.

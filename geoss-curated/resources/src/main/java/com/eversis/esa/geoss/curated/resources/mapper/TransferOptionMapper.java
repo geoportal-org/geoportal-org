@@ -3,8 +3,8 @@ package com.eversis.esa.geoss.curated.resources.mapper;
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
-import com.eversis.esa.geoss.curated.resources.service.EndpointService;
-import com.eversis.esa.geoss.curated.resources.service.ProtocolService;
+import com.eversis.esa.geoss.curated.common.service.EndpointService;
+import com.eversis.esa.geoss.curated.common.service.ProtocolService;
 import org.springframework.stereotype.Component;
 
 /**

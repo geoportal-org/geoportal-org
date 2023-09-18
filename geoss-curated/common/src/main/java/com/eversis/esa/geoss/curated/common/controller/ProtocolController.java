@@ -1,9 +1,9 @@
-package com.eversis.esa.geoss.curated.resources.controller;
+package com.eversis.esa.geoss.curated.common.controller;
 
 import java.util.List;
 
-import com.eversis.esa.geoss.curated.resources.domain.Protocol;
-import com.eversis.esa.geoss.curated.resources.repository.ProtocolRepository;
+import com.eversis.esa.geoss.curated.common.domain.Protocol;
+import com.eversis.esa.geoss.curated.common.repository.ProtocolRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;

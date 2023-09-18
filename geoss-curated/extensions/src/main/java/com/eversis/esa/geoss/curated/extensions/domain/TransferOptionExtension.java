@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.curated.resources.domain;
+package com.eversis.esa.geoss.curated.extensions.domain;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
@@ -22,13 +22,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * The type Transfer option.
+ * The type Transfer option extension.
  */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "transferoptions")
-public class TransferOption {
+@Table(name = "transferoptionextension")
+public class TransferOptionExtension {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -42,20 +42,20 @@ public class TransferOption {
     @Column(name = "description", nullable = true)
     private String description;
 
-    @Column(name = "title", nullable = true)
-    private String title;
+    @Column(name = "displaytitle", nullable = true)
+    private String displayTitle;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "protocolid")
-    private Protocol protocol;
+    @JoinColumn(name = "entryextensionid")
+    private EntryExtension entryExtension;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "endpointid")
     private Endpoint endpoint;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "entryid")
-    private Entry entry;
+    @JoinColumn(name = "protocolid")
+    private Protocol protocol;
 
     @Column(name = "deleted", nullable = false)
     private Integer deleted = 0;

@@ -1,7 +1,7 @@
-package com.eversis.esa.geoss.curated.resources.mapper;
+package com.eversis.esa.geoss.curated.common.mapper;
 
-import com.eversis.esa.geoss.curated.resources.domain.Protocol;
-import com.eversis.esa.geoss.curated.resources.model.ProtocolModel;
+import com.eversis.esa.geoss.curated.common.domain.Protocol;
+import com.eversis.esa.geoss.curated.common.model.ProtocolModel;
 
 /**
  * The type Protocol mapper.

@@ -1,10 +1,10 @@
-package com.eversis.esa.geoss.curated.resources.service.impl;
+package com.eversis.esa.geoss.curated.common.service.impl;
 
-import com.eversis.esa.geoss.curated.resources.domain.Endpoint;
-import com.eversis.esa.geoss.curated.resources.mapper.EndpointMapper;
-import com.eversis.esa.geoss.curated.resources.model.EndpointModel;
-import com.eversis.esa.geoss.curated.resources.repository.EndpointRepository;
-import com.eversis.esa.geoss.curated.resources.service.EndpointService;
+import com.eversis.esa.geoss.curated.common.domain.Endpoint;
+import com.eversis.esa.geoss.curated.common.mapper.EndpointMapper;
+import com.eversis.esa.geoss.curated.common.model.EndpointModel;
+import com.eversis.esa.geoss.curated.common.repository.EndpointRepository;
+import com.eversis.esa.geoss.curated.common.service.EndpointService;
 import org.springframework.stereotype.Service;
 
 /**

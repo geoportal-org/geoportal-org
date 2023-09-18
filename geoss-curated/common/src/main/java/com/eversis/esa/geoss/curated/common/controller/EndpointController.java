@@ -1,11 +1,11 @@
-package com.eversis.esa.geoss.curated.resources.controller;
+package com.eversis.esa.geoss.curated.common.controller;
 
 import java.util.List;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import com.eversis.esa.geoss.curated.resources.domain.Endpoint;
-import com.eversis.esa.geoss.curated.resources.repository.EndpointRepository;
+import com.eversis.esa.geoss.curated.common.domain.Endpoint;
+import com.eversis.esa.geoss.curated.common.repository.EndpointRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;

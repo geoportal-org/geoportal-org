@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.curated.resources.domain;
+package com.eversis.esa.geoss.curated.extensions.domain;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
@@ -12,23 +12,23 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.eversis.esa.geoss.curated.common.domain.Endpoint;
-import com.eversis.esa.geoss.curated.common.domain.Protocol;
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * The type Transfer option.
+ * The type Entry extension.
  */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "transferoptions")
-public class TransferOption {
+@Table(name = "entryextension")
+public class EntryExtension {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -36,26 +36,40 @@ public class TransferOption {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @Column(name = "name", nullable = true)
-    private String name;
+    @NaturalId
+    @Column(name = "code", nullable = false)
+    private String code;
 
-    @Column(name = "description", nullable = true)
-    private String description;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "datasourceid", nullable = false)
+    private DataSource dataSource;
 
     @Column(name = "title", nullable = true)
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "protocolid")
-    private Protocol protocol;
+    @Column(name = "summary", columnDefinition = "TEXT", nullable = true)
+    private String summary;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "endpointid")
-    private Endpoint endpoint;
+    @Column(name = "keywords", nullable = true)
+    private String keywords;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "entryid")
-    private Entry entry;
+    @Column(name = "tags", nullable = true)
+    private String tags;
+
+    @Column(name = "comment",columnDefinition = "TEXT", nullable = true)
+    private String comment;
+
+    @Column(name = "workflowinstanceid", nullable = true)
+    private Long workflowInstanceId;
+
+    @Column(name = "userid", nullable = false)
+    private Long userId;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "deleted", nullable = false)
     private Integer deleted = 0;

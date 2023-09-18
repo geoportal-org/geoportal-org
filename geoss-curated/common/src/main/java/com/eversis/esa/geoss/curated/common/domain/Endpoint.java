@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.curated.resources.domain;
+package com.eversis.esa.geoss.curated.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,15 +10,14 @@ import jakarta.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NaturalId;
 
 /**
- * The type Protocol.
+ * The type Endpoint.
  */
 @Data
 @Entity
-@Table(name = "protocol")
-public class Protocol {
+@Table(name = "endpoint")
+public class Endpoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -26,26 +25,20 @@ public class Protocol {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NaturalId
-    @Column(unique = true, nullable = true)
-    private String value;
+    @Column(name = "url", nullable = true)
+    private String url;
+
+    @Column(name = "urltype", nullable = true)
+    private String urlType;
 
     @Column(name = "iscustom", nullable = false)
     private Integer isCustom = 0;
 
-    /**
-     * Instantiates a new Protocol.
-     *
-     * @param value the value
-     */
-    public Protocol(String value) {
-        this.value = value;
+    public Endpoint(String url) {
+        this.url = url;
     }
 
-    /**
-     * Instantiates a new Protocol.
-     */
-    protected Protocol() {
+    protected Endpoint() {
         // required by JPA
     }
 
