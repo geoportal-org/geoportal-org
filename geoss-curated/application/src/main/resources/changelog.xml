@@ -41,4 +41,5 @@
     <include file="changelogs/0035_add_protocol_values.xml"/>
     <include file="changelogs/0036_create_user_relation_table.xml"/>
     <include file="changelogs/0037_add_relationtype_values.xml"/>
+    <include file="changelogs/0038_create_user_extension_table.xml"/>
 </databaseChangeLog>
