@@ -170,6 +170,8 @@ services:
 #    command: [ "--debug" ]
 #    environment:
 #      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch:9200
+#      ELASTICSEARCH_USERNAME: "elastic"
+#      ELASTICSEARCH_PASSWORD: "elastic123"
 #      SPRING_PROFILES_ACTIVE: keycloak
 #      SPRING_SECURITY_OAUTH2_BASE_URI: "http://geoss-keycloak:8080"
 #      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs"

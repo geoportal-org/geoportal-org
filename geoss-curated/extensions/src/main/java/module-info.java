@@ -12,4 +12,12 @@ module geoss.curated.extensions {
     requires geoss.curated.common;
     requires spring.data.commons;
     requires jakarta.validation;
+    requires io.swagger.v3.oas.annotations;
+    requires spring.web;
+    requires spring.data.rest.webmvc;
+    requires spring.security.core;
+    requires spring.tx;
+    requires spring.data.rest.core;
+    requires org.apache.logging.log4j;
+
 }
