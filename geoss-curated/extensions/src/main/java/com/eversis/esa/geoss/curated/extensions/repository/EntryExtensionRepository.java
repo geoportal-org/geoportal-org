@@ -20,4 +20,13 @@ public interface EntryExtensionRepository extends JpaRepository<EntryExtension, 
      */
     Optional<EntryExtension> findByCode(String code);
 
+    /**
+     * Find by code and title optional.
+     *
+     * @param code the code
+     * @param title the title
+     * @return the optional
+     */
+    Optional<EntryExtension> findByCodeAndTitle(String code, String title);
+
 }

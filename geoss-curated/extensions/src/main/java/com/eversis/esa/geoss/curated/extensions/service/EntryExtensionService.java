@@ -64,4 +64,12 @@ public interface EntryExtensionService {
      */
     void restoreEntryExtension(long entryExtensionId);
 
+    /**
+     * Gets or create entry extension.
+     *
+     * @param entryExtensionModel the entry extension model
+     * @return the or create entry extension
+     */
+    EntryExtension getOrCreateEntryExtension(EntryExtensionModel entryExtensionModel);
+
 }

@@ -106,4 +106,12 @@ public class EntryExtensionServiceImpl implements EntryExtensionService {
         log.info("Restored entry extension with id: {}", entryExtension.getId());
     }
 
+    @Override
+    public EntryExtension getOrCreateEntryExtension(EntryExtensionModel entryExtensionModel) {
+        return entryExtensionRepository
+                .findByCodeAndTitle(entryExtensionModel.getCode(), entryExtensionModel.getTitle())
+                .orElseGet(() ->
+                        entryExtensionRepository.save(entryExtensionMapper.mapToEntryExtension(entryExtensionModel)));
+    }
+
 }
