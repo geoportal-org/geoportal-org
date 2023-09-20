@@ -21,4 +21,12 @@ public interface DataSourceRepository extends JpaRepository<DataSource, Long> {
      */
     Optional<DataSource> findByCode(String code);
 
+    /**
+     * Find data source by code data source.
+     *
+     * @param code the code
+     * @return the data source
+     */
+    DataSource findDataSourceByCode(String code);
+
 }

@@ -51,7 +51,7 @@ public class DataSource {
     /**
      * Instantiates a new Data source.
      */
-    protected DataSource() {
+    public DataSource() {
         // required by JPA
     }
 

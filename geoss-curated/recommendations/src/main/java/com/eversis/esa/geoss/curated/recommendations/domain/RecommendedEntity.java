@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.curated.recommendations.domain;
 
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Data;

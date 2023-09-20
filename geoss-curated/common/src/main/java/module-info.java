@@ -4,6 +4,7 @@ module geoss.curated.common {
     exports com.eversis.esa.geoss.curated.common.domain;
     exports com.eversis.esa.geoss.curated.common.model;
     exports com.eversis.esa.geoss.curated.common.service;
+    exports com.eversis.esa.geoss.curated.common.repository;
 
     requires static lombok;
     requires spring.boot;

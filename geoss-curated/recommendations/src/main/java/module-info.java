@@ -30,4 +30,5 @@ module geoss.curated.recommendations {
     requires spring.security.core;
     requires spring.tx;
     requires spring.web;
+    requires geoss.curated.common;
 }

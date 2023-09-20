@@ -1,12 +1,12 @@
 package com.eversis.esa.geoss.curated.recommendations.service.internal;
 
-import com.eversis.esa.geoss.curated.recommendations.domain.DataSource;
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
+import com.eversis.esa.geoss.curated.common.repository.DataSourceRepository;
 import com.eversis.esa.geoss.curated.recommendations.domain.Recommendation;
 import com.eversis.esa.geoss.curated.recommendations.domain.RecommendedEntity;
 import com.eversis.esa.geoss.curated.recommendations.domain.RecommendedKeyword;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendationModel;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendedEntityModel;
-import com.eversis.esa.geoss.curated.recommendations.repository.DataSourceRepository;
 import com.eversis.esa.geoss.curated.recommendations.repository.RecommendationRepository;
 import com.eversis.esa.geoss.curated.recommendations.repository.RecommendedEntityRepository;
 import com.eversis.esa.geoss.curated.recommendations.service.RecommendationService;

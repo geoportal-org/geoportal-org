@@ -1,6 +1,6 @@
 package com.eversis.esa.geoss.curated.recommendations.repository;
 
-import com.eversis.esa.geoss.curated.recommendations.domain.DataSource;
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.recommendations.domain.Recommendation;
 import com.eversis.esa.geoss.curated.recommendations.domain.RecommendedEntity;
 
