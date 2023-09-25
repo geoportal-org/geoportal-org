@@ -69,4 +69,36 @@ public interface WorkflowService {
      */
     void deleteUserRelation(long userRelationId, String host);
 
+    /**
+     * Pending user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    void pendingUserExtension(long userExtensionId, String host);
+
+    /**
+     * Approve user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    void approveUserExtension(long userExtensionId, String host);
+
+    /**
+     * Deny user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    void denyUserExtension(long userExtensionId, String host);
+
+    /**
+     * Delete user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    void deleteUserExtension(long userExtensionId, String host);
+
 }

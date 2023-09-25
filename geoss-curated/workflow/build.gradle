@@ -36,6 +36,7 @@ dependencies {
     implementation project(path: ':common')
     implementation project(path: ':resources')
     implementation project(path: ':relations')
+    implementation project(path: ':extensions')
     implementation project(path: ':elasticsearch')
     compileOnly 'org.projectlombok:lombok'
     compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"

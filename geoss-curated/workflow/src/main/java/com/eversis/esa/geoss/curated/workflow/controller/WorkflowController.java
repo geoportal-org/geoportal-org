@@ -29,6 +29,7 @@ public class WorkflowController {
      * Pending user resource.
      *
      * @param userResourceId the user resource id
+     * @param host the host
      */
     @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -42,6 +43,7 @@ public class WorkflowController {
      * Approve user resource.
      *
      * @param userResourceId the user resource id
+     * @param host the host
      */
     @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -55,6 +57,7 @@ public class WorkflowController {
      * Deny user resource.
      *
      * @param userResourceId the user resource id
+     * @param host the host
      */
     @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -68,6 +71,7 @@ public class WorkflowController {
      * Delete user resource.
      *
      * @param userResourceId the user resource id
+     * @param host the host
      */
     @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -131,6 +135,62 @@ public class WorkflowController {
     public void deleteUserRelation(@PathVariable long userRelationId, @RequestHeader String host) {
         log.info("Delete user relation");
         workflowService.deleteUserRelation(userRelationId, host);
+    }
+
+    /**
+     * Pending user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/extension/pending/{userExtensionId}")
+    public void pendingUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
+        log.info("Pending user extension");
+        workflowService.pendingUserExtension(userExtensionId, host);
+    }
+
+    /**
+     * Approve user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/extension/approve/{userExtensionId}")
+    public void approveUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
+        log.info("Approve user extension");
+        workflowService.approveUserExtension(userExtensionId, host);
+    }
+
+    /**
+     * Deny user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/extension/deny/{userExtensionId}")
+    public void denyUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
+        log.info("Deny user extension");
+        workflowService.denyUserExtension(userExtensionId, host);
+    }
+
+    /**
+     * Delete user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/extension/delete/{userExtensionId}")
+    public void deleteUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
+        log.info("Delete user extension");
+        workflowService.deleteUserExtension(userExtensionId, host);
     }
 
 }

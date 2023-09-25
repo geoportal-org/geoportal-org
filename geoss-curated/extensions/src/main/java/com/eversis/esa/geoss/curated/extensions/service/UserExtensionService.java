@@ -73,4 +73,26 @@ public interface UserExtensionService {
      */
     void restoreUserExtension(long userExtensionId);
 
+    /**
+     * Pending user extension.
+     *
+     * @param userExtensionId the user extension id
+     */
+    void pendingUserExtension(long userExtensionId);
+
+    /**
+     * Approve user extension user extension.
+     *
+     * @param userExtensionId the user extension id
+     * @return the user extension
+     */
+    UserExtension approveUserExtension(long userExtensionId);
+
+    /**
+     * Deny user extension.
+     *
+     * @param userExtensionId the user extension id
+     */
+    void denyUserExtension(long userExtensionId);
+
 }

@@ -9,6 +9,8 @@ import javax.ws.rs.NotFoundException;
 
 import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
 import com.eversis.esa.geoss.curated.elasticsearch.service.ElasticsearchService;
+import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
@@ -40,6 +42,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final UserRelationService userRelationService;
 
+    private final UserExtensionService userExtensionService;
+
     private final ElasticsearchService elasticsearchService;
 
     private final EmailEventPublisher emailEventPublisher;
@@ -51,14 +55,16 @@ public class WorkflowServiceImpl implements WorkflowService {
      *
      * @param userResourceService the user resource service
      * @param userRelationService the user relation service
+     * @param userExtensionService the user extension service
      * @param elasticsearchService the elasticsearch service
      * @param emailEventPublisher the email event publisher
      * @param keycloak the keycloak
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
-            ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher, Keycloak keycloak) {
+            UserExtensionService userExtensionService, ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher, Keycloak keycloak) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
+        this.userExtensionService = userExtensionService;
         this.elasticsearchService = elasticsearchService;
         this.emailEventPublisher = emailEventPublisher;
         this.keycloak = keycloak;
@@ -232,6 +238,89 @@ public class WorkflowServiceImpl implements WorkflowService {
                         .toRepresentation().getEmail(), Locale.getDefault(),
                 "relation.deleted.title", "emails/workflow-relation-deleted.html", variables);
         log.info("Workflow delete user relation.");
+    }
+
+    @Transactional
+    @Override
+    public void pendingUserExtension(long userExtensionId, String host) {
+        log.info("Workflow pending user extension with id {}", userExtensionId);
+        userExtensionService.pendingUserExtension(userExtensionId);
+        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+        GroupRepresentation group =
+                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+        users.forEach(userRepresentation ->
+                emailEventPublisher.send(
+                        userRepresentation.getEmail(),
+                        Locale.getDefault(),
+                        "extension.pending.title",
+                        "emails/workflow-extension-pending.html",
+                        Map.of(
+                                "id", userExtensionId,
+                                "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                                "extensionsVerifyUrl", host + "/extensions/verify/" + userExtensionId
+                        )));
+        log.info("Workflow pending user extension.");
+    }
+
+    @Transactional
+    @Override
+    public void approveUserExtension(long userExtensionId, String host) {
+        log.info("Workflow approving user extension with id {}", userExtensionId);
+        UserExtension userExtension = userExtensionService.approveUserExtension(userExtensionId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
+                        .toRepresentation().getEmail(),
+                Locale.getDefault(),
+                "extension.approved.title",
+                "emails/workflow-extension-approved.html",
+                Map.of(
+                        "id", userExtensionId,
+                        "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                        "extensionUrl", host + "/extensions/" + userExtensionId
+                ));
+        log.info("Workflow approved user resource.");
+    }
+
+    @Transactional
+    @Override
+    public void denyUserExtension(long userExtensionId, String host) {
+        log.info("Workflow denying user extension with id {}", userExtensionId);
+        userExtensionService.denyUserExtension(userExtensionId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
+                        .toRepresentation().getEmail(),
+                Locale.getDefault(),
+                "extension.denied.title",
+                "emails/workflow-extension-denied.html",
+                Map.of(
+                        "id", userExtensionId,
+                        "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                        "extensionUrl", host + "/extensions/" + userExtensionId
+                ));
+        log.info("Workflow denied user extension.");
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserExtension(long userExtensionId, String host) {
+        log.info("Workflow delete user extension with id {}", userExtensionId);
+        UserExtension userExtension = userExtensionService.findUserExtension(userExtensionId);
+        Map<String, Object> variables = Map.of(
+                "id", userExtensionId,
+                "name", userExtensionService.findUserExtension(userExtensionId).getEntryName()
+        );
+        String userId = userExtensionService.findUserExtension(userExtensionId).getUserId();
+        userExtensionService.deleteUserExtension(userExtensionId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userId)
+                        .toRepresentation().getEmail(), Locale.getDefault(),
+                "extension.deleted.title", "emails/workflow-extension-deleted.html", variables);
+        log.info("Workflow delete user extension.");
     }
 
 }

@@ -122,4 +122,41 @@ public class UserExtensionServiceImpl implements UserExtensionService {
         log.info("Restored user extension with id: {}", userExtensionId);
     }
 
+    @Transactional
+    @Override
+    public void pendingUserExtension(long userExtensionId) {
+        log.info("Pending user extension with id {}", userExtensionId);
+        final UserExtension userExtension = userExtensionRepository.findById(userExtensionId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Extension entity with id: " + userExtensionId + " does not exist"));
+        userExtension.setStatus(Status.PENDING);
+        userExtensionRepository.save(userExtension);
+        log.info("Pending user extension finished.");
+    }
+
+    @Transactional
+    @Override
+    public UserExtension approveUserExtension(long userExtensionId) {
+        log.info("Approving user extension with id {}", userExtensionId);
+        final UserExtension userExtension = userExtensionRepository.findById(userExtensionId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Extension entity with id: " + userExtensionId + " does not exist"));
+        userExtension.setStatus(Status.APPROVED);
+        userExtensionRepository.save(userExtension);
+        log.info("Approved user extension.");
+        return userExtension;
+    }
+
+    @Transactional
+    @Override
+    public void denyUserExtension(long userExtensionId) {
+        log.info("Denying user extension with id {}", userExtensionId);
+        final UserExtension userExtension = userExtensionRepository.findById(userExtensionId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Extension entity with id: " + userExtensionId + " does not exist"));
+        userExtension.setStatus(Status.DENIED);
+        userExtensionRepository.save(userExtension);
+        log.info("Denied user extension.");
+    }
+
 }
