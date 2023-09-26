@@ -51,7 +51,7 @@ public class EntryExtensionMapper {
         entryExtension.setKeywords(model.getKeywords());
         entryExtension.setTags(model.getTags());
         entryExtension.setUserId(0L);
-        entryExtension.setUsername("");
+        entryExtension.setUsername(model.getUsername());
         entryExtension.setEmail("");
         entryExtension.setDeleted(0);
         return entryExtension;
@@ -68,7 +68,7 @@ public class EntryExtensionMapper {
         entryExtension.setKeywords(model.getKeywords());
         entryExtension.setTags(model.getTags());
         entryExtension.setUserId(0L);
-        entryExtension.setUsername("");
+        entryExtension.setUsername(model.getUsername());
         entryExtension.setEmail("");
         return entryExtension;
     }

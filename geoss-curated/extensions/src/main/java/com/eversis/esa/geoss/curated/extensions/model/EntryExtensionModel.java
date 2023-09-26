@@ -30,6 +30,8 @@ public class EntryExtensionModel {
 
     private String userId;
 
+    private String username;
+
     private List<TransferOptionExtensionModel> transferOptionExtensions = new ArrayList<>();
 
 }
