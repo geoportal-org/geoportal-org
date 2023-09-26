@@ -42,4 +42,5 @@
     <include file="changelogs/0036_create_user_relation_table.xml"/>
     <include file="changelogs/0037_add_relationtype_values.xml"/>
     <include file="changelogs/0038_create_user_extension_table.xml"/>
+    <include file="changelogs/0039_create_user_dashboard_table.xml"/>
 </databaseChangeLog>

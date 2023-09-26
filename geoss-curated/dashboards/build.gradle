@@ -18,9 +18,33 @@ configurations {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation "org.springdoc:springdoc-openapi-starter-common:${springdocOpenapiVersion}"
+    implementation "org.keycloak:keycloak-admin-client:${keycloakAdminClientVersion}"
+    implementation "org.jboss.resteasy:resteasy-client:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-jaxrs:${resteasyJaxrsVersion}"
+    implementation project(path: ':geoss-common')
+    implementation project(path: ':common')
+    implementation project(path: ':resources')
     compileOnly 'org.projectlombok:lombok'
+    compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
+    compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
