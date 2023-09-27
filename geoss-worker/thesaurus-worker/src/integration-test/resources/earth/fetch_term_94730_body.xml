@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vocabularyservices>
+    <result>
+        <term>
+            <term_id>
+                <![CDATA[94730]]>
+            </term_id>
+            <tema_id>
+                <![CDATA[94730]]>
+            </tema_id>
+            <code>
+                <![CDATA[]]>
+            </code>
+            <lang>
+                <![CDATA[en]]>
+            </lang>
+            <string>
+                <![CDATA[anomaly]]>
+            </string>
+            <isMetaTerm>
+                <![CDATA[0]]>
+            </isMetaTerm>
+            <date_create>
+                <![CDATA[2013-03-07 18:22:30]]>
+            </date_create>
+        </term>
+    </result>
+    <resume>
+        <status>
+            <![CDATA[available]]>
+        </status>
+        <param>
+            <task>
+                <![CDATA[fetchTerm]]>
+            </task>
+            <arg>
+                <![CDATA[94730]]>
+            </arg>
+        </param>
+        <web_service_version>
+            <![CDATA[1.6]]>
+        </web_service_version>
+        <version>
+            <![CDATA[TemaTres 3.0]]>
+        </version>
+        <cant_result>
+            <![CDATA[1]]>
+        </cant_result>
+    </resume>
+</vocabularyservices>

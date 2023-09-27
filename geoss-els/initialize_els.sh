@@ -7,7 +7,6 @@ echo "ENTRYPOINT: Creating indexes ..."
 curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/geoss-cr' -H 'Content-Type: application/json' -d @/indices/geoss-cr-index.json
 curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/geoss-cr-extensions' -H 'Content-Type: application/json' -d @/indices/geoss-cr-extensions-index.json
 curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/geoss-recommendation' -H 'Content-Type: application/json' -d @/indices/geoss-recommendation-index.json
-curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/thesaurus-vocabulary' -H 'Content-Type: application/json' -d @/indices/thesaurus-vocabulary-index.json
 echo "ENTRYPOINT: Indexes created."
 
 echo "ENTRYPOINT: Setting password for kibana_system user ..."

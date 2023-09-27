@@ -1,85 +1,14 @@
 version: "3.8"
 
+x-proxy-variables: &proxy-variables
+  http_proxy: ${SQUID_PROXY_URL}
+  https_proxy: ${SQUID_PROXY_URL}
+  no_proxy: 127.0.0.1,localhost,geoss-admin,geoss-contents,geoss-curated,geoss-db,geoss-elasticsearch-1,geoss-haproxy-lan,geoss-keycloak,geoss-kibana,geoss-matomo,geoss-personaldata,geoss-proxy,geoss-search,geoss-settings,geoss-ui,geoss-worker-geodab-worker,geoss-worker-sdg-worker,geoss-worker-wikipedia-worker,geoss-worker-thesaurus-worker,geoss-maildev
+
 services:
-  geoss-haproxy-lan:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
-    hostname: geoss-haproxy
-    deploy:
-      replicas: 1
-    environment:
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "8087:8087"
-      - "8088:8088"
-      - "8089:8089"
-    networks:
-      - geosslan
-
-  geoss-db:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db
-    hostname: geoss-mariadb
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.unique_tag==geoss-db-1"
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
-      MARIADB_USER: admin
-      MARIADB_PASSWORD: ${DB_ROOT_PASS}
-      MARIADB_DATABASE: geoss_db
-      MATOMO_DATABASE_USERNAME: ${MATOMO_DB_USER_NAME}
-      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_DBNAME: ${MATOMO_DB_NAME}
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
-      - /var/log/mysql:/var/log/mysql
-    ports:
-      - "3306:3306"
-    networks:
-      - geosslan
-
-  geoss-keycloak:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}
-    command: [ "start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss", "--https-certificate-file=/etc/x509/https/dev/tls.crt", "--https-certificate-key-file=/etc/x509/https/dev/tls.key" ]
-    hostname: geoss-keycloak
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.unique_tag==geoss-db-1"
-    environment:
-      KC_DB: mariadb
-      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false&useSSL=false&allowPublicKeyRetrieval=true"
-      KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: ${DB_ROOT_PASS}
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
-      KC_HOSTNAME: gpp-idp.devel.esaportal.eu
-      KC_HOSTNAME_STRICT: "false"
-      KC_PROXY: edge
-      PROXY_ADDRESS_FORWARDING: "true"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "8443:8443"
-    networks:
-      - geosslan
-    depends_on:
-      - geoss-db
-      - geoss-maildev
-
-  geoss-settings:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
-    hostname: geoss-settings
+  geoss-admin:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
+    hostname: geoss-admin
     deploy:
       replicas: 1
       placement:
@@ -87,48 +16,17 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
-      SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SETTINGS_OA2_KCSECRET}
-      KEYTOOL_STOREPASS: notusedyet
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
+      NEXT_PUBLIC_API: "https://gpp-admin.devel.esaportal.eu"
+      NEXT_PUBLIC_APP_URL: "https://gpp.devel.esaportal.eu"
+      NEXT_PUBLIC_URL: "https://gpp-admin.devel.esaportal.eu"
+      NEXTAUTH_URL: "https://gpp-admin.devel.esaportal.eu"
+      NEXTAUTH_SECRET: ${GEOSS_ADMIN_NEXTAUTH_SECRET}
+      KEYCLOAK_CLIENT_ID: "geoss-admin"
+      KEYCLOAK_CLIENT_SECRET: ${GEOSS_ADMIN_OA2_KCSECRET}
+      KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
+      << : *proxy-variables
     ports:
-      - "8080:8080"
-    networks:
-      - geosslan
-    depends_on:
-      - geoss-db
-      - geoss-keycloak
-
-  geoss-personaldata:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_personaldata:${DOCKER_IMAGE_TAG}
-    hostname: geoss-personaldata
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.shared_tag==geoss-apps"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_personaldata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
-      SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PERSONALDATA_OA2_KCSECRET}
-      KEYTOOL_STOREPASS: notusedyet
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "8083:8080"
+      - "3000:3000"
     networks:
       - geosslan
     depends_on:
@@ -147,14 +45,12 @@ services:
     environment:
       SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_contents_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CONTENTS_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
+      << : *proxy-variables
     ports:
       - "8082:8081"
     networks:
@@ -164,124 +60,6 @@ services:
       - geoss-keycloak
     volumes:
       - /nfs/data:/repository
-
-  geoss-admin:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_admin:${DOCKER_IMAGE_TAG}
-    hostname: geoss-admin
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.shared_tag==geoss-apps"
-    environment:
-      NEXT_PUBLIC_API: "https://gpp-admin.devel.esaportal.eu"
-      NEXT_PUBLIC_APP_URL: "https://gpp.devel.esaportal.eu"
-      NEXT_PUBLIC_URL: "https://gpp-admin.devel.esaportal.eu"
-      NEXTAUTH_URL: "https://gpp-admin.devel.esaportal.eu"
-      NEXTAUTH_SECRET: "d3fa4c4ff9e3a252247fca2e74e5f585"
-      KEYCLOAK_CLIENT_ID: "geoss-admin"
-      KEYCLOAK_CLIENT_SECRET: ${GEOSS_ADMIN_OA2_KCSECRET}
-      KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "3000:3000"
-    networks:
-      - geosslan
-    depends_on:
-      - geoss-db
-      - geoss-keycloak
-
-  geoss-ui:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
-    hostname: geoss-ui
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.shared_tag==geoss-apps"
-    environment:
-      API_URL: http://gpp.devel.esaportal.eu
-      BASE_URL: https://gpp.devel.esaportal.eu
-      ADMIN_URL: https://gpp-admin.devel.esaportal.eu
-      KEYCLOAK_CLIENT_ID: geoss-ui
-      KEYCLOAK_BASE_URL: https://gpp-idp.devel.esaportal.eu/realms/geoss
-      MATOMO_SITE_ID: 1
-      MATOMO_TOKEN: 'f77e8d5acd3304d6c20585fda219b414'
-      MATOMO_URL: 'https://gpp-admin.devel.esaportal.eu/matomo/?'
-      ELK_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/statistics/'
-      ELS_CLIENT_ID: 'geoss-proxy'
-      ELS_CLIENT_SECRET: 'uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs'
-      ELS_USERNAME: 'geoss'
-      ELS_PASSWORD: 'geoss'
-      ELS_TOKEN_URL: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token'
-      NODE_OPTIONS: "--max-old-space-size=4096"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "3001:3000"
-    networks:
-      - geosslan
-    depends_on:
-      - geoss-db
-      - geoss-keycloak
-
-  geoss-maildev:
-    hostname: geoss-maildev
-    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.shared_tag==geoss-apps"
-    environment:
-      MAILDEV_INCOMING_USER: maildev
-      MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
-      MAILDEV_WEB_USER: admin
-      MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "1081:1080"
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 300
-        max-size: 10m
-    networks:
-      - geosslan
-
-  geoss-proxy:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:${DOCKER_IMAGE_TAG}
-    hostname: geoss-proxy
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.labels.shared_tag==geoss-apps"
-    environment:
-      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
-      ELASTICSEARCH_USERNAME: "elastic"
-      ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
-      SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PROXY_OA2_KCSECRET}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    ports:
-      - "8084:8082"
-    networks:
-      - geosslan
-    depends_on:
-      - geoss-elasticsearch-1
-      - geoss-keycloak
 
   geoss-curated:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_curated:${DOCKER_IMAGE_TAG}
@@ -295,24 +73,22 @@ services:
     environment:
       SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DS_PASS}
-      SPRING_ELASTICSEARCH_REST_URIS: geoss-elasticsearch-1:9200
-      ELASTICSEARCH_USERNAME: "elastic"
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_ELASTICSEARCH_REST_URIS: "geoss-elasticsearch-1:9200"
+      ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CURATED_OA2_KCSECRET}
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: ${KC_ROOT_PASS}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
       SPRING_MAIL_HOST: geoss-maildev
       SPRING_MAIL_PORT: 1025
       SPRING_MAIL_USERNAME: maildev
       SPRING_MAIL_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
       SPRING_MAIL_PROPERTIES_MAIL_DEBUG: 'true'
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
+      << : *proxy-variables
     restart: always
     ports:
       - "8085:8080"
@@ -324,38 +100,31 @@ services:
       - geoss-elasticsearch-1
       - geoss-maildev
 
-  geoss-search:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
-    hostname: geoss-search
+  geoss-db:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_db
+    hostname: geoss-mariadb
     deploy:
       replicas: 1
       placement:
         max_replicas_per_node: 1
         constraints:
-          - "node.labels.shared_tag==geoss-apps"
+          - "node.labels.unique_tag==geoss-db-1"
     environment:
-      DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "https://data.amerigeoss.org/api/3/action"
-      DATASOURCE_ZENODO_BASE_URL: "https://zenodo.org"
-      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch-1"
-      DATASOURCE_ELASTICSEARCH_USERNAME: "elastic"
-      DATASOURCE_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
-      DATASOURCE_ELASTICSEARCH_PORT: "9200"
-      DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: "true"
-      SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
-    restart: always
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: ${DB_USER_PASS}
+      MARIADB_DATABASE: geoss_db
+      MATOMO_DATABASE_USERNAME: matomo
+      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
+      MATOMO_DATABASE_DBNAME: matomodb
+      << : *proxy-variables
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+      - /var/log/mysql:/var/log/mysql
     ports:
-      - "8086:8080"
+      - "3306:3306"
     networks:
       - geosslan
-    depends_on:
-      - geoss-keycloak
-      - geoss-elasticsearch-1
 
   geoss-elasticsearch-1:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:${DOCKER_IMAGE_TAG}
@@ -367,19 +136,18 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      - node.name=geoss-elasticsearch-1
-      - cluster.name=geoss-elasticsearch
-      #      - discovery.seed_hosts=geoss-elasticsearch-2,geoss-elasticsearch-3
-      #      - cluster.initial_master_nodes=geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
-      #      - bootstrap.memory_lock=true
-      - network.publish_host=geoss-elasticsearch-1
-      - ELASTIC_PASSWORD=${ENV_ELASTIC_PASSWORD}
-      - KIBANA_PASSWORD=${ENV_KIBANA_PASSWORD}
-      - GEOSS_PASSWORD=${ENV_GEOSS_PASSWORD}
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=true
-      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+      node.name: geoss-elasticsearch-1
+      cluster.name: geoss-elasticsearch
+#      discovery.seed_hosts: geoss-elasticsearch-2,geoss-elasticsearch-3
+#      cluster.initial_master_nodes: geoss-elasticsearch-1,geoss-elasticsearch-2,geoss-elasticsearch-3
+      bootstrap.memory_lock: true
+      network.publish_host: geoss-elasticsearch-1
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms4g -Xmx4g"
+      ELASTIC_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      KIBANA_PASSWORD: ${ENV_KIBANA_PASSWORD}
+      GEOSS_PASSWORD: ${ENV_GEOSS_PASSWORD}
+      << : *proxy-variables
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -392,6 +160,50 @@ services:
     networks:
       - geosslan
 
+  geoss-haproxy-lan:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
+    hostname: geoss-haproxy
+    deploy:
+      replicas: 1
+    environment:
+      << : *proxy-variables
+    ports:
+      - "8087:8087"
+      - "8088:8088"
+      - "8089:8089"
+    networks:
+      - geosslan
+
+  geoss-keycloak:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_keycloak:${DOCKER_IMAGE_TAG}
+    command: ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss", "--https-certificate-file=/etc/x509/https/dev/tls.crt", "--https-certificate-key-file=/etc/x509/https/dev/tls.key"]
+    hostname: geoss-keycloak
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.unique_tag==geoss-db-1"
+    environment:
+      KC_DB: mariadb
+      KC_DB_URL: "jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false&useSSL=false&allowPublicKeyRetrieval=true"
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: ${DB_USER_PASS}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
+      KC_HOSTNAME: "gpp-idp.devel.esaportal.eu"
+      KC_HOSTNAME_STRICT: "false"
+      KC_PROXY: edge
+      PROXY_ADDRESS_FORWARDING: "true"
+      << : *proxy-variables
+    ports:
+      - "8443:8443"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-maildev
+
   geoss-kibana:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_kibana:${DOCKER_IMAGE_TAG}
     hostname: geoss-kibana
@@ -402,10 +214,11 @@ services:
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
     environment:
-      - KIBANA_ELASTICSEARCH_URL=geoss-elasticsearch-1
-      - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=${KIBANA_OA2_KCSECRET}
-      - KIBANA_PASSWORD=${ENV_KIBANA_PASSWORD}
-      - GEOSS_PASSWORD=${ENV_GEOSS_PASSWORD}
+      KIBANA_ELASTICSEARCH_URL: "geoss-elasticsearch-1"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${KIBANA_OA2_KCSECRET}
+      KIBANA_PASSWORD: ${ENV_KIBANA_PASSWORD}
+      GEOSS_PASSWORD: ${ENV_GEOSS_PASSWORD}
+      << : *proxy-variables
     volumes:
       - /opt/kibana:/bitnami/kibana
     ports:
@@ -427,24 +240,311 @@ services:
       MATOMO_DATABASE_HOST: "geoss-mariadb"
       MATOMO_DATABASE_PORT_NUMBER: 3306
       MATOMO_DATABASE_ADAPTER: mysql
-      MATOMO_DATABASE_USER: ${MATOMO_DB_USER_NAME}
+      MATOMO_DATABASE_USER: matomo
       MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_NAME: ${MATOMO_DB_NAME}
-      MATOMO_USERNAME: "admin"
-      MATOMO_PASSWORD: "qaz123"
+      MATOMO_DATABASE_NAME: matomodb
+      MATOMO_USERNAME: admin
+      MATOMO_PASSWORD: ${MATOMO_ADMIN_PASSWORD}
       MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
-      MATOMO_DATABASE_TABLE_PREFIX: "${MATOMO_DB_PREFIX}"
+      MATOMO_DATABASE_TABLE_PREFIX: "matomo_"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${MATOMO_OA2_KCSECRET}
-      http_proxy: ${SQUID_PROXY_URL}
-      https_proxy: ${SQUID_PROXY_URL}
-      no_proxy: 127.0.0.1,localhost,geoss-haproxy-lan,geoss-db,geoss-keycloak,geoss-settings,geoss-personaldata,geoss-contents,geoss-admin,geoss-ui,geoss-maildev,geoss-proxy,geoss-elasticsearch-1,geoss-kibana,geoss-matomo,geoss-curated,geoss-search
+      << : *proxy-variables
     volumes:
       - /var/log/matomo:/var/log
     networks:
       - geosslan
     depends_on:
       - geoss-db
+
+  geoss-personaldata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_personaldata:${DOCKER_IMAGE_TAG}
+    hostname: geoss-personaldata
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_personaldata_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PERSONALDATA_OA2_KCSECRET}
+      KEYTOOL_STOREPASS: notusedyet
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8083:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:${DOCKER_IMAGE_TAG}
+    hostname: geoss-proxy
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_ELASTICSEARCH_REST_URIS: "geoss-elasticsearch-1:9200"
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PROXY_OA2_KCSECRET}
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8084:8082"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-elasticsearch-1
+      - geoss-keycloak
+
+  geoss-search:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
+    hostname: geoss-search
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "https://data.amerigeoss.org/api/3/action"
+      DATASOURCE_ZENODO_BASE_URL: "https://zenodo.org"
+      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch-1"
+      DATASOURCE_ELASTICSEARCH_USERNAME: elastic
+      DATASOURCE_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      DATASOURCE_ELASTICSEARCH_PORT: "9200"
+      DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: "true"
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    restart: always
+    ports:
+      - "8086:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-keycloak
+      - geoss-elasticsearch-1
+
+  geoss-settings:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
+    hostname: geoss-settings
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_settings_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SETTINGS_OA2_KCSECRET}
+      KEYTOOL_STOREPASS: notusedyet
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8080:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+
+  geoss-ui:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
+    hostname: geoss-ui
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      API_URL: "https://gpp.devel.esaportal.eu"
+      BASE_URL: "https://gpp.devel.esaportal.eu"
+      ADMIN_URL: "https://gpp-admin.devel.esaportal.eu"
+      KEYCLOAK_CLIENT_ID: geoss-ui
+      KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
+      MATOMO_SITE_ID: 1
+      MATOMO_TOKEN: 'f77e8d5acd3304d6c20585fda219b414'
+      MATOMO_URL: 'https://gpp-admin.devel.esaportal.eu/matomo/?'
+      ELK_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/statistics/'
+      ELS_CLIENT_ID: 'geoss-proxy'
+      ELS_CLIENT_SECRET: 'uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs'
+      ELS_USERNAME: 'geoss'
+      ELS_PASSWORD: 'geoss'
+      ELS_TOKEN_URL: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token'
+      NODE_OPTIONS: "--max-old-space-size=4096"
+      << : *proxy-variables
+    ports:
+      - "3001:3000"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-keycloak
+
+  geoss-worker-geodab-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_geodab_worker:${DOCKER_IMAGE_TAG}
+    hostname: geoss_worker_geodab_worker
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET}
+      CONFIG_DAB_GEODAB_BASE_URL: "https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha"
+      CONFIG_DAB_VLAB_BASE_URL: "https://vlabdev.geodab.org/vlab"
+      CONFIG_DAB_VLAB_API_TOKEN: ${VLAB_API_TOKEN}
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8087:8080"
+    networks:
+      - geosslan
+    depends_on:
+      - geoss-db
+      - geoss-curated
+      - geoss-keycloak
+
+  geoss-worker-sdg-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_sdg_worker:${DOCKER_IMAGE_TAG}
+    hostname: geoss_worker_sdg_worker
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET}
+      CONFIG_SDG_DEFAULT_LOGO: "https://unstats.un.org/home/assets/img/logos/logo_StatisticsDivision.png"
+      CONFIG_SDG_UN_BASE_URL: "https://unstats.un.org/SDGAPI/v1/sdg"
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8088:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-curated
+      - geoss-keycloak
+
+  geoss-worker-wikipedia-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_wikipedia_worker:${DOCKER_IMAGE_TAG}
+    hostname: geoss_worker_wikipedia_worker
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET}
+      WIKIDATA_API_URL: "https://en.wikipedia.org/w/api.php"
+      WIKIDATA_CATEGORIES_SPARQL_URL: "https://live.dbpedia.org/sparql"
+      WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI: "https://dbpedia.org"
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8089:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-curated
+      - geoss-keycloak
+
+  geoss-worker-thesaurus-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_thesaurus_worker:${DOCKER_IMAGE_TAG}
+    hostname: geoss_worker_thesaurus_worker
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      SPRING_ELASTICSEARCH_URIS: "http://geoss-elasticsearch-1:9200"
+      SPRING_ELASTICSEARCH_USERNAME: elastic
+      SPRING_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      SPRING_PROFILES_ACTIVE: keycloak
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET}
+      THESAURUS_ESA_BASE_URI: "https://thesauri.eo.esa.int/rest/v1/thesaurus/data"
+      THESAURUS_ESA_TOP_CONCEPTS_URIS: "https://earth.esa.int/concept/5c476560-e0a3-554a-9187-187a90da1309,https://earth.esa.int/concept/c98c8eae-7561-55de-bf01-2fb866693c14,https://earth.esa.int/concept/738c519f-48db-5344-bebc-030c16781c22"
+      THESAURUS_EOSTERM_BASE_URI: "https://vocabularyserver.com/cnr/ml/eosterm/en/services.php"
+      THESAURUS_EARTH_BASE_URI: "https://vocabularyserver.com/cnr/ml/earth/en/services.php"
+      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      << : *proxy-variables
+    ports:
+      - "8090:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-els
+      - geoss-keycloak
+
+  geoss-maildev:
+    hostname: geoss-maildev
+    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      MAILDEV_INCOMING_USER: maildev
+      MAILDEV_INCOMING_PASS: ${MAILDEV_SMTP_PASSWORD}
+      MAILDEV_WEB_USER: admin
+      MAILDEV_WEB_PASS: ${MAILDEV_WEB_PASSWORD}
+      << : *proxy-variables
+    ports:
+      - "1081:1080"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 300
+        max-size: 10m
+    networks:
+      - geosslan
 
   #######################################
   #          HELPER CONTAINERS          #

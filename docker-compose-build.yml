@@ -45,22 +45,10 @@ services:
       context: ./geoss-contents
       dockerfile: Dockerfile
 
-  geoss-settings:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
+  geoss-curated:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_curated:${DOCKER_IMAGE_TAG}
     build:
-      context: ./geoss-settings
-      dockerfile: Dockerfile
-
-  geoss-ui:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-ui
-      dockerfile: Dockerfile
-
-  geoss-personaldata:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_personaldata:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-personaldata
+      context: ./geoss-curated
       dockerfile: Dockerfile
 
   geoss-db:
@@ -69,28 +57,16 @@ services:
       context: ./geoss-db
       dockerfile: Dockerfile
 
-  geoss-proxy:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-proxy
-      dockerfile: Dockerfile
-
-  geoss-curated:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_curated:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-curated
-      dockerfile: Dockerfile
-
-  geoss-search:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-search
-      dockerfile: Dockerfile
-
   geoss-els:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_els:${DOCKER_IMAGE_TAG}
     build:
       context: ./geoss-els
+      dockerfile: Dockerfile
+
+  geoss-haproxy-lan:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-haproxy-lan
       dockerfile: Dockerfile
 
   geoss-keycloak:
@@ -107,26 +83,62 @@ services:
       context: ./geoss-kibana
       dockerfile: Dockerfile
 
-  geoss-haproxy-lan:
-    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-haproxy-lan
-      dockerfile: Dockerfile
-
   geoss-matomo:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
     build:
       context: ./geoss-matomo
       dockerfile: Dockerfile
 
-  # geoss-matomo-db:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo_db:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-matomo-db
-  #     dockerfile: Dockerfile
+  geoss-personaldata:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_personaldata:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-personaldata
+      dockerfile: Dockerfile
 
-  # geoss-matomo:
-  #   image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-matomo
-  #     dockerfile: Dockerfile
+  geoss-proxy:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_proxy:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-proxy
+      dockerfile: Dockerfile
+
+  geoss-search:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_search:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-search
+      dockerfile: Dockerfile
+
+  geoss-settings:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_settings:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-settings
+      dockerfile: Dockerfile
+
+  geoss-ui:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_ui:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-ui
+      dockerfile: Dockerfile
+
+  geoss-worker-geodab-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_geodab_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-worker/entry-worker/geodab-worker
+      dockerfile: Dockerfile
+
+  geoss-worker-sdg-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_sdg_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-worker/entry-worker/sdg-worker
+      dockerfile: Dockerfile
+
+  geoss-worker-wikipedia-worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_wikipedia_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-worker/entry-worker/wikipedia-worker
+      dockerfile: Dockerfile
+
+  geoss-worker_thesaurus_worker:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_worker_thesaurus_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-worker/thesaurus-worker
+      dockerfile: Dockerfile

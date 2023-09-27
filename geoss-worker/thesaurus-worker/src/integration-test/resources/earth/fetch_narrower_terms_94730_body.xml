@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vocabularyservices>
+    <resume>
+        <status>
+            <![CDATA[available]]>
+        </status>
+        <param>
+            <task>
+                <![CDATA[fetchDown]]>
+            </task>
+            <arg>
+                <![CDATA[94730]]>
+            </arg>
+        </param>
+        <web_service_version>
+            <![CDATA[1.6]]>
+        </web_service_version>
+        <version>
+            <![CDATA[TemaTres 3.0]]>
+        </version>
+        <cant_result>
+            <![CDATA[0]]>
+        </cant_result>
+    </resume>
+</vocabularyservices>

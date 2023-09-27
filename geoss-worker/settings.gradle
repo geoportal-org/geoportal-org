@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.spring.io/milestone' }
+        gradlePluginPortal()
+    }
+    plugins {
+        id "io.spring.dependency-management" version '1.1.2'
+        id 'org.springframework.boot' version "${springBootVersion}"
+        id 'org.sonarqube' version '3.5.0.+'
+        id 'com.gorylenko.gradle-git-properties' version '2.4.1'
+    }
+}
+rootProject.name = 'geoss-worker'
+include 'core:common'
+include 'core:domain'
+include 'core:data'
+include 'core:data-garbage-collector'
+include 'entry-worker:geodab-worker'
+include 'entry-worker:sdg-worker'
+include 'entry-worker:wikipedia-worker'
+include 'thesaurus-worker'
