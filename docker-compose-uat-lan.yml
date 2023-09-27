@@ -89,7 +89,6 @@ services:
       SPRING_MAIL_PROPERTIES_MAIL_DEBUG: 'true'
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       << : *proxy-variables
-    restart: always
     ports:
       - "8085:8080"
     networks:
@@ -332,7 +331,6 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       << : *proxy-variables
-    restart: always
     ports:
       - "8086:8080"
     networks:
@@ -455,7 +453,7 @@ services:
     ports:
       - "8088:8080"
     networks:
-      - geoss_net
+      - geosslan
     depends_on:
       - geoss-db
       - geoss-curated
@@ -485,7 +483,7 @@ services:
     ports:
       - "8089:8080"
     networks:
-      - geoss_net
+      - geosslan
     depends_on:
       - geoss-db
       - geoss-curated
@@ -516,7 +514,7 @@ services:
     ports:
       - "8090:8080"
     networks:
-      - geoss_net
+      - geosslan
     depends_on:
       - geoss-els
       - geoss-keycloak
