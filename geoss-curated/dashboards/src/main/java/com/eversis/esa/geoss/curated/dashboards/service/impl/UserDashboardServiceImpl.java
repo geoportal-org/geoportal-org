@@ -54,10 +54,10 @@ public class UserDashboardServiceImpl implements UserDashboardService {
 
     @Override
     public UserDashboard findUserDashboard(long userDashboardId) {
-            log.info("Finding user dashboard with id {}", userDashboardId);
-            return userDashboardRepository.findById(userDashboardId).orElseThrow(
-                    () -> new ResourceNotFoundException(
-                            "User Dashboard entity with id: " + userDashboardId + " does not exist"));
+        log.info("Finding user dashboard with id {}", userDashboardId);
+        return userDashboardRepository.findById(userDashboardId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Dashboard entity with id: " + userDashboardId + " does not exist"));
     }
 
     @Override
@@ -70,8 +70,10 @@ public class UserDashboardServiceImpl implements UserDashboardService {
     @Override
     public void createUserDashboard(UserDashboardModel userDashboardModel) {
         log.info("Creating new user dashboard - {}", userDashboardModel);
-        UserDashboard userDashboard = userDashboardRepository.save(userDashboardMapper.mapToUserDashboard(userDashboardModel));
-        transferOptionService.saveTransferOptions(userDashboardModel.getEntry().getTransferOptions(), userDashboard.getEntry());
+        UserDashboard userDashboard = userDashboardRepository
+                .save(userDashboardMapper.mapToUserDashboard(userDashboardModel));
+        transferOptionService
+                .saveTransferOptions(userDashboardModel.getEntry().getTransferOptions(), userDashboard.getEntry());
         log.info("Created new user dashboard with id: {}", userDashboard.getId());
     }
 
@@ -83,7 +85,8 @@ public class UserDashboardServiceImpl implements UserDashboardService {
                 () -> new ResourceNotFoundException(
                         "User Dashboard entity with id: " + userDashboardId + " does not exist"));
         userDashboardRepository.save(userDashboardMapper.mapToUserDashboard(userDashboardModel, userDashboard));
-        transferOptionService.saveTransferOptions(userDashboardModel.getEntry().getTransferOptions(), userDashboard.getEntry());
+        transferOptionService
+                .saveTransferOptions(userDashboardModel.getEntry().getTransferOptions(), userDashboard.getEntry());
         log.info("Updated user dahboard with id: {}", userDashboard.getId());
     }
 
