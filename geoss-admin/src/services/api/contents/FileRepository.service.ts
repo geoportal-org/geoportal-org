@@ -37,5 +37,5 @@ export const FileRepositoryService = {
         fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}` }),
 
     updateFileTitle: async (id: number, fileData: Pick<IDocument, "title">): Promise<IDocument> =>
-        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}`, body: fileData, method: "PATCH" }),
+        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/${id}`, body: fileData, method: "PATCH" })
 };

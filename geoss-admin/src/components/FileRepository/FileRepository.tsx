@@ -13,6 +13,8 @@ import useCustomToast from "@/utils/useCustomToast";
 import { initRepositoryPagination } from "@/data";
 import { BreadcrumbItem, MainContentAction, ModalAction, ToastStatus } from "@/types";
 import { IDocument, IFolder } from "@/types/models";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 export const FileRepository = () => {
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -229,49 +231,58 @@ export const FileRepository = () => {
 
     return (
         <>
-            <MainContent titleId="nav.contents.section.repository" actions={headingActions}>
-                {isLoading && <Loader />}
-                {!isLoading && (
-                    <FileRepositoryBreadcrumb breadcrumb={breadcrumb} handleBreadcrumbClick={handleBreadcrumbClick} />
-                )}
-                {!isLoading && !isEmptyFolder && (
-                    <Grid templateColumns="repeat(auto-fill, minmax(min(90px, 100%), 1fr))" gap={6} m={1}>
-                        {currentFolders.map((folder) => {
-                            return (
-                                <FileRepositoryItem
-                                    key={getIdFromUrl(folder._links.self.href)}
-                                    item={folder}
-                                    handleRepositoryItemClick={handleRepositoryItemClick}
-                                    handleItemDeleteClick={handleItemDeleteClick}
-                                    handleItemEditClick={handleItemEditClick}
-                                />
-                            );
-                        })}
-                        {currentDocuments.map((document) => {
-                            return (
-                                <FileRepositoryItem
-                                    key={getIdFromUrl(document._links.self.href)}
-                                    item={document}
-                                    handleRepositoryItemClick={handleRepositoryItemClick}
-                                    handleItemDeleteClick={handleItemDeleteClick}
-                                    handleItemEditClick={handleItemEditClick}
-                                />
-                            );
-                        })}
-                    </Grid>
-                )}
-                {!isLoading && isEmptyFolder && <TextInfo id="pages.file-repository.empty-folder" />}
-            </MainContent>
+            <DndProvider backend={HTML5Backend}>
+                <MainContent titleId="nav.contents.section.repository" actions={headingActions}>
+                    {isLoading && <Loader />}
+                    {!isLoading && (
+                        <FileRepositoryBreadcrumb
+                            breadcrumb={breadcrumb}
+                            handleBreadcrumbClick={handleBreadcrumbClick}
+                        />
+                    )}
+                    {!isLoading && !isEmptyFolder && (
+                        <Grid templateColumns="repeat(auto-fill, minmax(min(90px, 100%), 1fr))" gap={6} m={1}>
+                            {currentFolders.map((folder) => {
+                                return (
+                                    <FileRepositoryItem
+                                        key={getIdFromUrl(folder._links.self.href)}
+                                        item={folder}
+                                        handleRepositoryItemClick={handleRepositoryItemClick}
+                                        handleItemDeleteClick={handleItemDeleteClick}
+                                        handleItemEditClick={handleItemEditClick}
+                                        getFileRepositoryItems={getFileRepositoryItems}
+                                        showToast={showToast}
+                                    />
+                                );
+                            })}
+                            {currentDocuments.map((document) => {
+                                return (
+                                    <FileRepositoryItem
+                                        key={getIdFromUrl(document._links.self.href)}
+                                        item={document}
+                                        handleRepositoryItemClick={handleRepositoryItemClick}
+                                        handleItemDeleteClick={handleItemDeleteClick}
+                                        handleItemEditClick={handleItemEditClick}
+                                        getFileRepositoryItems={getFileRepositoryItems}
+                                        showToast={showToast}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    )}
+                    {!isLoading && isEmptyFolder && <TextInfo id="pages.file-repository.empty-folder" />}
+                </MainContent>
 
-            <Modal
-                modalHeader={modalContent?.header}
-                modalBody={modalContent?.body}
-                actions={modalContent?.actions}
-                onModalClose={onCloseModal}
-                isModalOpen={isOpenModal}
-            />
+                <Modal
+                    modalHeader={modalContent?.header}
+                    modalBody={modalContent?.body}
+                    actions={modalContent?.actions}
+                    onModalClose={onCloseModal}
+                    isModalOpen={isOpenModal}
+                />
 
-            <SideBar isOpen={isOpen} onClose={onClose} titleId={sideBarTitle} content={sideBarContent} />
+                <SideBar isOpen={isOpen} onClose={onClose} titleId={sideBarTitle} content={sideBarContent} />
+            </DndProvider>
         </>
     );
 };

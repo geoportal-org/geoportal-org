@@ -1,5 +1,6 @@
 import { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { IDocument, IDocumentList, IFolder, IFolderList } from "../models";
+import { ToastStatus } from "../data/customToast";
 
 export type FileRepositoryTreeItem = {
     name: string;
@@ -27,6 +28,8 @@ export type FileRepositoryItemProps = {
     handleItemDeleteClick: (item: IFolder | IDocument) => void;
     handleItemEditClick: (item: IFolder | IDocument) => void;
     item: IFolder | IDocument;
+    getFileRepositoryItems: () => void;
+    showToast: (item: { title: string; description: string; status: ToastStatus }) => void;
 };
 
 export type FileRepositoryItemControlProps = {

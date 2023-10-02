@@ -16,6 +16,14 @@ export interface IDocument {
     };
 }
 
+export interface IDocumentPatch {
+    title: string;
+    fileName: string;
+    extension: string;
+    path: string;
+    folderId: number;
+}
+
 export interface IDocumentList {
     _embedded: {
         document: IDocument[];
