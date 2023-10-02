@@ -13,4 +13,11 @@ module geoss.curated.dashboards {
     requires spring.data.commons;
     requires geoss.curated.resources;
     requires jakarta.validation;
+    requires io.swagger.v3.oas.annotations;
+    requires spring.data.rest.webmvc;
+    requires spring.web;
+    requires spring.tx;
+    requires spring.security.core;
+    requires spring.data.rest.core;
+    requires org.apache.logging.log4j;
 }

@@ -2,6 +2,7 @@ module geoss.curated.resources {
     exports com.eversis.esa.geoss.curated.resources.configuration to spring.beans, spring.boot, spring.context;
     exports com.eversis.esa.geoss.curated.resources.domain;
     exports com.eversis.esa.geoss.curated.resources.model;
+    exports com.eversis.esa.geoss.curated.resources.service;
 
     requires static lombok;
     requires spring.boot;
@@ -22,4 +23,5 @@ module geoss.curated.resources {
     requires jakarta.validation;
     requires spring.tx;
     requires org.apache.logging.log4j;
+    requires spring.data.rest.core;
 }
