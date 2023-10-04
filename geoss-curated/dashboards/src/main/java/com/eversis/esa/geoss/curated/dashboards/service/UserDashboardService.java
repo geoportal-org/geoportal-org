@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
 import com.eversis.esa.geoss.curated.dashboards.model.UserDashboardModel;
-import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -73,5 +72,27 @@ public interface UserDashboardService {
      * @param userDashboardId the user dashboard id
      */
     void restoreUserDashboard(long userDashboardId);
+
+    /**
+     * Approve user dashboard user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @return the user dashboard
+     */
+    UserDashboard approveUserDashboard(long userDashboardId);
+
+    /**
+     * Deny user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     */
+    void denyUserDashboard(long userDashboardId);
+
+    /**
+     * Pending user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     */
+    void pendingUserDashboard(long userDashboardId);
 
 }

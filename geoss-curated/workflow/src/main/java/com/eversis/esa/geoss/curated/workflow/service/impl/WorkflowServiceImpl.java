@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 
 import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
+import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
+import com.eversis.esa.geoss.curated.dashboards.service.UserDashboardService;
 import com.eversis.esa.geoss.curated.elasticsearch.service.ElasticsearchService;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
@@ -44,6 +46,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final UserExtensionService userExtensionService;
 
+    private final UserDashboardService userDashboardService;
+
     private final ElasticsearchService elasticsearchService;
 
     private final EmailEventPublisher emailEventPublisher;
@@ -61,10 +65,12 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param keycloak the keycloak
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
-            UserExtensionService userExtensionService, ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher, Keycloak keycloak) {
+            UserExtensionService userExtensionService, UserDashboardService userDashboardService,
+            ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher, Keycloak keycloak) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
         this.userExtensionService = userExtensionService;
+        this.userDashboardService = userDashboardService;
         this.elasticsearchService = elasticsearchService;
         this.emailEventPublisher = emailEventPublisher;
         this.keycloak = keycloak;
@@ -321,6 +327,89 @@ public class WorkflowServiceImpl implements WorkflowService {
                         .toRepresentation().getEmail(), Locale.getDefault(),
                 "extension.deleted.title", "emails/workflow-extension-deleted.html", variables);
         log.info("Workflow delete user extension.");
+    }
+
+    @Transactional
+    @Override
+    public void pendingUserDashboard(long userDashboardId, String host) {
+        log.info("Workflow pending user dashboard with id {}", userDashboardId);
+        userDashboardService.pendingUserDashboard(userDashboardId);
+        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+        GroupRepresentation group =
+                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+        users.forEach(userRepresentation ->
+                emailEventPublisher.send(
+                        userRepresentation.getEmail(),
+                        Locale.getDefault(),
+                        "dashboard.pending.title",
+                        "emails/workflow-dashboard-pending.html",
+                        Map.of(
+                                "id", userDashboardId,
+                                "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                                "dashboardsVerifyUrl", host + "/dashboards/verify/" + userDashboardId
+                        )));
+        log.info("Workflow pending user dashboard.");
+    }
+
+    @Transactional
+    @Override
+    public void approveUserDashboard(long userDashboardId, String host) {
+        log.info("Workflow approving user dashboard with id {}", userDashboardId);
+        UserDashboard userDashboard = userDashboardService.approveUserDashboard(userDashboardId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
+                        .toRepresentation().getEmail(),
+                Locale.getDefault(),
+                "dashboard.approved.title",
+                "emails/workflow-dashboard-approved.html",
+                Map.of(
+                        "id", userDashboardId,
+                        "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                        "dashboardUrl", host + "/dashboards/" + userDashboardId
+                ));
+        log.info("Workflow approved user dashboard.");
+    }
+
+    @Transactional
+    @Override
+    public void denyUserDashboard(long userDashboardId, String host) {
+        log.info("Workflow denying user dashboard with id {}", userDashboardId);
+        userDashboardService.denyUserDashboard(userDashboardId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
+                        .toRepresentation().getEmail(),
+                Locale.getDefault(),
+                "dashboard.denied.title",
+                "emails/workflow-dashboard-denied.html",
+                Map.of(
+                        "id", userDashboardId,
+                        "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                        "dashboardUrl", host + "/dashboards/" + userDashboardId
+                ));
+        log.info("Workflow denied user dashboard.");
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserDashboard(long userDashboardId, String host) {
+        log.info("Workflow delete user dashboard with id {}", userDashboardId);
+        UserDashboard userDashboard = userDashboardService.findUserDashboard(userDashboardId);
+        Map<String, Object> variables = Map.of(
+                "id", userDashboardId,
+                "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName()
+        );
+        String userId = userDashboardService.findUserDashboard(userDashboardId).getUserId();
+        userDashboardService.deleteUserDashboard(userDashboardId);
+        emailEventPublisher.send(
+                keycloak.realm(REALM_NAME).users()
+                        .get(userId)
+                        .toRepresentation().getEmail(), Locale.getDefault(),
+                "dashboard.deleted.title", "emails/workflow-dashboard-deleted.html", variables);
+        log.info("Workflow delete user dashboard.");
     }
 
 }

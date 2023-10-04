@@ -122,4 +122,41 @@ public class UserDashboardServiceImpl implements UserDashboardService {
         log.info("Pending user dashboard finished.");
     }
 
+    @Transactional
+    @Override
+    public UserDashboard approveUserDashboard(long userDashboardId) {
+        log.info("Approving user dashboard with id {}", userDashboardId);
+        final UserDashboard userDashboard = userDashboardRepository.findById(userDashboardId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Dashboard entity with id: " + userDashboardId + " does not exist"));
+        userDashboard.setStatus(Status.APPROVED);
+        userDashboardRepository.save(userDashboard);
+        log.info("Approved user dashboard.");
+        return userDashboard;
+    }
+
+    @Transactional
+    @Override
+    public void denyUserDashboard(long userDashboardId) {
+        log.info("Denying user dashboard with id {}", userDashboardId);
+        final UserDashboard userDashboard = userDashboardRepository.findById(userDashboardId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Dashboard entity with id: " + userDashboardId + " does not exist"));
+        userDashboard.setStatus(Status.DENIED);
+        userDashboardRepository.save(userDashboard);
+        log.info("Denied user dashboard.");
+    }
+
+    @Transactional
+    @Override
+    public void pendingUserDashboard(long userDashboardId) {
+        log.info("Pending user dashboard with id {}", userDashboardId);
+        final UserDashboard userDashboard = userDashboardRepository.findById(userDashboardId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Dashboard entity with id: " + userDashboardId + " does not exist"));
+        userDashboard.setStatus(Status.PENDING);
+        userDashboardRepository.save(userDashboard);
+        log.info("Pending user dashboard finished.");
+    }
+
 }

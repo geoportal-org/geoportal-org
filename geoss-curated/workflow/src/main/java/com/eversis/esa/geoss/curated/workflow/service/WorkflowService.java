@@ -101,4 +101,36 @@ public interface WorkflowService {
      */
     void deleteUserExtension(long userExtensionId, String host);
 
+    /**
+     * Pending user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    void pendingUserDashboard(long userDashboardId, String host);
+
+    /**
+     * Approve user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    void approveUserDashboard(long userDashboardId, String host);
+
+    /**
+     * Deny user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    void denyUserDashboard(long userDashboardId, String host);
+
+    /**
+     * Delete user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    void deleteUserDashboard(long userDashboardId, String host);
+
 }

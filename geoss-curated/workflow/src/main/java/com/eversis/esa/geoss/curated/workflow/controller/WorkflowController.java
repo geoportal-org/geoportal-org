@@ -101,7 +101,7 @@ public class WorkflowController {
      * @param userRelationId the user relation id
      * @param host the host
      */
-    @PreAuthorize("hasAnyRole('RELATION_WRITER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('RELATION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/relation/approve/{userRelationId}")
     public void approveUserRelation(@PathVariable long userRelationId, @RequestHeader String host) {
@@ -157,7 +157,7 @@ public class WorkflowController {
      * @param userExtensionId the user extension id
      * @param host the host
      */
-    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('EXTENSION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/extension/approve/{userExtensionId}")
     public void approveUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
@@ -171,7 +171,7 @@ public class WorkflowController {
      * @param userExtensionId the user extension id
      * @param host the host
      */
-    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('EXTENSION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/extension/deny/{userExtensionId}")
     public void denyUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
@@ -185,12 +185,68 @@ public class WorkflowController {
      * @param userExtensionId the user extension id
      * @param host the host
      */
-    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('EXTENSION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/extension/delete/{userExtensionId}")
     public void deleteUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
         log.info("Delete user extension");
         workflowService.deleteUserExtension(userExtensionId, host);
+    }
+
+    /**
+     * Pending user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('DASHBOARD_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/dashboard/pending/{userDashboardId}")
+    public void pendingUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
+        log.info("Pending user dashboard");
+        workflowService.pendingUserDashboard(userDashboardId, host);
+    }
+
+    /**
+     * Approve user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('DASHBOARD_REVIEWER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/dashboard/approve/{userDashboardId}")
+    public void approveUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
+        log.info("Approve user dashboard");
+        workflowService.approveUserDashboard(userDashboardId, host);
+    }
+
+    /**
+     * Deny user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('DASHBOARD_REVIEWER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/dashboard/deny/{userDashboardId}")
+    public void denyUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
+        log.info("Deny user dashboard");
+        workflowService.denyUserDashboard(userDashboardId, host);
+    }
+
+    /**
+     * Delete user dashboard.
+     *
+     * @param userDashboardId the user dashboard id
+     * @param host the host
+     */
+    @PreAuthorize("hasAnyRole('DASHBOARD_REVIEWER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/dashboard/delete/{userDashboardId}")
+    public void deleteUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
+        log.info("Delete user dashboard");
+        workflowService.deleteUserDashboard(userDashboardId, host);
     }
 
 }
