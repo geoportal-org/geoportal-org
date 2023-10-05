@@ -369,7 +369,7 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_workers_geodab.conf
+    include conf.d/utils/proxy_request_headers_x_geoss_workers_geodab.conf;
 
     proxy_pass    http://admin_upstream;
     proxy_no_cache 1;
@@ -385,7 +385,7 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_workers_sdg.conf
+    include conf.d/utils/proxy_request_headers_x_geoss_workers_sdg.conf;
 
     proxy_pass    http://admin_upstream;
     proxy_no_cache 1;
@@ -401,7 +401,7 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_workers_wikipedia.conf
+    include conf.d/utils/proxy_request_headers_x_geoss_workers_wikipedia.conf;
 
     proxy_pass    http://admin_upstream;
     proxy_no_cache 1;
@@ -417,7 +417,7 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_workers_thesaurus.conf
+    include conf.d/utils/proxy_request_headers_x_geoss_workers_thesaurus.conf;
 
     proxy_pass    http://admin_upstream;
     proxy_no_cache 1;
