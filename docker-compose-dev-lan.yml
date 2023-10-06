@@ -134,6 +134,11 @@ services:
         max_replicas_per_node: 1
         constraints:
           - "node.labels.unique_tag==geoss-elastic-1"
+    healthcheck:
+      test: curl --user elastic:$ELASTIC_PASSWORD -sS "http://localhost:9200/_cat/health?h=status" | grep -q "green\|yellow" || exit 1
+      interval: 30s
+      start_period: 30s
+      timeout: 1m
     environment:
       node.name: geoss-elasticsearch-1
       cluster.name: geoss-elasticsearch
