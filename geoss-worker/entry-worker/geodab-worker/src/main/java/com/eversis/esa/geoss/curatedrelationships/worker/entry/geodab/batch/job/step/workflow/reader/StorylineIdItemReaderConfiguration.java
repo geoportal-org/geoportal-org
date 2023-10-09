@@ -38,7 +38,7 @@ class StorylineIdItemReaderConfiguration {
     @StepScope
     @Bean(value = "storylineIdItemReader", destroyMethod = "")
     JdbcPagingItemReader<String> storylineIdItemReader(
-            @Qualifier("geossCuratedDataSource") DataSource dataSource,
+            DataSource dataSource,
             DabProperties dabProperties) throws Exception {
         final SqlPagingQueryProviderFactoryBean sqlPagingQueryProviderFactoryBean
                 = new SqlPagingQueryProviderFactoryBean();

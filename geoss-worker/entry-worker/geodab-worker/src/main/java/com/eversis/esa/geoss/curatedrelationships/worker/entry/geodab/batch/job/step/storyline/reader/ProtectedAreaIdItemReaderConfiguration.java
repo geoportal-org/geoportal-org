@@ -38,7 +38,7 @@ class ProtectedAreaIdItemReaderConfiguration {
     @StepScope
     @Bean(value = "protectedAreaIdItemReader", destroyMethod = "")
     JdbcPagingItemReader<String> protectedAreaIdItemReader(
-            @Qualifier("geossCuratedDataSource") DataSource dataSource,
+            DataSource dataSource,
             DabProperties dabProperties) throws Exception {
         final SqlPagingQueryProviderFactoryBean sqlPagingQueryProviderFactoryBean
                 = new SqlPagingQueryProviderFactoryBean();

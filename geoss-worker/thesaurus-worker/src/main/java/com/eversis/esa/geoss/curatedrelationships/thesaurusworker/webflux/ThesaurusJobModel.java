@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curatedrelationships.thesaurusworker.webflux;
 
+import com.eversis.esa.geoss.curatedrelationships.thesaurusworker.model.ThesaurusType;
+
 import lombok.Data;
 
 /**
@@ -8,7 +10,7 @@ import lombok.Data;
 @Data
 public class ThesaurusJobModel {
 
-    private String name;
+    private ThesaurusType type;
 
     private String status;
 

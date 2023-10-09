@@ -15,8 +15,6 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * The type Job handler.
  */
@@ -36,19 +34,18 @@ public class JobHandler {
      *
      * @return the job
      */
-    public Mono<JobModel> getJob() {
+    public Mono<JobExecution> getJob() {
         log.debug("job:{}", job);
-        JobModel jobModel = new JobModel(job.getName());
         JobInstance lastJobInstance = jobExplorer.getLastJobInstance(job.getName());
         log.debug("lastJobInstance:{}", lastJobInstance);
         if (lastJobInstance != null) {
             JobExecution lastJobExecution = jobExplorer.getLastJobExecution(lastJobInstance);
             log.debug("lastJobExecution:{}", lastJobExecution);
             if (lastJobExecution != null) {
-                updateJobModel(jobModel, lastJobExecution);
+                return Mono.just(lastJobExecution);
             }
         }
-        return Mono.just(jobModel);
+        return Mono.empty();
     }
 
     /**
@@ -56,25 +53,15 @@ public class JobHandler {
      *
      * @return the mono
      */
-    public Mono<JobModel> runJob() {
+    public Mono<JobExecution> runJob() {
         try {
             log.debug("job:{}", job);
             JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
             log.debug("jobExecution:{}", jobExecution);
-            JobModel jobModel = new JobModel(job.getName());
-            updateJobModel(jobModel, jobExecution);
-            return Mono.just(jobModel);
+            return Mono.just(jobExecution);
         } catch (JobExecutionAlreadyRunningException | JobParametersInvalidException | JobRestartException
                  | JobInstanceAlreadyCompleteException e) {
-            throw new RuntimeException(e);
+            return Mono.error(e);
         }
-    }
-
-    private void updateJobModel(JobModel jobModel, JobExecution jobExecution) {
-        jobModel.setStatus(jobExecution.getStatus());
-        jobModel.setStartTime(jobExecution.getStartTime());
-        jobModel.setCreateTime(jobExecution.getCreateTime());
-        jobModel.setEndTime(jobExecution.getEndTime());
-        jobModel.setLastUpdated(jobExecution.getLastUpdated());
     }
 }

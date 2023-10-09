@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curatedrelationships.thesaurusworker.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * The enum Thesaurus type.
  */
@@ -15,5 +17,21 @@ public enum ThesaurusType {
     /**
      * Earth thesaurus type.
      */
-    EARTH
+    EARTH;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
+
+    /**
+     * From string thesaurus type.
+     *
+     * @param type the type
+     * @return the thesaurus type
+     */
+    public static ThesaurusType fromString(String type) {
+        return ThesaurusType.valueOf(type.toUpperCase());
+    }
 }

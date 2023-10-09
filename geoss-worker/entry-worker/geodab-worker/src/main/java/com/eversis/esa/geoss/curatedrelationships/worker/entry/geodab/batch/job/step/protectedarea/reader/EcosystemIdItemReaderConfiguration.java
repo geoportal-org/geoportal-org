@@ -38,7 +38,7 @@ class EcosystemIdItemReaderConfiguration {
     @StepScope
     @Bean(value = "ecosystemIdItemReader", destroyMethod = "")
     JdbcPagingItemReader<String> ecosystemIdItemReader(
-            @Qualifier("geossCuratedDataSource") DataSource dataSource,
+            DataSource dataSource,
             DabProperties dabProperties) throws Exception {
         final SqlPagingQueryProviderFactoryBean sqlPagingQueryProviderFactoryBean
                 = new SqlPagingQueryProviderFactoryBean();
