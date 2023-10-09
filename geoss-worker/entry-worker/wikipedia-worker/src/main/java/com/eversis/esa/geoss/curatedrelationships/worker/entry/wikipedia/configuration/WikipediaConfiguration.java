@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 /**
  * The type Wikipedia configuration.
  */
-@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Wikipedia worker API"))
+@OpenAPIDefinition(
+        info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Wikipedia worker API"))
 @Configuration(proxyBeanMethods = false)
 public class WikipediaConfiguration {
 

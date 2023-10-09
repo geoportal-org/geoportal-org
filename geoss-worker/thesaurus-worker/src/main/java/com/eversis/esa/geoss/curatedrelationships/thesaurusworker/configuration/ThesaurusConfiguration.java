@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 /**
  * The type Thesaurus configuration.
  */
-@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Thesaurus worker API"))
+@OpenAPIDefinition(
+        info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Thesaurus worker API"))
 @Configuration(proxyBeanMethods = false)
 public class ThesaurusConfiguration {
 
