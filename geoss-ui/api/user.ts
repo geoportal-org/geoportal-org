@@ -9,7 +9,8 @@ const UserAPI = {
         const savedSearchUrl = buildSavedSearchUrl(searchData)
 
         return apiClient.$post(url, {
-            phrase,
+            name: phrase,
+            phrase: phrase,
             url: savedSearchUrl,
         })
     },
