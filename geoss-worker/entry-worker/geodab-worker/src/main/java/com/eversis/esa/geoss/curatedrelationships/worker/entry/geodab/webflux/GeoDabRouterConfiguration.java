@@ -38,6 +38,7 @@ public class GeoDabRouterConfiguration {
                 .GET(basePath + "/jobs/geodab", serverRequest -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(jobHandler.getJob(), Job.class)
+                        .switchIfEmpty(ServerResponse.noContent().build())
                 )
                 .build();
     }

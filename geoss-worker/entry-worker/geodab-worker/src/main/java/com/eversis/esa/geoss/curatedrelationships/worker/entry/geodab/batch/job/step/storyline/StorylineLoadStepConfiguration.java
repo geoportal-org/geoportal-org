@@ -73,6 +73,7 @@ class StorylineLoadStepConfiguration {
             @Qualifier("storylineChunkListener") ChunkListener chunkListener,
             @Qualifier("storylineStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("storylineEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

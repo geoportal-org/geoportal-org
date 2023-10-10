@@ -77,6 +77,7 @@ class WorkflowOutputStepConfiguration {
             @Qualifier("outputDabSkipPolicy") SkipPolicy skipPolicy
     ) {
         return new StepBuilder("workflowOutputEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

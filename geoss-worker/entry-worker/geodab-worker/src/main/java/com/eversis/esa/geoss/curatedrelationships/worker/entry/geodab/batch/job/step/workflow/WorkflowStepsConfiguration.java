@@ -74,6 +74,7 @@ class WorkflowStepsConfiguration {
             @Qualifier("workflowChunkListener") ChunkListener chunkListener,
             @Qualifier("workflowStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("geoDabWorkflowEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)
@@ -100,6 +101,7 @@ class WorkflowStepsConfiguration {
             @Qualifier("workflowStepListener") StepExecutionListener stepListener,
             @Qualifier("defaultDabSkipPolicy") SkipPolicy skipPolicy) {
         return new StepBuilder("vlabDabWorkflowEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

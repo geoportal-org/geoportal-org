@@ -73,6 +73,7 @@ class EcosystemLoadStepConfiguration {
             @Qualifier("ecosystemChunkListener") ChunkListener chunkListener,
             @Qualifier("ecosystemStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("ecosystemEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

@@ -31,6 +31,7 @@ class CleanUpStepConfiguration {
     Step cleanUpStep(
             CleanUpTasklet cleanUpTasklet) {
         return new StepBuilder("cleanUpStep", jobRepository)
+                .allowStartIfComplete(true)
                 .tasklet(cleanUpTasklet, transactionManager)
                 .build();
     }

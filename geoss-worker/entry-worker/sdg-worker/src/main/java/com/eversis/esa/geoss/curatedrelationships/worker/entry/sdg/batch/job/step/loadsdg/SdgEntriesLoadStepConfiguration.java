@@ -73,6 +73,7 @@ class SdgEntriesLoadStepConfiguration {
             @Qualifier("unEntryChunkListener") ChunkListener chunkListener,
             @Qualifier("unEntyStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("loadUNEntriesStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

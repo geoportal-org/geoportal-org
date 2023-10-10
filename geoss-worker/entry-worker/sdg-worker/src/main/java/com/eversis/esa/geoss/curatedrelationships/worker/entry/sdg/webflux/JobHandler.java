@@ -14,6 +14,9 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
 
 /**
  * The type Job handler.
@@ -30,12 +33,12 @@ public class JobHandler {
     private final Job job;
 
     /**
-     * Gets job.
+     * Get job.
      *
      * @return the job
      */
     public Mono<JobExecution> getJob() {
-        log.debug("job:{}", job);
+        log.debug("getJob:{}", job);
         JobInstance lastJobInstance = jobExplorer.getLastJobInstance(job.getName());
         log.debug("lastJobInstance:{}", lastJobInstance);
         if (lastJobInstance != null) {
@@ -49,19 +52,26 @@ public class JobHandler {
     }
 
     /**
-     * Run job mono.
+     * Run job.
      *
      * @return the mono
      */
     public Mono<JobExecution> runJob() {
-        try {
-            log.debug("job:{}", job);
-            JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
-            log.debug("jobExecution:{}", jobExecution);
-            return Mono.just(jobExecution);
-        } catch (JobExecutionAlreadyRunningException | JobParametersInvalidException | JobRestartException
-                 | JobInstanceAlreadyCompleteException e) {
-            return Mono.error(e);
-        }
+        log.debug("runJob:{}", job);
+        Mono
+                .create(monoSink -> {
+                    try {
+                        JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
+                        monoSink.success(jobExecution);
+                    } catch (JobExecutionAlreadyRunningException | JobRestartException
+                             | JobInstanceAlreadyCompleteException | JobParametersInvalidException
+                             | RuntimeException e) {
+                        monoSink.error(e);
+                    }
+                })
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(o -> log.info("Job: {}", o), e -> log.error("JobError: " + e.getMessage(), e));
+        // delay means waiting for start the previous mono, I don't know a better way to wait for started previous mono
+        return Mono.delay(Duration.ofSeconds(1)).flatMap(l -> getJob());
     }
 }

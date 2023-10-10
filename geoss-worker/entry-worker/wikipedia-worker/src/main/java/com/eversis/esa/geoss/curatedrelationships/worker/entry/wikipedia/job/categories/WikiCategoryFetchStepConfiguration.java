@@ -71,6 +71,7 @@ class WikiCategoryFetchStepConfiguration {
             @Qualifier("wikiCategoryChunkListener") ChunkListener chunkListener,
             @Qualifier("wikiCategoryStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("fetchWikiCategoriesStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<String, String>chunk(100, transactionManager)
                 .reader(itemReader)

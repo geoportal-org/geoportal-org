@@ -40,6 +40,7 @@ public class SdgRouterConfiguration {
                 .GET(basePath + "/jobs/sdg", serverRequest -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(jobHandler.getJob(), Job.class)
+                        .switchIfEmpty(ServerResponse.noContent().build())
                 )
                 .build();
     }

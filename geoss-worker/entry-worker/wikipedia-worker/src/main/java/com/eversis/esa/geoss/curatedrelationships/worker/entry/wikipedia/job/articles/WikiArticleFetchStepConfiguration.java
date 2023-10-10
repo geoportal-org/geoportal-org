@@ -81,6 +81,7 @@ class WikiArticleFetchStepConfiguration {
             @Qualifier("batchTaskExecutor") TaskExecutor taskExecutor,
             DataIntegrityViolationSkipPolicy skipPolicy) {
         return new StepBuilder("fetchWikiArticlesStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<WikiArticle, WikiArticleEntry>chunk(50, transactionManager)
                 .reader(itemReader)

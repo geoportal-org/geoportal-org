@@ -73,6 +73,7 @@ class ProtectedAreaLoadStepConfiguration {
             @Qualifier("protectedAreaChunkListener") ChunkListener chunkListener,
             @Qualifier("protectedAreaStepListener") StepExecutionListener stepListener) {
         return new StepBuilder("protectedAreaEntriesLoadStep", jobRepository)
+                .allowStartIfComplete(true)
                 .listener(stepListener)
                 .<Entry, Entry>chunk(batchSize, transactionManager)
                 .reader(itemReader)

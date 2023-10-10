@@ -50,7 +50,8 @@ public class GeoDabWorkflowLoaderService {
         List<Entry> ecosystemEntries = fetchWorkflowEntries()
                 .map(entryMapper::createWorkflowEntry)
                 .collectList()
-                .block(Duration.ofSeconds(30));
+                .block(Duration.ofSeconds(30))
+                ;
         log.debug("Fetched {} workflow entries", ecosystemEntries.size());
         return ecosystemEntries;
     }

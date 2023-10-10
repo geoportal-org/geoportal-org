@@ -40,6 +40,7 @@ public class WikipediaRouterConfiguration {
                 .GET(basePath + "/jobs/wikipedia", serverRequest -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(jobHandler.getJob(), Job.class)
+                        .switchIfEmpty(ServerResponse.noContent().build())
                 )
                 .build();
     }
