@@ -35,7 +35,7 @@ export const FileRepositoryItem = ({
             await FileRepositoryService.updateFileTitle(Number(fileId), fileData);
             getFileRepositoryItems()
             showToast({
-                title: "Folder deleted",
+                title: "Item moved",
                 description: `Item ${item.title} (ID: ${fileId}) has been moved to folder ${folder.title}`,
                 status: ToastStatus.SUCCESS,
             });
