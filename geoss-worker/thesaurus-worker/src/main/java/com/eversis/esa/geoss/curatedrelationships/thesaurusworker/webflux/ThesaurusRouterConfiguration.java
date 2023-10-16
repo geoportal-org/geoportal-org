@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.curatedrelationships.thesaurusworker.webflux;
 
+import com.eversis.esa.geoss.curatedrelationships.thesaurusworker.model.ThesaurusJobModel;
 import com.eversis.esa.geoss.curatedrelationships.thesaurusworker.model.ThesaurusType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,29 +71,5 @@ public class ThesaurusRouterConfiguration {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(thesaurusHandler.runJob(serverRequest.pathVariable("type")), ThesaurusJobModel.class))
                 .build();
-    }
-
-    @RouterOperation(
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            beanClass = ThesaurusHandler.class,
-            beanMethod = "loadJob",
-            operation = @Operation(
-                    operationId = "loadJob",
-                    parameters = {
-                            @Parameter(in = ParameterIn.PATH,
-                                       name = "type",
-                                       schema = @Schema(implementation = ThesaurusType.class))
-                    }
-            )
-    )
-    @Bean
-    RouterFunction<ServerResponse> loadJob(ThesaurusHandler thesaurusHandler) {
-        return route()
-                .POST(basePath + "/jobs/{type}/load", serverRequest -> ServerResponse.ok()
-                        .contentType(MediaType.APPLICATION_NDJSON)
-                        .body(thesaurusHandler.loadJob(serverRequest.pathVariable("type")), String.class))
-                // .body(thesaurusHandler.loadJob(serverRequest.pathVariable("type")), ThesaurusJobModel.class))
-                .build();
-        // ;
     }
 }
