@@ -104,6 +104,15 @@
                 "clientRole": false,
                 "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529",
                 "attributes": {}
+            },
+            {
+                "id": "ca2b1221-eb43-463a-88ac-24493c4ebf8e",
+                "name": "worker_manager",
+                "description": "",
+                "composite": false,
+                "clientRole": false,
+                "containerId": "da288f8d-9db8-4d7c-86ab-34d8801aa529",
+                "attributes": {}
             }
         ],
         "client": {
@@ -792,7 +801,9 @@
                     "attributes": {}
                 }
             ],
+            "geoss-worker-wikipedia-worker": [],
             "geoss-bookmarks": [],
+            "geoss-worker-geodab-worker": [],
             "admin-cli": [],
             "geoss-curated": [
                 {
@@ -1003,6 +1014,7 @@
                     "attributes": {}
                 }
             ],
+            "geoss-worker-thesaurus-worker": [],
             "account": [
                 {
                     "id": "af8e8f7a-aa36-476c-beb3-8c1ca2a8eed5",
@@ -1091,7 +1103,8 @@
                     "attributes": {}
                 }
             ],
-            "geoss-admin": []
+            "geoss-admin": [],
+            "geoss-worker-sdg-worker": []
         }
     },
     "groups": [
@@ -2046,6 +2059,226 @@
             "protocol": "openid-connect",
             "attributes": {
                 "oidc.ciba.grant.enabled": "false",
+                "backchannel.logout.session.required": "true",
+                "post.logout.redirect.uris": "+",
+                "display.on.consent.screen": "false",
+                "oauth2.device.authorization.grant.enabled": "false",
+                "backchannel.logout.revoke.offline.tokens": "false"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": true,
+            "nodeReRegistrationTimeout": -1,
+            "defaultClientScopes": [
+                "web-origins"
+            ],
+            "optionalClientScopes": [
+                "acr",
+                "address",
+                "phone",
+                "offline_access",
+                "profile",
+                "roles",
+                "microprofile-jwt",
+                "email"
+            ]
+        },
+        {
+            "id": "b4ecb3d3-5490-4624-bc38-6f7af00db5d4",
+            "clientId": "geoss-worker-geodab-worker",
+            "name": "Geoss Geodab Worker",
+            "description": "Geoss Geodab Worker application",
+            "rootUrl": "",
+            "adminUrl": "",
+            "baseUrl": "",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": false,
+            "publicClient": false,
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "attributes": {
+                "oidc.ciba.grant.enabled": "false",
+                "client.secret.creation.time": "1689857140",
+                "backchannel.logout.session.required": "true",
+                "post.logout.redirect.uris": "+",
+                "display.on.consent.screen": "false",
+                "oauth2.device.authorization.grant.enabled": "false",
+                "backchannel.logout.revoke.offline.tokens": "false"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": true,
+            "nodeReRegistrationTimeout": -1,
+            "defaultClientScopes": [
+                "web-origins"
+            ],
+            "optionalClientScopes": [
+                "acr",
+                "address",
+                "phone",
+                "offline_access",
+                "profile",
+                "roles",
+                "microprofile-jwt",
+                "email"
+            ]
+        },
+        {
+            "id": "46fba5d8-d2f8-4fcd-8c6e-4d82b1915b2e",
+            "clientId": "geoss-worker-sdg-worker",
+            "name": "Geoss Sdg Worker",
+            "description": "Geoss Sdg Worker application",
+            "rootUrl": "",
+            "adminUrl": "",
+            "baseUrl": "",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": false,
+            "publicClient": false,
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "attributes": {
+                "oidc.ciba.grant.enabled": "false",
+                "client.secret.creation.time": "1689857140",
+                "backchannel.logout.session.required": "true",
+                "post.logout.redirect.uris": "+",
+                "display.on.consent.screen": "false",
+                "oauth2.device.authorization.grant.enabled": "false",
+                "backchannel.logout.revoke.offline.tokens": "false"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": true,
+            "nodeReRegistrationTimeout": -1,
+            "defaultClientScopes": [
+                "web-origins"
+            ],
+            "optionalClientScopes": [
+                "acr",
+                "address",
+                "phone",
+                "offline_access",
+                "profile",
+                "roles",
+                "microprofile-jwt",
+                "email"
+            ]
+        },
+        {
+            "id": "11720d00-2f64-459f-83a1-ae1e271141e4",
+            "clientId": "geoss-worker-thesaurus-worker",
+            "name": "Geoss Thesaurus Worker",
+            "description": "Geoss Thesaurus Worker application",
+            "rootUrl": "",
+            "adminUrl": "",
+            "baseUrl": "",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": false,
+            "publicClient": false,
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "attributes": {
+                "oidc.ciba.grant.enabled": "false",
+                "client.secret.creation.time": "1689857140",
+                "backchannel.logout.session.required": "true",
+                "post.logout.redirect.uris": "+",
+                "display.on.consent.screen": "false",
+                "oauth2.device.authorization.grant.enabled": "false",
+                "backchannel.logout.revoke.offline.tokens": "false"
+            },
+            "authenticationFlowBindingOverrides": {},
+            "fullScopeAllowed": true,
+            "nodeReRegistrationTimeout": -1,
+            "defaultClientScopes": [
+                "web-origins"
+            ],
+            "optionalClientScopes": [
+                "acr",
+                "address",
+                "phone",
+                "offline_access",
+                "profile",
+                "roles",
+                "microprofile-jwt",
+                "email"
+            ]
+        },
+        {
+            "id": "ac783539-5400-45e9-ac2a-de89fa78a357",
+            "clientId": "geoss-worker-wikipedia-worker",
+            "name": "Geoss Wikipedia Worker",
+            "description": "Geoss Wikipedia Worker application",
+            "rootUrl": "",
+            "adminUrl": "",
+            "baseUrl": "",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "alwaysDisplayInConsole": false,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "notBefore": 0,
+            "bearerOnly": false,
+            "consentRequired": false,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": false,
+            "publicClient": false,
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "attributes": {
+                "oidc.ciba.grant.enabled": "false",
+                "client.secret.creation.time": "1689857140",
                 "backchannel.logout.session.required": "true",
                 "post.logout.redirect.uris": "+",
                 "display.on.consent.screen": "false",
