@@ -1,14 +1,4 @@
-FROM node:18.15-slim as themes
-
-WORKDIR /themes/geoss/account/src
-
-COPY themes/geoss/account/src/ ./
-
-RUN npm install
-RUN npm run build
-RUN npm run babel
-
-FROM quay.io/keycloak/keycloak:21.0 as builder
+FROM quay.io/keycloak/keycloak:22.0 as builder
 
 # Enable health and metrics support
 ENV KC_HEALTH_ENABLED=true
@@ -24,7 +14,7 @@ WORKDIR /opt/keycloak
 #RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname "CN=server" -alias server -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -keystore conf/server.keystore
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:21.0 as runner
+FROM quay.io/keycloak/keycloak:22.0 as runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -38,14 +28,11 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 COPY certs/ /etc/x509/https/
 COPY realms/ /opt/keycloak/data/import/
-COPY themes/geoss/account/messages/ /opt/keycloak/themes/geoss/account/messages/
-COPY themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
-COPY themes/geoss/account/theme.properties /opt/keycloak/themes/geoss/account/theme.properties
+COPY themes/geoss/account/ /opt/keycloak/themes/geoss/account/
 COPY themes/geoss/admin/ /opt/keycloak/themes/geoss/admin/
 COPY themes/geoss/email/ /opt/keycloak/themes/geoss/email/
 COPY themes/geoss/login/ /opt/keycloak/themes/geoss/login/
 COPY themes/geoss/welcome/ /opt/keycloak/themes/geoss/welcome/
-COPY --from=themes /themes/geoss/account/resources/ /opt/keycloak/themes/geoss/account/resources/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss"]
