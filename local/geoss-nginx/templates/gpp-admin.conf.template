@@ -53,6 +53,23 @@ server {
         add_header X-Cache-Status $upstream_cache_status;
     }
 
+    location /kibana/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_kibana_settings ${ADMIN_UPSTREAM_HOST};
+        rewrite /kibana/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /kibana;
+
+        proxy_pass http://$upstream_kibana_settings:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
     location /personaldata/ {
         # workaround to allow start nginx without backend upstream
         set $upstream_geoss_personaldata ${ADMIN_UPSTREAM_HOST};
