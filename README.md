@@ -80,9 +80,9 @@ Module for User data management. (Java / Spring)
 
 ## Setup local environment
 
-### Add alias `geoss-keycloak` to localhost in host file
+### Add alias `geoss-keycloak` `gpp-ui` `gpp-idp` `gpp-admin` to localhost in host file
 ```
-127.0.0.1	localhost geoss-keycloak
+127.0.0.1	localhost geoss-keycloak gpp-ui gpp-idp gpp-admin
 ```
 
 ### Run command to start
@@ -123,7 +123,7 @@ http://geoss-keycloak:8080/realms/geoss/account/
 # Installation guide
 
 ## Prerequisites
-Prerequisites: 
+Prerequisites:
 - Open network communication between servers
 - Servers should be configured as working docker swarm network
 - Active domains SSL certificates and keys

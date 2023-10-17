@@ -1,0 +1,191 @@
+server {
+    listen *:80;
+    listen [::]:80;
+    server_name ${ADMIN_DOMAIN_NAME};
+    resolver 127.0.0.11 valid=30s;
+
+    location / {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_admin ${ADMIN_UPSTREAM_HOST};
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+
+        proxy_pass http://$upstream_geoss_admin:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /contents/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_contents ${ADMIN_UPSTREAM_HOST};
+        rewrite /contents/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /contents;
+
+        proxy_pass http://$upstream_geoss_contents:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /curated/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_curated ${ADMIN_UPSTREAM_HOST};
+        rewrite /curated/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /curated;
+
+        proxy_pass http://$upstream_geoss_curated:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /personaldata/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_personaldata ${ADMIN_UPSTREAM_HOST};
+        rewrite /personaldata/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /personaldata;
+
+        proxy_pass http://$upstream_geoss_personaldata:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /proxy/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_proxy ${ADMIN_UPSTREAM_HOST};
+        rewrite /proxy/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /proxy;
+
+        proxy_pass http://$upstream_geoss_proxy:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /search/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_search ${ADMIN_UPSTREAM_HOST};
+        rewrite /search/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /search;
+
+        proxy_pass http://$upstream_geoss_search:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /settings/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_settings ${ADMIN_UPSTREAM_HOST};
+        rewrite /settings/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /settings;
+
+        proxy_pass http://$upstream_geoss_settings:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /workers/geodab/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geodab_worker ${ADMIN_UPSTREAM_HOST};
+        rewrite /workers/geodab/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /workers/geodab;
+
+        proxy_pass http://$upstream_geodab_worker:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /workers/sdg/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_sdg_worker ${ADMIN_UPSTREAM_HOST};
+        rewrite /workers/sdg/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /workers/sdg;
+
+        proxy_pass http://$upstream_sdg_worker:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /workers/wikipedia/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_wikipedia_worker ${ADMIN_UPSTREAM_HOST};
+        rewrite /workers/wikipedia/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /workers/wikipedia;
+
+        proxy_pass http://$upstream_wikipedia_worker:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /workers/thesaurus/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_thesaurus_worker ${ADMIN_UPSTREAM_HOST};
+        rewrite /workers/thesaurus/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /workers/thesaurus;
+
+        proxy_pass http://$upstream_thesaurus_worker:${ADMIN_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+}

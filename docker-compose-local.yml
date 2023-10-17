@@ -131,6 +131,28 @@ services:
     networks:
       - geoss_net
 
+  geoss-haproxy:
+    image: geoss-haproxy
+    build:
+      context: ./local/geoss-haproxy
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: "64M"
+    container_name: geoss-haproxy
+    environment:
+      - FOO=BAR
+    hostname: geoss-haproxy
+    ports:
+      - "8011:8000"
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+    networks:
+      - geoss_net
+
   geoss-keycloak:
     image: geoss-keycloak
     build:
@@ -205,7 +227,7 @@ services:
       resources:
         limits:
           cpus: "1.00"
-          memory: "256M"
+          memory: "128M"
     environment:
       - MATOMO_DATABASE_HOST=geoss-db
       - MATOMO_DATABASE_PORT_NUMBER=3306
@@ -219,6 +241,9 @@ services:
       - MATOMO_SMTP_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - MATOMO_USERNAME=admin
       - MATOMO_PASSWORD=qaz123
+      - MATOMO_EMAIL=admin@gpp.com
+      - MATOMO_WEBSITE_NAME=geoss-ui
+      - MATOMO_WEBSITE_HOST=http://geoss-ui
     hostname: geoss-matomo
     ports:
       - "8008:8080"
@@ -227,6 +252,33 @@ services:
     depends_on:
       - geoss-db
       - geoss-maildev
+
+  geoss-nginx:
+    image: geoss-nginx
+    build:
+      context: ./local/geoss-nginx
+      dockerfile: Dockerfile
+    container_name: geoss-nginx
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: "32M"
+    environment:
+      - UI_DOMAIN_NAME=gpp-ui
+      - UI_UPSTREAM_HOST=geoss-haproxy
+      - UI_UPSTREAM_PORT=8001
+      - ADMIN_DOMAIN_NAME=gpp-admin
+      - ADMIN_UPSTREAM_HOST=geoss-haproxy
+      - ADMIN_UPSTREAM_PORT=8002
+      - IDP_DOMAIN_NAME=gpp-idp
+      - IDP_UPSTREAM_HOST=geoss-haproxy
+      - IDP_UPSTREAM_PORT=8003
+    hostname: geoss-nginx
+    ports:
+      - "80:80"
+    networks:
+      - geoss_net
 
   geoss-personaldata:
     image: geoss-personaldata
@@ -478,7 +530,7 @@ services:
       resources:
         limits:
           cpus: "0.25"
-          memory: "64M"
+          memory: "32M"
     environment:
       - MAILDEV_INCOMING_USER=maildev
       - MAILDEV_INCOMING_PASS=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs

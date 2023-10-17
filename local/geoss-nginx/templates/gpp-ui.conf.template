@@ -1,0 +1,123 @@
+server {
+    listen *:80;
+    listen [::]:80;
+    server_name ${UI_DOMAIN_NAME};
+    resolver 127.0.0.11 valid=30s;
+
+    location / {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_ui ${UI_UPSTREAM_HOST};
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+
+        proxy_pass http://$upstream_geoss_ui:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /contents/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_contents ${UI_UPSTREAM_HOST};
+        rewrite /contents/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /contents;
+
+        proxy_pass http://$upstream_geoss_contents:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /curated/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_curated ${UI_UPSTREAM_HOST};
+        rewrite /curated/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /curated;
+
+        proxy_pass http://$upstream_geoss_curated:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /personaldata/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_personaldata ${UI_UPSTREAM_HOST};
+        rewrite /personaldata/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /personaldata;
+
+        proxy_pass http://$upstream_geoss_personaldata:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /proxy/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_proxy ${UI_UPSTREAM_HOST};
+        rewrite /proxy/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /proxy;
+
+        proxy_pass http://$upstream_geoss_proxy:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /search/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_search ${UI_UPSTREAM_HOST};
+        rewrite /search/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /search;
+
+        proxy_pass http://$upstream_geoss_search:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+
+    location /settings/ {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_settings ${UI_UPSTREAM_HOST};
+        rewrite /settings/(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+        proxy_set_header X-Forwarded-Prefix /settings;
+
+        proxy_pass http://$upstream_geoss_settings:${UI_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        include conf.d/utils/proxy_response_headers.conf;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+}

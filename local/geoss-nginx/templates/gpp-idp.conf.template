@@ -1,0 +1,22 @@
+server {
+    listen *:80;
+    listen [::]:80;
+    server_name ${IDP_DOMAIN_NAME};
+    resolver 127.0.0.11 valid=30s;
+
+    location / {
+        # workaround to allow start nginx without backend upstream
+        set $upstream_geoss_keycloak ${IDP_UPSTREAM_HOST};
+#        rewrite /(.*) /$1  break;
+
+        # request headers
+        include conf.d/utils/proxy_request_headers.conf;
+
+        proxy_pass http://$upstream_geoss_keycloak:${IDP_UPSTREAM_PORT};
+        proxy_no_cache 1;
+
+        # response headers
+        add_header X-Request-ID $request_id always;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+}
