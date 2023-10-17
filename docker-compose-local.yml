@@ -2,14 +2,15 @@ version: "3.8"
 
 services:
   geoss-contents:
-    container_name: geoss-contents
+    image: geoss-contents
     build:
       context: ./geoss-contents
       dockerfile: Dockerfile-local
+    container_name: geoss-contents
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -19,6 +20,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    hostname: geoss-contents
     ports:
       - "8081:8081"
     networks:
@@ -28,14 +30,15 @@ services:
       - geoss-keycloak
 
   geoss-curated:
-    container_name: geoss-curated
+    image: geoss-curated
     build:
       context: .
       dockerfile: ./geoss-curated/Dockerfile-local
+    container_name: geoss-curated
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -55,7 +58,7 @@ services:
       - SPRING_MAIL_USERNAME=maildev
       - SPRING_MAIL_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - SPRING_MAIL_PROPERTIES_MAIL_DEBUG=true
-    restart: always
+    hostname: geoss-curated
     ports:
       - "8082:8080"
     networks:
@@ -67,20 +70,25 @@ services:
       - geoss-maildev
 
   geoss-db:
-    container_name: geoss-db
+    image: geoss-db
     build:
       context: ./geoss-db
       dockerfile: Dockerfile
+    container_name: geoss-db
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "164M"
     environment:
       - MARIADB_ROOT_PASSWORD=qaz123
       - MARIADB_USER=admin
       - MARIADB_PASSWORD=qaz123
       - MARIADB_DATABASE=geoss_db
+      - MATOMO_DATABASE_USERNAME=matomo
+      - MATOMO_DATABASE_PASSWORD=qaz123
+      - MATOMO_DATABASE_DBNAME=geoss_matomo_db
+    hostname: geoss-db
     volumes:
       - "geoss_db:/var/lib/mysql"
     ports:
@@ -89,22 +97,28 @@ services:
       - geoss_net
 
   geoss-els:
-    container_name: geoss-els
+    image: geoss-els
     build:
       context: ./geoss-els
       dockerfile: Dockerfile
+    container_name: geoss-els
     deploy:
       resources:
         limits:
-          cpus: "0.50"
-          memory: "2G"
+          cpus: "1.00"
+          memory: "1G"
     environment:
-#      - xpack.security.enabled=true
       - discovery.type=single-node
-#      - http.max_content_length=1000mb
       - ELASTIC_PASSWORD=elastic123
-#      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - KIBANA_PASSWORD=kibana123
+      - GEOSS_PASSWORD=qaz123
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: curl --user elastic:elastic123 -sS "http://localhost:9200/_cat/health?h=status" | grep -q "green\|yellow" || exit 1
+      interval: 30s
+      start_period: 30s
+      timeout: 1m
+    hostname: geoss-els
     ulimits:
       memlock:
         soft: -1
@@ -118,18 +132,19 @@ services:
       - geoss_net
 
   geoss-keycloak:
-    container_name: geoss-keycloak
+    image: geoss-keycloak
     build:
       context: ./geoss-keycloak
       dockerfile: Dockerfile
       args:
         KC_DB: mariadb
+    container_name: geoss-keycloak
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
-    command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss" ]
+    command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss", "--hostname-debug=true" ]
     environment:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
@@ -137,11 +152,12 @@ services:
       - KC_DB_PASSWORD=qaz123
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=qaz123
-      - KC_HOSTNAME=geoss-keycloak
-      - KC_HOSTNAME_STRICT=false
       - KC_SPI_THEME_CACHE_THEMES=false
       - KC_SPI_THEME_CACHE_TEMPLATES=false
       - KC_SPI_THEME_STATIC_MAX_AGE=-1
+      - KC_HEALTH_ENABLED=true
+      - KC_PROXY=edge
+    hostname: geoss-keycloak
     ports:
       - "8080:8080"
     networks:
@@ -151,17 +167,21 @@ services:
       - geoss-maildev
 
   geoss-kibana:
-    container_name: geoss-kibana
+    image: geoss-kibana
     build:
       context: ./geoss-kibana
       dockerfile: Dockerfile
+    container_name: geoss-kibana
     deploy:
       resources:
         limits:
-          cpus: "0.50"
-          memory: "256M"
+          cpus: "1.00"
+          memory: "1G"
     environment:
       - KIBANA_ELASTICSEARCH_URL=geoss-els
+      - KIBANA_PASSWORD=kibana123
+      - GEOSS_PASSWORD=qaz123
+    hostname: geoss-kibana
     ports:
       - "5601:5601"
     networks:
@@ -169,15 +189,49 @@ services:
     depends_on:
       - geoss-els
 
-  geoss-personaldata:
-    container_name: geoss-personaldata
+  geoss-matomo:
+    image: geoss-matomo
     build:
-      context: .
-      dockerfile: ./geoss-personaldata/Dockerfile-local
+      context: ./geoss-matomo
+      dockerfile: Dockerfile
+    container_name: geoss-matomo
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
+          memory: "256M"
+    environment:
+      - MATOMO_DATABASE_HOST=geoss-db
+      - MATOMO_DATABASE_PORT_NUMBER=3306
+      - MATOMO_DATABASE_NAME=geoss_matomo_db
+      - MATOMO_DATABASE_USER=matomo
+      - MATOMO_DATABASE_PASSWORD=qaz123
+      - MATOMO_DATABASE_TABLE_PREFIX=matomo_
+      - MATOMO_SMTP_HOST=geoss-maildev
+      - MATOMO_SMTP_PORT=1025
+      - MATOMO_SMTP_USER=maildev
+      - MATOMO_SMTP_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      - MATOMO_USERNAME=admin
+      - MATOMO_PASSWORD=qaz123
+    hostname: geoss-matomo
+    ports:
+      - "8008:8080"
+    networks:
+      - geoss_net
+    depends_on:
+      - geoss-db
+      - geoss-maildev
+
+  geoss-personaldata:
+    image: geoss-personaldata
+    build:
+      context: .
+      dockerfile: ./geoss-personaldata/Dockerfile-local
+    container_name: geoss-personaldata
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -187,6 +241,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    hostname: geoss-personaldata
     ports:
       - "8083:8080"
     networks:
@@ -196,14 +251,15 @@ services:
       - geoss-keycloak
 
   geoss-proxy:
-    container_name: geoss-proxy
+    image: geoss-proxy
     build:
       context: ./geoss-proxy
       dockerfile: Dockerfile-local
+    container_name: geoss-proxy
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -213,7 +269,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-    restart: always
+    hostname: geoss-proxy
     ports:
       - "8084:8082"
     networks:
@@ -223,14 +279,15 @@ services:
       - geoss-keycloak
 
   geoss-search:
-    container_name: geoss-search
+    image: geoss-search
     build:
       context: ./geoss-search
       dockerfile: Dockerfile-local
+    container_name: geoss-search
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -244,7 +301,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-    restart: always
+    hostname: geoss-search
     ports:
       - "8085:8080"
     networks:
@@ -254,14 +311,15 @@ services:
       - geoss-keycloak
 
   geoss-settings:
-    container_name: geoss-settings
+    image: geoss-settings
     build:
       context: .
       dockerfile: ./geoss-settings/Dockerfile-local
+    container_name: geoss-settings
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -271,6 +329,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+    hostname: geoss-settings
     ports:
       - "8086:8080"
     networks:
@@ -280,14 +339,15 @@ services:
       - geoss-keycloak
 
   geoss-worker-geodab-worker:
-    container_name: geoss-worker-geodab-worker
+    image: geoss-worker-geodab-worker
     build:
       context: .
       dockerfile: ./geoss-worker/entry-worker/geodab-worker/Dockerfile-local
+    container_name: geoss-worker-geodab-worker
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -300,6 +360,7 @@ services:
       - CONFIG_DAB_GEODAB_BASE_URL=https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha
       - CONFIG_DAB_VLAB_BASE_URL=https://vlabdev.geodab.org/vlab
       - CONFIG_DAB_VLAB_API_TOKEN=7qm9uezuj27SjqE7FTAEj3iNeKbmpRaHasg7zVs3
+    hostname: geoss-worker-geodab-worker
     ports:
       - "8087:8080"
     networks:
@@ -310,14 +371,15 @@ services:
       - geoss-keycloak
 
   geoss-worker-sdg-worker:
-    container_name: geoss-worker-sdg-worker
+    image: geoss-worker-sdg-worker
     build:
       context: .
       dockerfile: ./geoss-worker/entry-worker/sdg-worker/Dockerfile-local
+    container_name: geoss-worker-sdg-worker
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -329,6 +391,7 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - CONFIG_SDG_DEFAULT_LOGO=https://unstats.un.org/home/assets/img/logos/logo_StatisticsDivision.png
       - CONFIG_SDG_UN_BASE_URL=https://unstats.un.org/SDGAPI/v1/sdg
+    hostname: geoss-worker-sdg-worker
     ports:
       - "8088:8080"
     networks:
@@ -339,14 +402,15 @@ services:
       - geoss-keycloak
 
   geoss-worker-wikipedia-worker:
-    container_name: geoss-worker-wikipedia-worker
+    image: geoss-worker-wikipedia-worker
     build:
       context: .
       dockerfile: ./geoss-worker/entry-worker/wikipedia-worker/Dockerfile-local
+    container_name: geoss-worker-wikipedia-worker
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -358,7 +422,8 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - WIKIDATA_API_URL=https://en.wikipedia.org/w/api.php
       - WIKIDATA_CATEGORIES_SPARQL_URL=https://live.dbpedia.org/sparql
-      - WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI=http://dbpedia.org
+      - WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI=https://dbpedia.org
+    hostname: geoss-worker-wikipedia-worker
     ports:
       - "8089:8080"
     networks:
@@ -369,14 +434,15 @@ services:
       - geoss-keycloak
 
   geoss-worker-thesaurus-worker:
-    container_name: geoss-worker-thesaurus-worker
+    image: geoss-worker-thesaurus-worker
     build:
       context: .
       dockerfile: ./geoss-worker/thesaurus-worker/Dockerfile-local
+    container_name: geoss-worker-thesaurus-worker
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "1.00"
           memory: "256M"
     command: [ "--debug" ]
     environment:
@@ -390,6 +456,7 @@ services:
       - THESAURUS_ESA_TOP_CONCEPTS_URIS=https://earth.esa.int/concept/5c476560-e0a3-554a-9187-187a90da1309,https://earth.esa.int/concept/c98c8eae-7561-55de-bf01-2fb866693c14,https://earth.esa.int/concept/738c519f-48db-5344-bebc-030c16781c22
       - THESAURUS_EOSTERM_BASE_URI=https://vocabularyserver.com/cnr/ml/eosterm/en/services.php
       - THESAURUS_EARTH_BASE_URI=https://vocabularyserver.com/cnr/ml/earth/en/services.php
+    hostname: geoss-worker-thesaurus-worker
     ports:
       - "8090:8080"
     networks:
@@ -399,19 +466,19 @@ services:
       - geoss-keycloak
 
   geoss-maildev:
+    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
     container_name: geoss-maildev
     deploy:
       resources:
         limits:
           cpus: "0.25"
           memory: "64M"
-    hostname: geoss-maildev
-    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
     environment:
       - MAILDEV_INCOMING_USER=maildev
       - MAILDEV_INCOMING_PASS=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - MAILDEV_WEB_USER=admin
       - MAILDEV_WEB_PASS=qaz123
+    hostname: geoss-maildev
     ports:
       - "1081:1080"
       - "1025:1025"
