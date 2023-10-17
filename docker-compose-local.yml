@@ -157,6 +157,12 @@ services:
       - KC_SPI_THEME_STATIC_MAX_AGE=-1
       - KC_HEALTH_ENABLED=true
       - KC_PROXY=edge
+    healthcheck:
+      test: /opt/utils/health-check.sh
+      interval: 30s
+      retries: 3
+      start_period: 60s
+      timeout: 5s
     hostname: geoss-keycloak
     ports:
       - "8080:8080"
