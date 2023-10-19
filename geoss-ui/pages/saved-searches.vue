@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loaded">
         <client-only>
             <div class="my-workspace-header">
                 My Workspace / Your Saved Searches
@@ -50,6 +50,7 @@ export default {
 
     data() {
         return {
+            loaded: false,
             savedSearches: null,
             showShare: false,
         }
@@ -86,6 +87,7 @@ export default {
 
     mounted() {
         this.updateList();
+        this.loaded = true;
     }
 }
 </script>
