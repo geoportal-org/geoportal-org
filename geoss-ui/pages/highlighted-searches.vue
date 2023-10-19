@@ -9,9 +9,9 @@
                 </NuxtLink>
             </div>
             <div class="my-workspace-tab my-workspace-content highlighted-searches">
-                <div v-if="!highlightedSearches">Loading...</div>
-                <div v-if="highlightedSearches && !highlightedSearches.length">There are no Highlighted Searches.</div>
-                <ul v-else>
+                <div v-show="!highlightedSearches">Loading...</div>
+                <div v-show="highlightedSearches && !highlightedSearches.length">There are no Highlighted Searches.</div>
+                <ul v-show="highlightedSearches && !highlightedSearches.length">
                     <li v-for="highlightedSearch of highlightedSearches" :key="highlightedSearch.id">
                         <div>
                             <a :href="highlightedSearch.url" class="close-window">
@@ -27,14 +27,14 @@
                             </a>
                         </div>
 
-                        <div v-if="$auth.loggedIn">
-                            <button v-if="!highlightedSearch.defaultSearch" class="blue-btn-default"
+                        <div v-show="$auth.loggedIn">
+                            <button v-show="!highlightedSearch.defaultSearch" class="blue-btn-default"
                                 @click="defaultHighlightedSearch(highlightedSearch)">Default</button>
                             <button class="red-btn-default"
                                 @click="deleteHighlightedSearch(highlightedSearch.id)">Delete</button>
-                            <button v-if="highlightedSearch.enabled" class="blue-btn-default"
+                            <button v-show="highlightedSearch.enabled" class="blue-btn-default"
                                 @click="toggleHighlightedSearch(highlightedSearch)">Disable</button>
-                            <button v-if="!highlightedSearch.enabled" class="blue-btn-default"
+                            <button v-show="!highlightedSearch.enabled" class="blue-btn-default"
                                 @click="toggleHighlightedSearch(highlightedSearch)">Enable</button>
                         </div>
                     </li>
