@@ -65,7 +65,7 @@ export default {
         deleteSavedSearch(id) {
             UserAPI.deleteSavedSearch(id)
                 .then(() => {
-                    this.savedSearches = UserAPI.getSavedSearchesByUser();
+                    this.updateList();
                 })
                 .catch(() => {
                     console.log(error)
