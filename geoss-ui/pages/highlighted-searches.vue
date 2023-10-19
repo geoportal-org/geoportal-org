@@ -1,45 +1,47 @@
 <template>
-    <div>
-        <div class="my-workspace-header">
-            Highlighted Searches
-            <NuxtLink to="/" class="close-window">
-                <div class="line-1"></div>
-                <div class="line-2"></div>
-            </NuxtLink>
-        </div>
-        <div class="my-workspace-tab my-workspace-content highlighted-searches">
-            <div v-if="!highlightedSearches">Loading...</div>
-            <div v-if="highlightedSearches && !highlightedSearches.length">There are no Highlighted Searches.</div>
-            <ul v-else>
-                <li v-for="highlightedSearch of highlightedSearches" :key="highlightedSearch.id">
-                    <div>
-                        <a :href="highlightedSearch.url" class="close-window">
-                            <IconSearchEarth />
-                            <div>
-                                <span>
-                                    {{ highlightedSearch.phrase }}
-                                </span>
-                                <small>
-                                    Created on: {{ createdDate(highlightedSearch.createdOn) }}
-                                </small>
-                            </div>
-                        </a>
-                    </div>
+    <client-only>
+        <div>
+            <div class="my-workspace-header">
+                Highlighted Searches
+                <NuxtLink to="/" class="close-window">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                </NuxtLink>
+            </div>
+            <div class="my-workspace-tab my-workspace-content highlighted-searches">
+                <div v-if="!highlightedSearches">Loading...</div>
+                <div v-if="highlightedSearches && !highlightedSearches.length">There are no Highlighted Searches.</div>
+                <ul v-else>
+                    <li v-for="highlightedSearch of highlightedSearches" :key="highlightedSearch.id">
+                        <div>
+                            <a :href="highlightedSearch.url" class="close-window">
+                                <IconSearchEarth />
+                                <div>
+                                    <span>
+                                        {{ highlightedSearch.phrase }}
+                                    </span>
+                                    <small>
+                                        Created on: {{ createdDate(highlightedSearch.createdOn) }}
+                                    </small>
+                                </div>
+                            </a>
+                        </div>
 
-                    <div v-if="$auth.loggedIn">
-                        <button v-if="!highlightedSearch.defaultSearch" class="blue-btn-default"
-                            @click="defaultHighlightedSearch(highlightedSearch)">Default</button>
-                        <button class="red-btn-default"
-                            @click="deleteHighlightedSearch(highlightedSearch.id)">Delete</button>
-                        <button v-if="highlightedSearch.enabled" class="blue-btn-default"
-                            @click="toggleHighlightedSearch(highlightedSearch)">Disable</button>
-                        <button v-if="!highlightedSearch.enabled" class="blue-btn-default"
-                            @click="toggleHighlightedSearch(highlightedSearch)">Enable</button>
-                    </div>
-                </li>
-            </ul>
+                        <div v-if="$auth.loggedIn">
+                            <button v-if="!highlightedSearch.defaultSearch" class="blue-btn-default"
+                                @click="defaultHighlightedSearch(highlightedSearch)">Default</button>
+                            <button class="red-btn-default"
+                                @click="deleteHighlightedSearch(highlightedSearch.id)">Delete</button>
+                            <button v-if="highlightedSearch.enabled" class="blue-btn-default"
+                                @click="toggleHighlightedSearch(highlightedSearch)">Disable</button>
+                            <button v-if="!highlightedSearch.enabled" class="blue-btn-default"
+                                @click="toggleHighlightedSearch(highlightedSearch)">Enable</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </client-only>
 </template>
 
 <script>
