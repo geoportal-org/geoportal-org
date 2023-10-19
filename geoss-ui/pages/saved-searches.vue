@@ -1,6 +1,6 @@
 <template>
-    <client-only>
-        <div>
+    <div>
+        <client-only>
             <div class="my-workspace-header">
                 My Workspace / Your Saved Searches
                 <NuxtLink to="/" class="close-window">
@@ -9,9 +9,9 @@
                 </NuxtLink>
             </div>
             <div class="my-workspace-tab my-workspace-content saved-searches">
-                <div v-show="!savedSearches">Loading...</div>
-                <div v-show="savedSearches && !savedSearches.length">You have no Saved Searches yet.</div>
-                <ul v-show="savedSearches && savedSearches.length">
+                <div v-if="!savedSearches">Loading...</div>
+                <div v-if="savedSearches && !savedSearches.length">You have no Saved Searches yet.</div>
+                <ul v-else>
                     <li v-for="savedSearch of savedSearches" :key="savedSearch.id">
                         <div>
                             <a :href="savedSearch.url" class="close-window">
@@ -36,8 +36,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
-    </client-only>
+        </client-only>
+    </div>
 </template>
 
 <script>
