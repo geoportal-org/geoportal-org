@@ -1,12 +1,5 @@
 package com.eversis.esa.geoss.curated.workflow.service.impl;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.NotFoundException;
-
 import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
 import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
 import com.eversis.esa.geoss.curated.dashboards.service.UserDashboardService;
@@ -17,15 +10,22 @@ import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
-
 import com.eversis.esa.geoss.curated.workflow.service.WorkflowService;
+
 import lombok.extern.log4j.Log4j2;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.ws.rs.NotFoundException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The type Workflow service.
@@ -52,7 +52,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final EmailEventPublisher emailEventPublisher;
 
-    private final Keycloak keycloak;
+    private final ObjectProvider<Keycloak> keycloakProvider;
 
     /**
      * Instantiates a new Workflow service.
@@ -62,18 +62,19 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param userExtensionService the user extension service
      * @param elasticsearchService the elasticsearch service
      * @param emailEventPublisher the email event publisher
-     * @param keycloak the keycloak
+     * @param keycloakProvider the keycloak
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
             UserExtensionService userExtensionService, UserDashboardService userDashboardService,
-            ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher, Keycloak keycloak) {
+            ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher,
+            ObjectProvider<Keycloak> keycloakProvider) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
         this.userExtensionService = userExtensionService;
         this.userDashboardService = userDashboardService;
         this.elasticsearchService = elasticsearchService;
         this.emailEventPublisher = emailEventPublisher;
-        this.keycloak = keycloak;
+        this.keycloakProvider = keycloakProvider;
     }
 
     @Transactional
@@ -82,18 +83,23 @@ public class WorkflowServiceImpl implements WorkflowService {
         log.info("Workflow approving user resource with id {}", userResourceId);
         UserResource userResource = userResourceService.approveUserResource(userResourceId);
         elasticsearchService.indexEntry(userResource.getEntry());
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userResourceService.findUserResource(userResourceId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "resource.approved.title",
-                "emails/workflow-resource-approved.html",
-                Map.of(
-                        "id", userResourceId,
-                        "name", userResourceService.findUserResource(userResourceId).getEntryName(),
-                        "resourceUrl", host + "/resources/" + userResourceId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userResourceService.findUserResource(userResourceId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "resource.approved.title",
+                    "emails/workflow-resource-approved.html",
+                    Map.of(
+                            "id", userResourceId,
+                            "name", userResourceService.findUserResource(userResourceId).getEntryName(),
+                            "resourceUrl", host + "/resources/" + userResourceId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow approved user resource.");
     }
 
@@ -102,18 +108,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void denyUserResource(long userResourceId, String host) {
         log.info("Workflow denying user resource with id {}", userResourceId);
         userResourceService.denyUserResource(userResourceId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userResourceService.findUserResource(userResourceId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "resource.denied.title",
-                "emails/workflow-resource-denied.html",
-                Map.of(
-                        "id", userResourceId,
-                        "name", userResourceService.findUserResource(userResourceId).getEntryName(),
-                        "resourceUrl", host + "/resources/" + userResourceId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userResourceService.findUserResource(userResourceId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "resource.denied.title",
+                    "emails/workflow-resource-denied.html",
+                    Map.of(
+                            "id", userResourceId,
+                            "name", userResourceService.findUserResource(userResourceId).getEntryName(),
+                            "resourceUrl", host + "/resources/" + userResourceId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow denied user resource.");
     }
 
@@ -122,22 +133,28 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void pendingUserResource(long userResourceId, String host) {
         log.info("Workflow pending user resource with id {}", userResourceId);
         userResourceService.pendingUserResource(userResourceId);
-        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
-                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
-        GroupRepresentation group =
-                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
-        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
-        users.forEach(userRepresentation ->
-                emailEventPublisher.send(
-                        userRepresentation.getEmail(),
-                        Locale.getDefault(),
-                        "resource.pending.title",
-                        "emails/workflow-resource-pending.html",
-                        Map.of(
-                                "id", userResourceId,
-                                "name", userResourceService.findUserResource(userResourceId).getEntryName(),
-                                "resourcesVerifyUrl", host + "/resources/verify/" + userResourceId
-                        )));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                    .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+            GroupRepresentation group =
+                    groupByName.orElseThrow(
+                            () -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+            List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+            users.forEach(userRepresentation ->
+                    emailEventPublisher.send(
+                            userRepresentation.getEmail(),
+                            Locale.getDefault(),
+                            "resource.pending.title",
+                            "emails/workflow-resource-pending.html",
+                            Map.of(
+                                    "id", userResourceId,
+                                    "name", userResourceService.findUserResource(userResourceId).getEntryName(),
+                                    "resourcesVerifyUrl", host + "/resources/verify/" + userResourceId
+                            )));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow pending user resource.");
     }
 
@@ -153,11 +170,16 @@ public class WorkflowServiceImpl implements WorkflowService {
         );
         String userId = userResourceService.findUserResource(userResourceId).getUserId();
         userResourceService.deleteUserResource(userResourceId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userId)
-                        .toRepresentation().getEmail(), Locale.getDefault(),
-                "resource.deleted.title", "emails/workflow-resource-deleted.html", variables);
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "resource.deleted.title", "emails/workflow-resource-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow delete user resource.");
     }
 
@@ -167,18 +189,23 @@ public class WorkflowServiceImpl implements WorkflowService {
         log.info("Workflow approving user relation with id {}", userRelationId);
         UserRelation userRelation = userRelationService.approveUserResource(userRelationId);
         elasticsearchService.indexEntryRelation(userRelation.getEntryRelation());
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userRelationService.findUserRelation(userRelationId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "relation.approved.title",
-                "emails/workflow-relation-approved.html",
-                Map.of(
-                        "id", userRelationId,
-                        "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
-                        "relationUrl", host + "/relations/" + userRelationId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userRelationService.findUserRelation(userRelationId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "relation.approved.title",
+                    "emails/workflow-relation-approved.html",
+                    Map.of(
+                            "id", userRelationId,
+                            "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
+                            "relationUrl", host + "/relations/" + userRelationId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow approved user relation.");
     }
 
@@ -187,18 +214,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void denyUserRelation(long userRelationId, String host) {
         log.info("Workflow denying user relation with id {}", userRelationId);
         userRelationService.denyUserRelation(userRelationId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userRelationService.findUserRelation(userRelationId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "relation.denied.title",
-                "emails/workflow-relation-denied.html",
-                Map.of(
-                        "id", userRelationId,
-                        "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
-                        "relationUrl", host + "/relations/" + userRelationId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userRelationService.findUserRelation(userRelationId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "relation.denied.title",
+                    "emails/workflow-relation-denied.html",
+                    Map.of(
+                            "id", userRelationId,
+                            "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
+                            "relationUrl", host + "/relations/" + userRelationId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow denied user relation.");
     }
 
@@ -207,22 +239,28 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void pendingUserRelation(long userRelationId, String host) {
         log.info("Workflow pending user relation with id {}", userRelationId);
         userRelationService.pendingUserRelation(userRelationId);
-        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
-                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
-        GroupRepresentation group =
-                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
-        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
-        users.forEach(userRepresentation ->
-                emailEventPublisher.send(
-                        userRepresentation.getEmail(),
-                        Locale.getDefault(),
-                        "relation.pending.title",
-                        "emails/workflow-relation-pending.html",
-                        Map.of(
-                                "id", userRelationId,
-                                "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
-                                "relationsVerifyUrl", host + "/relations/verify/" + userRelationId
-                        )));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                    .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+            GroupRepresentation group =
+                    groupByName.orElseThrow(
+                            () -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+            List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+            users.forEach(userRepresentation ->
+                    emailEventPublisher.send(
+                            userRepresentation.getEmail(),
+                            Locale.getDefault(),
+                            "relation.pending.title",
+                            "emails/workflow-relation-pending.html",
+                            Map.of(
+                                    "id", userRelationId,
+                                    "name", userRelationService.findUserRelation(userRelationId).getEntryName(),
+                                    "relationsVerifyUrl", host + "/relations/verify/" + userRelationId
+                            )));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow pending user relation.");
     }
 
@@ -238,11 +276,16 @@ public class WorkflowServiceImpl implements WorkflowService {
         );
         String userId = userRelationService.findUserRelation(userRelationId).getUserId();
         userRelationService.deleteUserRelation(userRelationId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userId)
-                        .toRepresentation().getEmail(), Locale.getDefault(),
-                "relation.deleted.title", "emails/workflow-relation-deleted.html", variables);
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "relation.deleted.title", "emails/workflow-relation-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow delete user relation.");
     }
 
@@ -251,22 +294,28 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void pendingUserExtension(long userExtensionId, String host) {
         log.info("Workflow pending user extension with id {}", userExtensionId);
         userExtensionService.pendingUserExtension(userExtensionId);
-        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
-                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
-        GroupRepresentation group =
-                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
-        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
-        users.forEach(userRepresentation ->
-                emailEventPublisher.send(
-                        userRepresentation.getEmail(),
-                        Locale.getDefault(),
-                        "extension.pending.title",
-                        "emails/workflow-extension-pending.html",
-                        Map.of(
-                                "id", userExtensionId,
-                                "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
-                                "extensionsVerifyUrl", host + "/extensions/verify/" + userExtensionId
-                        )));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                    .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+            GroupRepresentation group =
+                    groupByName.orElseThrow(
+                            () -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+            List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+            users.forEach(userRepresentation ->
+                    emailEventPublisher.send(
+                            userRepresentation.getEmail(),
+                            Locale.getDefault(),
+                            "extension.pending.title",
+                            "emails/workflow-extension-pending.html",
+                            Map.of(
+                                    "id", userExtensionId,
+                                    "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                                    "extensionsVerifyUrl", host + "/extensions/verify/" + userExtensionId
+                            )));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow pending user extension.");
     }
 
@@ -275,18 +324,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void approveUserExtension(long userExtensionId, String host) {
         log.info("Workflow approving user extension with id {}", userExtensionId);
         UserExtension userExtension = userExtensionService.approveUserExtension(userExtensionId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "extension.approved.title",
-                "emails/workflow-extension-approved.html",
-                Map.of(
-                        "id", userExtensionId,
-                        "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
-                        "extensionUrl", host + "/extensions/" + userExtensionId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "extension.approved.title",
+                    "emails/workflow-extension-approved.html",
+                    Map.of(
+                            "id", userExtensionId,
+                            "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                            "extensionUrl", host + "/extensions/" + userExtensionId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow approved user resource.");
     }
 
@@ -295,18 +349,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void denyUserExtension(long userExtensionId, String host) {
         log.info("Workflow denying user extension with id {}", userExtensionId);
         userExtensionService.denyUserExtension(userExtensionId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "extension.denied.title",
-                "emails/workflow-extension-denied.html",
-                Map.of(
-                        "id", userExtensionId,
-                        "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
-                        "extensionUrl", host + "/extensions/" + userExtensionId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userExtensionService.findUserExtension(userExtensionId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "extension.denied.title",
+                    "emails/workflow-extension-denied.html",
+                    Map.of(
+                            "id", userExtensionId,
+                            "name", userExtensionService.findUserExtension(userExtensionId).getEntryName(),
+                            "extensionUrl", host + "/extensions/" + userExtensionId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow denied user extension.");
     }
 
@@ -321,11 +380,16 @@ public class WorkflowServiceImpl implements WorkflowService {
         );
         String userId = userExtensionService.findUserExtension(userExtensionId).getUserId();
         userExtensionService.deleteUserExtension(userExtensionId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userId)
-                        .toRepresentation().getEmail(), Locale.getDefault(),
-                "extension.deleted.title", "emails/workflow-extension-deleted.html", variables);
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "extension.deleted.title", "emails/workflow-extension-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow delete user extension.");
     }
 
@@ -334,22 +398,28 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void pendingUserDashboard(long userDashboardId, String host) {
         log.info("Workflow pending user dashboard with id {}", userDashboardId);
         userDashboardService.pendingUserDashboard(userDashboardId);
-        Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
-                .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
-        GroupRepresentation group =
-                groupByName.orElseThrow(() -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
-        List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
-        users.forEach(userRepresentation ->
-                emailEventPublisher.send(
-                        userRepresentation.getEmail(),
-                        Locale.getDefault(),
-                        "dashboard.pending.title",
-                        "emails/workflow-dashboard-pending.html",
-                        Map.of(
-                                "id", userDashboardId,
-                                "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
-                                "dashboardsVerifyUrl", host + "/dashboards/verify/" + userDashboardId
-                        )));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            Optional<GroupRepresentation> groupByName = keycloak.realm(REALM_NAME).groups().groups().stream()
+                    .filter(groupRepresentation -> groupRepresentation.getName().equals(ADMIN_GROUP_NAME)).findAny();
+            GroupRepresentation group =
+                    groupByName.orElseThrow(
+                            () -> new NotFoundException("Group not found with name " + ADMIN_GROUP_NAME));
+            List<UserRepresentation> users = keycloak.realm(REALM_NAME).groups().group(group.getId()).members();
+            users.forEach(userRepresentation ->
+                    emailEventPublisher.send(
+                            userRepresentation.getEmail(),
+                            Locale.getDefault(),
+                            "dashboard.pending.title",
+                            "emails/workflow-dashboard-pending.html",
+                            Map.of(
+                                    "id", userDashboardId,
+                                    "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                                    "dashboardsVerifyUrl", host + "/dashboards/verify/" + userDashboardId
+                            )));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow pending user dashboard.");
     }
 
@@ -358,18 +428,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void approveUserDashboard(long userDashboardId, String host) {
         log.info("Workflow approving user dashboard with id {}", userDashboardId);
         UserDashboard userDashboard = userDashboardService.approveUserDashboard(userDashboardId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "dashboard.approved.title",
-                "emails/workflow-dashboard-approved.html",
-                Map.of(
-                        "id", userDashboardId,
-                        "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
-                        "dashboardUrl", host + "/dashboards/" + userDashboardId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "dashboard.approved.title",
+                    "emails/workflow-dashboard-approved.html",
+                    Map.of(
+                            "id", userDashboardId,
+                            "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                            "dashboardUrl", host + "/dashboards/" + userDashboardId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow approved user dashboard.");
     }
 
@@ -378,18 +453,23 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void denyUserDashboard(long userDashboardId, String host) {
         log.info("Workflow denying user dashboard with id {}", userDashboardId);
         userDashboardService.denyUserDashboard(userDashboardId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
-                        .toRepresentation().getEmail(),
-                Locale.getDefault(),
-                "dashboard.denied.title",
-                "emails/workflow-dashboard-denied.html",
-                Map.of(
-                        "id", userDashboardId,
-                        "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
-                        "dashboardUrl", host + "/dashboards/" + userDashboardId
-                ));
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userDashboardService.findUserDashboard(userDashboardId).getUserId())
+                            .toRepresentation().getEmail(),
+                    Locale.getDefault(),
+                    "dashboard.denied.title",
+                    "emails/workflow-dashboard-denied.html",
+                    Map.of(
+                            "id", userDashboardId,
+                            "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName(),
+                            "dashboardUrl", host + "/dashboards/" + userDashboardId
+                    ));
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow denied user dashboard.");
     }
 
@@ -404,11 +484,16 @@ public class WorkflowServiceImpl implements WorkflowService {
         );
         String userId = userDashboardService.findUserDashboard(userDashboardId).getUserId();
         userDashboardService.deleteUserDashboard(userDashboardId);
-        emailEventPublisher.send(
-                keycloak.realm(REALM_NAME).users()
-                        .get(userId)
-                        .toRepresentation().getEmail(), Locale.getDefault(),
-                "dashboard.deleted.title", "emails/workflow-dashboard-deleted.html", variables);
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "dashboard.deleted.title", "emails/workflow-dashboard-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
         log.info("Workflow delete user dashboard.");
     }
 

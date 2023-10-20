@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.curated.workflow.configuration;
 
+import com.eversis.esa.geoss.curated.workflow.properties.KeycloakProperties;
 import com.eversis.esa.geoss.curated.workflow.properties.WorkflowProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Import;
 )
 @EnableConfigurationProperties(
         value = {
+                KeycloakProperties.class,
                 WorkflowProperties.class
         }
 )

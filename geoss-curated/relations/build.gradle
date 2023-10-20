@@ -28,10 +28,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation "org.springdoc:springdoc-openapi-starter-common:${springdocOpenapiVersion}"
-    implementation "org.keycloak:keycloak-admin-client:${keycloakAdminClientVersion}"
-    implementation "org.jboss.resteasy:resteasy-client:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jaxrs:${resteasyJaxrsVersion}"
     implementation project(path: ':geoss-common')
     implementation project(path: ':common')
     compileOnly 'org.projectlombok:lombok'

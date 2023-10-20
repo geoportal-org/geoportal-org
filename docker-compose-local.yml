@@ -51,7 +51,7 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_USERNAME=admin
       - KEYCLOAK_ADMIN_PASSWORD=qaz123
       - SPRING_MAIL_HOST=geoss-maildev
       - SPRING_MAIL_PORT=1025

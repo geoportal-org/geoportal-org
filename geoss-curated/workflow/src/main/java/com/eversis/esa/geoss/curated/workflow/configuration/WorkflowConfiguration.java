@@ -1,8 +1,10 @@
 package com.eversis.esa.geoss.curated.workflow.configuration;
 
+import com.eversis.esa.geoss.curated.workflow.properties.KeycloakProperties;
+
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,38 +24,21 @@ import org.springframework.context.annotation.PropertySource;
 public class WorkflowConfiguration {
 
     /**
-     * The Username.
-     */
-    @Value("${keycloak.admin}")
-    String username;
-
-    /**
-     * The Password.
-     */
-    @Value("${keycloak.admin.password}")
-    String password;
-
-    /**
-     * The Server url.
-     */
-    @Value("${spring.security.oauth2.base.uri}")
-    String serverUrl;
-
-    /**
      * Keycloak keycloak.
      *
+     * @param keycloakProperties the keycloak properties
      * @return the keycloak
      */
+    @ConditionalOnProperty(prefix = "keycloak.admin", name = "server-url")
     @Bean
-    public Keycloak keycloak() {
+    Keycloak keycloak(KeycloakProperties keycloakProperties) {
         return KeycloakBuilder.builder()
-                .serverUrl(serverUrl)
+                .serverUrl(keycloakProperties.getServerUrl())
                 .realm("master")
                 .grantType("password")
-                .username(username)
-                .password(password)
+                .username(keycloakProperties.getUsername())
+                .password(keycloakProperties.getPassword())
                 .clientId("admin-cli")
                 .build();
     }
-
 }

@@ -15,8 +15,8 @@ public class ApplicationCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("Started with args:{}", Arrays.asList(args));
-        log.info("environment:{}", System.getenv());
-        log.info("properties:{}", System.getProperties());
+        log.debug("Started with args:{}", Arrays.asList(args));
+        log.debug("environment:{}", System.getenv());
+        log.debug("properties:{}", System.getProperties());
     }
 }
