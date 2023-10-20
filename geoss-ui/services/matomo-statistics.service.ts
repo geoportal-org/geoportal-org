@@ -9,7 +9,6 @@ type matomoParams = {
     date: string
     format: string
     filter_limit: string
-    token_auth: string
 }
 
 const MatomoDataService = {
@@ -30,7 +29,7 @@ const MatomoDataService = {
         unit: string,
         dateFrom: string,
         dateTo: string,
-        resultsNumber: string,
+        resultsNumber: string
     ) {
         let currentDate = new Date().toJSON().slice(0, 10)
         const start = dateFrom
@@ -45,7 +44,6 @@ const MatomoDataService = {
             date: dateRange,
             format: 'json',
             filter_limit: resultsNumber,
-            token_auth: window.$nuxt.$config.matomoToken,
         }
 
         let chartType = ''
@@ -87,14 +85,14 @@ const MatomoDataService = {
         unit: string,
         dateFrom: string,
         dateTo: string,
-        resultsNumber: string,
+        resultsNumber: string
     ) {
         const [params, chartType]: any = this.prepareRequestParams(
             method,
             unit,
             dateFrom,
             dateTo,
-            resultsNumber,
+            resultsNumber
         )
 
         const data = await this.fetchMatomoData(
@@ -321,7 +319,8 @@ const MatomoDataService = {
                                     display: true,
                                     text: window.$nuxt.$tc(
                                         'statistics.numberOfVisits'
-                                    ),                                },
+                                    ),
+                                },
                             },
                         },
                     }
@@ -340,8 +339,16 @@ const MatomoDataService = {
     },
 
     async fetchMatomoData(url: string) {
+        const formData = new FormData()
+        let options = {
+            method: 'POST',
+        }
+        formData.append('token_auth', window.$nuxt.$config.matomoToken)
+        //@ts-ignore
+        options.body = formData
+
         try {
-            let response = await fetch(url)
+            let response = await fetch(url, options)
             let result = await response.json()
             return result
         } catch (error) {
