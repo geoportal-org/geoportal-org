@@ -1,4 +1,4 @@
-module geoss.curated.dashboards {
+module geoss.curated.relations {
     exports com.eversis.esa.geoss.curated.relations.configuration to spring.beans, spring.boot, spring.context;
 
     requires static lombok;
