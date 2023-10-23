@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.relations.mapper.RelationTypeMapper;
 import com.eversis.esa.geoss.curated.relations.model.RelationTypeModel;
 import com.eversis.esa.geoss.curated.relations.repository.RelationTypeRepository;
 import com.eversis.esa.geoss.curated.relations.service.RelationTypeService;
+
 import org.springframework.stereotype.Service;
 
 /**

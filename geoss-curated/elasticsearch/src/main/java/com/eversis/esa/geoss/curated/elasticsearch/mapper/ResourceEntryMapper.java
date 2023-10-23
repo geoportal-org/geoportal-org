@@ -1,11 +1,11 @@
 package com.eversis.esa.geoss.curated.elasticsearch.mapper;
 
-import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.elasticsearch.model.AccessPolicyELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.DashboardContentsELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.OrganisationELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.ResourceEntryELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.SourceELK;
+import com.eversis.esa.geoss.curated.resources.domain.Entry;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;

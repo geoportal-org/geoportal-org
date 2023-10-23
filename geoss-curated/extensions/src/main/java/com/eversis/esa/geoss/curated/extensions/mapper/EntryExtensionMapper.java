@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.curated.extensions.mapper;
 import com.eversis.esa.geoss.curated.common.service.DataSourceService;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.model.EntryExtensionModel;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +14,11 @@ public class EntryExtensionMapper {
 
     private final DataSourceService dataSourceService;
 
+    /**
+     * Instantiates a new Entry extension mapper.
+     *
+     * @param dataSourceService the data source service
+     */
     public EntryExtensionMapper(DataSourceService dataSourceService) {
         this.dataSourceService = dataSourceService;
     }
@@ -37,7 +43,6 @@ public class EntryExtensionMapper {
     public EntryExtension mapToEntryExtension(EntryExtensionModel model, EntryExtension entryExtension) {
         return getEntryExtension(model, entryExtension);
     }
-
 
     private EntryExtension getEntryExtension(EntryExtensionModel model) {
         if (model == null) {

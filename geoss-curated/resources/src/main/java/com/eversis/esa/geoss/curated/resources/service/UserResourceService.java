@@ -22,14 +22,6 @@ public interface UserResourceService {
     Page<UserResource> findAllUserResources(@NotNull Pageable pageable);
 
     /**
-     * Find user resource user resource.
-     *
-     * @param userResourceId the user resource id
-     * @return the user resource
-     */
-    UserResource findUserResource(long userResourceId);
-
-    /**
      * Find all user resources page.
      *
      * @param userId the user id
@@ -37,6 +29,14 @@ public interface UserResourceService {
      * @return the page
      */
     Page<UserResource> findAllUserResources(String userId, @NotNull Pageable pageable);
+
+    /**
+     * Find user resource user resource.
+     *
+     * @param userResourceId the user resource id
+     * @return the user resource
+     */
+    UserResource findUserResource(long userResourceId);
 
     /**
      * Create user resource.

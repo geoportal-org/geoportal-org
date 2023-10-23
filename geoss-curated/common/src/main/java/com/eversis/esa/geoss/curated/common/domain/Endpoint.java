@@ -1,15 +1,15 @@
 package com.eversis.esa.geoss.curated.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * The type Endpoint.
@@ -34,10 +34,16 @@ public class Endpoint {
     @Column(name = "iscustom", nullable = false)
     private Integer isCustom = 0;
 
+    /**
+     * Instantiates a new Endpoint.
+     */
     public Endpoint(String url) {
         this.url = url;
     }
 
+    /**
+     * Instantiates a new Endpoint.
+     */
     protected Endpoint() {
         // required by JPA
     }

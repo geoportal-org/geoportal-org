@@ -1,11 +1,10 @@
 package com.eversis.esa.geoss.curated.relations.controller;
 
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
 import com.eversis.esa.geoss.curated.relations.service.EntryRelationService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.validation.Valid;
 
 /**
  * The type Entry relation controller.

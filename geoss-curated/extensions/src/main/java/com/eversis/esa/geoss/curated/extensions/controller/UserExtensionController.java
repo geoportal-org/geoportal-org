@@ -1,10 +1,9 @@
 package com.eversis.esa.geoss.curated.extensions.controller;
 
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.validation.Valid;
 
 /**
  * The type User extension controller.

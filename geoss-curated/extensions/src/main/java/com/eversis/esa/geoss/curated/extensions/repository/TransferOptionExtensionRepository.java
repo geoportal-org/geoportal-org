@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.extensions.repository;
 
-import java.util.Set;
-
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.TransferOptionExtension;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.Set;
 
 /**
  * The interface Transfer option extension repository.

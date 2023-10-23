@@ -7,6 +7,7 @@ import com.eversis.esa.geoss.curated.relations.domain.EntryRelationId;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
 import com.eversis.esa.geoss.curated.relations.service.RelationTypeService;
+
 import org.springframework.stereotype.Component;
 
 /**

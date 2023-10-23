@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.extensions.service;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.model.EntryExtensionModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Entry extension service.

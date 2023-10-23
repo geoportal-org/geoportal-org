@@ -1,10 +1,11 @@
 package com.eversis.esa.geoss.curated.dashboards.model;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.common.domain.TaskType;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
+
 import lombok.Data;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type User dashboard model.

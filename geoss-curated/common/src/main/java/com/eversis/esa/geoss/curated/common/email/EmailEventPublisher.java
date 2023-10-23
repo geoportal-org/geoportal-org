@@ -1,15 +1,16 @@
 package com.eversis.esa.geoss.curated.common.email;
 
-import java.util.Locale;
-import java.util.Map;
-
 import com.eversis.esa.geoss.common.domain.NonTransactionalSimpleMailMessage;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The type Email event publisher.

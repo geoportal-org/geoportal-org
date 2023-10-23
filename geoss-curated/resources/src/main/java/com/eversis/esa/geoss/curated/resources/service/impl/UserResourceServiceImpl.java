@@ -54,6 +54,12 @@ public class UserResourceServiceImpl implements UserResourceService {
     }
 
     @Override
+    public Page<UserResource> findAllUserResources(String userId, @NotNull Pageable pageable) {
+        log.info("Finding all resource for userId {}", userId);
+        return userResourceRepository.findByUserId(userId, pageable);
+    }
+
+    @Override
     public UserResource findUserResource(long userResourceId) {
         log.info("Finding user resource with id {}", userResourceId);
         return userResourceRepository.findById(userResourceId).orElseThrow(
@@ -61,18 +67,13 @@ public class UserResourceServiceImpl implements UserResourceService {
                         "User Resource entity with id: " + userResourceId + " does not exist"));
     }
 
-    @Override
-    public Page<UserResource> findAllUserResources(String userId, @NotNull Pageable pageable) {
-        log.info("Finding all resource for userId {}", userId);
-        return userResourceRepository.findByUserId(userId, pageable);
-    }
-
     @Transactional
     @Override
     public void createUserResource(UserResourceModel userResourceDto) {
         log.info("Creating new user resource - {}", userResourceDto);
         UserResource userResource = userResourceRepository.save(userResourcesMapper.mapToUserResource(userResourceDto));
-        transferOptionService.saveTransferOptions(userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
+        transferOptionService.saveTransferOptions(
+                userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
         log.info("Created new user resource with id: {}", userResource.getId());
     }
 
@@ -84,7 +85,8 @@ public class UserResourceServiceImpl implements UserResourceService {
                 () -> new ResourceNotFoundException(
                         "User Resource entity with id: " + userResourceId + " does not exist"));
         userResourceRepository.save(userResourcesMapper.mapToUserResource(userResourceDto, userResource));
-        transferOptionService.saveTransferOptions(userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
+        transferOptionService.saveTransferOptions(
+                userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
         log.info("Updated user resource with id: {}", userResource.getId());
     }
 

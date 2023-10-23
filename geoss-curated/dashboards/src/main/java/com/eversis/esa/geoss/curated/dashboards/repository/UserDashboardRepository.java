@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.dashboards.repository;
 
 import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

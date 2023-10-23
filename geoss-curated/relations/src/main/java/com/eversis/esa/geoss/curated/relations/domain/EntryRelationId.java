@@ -1,12 +1,12 @@
 package com.eversis.esa.geoss.curated.relations.domain;
 
-import java.io.Serializable;
-import java.util.Objects;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * The type Entry relation id.

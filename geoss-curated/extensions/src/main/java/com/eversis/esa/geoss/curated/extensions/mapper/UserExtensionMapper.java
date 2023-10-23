@@ -4,6 +4,7 @@ import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
+
 import org.springframework.stereotype.Component;
 
 /**

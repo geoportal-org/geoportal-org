@@ -1,10 +1,11 @@
 package com.eversis.esa.geoss.curated.extensions.repository;
 
-import java.util.Optional;
-
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.Optional;
 
 /**
  * The interface Entry extension repository.

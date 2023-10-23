@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.common.mapper.EndpointMapper;
 import com.eversis.esa.geoss.curated.common.model.EndpointModel;
 import com.eversis.esa.geoss.curated.common.repository.EndpointRepository;
 import com.eversis.esa.geoss.curated.common.service.EndpointService;
+
 import org.springframework.stereotype.Service;
 
 /**

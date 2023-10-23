@@ -1,17 +1,12 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.mapper.TransferOptionMapper;
 import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
 import com.eversis.esa.geoss.curated.resources.repository.TransferOptionRepository;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
+
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -20,6 +15,12 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The type Transfer option service.
@@ -68,7 +69,8 @@ public class TransferOptionServiceImpl implements TransferOptionService {
 
     @Transactional
     @Override
-    public List<TransferOption> saveTransferOptions(@NonNull List<TransferOptionModel> transferOptionDto, @NonNull Entry relatedEntry) {
+    public List<TransferOption> saveTransferOptions(
+            @NonNull List<TransferOptionModel> transferOptionDto, @NonNull Entry relatedEntry) {
         log.info("Saving transfer option - {}", transferOptionDto);
         Set<TransferOption> existingTransferOptions = transferOptionRepository.findByEntryId(relatedEntry.getId());
         Set<TransferOption> newTransferOptions = transferOptionDto.stream()

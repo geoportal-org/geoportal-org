@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.extensions.model;
 
+import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
+
+import lombok.Data;
+
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.validation.constraints.NotNull;
-
-import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
-import lombok.Data;
 
 /**
  * The type Entry extension model.

@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.curated.dashboards.service.impl;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
 import com.eversis.esa.geoss.curated.dashboards.mapper.UserDashboardMapper;
@@ -9,6 +7,7 @@ import com.eversis.esa.geoss.curated.dashboards.model.UserDashboardModel;
 import com.eversis.esa.geoss.curated.dashboards.repository.UserDashboardRepository;
 import com.eversis.esa.geoss.curated.dashboards.service.UserDashboardService;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type User dashboard service.

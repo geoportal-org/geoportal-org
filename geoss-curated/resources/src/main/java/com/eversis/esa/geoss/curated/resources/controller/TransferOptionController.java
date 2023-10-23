@@ -1,9 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
-import java.util.Set;
-
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.Set;
 
 /**
  * The type Transfer option controller.

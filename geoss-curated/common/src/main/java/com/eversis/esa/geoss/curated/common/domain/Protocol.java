@@ -1,16 +1,16 @@
 package com.eversis.esa.geoss.curated.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NaturalId;
 
 /**
  * The type Protocol.

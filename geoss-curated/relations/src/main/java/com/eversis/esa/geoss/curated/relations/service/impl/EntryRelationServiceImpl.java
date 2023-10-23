@@ -1,13 +1,12 @@
 package com.eversis.esa.geoss.curated.relations.service.impl;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.relations.mapper.EntryRelationMapper;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
 import com.eversis.esa.geoss.curated.relations.repository.EntryRelationRepository;
 import com.eversis.esa.geoss.curated.relations.service.EntryRelationService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +14,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type Entry relation service.

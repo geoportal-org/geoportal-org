@@ -1,6 +1,13 @@
 package com.eversis.esa.geoss.curated.relations.domain;
 
-import java.time.LocalDateTime;
+import com.eversis.esa.geoss.curated.common.domain.DataSource;
+import com.eversis.esa.geoss.curated.common.domain.Type;
+
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -9,13 +16,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import com.eversis.esa.geoss.curated.common.domain.DataSource;
-import com.eversis.esa.geoss.curated.common.domain.Type;
-import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.time.LocalDateTime;
 
 /**
  * The type Entry relation.

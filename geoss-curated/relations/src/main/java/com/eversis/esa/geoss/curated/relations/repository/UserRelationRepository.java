@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.relations.repository;
 
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

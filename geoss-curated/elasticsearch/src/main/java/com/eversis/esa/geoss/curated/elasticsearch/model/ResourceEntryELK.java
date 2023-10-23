@@ -89,13 +89,13 @@ public class ResourceEntryELK {
 //            replace => [ "child_count", "false" ]
 //        }
 //    }
-
 //    map['hasChildren'] = event.get('child_count')
 
     @Field(type = FieldType.Keyword, name = "childrenTypes")
     private String childrenTypes;
 //    map['childrenTypes'] = event.get('children_types')  - czyli tutaj aktualizujeme entry które jest parent
 //"childrenTypes": "data_resource",
-    // do sprawdzenia ale jak jest kilka różnych childrentype to bedzie String po przecinku "childrenTypes": "data_resource, information_resource",
+    // do sprawdzenia ale jak jest kilka różnych childrentype to bedzie String po przecinku
+    // "childrenTypes": "data_resource, information_resource",
 
 }

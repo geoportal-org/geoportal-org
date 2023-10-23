@@ -1,13 +1,12 @@
 package com.eversis.esa.geoss.curated.relations.service.impl;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.mapper.UserRelationMapper;
 import com.eversis.esa.geoss.curated.relations.model.UserRelationModel;
 import com.eversis.esa.geoss.curated.relations.repository.UserRelationRepository;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +14,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type User relation service.
@@ -48,17 +49,17 @@ public class UserRelationServiceImpl implements UserRelationService {
     }
 
     @Override
+    public Page<UserRelation> findAllUserRelations(String userId, Pageable pageable) {
+        log.info("Finding all relations for userId {}", userId);
+        return userRelationRepository.findByUserId(userId, pageable);
+    }
+
+    @Override
     public UserRelation findUserRelation(long userRelationId) {
         log.info("Finding user relation with id {}", userRelationId);
         return userRelationRepository.findById(userRelationId).orElseThrow(
                 () -> new ResourceNotFoundException(
                         "User Relation entity with id: " + userRelationId + " does not exist"));
-    }
-
-    @Override
-    public Page<UserRelation> findAllUserRelations(String userId, Pageable pageable) {
-        log.info("Finding all relations for userId {}", userId);
-        return userRelationRepository.findByUserId(userId, pageable);
     }
 
     @Transactional

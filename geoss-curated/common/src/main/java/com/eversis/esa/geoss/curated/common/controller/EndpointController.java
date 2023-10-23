@@ -1,11 +1,8 @@
 package com.eversis.esa.geoss.curated.common.controller;
 
-import java.util.List;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 import com.eversis.esa.geoss.curated.common.domain.Endpoint;
 import com.eversis.esa.geoss.curated.common.repository.EndpointRepository;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.util.List;
 
 /**
  * The type Endpoint controller.

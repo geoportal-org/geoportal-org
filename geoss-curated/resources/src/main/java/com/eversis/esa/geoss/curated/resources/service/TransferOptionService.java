@@ -1,14 +1,15 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import java.util.List;
-import java.util.Set;
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The interface Transfer option service.

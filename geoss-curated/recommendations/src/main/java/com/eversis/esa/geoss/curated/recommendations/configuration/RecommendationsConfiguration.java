@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.curated.recommendations.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import lombok.extern.log4j.Log4j2;
 import org.springdoc.core.customizers.OpenApiCustomizer;

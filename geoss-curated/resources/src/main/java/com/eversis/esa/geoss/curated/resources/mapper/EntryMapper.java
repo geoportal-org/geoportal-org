@@ -1,14 +1,14 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
+import com.eversis.esa.geoss.curated.common.service.DataSourceService;
+import com.eversis.esa.geoss.curated.common.service.TypeService;
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.service.AccessPolicyService;
 import com.eversis.esa.geoss.curated.resources.service.DashboardContentsService;
-import com.eversis.esa.geoss.curated.common.service.DataSourceService;
 import com.eversis.esa.geoss.curated.resources.service.DefinitionTypeService;
 import com.eversis.esa.geoss.curated.resources.service.OrganisationService;
 import com.eversis.esa.geoss.curated.resources.service.SourceService;
-import com.eversis.esa.geoss.curated.common.service.TypeService;
 import com.eversis.esa.geoss.curated.resources.util.CodeGeneratorUtil;
 
 import org.springframework.stereotype.Component;

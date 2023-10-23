@@ -1,13 +1,13 @@
 package com.eversis.esa.geoss.curated.resources.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
 import com.eversis.esa.geoss.curated.common.model.TypeModel;
+
 import lombok.Data;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Entry model.

@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.relations.service;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.model.UserRelationModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface User relation service.

@@ -1,12 +1,13 @@
 package com.eversis.esa.geoss.curated.relations.service;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationIdModel;
 import com.eversis.esa.geoss.curated.relations.model.EntryRelationModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Entry relation service.

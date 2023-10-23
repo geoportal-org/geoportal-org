@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.curated.resources.domain;
 
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.common.domain.TaskType;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
