@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'checkstyle'
     id 'jacoco'
     id 'org.sonarqube'
@@ -41,11 +41,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation "org.hibernate.orm:hibernate-envers"
+    implementation 'org.hibernate.orm:hibernate-envers'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.withType(JavaCompile).configureEach {

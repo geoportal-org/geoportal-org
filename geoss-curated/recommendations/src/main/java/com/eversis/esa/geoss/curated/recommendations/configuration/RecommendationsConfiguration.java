@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
+import lombok.extern.log4j.Log4j2;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import jakarta.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 /**
  * The type Recommendations configuration.
  */
+@Log4j2
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.curated.recommendations.repository")
 @ComponentScan(
         basePackages = {
@@ -32,6 +35,11 @@ import java.util.stream.Stream;
 @PropertySource("classpath:application-recommendations.properties")
 @Configuration(proxyBeanMethods = false)
 public class RecommendationsConfiguration {
+
+    @PostConstruct
+    void init() {
+        log.warn("Init module");
+    }
 
     /**
      * Recommendations open api customizer open api customizer.

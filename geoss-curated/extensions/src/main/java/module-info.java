@@ -7,7 +7,6 @@ module geoss.curated.extensions {
     requires spring.context;
     requires spring.data.jpa;
     requires jakarta.persistence;
-    requires org.hibernate.orm.core;
     requires com.fasterxml.jackson.annotation;
     requires geoss.curated.common;
     requires spring.data.commons;
@@ -19,5 +18,5 @@ module geoss.curated.extensions {
     requires spring.tx;
     requires spring.data.rest.core;
     requires org.apache.logging.log4j;
-
+    requires jakarta.annotation;
 }

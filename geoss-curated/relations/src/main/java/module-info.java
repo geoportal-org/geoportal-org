@@ -18,4 +18,5 @@ module geoss.curated.relations {
     requires jakarta.validation;
     requires spring.tx;
     requires org.apache.logging.log4j;
+    requires jakarta.annotation;
 }

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  */
 @AutoConfiguration
 @ConditionalOnProperty(
-        prefix = "geoss.curated.dashboards", name = "enabled", havingValue = "true", matchIfMissing = true
+        prefix = "geoss.curated.dashboards", name = "enabled", havingValue = "true"
 )
 @EnableConfigurationProperties(
         value = {

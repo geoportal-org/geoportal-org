@@ -26,5 +26,5 @@ module geoss.curated.common {
     requires spring.security.core;
     requires spring.data.commons;
     requires jakarta.validation;
-
+    requires jakarta.annotation;
 }

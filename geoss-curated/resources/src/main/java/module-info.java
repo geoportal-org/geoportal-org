@@ -24,4 +24,5 @@ module geoss.curated.resources {
     requires spring.tx;
     requires org.apache.logging.log4j;
     requires spring.data.rest.core;
+    requires jakarta.annotation;
 }

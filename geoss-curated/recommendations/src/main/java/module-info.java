@@ -15,7 +15,6 @@ module geoss.curated.recommendations {
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
-    requires org.hibernate.orm.core;
     requires org.springdoc.openapi.common;
     requires spring.beans;
     requires spring.boot;
@@ -31,4 +30,5 @@ module geoss.curated.recommendations {
     requires spring.tx;
     requires spring.web;
     requires geoss.curated.common;
+    requires jakarta.annotation;
 }

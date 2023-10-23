@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
  */
 @AutoConfiguration
 @ConditionalOnProperty(
-        prefix = "geoss.curated.elasticsearch", name = "enabled", havingValue = "true", matchIfMissing = true
+        prefix = "geoss.curated.elasticsearch", name = "enabled", havingValue = "true"
 )
 @EnableConfigurationProperties(
         value = {
