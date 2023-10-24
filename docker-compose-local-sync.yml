@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  geoss-db:
+    image: geoss-db
+    build:
+      context: ./geoss-db
+      dockerfile: Dockerfile
+    container_name: geoss-db
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: "164M"
+    environment:
+      - MARIADB_ROOT_PASSWORD=qaz123
+      - MARIADB_USER=admin
+      - MARIADB_PASSWORD=qaz123
+      - MARIADB_DATABASE=geoss_db
+      - MATOMO_DATABASE_USERNAME=matomo
+      - MATOMO_DATABASE_PASSWORD=qaz123
+      - MATOMO_DATABASE_DBNAME=geoss_matomo_db
+    hostname: geoss-db
+    volumes:
+      - "geoss_db:/var/lib/mysql"
+    ports:
+      - "33066:3306"
+    networks:
+      - geoss_net
+
+  geoss-els:
+    image: geoss-els
+    build:
+      context: ./geoss-els
+      dockerfile: Dockerfile
+    container_name: geoss-els
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: "1G"
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=elastic123
+      - KIBANA_PASSWORD=kibana123
+      - GEOSS_PASSWORD=qaz123
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: curl --user elastic:elastic123 -sS "http://localhost:9200/_cat/health?h=status" | grep -q "green\|yellow" || exit 1
+      interval: 30s
+      start_period: 30s
+      timeout: 1m
+    hostname: geoss-els
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "geoss_els:/usr/share/elasticsearch/data"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - geoss_net
+
+  geoss-logstash:
+    image: geoss-logstash
+    build:
+      context: ./geoss-logstash
+      dockerfile: Dockerfile
+    container_name: geoss-logstash
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: "512M"
+    environment:
+      FOO: bar
+    hostname: geoss-logstash
+    ports:
+      - "9600:9600"
+    networks:
+      - geoss_net
+
+volumes:
+  geoss_db:
+  geoss_els:
+
+networks:
+  geoss_net:
