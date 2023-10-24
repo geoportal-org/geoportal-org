@@ -387,7 +387,7 @@ services:
       KEYCLOAK_CLIENT_ID: geoss-ui
       KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
       MATOMO_SITE_ID: 1
-      MATOMO_TOKEN: 'a26d8e00c7c0e546e743f89838e7f5ec'
+      MATOMO_TOKEN: 'bcbe98b5b0ca1f881a339125dd066e4a'
       MATOMO_URL: 'https://gpp.devel.esaportal.eu/matomo/?'
       ELK_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/statistics/'
       ELS_CLIENT_ID: 'geoss-proxy'
