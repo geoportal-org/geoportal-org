@@ -74,9 +74,9 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
-      SPRING_ELASTICSEARCH_REST_URIS: "geoss-elasticsearch-1:9200"
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      SPRING_ELASTICSEARCH_URIS: "http://geoss-elasticsearch-1:9200"
+      SPRING_ELASTICSEARCH_USERNAME: elastic
+      SPRING_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CURATED_OA2_KCSECRET}
@@ -86,6 +86,7 @@ services:
       SPRING_MAIL_PORT: 1025
       SPRING_MAIL_USERNAME: maildev
       SPRING_MAIL_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
+      SPRING_MAIL_PROTOCOL: smtp
       SPRING_MAIL_PROPERTIES_MAIL_DEBUG: 'true'
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       << : *proxy-variables

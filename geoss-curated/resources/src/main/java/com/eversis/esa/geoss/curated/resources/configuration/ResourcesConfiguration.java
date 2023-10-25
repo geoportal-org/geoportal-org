@@ -37,7 +37,7 @@ public class ResourcesConfiguration {
 
     @PostConstruct
     void init() {
-        log.warn("Init module");
+        log.debug("Init module");
     }
 
     /**

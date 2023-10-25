@@ -45,9 +45,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mariadb://geoss-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=qaz123
-      - SPRING_ELASTICSEARCH_REST_URIS=geoss-els:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=elastic123
+      - SPRING_ELASTICSEARCH_URIS=http://geoss-els:9200
+      - SPRING_ELASTICSEARCH_USERNAME=elastic
+      - SPRING_ELASTICSEARCH_PASSWORD=elastic123
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
@@ -57,6 +57,7 @@ services:
       - SPRING_MAIL_PORT=1025
       - SPRING_MAIL_USERNAME=maildev
       - SPRING_MAIL_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      - SPRING_MAIL_PROTOCOL=smtp
       - SPRING_MAIL_PROPERTIES_MAIL_DEBUG=true
     hostname: geoss-curated
     ports:

@@ -26,6 +26,6 @@ public class DashboardsConfiguration {
 
     @PostConstruct
     void init() {
-        log.warn("Init module");
+        log.debug("Init module");
     }
 }

@@ -1,20 +1,16 @@
 module geoss.curated.recommendations {
-    exports com.eversis.esa.geoss.curated.recommendations.domain;
-    exports com.eversis.esa.geoss.curated.recommendations.model;
-    exports com.eversis.esa.geoss.curated.recommendations.repository;
-    exports com.eversis.esa.geoss.curated.recommendations.service;
-
     exports com.eversis.esa.geoss.curated.recommendations.configuration to spring.beans, spring.boot, spring.context;
 
     requires static lombok;
     requires static org.mapstruct;
     requires com.fasterxml.jackson.annotation;
-    requires geoss.common;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
+    requires jakarta.annotation;
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
+    requires org.hibernate.orm.core;
     requires org.springdoc.openapi.common;
     requires spring.beans;
     requires spring.boot;
@@ -29,6 +25,6 @@ module geoss.curated.recommendations {
     requires spring.security.core;
     requires spring.tx;
     requires spring.web;
+    requires geoss.common;
     requires geoss.curated.common;
-    requires jakarta.annotation;
 }

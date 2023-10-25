@@ -4,6 +4,7 @@ module geoss.curated.dashboards {
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
+    requires jakarta.annotation;
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
@@ -21,5 +22,4 @@ module geoss.curated.dashboards {
     requires spring.web;
     requires geoss.curated.common;
     requires geoss.curated.resources;
-    requires jakarta.annotation;
 }

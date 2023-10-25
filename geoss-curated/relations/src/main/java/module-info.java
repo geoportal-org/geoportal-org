@@ -2,21 +2,21 @@ module geoss.curated.relations {
     exports com.eversis.esa.geoss.curated.relations.configuration to spring.beans, spring.boot, spring.context;
 
     requires static lombok;
-    requires spring.boot;
-    requires spring.boot.autoconfigure;
-    requires spring.context;
-    requires jakarta.persistence;
-    requires spring.data.jpa;
-    requires org.hibernate.orm.core;
     requires com.fasterxml.jackson.annotation;
-    requires geoss.curated.common;
-    requires spring.data.commons;
-    requires spring.data.rest.webmvc;
-    requires spring.web;
     requires io.swagger.v3.oas.annotations;
-    requires spring.security.core;
-    requires jakarta.validation;
-    requires spring.tx;
-    requires org.apache.logging.log4j;
     requires jakarta.annotation;
+    requires jakarta.persistence;
+    requires jakarta.validation;
+    requires org.apache.logging.log4j;
+    requires org.hibernate.orm.core;
+    requires spring.boot.autoconfigure;
+    requires spring.boot;
+    requires spring.context;
+    requires spring.data.commons;
+    requires spring.data.jpa;
+    requires spring.data.rest.webmvc;
+    requires spring.security.core;
+    requires spring.tx;
+    requires spring.web;
+    requires geoss.curated.common;
 }
