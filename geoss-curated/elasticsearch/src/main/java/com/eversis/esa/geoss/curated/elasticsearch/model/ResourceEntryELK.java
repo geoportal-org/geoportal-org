@@ -75,27 +75,10 @@ public class ResourceEntryELK {
 
     @Field(type = FieldType.Keyword, name = "parentId")
     private List<String> parentId = new ArrayList<>();
-    // ["geoss_cr_un_sd_16.8","geoss_cr_un_sd_16.8"] - czyli tutaj aktualizujeme entry które jest child
 
     @Field(type = FieldType.Boolean, name = "hasChildren")
-    private boolean hasChildren;  //   "hasChildren": "false" lub "true" - aktualizujeme entry które jest parent
-
-//        if ([child_count] > 0){
-//        mutate {
-//            replace => [ "child_count", "true" ]
-//        }
-//    } else {
-//        mutate {
-//            replace => [ "child_count", "false" ]
-//        }
-//    }
-//    map['hasChildren'] = event.get('child_count')
+    private boolean hasChildren;
 
     @Field(type = FieldType.Keyword, name = "childrenTypes")
     private String childrenTypes;
-//    map['childrenTypes'] = event.get('children_types')  - czyli tutaj aktualizujeme entry które jest parent
-//"childrenTypes": "data_resource",
-    // do sprawdzenia ale jak jest kilka różnych childrentype to bedzie String po przecinku
-    // "childrenTypes": "data_resource, information_resource",
-
 }

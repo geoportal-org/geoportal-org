@@ -8,6 +8,7 @@ module geoss.curated.dashboards {
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
+    requires org.hibernate.orm.core;
     requires spring.beans;
     requires spring.boot.autoconfigure;
     requires spring.boot;
