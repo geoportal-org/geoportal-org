@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.personaldata.application.controller;
+package com.eversis.esa.geoss.common.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.log4j.Log4j2;
@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The type Test controller.
+ * The type Ping controller.
  */
 @Log4j2
 @Hidden
 @RestController
 @RequestMapping("/ping")
-public class TestController {
+public class PingController {
 
     /**
      * Test string.
@@ -25,5 +25,4 @@ public class TestController {
         log.info("ping:pong");
         return "PONG";
     }
-
 }

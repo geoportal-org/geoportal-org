@@ -13,8 +13,10 @@ module geoss.common {
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
+    requires io.swagger.v3.oas.annotations;
     requires jakarta.mail;
     requires jakarta.persistence;
+    requires jakarta.servlet;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
     requires org.hibernate.orm.envers;
