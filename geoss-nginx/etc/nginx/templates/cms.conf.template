@@ -43,12 +43,6 @@ server {
   ##  Handle ERROR pages
   include conf.d/common/location_maintenance.conf;
 
-  ## SCRIPTS TO CLEAR CACHE
-  #include conf.d/common/location_cache_clear.conf;
-
-  ## Handle redirects
-  #include conf.d/cms_conf/location_redirects.conf;
-
   ## Handle static locations
   #include conf.d/cms_conf/location_static.conf;
 
@@ -195,12 +189,6 @@ server {
   ##  Handle ERROR pages
   include conf.d/common/location_maintenance.conf;
 
-  ## SCRIPTS TO CLEAR CACHE
-  #include conf.d/common/location_cache_clear.conf;
-
-  ## Handle redirects
-  #include conf.d/cms_conf/location_redirects.conf;
-
   ## Handle static locations
   include conf.d/cms_conf/location_static.conf;
 
@@ -251,12 +239,6 @@ server {
 
   ## Handle Monitoring, Matomo and Haproxy. TMP disable
   include conf.d/cms_conf/location_monitoring_gpp_admin.conf;
-
-  ## SCRIPTS TO CLEAR CACHE
-  #include conf.d/common/location_cache_clear.conf;
-
-  ## Handle redirects
-  #include conf.d/cms_conf/location_redirects.conf;
 
   ## Handle static locations
   include conf.d/cms_conf/location_static.conf;
