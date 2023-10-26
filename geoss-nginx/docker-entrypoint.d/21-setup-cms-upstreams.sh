@@ -67,10 +67,6 @@ if [ -n "${ADMIN_UPSTREAM_HOST}" ]; then
   mv /etc/nginx/conf.d/gpp-admin.conf /etc/nginx/conf.d/gpp-admin.conf.old
   awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-admin.conf.old > /etc/nginx/conf.d/gpp-admin.conf
   rm /etc/nginx/conf.d/gpp-admin.conf.old
-
-  mv /etc/nginx/conf.d/gpp.conf /etc/nginx/conf.d/gpp.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp.conf.old > /etc/nginx/conf.d/gpp.conf
-  rm /etc/nginx/conf.d/gpp.conf.old
 else
  echo "ADMIN_UPSTREAM_HOST env variable is not set"
 fi
