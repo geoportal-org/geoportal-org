@@ -1,14 +1,14 @@
 #!/bin/sh
 
-if [ -n "${CMS_UPSTREAM_HOST}" ] && [ -n "${CMS_UPSTREAM_PORT}" ]; then
+if [ -n "${UI_UPSTREAM_HOST}" ] && [ -n "${UI_UPSTREAM_PORT}" ]; then
 
   i=0
   upstream_conf=''
-  upstream_port=${CMS_UPSTREAM_PORT}
+  upstream_port=${UI_UPSTREAM_PORT}
 
   kibana_upstream_conf=''
 
-  for upstream_host in $(echo ${CMS_UPSTREAM_HOST} | tr "," "\n")
+  for upstream_host in $(echo ${UI_UPSTREAM_HOST} | tr "," "\n")
   do
   	i=$((i+1))
   	if [ $i -gt 1 ]; then
@@ -19,15 +19,11 @@ if [ -n "${CMS_UPSTREAM_HOST}" ] && [ -n "${CMS_UPSTREAM_PORT}" ]; then
   	fi
   done
 
-  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-  rm /etc/nginx/conf.d/cms.conf.old
-
-  # mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  # awk -v r="${kibana_upstream_conf}" '{gsub(/###KIBANA_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-  # rm /etc/nginx/conf.d/cms.conf.old
+  mv /etc/nginx/conf.d/gpp.conf /etc/nginx/conf.d/gpp.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp.conf.old > /etc/nginx/conf.d/gpp.conf
+  rm /etc/nginx/conf.d/gpp.conf.old
 else
-  echo "CMS_UPSTREAM_HOST or CMS_UPSTREAM_PORT env variable is not set"
+  echo "UI_UPSTREAM_HOST or UI_UPSTREAM_PORT env variable is not set"
 fi
 
 if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
@@ -45,9 +41,9 @@ if [ -n "${KEYCLOAK_UPSTREAM_HOST}" ]; then
       fi
   done
 
-  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###KEYCLOAK_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-  rm /etc/nginx/conf.d/cms.conf.old
+  mv /etc/nginx/conf.d/gpp-idp.conf /etc/nginx/conf.d/gpp-idp.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###KEYCLOAK_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-idp.conf.old > /etc/nginx/conf.d/gpp-idp.conf
+  rm /etc/nginx/conf.d/gpp-idp.conf.old
 else
  echo "KEYCLOAK_UPSTREAM_HOST env variable is not set"
 fi
@@ -68,9 +64,13 @@ if [ -n "${ADMIN_UPSTREAM_HOST}" ]; then
       fi
   done
 
-  mv /etc/nginx/conf.d/cms.conf /etc/nginx/conf.d/cms.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/cms.conf.old > /etc/nginx/conf.d/cms.conf
-  rm /etc/nginx/conf.d/cms.conf.old
+  mv /etc/nginx/conf.d/gpp-admin.conf /etc/nginx/conf.d/gpp-admin.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-admin.conf.old > /etc/nginx/conf.d/gpp-admin.conf
+  rm /etc/nginx/conf.d/gpp-admin.conf.old
+
+  mv /etc/nginx/conf.d/gpp.conf /etc/nginx/conf.d/gpp.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###ADMIN_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp.conf.old > /etc/nginx/conf.d/gpp.conf
+  rm /etc/nginx/conf.d/gpp.conf.old
 else
  echo "ADMIN_UPSTREAM_HOST env variable is not set"
 fi

@@ -1,0 +1,158 @@
+#gpp (ui, settings, contents, bookmarks, personaldata, proxy, search)
+upstream ui_upstream {
+  ###UPSTREAM_CONFIG###
+}
+
+#gpp-admin (admin, settings, contents, bookmarks, personaldata, proxy, search)
+upstream admin_upstream {
+  ###ADMIN_UPSTREAM_CONFIG###
+}
+
+## Initial common setup of variables
+include conf.d/common/map_initial_setup.conf;
+
+server {
+  listen *:80;
+  server_name ${UI_DOMAIN_NAME};
+
+  modsecurity on;
+  modsecurity_rules_file /etc/nginx/modsecurity.d/modsec.conf;
+
+  ssl_certificate /etc/nginx/certs/${DEPLOY_ENV}/server.crt;
+  ssl_certificate_key /etc/nginx/certs/${DEPLOY_ENV}/server.key;
+  ssl_session_cache builtin:1000 shared:SSL:10m;
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  ssl_prefer_server_ciphers off;
+
+  error_log /var/log/nginx/gpp.error.log;
+  access_log /var/log/nginx/gpp.access.log timed_combined;
+
+  ## PROXY, CACHE, COMPRESSION, jsession cookie, X-Forwarded-For
+  include conf.d/common/config.conf;
+
+  ###BASIC_AUTH###
+
+  ##  Handle ERROR pages
+  include conf.d/common/location_maintenance.conf;
+
+  ## Handle static locations
+  #include conf.d/cms_conf/location_static.conf;
+
+  location / {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  location /settings {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_settings.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  location /personaldata {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  location /contents {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_contents.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  location /proxy {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_proxy.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+  
+  location /search {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_geoss_search.conf;
+
+    proxy_pass    http://ui_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  location /matomo {
+    include conf.d/common/maintenance_conditions.conf;
+
+    #request headers
+    include conf.d/utils/proxy_request_headers.conf;
+    include conf.d/utils/proxy_request_headers_x_matomo_proxy.conf;
+
+    proxy_pass    http://admin_upstream;
+    proxy_no_cache 1;
+
+    #response headers
+    include conf.d/utils/proxy_response_headers.conf;
+
+    limit_except POST { deny  all; }
+
+    add_header X-Cache-Status $upstream_cache_status;
+  }
+
+  #Configuration of robots.txt file
+  ###ROBOTS_CONFIG###
+}

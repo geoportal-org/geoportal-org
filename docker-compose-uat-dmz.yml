@@ -42,9 +42,9 @@ services:
         parallelism: 1
         order: start-first
     environment:
-      CMS_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
-      CMS_UPSTREAM_PORT: ${NGINX_CMS_UPSTREAM_PORT}
-      CMS_DOMAIN_NAME: gpp.uat.esaportal.eu
+      UI_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
+      UI_UPSTREAM_PORT: ${NGINX_CMS_UPSTREAM_PORT}
+      UI_DOMAIN_NAME: gpp.uat.esaportal.eu
       KEYCLOAK_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
       KEYCLOAK_DOMAIN_NAME: gpp-idp.uat.esaportal.eu
       ADMIN_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
