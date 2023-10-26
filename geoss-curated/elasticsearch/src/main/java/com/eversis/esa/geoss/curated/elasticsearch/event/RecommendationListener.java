@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.elasticsearch.event;
 
 import com.eversis.esa.geoss.curated.elasticsearch.service.RecommendationService;
+import com.eversis.esa.geoss.curated.recommendations.model.DeletedRecommendationModel;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendationModel;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,21 @@ public class RecommendationListener {
         log.info("recommendationEvent:{}", recommendationModel);
         try {
             recommendationService.reindex(recommendationModel);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Handle recommendation id.
+     *
+     * @param deletedRecommendationModel the deleted recommendation model
+     */
+    @TransactionalEventListener(DeletedRecommendationModel.class)
+    public void handleRecommendationId(DeletedRecommendationModel deletedRecommendationModel) {
+        log.info("recommendationEvent:{}", deletedRecommendationModel);
+        try {
+            recommendationService.delete(deletedRecommendationModel.getId());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

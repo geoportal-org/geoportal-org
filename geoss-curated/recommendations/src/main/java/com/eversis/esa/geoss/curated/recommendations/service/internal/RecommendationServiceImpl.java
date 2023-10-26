@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.common.repository.DataSourceRepository;
 import com.eversis.esa.geoss.curated.recommendations.domain.Recommendation;
 import com.eversis.esa.geoss.curated.recommendations.domain.RecommendedEntity;
 import com.eversis.esa.geoss.curated.recommendations.domain.RecommendedKeyword;
+import com.eversis.esa.geoss.curated.recommendations.model.DeletedRecommendationModel;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendationModel;
 import com.eversis.esa.geoss.curated.recommendations.model.RecommendedEntityModel;
 import com.eversis.esa.geoss.curated.recommendations.repository.RecommendationRepository;
@@ -115,6 +116,9 @@ public class RecommendationServiceImpl implements RecommendationService {
         log.debug("Deleting recommendation with id: {}", recommendationId);
         try {
             recommendationRepository.deleteById(recommendationId);
+            DeletedRecommendationModel deletedRecommendationModel = new DeletedRecommendationModel();
+            deletedRecommendationModel.setId(recommendationId);
+            publish(deletedRecommendationModel);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(
                     "Recommendation entity with id: " + recommendationId + " does not exist");
@@ -275,6 +279,12 @@ public class RecommendationServiceImpl implements RecommendationService {
     private void publish(RecommendationModel recommendationModel) {
         if (recommendationModel != null) {
             applicationEventPublisher.publishEvent(recommendationModel);
+        }
+    }
+
+    private void publish(DeletedRecommendationModel deletedRecommendationModel) {
+        if (deletedRecommendationModel != null) {
+            applicationEventPublisher.publishEvent(deletedRecommendationModel);
         }
     }
 }
