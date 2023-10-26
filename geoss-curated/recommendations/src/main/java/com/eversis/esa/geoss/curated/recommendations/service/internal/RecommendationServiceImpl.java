@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final DataSourceRepository dataSourceRepository;
 
     private final RecommendedEntityModelToRecommendedEntityMapper recommendedEntityModelToRecommendedEntityMapper;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private ConversionService conversionService;
 
@@ -97,8 +100,11 @@ public class RecommendationServiceImpl implements RecommendationService {
                     log.debug("recommendation:{}", recommendation);
                     recommendation = recommendationRepository.save(recommendation);
                     log.debug("recommendation:{}", recommendation);
-                    return Optional.ofNullable(conversionService.convert(recommendation, RecommendationModel.class))
-                            .orElseThrow(() -> new MappingException("Recommendation not converted"));
+                    RecommendationModel recommendationResult = conversionService.convert(recommendation,
+                            RecommendationModel.class);
+                    log.debug("recommendationModel:{}", recommendationResult);
+                    publish(recommendationResult);
+                    return recommendationResult;
                 })
                 .orElseThrow(() -> new MappingException("Recommendation model not converted"));
     }
@@ -130,6 +136,10 @@ public class RecommendationServiceImpl implements RecommendationService {
         keywords.stream()
                 .map(keyword -> conversionService.convert(keyword, RecommendedKeyword.class))
                 .forEach(recommendation::addRecommendedKeyword);
+
+        RecommendationModel recommendationResult = conversionService.convert(recommendation, RecommendationModel.class);
+        log.debug("recommendationModel:{}", recommendationResult);
+        publish(recommendationResult);
         log.debug("Updated recommendation with id: {} with new keywords: {}", recommendationId, keywords);
     }
 
@@ -149,6 +159,10 @@ public class RecommendationServiceImpl implements RecommendationService {
                         entity.getCode(), entity.getDataSource(), recommendation))
                 .collect(Collectors.toList());
         entities.forEach(recommendation::addRecommendedEntity);
+
+        RecommendationModel recommendationResult = conversionService.convert(recommendation, RecommendationModel.class);
+        log.debug("recommendationModel:{}", recommendationResult);
+        publish(recommendationResult);
         log.debug("Updated recommendation with id: {} with new entities: {}", recommendationId, entities);
     }
 
@@ -171,6 +185,10 @@ public class RecommendationServiceImpl implements RecommendationService {
                         "Recommendation entity: [" + recommendedEntityModel + "] does not exist"));
         entity.setName(recommendedEntityModel.getName());
         entity.setOrderWeight(recommendedEntityModel.getOrderWeight());
+
+        RecommendationModel recommendationResult = conversionService.convert(recommendation, RecommendationModel.class);
+        log.debug("recommendationModel:{}", recommendationResult);
+        publish(recommendationResult);
         log.debug("Updated recommendation with id: {} and its entity: {}", recommendationId, entity);
     }
 
@@ -189,6 +207,11 @@ public class RecommendationServiceImpl implements RecommendationService {
                             recommendedEntity);
                     recommendedEntity = recommendedEntityRepository.save(recommendedEntity);
                     log.debug("recommendedEntity:{}", recommendedEntity);
+
+                    RecommendationModel recommendationResult = conversionService.convert(recommendation,
+                            RecommendationModel.class);
+                    log.debug("recommendationModel:{}", recommendationResult);
+                    publish(recommendationResult);
                     return recommendedEntity;
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Recommended entity not found"));
@@ -214,6 +237,10 @@ public class RecommendationServiceImpl implements RecommendationService {
                         + "] does not exist"));
 
         recommendedEntityRepository.delete(entity);
+
+        RecommendationModel recommendationResult = conversionService.convert(recommendation, RecommendationModel.class);
+        log.debug("recommendationModel:{}", recommendationResult);
+        publish(recommendationResult);
         log.debug("Deleted entity {} from recommendation with id: {}", recommendationId, entity);
     }
 
@@ -228,6 +255,11 @@ public class RecommendationServiceImpl implements RecommendationService {
                         throw new ResourceNotFoundException("Recommendation not found");
                     }
                     recommendedEntityRepository.delete(recommendedEntity);
+
+                    RecommendationModel recommendationResult = conversionService.convert(recommendation,
+                            RecommendationModel.class);
+                    log.debug("recommendationModel:{}", recommendationResult);
+                    publish(recommendationResult);
                     return recommendedEntity;
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Recommended entity not found"));
@@ -238,5 +270,11 @@ public class RecommendationServiceImpl implements RecommendationService {
         return dataSourceRepository.findAll().stream()
                 .map(DataSource::getCode)
                 .toList();
+    }
+
+    private void publish(RecommendationModel recommendationModel) {
+        if (recommendationModel != null) {
+            applicationEventPublisher.publishEvent(recommendationModel);
+        }
     }
 }

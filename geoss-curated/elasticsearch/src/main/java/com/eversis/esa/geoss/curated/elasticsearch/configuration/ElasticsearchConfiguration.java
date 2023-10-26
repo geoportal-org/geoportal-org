@@ -15,6 +15,7 @@ import jakarta.annotation.PostConstruct;
 @EnableElasticsearchRepositories(basePackages = "com.eversis.esa.geoss.curated.elasticsearch.repository")
 @ComponentScan(
         basePackages = {
+                "com.eversis.esa.geoss.curated.elasticsearch.event",
                 "com.eversis.esa.geoss.curated.elasticsearch.mapper",
                 "com.eversis.esa.geoss.curated.elasticsearch.service.impl",
         }

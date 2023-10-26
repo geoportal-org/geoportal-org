@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 /**
  * The type Recommendation elk.
@@ -26,13 +26,24 @@ public class RecommendationELK implements Serializable {
     @Field(name = "@version", type = FieldType.Keyword)
     private Long version = 1L;
 
-    @Field(name = "@timestamp", type = FieldType.Date,
+    @Field(
+            name = "@timestamp", type = FieldType.Date,
             format = {},
-            pattern = {"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSz", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSz"})
+            pattern = {"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSz", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSz"}
+    )
     private Instant timestamp = Instant.now();
 
     @Field(type = FieldType.Keyword)
     private Long recommendationId;
 
-    private List<RecommendedResourceELK> entities;
+    private Set<RecommendedResourceELK> entities;
+
+    /**
+     * Increment long.
+     *
+     * @return the long
+     */
+    public synchronized Long increment() {
+        return ++version;
+    }
 }

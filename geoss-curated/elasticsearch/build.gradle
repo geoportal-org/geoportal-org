@@ -29,6 +29,7 @@ dependencies {
     implementation project(path: ':resources')
     implementation project(path: ':relations')
     implementation project(path: ':extensions')
+    implementation project(path: ':recommendations')
     compileOnly 'org.projectlombok:lombok'
     compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
     compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
