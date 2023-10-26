@@ -3,11 +3,6 @@ upstream ui_upstream {
   ###UPSTREAM_CONFIG###
 }
 
-#gpp-admin (admin, settings, contents, bookmarks, personaldata, proxy, search)
-upstream admin_upstream {
-  ###ADMIN_UPSTREAM_CONFIG###
-}
-
 ## Initial common setup of variables
 include conf.d/common/map_initial_setup.conf;
 
