@@ -52,9 +52,6 @@ server {
   ## Handle static locations
   #include conf.d/cms_conf/location_static.conf;
 
-  ## Handle locations that required cookie like COMPANY_ID to be set.
-  include conf.d/cms_conf/location_signed.conf;
-
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -207,9 +204,6 @@ server {
   ## Handle static locations
   include conf.d/cms_conf/location_static.conf;
 
-  ## Handle locations that required cookie like COMPANY_ID to be set.
-  include conf.d/cms_conf/location_signed.conf;
-
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -266,9 +260,6 @@ server {
 
   ## Handle static locations
   include conf.d/cms_conf/location_static.conf;
-
-  ## Handle locations that required cookie like COMPANY_ID to be set.
-  include conf.d/cms_conf/location_signed.conf;
 
   location / {
     include conf.d/common/maintenance_conditions.conf;
