@@ -6,6 +6,7 @@ import com.eversis.esa.geoss.contents.service.RepositoryService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import jakarta.annotation.Resource;
@@ -17,6 +18,7 @@ import jakarta.annotation.Resource;
 @EnableConfigurationProperties({
         RepositoryProperties.class
 })
+@EntityScan
 public class GeossContentsApplication implements CommandLineRunner {
 
     /**

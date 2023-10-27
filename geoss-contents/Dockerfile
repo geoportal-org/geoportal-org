@@ -30,7 +30,7 @@ RUN mkdir -p "tomcat/temp"
 COPY ./certs /opt/app/certs/
 RUN keytool -importcert -file ./certs/server.crt -noprompt -alias server -storepass changeit -keystore $JAVA_HOME/lib/security/cacerts
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "application-boot.jar"]
 CMD [""]

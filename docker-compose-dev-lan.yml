@@ -52,7 +52,7 @@ services:
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
-      - "8082:8081"
+      - "8082:8080"
     networks:
       - geosslan
     depends_on:

@@ -40,7 +40,7 @@ COPY --from=builder ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "application-boot.jar"]
 CMD [""]

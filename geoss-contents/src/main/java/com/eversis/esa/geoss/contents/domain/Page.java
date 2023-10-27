@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.contents.domain;
 
+import com.eversis.esa.geoss.common.domain.AuditableEntity;
 import com.eversis.esa.geoss.contents.validation.AvailableLocale;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

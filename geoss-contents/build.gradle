@@ -1,10 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.4'
-    id 'io.spring.dependency-management' version '1.1.0'
     id 'checkstyle'
     id 'jacoco'
+    id 'org.sonarqube'
     id 'project-report'
+    id 'org.springframework.boot'
+    id "io.spring.dependency-management"
+    id 'com.gorylenko.gradle-git-properties'
 }
 
 java {
@@ -12,11 +14,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-checkstyle {
-    configFile "${project.rootDir}/../eversis_checks.xml" as File
-}
-
 configurations {
+    configureEach {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -26,32 +27,46 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        mavenBom "net.javacrumbs.shedlock:shedlock-bom:${shedlockVersion}"
+    }
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.webjars:swagger-ui:4.11.1'
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2"
-    implementation "org.hibernate.orm:hibernate-envers:6.1.6.Final"
-    implementation 'org.liquibase:liquibase-core'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
+    implementation "org.hibernate.orm:hibernate-envers"
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'net.javacrumbs.shedlock:shedlock-spring'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
+    implementation project(':geoss-common')
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.hsqldb:hsqldb'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-springBoot {
-    buildInfo()
-    mainClass = 'com.eversis.esa.geoss.contents.GeossContentsApplication'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -63,12 +78,35 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.named('jar') {
+    archiveClassifier = ''
+    exclude('application-local*.properties')
+}
+
 tasks.named('bootJar') {
     archiveClassifier = 'boot'
     exclude('application-local*.properties')
 }
 
-tasks.named('jar') {
-    archiveClassifier = ''
-    exclude('application-local*.properties')
+springBoot {
+    buildInfo()
+    mainClass = 'com.eversis.esa.geoss.contents.GeossContentsApplication'
+}
+
+gitProperties {
+    failOnNoGitDirectory = false
+}
+
+checkstyle {
+    configFile "${project.rootDir}/../eversis_checks.xml" as File
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}
+
+clean {
+    delete 'tomcat'
 }

@@ -27,7 +27,7 @@ docker build -f Dockerfile-local -t geoss/geoss-contents .
 ## Run the container from image
 ```shell
 cd geoss-contents
-docker run -p8081:8081 geoss/geoss-contents:latest
+docker run -p8080:8080 geoss/geoss-contents:latest
 ```
 
 By default, the application uses the memory database (H2)
@@ -40,6 +40,6 @@ By default, the application uses the memory database (H2)
 
 Available tools in application
 
-- [H2 console](http://localhost:8081/h2-console/)
+- [H2 console](http://localhost:8080/h2-console/)
 
-- [Swagger UI](http://localhost:8081/swagger-ui/index.html)
+- [Swagger UI](http://localhost:8080/swagger-ui/index.html)

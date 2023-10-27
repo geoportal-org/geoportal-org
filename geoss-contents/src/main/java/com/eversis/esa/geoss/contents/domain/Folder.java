@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.contents.domain;
 
+import com.eversis.esa.geoss.common.domain.AuditableEntity;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
