@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.personaldata.application.configuration;
+package com.eversis.esa.geoss.common.security.configuration;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.util.StringUtils;
@@ -49,49 +50,73 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Persistent token repository persistent token repository.
-     *
-     * @param dataSource the data source
-     * @return the persistent token repository
-     */
-    @Bean
-    PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
-        JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
-        persistentTokenRepository.setDataSource(dataSource);
-        return persistentTokenRepository;
-    }
-
-    /**
-     * In memory user details manager user details manager.
-     *
-     * @return the user details manager
+     * The type In memory user details configuration.
      */
     @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "memory")
-    @Bean
-    UserDetailsManager inMemoryUserDetailsManager() {
-        return new InMemoryUserDetailsManager();
+    @Configuration(proxyBeanMethods = false)
+    static class InMemoryUserDetailsConfiguration {
+
+        /**
+         * In memory user details manager user details manager.
+         *
+         * @return the user details manager
+         */
+        @Bean
+        UserDetailsManager inMemoryUserDetailsManager() {
+            return new InMemoryUserDetailsManager();
+        }
+
+        /**
+         * In memory token repository persistent token repository.
+         *
+         * @return the persistent token repository
+         */
+        @Bean
+        PersistentTokenRepository inMemoryTokenRepository() {
+            return new InMemoryTokenRepositoryImpl();
+        }
     }
 
     /**
-     * Users user details manager.
-     *
-     * @param dataSource the data source
-     * @return the user details manager
+     * The type Jdbc user details configuration.
      */
     @ConditionalOnProperty(prefix = "spring.security.user.details", name = "manager", havingValue = "jdbc")
-    @Bean
-    UserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select username,password,enabled, acc_locked, acc_expired, creds_expired"
-                + " from users where username = ?");
-        jdbcUserDetailsManager.setCreateUserSql(
-                "insert into users (username, password, enabled, acc_locked, acc_expired, creds_expired)"
-                + " values (?,?,?,?,?,?)");
-        jdbcUserDetailsManager.setUpdateUserSql(
-                "update users set password = ?, enabled = ?, acc_locked=?, acc_expired=?, creds_expired=?"
-                + " where username = ?");
-        return jdbcUserDetailsManager;
+    @Configuration(proxyBeanMethods = false)
+    static class JdbcUserDetailsConfiguration {
+
+        /**
+         * Users user details manager.
+         *
+         * @param dataSource the data source
+         * @return the user details manager
+         */
+        @Bean
+        UserDetailsManager userDetailsManager(DataSource dataSource) {
+            JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+            jdbcUserDetailsManager.setUsersByUsernameQuery(
+                    "select username,password,enabled, acc_locked, acc_expired, creds_expired"
+                    + " from users where username = ?");
+            jdbcUserDetailsManager.setCreateUserSql(
+                    "insert into users (username, password, enabled, acc_locked, acc_expired, creds_expired)"
+                    + " values (?,?,?,?,?,?)");
+            jdbcUserDetailsManager.setUpdateUserSql(
+                    "update users set password = ?, enabled = ?, acc_locked=?, acc_expired=?, creds_expired=?"
+                    + " where username = ?");
+            return jdbcUserDetailsManager;
+        }
+
+        /**
+         * Persistent token repository persistent token repository.
+         *
+         * @param dataSource the data source
+         * @return the persistent token repository
+         */
+        @Bean
+        PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+            JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
+            persistentTokenRepository.setDataSource(dataSource);
+            return persistentTokenRepository;
+        }
     }
 
     /**
@@ -109,7 +134,7 @@ public class SecurityConfiguration {
         private final ObjectProvider<PasswordEncoder> passwordEncoders;
 
         @Override
-        public void afterPropertiesSet() throws Exception {
+        public void afterPropertiesSet() {
             if (!userDetailsManager.userExists(securityProperties.getUser().getName())) {
                 userDetailsManager.createUser(defaultUser(securityProperties));
             } else {

@@ -54,7 +54,7 @@ public class OpenApiConfiguration {
                         securityRequirement.addList(s);
                         return securityRequirement;
                     }).toList();
-
+            // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream().map(PathItem::getGet);
             operations.forEach(operation -> {
                 if (operation != null) {

@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Configuration;
                 "com.eversis.esa.geoss.common.controller",
                 "com.eversis.esa.geoss.common.event",
                 "com.eversis.esa.geoss.common.exception",
-                "com.eversis.esa.geoss.common.hateoas"
+                "com.eversis.esa.geoss.common.hateoas",
+                "com.eversis.esa.geoss.common.security.configuration",
+                "com.eversis.esa.geoss.common.security.oauth2.configuration"
         }
 )
 @Configuration(proxyBeanMethods = false)

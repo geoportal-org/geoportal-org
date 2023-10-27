@@ -23,6 +23,7 @@ module geoss.curated.recommendations {
     requires spring.data.rest.webmvc;
     requires spring.hateoas;
     requires spring.security.core;
+    requires spring.security.config;
     requires spring.tx;
     requires spring.web;
     requires geoss.common;

@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.personaldata.application.configuration.oauth2;
+package com.eversis.esa.geoss.common.security.oauth2;
 
 import lombok.Setter;
 import org.springframework.core.convert.converter.Converter;

@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 @ComponentScan(
         basePackages = {
                 "com.eversis.esa.geoss.curated.recommendations.controller",
+                "com.eversis.esa.geoss.curated.recommendations.security",
                 "com.eversis.esa.geoss.curated.recommendations.service.internal",
                 "com.eversis.esa.geoss.curated.recommendations.support.internal"
         }
@@ -59,7 +60,7 @@ public class RecommendationsConfiguration {
                         securityRequirement.addList(s);
                         return securityRequirement;
                     }).toList();
-
+            // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
                     .flatMap(pathItem -> Stream.of(pathItem.getPost(), pathItem.getPut(), pathItem.getDelete()));
             operations.forEach(operation -> {

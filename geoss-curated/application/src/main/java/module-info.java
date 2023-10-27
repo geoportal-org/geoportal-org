@@ -2,11 +2,9 @@ module geoss.curated.application {
     exports com.eversis.esa.geoss.curated.application;
 
     exports com.eversis.esa.geoss.curated.application.configuration to spring.beans, spring.boot, spring.context;
-    exports com.eversis.esa.geoss.curated.application.configuration.oauth2 to spring.beans, spring.boot;
 
     opens com.eversis.esa.geoss.curated.application to spring.core;
     opens com.eversis.esa.geoss.curated.application.configuration to spring.core;
-    opens com.eversis.esa.geoss.curated.application.configuration.oauth2 to spring.core;
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
@@ -46,4 +44,5 @@ module geoss.curated.application {
     requires spring.web;
     requires spring.webmvc;
     requires spring.data.elasticsearch;
+    requires geoss.common;
 }

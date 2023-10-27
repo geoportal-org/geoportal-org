@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.configuration.oauth2;
+package com.eversis.esa.geoss.common.security.oauth2.properties;
 
 import lombok.Getter;
 import lombok.Setter;

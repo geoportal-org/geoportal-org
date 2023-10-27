@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.configuration.oauth2;
+package com.eversis.esa.geoss.common.security.oauth2;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;

@@ -56,7 +56,7 @@ public enum ApiSettingsSet {
         EXT_W3W_KEY("w3wKey"),
 
         /**
-         * Tour URL external
+         * Tour URL external.
          */
         EXT_TOUR_URL("tourUrl");
 

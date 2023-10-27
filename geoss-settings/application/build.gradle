@@ -48,6 +48,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
+    implementation project(':geoss-common')
     implementation project(':common')
     implementation project(':system-settings')
     implementation project(':instance-settings')

@@ -1,4 +1,10 @@
-package com.eversis.esa.geoss.personaldata.application.configuration.oauth2;
+package com.eversis.esa.geoss.common.security.oauth2.configuration;
+
+import com.eversis.esa.geoss.common.security.oauth2.ClaimAccessorGrantedAuthoritiesConverter;
+import com.eversis.esa.geoss.common.security.oauth2.JwtGrantedAuthoritiesConverter;
+import com.eversis.esa.geoss.common.security.oauth2.OidcGrantedAuthoritiesMapper;
+import com.eversis.esa.geoss.common.security.oauth2.OidcUserAuthorityGrantedAuthoritiesConverter;
+import com.eversis.esa.geoss.common.security.oauth2.properties.SecurityOauth2Properties;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
@@ -20,31 +26,9 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 /**
  * The type Open api oauth2 configuration.
  */
-@SecuritySchemes(
-        value = {
-                @SecurityScheme(
-                        name = "Authorization",
-                        type = SecuritySchemeType.OAUTH2,
-                        flows = @OAuthFlows(
-                                authorizationCode = @OAuthFlow(
-                                        authorizationUrl = "${openapi.oauth2.oauth-flow.authorizationUrl}",
-                                        tokenUrl = "${openapi.oauth2.oauth-flow.tokenUrl}",
-                                        refreshUrl = "${openapi.oauth2.oauth-flow.refreshUrl}",
-                                        scopes = {
-                                                @OAuthScope(name = "openid", description = "OpenID Connect"),
-                                                @OAuthScope(name = "profile",
-                                                            description = "OpenID Connect scope profile"),
-                                                @OAuthScope(name = "roles",
-                                                            description = "OpenID Connect scope for add user roles to "
-                                                                          + "the access token")
-                                        }
-                                ))
-                )
-        }
-)
+@ConditionalOnProperty(prefix = "spring.security.oauth2", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(SecurityOauth2Properties.class)
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = "spring.security.oauth2", name = "enabled", havingValue = "true")
 public class SecurityOauth2Configuration {
 
     /**
@@ -113,22 +97,5 @@ public class SecurityOauth2Configuration {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
-    }
-
-    /**
-     * Oidc logout success handler logout success handler.
-     *
-     * @param clientRegistrationRepository the client registration repository
-     * @param securityOauth2Properties the security oauth 2 properties
-     * @return the logout success handler
-     */
-    @Bean
-    LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository,
-            SecurityOauth2Properties securityOauth2Properties) {
-        OidcClientInitiatedLogoutSuccessHandler oidcClientInitiatedLogoutSuccessHandler
-                = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-        oidcClientInitiatedLogoutSuccessHandler.setPostLogoutRedirectUri(
-                securityOauth2Properties.getPostLogoutRedirectUri());
-        return oidcClientInitiatedLogoutSuccessHandler;
     }
 }
