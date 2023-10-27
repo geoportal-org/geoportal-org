@@ -4,8 +4,8 @@ services:
   geoss-contents:
     image: geoss-contents
     build:
-      context: ./geoss-contents
-      dockerfile: Dockerfile-local
+      context: .
+      dockerfile: /geoss-contents/Dockerfile-local
     container_name: geoss-contents
     deploy:
       resources:

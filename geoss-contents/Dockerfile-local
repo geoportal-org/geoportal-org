@@ -6,7 +6,8 @@ ENV GRADLE_USER_HOME=/opt/app/.gradle
 
 WORKDIR /opt/app
 
-COPY ./ ./
+COPY ./geoss-common ../geoss-common
+COPY ./geoss-contents ./
 
 RUN chmod u+x gradlew
 RUN ./gradlew --build-cache --no-daemon assemble
@@ -35,7 +36,7 @@ ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
 WORKDIR /opt/app
 
-ARG JAR_FILE=/opt/app/build/libs/geoss-contents-boot.jar
+ARG JAR_FILE=/opt/app/build/libs/geoss-contents-*-boot.jar
 COPY --from=builder ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
