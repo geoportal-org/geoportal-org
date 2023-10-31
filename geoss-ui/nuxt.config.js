@@ -37,6 +37,7 @@ export default {
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
         { src: '~/plugins/MatomoPlugin.js', ssr: false },
+        { src: './plugins/VueCarusel.js', mode: 'client' }
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components

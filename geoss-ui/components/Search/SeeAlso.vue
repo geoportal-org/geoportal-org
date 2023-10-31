@@ -25,24 +25,27 @@
                         <i>{{ item }}</i>
                     </div>
                 </div>
-                <div v-if="recentSeeAlsoRecommendations.length" class="see-also__scrollable-track recommendations">
-                    <b class="see-also__title recommendations" data-tutorial-tag="see-also-recommendations">{{
-                        $tc('searchBar.recommendationsForYou') }}</b>
-                    <div class="see-also__slider-wrapper">
-                        <!-- <Carousel class="see-also__slider"
-                            :class="{ 'no-arrows': (this.recentSeeAlsoRecommendations.length < 4) }" :scrollPerPage="false"
-                            :mouse-drag="true" :paginationEnabled="false" :per-page="3" :navigationNextLabel="''"
-                            :navigationPrevLabel="''" :navigationEnabled="true">
-                            <Slide v-for="(item, index) in recentSeeAlsoRecommendations" :key="index"
-                                class="see-also__slide">
-                                <div @click="selectRecommendation(item)">
-                                    <b class="see-also__slide--title">{{ item.title }}</b>
-                                    <p class="see-also__slide--description">{{ item.description }}</p>
-                                </div>
-                            </Slide>
-                        </Carousel> -->
+                <client-only>
+                    <div v-if="recentSeeAlsoRecommendations.length" class="see-also__scrollable-track recommendations">
+                        <b class="see-also__title recommendations" data-tutorial-tag="see-also-recommendations">{{
+                            $tc('searchBar.recommendationsForYou') }}</b>
+                        <div class="see-also__slider-wrapper">
+                            <carousel class="see-also__slider"
+                                :class="{ 'no-arrows': (this.recentSeeAlsoRecommendations.length < 4) }"
+                                :scrollPerPage="false" :mouse-drag="false" :paginationEnabled="false" :per-page="3"
+                                :navigationNextLabel="''" :navigationPrevLabel="''" :navigationEnabled="true"
+                                :autoplay="false" :loop="true">
+                                <slide v-for="(item, index) in recentSeeAlsoRecommendations" :key="index"
+                                    class="see-also__slide">
+                                    <div @click="selectRecommendation(item)">
+                                        <b class="see-also__slide--title">{{ item.title }}</b>
+                                        <p class="see-also__slide--description">{{ item.description }}</p>
+                                    </div>
+                                </slide>
+                            </carousel>
+                        </div>
                     </div>
-                </div>
+                </client-only>
                 <button class="see-also__scroll-button scroll-right" :class="{ disabled: disableScrollRight }"
                     @mousedown="seeAlsoScroll('right')" @mouseleave="stopScroll()" @mouseup="stopScroll()"
                     @touchstart="seeAlsoScroll('right')" @touchend="stopScroll()" @touchcancel="stopScroll()"></button>
@@ -61,14 +64,11 @@ import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-ac
 import DraggableResizable from '@/components/DraggableResizable.vue';
 import { MapActions } from '@/store/map/map-actions';
 import TutorialTagsService from '@/services/tutorial-tags.service';
-// import { Carousel, Slide } from 'vue-carousel';
 import LogService from '@/services/log.service';
 
 @Component({
     components: {
-        DraggableResizable,
-        // Carousel,
-        // Slide
+        DraggableResizable
     }
 })
 export default class SeeAlsoComponent extends Vue {
@@ -386,59 +386,59 @@ export default class SeeAlsoComponent extends Vue {
         }
     }
 
-    // :deep(.see-also__slide) {
-    //     display: flex;
-    //     flex-direction: column;
-    //     color: white;
-    //     opacity: 0.8;
-    //     align-self: center;
+    ::v-deep .see-also__slide {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        opacity: 0.8;
+        align-self: center;
 
-    //     &:hover {
-    //         opacity: 1;
-    //         cursor: pointer;
-    //     }
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
 
-    //     &--title,
-    //     &--description {
-    //         display: -webkit-box;
-    //         -webkit-box-orient: vertical;
-    //         overflow: hidden;
-    //         text-overflow: ellipsis;
-    //         white-space: normal;
-    //     }
+        &--title,
+        &--description {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
 
-    //     &--title {
-    //         -webkit-line-clamp: 1;
-    //         margin-bottom: 5px;
-    //     }
+        &--title {
+            -webkit-line-clamp: 1;
+            margin-bottom: 5px;
+        }
 
-    //     &--description {
-    //         -webkit-line-clamp: 2;
+        &--description {
+            -webkit-line-clamp: 2;
 
-    //         @media (max-width: $breakpoint-xl) {
-    //             -webkit-line-clamp: 1;
-    //         }
-    //     }
-    // }
+            @media (max-width: $breakpoint-xl) {
+                -webkit-line-clamp: 1;
+            }
+        }
+    }
 
     @media (max-width: $breakpoint-xl) {
 
-        // :deep(.VueCarousel-navigation-button) {
+        ::v-deep .VueCarousel-navigation-button {
 
-        //     &:before,
-        //     &:after {
-        //         width: 11px;
-        //         height: 2px;
-        //     }
+            &:before,
+            &:after {
+                width: 11px;
+                height: 2px;
+            }
 
-        //     &:before {
-        //         top: 19px;
-        //     }
+            &:before {
+                top: 19px;
+            }
 
-        //     &:after {
-        //         top: 25px;
-        //     }
-        // }
+            &:after {
+                top: 25px;
+            }
+        }
     }
 
     &__scrollable-wrapper {

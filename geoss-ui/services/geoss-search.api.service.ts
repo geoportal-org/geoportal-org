@@ -635,14 +635,14 @@ const GeossSearchApiService = {
                             result
                         )
                     })
-                // LogService.getSeeAlsoRecommendations(requestParams.st)
-                //     .catch((error: any) => error)
-                //     .then((result: any) => {
-                //         AppVueObj.app.$store.dispatch(
-                //             SearchActions.setRecentSeeAlsoRecommendations,
-                //             result
-                //         )
-                //     })
+                LogService.getSeeAlsoRecommendations(requestParams.st)
+                    .catch((error: any) => error)
+                    .then((result: any) => {
+                        AppVueObj.app.$store.dispatch(
+                            SearchActions.setRecentSeeAlsoRecommendations,
+                            result
+                        )
+                    })
             } else {
                 const sourceName: DataSource =
                     AppVueObj.app.$store.getters[SearchGetters.dataSource]
