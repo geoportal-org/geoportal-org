@@ -62,7 +62,8 @@ public class RecommendationsConfiguration {
                     }).toList();
             // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
-                    .flatMap(pathItem -> Stream.of(pathItem.getPost(), pathItem.getPut(), pathItem.getDelete()));
+                    .flatMap(pathItem -> Stream.of(pathItem.getPost(), pathItem.getPut(), pathItem.getPatch(),
+                            pathItem.getDelete()));
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();

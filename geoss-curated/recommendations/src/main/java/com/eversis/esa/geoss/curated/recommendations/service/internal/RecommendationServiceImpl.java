@@ -276,6 +276,19 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .toList();
     }
 
+    @Override
+    public Page<RecommendationModel> publishAll(Pageable pageable) {
+        final Page<Recommendation> recommendations = recommendationRepository.findAll(pageable);
+        final List<RecommendationModel> recommendationModels = recommendations.getContent().stream()
+                .map(recommendation -> conversionService.convert(recommendation, RecommendationModel.class))
+                .peek(recommendationModel -> {
+                    log.debug("recommendationModel:{}", recommendationModel);
+                    publish(recommendationModel);
+                })
+                .collect(Collectors.toList());
+        return new PageImpl<>(recommendationModels, pageable, recommendations.getTotalElements());
+    }
+
     private void publish(RecommendationModel recommendationModel) {
         if (recommendationModel != null) {
             applicationEventPublisher.publishEvent(recommendationModel);

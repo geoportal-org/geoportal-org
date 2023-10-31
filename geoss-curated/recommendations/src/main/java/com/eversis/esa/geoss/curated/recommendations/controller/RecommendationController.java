@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -181,6 +182,23 @@ public class RecommendationController {
     void removeRecommendedEntity(
             @PathVariable long recommendationId, @PathVariable long entityId) {
         recommendationService.removeEntity(recommendationId, entityId);
+    }
+
+    /**
+     * Reindex recommendations.
+     *
+     * @param pageable the pageable
+     * @return the paged model
+     */
+    @PreAuthorize("hasAnyRole('RECOMMENDATION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PatchMapping
+    PagedModel<EntityModel<RecommendationModel>> publishRecommendations(
+            @ParameterObject @PageableDefault Pageable pageable) {
+        log.debug("Publish recommendations pageable: {}", pageable);
+        Page<RecommendationModel> allRecommendations = recommendationService.publishAll(pageable);
+        return pageMapper.toPagedModel(allRecommendations, RecommendationModel.class, this::recommendationLinks,
+                this::recommendationLinks);
     }
 
     private List<Link> recommendationLinks(RecommendationModel recommendationModel) {

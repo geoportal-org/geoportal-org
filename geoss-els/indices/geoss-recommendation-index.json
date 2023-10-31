@@ -74,7 +74,7 @@
             },
             "entities": {
                 "properties": {
-                    "title": {
+                    "name": {
                         "type": "text"
                     },
                     "description": {

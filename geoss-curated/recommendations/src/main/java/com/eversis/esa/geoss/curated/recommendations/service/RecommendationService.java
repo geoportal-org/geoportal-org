@@ -105,4 +105,12 @@ public interface RecommendationService {
      * @return the data sources codes
      */
     List<String> getDataSourcesCodes();
+
+    /**
+     * Publish all page.
+     *
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<RecommendationModel> publishAll(Pageable pageable);
 }
