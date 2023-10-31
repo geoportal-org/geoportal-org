@@ -469,15 +469,21 @@ const LogService: any = {
         }),
 
     getSeeAlsoRecommendations: (queryString: string) =>
-        new Promise((resolve, reject) => {
-            const recommendationsdUrl = `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/recommendations?st=${queryString}${UtilsService.getAccessKeyString()}`
-            makeRequest('get', recommendationsdUrl, null, true, null, true)
-                .then((data: any) => {
-                    resolve(data)
-                })
-                .catch((error: any) => {
-                    reject(error)
-                })
+        new Promise((resolve) => {
+            const limit = 10;
+            const url = `${geossSearch.recommendations}?st=${queryString}&ct=${limit}`
+            apiClient.$get(url, {
+                headers: {
+                    Authorization: '',
+                },
+            })
+            .then((recommendations: Array<string>) => {
+                resolve(recommendations)
+            })
+            .catch(() => {
+                console.log('Error while getting RECOMMENDATIONS in getSeeAlsoRecommendations()');
+                resolve([])
+            })
         }),
 
     async getAllSuggestions(
