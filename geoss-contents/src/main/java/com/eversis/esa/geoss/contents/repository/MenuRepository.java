@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.contents.repository;
 
 import com.eversis.esa.geoss.contents.domain.Menu;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * The interface Menu repository.
  */
 @RepositoryRestResource(collectionResourceRel = "menu", path = "menu")
+@Tag(name = "manus")
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     /**

@@ -33,25 +33,25 @@ public class ApiSecurityConfiguration {
                 http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry
                             .requestMatchers(HttpMethod.GET, basePath + "/content/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, basePath + "/content/**").hasAnyRole("content_writer")
-                            .requestMatchers(HttpMethod.PUT, basePath + "/content/**").hasAnyRole("content_writer")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/content/**").hasAnyRole("content_remover")
+                            .requestMatchers(HttpMethod.POST, basePath + "/content/**").hasAnyRole("CONTENT_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/content/**").hasAnyRole("CONTENT_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/content/**").hasAnyRole("CONTENT_REMOVER")
                             .requestMatchers(HttpMethod.GET, basePath + "/document/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, basePath + "/document/**").hasAnyRole("file_writer")
-                            .requestMatchers(HttpMethod.PUT, basePath + "/document/**").hasAnyRole("file_writer")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/document/**").hasAnyRole("file_remover")
+                            .requestMatchers(HttpMethod.POST, basePath + "/document/**").hasAnyRole("FILE_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/document/**").hasAnyRole("FILE_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/document/**").hasAnyRole("FILE_REMOVER")
                             .requestMatchers(HttpMethod.GET, basePath + "/folder/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, basePath + "/folder/**").hasAnyRole("directory_writer")
-                            .requestMatchers(HttpMethod.PUT, basePath + "/folder/**").hasAnyRole("directory_writer")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/folder/**").hasAnyRole("directory_remover")
+                            .requestMatchers(HttpMethod.POST, basePath + "/folder/**").hasAnyRole("DIRECTORY_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/folder/**").hasAnyRole("DIRECTORY_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/folder/**").hasAnyRole("DIRECTORY_REMOVER")
                             .requestMatchers(HttpMethod.GET, basePath + "/menu/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, basePath + "/menu/**").hasAnyRole("menu_writer")
-                            .requestMatchers(HttpMethod.PUT, basePath + "/menu/**").hasAnyRole("menu_writer")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/menu/**").hasAnyRole("menu_remover")
+                            .requestMatchers(HttpMethod.POST, basePath + "/menu/**").hasAnyRole("MENU_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/menu/**").hasAnyRole("MENU_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/menu/**").hasAnyRole("MENU_REMOVER")
                             .requestMatchers(HttpMethod.GET, basePath + "/page/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, basePath + "/page/**").hasAnyRole("page_writer")
-                            .requestMatchers(HttpMethod.PUT, basePath + "/page/**").hasAnyRole("page_writer")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/page/**").hasAnyRole("page_remover");
+                            .requestMatchers(HttpMethod.POST, basePath + "/page/**").hasAnyRole("PAGE_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/page/**").hasAnyRole("PAGE_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/page/**").hasAnyRole("PAGE_REMOVER");
                     authorizationManagerRequestMatcherRegistry
                             .anyRequest().authenticated();
                 });

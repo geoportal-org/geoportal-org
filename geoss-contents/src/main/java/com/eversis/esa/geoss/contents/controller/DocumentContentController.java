@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.contents.controller;
 
 import com.eversis.esa.geoss.contents.service.RepositoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/rest/document")
+@Tag(name = "documents")
 public class DocumentContentController {
 
     private final RepositoryService repositoryService;

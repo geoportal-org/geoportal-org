@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.contents.controller;
 import com.eversis.esa.geoss.contents.domain.Folder;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
@@ -27,6 +28,7 @@ import java.util.List;
 @Log4j2
 @RepositoryRestController("/folder")
 @ResponseBody
+@Tag(name = "folders")
 public class FolderController {
 
     private final RepositoryService repositoryService;

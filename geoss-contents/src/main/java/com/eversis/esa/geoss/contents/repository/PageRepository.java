@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.contents.repository;
 
 import com.eversis.esa.geoss.contents.domain.Page;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,6 +17,7 @@ import java.util.List;
  * The interface Page repository.
  */
 @RepositoryRestResource(collectionResourceRel = "page", path = "page")
+@Tag(name = "pages")
 public interface PageRepository extends JpaRepository<Page, Long> {
 
     /**

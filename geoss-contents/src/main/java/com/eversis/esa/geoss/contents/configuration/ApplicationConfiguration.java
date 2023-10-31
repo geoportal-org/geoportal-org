@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @EnableAsync
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class ApplicationConfiguration {
 
     /**
