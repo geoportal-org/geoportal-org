@@ -18,7 +18,7 @@ import java.util.List;
  * The interface Content repository.
  */
 @RepositoryRestResource(collectionResourceRel = "content", path = "content")
-@Tag(name = "contnts")
+@Tag(name = "contents")
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
     /**

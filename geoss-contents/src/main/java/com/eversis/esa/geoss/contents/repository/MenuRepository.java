@@ -13,7 +13,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * The interface Menu repository.
  */
 @RepositoryRestResource(collectionResourceRel = "menu", path = "menu")
-@Tag(name = "manus")
+@Tag(name = "menus")
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     /**

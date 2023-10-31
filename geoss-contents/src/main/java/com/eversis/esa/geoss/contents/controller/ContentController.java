@@ -19,7 +19,7 @@ import java.util.List;
 @Log4j2
 @RepositoryRestController("/content")
 @ResponseBody
-@Tag(name = "contnts")
+@Tag(name = "contents")
 public class ContentController {
 
     private final ContentService contentService;

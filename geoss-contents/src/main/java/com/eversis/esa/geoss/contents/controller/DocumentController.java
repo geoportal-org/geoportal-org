@@ -30,7 +30,7 @@ import java.util.List;
 @Log4j2
 @RepositoryRestController("/document")
 @ResponseBody
-@Tag(name = "dcocuments")
+@Tag(name = "documents")
 public class DocumentController {
 
     private final RepositoryService repositoryService;
