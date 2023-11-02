@@ -18,7 +18,7 @@ import jakarta.annotation.Resource;
 @EnableConfigurationProperties({
         RepositoryProperties.class
 })
-@EntityScan
+@EntityScan("com.eversis.esa.geoss.contents.domain")
 public class GeossContentsApplication implements CommandLineRunner {
 
     /**
