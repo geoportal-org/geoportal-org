@@ -7,7 +7,7 @@
     "defaultSignatureAlgorithm": "RS256",
     "revokeRefreshToken": false,
     "refreshTokenMaxReuse": 0,
-    "accessTokenLifespan": 300,
+    "accessTokenLifespan": 1800,
     "accessTokenLifespanForImplicitFlow": 900,
     "ssoSessionIdleTimeout": 1800,
     "ssoSessionMaxLifespan": 36000,
@@ -496,6 +496,15 @@
             ],
             "geoss-personaldata": [
                 {
+                    "id": "3994f375-c89c-48f5-b1be-6e2c2dc8b707",
+                    "name": "saved_runs_manager",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
                     "id": "23bb9774-1fd4-4a8c-976d-c3e91a82c32a",
                     "name": "comment_writer",
                     "description": "",
@@ -516,6 +525,15 @@
                 {
                     "id": "e4de663b-7c0d-4491-a9d6-23ddb4a9dd46",
                     "name": "survey_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "edc5cafc-fdcc-4136-9c87-f0112e348363",
+                    "name": "user_settings_manager",
                     "description": "",
                     "composite": false,
                     "clientRole": true,
@@ -550,6 +568,15 @@
                     "attributes": {}
                 },
                 {
+                    "id": "e3a80a7f-d556-4c16-9c77-6ce61c3ac81b",
+                    "name": "saved_runs_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
                     "id": "48bf4314-3f53-419b-a04f-db42ddf3ac49",
                     "name": "saved_searches_reader",
                     "description": "",
@@ -561,6 +588,15 @@
                 {
                     "id": "aafb72dc-e3b6-46f6-bb15-c3a8a013b1ff",
                     "name": "saved_searches_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "3b4562c5-a2ba-4526-bdcb-bc3320361223",
+                    "name": "user_settings_reader",
                     "description": "",
                     "composite": false,
                     "clientRole": true,
@@ -597,6 +633,24 @@
                 {
                     "id": "792a727d-dd0e-495a-a01a-24c9a1ab0acc",
                     "name": "highlighted_searches_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "fbf2f436-0650-425b-b730-9b20db0bf71e",
+                    "name": "user_settings_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "3c6f919e-7afa-4fa9-8c98-c58edc86f9e8",
+                    "attributes": {}
+                },
+                {
+                    "id": "7cca6192-e199-4e02-9370-a3424354869c",
+                    "name": "saved_runs_remover",
                     "description": "",
                     "composite": false,
                     "clientRole": true,
@@ -1358,9 +1412,9 @@
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
-        "totpAppMicrosoftAuthenticatorName",
         "totpAppGoogleName",
-        "totpAppFreeOTPName"
+        "totpAppFreeOTPName",
+        "totpAppMicrosoftAuthenticatorName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
@@ -2939,6 +2993,7 @@
     "browserSecurityHeaders": {
         "contentSecurityPolicyReportOnly": "",
         "xContentTypeOptions": "nosniff",
+        "referrerPolicy": "no-referrer",
         "xRobotsTag": "none",
         "xFrameOptions": "SAMEORIGIN",
         "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
@@ -2982,14 +3037,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
+                        "saml-user-property-mapper",
+                        "saml-role-list-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-usermodel-attribute-mapper",
+                        "oidc-address-mapper",
                         "saml-user-attribute-mapper",
                         "oidc-full-name-mapper",
-                        "oidc-address-mapper",
-                        "saml-role-list-mapper",
-                        "saml-user-property-mapper",
-                        "oidc-usermodel-property-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-usermodel-attribute-mapper"
+                        "oidc-usermodel-property-mapper"
                     ]
                 }
             },
@@ -3021,14 +3076,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "saml-user-property-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
                         "oidc-full-name-mapper",
                         "oidc-usermodel-property-mapper",
+                        "saml-user-property-mapper",
                         "saml-role-list-mapper",
                         "oidc-usermodel-attribute-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "saml-user-attribute-mapper",
-                        "oidc-address-mapper"
+                        "oidc-address-mapper",
+                        "saml-user-attribute-mapper"
                     ]
                 }
             },
@@ -3784,17 +3839,22 @@
         "clientOfflineSessionMaxLifespan": "0",
         "oauth2DevicePollingInterval": "5",
         "clientSessionIdleTimeout": "0",
+        "actionTokenGeneratedByUserLifespan-execute-actions": "",
+        "actionTokenGeneratedByUserLifespan-verify-email": "",
         "clientOfflineSessionIdleTimeout": "0",
+        "actionTokenGeneratedByUserLifespan-reset-credentials": "",
         "cibaInterval": "5",
         "realmReusableOtpCode": "false",
         "cibaExpiresIn": "120",
         "oauth2DeviceCodeLifespan": "600",
+        "actionTokenGeneratedByUserLifespan-idp-verify-account-via-email": "",
         "parRequestUriLifespan": "60",
         "clientSessionMaxLifespan": "0",
         "frontendUrl": "",
-        "acr.loa.map": "{}"
+        "acr.loa.map": "{}",
+        "shortVerificationUri": ""
     },
-    "keycloakVersion": "22.0.4",
+    "keycloakVersion": "22.0.5",
     "userManagedAccessAllowed": false,
     "clientProfiles": {
         "profiles": []
