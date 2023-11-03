@@ -22,6 +22,7 @@ module geoss.personaldata.profile {
     requires spring.data.jpa;
     requires spring.data.rest.core;
     requires spring.hateoas;
+    requires spring.security.core;
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;

@@ -56,11 +56,10 @@ public class ProfileConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("comments")) {
+                        if (tags.contains("comments") || tags.contains("settings")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }
-
                 }
             });
         };

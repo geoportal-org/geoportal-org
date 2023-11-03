@@ -1,6 +1,6 @@
-package com.eversis.esa.geoss.personaldata.run.event;
+package com.eversis.esa.geoss.personaldata.profile.event;
 
-import com.eversis.esa.geoss.personaldata.run.domain.SavedRun;
+import com.eversis.esa.geoss.personaldata.profile.domain.Setting;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,45 +13,45 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
- * The type Saved run repository event.
+ * The type Setting repository event handler.
  */
 @Log4j2
 @RequiredArgsConstructor
 @Component
 @RepositoryEventHandler
-public class SavedRunRepositoryEventHandler {
+public class SettingRepositoryEventHandler {
 
     /**
      * Handle before create.
      *
-     * @param savedRun the saved run
+     * @param setting the setting
      */
     @HandleBeforeCreate
-    void handleBeforeCreate(final SavedRun savedRun) {
-        log.debug("savedRun:{}", savedRun);
+    void handleBeforeCreate(final Setting setting) {
+        log.debug("setting:{}", setting);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        savedRun.setUser(userName);
+        setting.setUser(userName);
     }
 
     /**
      * Handle before save.
      *
-     * @param savedRun the saved run
+     * @param setting the setting
      */
-    @PreAuthorize("#savedRun?.user == authentication.name")
+    @PreAuthorize("#setting?.user == authentication.name")
     @HandleBeforeSave
-    void handleBeforeSave(final SavedRun savedRun) {
-        log.debug("savedRun:{}", savedRun);
+    void handleBeforeSave(final Setting setting) {
+        log.debug("setting:{}", setting);
     }
 
     /**
      * Handle before delete.
      *
-     * @param savedRun the saved run
+     * @param setting the setting
      */
-    @PreAuthorize("#savedRun?.user == authentication.name or hasAnyRole('SAVED_RUNS_REMOVER', 'ADMIN')")
+    @PreAuthorize("#setting?.user == authentication.name or hasAnyRole('USER_SETTINGS_REMOVER', 'ADMIN')")
     @HandleBeforeDelete
-    void handleBeforeDelete(final SavedRun savedRun) {
-        log.debug("savedRun:{}", savedRun);
+    void handleBeforeDelete(final Setting setting) {
+        log.debug("setting:{}", setting);
     }
 }
