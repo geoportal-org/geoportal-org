@@ -53,6 +53,24 @@ public class ApiSecurityConfiguration {
                             .requestMatchers(basePath + "/highlighted-searches/**")
                             .hasAnyRole("HIGHLIGHTED_SEARCHES_WRITER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/saved-runs/search/current")
+                            .hasAnyRole("SAVED_RUNS_MANAGER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/saved-runs/search/**")
+                            .hasAnyRole("SAVED_RUNS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/saved-runs")
+                            .hasAnyRole("SAVED_RUNS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/saved-runs/**")
+                            .hasAnyRole("SAVED_RUNS_MANAGER", "SAVED_RUNS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/saved-runs/**")
+                            .hasAnyRole("SAVED_RUNS_MANAGER", "SAVED_RUNS_REMOVER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(basePath + "/saved-runs/**")
+                            .hasAnyRole("SAVED_RUNS_MANAGER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
                             .requestMatchers(HttpMethod.GET, basePath + "/saved-searches/search/current")
                             .hasAnyRole("SAVED_SEARCHES_MANAGER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
