@@ -98,6 +98,24 @@ public class ApiSecurityConfiguration {
                             .requestMatchers(HttpMethod.POST, basePath + "/surveys/**")
                             .permitAll();
                     authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/settings/search/current")
+                            .hasAnyRole("USER_SETTINGS_MANAGER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/settings/search/**")
+                            .hasAnyRole("USER_SETTINGS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/settings")
+                            .hasAnyRole("USER_SETTINGS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/settings/**")
+                            .hasAnyRole("USER_SETTINGS_MANAGER", "USER_SETTINGS_READER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/settings/**")
+                            .hasAnyRole("USER_SETTINGS_MANAGER", "USER_SETTINGS_REMOVER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(basePath + "/settings/**")
+                            .hasAnyRole("USER_SETTINGS_MANAGER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
                             .anyRequest().authenticated();
                 });
             } catch (Exception e) {
