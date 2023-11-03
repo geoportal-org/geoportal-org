@@ -41,6 +41,6 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
      * @param pageable the pageable
      * @return the page
      */
-    Page<Folder> findByParentFolderId(@Param("parentFolderId") String parentFolderId, Pageable pageable);
+    Page<Folder> findByParentFolderId(@Param("parentFolderId") Long parentFolderId, Pageable pageable);
 
 }

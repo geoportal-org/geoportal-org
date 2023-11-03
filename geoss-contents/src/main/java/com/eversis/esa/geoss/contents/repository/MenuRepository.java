@@ -32,7 +32,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      * @param pageable the pageable
      * @return the page
      */
-    Page<Menu> findByParentMenuId(@Param("parentMenuId") String parentMenuId, Pageable pageable);
+    Page<Menu> findByParentMenuId(@Param("parentMenuId") Long parentMenuId, Pageable pageable);
 
     /**
      * Find by level id page.
@@ -41,6 +41,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      * @param pageable the pageable
      * @return the page
      */
-    Page<Menu> findByLevelId(@Param("levelId") String levelId, Pageable pageable);
+    Page<Menu> findByLevelId(@Param("levelId") Long levelId, Pageable pageable);
 
 }

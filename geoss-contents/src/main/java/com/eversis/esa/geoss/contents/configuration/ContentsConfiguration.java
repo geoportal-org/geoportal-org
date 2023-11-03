@@ -1,13 +1,22 @@
 package com.eversis.esa.geoss.contents.configuration;
 
+import com.eversis.esa.geoss.contents.domain.Document;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.MapSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.core.mapping.ExposureConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +67,7 @@ public class ContentsConfiguration {
             });
             // add schemas
             final StringSchema stringSchema = new StringSchema();
-            final List<String> locales = List.of("en", "es");
+            final List<String> locales = List.of("en", "es", "fr", "pl", "ru", "zh");
 
             MapSchema contentLocalizedTitleSchema = new MapSchema();
             contentLocalizedTitleSchema.setProperties(
@@ -104,6 +113,36 @@ public class ContentsConfiguration {
             pageLocalizedDescriptionSchema.setExample(
                     locales.stream().collect(Collectors.toMap(k -> k, v -> "Lorem ipsum dolor sit amet")));
             openApi.schema("PageLocalizedDescription", pageLocalizedDescriptionSchema);
+
+            StringSchema binaryStringSchema = new StringSchema();
+            binaryStringSchema.format("binary");
+            StringSchema modelStringSchema = new StringSchema();
+            modelStringSchema.setExample("{\"title\":\"example\",\"fileName\":\"example.png\",\"extension\":\"png\""
+                                         + ",\"path\":\"0\",\"folderId\":0}");
+            ArraySchema filesSchema = new ArraySchema();
+            filesSchema.items(binaryStringSchema);
+            ObjectSchema documentRequestBodySchema = new ObjectSchema();
+            documentRequestBodySchema.addProperty("files", filesSchema);
+            documentRequestBodySchema.addProperty("model", modelStringSchema);
+            openApi.schema("DocumentRequestBody", documentRequestBodySchema);
+        };
+    }
+
+    /**
+     * Contents repository rest configurer repository rest configurer.
+     *
+     * @return the repository rest configurer
+     */
+    @Bean
+    RepositoryRestConfigurer contentsRepositoryRestConfigurer() {
+        return new RepositoryRestConfigurer() {
+            @Override
+            public void configureRepositoryRestConfiguration(RepositoryRestConfiguration repositoryRestConfiguration,
+                    CorsRegistry cors) {
+                ExposureConfiguration exposureConfiguration = repositoryRestConfiguration.getExposureConfiguration();
+                exposureConfiguration.forDomainType(Document.class)
+                        .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(HttpMethod.POST));
+            }
         };
     }
 }

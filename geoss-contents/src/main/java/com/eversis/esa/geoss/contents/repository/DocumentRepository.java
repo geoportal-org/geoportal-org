@@ -50,6 +50,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
      * @param pageable the pageable
      * @return the page
      */
-    Page<Document> findByFolderId(@Param("folderId") String folderId, Pageable pageable);
+    Page<Document> findByFolderId(@Param("folderId") Long folderId, Pageable pageable);
 
 }

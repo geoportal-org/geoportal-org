@@ -5,6 +5,11 @@ import com.eversis.esa.geoss.contents.service.RepositoryService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -12,6 +17,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,9 +62,18 @@ public class DocumentController {
      * @param model the model
      * @return the entity model
      */
-    @PostMapping("")
+    @RequestBody(
+            content = @Content(
+                    schema = @Schema(ref = AnnotationsUtils.COMPONENTS_REF + "DocumentRequestBody"),
+                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+            )
+    )
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    EntityModel<Document> saveDocument(@RequestParam("files") MultipartFile[] files,
+    EntityModel<Document> saveDocument(
+            @Parameter(hidden = true)
+            @RequestParam("files") MultipartFile[] files,
+            @Parameter(hidden = true)
             @RequestParam("model") String model) {
         Document savedDocument;
         ObjectMapper mapper = new ObjectMapper();

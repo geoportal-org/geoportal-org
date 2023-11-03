@@ -15,6 +15,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
@@ -84,12 +85,15 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void removeFolder(Long id) {
         log.info("Removing folder with id {}", id);
-        Folder removedfolder = folderRepository.getById(id);
-        Path path = Paths.get(removedfolder.getPath());
-        Path removeDirectory = rootDirectory.resolve(path).resolve(String.valueOf(id));
-        FileSystemUtils.deleteRecursively(removeDirectory.toFile());
-        deleteDocumentsAndFoldersRecursively(id);
-        log.info("Removed folder at path {}", removeDirectory);
+        folderRepository.findById(id)
+                .map(removedfolder -> {
+                    Path path = Paths.get(removedfolder.getPath());
+                    Path removeDirectory = rootDirectory.resolve(path).resolve(String.valueOf(id));
+                    FileSystemUtils.deleteRecursively(removeDirectory.toFile());
+                    deleteDocumentsAndFoldersRecursively(id);
+                    log.info("Removed folder at path {}", removeDirectory);
+                    return removedfolder;
+                }).orElseThrow(() -> new ResourceNotFoundException("Folder not found"));
     }
 
     @Override
@@ -99,11 +103,11 @@ public class RepositoryServiceImpl implements RepositoryService {
         if (folder != null) {
             log.debug("folder: {}", folder);
             Pageable paging = PageRequest.of(0, Integer.MAX_VALUE);
-            Page<Folder> folderPage = folderRepository.findByParentFolderId(folderId.toString(), paging);
+            Page<Folder> folderPage = folderRepository.findByParentFolderId(folderId, paging);
             List<Folder> subFolders = folderPage.getContent();
             log.debug("subFolders: {}", subFolders);
             subFolders.forEach(subfolder -> deleteDocumentsAndFoldersRecursively(subfolder.getId()));
-            Page<Document> documentPage = documentRepository.findByFolderId(folderId.toString(), paging);
+            Page<Document> documentPage = documentRepository.findByFolderId(folderId, paging);
             List<Document> documents = documentPage.getContent();
             log.debug("documents: {}", documents);
             documents.forEach(document -> documentRepository.delete(document));
@@ -129,33 +133,38 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Override
     public void removeDocument(Long id) {
         log.info("Removing document with id {}", id);
-        Document document = documentRepository.getById(id);
-        Path path = Paths.get(document.getPath());
-        Path removePath = rootDirectory.resolve(path).resolve(document.getFileName());
-        FileSystemUtils.deleteRecursively(removePath.toFile());
-        documentRepository.deleteById(id);
-        log.info("Removed document at path {}", removePath);
+        documentRepository.findById(id)
+                .map(document -> {
+                    Path path = Paths.get(document.getPath());
+                    Path removePath = rootDirectory.resolve(path).resolve(document.getFileName());
+                    FileSystemUtils.deleteRecursively(removePath.toFile());
+                    documentRepository.deleteById(id);
+                    log.info("Removed document at path {}", removePath);
+                    return document;
+                }).orElseThrow(() -> new ResourceNotFoundException("Document not found"));
     }
 
     @Override
     public Resource getDocumentContent(Long id) {
         log.info("Getting document with id {}", id);
-        Document document = documentRepository.getById(id);
-        log.info("document {}", document);
-        try {
-            Path path = Paths.get(document.getPath());
-            Path filePath = rootDirectory.resolve(path).resolve(document.getFileName());
-            log.info("filePath {}", filePath);
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                log.info("resource {}", resource);
-                return resource;
-            } else {
-                throw new RuntimeException("Could not read the file!");
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
-        }
+        return documentRepository.findById(id)
+                .map(document -> {
+                    log.info("document {}", document);
+                    try {
+                        Path path = Paths.get(document.getPath());
+                        Path filePath = rootDirectory.resolve(path).resolve(document.getFileName());
+                        log.info("filePath {}", filePath);
+                        Resource resource = new UrlResource(filePath.toUri());
+                        if (resource.exists() || resource.isReadable()) {
+                            log.info("resource {}", resource);
+                            return resource;
+                        } else {
+                            throw new RuntimeException("Could not read the file!");
+                        }
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException("Error: " + e.getMessage());
+                    }
+                }).orElseThrow(() -> new ResourceNotFoundException("Document not found"));
     }
 
     @Override
@@ -163,7 +172,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         int page = 0;
         int size = Integer.MAX_VALUE;
         Pageable paging = PageRequest.of(page, size);
-        Page<Document> documentPage = documentRepository.findByFolderId(document.getFolderId().toString(), paging);
+        Page<Document> documentPage = documentRepository.findByFolderId(document.getFolderId(), paging);
         List<Document> documents = documentPage.getContent();
 
         boolean isFileNameNotUnique = documents.stream()
