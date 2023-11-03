@@ -258,6 +258,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                     if (!recommendation.getId().equals(recommendationId)) {
                         throw new ResourceNotFoundException("Recommendation not found");
                     }
+                    recommendation.removeRecommendedEntity(recommendedEntity);
                     recommendedEntityRepository.delete(recommendedEntity);
 
                     RecommendationModel recommendationResult = conversionService.convert(recommendation,

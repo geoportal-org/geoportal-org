@@ -12,6 +12,7 @@ java {
 configurations {
     configureEach {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'org.eclipse.angus', module: 'angus-mail'
     }
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -19,7 +20,6 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.eclipse.angus:jakarta.mail:1.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

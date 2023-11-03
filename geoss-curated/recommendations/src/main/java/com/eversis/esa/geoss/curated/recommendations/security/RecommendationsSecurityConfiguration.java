@@ -33,7 +33,7 @@ public class RecommendationsSecurityConfiguration {
             try {
                 http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(basePath + "/recommendations")
+                            .requestMatchers(basePath + "/recommendations/**")
                             // delegate authorization to method access-control
                             .permitAll();
                 });
