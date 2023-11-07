@@ -1188,7 +1188,8 @@
             "path": "/administrator",
             "attributes": {},
             "realmRoles": [
-                "admin"
+                "admin",
+                "worker_manager"
             ],
             "clientRoles": {
                 "geoss-contents": [
@@ -1247,6 +1248,8 @@
                 ],
                 "geoss-personaldata": [
                     "comment_writer",
+                    "user_settings_remover",
+                    "saved_runs_remover",
                     "survey_writer",
                     "survey_remover",
                     "highlighted_searches_reader",
@@ -1255,6 +1258,8 @@
                     "highlighted_searches_writer",
                     "saved_searches_remover",
                     "saved_searches_reader",
+                    "saved_runs_reader",
+                    "user_settings_reader",
                     "highlighted_searches_remover",
                     "comment_remover"
                 ]
@@ -1369,6 +1374,8 @@
                 ],
                 "geoss-personaldata": [
                     "highlighted_searches_creator",
+                    "saved_runs_manager",
+                    "user_settings_manager",
                     "saved_searches_manager"
                 ],
                 "geoss-curated": [
@@ -1412,9 +1419,9 @@
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
-        "totpAppGoogleName",
+        "totpAppMicrosoftAuthenticatorName",
         "totpAppFreeOTPName",
-        "totpAppMicrosoftAuthenticatorName"
+        "totpAppGoogleName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
@@ -3037,14 +3044,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "saml-user-property-mapper",
-                        "saml-role-list-mapper",
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-usermodel-attribute-mapper",
-                        "oidc-address-mapper",
                         "saml-user-attribute-mapper",
                         "oidc-full-name-mapper",
-                        "oidc-usermodel-property-mapper"
+                        "oidc-usermodel-attribute-mapper",
+                        "oidc-address-mapper",
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-usermodel-property-mapper",
+                        "saml-role-list-mapper",
+                        "saml-user-property-mapper"
                     ]
                 }
             },
@@ -3076,14 +3083,14 @@
                 "subComponents": {},
                 "config": {
                     "allowed-protocol-mapper-types": [
-                        "oidc-sha256-pairwise-sub-mapper",
-                        "oidc-full-name-mapper",
-                        "oidc-usermodel-property-mapper",
+                        "saml-user-attribute-mapper",
                         "saml-user-property-mapper",
+                        "oidc-address-mapper",
+                        "oidc-full-name-mapper",
                         "saml-role-list-mapper",
                         "oidc-usermodel-attribute-mapper",
-                        "oidc-address-mapper",
-                        "saml-user-attribute-mapper"
+                        "oidc-sha256-pairwise-sub-mapper",
+                        "oidc-usermodel-property-mapper"
                     ]
                 }
             },
