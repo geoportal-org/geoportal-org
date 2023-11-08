@@ -50,6 +50,7 @@ dependencies {
     compileOnly 'org.springframework:spring-jdbc'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
 }
@@ -57,6 +58,10 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-parameters'
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
+compileJava {
+    options.compilerArgs += ['-AaddGeneratedAnnotation=false']
 }
 
 checkstyle {

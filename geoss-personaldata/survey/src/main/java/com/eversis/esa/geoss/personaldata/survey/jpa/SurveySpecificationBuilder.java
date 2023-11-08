@@ -1,6 +1,8 @@
 package com.eversis.esa.geoss.personaldata.survey.jpa;
 
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable_;
 import com.eversis.esa.geoss.personaldata.survey.domain.Survey;
+import com.eversis.esa.geoss.personaldata.survey.domain.Survey_;
 import com.eversis.esa.geoss.personaldata.survey.search.SearchQuery;
 
 import lombok.extern.log4j.Log4j2;
@@ -53,7 +55,7 @@ public class SurveySpecificationBuilder {
         Specification<Survey> specification = null;
         for (SearchQuery searchQuery : searchQueries) {
             SearchCriteria criteria = new SearchCriteria();
-            criteria.setKey(searchQuery.key());
+            criteria.setKey(getPath(searchQuery.key()));
             criteria.setValue(searchQuery.value());
             criteria.setOperation(OPERATIONS.get(searchQuery.operator()));
             SearchLogical logical = (searchQuery.logical() != null) ? LOGICAL.get(searchQuery.logical()) : null;
@@ -85,5 +87,15 @@ public class SurveySpecificationBuilder {
             sb.append(searchQuery.value());
         }
         return sb.toString();
+    }
+
+    private String getPath(String key) {
+        return switch (key) {
+            case "createdBy" -> Survey_.AUDITABLE + "." + AuditableEmbeddable_.CREATED_BY;
+            case "createdOn" -> Survey_.AUDITABLE + "." + AuditableEmbeddable_.CREATED_DATE;
+            case "modifiedBy" -> Survey_.AUDITABLE + "." + AuditableEmbeddable_.LAST_MODIFIED_BY;
+            case "modifiedOn" -> Survey_.AUDITABLE + "." + AuditableEmbeddable_.LAST_MODIFIED_DATE;
+            default -> key;
+        };
     }
 }

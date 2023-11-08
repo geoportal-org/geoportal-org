@@ -59,10 +59,11 @@ public class SurveyController {
 
     /**
      * Search surveys using query languages. Query format: [field] [operator] [value]. Where [field] - survey field
-     * name, [value] - value to search, value with special characters should be in single quotes, [operator] can be one
-     * of: (gt|>) - greater than, (lt|<) - less than, (ge|>:) - greater than or equal, (le|<:) - less than or equal,
-     * (ne|!:) - not equal, : (eq|-) equal, (like|~) - like. Multiple query are supported with logical operators: and &,
-     * or |. e.g. from eq 'test@example.com' and classification like test
+     * name, [value] - value to search, value with special characters should be in single quotes, date should be in ISO
+     * format yyyy-MM-dd'T'HH:mm:ss.SSSXXX e.g. '2032-11-08T01:30:00.000Z', [operator] can be one of: (gt|>) - greater
+     * than, (lt|<) - less than, (ge|>:) - greater than or equal, (le|<:) - less than or equal, (ne|!:) - not equal, :
+     * (eq|-) equal, (like|~) - like. Multiple query are supported with logical operators: and &, or |. e.g. from eq
+     * 'test@example.com' and classification like test
      *
      * @param query the query
      * @param pageable the pageable
