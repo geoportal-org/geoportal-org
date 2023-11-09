@@ -22,11 +22,5 @@ RUN chmod +x /entrypoint.sh
 COPY --chown=elasticsearch  initialize_els.sh /initialize_els.sh
 RUN chmod +x /initialize_els.sh
 
-#HEALTHCHECK \
-#	--interval=30s \
-#	--start-period=30s \
-#	--timeout=1m \
-#CMD curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"' || exit 1
-
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["eswrapper"]
