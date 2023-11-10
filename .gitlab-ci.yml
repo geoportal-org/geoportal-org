@@ -553,7 +553,7 @@ dev_remove_all:
     - echo "Removing lan services and nfs data"
     - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm geoss && sudo rm -rf /nfs/data/* && docker system prune -f"
     - echo "Removing lan db persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
+    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/ && sudo mkdir mysql && sudo chown systemd-coredump:input /var/lib/mysql && sudo chmod 777 /var/lib/mysql"
     - echo "Removing lan elastic persistent data"
     - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
     - echo "Removing dev environment - COMPLETED"
