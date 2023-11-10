@@ -515,6 +515,54 @@ dev_deploy_to_lan:
     - /^release-.*/
 
 ########################################################################################################################
+#                                                      DEV REMOVAL                                                     #
+########################################################################################################################
+#                                Remove docker stack and all the data on persistent volumes                            #
+########################################################################################################################
+dev_remove_all:
+  stage: docker_stack_remove
+  image: debian:11.4
+  tags:
+    - geoss-runner-1
+  cache: { }
+  variables:
+    VAR_MANAGER_SSH_CONNECTION_DMZ: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
+    VAR_MANAGER_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
+    VAR_DATABASE_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_DATABASE_SERVER_LAN
+    VAR_ELASTIC_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_ELASTIC_SERVER_LAN
+    VAR_DOCKER_MANAGER_SERVER_DMZ: $DEV_DMZ_DOCKER_MANAGER_SERVER
+    VAR_DOCKER_MANAGER_SERVER_LAN: $DEV_LAN_DOCKER_MANAGER_SERVER
+    VAR_DOCKER_DATABASE_SERVER_LAN: $DEV_DOCKER_DATABASE_SERVER_LAN
+    VAR_DOCKER_ELASTIC_SERVER_LAN: $DEV_DOCKER_ELASTIC_SERVER_LAN
+    VAR_SSH_PORT: 22
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+    - eval $(ssh-agent -s)
+    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Removing dev environment";
+    - echo "Removing dmz services and data"
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm geoss && docker system prune -f"
+    - echo "Removing lan services and nfs data"
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm geoss && sudo rm -rf /nfs/data/* && docker system prune -f"
+    - echo "Removing lan db persistent data"
+    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
+    - echo "Removing lan elastic persistent data"
+    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
+    - echo "Removing dev environment - COMPLETED"
+  when: manual
+  only:
+    - develop
+    - /^release-.*/
+
+########################################################################################################################
 #                                                      UAT DEPLOY                                                      #
 ########################################################################################################################
 uat_deploy_to_dmz:
@@ -675,3 +723,4 @@ uat_remove_all:
   when: manual
   only:
     - uat
+    - /^release-.*/
