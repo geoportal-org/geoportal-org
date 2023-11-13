@@ -72,17 +72,16 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     public void indexEntryRelation(EntryRelation entryRelation) {
         log.info("Indexing entry relation {}", entryRelation);
 
-        resourceRepository.findByCode(entryRelation.getDestDataSource().getCode()).ifPresent(resourceEntryELK -> {
+        resourceRepository.findByCode(entryRelation.getId().getDestId()).ifPresent(resourceEntryELK -> {
             log.info("Child entry: {}", resourceEntryELK);
             Set<String> parentId = resourceEntryELK.getParentId();
-            parentId.add(entryRelation.getSrcDataSource().getCode());
+            parentId.add(entryRelation.getId().getSrcId());
             resourceEntryELK.setParentId(parentId);
             resourceRepository.save(resourceEntryELK);
         });
 
-        resourceRepository.findByCode(entryRelation.getSrcDataSource().getCode()).ifPresent(resourceEntryELK -> {
+        resourceRepository.findByCode(entryRelation.getId().getSrcId()).ifPresent(resourceEntryELK -> {
             log.info("Parent entry: {}", resourceEntryELK);
-            log.info(resourceEntryELK);
             resourceEntryELK.setHasChildren(true);
             Set<String> childrenTypes = resourceEntryELK.getChildrenTypes();
             childrenTypes.add(entryRelation.getDestType().getCode());
@@ -97,14 +96,14 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     public void removeEntryRelationFromIndex(EntryRelation entryRelation) {
         log.info("Removing entry relation {} from index", entryRelation);
 
-        resourceRepository.findByCode(entryRelation.getDestDataSource().getCode()).ifPresent(resourceEntryELK -> {
+        resourceRepository.findByCode(entryRelation.getId().getDestId()).ifPresent(resourceEntryELK -> {
             Set<String> parentId = resourceEntryELK.getParentId();
             parentId.remove(entryRelation.getSrcDataSource().getCode());
             resourceEntryELK.setParentId(parentId);
             resourceRepository.save(resourceEntryELK);
         });
 
-        resourceRepository.findByCode(entryRelation.getSrcDataSource().getCode()).ifPresent(resourceEntryELK -> {
+        resourceRepository.findByCode(entryRelation.getId().getSrcId()).ifPresent(resourceEntryELK -> {
             resourceEntryELK.setHasChildren(false);
             Set<String> childrenTypes = resourceEntryELK.getChildrenTypes();
             childrenTypes.remove(entryRelation.getDestType().getCode());
