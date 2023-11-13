@@ -17,7 +17,7 @@ module geoss.common {
 
     opens com.eversis.esa.geoss.common.exception;
     opens com.eversis.esa.geoss.common.constraintvalidators;
-    opens com.eversis.esa.geoss.common.domain to spring.core, org.hibernate.orm.core;
+    opens com.eversis.esa.geoss.common.domain;
     opens com.eversis.esa.geoss.common.hateoas to spring.core;
     opens com.eversis.esa.geoss.common.security.configuration to spring.core;
     opens com.eversis.esa.geoss.common.security.oauth2.configuration to spring.core;
