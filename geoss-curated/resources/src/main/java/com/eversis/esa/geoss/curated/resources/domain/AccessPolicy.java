@@ -51,7 +51,7 @@ public class AccessPolicy {
     /**
      * Instantiates a new Access policy.
      */
-    protected AccessPolicy() {
+    public AccessPolicy() {
         // required by JPA
     }
 

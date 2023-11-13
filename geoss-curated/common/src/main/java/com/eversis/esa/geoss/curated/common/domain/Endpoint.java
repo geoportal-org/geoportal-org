@@ -44,7 +44,7 @@ public class Endpoint {
     /**
      * Instantiates a new Endpoint.
      */
-    protected Endpoint() {
+    public Endpoint() {
         // required by JPA
     }
 

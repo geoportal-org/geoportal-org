@@ -51,7 +51,7 @@ public class Source {
     /**
      * Instantiates a new Source.
      */
-    protected Source() {
+    public Source() {
         // required by JPA
     }
 

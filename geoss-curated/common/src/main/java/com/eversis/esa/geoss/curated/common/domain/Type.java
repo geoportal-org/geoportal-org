@@ -51,7 +51,7 @@ public class Type {
     /**
      * Instantiates a new Type.
      */
-    protected Type() {
+    public Type() {
         // required by JPA
     }
 

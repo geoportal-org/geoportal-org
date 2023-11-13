@@ -43,7 +43,7 @@ public class DashboardContents {
     /**
      * Instantiates a new Dashboard contents.
      */
-    protected DashboardContents() {
+    public DashboardContents() {
         // required by JPA
     }
 

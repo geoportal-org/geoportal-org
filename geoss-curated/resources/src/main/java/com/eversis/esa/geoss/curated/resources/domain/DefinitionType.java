@@ -48,7 +48,7 @@ public class DefinitionType {
     /**
      * Instantiates a new Definition type.
      */
-    protected DefinitionType() {
+    public DefinitionType() {
         // required by JPA
     }
 

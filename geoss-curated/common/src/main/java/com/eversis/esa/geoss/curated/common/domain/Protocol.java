@@ -45,7 +45,7 @@ public class Protocol {
     /**
      * Instantiates a new Protocol.
      */
-    protected Protocol() {
+    public Protocol() {
         // required by JPA
     }
 
