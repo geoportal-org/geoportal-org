@@ -1,9 +1,8 @@
-module geoss.curated.resources {
-    exports com.eversis.esa.geoss.curated.resources.configuration to spring.beans, spring.boot, spring.context;
-    exports com.eversis.esa.geoss.curated.resources.domain;
-    exports com.eversis.esa.geoss.curated.resources.model;
-    exports com.eversis.esa.geoss.curated.resources.service;
-    exports com.eversis.esa.geoss.curated.resources.repository;
+module geoss.curated.elasticsearch {
+    exports com.eversis.esa.geoss.curated.elasticsearch.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.curated.elasticsearch.model;
+    exports com.eversis.esa.geoss.curated.elasticsearch.service;
+    exports com.eversis.esa.geoss.curated.elasticsearch.repository;
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
@@ -13,17 +12,21 @@ module geoss.curated.resources {
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
-    requires org.hibernate.orm.core;
     requires org.springdoc.openapi.common;
     requires spring.boot.autoconfigure;
     requires spring.boot;
     requires spring.context;
     requires spring.data.commons;
-    requires spring.data.jpa;
     requires spring.data.rest.webmvc;
     requires spring.security.core;
     requires spring.tx;
     requires spring.web;
     requires geoss.curated.common;
     requires spring.data.rest.core;
+    requires spring.data.elasticsearch;
+    requires geoss.curated.resources;
+    requires geoss.curated.relations;
+    requires geoss.curated.extensions;
+    requires geoss.curated.recommendations;
+
 }

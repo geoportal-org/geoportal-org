@@ -18,6 +18,7 @@ import jakarta.annotation.PostConstruct;
                 "com.eversis.esa.geoss.curated.elasticsearch.event",
                 "com.eversis.esa.geoss.curated.elasticsearch.mapper",
                 "com.eversis.esa.geoss.curated.elasticsearch.service.impl",
+                "com.eversis.esa.geoss.curated.elasticsearch.controller"
         }
 )
 @PropertySource("classpath:application-elasticsearch.properties")

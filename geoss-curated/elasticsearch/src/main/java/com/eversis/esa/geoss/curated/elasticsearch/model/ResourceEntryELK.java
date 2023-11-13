@@ -1,5 +1,10 @@
 package com.eversis.esa.geoss.curated.elasticsearch.model;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +13,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The type Resource entry elk.
@@ -74,11 +75,15 @@ public class ResourceEntryELK {
     private DashboardContentsELK dashboardContents;
 
     @Field(type = FieldType.Keyword, name = "parentId")
-    private List<String> parentId = new ArrayList<>();
+    private Set<String> parentId = Set.of();
 
     @Field(type = FieldType.Boolean, name = "hasChildren")
     private boolean hasChildren;
 
     @Field(type = FieldType.Keyword, name = "childrenTypes")
-    private String childrenTypes;
+    private Set<String> childrenTypes = Set.of();
+
+    @Field(type = FieldType.Object, name = "transferOptions")
+    private List<TransferOptionELK> transferOptions = new ArrayList<>();
+
 }

@@ -5,8 +5,11 @@ import com.eversis.esa.geoss.curated.elasticsearch.model.DashboardContentsELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.OrganisationELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.ResourceEntryELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.SourceELK;
+import com.eversis.esa.geoss.curated.elasticsearch.model.TransferOptionELK;
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
 
+import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
+import com.eversis.esa.geoss.curated.resources.repository.TransferOptionRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;
 import org.springframework.data.geo.Point;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The type Resource entry mapper.
@@ -21,6 +25,12 @@ import java.util.List;
 @Log4j2
 @Component
 public class ResourceEntryMapper {
+
+    private final TransferOptionRepository transferOptionRepository;
+
+    public ResourceEntryMapper(TransferOptionRepository transferOptionRepository) {
+        this.transferOptionRepository = transferOptionRepository;
+    }
 
     /**
      * Map to document resource entry elk.
@@ -96,7 +106,29 @@ public class ResourceEntryMapper {
             );
         }
 
+        Set<TransferOption> transferOptions = transferOptionRepository.findByEntry(entry);
+        if (transferOptions != null && !transferOptions.isEmpty()) {
+            List<TransferOptionELK> transferOptionELKList = new ArrayList<>();
+            for (TransferOption transferOption : transferOptions) {
+                TransferOptionELK transferOptionELK = mapTransferOption(transferOption);
+                transferOptionELKList.add(transferOptionELK);
+            }
+            resourceEntryELK.setTransferOptions(transferOptionELKList);
+        }
+
         return resourceEntryELK;
+    }
+
+    private TransferOptionELK mapTransferOption(TransferOption transferOption) {
+        TransferOptionELK transferOptionELK = new TransferOptionELK();
+        transferOptionELK.setId(String.valueOf(transferOption.getId()));
+        transferOptionELK.setName(transferOption.getName());
+        transferOptionELK.setDescription(transferOption.getDescription());
+        transferOptionELK.setTitle(transferOption.getTitle());
+        transferOptionELK.setProtocol(transferOption.getProtocol().getValue());
+        transferOptionELK.setUrl(transferOption.getEndpoint().getUrl());
+        transferOptionELK.setUrlType(transferOption.getEndpoint().getUrlType());
+        return transferOptionELK;
     }
 
     private List<String> parseKeywords(String keywordsString) {

@@ -1,5 +1,6 @@
 module geoss.curated.relations {
     exports com.eversis.esa.geoss.curated.relations.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.curated.relations.domain;
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;

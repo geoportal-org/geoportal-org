@@ -2,23 +2,22 @@ package com.eversis.esa.geoss.curated.elasticsearch.repository;
 
 import java.util.Optional;
 
-import com.eversis.esa.geoss.curated.elasticsearch.model.ResourceEntryELK;
-
+import com.eversis.esa.geoss.curated.elasticsearch.model.EntryExtensionELK;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * The interface Resource repository.
+ * The interface Extension repository.
  */
 @Repository
-public interface ResourceRepository extends ElasticsearchRepository<ResourceEntryELK, String> {
+public interface ExtensionRepository extends ElasticsearchRepository<EntryExtensionELK, String> {
 
     /**
-     * Find by code optional.
+     * Find by entry code optional.
      *
      * @param code the code
      * @return the optional
      */
-    Optional<ResourceEntryELK> findByCode(String code);
+    Optional<EntryExtensionELK> findByEntryCode(String code);
 
 }

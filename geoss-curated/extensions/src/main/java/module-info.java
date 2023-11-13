@@ -1,5 +1,7 @@
 module geoss.curated.extensions {
     exports com.eversis.esa.geoss.curated.extensions.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.curated.extensions.domain;
+    exports com.eversis.esa.geoss.curated.extensions.repository;
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
@@ -19,4 +21,5 @@ module geoss.curated.extensions {
     requires spring.tx;
     requires spring.web;
     requires geoss.curated.common;
+    requires org.hibernate.orm.core;
 }

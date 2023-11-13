@@ -324,6 +324,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void approveUserExtension(long userExtensionId, String host) {
         log.info("Workflow approving user extension with id {}", userExtensionId);
         UserExtension userExtension = userExtensionService.approveUserExtension(userExtensionId);
+        elasticsearchService.indexEntryExtension(userExtension.getEntryExtension());
         Keycloak keycloak = keycloakProvider.getIfAvailable();
         if (keycloak != null) {
             emailEventPublisher.send(
@@ -374,6 +375,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void deleteUserExtension(long userExtensionId, String host) {
         log.info("Workflow delete user extension with id {}", userExtensionId);
         UserExtension userExtension = userExtensionService.findUserExtension(userExtensionId);
+        elasticsearchService.removeEntryExtensionFromIndex(userExtension.getEntryExtension());
         Map<String, Object> variables = Map.of(
                 "id", userExtensionId,
                 "name", userExtensionService.findUserExtension(userExtensionId).getEntryName()
@@ -428,6 +430,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void approveUserDashboard(long userDashboardId, String host) {
         log.info("Workflow approving user dashboard with id {}", userDashboardId);
         UserDashboard userDashboard = userDashboardService.approveUserDashboard(userDashboardId);
+        elasticsearchService.indexDashboard(userDashboard.getEntry());
         Keycloak keycloak = keycloakProvider.getIfAvailable();
         if (keycloak != null) {
             emailEventPublisher.send(
@@ -478,6 +481,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     public void deleteUserDashboard(long userDashboardId, String host) {
         log.info("Workflow delete user dashboard with id {}", userDashboardId);
         UserDashboard userDashboard = userDashboardService.findUserDashboard(userDashboardId);
+        elasticsearchService.removeDashboardFromIndex(userDashboard.getEntry());
         Map<String, Object> variables = Map.of(
                 "id", userDashboardId,
                 "name", userDashboardService.findUserDashboard(userDashboardId).getEntryName()

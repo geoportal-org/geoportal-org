@@ -1,5 +1,6 @@
 module geoss.curated.recommendations {
     exports com.eversis.esa.geoss.curated.recommendations.configuration to spring.beans, spring.boot, spring.context;
+    exports com.eversis.esa.geoss.curated.recommendations.model;
 
     requires static lombok;
     requires static org.mapstruct;
