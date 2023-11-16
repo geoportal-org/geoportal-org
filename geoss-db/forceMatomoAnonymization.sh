@@ -15,4 +15,4 @@ if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -
             break
         fi;
     done;
-end if;
+fi;
