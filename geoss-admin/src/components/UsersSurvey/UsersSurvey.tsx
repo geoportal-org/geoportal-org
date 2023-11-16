@@ -41,8 +41,8 @@ export const UsersSurvey = () => {
     const [startDate, setStartDate] = useState<any>("");
     const [endDate, setEndDate] = useState<any>("");
     const [isLoading, setIsLoading] = useState(true);
-    const direction = useBreakpointValue({ base: "column", lg: "row" });
-    const justify = useBreakpointValue({ base: "center", lg: "flex-start" });
+    const direction = useBreakpointValue({ base: "column", lg: "row" }) as any;
+    const justify = useBreakpointValue({ base: "center", lg: "flex-start" }) as any;
     const { translate } = useFormatMsg();
 
     const fetchSurveys = async (page = 0, numberOfHits = 20) => {
