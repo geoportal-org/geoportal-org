@@ -13,6 +13,6 @@ if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -
             mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" $MATOMO_DATABASE_USERNAME -e "source /opt/force_matomo_anonymization.sql"
             echo "Created matomo triggers - exiting"
             break
-    end if;
-    done
+        fi;
+    done;
 end if;
