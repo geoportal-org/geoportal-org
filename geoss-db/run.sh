@@ -1,4 +1,4 @@
 #!/bin/bash
 
-forceMatomoAnonymization.sh&
+/opt/forceMatomoAnonymization.sh&
 mariadb
