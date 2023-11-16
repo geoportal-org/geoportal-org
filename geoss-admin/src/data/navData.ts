@@ -82,6 +82,14 @@ const navContentsData: NavItem[] = [
     },
 ];
 
+const navUsersData: NavItem[] = [
+    {
+        titleId: "nav.users.section.usersSurvey",
+        href: pagesRoutes.survey,
+        Icon: WebsiteIcon,
+    },
+];
+
 const navProfileData: NavItem[] = [
     /*{
         titleId: "nav.profile.section.profile",
@@ -100,6 +108,7 @@ const navProfileData: NavItem[] = [
 
 export const navData: NavSection[] = [
     { titleId: "nav.contents.title", items: navContentsData },
+    { titleId: "nav.users.title", items: navUsersData },
     { titleId: "nav.settings.title", items: navSettingsData },
     { titleId: "nav.profile.title", items: navProfileData },
 ];

@@ -23,7 +23,7 @@ export { Nav } from "./Nav/Nav";
 export { Pages } from "./Pages/Pages";
 export { Pagination } from "./Pagination/Pagination";
 export { PrimaryButton } from "./PrimaryButton/PrimaryButton";
-export { RecommendationsConfig } from "./Recommendations/Recommendations"
+export { RecommendationsConfig } from "./Recommendations/Recommendations";
 export { SearchBar } from "./SearchBar/SearchBar";
 export { SideBar } from "./SideBar/SideBar";
 export { SignIn } from "./SignIn/SignIn";
@@ -36,5 +36,6 @@ export { TextInfo } from "./TextInfo/TextInfo";
 export { TranslationSwitcher } from "./TranslationSwitcher/TranslationSwitcher";
 export { TutorialTagsSettings } from "./TutorialTagsSettings/TutorialTagsSettings";
 export { Uploader } from "./Uploader/Uploader";
+export { UsersSurvey } from "./UsersSurvey/UsersSurvey";
 export { ViewsSettings } from "./ViewsSettings/ViewsSettings";
 export { WebSettings } from "./WebSettings/WebSettings";

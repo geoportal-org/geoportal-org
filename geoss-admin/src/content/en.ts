@@ -349,6 +349,23 @@ export const en = {
             edit: "Edit",
             addFormErrorInfo: 'All fields must be filled.',
             cancelButton: 'Cancel'
+        },
+        surveyResults: {
+            filter: 'Filter',
+            startDate: 'Start Date',
+            endDate: 'End Date',
+            clearFilters: 'Clear filters',
+            dateTime: 'Date and time',
+            from: 'From',
+            classification: 'Classification',
+            fwlf: 'Found what looking for?',
+            lookingFor: 'Looking for',
+            searchCriteria: 'Search criteria',
+            visualization: 'Visualization',
+            adequately: 'Adequately',
+            interest: 'Interest',
+            organized: 'Organized',
+            impression: 'Impression'
         }
     },
     nav: {
@@ -374,6 +391,12 @@ export const en = {
                 views: "Views",
                 web: "Web",
             },
+        },
+        users : {
+            title: "Users",
+            section: {
+                usersSurvey: 'Survey results'
+            }
         },
         profile: {
             title: "Profile",

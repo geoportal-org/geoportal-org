@@ -165,6 +165,23 @@ export const pl = {
             edit: "Edytuj",
             addFormErrorInfo: 'Wszystkie pola muszą być wypełnione.',
             cancelButton: 'Anuluj'
+        },
+        surveyResults: {
+            filter: 'Filtr',
+            startDate: 'Data rozpoczęcia',
+            endDate: 'Data zakończenia',
+            clearFilters: 'Wyczyść filtry',
+            dateTime: 'Data i godzina',
+            from: 'Od',
+            classification: 'Klasyfikacja',
+            fwlf: 'Znaleziono to, czego szukano?',
+            lookingFor: 'Szukam',
+            searchCriteria: 'Kryteria wyszukiwania',
+            visualization: 'Wizualizacja',
+            adequately: 'Odpowiednio',
+            interest: 'Zainteresowanie',
+            organized: 'Zorganizowane',
+            impression: 'Wrażenie'
         }
     },
     nav: {
@@ -190,6 +207,12 @@ export const pl = {
                 views: "Widoki",
                 web: "Sieć",
             },
+        },
+        users: {
+            title: "Użytkownicy",
+            section: {
+                usersSurvey: 'Wyniki ankiety'
+            }
         },
         profile: {
             title: "Profil",

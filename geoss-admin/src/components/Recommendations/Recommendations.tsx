@@ -29,7 +29,7 @@ import { MainContentHeader } from "../MainContent/MainContentHeader";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { AddIcon } from "@chakra-ui/icons";
 import RecommendationRow from "./RecommendationRow";
-import PagesControls from "./PagesControls";
+import PagesControls from "../PagesControls/PagesControls";
 import EntityRow from "./EntityRow";
 import { initialAddFormValue, initialNewEntity, initialPagesInfo } from "./DefaultValues";
 
@@ -157,6 +157,7 @@ export const RecommendationsConfig = () => {
 
     const deleteEntityFromRecommendation = async (recommendationId: number, entityId: number) => {
         try {
+            console.log(recommendationId)
             await RecommendationsService.deleteEntityForRecommendation(recommendationId, entityId);
             fetchRecommendations(pagesInfo.number - 1);
             setModalOpen(false);
@@ -299,9 +300,9 @@ export const RecommendationsConfig = () => {
                 })}
                 <PagesControls
                     pagesInfo={pagesInfo}
-                    setPagesInfo={setPagesInfo}
                     numberOfElements={recommendations.length}
-                    fetchRecommendations={fetchRecommendations}
+                    fetchFunction={fetchRecommendations}
+                    isZeroFirst={false}
                 />
             </Flex>
             <Modal

@@ -1,9 +1,11 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import { Footer, Header, Nav } from "@/components";
 import { LayoutProps } from "@/types";
+import { useRouter } from "next/router";
 
 export const Layout = ({ children }: LayoutProps) => {
     const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
+    const router = useRouter();
 
     return (
         <>
@@ -23,8 +25,12 @@ export const Layout = ({ children }: LayoutProps) => {
                     as="section"
                     h="full"
                     direction="column"
-                    maxW="container.2xl"
-                    w={{ base: "full", md: "95%", lg: "90%" }}
+                    maxW={router.route === "/survey" ? "100%" : "container.2xl"}
+                    w={{
+                        base: "full",
+                        md: router.route === "/survey" ? "100%" : "95%",
+                        lg: router.route === "/survey" ? "100%" : "90%",
+                    }}
                     bg="brand.mainLight"
                     borderRadius="primary"
                     color="brand.mainDark"

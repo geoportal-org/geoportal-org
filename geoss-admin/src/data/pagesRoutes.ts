@@ -10,6 +10,7 @@ export const pagesRoutes = {
     page: "/page",
     recommendations: "/recommendations",
     signIn: "/",
+    survey: "/survey",
     tutorialTags: "/tutorial-tags-settings",
     views: "/views-settings",
     web: "/web-settings",
