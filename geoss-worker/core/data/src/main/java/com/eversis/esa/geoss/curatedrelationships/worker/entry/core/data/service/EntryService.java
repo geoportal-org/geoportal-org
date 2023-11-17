@@ -1,7 +1,10 @@
 package com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.service;
 
 import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.Entry;
+import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryEventRepository;
 import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryRepository;
+import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.EntryEvent;
+import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.EntryEventType;
 
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
@@ -28,6 +31,8 @@ public class EntryService {
     private TransferOptionService transferOptionService;
     private EntryRelationService entryRelationService;
 
+    private EntryEventRepository entryEventRepository;
+
     /**
      * Instantiates a new Entry service.
      *
@@ -49,7 +54,9 @@ public class EntryService {
             DefinitionTypeService definitionTypeService,
             SourceService sourceService,
             TransferOptionService transferOptionService,
-            EntryRelationService entryRelationService) {
+            EntryRelationService entryRelationService,
+            EntryEventRepository entryEventRepository
+    ) {
         this.entryRepository = entryRepository;
         this.accessPolicyService = accessPolicyService;
         this.dataSourceService = dataSourceService;
@@ -59,6 +66,7 @@ public class EntryService {
         this.sourceService = sourceService;
         this.transferOptionService = transferOptionService;
         this.entryRelationService = entryRelationService;
+        this.entryEventRepository = entryEventRepository;
     }
 
     /**
@@ -91,6 +99,7 @@ public class EntryService {
         Entry entry = saveEntry(domainEntry);
         entryRelationService.saveEntryRelations(domainEntry.getRelations());
         transferOptionService.saveTransferOptions(entry, domainEntry.getTransferOptions());
+        saveEntryEvent(entry);
         return entry;
     }
 
@@ -122,4 +131,10 @@ public class EntryService {
         return entryRepository.findByCode(code).orElseGet(() -> new Entry(code));
     }
 
+    private void saveEntryEvent(Entry entry) {
+        EntryEvent entryEvent = new EntryEvent();
+        entryEvent.setType(EntryEventType.CREATE);
+        entryEvent.setEntryId(Long.valueOf(entry.getId()));
+        entryEventRepository.save(entryEvent);
+    }
 }
