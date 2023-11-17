@@ -26,3 +26,5 @@ if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -
     mysql -h localhost -u root -p"${MARIADB_ROOT_PASSWORD}" -e "$command"
     echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: Finished initializing matomo database"
 fi
+
+/opt/forceMatomoAnonymization.sh&
