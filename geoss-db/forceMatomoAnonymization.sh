@@ -11,6 +11,7 @@ if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -
         echo "Matomo triggers found: $tf"
         if [ "$tf" -lt 2 ]; then
             mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" $MATOMO_DATABASE_USERNAME -e "source /opt/force_matomo_anonymization.sql"
+            mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" $MATOMO_DATABASE_USERNAME -e "update matomo_option set option_value=1 where option_name='PrivacyManager.ipAnonymizerEnabled';"
             echo "Created matomo triggers - exiting"
             break
         fi;
