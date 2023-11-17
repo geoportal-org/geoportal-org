@@ -52,6 +52,6 @@ RUN chmod +x /opt/forceMatomoAnonymization.sh
 COPY run.sh /opt/run.sh
 RUN chmod +x /opt/run.sh
 
-CMD /opt/run.sh
+#CMD /opt/run.sh
 
 EXPOSE 3306
