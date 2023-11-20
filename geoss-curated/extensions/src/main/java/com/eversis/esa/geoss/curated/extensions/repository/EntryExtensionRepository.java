@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,12 +15,12 @@ import java.util.Optional;
 public interface EntryExtensionRepository extends JpaRepository<EntryExtension, Long> {
 
     /**
-     * Find by code optional.
+     * Find by code list.
      *
      * @param code the code
-     * @return the optional
+     * @return the list
      */
-    Optional<EntryExtension> findByCode(String code);
+    List<EntryExtension> findByCode(String code);
 
     /**
      * Find by code and title optional.
