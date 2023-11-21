@@ -43,10 +43,8 @@ COPY docker-entrypoint-initdb.d/5_create_matomo_db.sh /docker-entrypoint-initdb.
 RUN chmod +x /docker-entrypoint-initdb.d/5_create_matomo_db.sh
 
 #MATOMO ANONYMIZATION IP ENFORCEMENT
-COPY force_matomo_anonymization.sql /opt/force_matomo_anonymization.sql
-RUN chmod +x /opt/force_matomo_anonymization.sql
 
-COPY forceMatomoAnonymization.sh /opt/forceMatomoAnonymization.sh
-RUN chmod +x /opt/forceMatomoAnonymization.sh
+COPY enableMatomoAnonymization.sh /opt/enableMatomoAnonymization.sh
+RUN chmod +x /opt/enableMatomoAnonymization.sh
 
 EXPOSE 3306

@@ -25,7 +25,7 @@ if [ -n "$MATOMO_DATABASE_DBNAME" ] && [ -n "$MATOMO_DATABASE_USERNAME" ] && [ -
     command="GRANT FILE ON *.* TO '$MATOMO_DATABASE_USERNAME'@'localhost';"
     mysql -h localhost -u root -p"${MARIADB_ROOT_PASSWORD}" -e "$command"
     echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: Finished initializing matomo database"
-    /opt/forceMatomoAnonymization.sh&
+    /opt/enableMatomoAnonymization.sh&
 fi
 
 
