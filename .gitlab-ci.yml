@@ -474,7 +474,7 @@ dev_deploy_to_lan:
     #geoss admin
     VAR_GEOSS_ADMIN_NEXTAUTH_SECRET: $DEV_GEOSS_ADMIN_NEXTAUTH_SECRET
     #geoss ui
-    VAR_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
+    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
     #geoss worker geodab
     VAR_VLAB_API_TOKEN: $DEV_VLAB_API_TOKEN
     #maildev
@@ -534,7 +534,7 @@ dev_reload_matomo_token:
     VAR_DOCKER_MANAGER_SERVER: $DEV_LAN_DOCKER_MANAGER_SERVER
     VAR_SSH_PORT: 22
     #geoss ui
-    VAR_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
+    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
     - eval $(ssh-agent -s)
@@ -545,7 +545,7 @@ dev_reload_matomo_token:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Reloading matomo token value of geoss-ui service...";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && export GEOSS_MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN && docker service update --env-add MATOMO_TOKEN=$GEOSS_MATOMO_TOKEN geoss_geoss-ui"
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN geoss_geoss-ui"
     - echo "Matomo token has been reloaded."
   when: manual
   only:
@@ -675,7 +675,7 @@ uat_deploy_to_lan:
     VAR_GEOSS_ADMIN_NEXTAUTH_SECRET: $UAT_GEOSS_ADMIN_NEXTAUTH_SECRET
     #geoss ui
     #geoss ui
-    VAR_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
+    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
     #geoss worker geodab
     VAR_VLAB_API_TOKEN: $UAT_VLAB_API_TOKEN
     #maildev
@@ -713,6 +713,41 @@ uat_deploy_to_lan:
     - echo "Cleanup";
     - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
     - echo "Cleanup - COMPLETED";
+  when: manual
+  only:
+    - uat
+    - /^release-.*/
+
+########################################################################################################################
+#                                                UAT RELOAD MATOMO TOKEN                                               #
+########################################################################################################################
+#                         Load matomo token from GITLAB-CI and update geoss-ui service                                 #
+#                         BE AWARE that it will cause downtime on geoss-ui application                                 #
+########################################################################################################################
+uat_reload_matomo_token:
+  stage: docker_reload_matomo_token
+  image: debian:11.4
+  tags:
+    - geoss-runner-1
+  cache: { }
+  variables:
+    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
+    VAR_DOCKER_MANAGER_SERVER: $UAT_LAN_DOCKER_MANAGER_SERVER
+    VAR_SSH_PORT: 22
+    #geoss ui
+    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+    - eval $(ssh-agent -s)
+    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Reloading matomo token value of geoss-ui service...";
+    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN uat_geoss-ui"
+    - echo "Matomo token has been reloaded."
   when: manual
   only:
     - uat
