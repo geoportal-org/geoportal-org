@@ -61,8 +61,6 @@ stages: # List of stages for jobs, and their order of execution
   - build
   - build_docker_images
   - docker_stack_deploy
-  - docker_reload_matomo_token
-  - docker_stack_remove
 
 ###########################
 #          STEPS          #
@@ -524,7 +522,7 @@ dev_deploy_to_lan:
 #                         BE AWARE that it will cause downtime on geoss-ui application                                 #
 ########################################################################################################################
 dev_reload_matomo_token:
-  stage: docker_reload_matomo_token
+  stage: docker_stack_deploy
   image: debian:11.4
   tags:
     - geoss-runner-1
@@ -558,7 +556,7 @@ dev_reload_matomo_token:
 #                                Remove docker stack and all the data on persistent volumes                            #
 ########################################################################################################################
 dev_remove_all:
-  stage: docker_stack_remove
+  stage: docker_stack_deploy
   image: debian:11.4
   tags:
     - geoss-runner-1
@@ -725,7 +723,7 @@ uat_deploy_to_lan:
 #                         BE AWARE that it will cause downtime on geoss-ui application                                 #
 ########################################################################################################################
 uat_reload_matomo_token:
-  stage: docker_reload_matomo_token
+  stage: docker_stack_deploy
   image: debian:11.4
   tags:
     - geoss-runner-1
@@ -759,7 +757,7 @@ uat_reload_matomo_token:
 #                                Remove docker stack and all the data on persistent volumes                            #
 ########################################################################################################################
 uat_remove_all:
-  stage: docker_stack_remove
+  stage: docker_stack_deploy
   image: debian:11.4
   tags:
     - geoss-runner-1
