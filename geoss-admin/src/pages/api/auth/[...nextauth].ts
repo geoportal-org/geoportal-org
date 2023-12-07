@@ -27,8 +27,6 @@ async function refreshAccessToken(token: JWT) {
             throw refreshedToken;
         }
 
-        console.log(token);
-
         return {
             ...token,
             accessToken: refreshedToken.access_token,
@@ -52,40 +50,41 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.KEYCLOAK_CLIENT_ID!,
             clientSecret: process.env.KEYCLOAK_CLIENT_SECRET!,
             issuer: process.env.KEYCLOAK_BASE_URL,
-            // extended default providers options - scope - to get user roles
             authorization: { params: { scope: "openid email profile roles" } },
         }),
     ],
     pages: {
         signIn: `${pagesRoutes.signIn}`,
     },
+    session: {
+        strategy: "jwt",
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    jwt: {
+        secret: process.env.NEXTAUTH_SECRET,
+        maxAge: 5 * 60 * 1000,
+    },
     callbacks: {
         jwt: async ({ token, account, user, profile }) => {
             if (account && user) {
                 // just fired first time - when signed in
-                console.log(account);
-                console.log(user);
-
                 token.accessToken = account.access_token;
                 token.refreshToken = account.refresh_token;
-                token.accessTokenExpired = account.expires_at! * 1000;
-                token.refreshTokenExpired = Date.now() + +account.refresh_expires_in! * 1000;
+                //@ts-ignore
+                token.expires_at = Math.floor(Date.now() / 1000 + account.expires_in);
                 token.user = user;
                 token.tokenId = account.id_token;
                 return token;
-            }
-
-            if (Date.now() < token.accessTokenExpired!) {
-                console.log(token);
+                //@ts-ignore
+            } else if (Date.now() < token.expires_at * 1000) {
                 return token;
+            } else {
+                return refreshAccessToken(token);
             }
-
-            return refreshAccessToken(token);
         },
         session: async ({ session, token }) => {
             session.accessToken = token.accessToken as string;
             session.tokenId = token.tokenId as string;
-            console.log(session);
             return session;
         },
     },
