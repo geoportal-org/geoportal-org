@@ -67,16 +67,14 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         jwt: async ({ token, account, user, profile }) => {
             if (account && user) {
-                // just fired first time - when signed in
                 token.accessToken = account.access_token;
+                token.accessTokenExpired = account.expires_at,
                 token.refreshToken = account.refresh_token;
-                //@ts-ignore
-                token.expires_at = Math.floor(Date.now() / 1000 + account.expires_in);
                 token.user = user;
                 token.tokenId = account.id_token;
                 return token;
                 //@ts-ignore
-            } else if (Date.now() < token.expires_at * 1000) {
+            } else if (Date.now() < token.accessTokenExpired) {
                 return token;
             } else {
                 return refreshAccessToken(token);
@@ -85,6 +83,7 @@ export const authOptions: NextAuthOptions = {
         session: async ({ session, token }) => {
             session.accessToken = token.accessToken as string;
             session.tokenId = token.tokenId as string;
+            session.expires = token.refreshTokenExpired as string;
             return session;
         },
     },
