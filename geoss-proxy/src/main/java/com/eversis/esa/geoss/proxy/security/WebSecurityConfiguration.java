@@ -94,7 +94,7 @@ public class WebSecurityConfiguration {
                     .hasAnyRole("statistics_reader");
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers(HttpMethod.POST, basePath + "/log/**")
-                    .hasAnyRole("log_writer");
+                    .permitAll();
             authorizationManagerRequestMatcherRegistry
                     .anyRequest().authenticated();
         });
