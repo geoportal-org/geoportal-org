@@ -66,7 +66,7 @@ export const UsersSurvey = () => {
         try {
             setIsLoading(true);
             const isoStartDate = startDate === "" ? "" : new Date(startDate).toISOString();
-            const isoEndDate = endDate === "" ? "" : new Date(endDate).toISOString();
+            const isoEndDate = endDate === "" ? "" : new Date(endDate+' 23:59:59 UTC').toISOString();
             if (isoStartDate !== "" || isoEndDate !== "") {
                 let response = await SurveysService.searchSurveys(page, 20, isoStartDate, isoEndDate);
                 setSurveys(response._embedded.surveys);
