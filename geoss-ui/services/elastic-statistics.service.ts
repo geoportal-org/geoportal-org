@@ -9,7 +9,8 @@ const ElasticDataService = {
         interval: string,
         unit: string,
         type: string,
-        resultsNumber: number
+        resultsNumber: number,
+        token: string
     ) {
         const dsSourceKey =
             ElasticDataService.getDsSourceKey(datasetOption) || ''
@@ -99,17 +100,16 @@ const ElasticDataService = {
                 results: resultsNumber
             }
         }
-        const data = await this.fetchData(endpoint, body)
+        const data = await this.fetchData(endpoint, body, token)
         return this.prepareChartData(data, type)
     },
 
-    async fetchData(endpoint: string, body: any) {
+    async fetchData(endpoint: string, body: any, token: string) {
         try {
             let response = await fetch(window.$nuxt.$config.elkUrl + endpoint, {
                 method: 'POST',
                 headers: {
-                    Authorization:
-                        'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
+                    Authorization: token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(body),
@@ -117,10 +117,7 @@ const ElasticDataService = {
             if(response.status === 200){
                 let rJson = await response.json()
                 return rJson
-            }else if(response.status === 401){
-                UtilsService.setElkApiToken()
             }
-
         } catch (error) {
             console.log(error)
         }
