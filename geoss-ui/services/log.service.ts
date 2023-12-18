@@ -181,13 +181,15 @@ const LogService: any = {
                     : null,
         })
 
-        apiClient.$post(`${geossProxy.logSearch}`, JSON.stringify(body), {
-            headers: {
-                Authorization:
-                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
-                'Content-Type': 'application/json',
-            },
-        })
+        try {
+            apiClient.$post(`${geossProxy.logSearch}`, JSON.stringify(body), {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+        } catch (e: any) {
+            console.log(e)
+        }
 
         if (!UtilsService.isWidget()) {
             const paq: Array<any> = (<any>window)[_PAQ]
@@ -228,14 +230,20 @@ const LogService: any = {
             operation: pOperation,
         })
 
-        apiClient.$post(`${geossProxy.logElementClick}`, JSON.stringify(body), {
-            headers: {
-                Authorization:
-                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
-                'Content-Type': 'application/json',
-                accept: 'application/json',
-            },
-        })
+        try {
+            apiClient.$post(
+                `${geossProxy.logElementClick}`,
+                JSON.stringify(body),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        accept: 'application/json',
+                    },
+                }
+            )
+        } catch (e: any) {
+            console.log(e)
+        }
 
         if (!UtilsService.isWidget()) {
             const paq: Array<any> = (<any>window)[_PAQ]
@@ -270,18 +278,20 @@ const LogService: any = {
             shortUrl: 'test',
         })
 
-        apiClient.$post(
-            `${geossProxy.logResourceError}`,
-            JSON.stringify(body),
-            {
-                headers: {
-                    Authorization:
-                        'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
-                    'Content-Type': 'application/json',
-                    accept: 'application/json',
-                },
-            }
-        )
+        try {
+            apiClient.$post(
+                `${geossProxy.logResourceError}`,
+                JSON.stringify(body),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        accept: 'application/json',
+                    },
+                }
+            )
+        } catch (e: any) {
+            console.log(e)
+        }
     },
 
     /*-----------------------------------------------*/
@@ -308,14 +318,16 @@ const LogService: any = {
             sessionSiteUrl: LogService.friendlySiteUrl(),
         })
 
-        apiClient.$post(`${geossProxy.logSignIn}`, JSON.stringify(body), {
-            headers: {
-                Authorization:
-                    'Bearer ' + window.$nuxt.$cookies.get('elkAuthToken'),
-                'Content-Type': 'application/json',
-                accept: 'application/json',
-            },
-        })
+        try {
+            apiClient.$post(`${geossProxy.logSignIn}`, JSON.stringify(body), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    accept: 'application/json',
+                },
+            })
+        } catch (e: any) {
+            console.log(e)
+        }
     },
 
     addCommonProperties(document: any) {
@@ -357,7 +369,7 @@ const LogService: any = {
     },
 
     /*------------------------------------*/
-    /*-----  LEGACY ----------*/
+    /*---------  LEGACY ----------*/
     /*------------------------------------*/
 
     /*------------------------------------*/
@@ -409,81 +421,91 @@ const LogService: any = {
     getPopularWords: (queryString: string, limit: string | number) =>
         new Promise((resolve) => {
             const url = `${geossProxy.popular}?query=${queryString}&limit=${limit}`
-            apiClient.$get(url, {
-                headers: {
-                    Authorization: '',
-                },
-            })
-            .then((popular: Array<string>) => {
-                resolve(popular)
-            })
-            .catch((error: any) => {
-                console.log('Error while getting POPULAR in getPopularWords()');
-                resolve([])
-            })
+            apiClient
+                .$get(url, {
+                    headers: {
+                        Authorization: '',
+                    },
+                })
+                .then((popular: Array<string>) => {
+                    resolve(popular)
+                })
+                .catch((error: any) => {
+                    console.log(
+                        'Error while getting POPULAR in getPopularWords()'
+                    )
+                    resolve([])
+                })
         }),
 
     getSeeAlsoWords: (
         queryString: string,
         limit: string | number,
         addMixedTerms: boolean
-    ) => new Promise((resolve) => {
+    ) =>
+        new Promise((resolve) => {
             const url = `${geossSearch.concepts}?st=${queryString}&ct=${limit}`
-            apiClient.$get(url, {
-                headers: {
-                    Authorization: '',
-                },
-            })
-            .then((concepts: Array<string>) => {
-                if (addMixedTerms) {
-                    let queryArray = queryString.split(' ')
-                    const forbiddenWords = [
-                        'and',
-                        'or',
-                        'a',
-                        'an',
-                        'the',
-                        'of',
-                        'for',
-                        'in',
-                        'to',
-                    ]
-                    queryArray = queryArray.filter(
-                        (item) =>
-                            !forbiddenWords.includes(item.toLowerCase())
-                    )
-                    if (
-                        queryArray.length === 2 ||
-                        queryArray.length === 3
-                    ) {
-                        concepts.unshift(`${queryArray.join(' AND ')}`)
-                        concepts.unshift(`${queryArray.join(' OR ')}`)
+            apiClient
+                .$get(url, {
+                    headers: {
+                        Authorization: '',
+                    },
+                })
+                .then((concepts: Array<string>) => {
+                    if (addMixedTerms) {
+                        let queryArray = queryString.split(' ')
+                        const forbiddenWords = [
+                            'and',
+                            'or',
+                            'a',
+                            'an',
+                            'the',
+                            'of',
+                            'for',
+                            'in',
+                            'to',
+                        ]
+                        queryArray = queryArray.filter(
+                            (item) =>
+                                !forbiddenWords.includes(item.toLowerCase())
+                        )
+                        if (
+                            queryArray.length === 2 ||
+                            queryArray.length === 3
+                        ) {
+                            concepts.unshift(`${queryArray.join(' AND ')}`)
+                            concepts.unshift(`${queryArray.join(' OR ')}`)
+                        }
                     }
-                }
-                resolve(concepts)
-            })
-            .catch(() => {
-                console.log('Error while getting CONCEPTS in getSeeAlsoWords()');
-                resolve([])
-            })
+                    resolve(concepts)
+                })
+                .catch(() => {
+                    console.log(
+                        'Error while getting CONCEPTS in getSeeAlsoWords()'
+                    )
+                    resolve([])
+                })
         }),
 
     getSeeAlsoRecommendations: (queryString: string) =>
         new Promise((resolve) => {
-            const limit = 10;
+            const limit = 10
             const url = `${geossSearch.recommendations}?st=${queryString}&ct=${limit}`
-            apiClient.$get(url, {
-                headers: {
-                    Authorization: '',
-                },
-            })
-            .then((recommendations: Array<string>) => {
-                resolve(recommendations)
-            })
-            .catch(() => {
-                console.log('Error while getting RECOMMENDATIONS in getSeeAlsoRecommendations()');
-                resolve([])
-            })
+            apiClient
+                .$get(url, {
+                    headers: {
+                        Authorization: '',
+                    },
+                })
+                .then((recommendations: Array<string>) => {
+                    resolve(recommendations)
+                })
+                .catch(() => {
+                    console.log(
+                        'Error while getting RECOMMENDATIONS in getSeeAlsoRecommendations()'
+                    )
+                    resolve([])
+                })
         }),
 
     async getAllSuggestions(

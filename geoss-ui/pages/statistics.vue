@@ -354,7 +354,8 @@ export default {
                     this.form.interval,
                     this.form.unit,
                     this.form.type,
-                    this.form.resultsNumber
+                    this.form.resultsNumber,
+                    this.$auth.getToken('keycloak')
                 )
             } else {
                 result = await MatomoDataService.prepareChartData(
@@ -362,7 +363,7 @@ export default {
                     this.isTypeNumeric ? this.form.unit : 'range',
                     this.form.dateFrom,
                     this.form.dateTo,
-                    this.form.resultsNumber.toString(),
+                    this.form.resultsNumber.toString()
                 )
             }
             if (this.chartInstance) {
@@ -517,7 +518,6 @@ export default {
         },
     },
     mounted() {
-        UtilsService.setElkApiToken()
         const now = new Date()
         this.form.dateFrom = new Date(
             now.getFullYear(),

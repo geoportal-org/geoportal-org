@@ -103,6 +103,7 @@ import CollapseTransition from '@/plugins/CollapseTransition';
 
 import MenuAPI from '@/api/menu'
 import apiClient from '@/api/apiClient'
+import LogService from '~/services/log.service';
 
 @Component({
     components: {
@@ -181,6 +182,7 @@ export default class MenuComponent extends Vue {
 
     public signIn() {
         this.$auth.loginWith('keycloak')
+        LogService.logSignIn()
     }
 
     public isMyWorkspace(route) {

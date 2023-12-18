@@ -534,7 +534,6 @@ export default class App extends Vue {
                 });
             }
         }
-        UtilsService.setElkApiToken()
         const spinnerElem: HTMLElement | null = document.querySelector('.earch-rocket-spinner');
         if (spinnerElem) {
             spinnerElem.classList.add('inactive');
