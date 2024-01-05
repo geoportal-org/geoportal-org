@@ -19,6 +19,9 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 ENV JDK_JAVA_OPTIONS=$JAVA_OPTS
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
+#INSTALL CURL FOR DEBUGGING PURPOSES
+RUN apt-get update && apt-get install -y curl
+
 WORKDIR /opt/app
 
 ARG JAR_FILE=./application/build/libs/application-*-boot.jar
