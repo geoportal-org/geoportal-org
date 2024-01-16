@@ -548,41 +548,9 @@ export default {
         interest: {
             question1: 'How would you describe your interest',
             question2: 'as an Earth Observation user?',
-            options: [
-                {
-                    label: 'Global - world-wide interest',
-                    value: 'global',
-                },
-                {
-                    label: 'National - country-specific interest',
-                    value: 'national',
-                },
-                {
-                    label: 'Regional - specific geographic interests within a country',
-                    value: 'regional',
-                },
-                {
-                    label: 'Local - community-specific geographic interests',
-                    value: 'local',
-                },
-            ],
         },
         classification: {
             question: 'How would you classify yourself professionally?',
-            options: [
-                {
-                    label: 'Scientist/Researcher',
-                    value: 'scientist/researcher',
-                },
-                {
-                    label: 'Decision Support Official',
-                    value: 'decision support official',
-                },
-                {
-                    label: 'Policy Analyst',
-                    value: 'policy analyst',
-                },
-            ],
         },
         organized: {
             title: 'How strongly do you agree with the following statement?',

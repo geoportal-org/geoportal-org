@@ -67,6 +67,11 @@ const UserAPI = {
         const url = `${geossPersonaldata.highlightedSearches}/${highlightedSearchId}`
         return apiClient.$delete(url)
     },
+
+    addSurvey: (surveyData: any) => {
+        const url = `${geossPersonaldata.surveys}`
+        return apiClient.$post(url, surveyData)
+    },
 }
 
 export default UserAPI

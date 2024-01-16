@@ -1,12 +1,11 @@
 <template>
     <div class="survey"
         :class="{ 'hide-navigation': currentPage > 8, 'hide-next-button': currentPage === 8, 'hide-prev-button': currentPage === 0, 'survey-complete': currentPage === 9 }"
-        :style="`background: url('/svg/survey-background.svg') center center no-repeat;`">
-        <!-- <carousel class="survey" ref="slider" v-model="currentPage" :scrollPerPage="false" :mouse-drag="false"
-            :paginationEnabled="true" :per-page="1" :navigationNextLabel="''" :navigationPrevLabel="''"
-            :navigationEnabled="true">
+        :style="`background: url(/svg/survey-background.svg) center center no-repeat;`">
+        <carousel class="survey" v-model="currentPage" :scrollPerPage="false" :mouse-drag="false" :paginationEnabled="true"
+            :per-page="1" :navigationNextLabel="''" :navigationPrevLabel="''" :navigationEnabled="true">
             <slide class="survey__slide_item question question--impression">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.generalImpression.question') }}</div>
                 <div class="question--impression__container">
                     <div class="question--impression__choice" @click="selectImpression('negative')">
@@ -31,7 +30,7 @@
                 </div>
             </slide>
             <slide class="survey__slide_item question question--did-you-find">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text">
                     {{ $tc('survey.didYouFind.thankYou') }}<br />{{ $tc('survey.didYouFind.question') }}</div>
                 <div class="question__answers question__answers--did-you-find">
@@ -47,21 +46,19 @@
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.whatWereYouLookingFor.question') }}</div>
-                <textarea class="question__answers--textarea"
-                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
+                <textarea class="question__answers--textarea" :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
                     v-model="form.what_looking_for"></textarea>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text">{{ $tc('survey.interest.question1') }}
                     <br />{{ $tc('survey.interest.question2') }}
                 </div>
                 <div class="question__answers question__answers--single_choice">
-                    <label class="answer" v-for="option in $tc('survey.interest.options')" :key="option.value">
-                        <input type="radio" @change="selectRadio('interest', $event)" name="interest"
-                            :value="option.value">
+                    <label class="answer" v-for="option in surveyInterestOptions" :key="option.value">
+                        <input type="radio" @change="selectRadio('interest', $event)" name="interest" :value="option.value">
                         <span class="checkmark"></span> {{ option.label }}
                     </label>
                     <label class="answer">
@@ -73,10 +70,10 @@
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.classification.question') }}</div>
                 <div class="question__answers question__answers--single_choice">
-                    <label class="answer" v-for="option in $tc('survey.classification.options')" :key="option.value">
+                    <label class="answer" v-for="option in surveyClassificationOptions" :key="option.value">
                         <input type="radio" @change="selectRadio('classification', $event)" name="classification"
                             :value="option.value">
                         <span class="checkmark"></span> {{ option.label }}
@@ -85,13 +82,12 @@
                         <input type="radio" @change="selectRadio('classification', $event)" name="classification"
                             value="other">
                         <span class="checkmark"></span> {{ $tc('survey.other') }}:
-                        <input type="text" :disabled="form.classification !== 'other'"
-                            v-model="form.classificationText">
+                        <input type="text" :disabled="form.classification !== 'other'" v-model="form.classificationText">
                     </label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.organized.title') }}</div>
                 <div class="question__quote">"{{ $tc('survey.organized.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
@@ -105,41 +101,36 @@
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.adequately.title') }}</div>
                 <div class="question__quote">"{{ $tc('survey.adequately.question') }}"</div>
                 <div class="question__answers question__answers--single_horizontal_choice"
                     :style="`background: url('/img/survey-barometer.png') center bottom no-repeat;`">
                     <label class="strongly-disagree">{{ $tc('survey.adequately.stronglyDisagree') }}</label>
                     <label class="answer" v-for="value in [1, 2, 3, 4, 5]" :key="value">
-                        <input type="radio" @change="selectRadio('adequately', $event)" name="adequately"
-                            :value="value">
+                        <input type="radio" @change="selectRadio('adequately', $event)" name="adequately" :value="value">
                         <span class="checkmark"></span>
                     </label>
                     <label class="strongly-agree">{{ $tc('survey.adequately.stronglyAgree') }}</label>
                 </div>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text one-liner">{{ $tc('survey.search_criteria.question') }}</div>
                 <textarea name="search_criteria" class="question__answers--textarea"
                     :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
                     v-model="form.search_criteria"></textarea>
             </slide>
             <slide class="survey__slide_item question">
-                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1}}/9</div>
+                <div class="question__number">{{ $tc('survey.question') }} {{ currentPage + 1 }}/9</div>
                 <div class="question__text">{{ $tc('survey.visualization.question') }}</div>
                 <textarea name="visualization" class="question__answers--textarea"
-                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')"
-                    v-model="form.visualization"></textarea>
+                    :placeholder="$tc('survey.whatWereYouLookingFor.placeholder')" v-model="form.visualization"></textarea>
             </slide>
             <slide class="survey__slide_item question question--survey-complete">
                 <div class="question__text">{{ $tc('survey.thankYouForCompleting') }}</div>
             </slide>
-            for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to)
-        <slide></slide>
-        <slide></slide>
-        </carousel> -->
+        </carousel>
         <div class="d-flex flex--justify-between buttons-wrapper">
             <div class="checkbox">
                 <input id="hide-in-future" type="checkbox" @change="toggleHideInFuture($event)" />
@@ -157,18 +148,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
-// import { Carousel, Slide } from 'vue-carousel';
-
+// @ts-nocheck
+import { Component, Vue } from 'nuxt-property-decorator';
 import GeossSearchApiService from '@/services/geoss-search.api.service';
 import PopupCloseService from '@/services/popup-close.service';
-// import { PopupGetters } from '@/store/popup/popup-getters';
 
 @Component({
     components: {
     }
 })
 export default class SurveyComponent extends Vue {
+
     public currentPage: number = 0;
     public form: any = {
         impression: '',
@@ -183,6 +173,40 @@ export default class SurveyComponent extends Vue {
         search_criteria: '',
         visualization: ''
     };
+
+    public surveyInterestOptions = [
+        {
+            label: 'Global - world-wide interest',
+            value: 'global',
+        },
+        {
+            label: 'National - country-specific interest',
+            value: 'national',
+        },
+        {
+            label: 'Regional - specific geographic interests within a country',
+            value: 'regional',
+        },
+        {
+            label: 'Local - community-specific geographic interests',
+            value: 'local',
+        },
+    ];
+
+    public surveyClassificationOptions = [
+        {
+            label: 'Scientist/Researcher',
+            value: 'scientist/researcher',
+        },
+        {
+            label: 'Decision Support Official',
+            value: 'decision support official',
+        },
+        {
+            label: 'Policy Analyst',
+            value: 'policy analyst',
+        },
+    ];
 
     public answerDidYouFind(didYouFind: string) {
         this.form.did_found_what_looking_for = didYouFind;
@@ -228,14 +252,15 @@ export default class SurveyComponent extends Vue {
 
         const data = {
             impression: this.form.impression,
-            did_found_what_looking_for: this.form.did_found_what_looking_for,
-            what_looking_for: this.form.what_looking_for,
+            foundLookingFor: this.form.did_found_what_looking_for,
+            lookingFor: this.form.what_looking_for,
             interest: this.form.interest,
             classification: this.form.classification,
             organized: this.form.organized,
             adequately: this.form.adequately,
-            search_criteria: this.form.search_criteria,
-            visualization: this.form.visualization
+            searchCriteria: this.form.search_criteria,
+            visualization: this.form.visualization,
+            from: window.$nuxt.$auth.loggedIn ? window.$nuxt.$auth.user.given_name : 'anonymousUser'
         };
 
         this.form = {
@@ -267,9 +292,9 @@ export default class SurveyComponent extends Vue {
         if (value) {
             const date = new Date();
             date.setFullYear(date.getFullYear() + 1);
-            this.$cookies.set('hide-survey', 'true', { expires: date });
+            window.$nuxt.$cookies.set('hide-survey', 'true', { expires: date });
         } else {
-            this.$cookies.remove('hide-survey');
+            window.$nuxt.$cookies.remove('hide-survey');
         }
     }
 
@@ -284,7 +309,7 @@ export default class SurveyComponent extends Vue {
     private created() {
         const date = new Date();
         date.setDate(date.getDate() + 1);
-        this.$cookies.set('hide-survey', 'true', { expires: date });
+        window.$nuxt.$cookies.set('hide-survey', 'true', { expires: date });
     }
 
     private mounted() {
@@ -374,6 +399,16 @@ export default class SurveyComponent extends Vue {
     }
 
     .VueCarousel {
+        position: static;
+
+        &-wrapper {
+            position: static;
+        }
+
+        &-inner {
+            transition: transform 0.5s ease !important;
+        }
+
         &.survey {
             @media(max-width: $breakpoint-lg) {
                 padding: 0;
@@ -384,7 +419,7 @@ export default class SurveyComponent extends Vue {
 
             &-prev,
             &-next {
-                top: 60px;
+                top: 60px !important;
                 transform: none !important;
 
                 @media(max-width: $breakpoint-lg) {
@@ -414,7 +449,7 @@ export default class SurveyComponent extends Vue {
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: auto;
+            width: auto !important;
 
             @media(max-width: $breakpoint-lg) {
                 position: static;

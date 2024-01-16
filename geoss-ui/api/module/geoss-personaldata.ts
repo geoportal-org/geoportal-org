@@ -2,6 +2,7 @@ const config = {
     apiUrl: '/personaldata/rest', // 'http://10.254.7.59:8083/rest',
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',
+    surveys: '/surveys'
 }
 
 export default {
@@ -12,4 +13,5 @@ export default {
     savedSearchesByCurrentUser:
         config.apiUrl + config.savedSearchesUrl + '/search/current',
     highlightedSearches: config.apiUrl + config.highlightedSeearchesUrl,
+    surveys: config.apiUrl + config.surveys,
 }
