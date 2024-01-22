@@ -44,4 +44,6 @@
     <include file="changelogs/0038_create_user_extension_table.xml"/>
     <include file="changelogs/0039_create_user_dashboard_table.xml"/>
     <include file="changelogs/0040_create_entry_event_table.xml"/>
+    <include file="changelogs/0041_create_entry_rating_table.xml"/>
+    <include file="changelogs/0042_create_entry_stats_table.xml"/>
 </databaseChangeLog>

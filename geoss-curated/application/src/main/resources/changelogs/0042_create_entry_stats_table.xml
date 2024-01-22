@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="create_entry_stats_table">
+        <createTable tableName="entry_stats">
+            <column autoIncrement="true" name="statsId" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="targetId" type="VARCHAR(250)">
+                <constraints nullable="true" />
+            </column>
+            <column name="totalEntries" type="INT">
+                <constraints nullable="true" />
+            </column>
+            <column name="totalScore" type="DOUBLE">
+                <constraints nullable="true" />
+            </column>
+            <column name="averageScore" type="DOUBLE">
+                <constraints nullable="true" />
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="dataSource" type="VARCHAR(75)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,50 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mmorawski" id="create_entry_rating_table">
+        <createTable tableName="entry_rating">
+            <column autoIncrement="true" name="entryId" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="targetId" type="VARCHAR(250)">
+                <constraints nullable="true" />
+            </column>
+            <column name="name" type="VARCHAR(1000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="userId" type="VARCHAR(36)">
+                <constraints nullable="true" />
+            </column>
+            <column name="groupId" type="INT">
+                <constraints nullable="true" />
+            </column>
+            <column name="createDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="modifiedDate" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="score" type="DOUBLE">
+                <constraints nullable="true" />
+            </column>
+            <column name="comment_" type="LONGTEXT">
+                <constraints nullable="true" />
+            </column>
+            <column name="entryXml" type="LONGTEXT">
+                <constraints nullable="true" />
+            </column>
+            <column name="dataSource" type="VARCHAR(75)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sourceBaseUrl" type="VARCHAR(250)">
+                <constraints nullable="true" />
+            </column>
+            <column name="valid" type="TINYINT">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
