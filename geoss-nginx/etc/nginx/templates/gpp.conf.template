@@ -152,7 +152,7 @@ server {
 
   location /services-providers {
   resolver 127.0.0.1;
-  proxy_pass http://yp.geodab.eu/yp-publisher/services/yp/providers
+  proxy_pass http://yp.geodab.eu/yp-publisher/services/yp/providers;
 
   proxy_cache service_providers_zone;
   proxy_cache_valid any 10m;
