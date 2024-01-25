@@ -56,7 +56,7 @@ public class SavedSearches {
     @NotEmpty
     @NotBlank
     @NaturalId(mutable = true)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @NotNull
