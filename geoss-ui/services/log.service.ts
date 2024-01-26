@@ -185,6 +185,7 @@ const LogService: any = {
             apiClient.$post(`${geossProxy.logSearch}`, JSON.stringify(body), {
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: '',
                 },
             })
         } catch (e: any) {
