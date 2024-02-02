@@ -10,7 +10,6 @@ services:
         constraints:
           - "node.labels.group_tag==geoss-proxy"
     environment:
-      DEPLOY_ENV: dev
       http_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
       https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
       no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
@@ -27,6 +26,8 @@ services:
         published: 80
         protocol: tcp
         mode: host
+    volumes:
+      - /etc/ssl/geoss_certs/geoss_haproxy/server.pem:/usr/local/etc/haproxy/certs/server.pem
     networks:
       - geossdmz
 
@@ -58,6 +59,8 @@ services:
       https_proxy: http://squid:${SQUID_PROXY_PASSWORD}@geoss-dmz-squid:3128
       no_proxy: 127.0.0.1,localhost,geoss-dmz-haproxy,geoss-dmz-postfix,geoss-dmz-nginx,geoss-dmz-squid,geoss-dmz-cvupdate
     volumes:
+      - /etc/ssl/geoss_certs/geoss_nginx/server.crt:/etc/nginx/certs/server.crt
+      - /etc/ssl/geoss_certs/geoss_nginx/server.key:/etc/nginx/certs/server.key
       - /var/log/nginx:/var/log/nginx
     networks:
       - geossdmz

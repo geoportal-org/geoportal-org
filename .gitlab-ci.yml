@@ -369,14 +369,14 @@ build_images:
   cache: { }
   before_script:
     - chmod +x setup_tag.sh
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/dev/server.pem
-    - echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/uat/server.pem
+    #- echo "$DEV_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/dev/server.pem
+    #- echo "$UAT_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/uat/server.pem
     # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" >> ./geoss-haproxy/etc/haproxy/certs/prod/server.pem
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
-    - echo "$UAT_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/uat/server.key
+    #- echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/dev/server.key
+    #- echo "$UAT_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/uat/server.key
     # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" > ./geoss-nginx/etc/nginx/certs/prod/server.key
-    - echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/dev/tls.key
-    - echo "$UAT_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/uat/tls.key
+    #- echo "$DEV_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/dev/tls.key
+    #- echo "$UAT_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/uat/tls.key
     # - echo "$PROD_NGINX_SSL_PRIVATE_KEY" > ./geoss-keycloak/certs/tls.key
   script:
     - echo "Docker image tag setup" && source setup_tag.sh

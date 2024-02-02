@@ -26,7 +26,6 @@ ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-COPY certs/ /etc/x509/https/
 COPY realms/ /opt/keycloak/data/import/
 COPY themes/geoss/account/ /opt/keycloak/themes/geoss/account/
 COPY themes/geoss/admin/ /opt/keycloak/themes/geoss/admin/
@@ -36,4 +35,4 @@ COPY themes/geoss/welcome/ /opt/keycloak/themes/geoss/welcome/
 COPY utils/ /opt/utils/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss"]
+CMD ["start", "--optimized", "--import-realm", "--spi-theme-welcome-theme=geoss", "--https-certificate-file=/etc/x509/https/tls.crt", "--https-certificate-key-file=/etc/x509/https/tls.key"]
