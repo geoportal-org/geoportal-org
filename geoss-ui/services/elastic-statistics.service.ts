@@ -139,7 +139,8 @@ const ElasticDataService = {
                 case 'line':
                     if (data.length) {
                         data.forEach((element: any) => {
-                            labels.push(element.keyAsString.slice(0, 10))
+                            const label = element.key === '' ? 'Unspecified' : element.keyAsString.slice(0, 10)
+                            labels.push(label)
                             values.push(element.docCount)
                         })
                     }
@@ -183,11 +184,11 @@ const ElasticDataService = {
                 case 'bar':
                     if (data.length) {
                         data.forEach((element: any) => {
-                            labels.push(element.key)
+                            const label = element.key === '' ? 'Unspecified' : element.key
+                            labels.push(label)
                             values.push(element.docCount.toString())
                         })
                     }
-
                     colors = getRandomColorsArray(labels.length)
                     const barChartData = {
                         labels: labels,
@@ -201,7 +202,6 @@ const ElasticDataService = {
                             },
                         ],
                     }
-
                     options = {
                         responsive: true,
                         plugins: {
