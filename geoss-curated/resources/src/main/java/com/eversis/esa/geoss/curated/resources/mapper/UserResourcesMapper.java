@@ -71,7 +71,7 @@ public class UserResourcesMapper {
         dto.setCreateDate(userResource.getCreateDate());
         dto.setModifiedDate(userResource.getModifiedDate());
         boolean hasOtherEntriesWithSameEntry = userResourceService.checkIfOtherEntriesExist(userResource);
-        dto.setHasOtherEntriesWithSameEntry(hasOtherEntriesWithSameEntry);
+        dto.setHasOtherResourcesWithSameEntry(hasOtherEntriesWithSameEntry);
         return dto;
     }
 

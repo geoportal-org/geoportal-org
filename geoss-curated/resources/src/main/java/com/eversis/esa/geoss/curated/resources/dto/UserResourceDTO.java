@@ -27,6 +27,6 @@ public class UserResourceDTO {
     private Status status;
     private LocalDateTime createDate;
     private LocalDateTime modifiedDate;
-    private boolean hasOtherEntriesWithSameEntry;
+    private boolean hasOtherResourcesWithSameEntry;
 
 }
