@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -248,6 +249,19 @@ public class WorkflowController {
     public void deleteUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
         log.info("Delete user dashboard");
         workflowService.deleteUserDashboard(userDashboardId, host);
+    }
+
+    /**
+     * Delete entry.
+     *
+     * @param entryId the entry id
+     */
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/entry/delete/{entryId}")
+    public void deleteEntry(@PathVariable long entryId) {
+        log.info("Delete entry");
+        workflowService.deleteEntry(entryId);
     }
 
 }

@@ -8,7 +8,10 @@ import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
+import com.eversis.esa.geoss.curated.resources.domain.Entry;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
+import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 import com.eversis.esa.geoss.curated.workflow.service.WorkflowService;
 
@@ -17,6 +20,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -54,20 +58,28 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final ObjectProvider<Keycloak> keycloakProvider;
 
+    private final EntryRepository entryRepository;
+
+    private final UserResourceRepository userResourceRepository;
+
     /**
      * Instantiates a new Workflow service.
      *
      * @param userResourceService the user resource service
      * @param userRelationService the user relation service
      * @param userExtensionService the user extension service
+     * @param userDashboardService the user dashboard service
      * @param elasticsearchService the elasticsearch service
      * @param emailEventPublisher the email event publisher
-     * @param keycloakProvider the keycloak
+     * @param keycloakProvider the keycloak provider
+     * @param entryRepository the entry repository
+     * @param userResourceRepository the user resource repository
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
             UserExtensionService userExtensionService, UserDashboardService userDashboardService,
             ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher,
-            ObjectProvider<Keycloak> keycloakProvider) {
+            ObjectProvider<Keycloak> keycloakProvider, EntryRepository entryRepository,
+            UserResourceRepository userResourceRepository) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
         this.userExtensionService = userExtensionService;
@@ -75,6 +87,8 @@ public class WorkflowServiceImpl implements WorkflowService {
         this.elasticsearchService = elasticsearchService;
         this.emailEventPublisher = emailEventPublisher;
         this.keycloakProvider = keycloakProvider;
+        this.entryRepository = entryRepository;
+        this.userResourceRepository = userResourceRepository;
     }
 
     @Transactional
@@ -499,6 +513,59 @@ public class WorkflowServiceImpl implements WorkflowService {
             log.warn("Keycloak not activated. Skipping send emails.");
         }
         log.info("Workflow delete user dashboard.");
+    }
+
+    @Transactional
+    @Override
+    public void deleteEntry(long entryId) {
+        log.info("Deleting entry with id: {}", entryId);
+        final Entry entry = entryRepository.findById(entryId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Entry entity with id: " + entryId + " does not exist"));
+        elasticsearchService.removeEntryFromIndex(entry);
+        deleteUserResourcesByEntryName(entry.getTitle(), entry.getCode());
+        entryRepository.deleteById(entryId);
+        log.info("Deleted entry with id: {}", entryId);
+    }
+
+    private void deleteUserResourcesByEntryName(String entryName, String code) {
+        log.info("Deleting user resources by entry name: {}", entryName);
+        List<UserResource> userResourcesToDelete = userResourceRepository.findByEntryName(entryName);
+
+        if (userResourcesToDelete.isEmpty()) {
+            log.info("No user resources found for entry name: {}", entryName);
+            return;
+        }
+
+        String userId = userResourcesToDelete.get(0).getUserId();
+        StringBuilder namesBuilder = new StringBuilder();
+
+        userResourcesToDelete.forEach(userResource -> {
+            String name = userResource.getId() + " " + userResource.getEntryName() + " " + userResource.getTaskType()
+                    .getName();
+            namesBuilder.append(name).append("\n");
+            userResourceRepository.delete(userResource);
+        });
+
+        String names = namesBuilder.toString();
+        Map<String, Object> variables = Map.of("code", code, "names", names);
+        sendEmailIfKeycloakAvailable(userId, variables);
+
+        log.info("Deleted user resources by entry name: {}", entryName);
+    }
+
+    private void sendEmailIfKeycloakAvailable(String userId, Map<String, Object> variables) {
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "corresponding.resources.deleted.title",
+                    "emails/corresponding-resources-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
     }
 
 }

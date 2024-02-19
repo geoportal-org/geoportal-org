@@ -133,4 +133,11 @@ public interface WorkflowService {
      */
     void deleteUserDashboard(long userDashboardId, String host);
 
+    /**
+     * Delete entry.
+     *
+     * @param entryId the entry id
+     */
+    void deleteEntry(long entryId);
+
 }

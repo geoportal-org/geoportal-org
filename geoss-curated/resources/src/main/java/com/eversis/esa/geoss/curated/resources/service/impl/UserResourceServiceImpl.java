@@ -112,15 +112,6 @@ public class UserResourceServiceImpl implements UserResourceService {
 
     @Transactional
     @Override
-    public void deleteUserResourcesByEntryName(String entryName) {
-        log.info("Deleting user resources by entry name: {}", entryName);
-        List<UserResource> userResourcesToDelete = userResourceRepository.findByEntryName(entryName);
-        userResourceRepository.deleteAll(userResourcesToDelete);
-        log.info("Deleted user resources by entry name: {}", entryName);
-    }
-
-    @Transactional
-    @Override
     public void restoreUserResource(long userResourceId) {
         log.info("Restoring user resource with id: {}", userResourceId);
         final UserResource userResource = userResourceRepository.findById(userResourceId).orElseThrow(

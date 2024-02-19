@@ -7,7 +7,6 @@ import com.eversis.esa.geoss.curated.resources.mapper.EntryMapper;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
 import com.eversis.esa.geoss.curated.resources.service.ResourceService;
-import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,20 +28,15 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final EntryMapper entryMapper;
 
-    private final UserResourceService userResourceService;
-
     /**
      * Instantiates a new Resource service.
      *
      * @param entryRepository the entry repository
      * @param entryMapper the entry mapper
-     * @param userResourceService the user resource service
      */
-    public ResourceServiceImpl(EntryRepository entryRepository, EntryMapper entryMapper,
-            UserResourceService userResourceService) {
+    public ResourceServiceImpl(EntryRepository entryRepository, EntryMapper entryMapper) {
         this.entryRepository = entryRepository;
         this.entryMapper = entryMapper;
-        this.userResourceService = userResourceService;
     }
 
     @Override
@@ -94,10 +88,6 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void deleteEntry(long entryId) {
         log.info("Deleting entry with id: {}", entryId);
-        final Entry entry = entryRepository.findById(entryId).orElseThrow(
-                () -> new ResourceNotFoundException(
-                        "Entry entity with id: " + entryId + " does not exist"));
-        userResourceService.deleteUserResourcesByEntryName(entry.getTitle());
         entryRepository.deleteById(entryId);
         log.info("Deleted entry with id: {}", entryId);
     }
