@@ -2,9 +2,11 @@ package com.eversis.esa.geoss.curated.resources.mapper;
 
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.service.EntryService;
 
+import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,13 +17,17 @@ public class UserResourcesMapper {
 
     private final EntryService entryService;
 
+    private final UserResourceService userResourceService;
+
     /**
      * Instantiates a new User resources mapper.
      *
      * @param entryService the entry service
+     * @param userResourceService the user resource service
      */
-    public UserResourcesMapper(EntryService entryService) {
+    public UserResourcesMapper(EntryService entryService, UserResourceService userResourceService) {
         this.entryService = entryService;
+        this.userResourceService = userResourceService;
     }
 
     /**
@@ -43,6 +49,30 @@ public class UserResourcesMapper {
      */
     public UserResource mapToUserResource(UserResourceModel model, UserResource userResource) {
         return getUserResource(model, userResource);
+    }
+
+    /**
+     * Convert to dto user resource dto.
+     *
+     * @param userResource the user resource
+     * @return the user resource dto
+     */
+    public UserResourceDTO convertToDto(UserResource userResource) {
+        if (userResource == null) {
+            return null;
+        }
+        UserResourceDTO dto = new UserResourceDTO();
+        dto.setId(userResource.getId());
+        dto.setUserId(userResource.getUserId());
+        dto.setEntryName(userResource.getEntryName());
+        dto.setTaskType(userResource.getTaskType());
+        dto.setEntry(userResource.getEntry());
+        dto.setStatus(userResource.getStatus());
+        dto.setCreateDate(userResource.getCreateDate());
+        dto.setModifiedDate(userResource.getModifiedDate());
+        boolean hasOtherEntriesWithSameEntry = userResourceService.checkIfOtherEntriesExist(userResource);
+        dto.setHasOtherEntriesWithSameEntry(hasOtherEntriesWithSameEntry);
+        return dto;
     }
 
     private UserResource getUserResource(UserResourceModel model) {

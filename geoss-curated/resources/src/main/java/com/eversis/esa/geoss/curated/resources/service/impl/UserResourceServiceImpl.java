@@ -1,10 +1,12 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import jakarta.validation.constraints.NotNull;
 
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.mapper.UserResourcesMapper;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
@@ -12,6 +14,7 @@ import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -157,6 +160,24 @@ public class UserResourceServiceImpl implements UserResourceService {
         userResource.setStatus(Status.PENDING);
         userResourceRepository.save(userResource);
         log.info("Pending user resource finished.");
+    }
+
+    @Override
+    public Page<UserResourceDTO> findUserResourcesWithCheck(String userId, @NotNull Pageable pageable) {
+        Page<UserResource> userResourcesPage = userResourceRepository.findByUserId(userId, pageable);
+        List<UserResourceDTO> dtos = userResourcesPage.stream()
+                .map(userResourcesMapper::convertToDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(dtos, pageable, userResourcesPage.getTotalElements());
+    }
+
+    @Override
+    public boolean checkIfOtherEntriesExist(UserResource userResource) {
+        List<UserResource> userResources = userResourceRepository.findByEntryName(userResource.getEntryName());
+        if (userResources.size() > 1) {
+            return true;
+        }
+        return false;
     }
 
 }

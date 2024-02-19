@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 
@@ -152,6 +153,23 @@ public class UserResourceController {
     public void restoreUserResource(@PathVariable long userResourceId) {
         log.info("Restore user resource");
         userResourceService.restoreUserResource(userResourceId);
+    }
+
+    /**
+     * Find user resources with check page.
+     *
+     * @param userId the user id
+     * @param page the page
+     * @param size the size
+     * @return the page
+     */
+    @GetMapping("/check/user/{userId}")
+    public Page<UserResourceDTO> findUserResourcesWithCheck(
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        log.info("Find user resources with additional check");
+        return userResourceService.findUserResourcesWithCheck(userId, PageRequest.of(page, size));
     }
 
 }

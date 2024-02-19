@@ -1,12 +1,13 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import com.eversis.esa.geoss.curated.resources.domain.UserResource;
-import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import jakarta.validation.constraints.NotNull;
+
+import com.eversis.esa.geoss.curated.resources.domain.UserResource;
+import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
+import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  * The interface User resource service.
@@ -95,5 +96,22 @@ public interface UserResourceService {
      * @param userResourceId the user resource id
      */
     void pendingUserResource(long userResourceId);
+
+    /**
+     * Find user resources with check page.
+     *
+     * @param userId the user id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<UserResourceDTO> findUserResourcesWithCheck(String userId, @NotNull Pageable pageable);
+
+    /**
+     * Check if other entries exist boolean.
+     *
+     * @param userResource the user resource
+     * @return the boolean
+     */
+    boolean checkIfOtherEntriesExist(UserResource userResource);
 
 }
