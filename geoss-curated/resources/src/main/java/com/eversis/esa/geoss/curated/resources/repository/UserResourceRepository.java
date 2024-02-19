@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.resources.repository;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 
 import org.springframework.data.domain.Page;
@@ -22,5 +24,13 @@ public interface UserResourceRepository extends JpaRepository<UserResource, Long
      * @return the page
      */
     Page<UserResource> findByUserId(@Param("userId") String userId, Pageable pageable);
+
+    /**
+     * Find by entry name list.
+     *
+     * @param entryName the entry name
+     * @return the list
+     */
+    List<UserResource> findByEntryName(@Param("entryName") String entryName);
 
 }

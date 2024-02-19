@@ -68,6 +68,13 @@ public interface UserResourceService {
     void deleteUserResource(long userResourceId);
 
     /**
+     * Delete user resources by entry name.
+     *
+     * @param entryName the entry name
+     */
+    void deleteUserResourcesByEntryName(String entryName);
+
+    /**
      * Restore user resource.
      *
      * @param userResourceId the user resource id

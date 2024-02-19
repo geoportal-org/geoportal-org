@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.curated.resources.model;
 
 import jakarta.validation.constraints.NotNull;
 
-import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
 import lombok.Data;
 
 /**
