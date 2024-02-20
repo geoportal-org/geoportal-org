@@ -7,6 +7,7 @@ import com.eversis.esa.geoss.curated.resources.mapper.EntryMapper;
 import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
 import com.eversis.esa.geoss.curated.resources.service.ResourceService;
+import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,15 +29,20 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final EntryMapper entryMapper;
 
+    private final TransferOptionService transferOptionService;
+
     /**
      * Instantiates a new Resource service.
      *
      * @param entryRepository the entry repository
      * @param entryMapper the entry mapper
+     * @param transferOptionService the transfer option service
      */
-    public ResourceServiceImpl(EntryRepository entryRepository, EntryMapper entryMapper) {
+    public ResourceServiceImpl(EntryRepository entryRepository, EntryMapper entryMapper,
+            TransferOptionService transferOptionService) {
         this.entryRepository = entryRepository;
         this.entryMapper = entryMapper;
+        this.transferOptionService = transferOptionService;
     }
 
     @Override
@@ -69,6 +75,7 @@ public class ResourceServiceImpl implements ResourceService {
                 () -> new ResourceNotFoundException(
                         "Entry entity with id: " + entryId + " does not exist"));
         entryRepository.save(entryMapper.mapToEntry(entryDto, entry));
+        transferOptionService.saveTransferOptions(entryDto.getTransferOptions(), entry);
         log.info("Updated entry with id: {}", entry.getId());
     }
 
