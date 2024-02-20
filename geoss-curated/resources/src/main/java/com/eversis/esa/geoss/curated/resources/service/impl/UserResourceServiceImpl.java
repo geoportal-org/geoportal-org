@@ -171,13 +171,4 @@ public class UserResourceServiceImpl implements UserResourceService {
         return new PageImpl<>(dtos, pageable, userResourcesPage.getTotalElements());
     }
 
-    @Override
-    public boolean checkIfOtherEntriesExist(UserResource userResource) {
-        List<UserResource> userResources = userResourceRepository.findByEntryName(userResource.getEntryName());
-        if (userResources.size() > 1) {
-            return true;
-        }
-        return false;
-    }
-
 }

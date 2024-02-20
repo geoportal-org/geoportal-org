@@ -6,7 +6,6 @@ import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -105,13 +104,5 @@ public interface UserResourceService {
      * @return the page
      */
     Page<UserResourceDTO> findUserResourcesWithCheck(String userId, @NotNull Pageable pageable);
-
-    /**
-     * Check if other entries exist boolean.
-     *
-     * @param userResource the user resource
-     * @return the boolean
-     */
-    boolean checkIfOtherEntriesExist(UserResource userResource);
 
 }

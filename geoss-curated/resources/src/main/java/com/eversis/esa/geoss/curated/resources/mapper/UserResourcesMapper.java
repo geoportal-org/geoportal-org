@@ -1,12 +1,13 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
+import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.EntryService;
-
-import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,17 +18,16 @@ public class UserResourcesMapper {
 
     private final EntryService entryService;
 
-    private final UserResourceService userResourceService;
+    private final UserResourceRepository userResourceRepository;
 
     /**
      * Instantiates a new User resources mapper.
      *
      * @param entryService the entry service
-     * @param userResourceService the user resource service
      */
-    public UserResourcesMapper(EntryService entryService, UserResourceService userResourceService) {
+    public UserResourcesMapper(EntryService entryService, UserResourceRepository userResourceRepository) {
         this.entryService = entryService;
-        this.userResourceService = userResourceService;
+        this.userResourceRepository = userResourceRepository;
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserResourcesMapper {
         dto.setStatus(userResource.getStatus());
         dto.setCreateDate(userResource.getCreateDate());
         dto.setModifiedDate(userResource.getModifiedDate());
-        boolean hasOtherEntriesWithSameEntry = userResourceService.checkIfOtherEntriesExist(userResource);
+        boolean hasOtherEntriesWithSameEntry = checkIfOtherEntriesExist(userResource);
         dto.setHasOtherResourcesWithSameEntry(hasOtherEntriesWithSameEntry);
         return dto;
     }
@@ -97,6 +97,11 @@ public class UserResourcesMapper {
         userResource.setTaskType(model.getTaskType());
         userResource.setEntry(entryService.getOrCreateEntry(model.getEntry()));
         return userResource;
+    }
+
+    private boolean checkIfOtherEntriesExist(UserResource userResource) {
+        List<UserResource> userResources = userResourceRepository.findByEntryName(userResource.getEntryName());
+        return userResources.size() > 1;
     }
 
 }
