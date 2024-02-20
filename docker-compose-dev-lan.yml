@@ -531,7 +531,7 @@ services:
 
   geoss-maildev:
     hostname: geoss-maildev
-    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
+    image: nexus-docker.eversis.com:7443/common/maildev:1.3.0
     deploy:
       replicas: 1
       placement:
