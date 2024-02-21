@@ -530,6 +530,8 @@ services:
   geoss-maildev:
     hostname: geoss-maildev
     image: nexus-docker.eversis.com:7443/common/maildev:1.3.0
+    healthcheck:
+      test: ['CMD','true']
     deploy:
       replicas: 1
       placement:
