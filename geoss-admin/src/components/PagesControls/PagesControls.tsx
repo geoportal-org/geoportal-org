@@ -1,4 +1,4 @@
-import { PagesInfo } from "@/types/models/recommendations";
+import { PagesInfo } from "@/types/models/page";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { Button, Flex, Select, Text, useBreakpointValue } from "@chakra-ui/react";

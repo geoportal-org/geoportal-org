@@ -1,3 +1,5 @@
+import { PagesInfo } from "./page";
+
 export interface RecommendationList {
     _embedded: {
         recommendationModels: SavedRecommendationData[];
@@ -50,11 +52,4 @@ export interface RecommendationEntityData {
     entityCode: string;
     name: string;
     orderWeight: number;
-}
-
-export interface PagesInfo {
-    size: number;
-    totalElements: number;
-    totalPages: number;
-    number: number;
 }

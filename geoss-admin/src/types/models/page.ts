@@ -32,3 +32,10 @@ export interface IPageList {
     page: IPagination;
     _links: IResponseLinks;
 }
+
+export interface PagesInfo {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+}

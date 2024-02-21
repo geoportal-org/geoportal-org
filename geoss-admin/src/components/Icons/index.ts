@@ -1,7 +1,9 @@
 export { ApiIcon } from "./ApiIcon";
 export { CatalogIcon } from "./CatalogIcon";
 export { ContentIcon } from "./ContentIcon";
+export { CrossIcon } from "./CrossIcon";
 export { DirectoryIcon } from "./DirectoryIcon";
+export { EntryIcon } from "./EntryIcon";
 export { FileIcon } from "./FileIcon";
 export { FolderIcon } from "./FolderIcon";
 export { HomeIcon } from "./HomeIcon";
@@ -10,6 +12,7 @@ export { LayoutIcon } from "./LayoutIcon";
 export { LogoutIcon } from "./LogoutIcon";
 export { MenuIcon } from "./MenuIcon";
 export { PageIcon } from "./PageIcon";
+export { PlusIcon } from "./PlusIcon";
 export { ProfileIcon } from "./ProfileIcon";
 export { SingleFileIcon } from "./SingleFileIcon";
 export { TutorialIcon } from "./TutorialIcon";

@@ -81,9 +81,12 @@ export const authOptions: NextAuthOptions = {
             }
         },
         session: async ({ session, token }) => {
+            console.log(token)
             session.accessToken = token.accessToken as string;
             session.tokenId = token.tokenId as string;
             session.expires = token.refreshTokenExpired as string;
+            //@ts-ignore
+            session.userId = token.user.id
             return session;
         },
     },

@@ -11,6 +11,7 @@ export const PrimaryButton = ({ children, color, disabled, onClick, type, varian
             variant={variant || ButtonVariant.OUTLINE}
             color={variant !== ButtonVariant.SOLID ? color || "brand.dark" : "brand.mainLight"}
             bg={variant === ButtonVariant.SOLID ? color : "inherit"}
+            whiteSpace='break-spaces'
         >
             {children}
         </Button>

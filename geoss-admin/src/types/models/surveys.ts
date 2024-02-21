@@ -1,5 +1,4 @@
-import { PagesInfo } from "./recommendations";
-
+import { PagesInfo } from "@/types/models/page";
 export interface SurveysData {
     page: PagesInfo;
     _embedded: {

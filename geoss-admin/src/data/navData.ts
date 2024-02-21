@@ -1,14 +1,12 @@
 import {
     ApiIcon,
-    CatalogIcon,
+    EntryIcon,
     FileIcon,
     LayerIcon,
     LayoutIcon,
     LogoutIcon,
     MenuIcon,
     PageIcon,
-    ProfileIcon,
-    TutorialIcon,
     WebIcon,
     WebsiteIcon,
 } from "@/components/Icons";
@@ -83,6 +81,11 @@ const navContentsData: NavItem[] = [
 ];
 
 const navUsersData: NavItem[] = [
+    {
+        titleId: "nav.users.section.entryResources",
+        href: pagesRoutes.entryResources,
+        Icon: EntryIcon,
+    },
     {
         titleId: "nav.users.section.usersSurvey",
         href: pagesRoutes.survey,

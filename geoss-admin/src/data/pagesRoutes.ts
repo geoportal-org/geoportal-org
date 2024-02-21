@@ -4,6 +4,7 @@ export const pagesRoutes = {
     api: "/api-settings",
     catalogs: "/catalogs-settings",
     defaultLayer: "/default-layer-settings",
+    entryResources: "/entry-resources",
     fileRepository: "/file-repository",
     menu: "/menu",
     myProfile: "/profile",

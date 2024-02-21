@@ -1,5 +1,5 @@
 import { SurveysService } from "@/services/api/users/surveyResultsService";
-import { PagesInfo } from "@/types/models/recommendations";
+import { PagesInfo } from "@/types/models/page";
 import {
     Button,
     Flex,
@@ -45,6 +45,10 @@ export const UsersSurvey = () => {
     const justify = useBreakpointValue({ base: "center", lg: "flex-start" }) as any;
     const { translate } = useFormatMsg();
 
+    useEffect(() => {
+        fetchSurveys();
+    }, []);
+
     const fetchSurveys = async (page = 0, numberOfHits = 20) => {
         try {
             setIsLoading(true);
@@ -57,10 +61,6 @@ export const UsersSurvey = () => {
             setIsLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchSurveys();
-    }, []);
 
     const filterResults = async (page = 0) => {
         try {
