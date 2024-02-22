@@ -1,6 +1,5 @@
 import { RecommendationsService } from "@/services/api/settings/RecommendationsService";
 import {
-    PagesInfo,
     RecommendationData,
     RecommendationEntityData,
     SavedRecommendationData,
@@ -32,6 +31,7 @@ import RecommendationRow from "./RecommendationRow";
 import PagesControls from "../PagesControls/PagesControls";
 import EntityRow from "./EntityRow";
 import { initialAddFormValue, initialNewEntity, initialPagesInfo } from "./DefaultValues";
+import { PagesInfo } from "@/types/models/page";
 
 interface addForm {
     keywords: string;
