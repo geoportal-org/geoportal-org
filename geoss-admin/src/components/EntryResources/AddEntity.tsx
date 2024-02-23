@@ -46,6 +46,7 @@ const defaultFormState = {
 };
 
 const defaultLinkState = {
+    id: 0,
     title: "",
     name: "",
     description: "",
@@ -180,7 +181,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             const response = await UserResourcesService.getEntry(entryId);
             const entry = response[0].entry;
             setDefaultEntryVal(entry);
-            
+
             //entry data
             let data = { ...defaultFormState };
             data.title = entry.title;
@@ -221,6 +222,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             let links: any = [];
             response.forEach((transferOption) => {
                 let link = { ...defaultLinkState };
+                link.id = transferOption.id;
                 link.title = transferOption.title;
                 link.description = transferOption.description;
                 link.name = transferOption.name;
@@ -378,18 +380,34 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
     const getTransferOptions = () => {
         const transferOptions: LinkType[] = [];
         links.forEach((link: any) => {
-            transferOptions.push({
-                name: link.name,
-                description: link.description,
-                title: link.title,
-                protocol: {
-                    value: link.protocol === "customProtocol" ? link.customProtocol : link.protocolValue,
-                },
-                endpoint: {
-                    url: link.endpoint === "customEndpoint" ? link.customEndpoint : link.endpointUrl,
-                    urlType: link.endpointType,
-                },
-            });
+            transferOptions.push(
+                isUpdate
+                    ? {
+                          id: link.id,
+                          name: link.name,
+                          description: link.description,
+                          title: link.title,
+                          protocol: {
+                              value: link.protocol === "customProtocol" ? link.customProtocol : link.protocolValue,
+                          },
+                          endpoint: {
+                              url: link.endpoint === "customEndpoint" ? link.customEndpoint : link.endpointUrl,
+                              urlType: link.endpointType,
+                          },
+                      }
+                    : {
+                          name: link.name,
+                          description: link.description,
+                          title: link.title,
+                          protocol: {
+                              value: link.protocol === "customProtocol" ? link.customProtocol : link.protocolValue,
+                          },
+                          endpoint: {
+                              url: link.endpoint === "customEndpoint" ? link.customEndpoint : link.endpointUrl,
+                              urlType: link.endpointType,
+                          },
+                      }
+            );
         });
         return transferOptions;
     };
@@ -489,6 +507,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
         );
     };
 
+    
     const generateAdditionalInfoForm = () => {
         return (
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={3} pt={3}>

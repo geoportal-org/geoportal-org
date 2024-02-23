@@ -194,6 +194,7 @@ export interface TransferOption {
 }
 
 export interface LinkType {
+    id?: number;
     name: string;
     description: string;
     title: string;
