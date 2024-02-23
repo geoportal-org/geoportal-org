@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * The type Score model.
+ * The type View counter model.
  */
 @Data
-public class ScoreModel extends LoggedModel {
+public class ViewCounterModel extends LoggedModel {
 
     private String uiObjectId;
     private String uiObjectClass;

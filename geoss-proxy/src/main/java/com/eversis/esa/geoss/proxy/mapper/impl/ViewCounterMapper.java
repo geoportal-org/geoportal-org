@@ -1,22 +1,22 @@
 package com.eversis.esa.geoss.proxy.mapper.impl;
 
-import com.eversis.esa.geoss.proxy.document.ScoreDoc;
-import com.eversis.esa.geoss.proxy.domain.ScoreModel;
+import com.eversis.esa.geoss.proxy.document.ViewCounterDoc;
+import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * The type Score mapper.
+ * The type View counter mapper.
  */
 @Component
-public class ScoreMapper implements ElasticsearchDocumentMapper<ScoreModel>{
+public class ViewCounterMapper implements ElasticsearchDocumentMapper<ViewCounterModel>{
 
     @Override
-    public ScoreDoc mapToDocument(ScoreModel model) {
+    public ViewCounterDoc mapToDocument(ViewCounterModel model) {
         if (model == null) {
             return null;
         }
-        ScoreDoc doc = new ScoreDoc();
+        ViewCounterDoc doc = new ViewCounterDoc();
         doc.setUiObjectId(model.getUiObjectId());
         doc.setUiObjectClass(model.getUiObjectClass());
         doc.setUiSource(model.getUiSource());

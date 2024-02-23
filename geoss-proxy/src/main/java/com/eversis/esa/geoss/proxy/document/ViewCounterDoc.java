@@ -6,11 +6,11 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
- * The type Score doc.
+ * The type View counter doc.
  */
 @Document(indexName = "geoss_index", createIndex = true)
 @Data
-public class ScoreDoc extends Doc {
+public class ViewCounterDoc extends Doc {
 
     /**
      * The Ui object id.

@@ -96,10 +96,10 @@ public class WebSecurityConfiguration {
                     .requestMatchers(HttpMethod.POST, basePath + "/log/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.POST, basePath + "/score/**")
+                    .requestMatchers(HttpMethod.POST, basePath + "/counter/view/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.GET, basePath + "/score/**")
+                    .requestMatchers(HttpMethod.GET, basePath + "/counter/view/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
                     .anyRequest().authenticated();
