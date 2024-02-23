@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,14 +73,12 @@ public class TransferOptionServiceImpl implements TransferOptionService {
     public List<TransferOption> saveTransferOptions(
             @NonNull List<TransferOptionModel> transferOptionDto, @NonNull Entry relatedEntry) {
         log.info("Saving transfer option - {}", transferOptionDto);
-        Set<TransferOption> existingTransferOptions = transferOptionRepository.findByEntryId(relatedEntry.getId());
-        Set<TransferOption> newTransferOptions = transferOptionDto.stream()
-                .map(transferOption -> transferOptionMapper.mapToTransferOption(transferOption, relatedEntry))
-                .collect(Collectors.toSet());
-        existingTransferOptions.addAll(newTransferOptions);
-        existingTransferOptions.forEach(transferOption -> transferOption.setModifiedDate(LocalDateTime.now()));
+        List<TransferOption> transferOptions = transferOptionDto.stream()
+                .map(option -> transferOptionMapper.mapToTransferOption(option, relatedEntry))
+                .collect(Collectors.toList());
+        transferOptionRepository.saveAll(transferOptions);
         log.info("Transfer options Saved");
-        return transferOptionRepository.saveAll(existingTransferOptions);
+        return transferOptions;
     }
 
     @Transactional
