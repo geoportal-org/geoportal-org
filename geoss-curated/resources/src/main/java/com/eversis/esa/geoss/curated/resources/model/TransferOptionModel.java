@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class TransferOptionModel {
 
+    private Long id;
+
     private String name;
 
     private String description;
