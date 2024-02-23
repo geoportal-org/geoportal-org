@@ -96,6 +96,12 @@ public class WebSecurityConfiguration {
                     .requestMatchers(HttpMethod.POST, basePath + "/log/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
+                    .requestMatchers(HttpMethod.POST, basePath + "/score/**")
+                    .permitAll();
+            authorizationManagerRequestMatcherRegistry
+                    .requestMatchers(HttpMethod.GET, basePath + "/score/**")
+                    .permitAll();
+            authorizationManagerRequestMatcherRegistry
                     .anyRequest().authenticated();
         });
         http.oauth2ResourceServer(
