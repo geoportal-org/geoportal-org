@@ -81,7 +81,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
     const session = useSession();
     const router = useRouter();
     const { translate } = useFormatMsg();
-    const validCoverage = /\[\d+,\s*\d+\],\[\d+,\s*\d+\]/;
+    const validCoverage = /\[-?\d+,-?\d+\],\[-?\d+,-?\d+\]/;
     const headingActions = [
         {
             titleId: "pages.entryResources.return",
