@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </CollapseTransition>
-                        <Share class="provider__share-btn" :url="getProviderUrl(provider).url" />
+                        <Share class="provider__share-btn" :url="getProviderUrl(provider).url" :survey="true" />
                         <!-- <button class="provider__share-btn" :class="{active: providerShareActive === provider.id}" @click="toggleProviderShare(provider.id)">
 							<i class="icomoon-share"></i>
 						</button>
@@ -80,7 +80,7 @@
 							<div class="provider__share__container" v-show="providerShareActive === provider.id">
 								<div>
 									<div class="provider__share">
-										<Share :url="getProviderUrl(provider).url" />
+										<Share :url="getProviderUrl(provider).url" :survey="true" />
 									</div>
 								</div>
 							</div>

@@ -27,11 +27,11 @@
                             </a>
                         </div>
 
-                        <div>
+                        <div class="saved-searches__buttons-wrapper">
                             <button class="red-btn-default" @click="deleteSavedSearch(savedSearch.id)">Delete</button>
-                            <button class="blue-btn-default">Share</button>
                             <button class="blue-btn-default"
                                 @click="highlightSavedSearch(savedSearch.id, savedSearch.phrase)">Publish</button>
+                            <Share :url="$config.baseUrl + savedSearch.url" :survey="false" />
                         </div>
                     </li>
                 </ul>
@@ -41,7 +41,8 @@
 </template>
 
 <script>
-import UserAPI from '@/api/user';
+import UserAPI from '@/api/user'
+import NotificationService from '@/services/notification.service'
 
 export default {
     layout() {
@@ -57,6 +58,24 @@ export default {
     },
 
     methods: {
+        notification(message, type = 'success') {
+            const title = type === 'success' ? `Saved Searches` : `${this.$tc('general.errorOccurred')}`
+            NotificationService.show(
+                title,
+                message,
+                10000,
+                null,
+                9999,
+                type
+            );
+        },
+        prepareErrorMessage(error) {
+            if (error.response && error.response.data && error.response.data.cause && error.response.data.cause.cause && error.response.data.cause.cause.message) {
+                return error.response.data.cause.cause.message
+            } else {
+                return error
+            }
+        },
         createdDate(date) {
             return (new Date(date)).toLocaleString();
         },
@@ -66,22 +85,25 @@ export default {
         deleteSavedSearch(id) {
             UserAPI.deleteSavedSearch(id)
                 .then(() => {
+                    this.notification('Your Saved Seaerch has beed successfully deleted')
                     this.updateList();
                 })
-                .catch(() => {
-                    console.log(error)
+                .catch((error) => {
+                    this.notification(this.prepareErrorMessage(error), 'error')
                 });
-
         },
 
         highlightSavedSearch(id, name) {
             UserAPI.highlightSavedSearch(id, name)
                 .then(() => {
-                    console.log('Saved Search published');
+                    this.notification('Your Saved Seaerch has beed successfully passed to Highlighted Searches and is waiting for administrator acceptance')
                 })
-                .catch(() => {
-                    console.log(error)
+                .catch((error) => {
+                    this.notification(this.prepareErrorMessage(error), 'error')
                 });
+        },
+        shareSavedSearch(savedSearchUrl) {
+            console.log(savedSearchUrl)
         }
     },
 
@@ -145,6 +167,11 @@ export default {
                 font-size: 1em;
             }
         }
+    }
+
+    &__buttons-wrapper {
+        display: flex;
+        gap: 5px;
     }
 }
 </style>

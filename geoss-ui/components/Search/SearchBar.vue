@@ -28,7 +28,7 @@
         <div class="search-bar__share" :class="{ active: showShare }">
             <div class="search-bar__share-wrapper"
                 v-click-outside="{ fn: closeShare, excludeSelectors: '.search-bar__share-trigger' }">
-                <Share :url="shareUrl" />
+                <Share :url="shareUrl" :survey="true" />
                 <button class="close-btn" @click="closeShare()" :title="$tc('general.close')"
                     :aria-label="$tc('general.close')"></button>
             </div>

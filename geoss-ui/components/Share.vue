@@ -41,6 +41,7 @@ export default class ShareComponent extends Vue {
     @Prop(String) public quote: string;
     @Prop(String) public hashtags: string;
     @Prop(String) public twitterUser: string;
+    @Prop(Boolean) public survey: boolean;
 
     public initSurveyOnLeave() {
         MouseLeaveService.initSurvey();
@@ -53,7 +54,9 @@ export default class ShareComponent extends Vue {
     private mounted() {
         const copyButton = new ClipboardJS(this.$el.querySelector('.copy-link'), {
             text: () => {
-                this.initSurveyOnLeave();
+                if (this.survey) {
+                    this.initSurveyOnLeave();
+                }
                 return this.url;
             }
         });

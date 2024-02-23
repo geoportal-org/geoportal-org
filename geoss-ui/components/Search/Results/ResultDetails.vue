@@ -192,7 +192,7 @@
                                     <div class="dab-result-details__share">
                                         <CollapseTransition>
                                             <div v-show="showShare" class="dab-result-details__share-wrapper">
-                                                <Share :url="shareUrl" />
+                                                <Share :url="shareUrl" :survey="true" />
                                             </div>
                                         </CollapseTransition>
                                     </div>

@@ -46,6 +46,7 @@
 
 <script>
 import UserAPI from '@/api/user';
+import NotificationService from '@/services/notification.service'
 
 export default {
     layout() {
@@ -61,6 +62,24 @@ export default {
     },
 
     methods: {
+        notification(message, type = 'success') {
+            const title = type === 'success' ? `Highlighted Searches` : `${this.$tc('general.errorOccurred')}`
+            NotificationService.show(
+                title,
+                message,
+                10000,
+                null,
+                9999,
+                type
+            );
+        },
+        prepareErrorMessage(error) {
+            if (error.response && error.response.data && error.response.data.cause && error.response.data.cause.cause && error.response.data.cause.cause.message) {
+                return error.response.data.cause.cause.message
+            } else {
+                return error
+            }
+        },
         createdDate(date) {
             return (new Date(date)).toLocaleString();
         },
@@ -79,9 +98,15 @@ export default {
                 }
             }
         },
-        async deleteHighlightedSearch(id) {
-            await UserAPI.deleteHighlightedSearch(id);
-            this.updateList();
+        deleteHighlightedSearch(id) {
+            UserAPI.deleteHighlightedSearch(id)
+                .then(() => {
+                    this.notification('Your Highlighted Seaerch has beed successfully deleted')
+                    this.updateList();
+                })
+                .catch((error) => {
+                    this.notification(this.prepareErrorMessage(error), 'error')
+                });
         },
         defaultHighlightedSearch(highlightedSearch) {
             for (const search of this.highlightedSearches) {
