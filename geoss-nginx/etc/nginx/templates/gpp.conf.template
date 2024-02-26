@@ -1,4 +1,4 @@
-#proxy_cache_path /var/cache/nginx levels=1 keys_zone=service_providers_zone:10m inactive=12h;
+proxy_cache_path /var/cache/nginx levels=1 keys_zone=service_providers_zone:10m inactive=4h;
 
 #gpp (ui, settings, contents, bookmarks, personaldata, proxy, search)
 upstream ui_upstream {
