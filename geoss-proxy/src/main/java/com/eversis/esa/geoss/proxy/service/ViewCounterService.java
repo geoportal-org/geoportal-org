@@ -1,5 +1,8 @@
 package com.eversis.esa.geoss.proxy.service;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.eversis.esa.geoss.proxy.domain.ViewCounter;
 import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 
@@ -22,5 +25,13 @@ public interface ViewCounterService {
      * @return the counter
      */
     ViewCounter getCounter(String entryId);
+
+    /**
+     * Gets counter.
+     *
+     * @param entryIds the entry ids
+     * @return the counter
+     */
+    List<ViewCounter> getCounter(List<String> entryIds);
 
 }

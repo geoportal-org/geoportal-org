@@ -1,7 +1,9 @@
 package com.eversis.esa.geoss.proxy.controller;
 
+import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -46,22 +49,35 @@ public class ViewCounterController {
      * @return the response entity
      */
     @PostMapping
-    public ResponseEntity<Void> increaseViewCounter(@Valid @RequestBody ViewCounterModel viewCounterModel){
+    public ResponseEntity<Void> increaseViewCounter(@Valid @RequestBody ViewCounterModel viewCounterModel) {
         log.info("Increasing view counter: {}", viewCounterModel);
         viewCounterService.increaseCounter(viewCounterModel);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
-     * Get view counter response entity.
+     * Gets view counter for single entry.
      *
      * @param entryId the entry id
-     * @return the response entity
+     * @return the view counter for single entry
      */
     @GetMapping("/{entryId}")
-    public ResponseEntity<ViewCounter> getViewCounter(@PathVariable @NotBlank String entryId){
+    public ResponseEntity<ViewCounter> getViewCounterForSingleEntry(@PathVariable @NotBlank String entryId) {
         log.info("Getting view counter for entryId: {}", entryId);
         ViewCounter viewCounter = viewCounterService.getCounter(entryId);
+        return ResponseEntity.ok(viewCounter);
+    }
+
+    /**
+     * Gets view counters for multiple entries.
+     *
+     * @param entryIds the entry ids
+     * @return the view counters for multiple entries
+     */
+    @GetMapping("/list")
+    public ResponseEntity<List<ViewCounter>> getViewCountersForMultipleEntries(@RequestParam @NotEmpty List<String> entryIds) {
+        log.info("Getting view counters for entryIds: {}", entryIds);
+        List<ViewCounter> viewCounter = viewCounterService.getCounter(entryIds);
         return ResponseEntity.ok(viewCounter);
     }
 
