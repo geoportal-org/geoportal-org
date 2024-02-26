@@ -169,3 +169,5 @@ www.sqlite.org
 pypi.python.org
 pypi.org
 files.pythonhosted.org
+yp.geodab.eu
+geodab.eu
