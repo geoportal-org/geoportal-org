@@ -52,6 +52,17 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
+  #Configuration of external services providers
+  #SP#location /rest/services-providers {
+  #SP#  resolver 8.8.8.8;
+  #SP#
+  #SP#  add_header X-Cache-Status $upstream_cache_status;
+  #SP#  proxy_pass      ###SERVICES_PROVIDERS_SOURCE###;
+  #SP#
+  #SP#  proxy_cache service_providers_zone;
+  #SP#  proxy_cache_valid any 10m;
+  #SP#}
+
   location /settings {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -149,9 +160,6 @@ server {
 
     add_header X-Cache-Status $upstream_cache_status;
   }
-
-  #Configuration of external services providers
-  ###SERVICES_PROVIDERS_LOCATION###
 
   #Configuration of robots.txt file
   ###ROBOTS_CONFIG###
