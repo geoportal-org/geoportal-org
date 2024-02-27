@@ -37,7 +37,7 @@ server {
   #include conf.d/cms_conf/location_static.conf;
 
   #Configuration of external services providers
-  #SP#location /services-providers {
+  #SP#location = /rest/services-providers {
   #SP#  resolver 127.0.0.1;
   #SP#
   #SP#  proxy_pass ###SERVICES_PROVIDERS_SOURCE###;
