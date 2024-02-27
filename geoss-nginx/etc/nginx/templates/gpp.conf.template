@@ -36,6 +36,17 @@ server {
   ## Handle static locations
   #include conf.d/cms_conf/location_static.conf;
 
+  #Configuration of external services providers
+  #SP#location /services-providers {
+  #SP#  resolver 127.0.0.1;
+  #SP#
+  #SP#  proxy_pass ###SERVICES_PROVIDERS_SOURCE###;
+  #SP#
+  #SP#  proxy_cache service_providers_zone;
+  #SP#  proxy_cache_valid any 10m;
+  #SP#  add_header X-Proxy-Cache $upstream_cache_status;
+  #SP#}
+
   location / {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -51,17 +62,6 @@ server {
 
     add_header X-Cache-Status $upstream_cache_status;
   }
-
-  #Configuration of external services providers
-  #SP#location ~* ^/rest/services-providers {
-  #SP#  resolver 8.8.8.8;
-  #SP#
-  #SP#  add_header X-Cache-Status $upstream_cache_status;
-  #SP#  proxy_pass      ###SERVICES_PROVIDERS_SOURCE###;
-  #SP#
-  #SP#  proxy_cache service_providers_zone;
-  #SP#  proxy_cache_valid any 10m;
-  #SP#}
 
   location /settings {
     include conf.d/common/maintenance_conditions.conf;
