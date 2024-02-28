@@ -59,7 +59,7 @@ server {
   #SP#  error_log /var/log/nginx/gpp-sp.error.log;
   #SP#}
 
-  #SP#location = /rest/services-providers/ {
+  #SP#location /rest/services-providers/ {
   #SP#  resolver 8.8.8.8;
   #SP#  access_log /var/log/nginx/gpp-sp.access.log;
   #SP#  error_log /var/log/nginx/gpp-sp.error.log;
