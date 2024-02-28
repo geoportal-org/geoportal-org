@@ -54,7 +54,7 @@ server {
 
   #Configuration of external services providers
   #SP#location = /rest/services-providers {
-  #SP#  return 302 /rest/services-providers/
+  #SP#  return 302 /rest/services-providers/;
   #SP#}
 
   #SP#location = /rest/services-providers/ {
@@ -67,7 +67,7 @@ server {
   #SP#  proxy_cache_valid any 10m;
   #SP#  add_header X-Proxy-Cache $upstream_cache_status;
   #SP#}
-  
+
   location /settings {
     include conf.d/common/maintenance_conditions.conf;
 
