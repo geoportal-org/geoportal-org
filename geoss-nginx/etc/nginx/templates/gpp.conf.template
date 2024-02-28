@@ -55,12 +55,14 @@ server {
   #Configuration of external services providers
   #SP#location = /rest/services-providers {
   #SP#  return 302 /rest/services-providers/;
+  #SP#  access_log /var/log/nginx/gpp-sp.access.log;
+  #SP#  error_log /var/log/nginx/gpp-sp.error.log;
   #SP#}
 
   #SP#location = /rest/services-providers/ {
-  #SP#  resolver 127.0.0.1;
-  #SP#  auth_basic "Restricted Access";
-  #SP#  auth_basic_user_file /etc/nginx/passwords/.haproxyadmin;
+  #SP#  resolver 8.8.8.8;
+  #SP#  access_log /var/log/nginx/gpp-sp.access.log;
+  #SP#  error_log /var/log/nginx/gpp-sp.error.log;
   #SP#  proxy_pass ###SERVICES_PROVIDERS_SOURCE###;
   #SP#
   #SP#  proxy_cache service_providers_zone;
