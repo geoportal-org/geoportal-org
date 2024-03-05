@@ -44,9 +44,6 @@ public class TransferOptionMapper {
             return null;
         }
         TransferOption transferOption = new TransferOption();
-        if (model.getId() != null || model.getId() != 0) {
-            transferOption.setId(model.getId());
-        }
         transferOption.setName(model.getName());
         transferOption.setDescription(model.getDescription());
         transferOption.setTitle(model.getTitle());
