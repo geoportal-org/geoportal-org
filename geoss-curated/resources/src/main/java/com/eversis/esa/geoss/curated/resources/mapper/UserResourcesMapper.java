@@ -95,7 +95,7 @@ public class UserResourcesMapper {
         userResource.setUserId(model.getUserId());
         userResource.setEntryName(model.getEntryName());
         userResource.setTaskType(model.getTaskType());
-        userResource.setEntry(entryService.getOrCreateEntry(model.getEntry()));
+        userResource.setEntry(entryService.saveEntry(model.getEntry()));
         return userResource;
     }
 

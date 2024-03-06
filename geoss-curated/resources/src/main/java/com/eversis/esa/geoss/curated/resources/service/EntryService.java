@@ -16,4 +16,12 @@ public interface EntryService {
      */
     Entry getOrCreateEntry(EntryModel entry);
 
+    /**
+     * Save entry entry.
+     *
+     * @param entryDto the entry dto
+     * @return the entry
+     */
+    Entry saveEntry(EntryModel entryDto);
+
 }
