@@ -50,6 +50,13 @@ public interface TransferOptionService {
     List<TransferOption> saveTransferOptions(List<TransferOptionModel> transferOptionDto, Entry relatedEntry);
 
     /**
+     * Save transfer option.
+     *
+     * @param transferOption the transfer option
+     */
+    void saveTransferOption(TransferOption transferOption);
+
+    /**
      * Remove transfer option.
      *
      * @param transferOptionId the transfer option id
@@ -62,5 +69,21 @@ public interface TransferOptionService {
      * @param transferOptionId the transfer option id
      */
     void deleteTransferOption(long transferOptionId);
+
+    /**
+     * Update transfer options by entry id.
+     *
+     * @param entryId the entry id
+     * @param transferOptions the transfer options
+     */
+    void updateTransferOptionsByEntryId(long entryId, Set<TransferOptionModel> transferOptions);
+
+    /**
+     * Create transfer option transfer option.
+     *
+     * @param transferOption the transfer option
+     * @return the transfer option
+     */
+    TransferOption createTransferOption(TransferOption transferOption);
 
 }

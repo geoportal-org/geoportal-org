@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
+import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,11 +14,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Set;
+import jakarta.validation.Valid;
 
 /**
  * The type Transfer option controller.
@@ -82,6 +86,21 @@ public class TransferOptionController {
     public Set<TransferOption> findTransferOptionsByEntryId(@PathVariable long entryId) {
         log.info("Find transfer options by entry id");
         return transferOptionService.findTransferOptionsByEntryId(entryId);
+    }
+
+    /**
+     * Update transfer options by entry id set.
+     *
+     * @param entryId the entry id
+     * @return the set
+     */
+    @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/entry/{entryId}")
+    public void updateTransferOptionsByEntryId(@PathVariable long entryId,
+            @RequestBody @Valid Set<TransferOptionModel> transferOptions) {
+        log.info("Update transfer options by entry id");
+        transferOptionService.updateTransferOptionsByEntryId(entryId, transferOptions);
     }
 
     /**

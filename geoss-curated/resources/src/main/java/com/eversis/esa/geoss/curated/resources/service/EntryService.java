@@ -24,4 +24,12 @@ public interface EntryService {
      */
     Entry saveEntry(EntryModel entryDto);
 
+    /**
+     * Find entry entry.
+     *
+     * @param entryId the entry id
+     * @return the entry
+     */
+    Entry findEntry(long entryId);
+
 }

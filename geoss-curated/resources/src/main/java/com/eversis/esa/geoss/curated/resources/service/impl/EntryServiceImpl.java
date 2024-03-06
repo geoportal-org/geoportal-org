@@ -44,4 +44,11 @@ public class EntryServiceImpl implements EntryService {
         return entryRepository.save(entryMapper.mapToEntry(entryDto, entry));
     }
 
+    @Override
+    public Entry findEntry(long entryId) {
+        return entryRepository.findById(entryId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Entry entity with id: " + entryId + " does not exist"));
+    }
+
 }
