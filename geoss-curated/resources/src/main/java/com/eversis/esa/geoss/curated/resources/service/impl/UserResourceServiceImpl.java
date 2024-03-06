@@ -109,6 +109,11 @@ public class UserResourceServiceImpl implements UserResourceService {
     @Override
     public void deleteUserResource(long userResourceId) {
         log.info("Deleting user resource with id: {}", userResourceId);
+        final UserResource userResource = userResourceRepository.findById(userResourceId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Resource entity with id: " + userResourceId + " does not exist"));
+        transferOptionService.findTransferOptionsByEntryId(userResource.getEntry().getId())
+                .forEach(transferOption -> transferOptionService.deleteTransferOption(transferOption.getId()));
         userResourceRepository.deleteById(userResourceId);
         log.info("Deleted user resource with id: {}", userResourceId);
     }

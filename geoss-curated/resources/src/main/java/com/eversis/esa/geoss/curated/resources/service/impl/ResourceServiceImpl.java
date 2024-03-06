@@ -95,6 +95,8 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void deleteEntry(long entryId) {
         log.info("Deleting entry with id: {}", entryId);
+        transferOptionService.findTransferOptionsByEntryId(entryId)
+                .forEach(transferOption -> transferOptionService.deleteTransferOption(transferOption.getId()));
         entryRepository.deleteById(entryId);
         log.info("Deleted entry with id: {}", entryId);
     }
