@@ -88,8 +88,6 @@ public class UserResourceServiceImpl implements UserResourceService {
                 () -> new ResourceNotFoundException(
                         "User Resource entity with id: " + userResourceId + " does not exist"));
         userResourceRepository.save(userResourcesMapper.mapToUserResource(userResourceDto, userResource));
-        transferOptionService.saveTransferOptions(
-                userResourceDto.getEntry().getTransferOptions(), userResource.getEntry());
         log.info("Updated user resource with id: {}", userResource.getId());
     }
 

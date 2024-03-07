@@ -75,7 +75,6 @@ public class ResourceServiceImpl implements ResourceService {
                 () -> new ResourceNotFoundException(
                         "Entry entity with id: " + entryId + " does not exist"));
         entryRepository.save(entryMapper.mapToEntry(entryDto, entry));
-        transferOptionService.saveTransferOptions(entryDto.getTransferOptions(), entry);
         log.info("Updated entry with id: {}", entry.getId());
     }
 
