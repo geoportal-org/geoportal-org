@@ -12,13 +12,19 @@ export const UserResourcesService = {
     getProtocols: async (): Promise<any> => fetcher({ url: `${UserResourcesService.baseUrl}/protocol` }),
     getUrlTypes: async (): Promise<any> => fetcher({ url: `${UserResourcesService.baseUrl}/endpoint/urlTypes` }),
     getResources: async (page: number, size = 20, userId: string): Promise<UserResourcesData> =>
-        fetcher({ url: `${UserResourcesService.baseUrl}/userResources/check/user/${userId}?page=${page}&size=${size}` }),
+        fetcher({
+            url: `${UserResourcesService.baseUrl}/userResources/check/user/${userId}?page=${page}&size=${size}`,
+        }),
     createResource: async (data: CreateUserResource) =>
         fetcher({ url: `${UserResourcesService.baseUrl}/userResources`, method: "POST", body: data }),
+    updateUserResource: async (data: any, userResourceId: number) =>
+        fetcher({ url: `${UserResourcesService.baseUrl}/userResources/${userResourceId}`, method: "PUT", body: data }),
     getEntries: async (page: number, size = 20): Promise<EntriesData> =>
         fetcher({ url: `${UserResourcesService.baseUrl}/resources?page=${page}&size=${size}` }),
     getEntry: async (entryId: number): Promise<TransferOption[]> =>
         fetcher({ url: `${UserResourcesService.baseUrl}/transferOption/entry/${entryId}` }),
     updateEntry: async (data: any, entryId: number) =>
         fetcher({ url: `${UserResourcesService.baseUrl}/resources/${entryId}`, method: "PUT", body: data }),
+    updateTransferOptionsForEntry: async (data: any, entryId: number) =>
+        fetcher({ url: `${UserResourcesService.baseUrl}/transferOption/entry/${entryId}`, method: "PUT", body: data }),
 };

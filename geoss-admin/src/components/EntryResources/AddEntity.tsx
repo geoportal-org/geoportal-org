@@ -61,9 +61,10 @@ const defaultLinkState = {
 
 type Props = {
     isUpdate?: boolean;
+    isUpdateResource?: boolean;
 };
 
-export const AddEntity = ({ isUpdate = false }: Props) => {
+export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props) => {
     //enums
     const [types, setTypes] = useState<any[]>([]);
     const [accessPolicies, setAccessPolicies] = useState<any[]>([]);
@@ -217,7 +218,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             }
             data.sourceCode = entry.source.code;
             data.type = entry.type.code;
-
+            
             //links
             let links: any = [];
             response.forEach((transferOption) => {
@@ -273,8 +274,15 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             setCoverageError(false);
             try {
                 if (isUpdate) {
-                    const body = createEntryBody();
-                    await UserResourcesService.updateEntry(body, Number(router.query.entryId));
+                    if (!isUpdateResource) {
+                        const body = createEntryBody();
+                        await UserResourcesService.updateEntry(body, Number(router.query.entryId));
+                    } else {
+                        const body = createResourceBody();
+                        await UserResourcesService.updateUserResource(body, Number(router.query.userResourceId));
+                    }
+                    const tOptions = getTransferOptions();
+                    await UserResourcesService.updateTransferOptionsForEntry(tOptions, Number(router.query.entryId));
                 } else {
                     const body = createResourceBody();
                     await UserResourcesService.createResource(body);
@@ -291,8 +299,8 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
         return {
             //@ts-ignore
             userId: session?.data?.userId || "",
-            entryName: formData.title,
-            taskType: TaskType.CREATE,
+            entryName: isUpdateResource ? (router.query.entryName as string) : formData.title,
+            taskType: isUpdateResource ? (router.query.taskType as TaskType) : TaskType.CREATE,
             entry: {
                 title: formData.title,
                 summary: formData.summary,
@@ -314,7 +322,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 },
                 keywords: formData.keywords,
                 tags: formData.tags,
-                code: "string",
+                code: defaultEntryVal?.code || "",
                 organisation: {
                     title: formData.organisationTitle,
                     email: formData.organisationEmail,
@@ -330,7 +338,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 definitionType: "0",
                 //@ts-ignore
                 userId: session?.data?.userId || "",
-                transferOptions: getTransferOptions(),
+                transferOptions: isUpdateResource ? [] : getTransferOptions(),
             },
         };
     };
@@ -373,7 +381,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             definitionType: "0",
             //@ts-ignore
             userId: session?.data?.userId || "",
-            transferOptions: getTransferOptions(),
+            transferOptions: [],
         };
     };
 
@@ -381,7 +389,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
         const transferOptions: LinkType[] = [];
         links.forEach((link: any) => {
             transferOptions.push(
-                isUpdate
+                isUpdate && link.id !== 0
                     ? {
                           id: link.id,
                           name: link.name,
@@ -417,7 +425,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={3} pt={3}>
                 <FormControl isRequired>
                     <FormLabel fontSize={14} htmlFor="title">
-                        Title
+                        {translate("pages.entryResources.addEntityPage.title")}
                     </FormLabel>
                     <Input
                         disabled={isUpdate}
@@ -430,8 +438,12 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 </FormControl>
                 <FormControl>
                     <FormLabel fontSize={14} htmlFor="logo" display="flex" alignItems="center" gap={1}>
-                        Logo{" "}
-                        <Tooltip label="tessst" shouldWrapChildren placement="top">
+                        {translate("pages.entryResources.addEntityPage.logo")}
+                        <Tooltip
+                            label={translate("pages.entryResources.addEntityPage.logoTooltip")}
+                            shouldWrapChildren
+                            placement="top"
+                        >
                             <TutorialIcon color="#0661A9" width={15} height={15} />
                         </Tooltip>
                     </FormLabel>
@@ -439,7 +451,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 </FormControl>
                 <FormControl>
                     <FormLabel fontSize={14} htmlFor="summary">
-                        Summary
+                        {translate("pages.entryResources.addEntityPage.summary")}
                     </FormLabel>
                     <Textarea
                         id="summary"
@@ -453,8 +465,12 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 <Flex direction="column" gap={3}>
                     <FormControl isRequired>
                         <FormLabel fontSize={14} htmlFor="coverage" display="flex" alignItems="center" gap={1}>
-                            Coverage{" "}
-                            <Tooltip label="tessst" shouldWrapChildren placement="top">
+                            {translate("pages.entryResources.addEntityPage.coverage")}
+                            <Tooltip
+                                label={translate("pages.entryResources.addEntityPage.coverageTooltip")}
+                                shouldWrapChildren
+                                placement="top"
+                            >
                                 <TutorialIcon color="#0661A9" width={15} height={15} />
                             </Tooltip>
                         </FormLabel>
@@ -468,14 +484,18 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                         ></Input>
                         {coverageError && (
                             <FormHelperText color="red">
-                                Incorrect coverage format. Use the format from the example.
+                                {translate("pages.entryResources.addEntityPage.coverageErrorMsg")}
                             </FormHelperText>
                         )}
                     </FormControl>
                     <FormControl gridColumn={2} gridRow={3} isRequired>
                         <FormLabel fontSize={14} htmlFor="keywords" display="flex" alignItems="center" gap={1}>
-                            Keywords{" "}
-                            <Tooltip label="tessst" shouldWrapChildren placement="top">
+                            {translate("pages.entryResources.addEntityPage.keywords")}
+                            <Tooltip
+                                label={translate("pages.entryResources.addEntityPage.keywordsTooltip")}
+                                shouldWrapChildren
+                                placement="top"
+                            >
                                 <TutorialIcon color="#0661A9" width={15} height={15} />
                             </Tooltip>
                         </FormLabel>
@@ -489,8 +509,12 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                     </FormControl>
                     <FormControl gridColumn={2} gridRow={3} isRequired>
                         <FormLabel fontSize={14} htmlFor="tags" display="flex" alignItems="center" gap={1}>
-                            Tags{" "}
-                            <Tooltip label="tessst" shouldWrapChildren placement="top">
+                            {translate("pages.entryResources.addEntityPage.tags")}
+                            <Tooltip
+                                label={translate("pages.entryResources.addEntityPage.tagsTooltip")}
+                                shouldWrapChildren
+                                placement="top"
+                            >
                                 <TutorialIcon color="#0661A9" width={15} height={15} />
                             </Tooltip>
                         </FormLabel>
@@ -507,20 +531,19 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
         );
     };
 
-    
     const generateAdditionalInfoForm = () => {
         return (
             <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={3} pt={3}>
                 <FormControl isRequired>
                     <FormLabel fontSize={14} htmlFor="type">
-                        Type
+                        {translate("pages.entryResources.addEntityPage.type")}
                     </FormLabel>
                     <Select
                         id="type"
                         name="type"
                         value={formData.type}
                         onChange={handleInputChange}
-                        placeholder="Select type"
+                        placeholder={translate("pages.entryResources.addEntityPage.typePlaceholder")}
                     >
                         {types.map((type: any) => {
                             return (
@@ -533,13 +556,13 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 </FormControl>
                 <FormControl isRequired>
                     <FormLabel fontSize={14} htmlFor="accessPolicy">
-                        Access Policy
+                        {translate("pages.entryResources.addEntityPage.accessPolicy")}
                     </FormLabel>
                     <Select
                         id="accessPolicy"
                         name="accessPolicy"
                         value={formData.accessPolicyName}
-                        placeholder="Select access policy"
+                        placeholder={translate("pages.entryResources.addEntityPage.accessPolicyPlaceholder")}
                         onChange={(event: any) => {
                             const { value } = event.target;
                             const policy = accessPolicies.find((policy) => policy.name === value);
@@ -557,13 +580,15 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                 </option>
                             );
                         })}
-                        <option value="customAccessPolicy">Custom access policy</option>
+                        <option value="customAccessPolicy">
+                            {translate("pages.entryResources.addEntityPage.customAccessPolicy")}
+                        </option>
                     </Select>
                     {formData.accessPolicyName === "customAccessPolicy" && (
                         <Input
                             type="text"
                             mt={1}
-                            placeholder="Custom access policy"
+                            placeholder={translate("pages.entryResources.addEntityPage.customAccessPolicyPlaceholder")}
                             id="customAccessPolicy"
                             name="customAccessPolicy"
                             value={formData.customAccessPolicy}
@@ -573,7 +598,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 </FormControl>
                 <FormControl>
                     <FormLabel fontSize={14} htmlFor="dashboardContents">
-                        Dashboard contents
+                        {translate("pages.entryResources.addEntityPage.dashboardContents")}
                     </FormLabel>
                     <Textarea
                         id="dashboardContents"
@@ -587,7 +612,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 <Flex direction="column" gap={3}>
                     <FormControl isRequired>
                         <FormLabel fontSize={14} htmlFor="organisation">
-                            Organisation
+                            {translate("pages.entryResources.addEntityPage.organisation")}
                         </FormLabel>
                         <Select
                             id="organisation"
@@ -605,7 +630,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     organisationContactEmail: organisation ? organisation.contactEmail : "",
                                 });
                             }}
-                            placeholder="Select organisation"
+                            placeholder={translate("pages.entryResources.addEntityPage.organisationPlaceholder")}
                         >
                             {organisations.map((organisation: any) => {
                                 return (
@@ -614,7 +639,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     </option>
                                 );
                             })}
-                            <option value="customOrganisation">Custom organisation</option>
+                            <option value="customOrganisation">
+                                {translate("pages.entryResources.addEntityPage.customOrganisation")}
+                            </option>
                         </Select>
                         {formData.organisation === "customOrganisation" && (
                             <>
@@ -624,7 +651,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     name="organisationTitle"
                                     value={formData.organisationTitle}
                                     onChange={handleInputChange}
-                                    placeholder="Organisation title"
+                                    placeholder={translate(
+                                        "pages.entryResources.addEntityPage.organisationTitlePlaceholder"
+                                    )}
                                     mb={1}
                                     mt={1}
                                 />
@@ -634,7 +663,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     name="organisationEmail"
                                     value={formData.organisationEmail}
                                     onChange={handleInputChange}
-                                    placeholder="Organisation email"
+                                    placeholder={translate(
+                                        "pages.entryResources.addEntityPage.organisationEmailPlaceholder"
+                                    )}
                                     mb={1}
                                 />
                                 <Input
@@ -643,7 +674,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     name="organisationContact"
                                     value={formData.organisationContact}
                                     onChange={handleInputChange}
-                                    placeholder="Organisation contact"
+                                    placeholder={translate(
+                                        "pages.entryResources.addEntityPage.organisationContactPlaceholder"
+                                    )}
                                     mb={1}
                                 />
                                 <Input
@@ -652,14 +685,16 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     name="organisationContactEmail"
                                     value={formData.organisationContactEmail}
                                     onChange={handleInputChange}
-                                    placeholder="Organisation contact email"
+                                    placeholder={translate(
+                                        "pages.entryResources.addEntityPage.organisationContactEmailPlaceholder"
+                                    )}
                                 />
                             </>
                         )}
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel fontSize={14} htmlFor="source">
-                            Source
+                            {translate("pages.entryResources.addEntityPage.source")}
                         </FormLabel>
                         <Select
                             id="source"
@@ -674,7 +709,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     sourceCode: source ? source.code : "",
                                 });
                             }}
-                            placeholder="Select source"
+                            placeholder={translate("pages.entryResources.addEntityPage.sourcePlaceholder")}
                         >
                             {sources.map((source: any) => {
                                 return (
@@ -683,7 +718,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     </option>
                                 );
                             })}
-                            <option value="customSource">Custom source</option>
+                            <option value="customSource">
+                                {translate("pages.entryResources.addEntityPage.customSource")}
+                            </option>
                         </Select>
                         {formData.sourceTerm === "customSource" && (
                             <Input
@@ -693,7 +730,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                 value={formData.customSource}
                                 onChange={handleInputChange}
                                 mt={1}
-                                placeholder="Custom source"
+                                placeholder={translate("pages.entryResources.addEntityPage.customSourcePlaceholder")}
                             />
                         )}
                     </FormControl>
@@ -713,7 +750,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                     <Flex direction="column" gap={3}>
                         <FormControl isRequired>
                             <FormLabel fontSize={14} htmlFor="title">
-                                Title
+                                {translate("pages.entryResources.addEntityPage.title")}
                             </FormLabel>
                             <Input
                                 type="text"
@@ -725,7 +762,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                         </FormControl>
                         <FormControl>
                             <FormLabel fontSize={14} htmlFor="name">
-                                Name
+                                {translate("pages.entryResources.addEntityPage.name")}
                             </FormLabel>
                             <Input
                                 type="text"
@@ -738,7 +775,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                     </Flex>
                     <FormControl>
                         <FormLabel fontSize={14} htmlFor="description">
-                            Description
+                            {translate("pages.entryResources.addEntityPage.description")}
                         </FormLabel>
                         <Textarea
                             id="description"
@@ -752,13 +789,13 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                     <Flex direction="column" gap={3}>
                         <FormControl isRequired>
                             <FormLabel fontSize={14} htmlFor="endpoint">
-                                Endpoint
+                                {translate("pages.entryResources.addEntityPage.endpoint")}
                             </FormLabel>
                             <Select
                                 id="endpoint"
                                 name="endpoint"
                                 value={links[index].endpoint}
-                                placeholder="Select endpoint"
+                                placeholder={translate("pages.entryResources.addEntityPage.endpointPlaceholder")}
                                 onChange={(event: any) => {
                                     const { value } = event.target;
                                     const endpoint = endpoints.find((endpoint) => endpoint.url === value);
@@ -779,7 +816,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                         </option>
                                     );
                                 })}
-                                <option value="customEndpoint">Custom endpoint</option>
+                                <option value="customEndpoint">
+                                    {translate("pages.entryResources.addEntityPage.customEndpoint")}
+                                </option>
                             </Select>
                             {links[index].endpoint === "customEndpoint" && (
                                 <>
@@ -789,7 +828,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                         name="customEndpoint"
                                         value={links[index].customEndpoint}
                                         onChange={(event: any) => handleLinksInputChange(event, index)}
-                                        placeholder="Endpoint URL parameter"
+                                        placeholder={translate(
+                                            "pages.entryResources.addEntityPage.endpointUrlPlaceholder"
+                                        )}
                                         mt={1}
                                         mb={1}
                                     />
@@ -797,7 +838,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                         id="endpointType"
                                         name="endpointType"
                                         value={links[index].endpointType}
-                                        placeholder="Select endpointType"
+                                        placeholder={translate(
+                                            "pages.entryResources.addEntityPage.endpointTypePlaceholder"
+                                        )}
                                         onChange={(event: any) => handleLinksInputChange(event, index)}
                                     >
                                         {urlTypes.map((url: any) => {
@@ -813,13 +856,13 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                         </FormControl>
                         <FormControl gridColumn={2} gridRow={3} isRequired>
                             <FormLabel fontSize={14} htmlFor="protocol">
-                                Protocol
+                                {translate("pages.entryResources.addEntityPage.protocol")}
                             </FormLabel>
                             <Select
                                 id="protocol"
                                 name="protocol"
                                 value={links[index].protocol}
-                                placeholder="Select protocol"
+                                placeholder={translate("pages.entryResources.addEntityPage.protocolPlaceholder")}
                                 onChange={(event: any) => {
                                     const { value } = event.target;
                                     const protocol = protocols.find((protocol) => protocol.value === value);
@@ -839,7 +882,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                         </option>
                                     );
                                 })}
-                                <option value="customProtocol">Custom protocol</option>
+                                <option value="customProtocol">
+                                    {translate("pages.entryResources.addEntityPage.customProtocol")}
+                                </option>
                             </Select>
                             {links[index].protocol === "customProtocol" && (
                                 <Input
@@ -849,7 +894,9 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                                     value={links[index].customProtocol}
                                     onChange={(event: any) => handleLinksInputChange(event, index)}
                                     mt={1}
-                                    placeholder="Custom protocol"
+                                    placeholder={translate(
+                                        "pages.entryResources.addEntityPage.customProtocolPlaceholder"
+                                    )}
                                 />
                             )}
                         </FormControl>
@@ -921,7 +968,7 @@ export const AddEntity = ({ isUpdate = false }: Props) => {
                 titleId={
                     isUpdate
                         ? "pages.entryResources.addEntityPage.updateTitle"
-                        : "pages.entryResources.addEntityPage.title"
+                        : "pages.entryResources.addEntityPage.pageTitle"
                 }
                 actions={headingActions}
             />

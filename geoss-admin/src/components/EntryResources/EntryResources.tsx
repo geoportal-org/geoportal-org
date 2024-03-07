@@ -169,7 +169,7 @@ export const EntryResources = () => {
             fetchResources(pagesInfo.number, 20);
             showToast({
                 title: "Status changed",
-                description: `Resource with ID: ${userResourceId} has status pending.`,
+                description: `Created new resource with update status.`,
             });
         } catch (e) {
             console.log(e);
@@ -267,13 +267,15 @@ export const EntryResources = () => {
                                                 <Menu>
                                                     <MenuButton
                                                         isDisabled={
-                                                            resource.hasOtherResourcesWithSameEntry &&
-                                                            resource.status === "approved" || resource.status === 'denied'
+                                                            (resource.hasOtherResourcesWithSameEntry &&
+                                                                resource.status === "approved") ||
+                                                            resource.status === "denied"
                                                         }
                                                         size="sm"
                                                         colorScheme={
-                                                            resource.hasOtherResourcesWithSameEntry &&
-                                                            resource.status === "approved" || resource.status === 'denied'
+                                                            (resource.hasOtherResourcesWithSameEntry &&
+                                                                resource.status === "approved") ||
+                                                            resource.status === "denied"
                                                                 ? "gray.400"
                                                                 : "teal"
                                                         }
@@ -281,7 +283,7 @@ export const EntryResources = () => {
                                                         _hover={{}}
                                                         rightIcon={<ChevronDownIcon />}
                                                     >
-                                                        Actions
+                                                        {translate("pages.entryResources.actions")}
                                                     </MenuButton>
                                                     <MenuList>
                                                         {resource.status === "draft" && (
@@ -289,8 +291,13 @@ export const EntryResources = () => {
                                                                 <MenuItem
                                                                     onClick={() =>
                                                                         router.push({
-                                                                            pathname: `/entry-resources/update-entry`,
-                                                                            query: { entryId: resource.entry.id },
+                                                                            pathname: `/entry-resources/update-resource`,
+                                                                            query: {
+                                                                                entryId: resource.entry.id,
+                                                                                userResourceId: resource.id,
+                                                                                entryName: resource.entryName,
+                                                                                taskType: resource.taskType,
+                                                                            },
                                                                         })
                                                                     }
                                                                 >
@@ -306,16 +313,6 @@ export const EntryResources = () => {
                                                         )}
                                                         {resource.status === "pending" && (
                                                             <>
-                                                                <MenuItem
-                                                                    onClick={() =>
-                                                                        router.push({
-                                                                            pathname: `/entry-resources/update-entry`,
-                                                                            query: { entryId: resource.entry.id },
-                                                                        })
-                                                                    }
-                                                                >
-                                                                    {translate("pages.entryResources.editEntry")}
-                                                                </MenuItem>
                                                                 <MenuItem onClick={() => approveResource(resource.id)}>
                                                                     {translate("pages.entryResources.approve")}
                                                                 </MenuItem>
