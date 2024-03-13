@@ -69,7 +69,6 @@ server {
   #SP#  proxy_cache service_providers_zone;
   #SP#  proxy_cache_valid any 10m;
   #SP#  add_header X-Proxy-Cache $upstream_cache_status;
-  #SP#  proxy_set_header Referer "https://geoss.devel.esaportal.eu";
   #SP#}
 
   location /settings {
