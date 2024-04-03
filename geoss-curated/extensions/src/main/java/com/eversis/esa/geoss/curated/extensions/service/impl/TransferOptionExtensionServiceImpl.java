@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.extensions.service.impl;
 
+import com.eversis.esa.geoss.curated.common.service.EndpointService;
+import com.eversis.esa.geoss.curated.common.service.ProtocolService;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.TransferOptionExtension;
 import com.eversis.esa.geoss.curated.extensions.mapper.TransferOptionExtensionMapper;
@@ -17,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,16 +37,25 @@ public class TransferOptionExtensionServiceImpl implements TransferOptionExtensi
 
     private final TransferOptionExtensionMapper transferOptionExtensionMapper;
 
+    private final EndpointService endpointService;
+
+    private final ProtocolService protocolService;
+
     /**
      * Instantiates a new Transfer option extension service.
      *
      * @param transferOptionExtensionRepository the transfer option extension repository
      * @param transferOptionExtensionMapper the transfer option extension mapper
+     * @param endpointService the endpoint service
+     * @param protocolService the protocol service
      */
     public TransferOptionExtensionServiceImpl(TransferOptionExtensionRepository transferOptionExtensionRepository,
-            TransferOptionExtensionMapper transferOptionExtensionMapper) {
+            TransferOptionExtensionMapper transferOptionExtensionMapper, EndpointService endpointService,
+            ProtocolService protocolService) {
         this.transferOptionExtensionRepository = transferOptionExtensionRepository;
         this.transferOptionExtensionMapper = transferOptionExtensionMapper;
+        this.endpointService = endpointService;
+        this.protocolService = protocolService;
     }
 
     @Override
@@ -87,6 +99,14 @@ public class TransferOptionExtensionServiceImpl implements TransferOptionExtensi
 
     @Transactional
     @Override
+    public void saveTransferOptionExtension(TransferOptionExtension transferOptionExtension) {
+        log.info("Saving transfer option extension - {}", transferOptionExtension);
+        transferOptionExtensionRepository.save(transferOptionExtension);
+        log.info("Transfer option extension saved");
+    }
+
+    @Transactional
+    @Override
     public void removeTransferOptionExtension(long transferOptionExtensionId) {
         log.info("Removing transfer option extension with id {}", transferOptionExtensionId);
         final TransferOptionExtension transferOptionExtension =
@@ -105,6 +125,58 @@ public class TransferOptionExtensionServiceImpl implements TransferOptionExtensi
         log.info("Deleting transfer option extension with id: {}", transferOptionExtensionId);
         transferOptionExtensionRepository.deleteById(transferOptionExtensionId);
         log.info("Deleted transfer option extension with id: {}", transferOptionExtensionId);
+    }
+
+    @Transactional
+    @Override
+    public void updateTransferOptionExtensionsByExtensionId(long extensionId,
+            Set<TransferOptionExtensionModel> transferOptionExtensions) {
+        log.info("Updating transfer option extensions by entry extension id: {}", extensionId);
+
+        Set<TransferOptionExtension> currentTransferOptionExtensions =
+                transferOptionExtensionRepository.findByEntryExtensionId(extensionId);
+        Set<Long> newIds = new HashSet<>();
+
+        transferOptionExtensions.forEach(transferOptionExtensionModel -> {
+            if (transferOptionExtensionModel.getId() == null) {
+                final TransferOptionExtension transferOptionExtension =
+                        transferOptionExtensionRepository.findById(transferOptionExtensionModel.getId()).orElseThrow(
+                                () -> new ResourceNotFoundException(
+                                        "TransferOptionExtension entity with id: "
+                                                + transferOptionExtensionModel.getId()
+                                                + " does not exist"));
+                transferOptionExtension.setName(transferOptionExtensionModel.getName());
+                transferOptionExtension.setDescription(transferOptionExtensionModel.getDescription());
+                transferOptionExtension.setDisplayTitle(transferOptionExtensionModel.getDisplayTitle());
+                transferOptionExtension.setEndpoint(
+                        endpointService.getOrCreateEndpoint(transferOptionExtensionModel.getEndpoint()));
+                transferOptionExtension.setProtocol(
+                        protocolService.getOrCreateProtocol(transferOptionExtensionModel.getProtocol()));
+                saveTransferOptionExtension(transferOptionExtension);
+                newIds.add(transferOptionExtension.getId());
+            } else {
+                TransferOptionExtension option =
+                        createTransferOptionExtension(
+                                transferOptionExtensionMapper.mapToTransferOptionExtension(transferOptionExtensionModel,
+                                        extensionId));
+                newIds.add(option.getId());
+            }
+        });
+
+        List<TransferOptionExtension> optionsToRemove = currentTransferOptionExtensions.stream()
+                .filter(option -> !newIds.contains(option.getId()))
+                .collect(Collectors.toList());
+
+        optionsToRemove.forEach(transferOption -> {
+            deleteTransferOptionExtension(transferOption.getId());
+        });
+    }
+
+    @Transactional
+    @Override
+    public TransferOptionExtension createTransferOptionExtension(TransferOptionExtension transferOptionExtension) {
+        log.info("Creating transfer option extension - {}", transferOptionExtension);
+        return transferOptionExtensionRepository.save(transferOptionExtension);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.extensions.controller;
 
 import com.eversis.esa.geoss.curated.extensions.domain.TransferOptionExtension;
+import com.eversis.esa.geoss.curated.extensions.model.TransferOptionExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.service.TransferOptionExtensionService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,14 +14,22 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Set;
+import jakarta.validation.Valid;
 
 /**
- * The type Transfer option extension controller.
+ * The TransferOptionExtensionController class. This class is a controller in the Spring framework that handles HTTP
+ * requests related to TransferOptionExtension entities. It uses the TransferOptionExtensionService for the business
+ * logic and data access. The class is annotated with @Log4j2 for logging, @BasePathAwareController for being a Spring
+ * controller with a base path, and @ResponseBody for sending JSON responses. It has methods for finding, updating, and
+ * deleting TransferOptionExtension entities, with appropriate HTTP methods, paths, and status codes. Each method is
+ * secured with @PreAuthorize, allowing only users with certain roles to access them.
  */
 @Log4j2
 @BasePathAwareController("/transferOptionExtension")
@@ -83,6 +92,22 @@ public class TransferOptionExtensionController {
             @PathVariable long extensionId) {
         log.info("Find transfer option extensions by extension id");
         return transferOptionExtensionService.findTransferOptionExtensionsByExtensionId(extensionId);
+    }
+
+    /**
+     * Update transfer option extensions by extension id.
+     *
+     * @param extensionId the extension id
+     * @param transferOptionExtensions the transfer option extensions
+     */
+    @PreAuthorize("hasAnyRole('EXTENSION_WRITER', 'ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/extension/{extensionId}")
+    public void updateTransferOptionExtensionsByExtensionId(@PathVariable long extensionId,
+            @RequestBody @Valid Set<TransferOptionExtensionModel> transferOptionExtensions) {
+        log.info("Update transfer option extensions by entry id");
+        transferOptionExtensionService.updateTransferOptionExtensionsByExtensionId(extensionId,
+                transferOptionExtensions);
     }
 
     /**

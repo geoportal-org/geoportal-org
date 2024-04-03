@@ -52,6 +52,13 @@ public interface TransferOptionExtensionService {
             EntryExtension entryExtension);
 
     /**
+     * Save transfer option extension.
+     *
+     * @param transferOptionExtension the transfer option extension
+     */
+    void saveTransferOptionExtension(TransferOptionExtension transferOptionExtension);
+
+    /**
      * Remove transfer option extension.
      *
      * @param transferOptionExtensionId the transfer option extension id
@@ -65,4 +72,20 @@ public interface TransferOptionExtensionService {
      */
     void deleteTransferOptionExtension(long transferOptionExtensionId);
 
+    /**
+     * Update transfer option extensions by extension id.
+     *
+     * @param extensionId the extension id
+     * @param transferOptionExtensions the transfer option extensions
+     */
+    void updateTransferOptionExtensionsByExtensionId(long extensionId,
+            Set<TransferOptionExtensionModel> transferOptionExtensions);
+
+    /**
+     * Create transfer option extension transfer option extension.
+     *
+     * @param transferOptionExtension the transfer option extension
+     * @return the transfer option extension
+     */
+    TransferOptionExtension createTransferOptionExtension(TransferOptionExtension transferOptionExtension);
 }
