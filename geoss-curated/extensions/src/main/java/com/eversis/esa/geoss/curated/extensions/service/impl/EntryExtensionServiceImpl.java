@@ -6,6 +6,7 @@ import com.eversis.esa.geoss.curated.extensions.model.EntryExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
 
+import com.eversis.esa.geoss.curated.extensions.service.TransferOptionExtensionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,12 @@ import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The type Entry extension service.
+ * This class implements the EntryExtensionService interface and provides the business logic for managing EntryExtension
+ * entities. It uses the EntryExtensionRepository for database operations, EntryExtensionMapper for mapping between the
+ * model and entity, and TransferOptionExtensionService for managing associated TransferOptionExtension entities. All
+ * methods are transactional, meaning they are part of a single database transaction. Some methods are read-only,
+ * meaning they do not modify the database, while others can create, update, delete, or restore EntryExtension
+ * entities.
  */
 @Log4j2
 @Service
@@ -29,16 +35,20 @@ public class EntryExtensionServiceImpl implements EntryExtensionService {
 
     private final EntryExtensionMapper entryExtensionMapper;
 
+    private final TransferOptionExtensionService transferOptionExtensionService;
+
     /**
      * Instantiates a new Entry extension service.
      *
      * @param entryExtensionRepository the entry extension repository
      * @param entryExtensionMapper the entry extension mapper
+     * @param transferOptionExtensionService the transfer option extension service
      */
     public EntryExtensionServiceImpl(EntryExtensionRepository entryExtensionRepository,
-            EntryExtensionMapper entryExtensionMapper) {
+            EntryExtensionMapper entryExtensionMapper, TransferOptionExtensionService transferOptionExtensionService) {
         this.entryExtensionRepository = entryExtensionRepository;
         this.entryExtensionMapper = entryExtensionMapper;
+        this.transferOptionExtensionService = transferOptionExtensionService;
     }
 
     @Override
@@ -91,6 +101,9 @@ public class EntryExtensionServiceImpl implements EntryExtensionService {
     @Override
     public void deleteEntryExtension(long entryExtensionId) {
         log.info("Deleting entry extension with id: {}", entryExtensionId);
+        transferOptionExtensionService.findTransferOptionExtensionsByExtensionId(entryExtensionId)
+                .forEach(transferOptionExtension -> transferOptionExtensionService.deleteTransferOptionExtension(
+                        transferOptionExtension.getId()));
         entryExtensionRepository.deleteById(entryExtensionId);
         log.info("Deleted entry extension with id: {}", entryExtensionId);
     }

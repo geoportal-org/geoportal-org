@@ -19,7 +19,12 @@ import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The type User extension service.
+ * This class implements the UserExtensionService interface and provides the business logic for managing UserExtension
+ * entities. It uses the UserExtensionRepository for database operations, UserExtensionMapper for mapping between the
+ * model and entity, and TransferOptionExtensionService for managing associated TransferOptionExtension entities. All
+ * methods are transactional, meaning they are part of a single database transaction. Some methods are read-only,
+ * meaning they do not modify the database, while others can create, update, delete, or restore UserExtension
+ * entities.
  */
 @Log4j2
 @Service
@@ -107,6 +112,13 @@ public class UserExtensionServiceImpl implements UserExtensionService {
     @Override
     public void deleteUserExtension(long userExtensionId) {
         log.info("Deleting user extension with id: {}", userExtensionId);
+        final UserExtension userExtension = userExtensionRepository.findById(userExtensionId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "User Extension entity with id: " + userExtensionId + " does not exist"));
+        transferOptionExtensionService.findTransferOptionExtensionsByExtensionId(
+                        userExtension.getEntryExtension().getId())
+                .forEach(transferOptionExtension -> transferOptionExtensionService.deleteTransferOptionExtension(
+                        transferOptionExtension.getId()));
         userExtensionRepository.deleteById(userExtensionId);
         log.info("Deleted user extension with id: {}", userExtensionId);
     }
