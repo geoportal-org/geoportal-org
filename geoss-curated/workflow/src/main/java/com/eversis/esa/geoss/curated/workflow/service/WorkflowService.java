@@ -140,4 +140,11 @@ public interface WorkflowService {
      */
     void deleteEntry(long entryId);
 
+    /**
+     * Delete entry extension.
+     *
+     * @param entryExtensionId the entry extension id
+     */
+    void deleteEntryExtension(long entryExtensionId);
+
 }

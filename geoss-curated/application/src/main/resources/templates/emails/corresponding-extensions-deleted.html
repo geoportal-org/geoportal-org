@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Corresponding extensions deleted</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="#{user.body.greeting}">Dear User,</p>
+<p><span th:text="#{corresponding.extensions.deleted.body.span1}">Your extension </span><span th:text="${code}"></span> <span th:text="#{corresponding.extensions.deleted.body.span2}"> and corresponding user entry extensions: </span><span th:text="${names}"></span> <span th:text="#{corresponding.extensions.deleted.body.span3}"> has been removed from the system by the Administrator.</span></p>
+<p th:text="#{body.closing}">Thank you,</p>
+<p th:text="#{body.signature}">GEOSS Administrator</p>
+</body>
+</html>

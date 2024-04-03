@@ -4,7 +4,10 @@ import com.eversis.esa.geoss.curated.common.email.EmailEventPublisher;
 import com.eversis.esa.geoss.curated.dashboards.domain.UserDashboard;
 import com.eversis.esa.geoss.curated.dashboards.service.UserDashboardService;
 import com.eversis.esa.geoss.curated.elasticsearch.service.ElasticsearchService;
+import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionRepository;
+import com.eversis.esa.geoss.curated.extensions.repository.UserExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
@@ -40,6 +43,8 @@ import java.util.Optional;
 @Validated
 public class WorkflowServiceImpl implements WorkflowService {
 
+    private final UserExtensionRepository userExtensionRepository;
+
     private static final String REALM_NAME = "geoss";
 
     private static final String ADMIN_GROUP_NAME = "administrator";
@@ -62,6 +67,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final UserResourceRepository userResourceRepository;
 
+    private final EntryExtensionRepository entryExtensionRepository;
+
     /**
      * Instantiates a new Workflow service.
      *
@@ -74,12 +81,14 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param keycloakProvider the keycloak provider
      * @param entryRepository the entry repository
      * @param userResourceRepository the user resource repository
+     * @param entryExtensionRepository the entry extension repository
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
             UserExtensionService userExtensionService, UserDashboardService userDashboardService,
             ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher,
             ObjectProvider<Keycloak> keycloakProvider, EntryRepository entryRepository,
-            UserResourceRepository userResourceRepository) {
+            UserResourceRepository userResourceRepository, EntryExtensionRepository entryExtensionRepository,
+            UserExtensionRepository userExtensionRepository) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
         this.userExtensionService = userExtensionService;
@@ -89,6 +98,8 @@ public class WorkflowServiceImpl implements WorkflowService {
         this.keycloakProvider = keycloakProvider;
         this.entryRepository = entryRepository;
         this.userResourceRepository = userResourceRepository;
+        this.entryExtensionRepository = entryExtensionRepository;
+        this.userExtensionRepository = userExtensionRepository;
     }
 
     @Transactional
@@ -528,6 +539,45 @@ public class WorkflowServiceImpl implements WorkflowService {
         log.info("Deleted entry with id: {}", entryId);
     }
 
+    @Transactional
+    @Override
+    public void deleteEntryExtension(long entryExtensionId) {
+        log.info("Deleting entry extension with id: {}", entryExtensionId);
+        final EntryExtension entryExtension = entryExtensionRepository.findById(entryExtensionId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Entry Extension entity with id: " + entryExtensionId + " does not exist"));
+        elasticsearchService.removeEntryExtensionFromIndex(entryExtension);
+        deleteUserExtensionsByEntryName(entryExtension.getTitle(), entryExtension.getCode());
+        entryExtensionRepository.deleteById(entryExtensionId);
+        log.info("Deleted entry extension with id: {}", entryExtensionId);
+    }
+
+    private void deleteUserExtensionsByEntryName(String title, String code) {
+        log.info("Deleting user extensions by entry name: {}", title);
+        List<UserExtension> userExtensionsToDelete = userExtensionRepository.findByEntryName(title);
+
+        if (userExtensionsToDelete.isEmpty()) {
+            log.info("No user extensions found for entry name: {}", title);
+            return;
+        }
+
+        String userId = userExtensionsToDelete.get(0).getUserId();
+        StringBuilder namesBuilder = new StringBuilder();
+
+        userExtensionsToDelete.forEach(userExtension -> {
+            String name = userExtension.getId() + " " + userExtension.getEntryName() + " " + userExtension.getTaskType()
+                    .getName();
+            namesBuilder.append(name).append("\n");
+            userExtensionRepository.delete(userExtension);
+        });
+
+        String names = namesBuilder.toString();
+        Map<String, Object> variables = Map.of("code", code, "names", names);
+        sendEmailIfKeycloakAvailableForExtensions(userId, variables);
+
+        log.info("Deleted user extensions by entry name: {}", title);
+    }
+
     private void deleteUserResourcesByEntryName(String entryName, String code) {
         log.info("Deleting user resources by entry name: {}", entryName);
         List<UserResource> userResourcesToDelete = userResourceRepository.findByEntryName(entryName);
@@ -563,6 +613,20 @@ public class WorkflowServiceImpl implements WorkflowService {
                             .toRepresentation().getEmail(), Locale.getDefault(),
                     "corresponding.resources.deleted.title",
                     "emails/corresponding-resources-deleted.html", variables);
+        } else {
+            log.warn("Keycloak not activated. Skipping send emails.");
+        }
+    }
+
+    private void sendEmailIfKeycloakAvailableForExtensions(String userId, Map<String, Object> variables) {
+        Keycloak keycloak = keycloakProvider.getIfAvailable();
+        if (keycloak != null) {
+            emailEventPublisher.send(
+                    keycloak.realm(REALM_NAME).users()
+                            .get(userId)
+                            .toRepresentation().getEmail(), Locale.getDefault(),
+                    "corresponding.extensions.deleted.title",
+                    "emails/corresponding-extensions-deleted.html", variables);
         } else {
             log.warn("Keycloak not activated. Skipping send emails.");
         }

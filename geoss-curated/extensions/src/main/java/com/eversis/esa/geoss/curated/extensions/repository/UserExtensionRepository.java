@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.curated.extensions.repository;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 
 import org.springframework.data.domain.Page;
@@ -22,5 +24,13 @@ public interface UserExtensionRepository extends JpaRepository<UserExtension, Lo
      * @return the page
      */
     Page<UserExtension> findByUserId(@Param("userId") String userId, Pageable pageable);
+
+    /**
+     * Find by entry name list.
+     *
+     * @param entryName the entry name
+     * @return the list
+     */
+    List<UserExtension> findByEntryName(@Param("entryName") String entryName);
 
 }
