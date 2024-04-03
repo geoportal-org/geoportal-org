@@ -91,8 +91,6 @@ public class UserExtensionServiceImpl implements UserExtensionService {
                 () -> new ResourceNotFoundException(
                         "User Extension entity with id: " + userExtensionId + " does not exist"));
         userExtensionRepository.save(userExtensionMapper.mapToUserUserExtension(userExtensionDto, userExtension));
-        transferOptionExtensionService.saveTransferOptionExtensions(userExtensionDto.getEntryExtension()
-                .getTransferOptionExtensions(), userExtension.getEntryExtension());
         log.info("Updated user extension with id: {}", userExtension.getId());
     }
 
