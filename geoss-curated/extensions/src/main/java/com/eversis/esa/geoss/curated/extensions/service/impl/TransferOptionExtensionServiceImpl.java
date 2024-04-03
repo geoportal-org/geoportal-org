@@ -9,6 +9,7 @@ import com.eversis.esa.geoss.curated.extensions.model.TransferOptionExtensionMod
 import com.eversis.esa.geoss.curated.extensions.repository.TransferOptionExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.TransferOptionExtensionService;
 
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -81,20 +82,15 @@ public class TransferOptionExtensionServiceImpl implements TransferOptionExtensi
     @Transactional
     @Override
     public List<TransferOptionExtension> saveTransferOptionExtensions(
-            List<TransferOptionExtensionModel> transferOptionExtensionDto, EntryExtension entryExtension) {
+            @NonNull List<TransferOptionExtensionModel> transferOptionExtensionDto,
+            @NonNull EntryExtension entryExtension) {
         log.info("Saving transfer option extensions - {}", transferOptionExtensionDto);
-        Set<TransferOptionExtension> existingTransferOptionExtensions =
-                transferOptionExtensionRepository.findByEntryExtensionId(entryExtension.getId());
-        Set<TransferOptionExtension> newTransferOptionExtensions = transferOptionExtensionDto.stream()
-                .map(transferOptionExtension ->
-                        transferOptionExtensionMapper.mapToTransferOptionExtension(transferOptionExtension,
-                                entryExtension))
-                .collect(Collectors.toSet());
-        existingTransferOptionExtensions.addAll(newTransferOptionExtensions);
-        existingTransferOptionExtensions.forEach(transferOptionExtension
-                -> transferOptionExtension.setModifiedDate(LocalDateTime.now()));
+        List<TransferOptionExtension> transferOptionExtensions = transferOptionExtensionDto.stream()
+                .map(option -> transferOptionExtensionMapper.mapToTransferOptionExtension(option, entryExtension))
+                .collect(Collectors.toList());
+        transferOptionExtensionRepository.saveAll(transferOptionExtensions);
         log.info("Transfer option extensions saved");
-        return transferOptionExtensionRepository.saveAll(existingTransferOptionExtensions);
+        return transferOptionExtensions;
     }
 
     @Transactional

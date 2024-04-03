@@ -131,9 +131,8 @@ public class EntryExtensionServiceImpl implements EntryExtensionService {
     @Override
     public EntryExtension saveEntryExtension(EntryExtensionModel entryExtensionModel) {
         final EntryExtension entryExtension = entryExtensionRepository.findByCodeAndTitle(entryExtensionModel.getCode(),
-                entryExtensionModel.getTitle()).orElseThrow(
-                () -> new ResourceNotFoundException(
-                        "Entry extension entity with code: " + entryExtensionModel.getCode() + " does not exist"));
+                entryExtensionModel.getTitle()).orElseThrow(() -> new ResourceNotFoundException(
+                "Entry extension entity with code: " + entryExtensionModel.getCode() + " does not exist"));
         return entryExtensionRepository.save(
                 entryExtensionMapper.mapToEntryExtension(entryExtensionModel, entryExtension));
     }
