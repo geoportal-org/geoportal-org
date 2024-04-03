@@ -1,7 +1,11 @@
 package com.eversis.esa.geoss.curated.extensions.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
 import com.eversis.esa.geoss.curated.extensions.mapper.UserExtensionMapper;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.repository.UserExtensionRepository;
@@ -10,6 +14,7 @@ import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -168,6 +173,15 @@ public class UserExtensionServiceImpl implements UserExtensionService {
         userExtension.setStatus(Status.DENIED);
         userExtensionRepository.save(userExtension);
         log.info("Denied user extension.");
+    }
+
+    @Override
+    public Page<UserExtensionDTO> findUserExtensionsWithCheck(String userId, @NotNull Pageable pageable) {
+        Page<UserExtension> userExtensionsPage = userExtensionRepository.findByUserId(userId, pageable);
+        List<UserExtensionDTO> dtos = userExtensionsPage.stream()
+                .map(userExtensionMapper::convertToDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(dtos, pageable, userExtensionsPage.getTotalElements());
     }
 
 }

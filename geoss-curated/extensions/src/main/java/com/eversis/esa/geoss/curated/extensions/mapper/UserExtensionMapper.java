@@ -1,8 +1,12 @@
 package com.eversis.esa.geoss.curated.extensions.mapper;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
+import com.eversis.esa.geoss.curated.extensions.repository.UserExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
 
 import org.springframework.stereotype.Component;
@@ -15,13 +19,18 @@ public class UserExtensionMapper {
 
     private final EntryExtensionService entryExtensionService;
 
+    private final UserExtensionRepository userExtensionRepository;
+
     /**
      * Instantiates a new User extension mapper.
      *
      * @param entryExtensionService the entry extension service
+     * @param userExtensionRepository the user extension repository
      */
-    public UserExtensionMapper(EntryExtensionService entryExtensionService) {
+    public UserExtensionMapper(EntryExtensionService entryExtensionService,
+            UserExtensionRepository userExtensionRepository) {
         this.entryExtensionService = entryExtensionService;
+        this.userExtensionRepository = userExtensionRepository;
     }
 
     /**
@@ -43,6 +52,35 @@ public class UserExtensionMapper {
      */
     public UserExtension mapToUserUserExtension(UserExtensionModel model, UserExtension userExtension) {
         return getUserExtension(model, userExtension);
+    }
+
+    /**
+     * Convert to dto user extension dto.
+     *
+     * @param userExtension the user extension
+     * @return the user extension dto
+     */
+    public UserExtensionDTO convertToDto(UserExtension userExtension) {
+        if (userExtension == null) {
+            return null;
+        }
+        UserExtensionDTO dto = new UserExtensionDTO();
+        dto.setId(userExtension.getId());
+        dto.setUserId(userExtension.getUserId());
+        dto.setEntryName(userExtension.getEntryName());
+        dto.setTaskType(userExtension.getTaskType());
+        dto.setEntryExtension(userExtension.getEntryExtension());
+        dto.setStatus(userExtension.getStatus());
+        dto.setCreateDate(userExtension.getCreateDate());
+        dto.setModifiedDate(userExtension.getModifiedDate());
+        boolean hasOtherExtensionsWithSameEntry = checkIfOtherEntriesExist(userExtension);
+        dto.setHasOtherExtensionsWithSameEntry(hasOtherExtensionsWithSameEntry);
+        return dto;
+    }
+
+    private boolean checkIfOtherEntriesExist(UserExtension userExtension) {
+        List<UserExtension> userExtensions = userExtensionRepository.findByEntryName(userExtension.getEntryName());
+        return userExtensions.size() > 1;
     }
 
     private UserExtension getUserExtension(UserExtensionModel model) {

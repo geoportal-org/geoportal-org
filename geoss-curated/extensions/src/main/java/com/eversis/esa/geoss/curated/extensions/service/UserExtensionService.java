@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.extensions.service;
 
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
 
 import org.springframework.data.domain.Page;
@@ -95,5 +96,14 @@ public interface UserExtensionService {
      * @param userExtensionId the user extension id
      */
     void denyUserExtension(long userExtensionId);
+
+    /**
+     * Find user extensions with check page.
+     *
+     * @param userId the user id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<UserExtensionDTO> findUserExtensionsWithCheck(String userId,  @NotNull Pageable pageable);
 
 }

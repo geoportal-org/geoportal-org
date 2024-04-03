@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.curated.extensions.controller;
 
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
+import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
 import com.eversis.esa.geoss.curated.extensions.model.UserExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 
@@ -152,6 +153,23 @@ public class UserExtensionController {
     public void restoreUserExtension(@PathVariable long userExtensionId) {
         log.info("Restore user extension");
         userExtensionService.restoreUserExtension(userExtensionId);
+    }
+
+    /**
+     * Find user extensions with check page.
+     *
+     * @param userId the user id
+     * @param page the page
+     * @param size the size
+     * @return the page
+     */
+    @GetMapping("/check/user/{userId}")
+    public Page<UserExtensionDTO> findUserExtensionsWithCheck(
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        log.info("Find user extensions with additional check");
+        return userExtensionService.findUserExtensionsWithCheck(userId, PageRequest.of(page, size));
     }
 
 }
