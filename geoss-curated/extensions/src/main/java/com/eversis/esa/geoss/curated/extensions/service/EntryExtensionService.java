@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The interface Entry extension service.
+ * The EntryExtensionService interface. This interface defines the contract for managing EntryExtension entities. It
+ * includes methods for finding, creating, updating, deleting, and restoring EntryExtension entities. It also includes a
+ * method for getting or creating an EntryExtension entity, and a method for saving an EntryExtension entity. Each
+ * method should be implemented by any class that provides the business logic for managing EntryExtension entities.
  */
 public interface EntryExtensionService {
 
@@ -72,5 +75,13 @@ public interface EntryExtensionService {
      * @return the or create entry extension
      */
     EntryExtension getOrCreateEntryExtension(EntryExtensionModel entryExtensionModel);
+
+    /**
+     * Save entry extension entry extension.
+     *
+     * @param entryExtensionModel the entry extension model
+     * @return the entry extension
+     */
+    EntryExtension saveEntryExtension(EntryExtensionModel entryExtensionModel);
 
 }

@@ -67,7 +67,7 @@ public class UserExtensionMapper {
         userExtension.setEntryName(model.getEntryName());
         userExtension.setDescription(model.getDescription());
         userExtension.setTaskType(model.getTaskType());
-        userExtension.setEntryExtension(entryExtensionService.getOrCreateEntryExtension(model.getEntryExtension()));
+        userExtension.setEntryExtension(entryExtensionService.saveEntryExtension(model.getEntryExtension()));
         return userExtension;
     }
 
