@@ -5,8 +5,7 @@ import com.eversis.esa.geoss.curated.common.service.ProtocolService;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.TransferOptionExtension;
 import com.eversis.esa.geoss.curated.extensions.model.TransferOptionExtensionModel;
-
-import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
+import com.eversis.esa.geoss.curated.extensions.service.ExtensionService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,21 +22,20 @@ public class TransferOptionExtensionMapper {
 
     private final EndpointService endpointService;
     private final ProtocolService protocolService;
-
-    private final EntryExtensionService entryExtensionService;
+    private final ExtensionService extensionService;
 
     /**
      * Instantiates a new Transfer option extension mapper.
      *
      * @param endpointService the endpoint service
      * @param protocolService the protocol service
-     * @param entryExtensionService the entry extension service
+     * @param extensionService the extension service
      */
     public TransferOptionExtensionMapper(EndpointService endpointService, ProtocolService protocolService,
-            EntryExtensionService entryExtensionService) {
+            ExtensionService extensionService) {
         this.endpointService = endpointService;
         this.protocolService = protocolService;
-        this.entryExtensionService = entryExtensionService;
+        this.extensionService = extensionService;
     }
 
     /**
@@ -90,7 +88,7 @@ public class TransferOptionExtensionMapper {
         transferOptionExtension.setName(model.getName());
         transferOptionExtension.setDescription(model.getDescription());
         transferOptionExtension.setDisplayTitle(model.getDisplayTitle());
-        transferOptionExtension.setEntryExtension(entryExtensionService.findEntryExtension(extensionId));
+        transferOptionExtension.setEntryExtension(extensionService.findExtension(extensionId));
         transferOptionExtension.setEndpoint(endpointService.getOrCreateEndpoint(model.getEndpoint()));
         transferOptionExtension.setProtocol(protocolService.getOrCreateProtocol(model.getProtocol()));
         transferOptionExtension.setDeleted(0);
