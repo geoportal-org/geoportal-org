@@ -100,6 +100,8 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
         }
     }, [router.isReady]);
 
+    console.log(endpoints);
+
     const getSelectOptions = async () => {
         try {
             const typesVal = localStorage.getItem("types");
@@ -159,7 +161,7 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
             } else {
                 const newUrlTypes = await UserResourcesService.getUrlTypes();
                 localStorage.setItem("urlTypes", JSON.stringify(newUrlTypes));
-                setEndpoints(newUrlTypes);
+                setUrlTypes(newUrlTypes);
             }
 
             const protocolsVal = localStorage.getItem("protocols");
@@ -218,7 +220,7 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
             }
             data.sourceCode = entry.source.code;
             data.type = entry.type.code;
-            
+
             //links
             let links: any = [];
             response.forEach((transferOption) => {
@@ -809,13 +811,14 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
                                     setLinks(newArr);
                                 }}
                             >
-                                {endpoints.map((endpoint: any) => {
-                                    return (
-                                        <option key={endpoint.id} value={endpoint.url}>
-                                            {endpoint.url}
-                                        </option>
-                                    );
-                                })}
+                                {endpoints.length > 0 &&
+                                    endpoints.map((endpoint: any, i: number) => {
+                                        return (
+                                            <option key={endpoint?.id || i} value={endpoint?.url}>
+                                                {endpoint?.url}
+                                            </option>
+                                        );
+                                    })}
                                 <option value="customEndpoint">
                                     {translate("pages.entryResources.addEntityPage.customEndpoint")}
                                 </option>
