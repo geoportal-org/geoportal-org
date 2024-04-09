@@ -77,7 +77,7 @@ public class WorkflowController {
      */
     @PreAuthorize("hasAnyRole('RESOURCE_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/resource/delete/{userResourceId}")
+    @DeleteMapping("/resource/delete/{userResourceId}")
     public void deleteUserResource(@PathVariable long userResourceId, @RequestHeader String host) {
         log.info("Delete user resource");
         workflowService.deleteUserResource(userResourceId, host);
@@ -133,7 +133,7 @@ public class WorkflowController {
      */
     @PreAuthorize("hasAnyRole('RELATION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/relation/delete/{userRelationId}")
+    @DeleteMapping("/relation/delete/{userRelationId}")
     public void deleteUserRelation(@PathVariable long userRelationId, @RequestHeader String host) {
         log.info("Delete user relation");
         workflowService.deleteUserRelation(userRelationId, host);
@@ -189,7 +189,7 @@ public class WorkflowController {
      */
     @PreAuthorize("hasAnyRole('EXTENSION_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/extension/delete/{userExtensionId}")
+    @DeleteMapping("/extension/delete/{userExtensionId}")
     public void deleteUserExtension(@PathVariable long userExtensionId, @RequestHeader String host) {
         log.info("Delete user extension");
         workflowService.deleteUserExtension(userExtensionId, host);
@@ -245,7 +245,7 @@ public class WorkflowController {
      */
     @PreAuthorize("hasAnyRole('DASHBOARD_REVIEWER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/dashboard/delete/{userDashboardId}")
+    @DeleteMapping("/dashboard/delete/{userDashboardId}")
     public void deleteUserDashboard(@PathVariable long userDashboardId, @RequestHeader String host) {
         log.info("Delete user dashboard");
         workflowService.deleteUserDashboard(userDashboardId, host);
