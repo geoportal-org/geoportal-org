@@ -8,6 +8,7 @@ import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.repository.UserExtensionRepository;
+import com.eversis.esa.geoss.curated.extensions.service.TransferOptionExtensionService;
 import com.eversis.esa.geoss.curated.extensions.service.UserExtensionService;
 import com.eversis.esa.geoss.curated.relations.domain.UserRelation;
 import com.eversis.esa.geoss.curated.relations.service.UserRelationService;
@@ -69,6 +70,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private final EntryExtensionRepository entryExtensionRepository;
 
+    private final TransferOptionExtensionService transferOptionExtensionService;
+
     /**
      * Instantiates a new Workflow service.
      *
@@ -82,13 +85,16 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param entryRepository the entry repository
      * @param userResourceRepository the user resource repository
      * @param entryExtensionRepository the entry extension repository
+     * @param userExtensionRepository the user extension repository
+     * @param transferOptionExtensionService the transfer option extension service
      */
     public WorkflowServiceImpl(UserResourceService userResourceService, UserRelationService userRelationService,
             UserExtensionService userExtensionService, UserDashboardService userDashboardService,
             ElasticsearchService elasticsearchService, EmailEventPublisher emailEventPublisher,
             ObjectProvider<Keycloak> keycloakProvider, EntryRepository entryRepository,
             UserResourceRepository userResourceRepository, EntryExtensionRepository entryExtensionRepository,
-            UserExtensionRepository userExtensionRepository) {
+            UserExtensionRepository userExtensionRepository,
+            TransferOptionExtensionService transferOptionExtensionService) {
         this.userResourceService = userResourceService;
         this.userRelationService = userRelationService;
         this.userExtensionService = userExtensionService;
@@ -100,6 +106,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         this.userResourceRepository = userResourceRepository;
         this.entryExtensionRepository = entryExtensionRepository;
         this.userExtensionRepository = userExtensionRepository;
+        this.transferOptionExtensionService = transferOptionExtensionService;
     }
 
     @Transactional
@@ -548,6 +555,9 @@ public class WorkflowServiceImpl implements WorkflowService {
                         "Entry Extension entity with id: " + entryExtensionId + " does not exist"));
         elasticsearchService.removeEntryExtensionFromIndex(entryExtension);
         deleteUserExtensionsByEntryName(entryExtension.getTitle(), entryExtension.getCode());
+        transferOptionExtensionService.findTransferOptionExtensionsByExtensionId(entryExtensionId)
+                .forEach(transferOptionExtension -> transferOptionExtensionService.deleteTransferOptionExtension(
+                        transferOptionExtension.getId()));
         entryExtensionRepository.deleteById(entryExtensionId);
         log.info("Deleted entry extension with id: {}", entryExtensionId);
     }
