@@ -271,7 +271,7 @@ public class WorkflowController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/extension/delete/{entryExtensionId}")
+    @DeleteMapping("/entryExtension/delete/{entryExtensionId}")
     public void deleteEntryExtension(@PathVariable long entryExtensionId) {
         log.info("Delete entry extension");
         workflowService.deleteEntryExtension(entryExtensionId);
