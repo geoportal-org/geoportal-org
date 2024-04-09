@@ -68,6 +68,7 @@ public class UserExtensionMapper {
         dto.setId(userExtension.getId());
         dto.setUserId(userExtension.getUserId());
         dto.setEntryName(userExtension.getEntryName());
+        dto.setDescription(userExtension.getDescription());
         dto.setTaskType(userExtension.getTaskType());
         dto.setEntryExtension(userExtension.getEntryExtension());
         dto.setStatus(userExtension.getStatus());

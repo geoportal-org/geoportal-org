@@ -22,6 +22,7 @@ public class UserExtensionDTO {
     private Long id;
     private String userId;
     private String entryName;
+    private String description;
     private TaskType taskType;
     private EntryExtension entryExtension;
     private Status status;
