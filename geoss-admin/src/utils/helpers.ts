@@ -377,6 +377,7 @@ export const getViewsSideBarTitleId = (
     return titleId + "edit";
 };
 
+
 // create folders & documents structure ready to create directory tree
 export const createFileTree = (folders: IFolder[], documents: IDocument[]): FileRepositoryTreeItem[] => {
     const fileTree: FileRepositoryTreeItem[] = [
@@ -412,3 +413,5 @@ const assignFileTreeItem = (newItem: IFolder | IDocument, fileTreeItem: FileRepo
         }
     });
 };
+
+

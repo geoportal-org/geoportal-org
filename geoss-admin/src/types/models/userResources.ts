@@ -31,12 +31,12 @@ export interface UserResourcesContentData {
     id: 0;
     userId: string;
     entryName: string;
-    taskType: string;
+    taskType: TaskType;
     entry: ResourceEntry;
     status: string;
     createDate: string;
     modifiedDate: string;
-    hasOtherResourcesWithSameEntry: boolean;
+    hasOtherResourcesWithSameEntry?: boolean;
 }
 
 export interface EntriesData {

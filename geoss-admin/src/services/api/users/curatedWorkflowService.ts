@@ -1,4 +1,3 @@
-import { UserResourcesData } from "@/types/models/userResources";
 import { fetcher } from "@/utils/fetcher";
 
 export const WorkflowService = {
@@ -12,7 +11,7 @@ export const WorkflowService = {
     deleteUserResource: async (userResourceId: number) =>
         fetcher({
             url: `${WorkflowService.baseUrl}/resource/delete/${userResourceId}`,
-            method: "POST",
+            method: "DELETE",
         }),
     denyUserResource: async (userResourceId: number) =>
         fetcher({
@@ -24,6 +23,28 @@ export const WorkflowService = {
             url: `${WorkflowService.baseUrl}/resource/pending/${userResourceId}`,
             method: "POST",
         }),
+    approveUserExtension: async (userExtensionId: number) =>
+        fetcher({
+            url: `${WorkflowService.baseUrl}/extension/approve/${userExtensionId}`,
+            method: "POST",
+        }),
+    deleteUserExtension: async (userExtensionId: number) =>
+        fetcher({
+            url: `${WorkflowService.baseUrl}/extension/delete/${userExtensionId}`,
+            method: "DELETE",
+        }),
+    denyUserExtension: async (userExtensionId: number) =>
+        fetcher({
+            url: `${WorkflowService.baseUrl}/extension/deny/${userExtensionId}`,
+            method: "POST",
+        }),
+    pendingUserExtension: async (userExtensionId: number) =>
+        fetcher({
+            url: `${WorkflowService.baseUrl}/extension/pending/${userExtensionId}`,
+            method: "POST",
+        }),
     deleteEntry: async (entryId: number) =>
         fetcher({ url: `${WorkflowService.baseUrl}/entry/delete/${entryId}`, method: "DELETE" }),
+    deleteExtensionEntry: async (entryId: number) =>
+        fetcher({ url: `${WorkflowService.baseUrl}/entryExtension/delete/${entryId}`, method: "DELETE" }),
 };

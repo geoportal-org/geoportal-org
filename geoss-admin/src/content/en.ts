@@ -322,6 +322,17 @@ export const en = {
             "delete-confirmation": "Tag {title} has been deleted",
             "delete-error": "Tag {title} has not been deleted - please try again",
         },
+        curatedToastsMessages: {
+            statusChange: 'Status changed',
+            entryID: 'Entry with ID',
+            extensionID: 'Extension with ID',
+            approved: 'has been approved',
+            denied: 'has been denied',
+            deleted: 'has been deleted',
+            pending: 'has status pending',
+            updateResource: 'Created new resource with update status',
+            updateExtension: 'Created new extension with update status'
+        },
         recommendations: {
             add: "Add new recommendation",
             keywordsComma: "Keywords (comma separated)",
@@ -445,6 +456,9 @@ export const en = {
                 submitButton: "Add entry",
             },
         },
+        resourceExtensions: {
+            manage: "Manage all extensions entries",
+        }
     },
     nav: {
         open: "Open menu",
@@ -475,7 +489,8 @@ export const en = {
             section: {
                 entryResources: "Entry resources",
                 usersSurvey: "Survey results",
-            },
+                resourceExtensions: 'Resource extensions'
+            }
         },
         profile: {
             title: "Profile",

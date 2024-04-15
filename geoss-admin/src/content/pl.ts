@@ -138,6 +138,18 @@ export const pl = {
             "delete-confirmation": "Tag {title} has been deleted",
             "delete-error": "Tag {title} has not been deleted - please try again",
         },
+
+        curatedToastsMessages: {
+            statusChange: "Zmiana statusu",
+            entryID: "Wpis o identyfikatorze",
+            extensionID: "Rozszerzenie o identyfikatorze",
+            approved: "został zatwierdzony",
+            denied: "został odrzucony",
+            deleted: "został usunięty",
+            pending: "ma status oczekujący",
+            updateResource: "Utworzono nowy zasób ze statusem aktualizuj",
+            updateExtension: "Utworzono nowe rozszerzenie ze statusem aktualizuj",
+        },
         recommendations: {
             add: "Dodaj nową rekomendację",
             keywordsComma: "Słowa kluczowe (oddzielone przecinkiem)",
@@ -210,7 +222,6 @@ export const pl = {
             deleteEntry: "Usuń wpis",
             updateEntry: "Aktualizuj wpis",
             entries: "Wpisy",
-
             addEntityPage: {
                 pageTitle: "Dodaj wpis",
                 title: "Tytuł",
@@ -262,6 +273,9 @@ export const pl = {
                 submitButton: "Dodaj wpis",
             },
         },
+        resourceExtensions: {
+            manage: "Zarządzaj wszystkimi wpisami rozszerzeń",
+        },
     },
     nav: {
         open: "Otwórz menu",
@@ -292,6 +306,7 @@ export const pl = {
             section: {
                 usersSurvey: "Wyniki ankiety",
                 entryResources: "Zasoby",
+                resourceExtensions: 'Rozszerzenia'
             },
         },
         profile: {

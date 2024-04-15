@@ -1,6 +1,7 @@
 import {
     ApiIcon,
     EntryIcon,
+    ExtensionIcon,
     FileIcon,
     LayerIcon,
     LayoutIcon,
@@ -46,8 +47,8 @@ const navSettingsData: NavItem[] = [
     {
         titleId: "nav.settings.section.recommendations",
         href: pagesRoutes.recommendations,
-        Icon: RecommendationsIcon
-    }
+        Icon: RecommendationsIcon,
+    },
     // hidden tutorial tags in menu
     /*
     {
@@ -90,6 +91,11 @@ const navUsersData: NavItem[] = [
         titleId: "nav.users.section.usersSurvey",
         href: pagesRoutes.survey,
         Icon: WebsiteIcon,
+    },
+    {
+        titleId: "nav.users.section.resourceExtensions",
+        href: pagesRoutes.resourceExtensions,
+        Icon: ExtensionIcon,
     },
 ];
 

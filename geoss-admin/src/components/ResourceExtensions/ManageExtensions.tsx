@@ -1,7 +1,7 @@
-import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
+import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
 import { WorkflowService } from "@/services/api/users/curatedWorkflowService";
 import { PagesInfo } from "@/types/models/page";
-import { ResourceEntry } from "@/types/models/userResources";
+import { ExtensionContent } from "@/types/models/userExtensions";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -17,7 +17,6 @@ import {
     MenuButton,
     Button,
     MenuList,
-    Text,
     Table,
     MenuItem,
 } from "@chakra-ui/react";
@@ -28,10 +27,10 @@ import { MainContentHeader } from "../MainContent/MainContentHeader";
 import PagesControls from "../PagesControls/PagesControls";
 import { initialPagesInfo } from "../Recommendations/DefaultValues";
 
-export const ManageEntities = () => {
+export const ManageExtensions = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [pagesInfo, setPagesInfo] = useState<PagesInfo>(initialPagesInfo);
-    const [resources, setResources] = useState<ResourceEntry[]>([]);
+    const [extensions, setExtensions] = useState<ExtensionContent[]>([]);
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const router = useRouter();
@@ -39,20 +38,20 @@ export const ManageEntities = () => {
     const headingActions = [
         {
             titleId: "pages.entryResources.return",
-            onClick: () => router.push("/entry-resources"),
+            onClick: () => router.push("/resource-extensions"),
             disabled: false,
         },
     ];
 
     useEffect(() => {
-        fetchResources();
+        fetchExtensions();
     }, []);
 
-    const fetchResources = async (page = 0, numberOfHits = 20) => {
+    const fetchExtensions = async (page = 0, numberOfHits = 20) => {
         try {
             setIsLoading(true);
-            let response = await UserResourcesService.getEntries(page, numberOfHits);
-            setResources(response.content);
+            let response = await ResourceExtensionsService.getExtensions(page, numberOfHits);
+            setExtensions(response.content);
             const pInfo = {
                 size: response.size,
                 totalElements: response.totalElements,
@@ -67,13 +66,13 @@ export const ManageEntities = () => {
         }
     };
 
-    const deleteEntry = async (entryId: number) => {
+    const deleteEntry = async (entryExtensionId: number) => {
         try {
-            await WorkflowService.deleteEntry(entryId);
-            fetchResources(pagesInfo.number, 20);
+            await WorkflowService.deleteExtensionEntry(entryExtensionId);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${entryId} ${translate(
+                description: `${translate("pages.curatedToastsMessages.entryID")} ${entryExtensionId} ${translate(
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
@@ -122,13 +121,13 @@ export const ManageEntities = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {resources &&
-                                resources.map((resource: ResourceEntry) => {
+                            {extensions &&
+                                extensions.map((extension: ExtensionContent) => {
                                     return (
-                                        <Tr key={resource.id}>
-                                            <Td>{resource.id}</Td>
-                                            <Td>{resource.title}</Td>
-                                            <Td>{resource.summary}</Td>
+                                        <Tr key={extension.id}>
+                                            <Td>{extension.id}</Td>
+                                            <Td>{extension.title}</Td>
+                                            <Td>{extension.summary}</Td>
                                             <Td textAlign="end">
                                                 <Menu>
                                                     <MenuButton
@@ -141,14 +140,14 @@ export const ManageEntities = () => {
                                                     </MenuButton>
                                                     <MenuList>
                                                         <>
-                                                            <MenuItem onClick={() => deleteEntry(resource.id)}>
+                                                            <MenuItem onClick={() => deleteEntry(extension.id)}>
                                                                 {translate("pages.entryResources.deleteEntry")}
                                                             </MenuItem>
                                                             <MenuItem
                                                                 onClick={() =>
                                                                     router.push({
-                                                                        pathname: `/entry-resources/update-entry`,
-                                                                        query: { entryId: resource.id },
+                                                                        pathname: `/resource-extensions/update-entry`,
+                                                                        query: { entryId: extension.id },
                                                                     })
                                                                 }
                                                             >
@@ -166,8 +165,8 @@ export const ManageEntities = () => {
                 </TableContainer>
                 <PagesControls
                     pagesInfo={pagesInfo}
-                    numberOfElements={resources.length}
-                    fetchFunction={fetchResources}
+                    numberOfElements={extensions.length}
+                    fetchFunction={fetchExtensions}
                     isZeroFirst={true}
                 />
             </Flex>

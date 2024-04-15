@@ -157,7 +157,6 @@ export const RecommendationsConfig = () => {
 
     const deleteEntityFromRecommendation = async (recommendationId: number, entityId: number) => {
         try {
-            console.log(recommendationId)
             await RecommendationsService.deleteEntityForRecommendation(recommendationId, entityId);
             fetchRecommendations(pagesInfo.number - 1);
             setModalOpen(false);

@@ -4,6 +4,7 @@ export { ContentIcon } from "./ContentIcon";
 export { CrossIcon } from "./CrossIcon";
 export { DirectoryIcon } from "./DirectoryIcon";
 export { EntryIcon } from "./EntryIcon";
+export { ExtensionIcon } from "./ExtensionIcon";
 export { FileIcon } from "./FileIcon";
 export { FolderIcon } from "./FolderIcon";
 export { HomeIcon } from "./HomeIcon";

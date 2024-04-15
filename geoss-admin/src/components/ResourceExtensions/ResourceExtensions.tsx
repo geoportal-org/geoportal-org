@@ -1,7 +1,5 @@
-import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
 import { WorkflowService } from "@/services/api/users/curatedWorkflowService";
 import { PagesInfo } from "@/types/models/page";
-import { UserResourcesContentData } from "@/types/models/userResources";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -30,6 +28,8 @@ import PagesControls from "../PagesControls/PagesControls";
 import { PrimaryButton } from "../PrimaryButton/PrimaryButton";
 import { initialPagesInfo } from "../Recommendations/DefaultValues";
 import { useSession } from "next-auth/react";
+import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
+import { UserExtensionContent } from "@/types/models/userExtensions";
 
 const statuses = {
     draft: "#68a1fc",
@@ -39,10 +39,10 @@ const statuses = {
     "in-trash": "#c9c9c9",
 };
 
-export const EntryResources = () => {
+export const ResourceExtensions = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [pagesInfo, setPagesInfo] = useState<PagesInfo>(initialPagesInfo);
-    const [resources, setResources] = useState<UserResourcesContentData[]>([]);
+    const [userExtensions, setUserExtensions] = useState<UserExtensionContent[]>([]);
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const session = useSession();
@@ -51,14 +51,14 @@ export const EntryResources = () => {
     const router = useRouter();
 
     useEffect(() => {
-        fetchResources();
+        fetchExtensions();
     }, []);
 
-    const fetchResources = async (page = 0, numberOfHits = 20) => {
+    const fetchExtensions = async (page = 0, numberOfHits = 20) => {
         try {
             setIsLoading(true);
-            let response = await UserResourcesService.getResources(page, numberOfHits, userId);
-            setResources(response.content);
+            let response = await ResourceExtensionsService.getUserExtensions(page, numberOfHits, userId);
+            setUserExtensions(response.content);
             const pInfo = {
                 size: response.size,
                 totalElements: response.totalElements,
@@ -73,86 +73,86 @@ export const EntryResources = () => {
         }
     };
 
-    const approveResource = async (userResourceId: number) => {
+    const approveExtension = async (userExtensionId: number) => {
         try {
-            await WorkflowService.approveUserResource(userResourceId);
-            fetchResources(pagesInfo.number, 20);
+            await WorkflowService.approveUserExtension(userExtensionId);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.approved")}.`,
+                description: `${translate("pages.curatedToastsMessages.extensionID")} ${userExtensionId} ${translate(
+                    "pages.curatedToastsMessages.approved"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
         }
     };
 
-    const deleteResource = async (userResourceId: number) => {
+    const deleteExtension = async (userExtensionId: number) => {
         try {
-            await WorkflowService.deleteUserResource(userResourceId);
-            fetchResources(pagesInfo.number, 20);
+            await WorkflowService.deleteUserExtension(userExtensionId);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.deleted")}.`,
+                description: `${translate("pages.curatedToastsMessages.extensionID")} ${userExtensionId} ${translate(
+                    "pages.curatedToastsMessages.deleted"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
         }
     };
 
-    const denyResource = async (userResourceId: number) => {
+    const denyExtension = async (userExtensionId: number) => {
         try {
-            await WorkflowService.denyUserResource(userResourceId);
-            fetchResources(pagesInfo.number, 20);
+            await WorkflowService.denyUserExtension(userExtensionId);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.denied")}.`,
+                description: `${translate("pages.curatedToastsMessages.extensionID")} ${userExtensionId} ${translate(
+                    "pages.curatedToastsMessages.denied"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
         }
     };
 
-    const pendingResource = async (userResourceId: number) => {
+    const pendingExtension = async (userExtensionId: number) => {
         try {
-            await WorkflowService.pendingUserResource(userResourceId);
-            fetchResources(pagesInfo.number, 20);
+            await WorkflowService.pendingUserExtension(userExtensionId);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.pending")}.`,
+                description: `${translate("pages.curatedToastsMessages.extensionID")} ${userExtensionId} ${translate(
+                    "pages.curatedToastsMessages.pending"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
         }
     };
 
-    const updateResource = async (userResourceId: number) => {
-        let resourceFromList: any = { ...resources.find((userResource) => userResource.id === userResourceId) };
-        resourceFromList.taskType = "update";
-        delete resourceFromList.id;
-        delete resourceFromList.createDate;
-        delete resourceFromList.hasOtherResourcesWithSameEntry;
-        delete resourceFromList.modifiedDate;
-        delete resourceFromList.status;
-        delete resourceFromList.entry.id;
-
-        const resourceForUpdate = { ...resourceFromList };
-        resourceForUpdate.entry.type = resourceFromList.entry.type.code;
-        resourceForUpdate.entry.source = {
-            term: resourceFromList.entry.source.term,
-            code: resourceFromList.entry.source.code,
+    const updateResource = async (resourceExtensionId: number) => {
+        let extensionFromList: any = {
+            ...userExtensions.find((userExtension) => userExtension.id === resourceExtensionId),
         };
-        resourceForUpdate.entry.dataSource = resourceFromList.entry.dataSource.code;
-        resourceForUpdate.entry.displayDataSource = resourceFromList.entry.displayDataSource.code;
-        resourceForUpdate.entry.definitionType = resourceFromList.entry.definitionType.code;
-
+        extensionFromList.taskType = "update";
+        delete extensionFromList.id;
+        delete extensionFromList.createDate;
+        delete extensionFromList.modifiedDate;
+        delete extensionFromList.status;
+        delete extensionFromList.entryExtension.id;
+        const extensionForUpdate = { ...extensionFromList };
+        extensionForUpdate.entryExtension.dataSource = extensionFromList.entryExtension.dataSource.code;
         try {
-            const resource = await UserResourcesService.getEntry(userResourceId);
+            const extension = await ResourceExtensionsService.getEntry(resourceExtensionId);
             let transferOptions: any = [];
-            resource.forEach((tOption) => {
+            extension.forEach((tOption) => {
                 transferOptions.push({
                     name: tOption.name,
-                    description: tOption.description,
-                    title: tOption.title,
+                    description: tOption.description || '',
+                    title: tOption.displayTitle,
                     protocol: {
                         value: tOption.protocol.value,
                     },
@@ -162,12 +162,12 @@ export const EntryResources = () => {
                     },
                 });
             });
-
-            await UserResourcesService.createResource(resourceForUpdate);
-            fetchResources(pagesInfo.number, 20);
+            extensionForUpdate.entryExtension.transferOptionExtensions = transferOptions;
+            await ResourceExtensionsService.createUserExtension(extensionForUpdate);
+            fetchExtensions(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.updateResource")}.`,
+                description: `${translate("pages.curatedToastsMessages.updateExtension")}.`,
             });
         } catch (e) {
             console.log(e);
@@ -180,17 +180,14 @@ export const EntryResources = () => {
 
     return (
         <Flex direction="column" w={"100%"} overflowY="auto">
-            <MainContentHeader titleId="nav.users.section.entryResources" />
+            <MainContentHeader titleId="nav.users.section.resourceExtensions" />
             <Flex direction="column" w={"100%"} padding={4}>
                 <Text fontSize="xl" mt="2" mb="2" color="grey">
                     {translate("pages.entryResources.actionsTitle")}
                 </Text>
                 <Flex direction="row" justifyContent="flex-start" gap={1}>
-                    <PrimaryButton onClick={() => router.push("/entry-resources/add-entity")}>
-                        {translate("pages.entryResources.addEntity")}
-                    </PrimaryButton>
-                    <PrimaryButton onClick={() => router.push("/entry-resources/manage-entities")}>
-                        {translate("pages.entryResources.manage")}
+                    <PrimaryButton onClick={() => router.push("/resource-extensions/manage-extensions")}>
+                        {translate("pages.resourceExtensions.manage")}
                     </PrimaryButton>
                 </Flex>
                 <Text fontSize="xl" mt="6" color="grey">
@@ -237,15 +234,15 @@ export const EntryResources = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {resources &&
-                                resources.map((resource: UserResourcesContentData) => {
+                            {userExtensions &&
+                                userExtensions.map((userExtension: UserExtensionContent) => {
                                     return (
-                                        <Tr key={resource.id}>
-                                            <Td>{resource.id}</Td>
-                                            <Td>{resource.entryName}</Td>
-                                            <Td>{resource.taskType}</Td>
-                                            <Td>{resource.createDate}</Td>
-                                            <Td>{resource.modifiedDate}</Td>
+                                        <Tr key={userExtension.id}>
+                                            <Td>{userExtension.id}</Td>
+                                            <Td>{userExtension.entryName}</Td>
+                                            <Td>{userExtension.taskType}</Td>
+                                            <Td>{userExtension.createDate}</Td>
+                                            <Td>{userExtension.modifiedDate}</Td>
                                             <Td>
                                                 <Box
                                                     display="flex"
@@ -256,24 +253,24 @@ export const EntryResources = () => {
                                                     justifyContent="center"
                                                     p="1.5"
                                                     borderRadius="4px"
-                                                    bg={statuses[resource.status as keyof typeof statuses]}
+                                                    bg={statuses[userExtension.status as keyof typeof statuses]}
                                                 >
-                                                    {resource.status}
+                                                    {userExtension.status}
                                                 </Box>
                                             </Td>
                                             <Td textAlign="end">
                                                 <Menu>
                                                     <MenuButton
                                                         isDisabled={
-                                                            (resource.hasOtherResourcesWithSameEntry &&
-                                                                resource.status === "approved") ||
-                                                            resource.status === "denied"
+                                                            (userExtension.hasOtherExtensionsWithSameEntry &&
+                                                                userExtension.status === "approved") ||
+                                                            userExtension.status === "denied"
                                                         }
                                                         size="sm"
                                                         colorScheme={
-                                                            (resource.hasOtherResourcesWithSameEntry &&
-                                                                resource.status === "approved") ||
-                                                            resource.status === "denied"
+                                                            (userExtension.hasOtherExtensionsWithSameEntry &&
+                                                                userExtension.status === "approved") ||
+                                                            userExtension.status === "denied"
                                                                 ? "gray.400"
                                                                 : "teal"
                                                         }
@@ -284,53 +281,67 @@ export const EntryResources = () => {
                                                         {translate("pages.entryResources.actions")}
                                                     </MenuButton>
                                                     <MenuList>
-                                                        {resource.status === "draft" && (
+                                                        {userExtension.status === "draft" && (
                                                             <>
                                                                 <MenuItem
                                                                     onClick={() =>
                                                                         router.push({
-                                                                            pathname: `/entry-resources/update-resource`,
+                                                                            pathname: `/resource-extensions/update-resource`,
                                                                             query: {
-                                                                                entryId: resource.entry.id,
-                                                                                userResourceId: resource.id,
-                                                                                entryName: resource.entryName,
-                                                                                taskType: resource.taskType,
+                                                                                entryId:
+                                                                                    userExtension.entryExtension.id,
+                                                                                userExtensionId: userExtension.id,
+                                                                                entryName: userExtension.entryName,
+                                                                                taskType: userExtension.taskType,
+                                                                                description: userExtension.description,
                                                                             },
                                                                         })
                                                                     }
                                                                 >
                                                                     {translate("pages.entryResources.editEntry")}
                                                                 </MenuItem>
-                                                                <MenuItem onClick={() => pendingResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => pendingExtension(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.pending")}
                                                                 </MenuItem>
-                                                                <MenuItem onClick={() => deleteResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => deleteExtension(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.delete")}
                                                                 </MenuItem>
                                                             </>
                                                         )}
-                                                        {resource.status === "pending" && (
+                                                        {userExtension.status === "pending" && (
                                                             <>
-                                                                <MenuItem onClick={() => approveResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => approveExtension(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.approve")}
                                                                 </MenuItem>
-                                                                <MenuItem onClick={() => denyResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => denyExtension(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.deny")}
                                                                 </MenuItem>
                                                             </>
                                                         )}
-                                                        {resource.status === "denied" && (
+                                                        {userExtension.status === "denied" && (
                                                             <>
-                                                                <MenuItem onClick={() => deleteResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => deleteExtension(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.delete")}
                                                                 </MenuItem>
-                                                                <MenuItem onClick={() => updateResource(resource.id)}>
+                                                                <MenuItem
+                                                                    onClick={() => updateResource(userExtension.id)}
+                                                                >
                                                                     {translate("pages.entryResources.update")}
                                                                 </MenuItem>
                                                             </>
                                                         )}
-                                                        {resource.status === "approved" && (
-                                                            <MenuItem onClick={() => updateResource(resource.id)}>
+                                                        {userExtension.status === "approved" && (
+                                                            <MenuItem onClick={() => updateResource(userExtension.id)}>
                                                                 {translate("pages.entryResources.update")}
                                                             </MenuItem>
                                                         )}
@@ -345,8 +356,8 @@ export const EntryResources = () => {
                 </TableContainer>
                 <PagesControls
                     pagesInfo={pagesInfo}
-                    numberOfElements={resources.length}
-                    fetchFunction={fetchResources}
+                    numberOfElements={userExtensions.length}
+                    fetchFunction={fetchExtensions}
                     isZeroFirst={true}
                 />
             </Flex>

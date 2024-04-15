@@ -1,6 +1,6 @@
 import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
 import { ButtonVariant } from "@/types";
-import { CreateUserResource, LinkType, ResourceEntry, TaskType, TransferOption } from "@/types/models/userResources";
+import { LinkType, TaskType } from "@/types/models/userResources";
 import useFormatMsg from "@/utils/useFormatMsg";
 import {
     Box,
@@ -99,8 +99,6 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
             getEntry();
         }
     }, [router.isReady]);
-
-    console.log(endpoints);
 
     const getSelectOptions = async () => {
         try {
@@ -220,8 +218,6 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
             }
             data.sourceCode = entry.source.code;
             data.type = entry.type.code;
-
-            //links
             let links: any = [];
             response.forEach((transferOption) => {
                 let link = { ...defaultLinkState };
