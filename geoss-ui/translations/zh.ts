@@ -50,7 +50,9 @@ export default {
         visitorTypeTitle: '访客类型',
         country: '国家',
         numberOfVisits: '访问次数',
-        numberOfSearches: '搜索次数'
+        numberOfSearches: '搜索次数',
+        unspecifiedLabel: '未指定',
+        noDataToDisplay: '没有要显示的数据',
     },
     placeholders: {
         searchBar: '输入搜索词',

@@ -36,7 +36,7 @@ const ElasticDataService = {
                     max: dateToTs,
                 },
                 interval: intervalElk,
-                results: 0
+                results: 0,
             }
         } else if (
             type ===
@@ -49,7 +49,7 @@ const ElasticDataService = {
                     max: dateToTs,
                 },
                 size: 10,
-                results: resultsNumber
+                results: resultsNumber,
             }
         } else if (
             type ===
@@ -62,7 +62,7 @@ const ElasticDataService = {
                     min: dateFromTs,
                     max: dateToTs,
                 },
-                results: resultsNumber
+                results: resultsNumber,
             }
         } else if (
             type ===
@@ -74,7 +74,7 @@ const ElasticDataService = {
                     min: dateFromTs,
                     max: dateToTs,
                 },
-                results: resultsNumber
+                results: resultsNumber,
             }
         } else if (
             type ===
@@ -87,7 +87,7 @@ const ElasticDataService = {
                     max: dateToTs,
                 },
                 size: 10,
-                results: resultsNumber
+                results: resultsNumber,
             }
         } else {
             endpoint = 'getMostPopularAreas'
@@ -97,7 +97,7 @@ const ElasticDataService = {
                     min: dateFromTs,
                     max: dateToTs,
                 },
-                results: resultsNumber
+                results: resultsNumber,
             }
         }
         const data = await this.fetchData(endpoint, body, token)
@@ -114,7 +114,7 @@ const ElasticDataService = {
                 },
                 body: JSON.stringify(body),
             })
-            if(response.status === 200){
+            if (response.status === 200) {
                 let rJson = await response.json()
                 return rJson
             }
@@ -139,7 +139,12 @@ const ElasticDataService = {
                 case 'line':
                     if (data.length) {
                         data.forEach((element: any) => {
-                            const label = element.key === '' ? 'Unspecified' : element.keyAsString.slice(0, 10)
+                            const label =
+                                element.key === ''
+                                    ? window.$nuxt.$tc(
+                                          'statistics.unspecifiedLabel'
+                                      )
+                                    : element.keyAsString.slice(0, 10)
                             labels.push(label)
                             values.push(element.docCount)
                         })
@@ -184,7 +189,12 @@ const ElasticDataService = {
                 case 'bar':
                     if (data.length) {
                         data.forEach((element: any) => {
-                            const label = element.key === '' ? 'Unspecified' : element.key
+                            const label =
+                                element.key === ''
+                                    ? window.$nuxt.$tc(
+                                          'statistics.unspecifiedLabel'
+                                      )
+                                    : element.key
                             labels.push(label)
                             values.push(element.docCount.toString())
                         })

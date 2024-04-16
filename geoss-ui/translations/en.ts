@@ -46,11 +46,14 @@ export default {
         dateLabel: 'Date',
         newVisitorsLabel: 'New visitors',
         returningVisitorsLabel: 'Returning visitors',
-        popularBrowsersTitle: 'Most popular browsers based on number of actions',
+        popularBrowsersTitle:
+            'Most popular browsers based on number of actions',
         visitorTypeTitle: 'Visitor type',
         country: 'Country',
         numberOfVisits: 'Number of visits',
-        numberOfSearches: 'Number of searches'
+        numberOfSearches: 'Number of searches',
+        unspecifiedLabel: 'Unspecified',
+        noDataToDisplay: 'No results to display',
     },
     placeholders: {
         searchBar: 'Enter search words',

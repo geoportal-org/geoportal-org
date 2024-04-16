@@ -51,7 +51,9 @@ export default {
         visitorTypeTitle: 'Тип посетителя',
         country: 'Страна',
         numberOfVisits: 'Количество посещений',
-        numberOfSearches: 'Количество поисков'
+        numberOfSearches: 'Количество поисков',
+        unspecifiedLabel: 'Не указано',
+        noDataToDisplay: 'Нет данных для отображения',
     },
     placeholders: {
         searchBar: 'Введите слова для поиска',

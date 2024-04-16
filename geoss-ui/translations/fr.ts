@@ -46,11 +46,14 @@ export default {
         dateLabel: 'Date',
         newVisitorsLabel: 'Nouveaux visiteurs',
         returningVisitorsLabel: 'Visiteurs récurrents',
-        popularBrowsersTitle: "Navigateurs les plus populaires en fonction du nombre d'actions",
+        popularBrowsersTitle:
+            "Navigateurs les plus populaires en fonction du nombre d'actions",
         visitorTypeTitle: 'Type de visiteur',
         country: 'Pays',
         numberOfVisits: 'Nombre de visites',
-        numberOfSearches: 'Nombre de recherches'
+        numberOfSearches: 'Nombre de recherches',
+        unspecifiedLabel: 'Non spécifié',
+        noDataToDisplay: 'Aucune donnée à afficher',
     },
     placeholders: {
         searchBar: 'Entrer des mots de recherche',

@@ -1,5 +1,5 @@
 const config = {
-    apiUrl:   '/contents/rest', // 'http://10.254.7.59:8082/rest', // 
+    apiUrl:   'http://10.254.7.59:8082/rest', //'/contents/rest', //  
     menuUrl: '/menu',
     pageUrl: '/page',
     contentUrl: '/content',

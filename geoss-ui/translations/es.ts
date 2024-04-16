@@ -51,7 +51,9 @@ export default {
         visitorTypeTitle: 'Tipo de visitante',
         country: 'País',
         numberOfVisits: 'Número de visitas',
-        numberOfSearches: 'Número de búsquedas'
+        numberOfSearches: 'Número de búsquedas',
+        unspecifiedLabel: 'No especificado',
+        noDataToDisplay: 'No hay resultados para mostrar',
     },
     placeholders: {
         searchBar: 'Ingrese palabras de búsqueda',

@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: '/search/rest', // 'http://10.254.7.59:8086/rest', //
+    apiUrl: 'http://10.254.7.59:8086/rest', //'/search/rest', // 
     conceptsUrl: '/concepts',
     recommendationsUrl: '/recommendations',
 }

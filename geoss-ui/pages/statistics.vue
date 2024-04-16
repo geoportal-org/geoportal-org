@@ -11,34 +11,44 @@
             <div class="statistics_control" :class="{ closedStyle: !isOpen }">
                 <div v-if="isOpen">
                     <h1>{{ $tc('statistics.chartOptions') }}</h1>
-                    <div class="statistics_element statistics_element-start">
+                    <div class="statistics_element">
                         <p>{{ $tc('statistics.source') }}</p>
 
-                        <input
-                            v-model="form.source"
-                            type="radio"
-                            checked="true"
-                            id="dataUsage"
-                            :value="$tc('statistics.dataUsage')"
-                            @change="
-                                onSourceRadioChange($tc('statistics.dataUsage'))
-                            "
-                        />
-                        <label for="dataUsage">
-                            {{ $tc('statistics.dataUsage') }}
-                        </label>
-                        <input
-                            v-model="form.source"
-                            type="radio"
-                            id="default"
-                            :value="$tc('statistics.siteUsage')"
-                            @change="
-                                onSourceRadioChange($tc('statistics.siteUsage'))
-                            "
-                        />
-                        <label for="default">
-                            {{ $tc('statistics.siteUsage') }}
-                        </label>
+                        <div class="radios_box">
+                            <div class="radio">
+                                <input
+                                    v-model="form.source"
+                                    type="radio"
+                                    checked="true"
+                                    id="dataUsage"
+                                    :value="$tc('statistics.dataUsage')"
+                                    @change="
+                                        onSourceRadioChange(
+                                            $tc('statistics.dataUsage')
+                                        )
+                                    "
+                                />
+                                <label for="dataUsage">
+                                    {{ $tc('statistics.dataUsage') }}
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <input
+                                    v-model="form.source"
+                                    type="radio"
+                                    id="default"
+                                    :value="$tc('statistics.siteUsage')"
+                                    @change="
+                                        onSourceRadioChange(
+                                            $tc('statistics.siteUsage')
+                                        )
+                                    "
+                                />
+                                <label for="default">
+                                    {{ $tc('statistics.siteUsage') }}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="statistics_element">
                         <p>{{ $tc('statistics.dataset') }}</p>
@@ -190,7 +200,10 @@
                     {{ $tc('statistics.showOptions') }}
                 </button>
                 <div class="statistics_element statistics_element-end">
-                    <div v-if="chartInstance" class="dropdown">
+                    <div
+                        v-if="chartInstance && !isResultEmpty"
+                        class="dropdown"
+                    >
                         <button
                             type="button"
                             @click="toggleDropdown()"
@@ -214,7 +227,10 @@
             </div>
         </form>
 
-        <div id="chart-container" class="chart_container">
+        <p v-if="isResultEmpty && chartInstance" class="empty_data_message">
+            {{ $tc('statistics.noDataToDisplay') }}
+        </p>
+        <div v-if="!isResultEmpty" id="chart-container" class="chart_container">
             <canvas class="chart" id="chart"></canvas>
         </div>
         <div v-if="isCountires" class="map_container">
@@ -232,7 +248,6 @@
 <script type="module">
 import MatomoDataService from '@/services/matomo-statistics.service.ts'
 import ElasticDataService from '@/services/elastic-statistics.service.ts'
-import UtilsService from '@/services/utils.service'
 import Chart from 'chart.js/auto'
 import { GChart } from 'vue-google-charts/legacy'
 import { jsPDF } from 'jspdf'
@@ -306,6 +321,7 @@ export default {
             isOpen: true,
             chartInstance: null,
             chartData: null,
+            isResultEmpty: false,
             isCountires: false,
             dropDownOpen: false,
             mapData: [],
@@ -346,6 +362,7 @@ export default {
     methods: {
         async onSubmit() {
             let result = {}
+            this.isResultEmpty = false
             if (this.form.source === this.$tc('statistics.dataUsage')) {
                 result = await ElasticDataService.fetchElasticData(
                     this.form.dataset,
@@ -388,6 +405,9 @@ export default {
                 } else {
                     this.isCountires = false
                 }
+                if (result.data.labels.length === 0) {
+                    this.isResultEmpty = true
+                }
             }
         },
         toggleIsOpen() {
@@ -398,6 +418,9 @@ export default {
         },
         onSourceRadioChange(value) {
             this.form.dataset = this.datasetOptions[0]
+            if (this.chartInstance) {
+                this.chartInstance.destroy()
+            }
             if (value === this.$tc('statistics.dataUsage')) {
                 this.form.type = this.dataTypeOptions[0]
             } else {
@@ -543,10 +566,14 @@ export default {
 .dropbtn {
     background-color: transparent;
     color: white;
-    padding: 16px;
+    padding-right: 16px;
+    padding-left: 16px;
+
+    height: 2rem;
     font-size: 16px;
-    border: none;
     cursor: pointer;
+    border: 2px solid;
+    border-color: rgba(66, 161, 149, 0.94);
 }
 
 .dropdown {
@@ -554,13 +581,19 @@ export default {
     display: inline-block;
 }
 
+.dropdown:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
 .dropdown-content {
-    display: block;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 80px;
+    width: 80px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    margin-top: 5px;
+    left: 50%;
+    transform: translate(-50%, 0);
     text-align: center;
 }
 
@@ -574,6 +607,13 @@ export default {
 
 .dropdown-content a:hover {
     background-color: #ddd;
+}
+
+.empty_data_message {
+    text-align: center;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .chart_container {
@@ -675,6 +715,20 @@ export default {
     justify-content: flex-end;
 }
 
+.radios_box {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.radio {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
 .statistics_datepicker_wrapper {
     display: flex;
     flex-direction: row;
@@ -705,16 +759,22 @@ export default {
     justify-self: flex-start;
     font-size: 16px;
     margin: 1rem 0rem 1rem;
+    border: 2px solid;
+    border-color: rgba(66, 161, 149, 0.94);
+}
+
+.statistics_menu_button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .statistics_submit_button:hover {
     filter: brightness(90%);
 }
 
-.statistics_menu_button:hover {
-    border: 1px solid;
-    border-radius: 5px;
-    border-color: rgba(66, 161, 149, 0.94);
+@media (max-width: $breakpoint-sm) {
+    .radios_box {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: $breakpoint-md) {
