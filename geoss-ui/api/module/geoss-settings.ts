@@ -1,5 +1,5 @@
 const config = {
-    apiUrl:  'http://10.254.7.59:8080/rest', //'settings/rest',  //  
+    apiUrl: 'settings/rest', // 'http://10.254.7.59:8080/rest', //
     apiSettingsUrl: '/api-settings',
     webSettingsUrl: '/web-settings',
     catalogsUrl: '/catalogs',
