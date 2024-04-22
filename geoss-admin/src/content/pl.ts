@@ -178,6 +178,14 @@ export const pl = {
             addFormErrorInfo: "Wszystkie pola muszą być wypełnione.",
             cancelButton: "Anuluj",
         },
+        workers: {
+            status: "Status",
+            cause: "Przyczyna",
+            created: "Utworzono",
+            started: "Rozpoczęto",
+            ended: "Zakończono",
+            updated: "Zaktualizowano",
+        },
         surveyResults: {
             filter: "Filtr",
             startDate: "Data rozpoczęcia",
@@ -299,6 +307,7 @@ export const pl = {
                 tutorial: "Tagi samouczka",
                 views: "Widoki",
                 web: "Sieć",
+                workers: "Workery",
             },
         },
         users: {
@@ -306,7 +315,7 @@ export const pl = {
             section: {
                 usersSurvey: "Wyniki ankiety",
                 entryResources: "Zasoby",
-                resourceExtensions: 'Rozszerzenia'
+                resourceExtensions: "Rozszerzenia",
             },
         },
         profile: {

@@ -361,6 +361,15 @@ export const en = {
             addFormErrorInfo: "All fields must be filled.",
             cancelButton: "Cancel",
         },
+        workers: {
+            status: 'Status',
+            cause: 'Cause',
+            created: 'Created',
+            started: 'Started',
+            ended: 'Ended',
+            updated: 'Updated',
+
+        },
         surveyResults: {
             filter: "Filter",
             startDate: "Start Date",
@@ -482,6 +491,7 @@ export const en = {
                 tutorial: "Tutorial tags",
                 views: "Views",
                 web: "Web",
+                workers: 'Workers'
             },
         },
         users: {

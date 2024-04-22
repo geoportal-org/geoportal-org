@@ -45,3 +45,4 @@ export { Uploader } from "./Uploader/Uploader";
 export { UsersSurvey } from "./UsersSurvey/UsersSurvey";
 export { ViewsSettings } from "./ViewsSettings/ViewsSettings";
 export { WebSettings } from "./WebSettings/WebSettings";
+export { Workers } from "./Workers/Workers";

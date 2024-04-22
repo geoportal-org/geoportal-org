@@ -17,6 +17,7 @@ export const pagesRoutes = {
     views: "/views-settings",
     web: "/web-settings",
     website: "/website-contents",
+    workers: '/workers'
 };
 
 export const unauthenicatedRoutes = [pagesRoutes.signIn];

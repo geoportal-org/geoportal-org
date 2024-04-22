@@ -14,6 +14,7 @@ import {
 import { pagesRoutes } from "./pagesRoutes";
 import { NavItem, NavSection } from "@/types";
 import RecommendationsIcon from "@/components/Icons/RecommendationsIcon";
+import PickaxeIcon from "@/components/Icons/PickaxeIcon";
 
 const navSettingsData: NavItem[] = [
     {
@@ -48,6 +49,11 @@ const navSettingsData: NavItem[] = [
         titleId: "nav.settings.section.recommendations",
         href: pagesRoutes.recommendations,
         Icon: RecommendationsIcon,
+    },
+    {
+        titleId: "nav.settings.section.workers",
+        href: pagesRoutes.workers,
+        Icon: PickaxeIcon,
     },
     // hidden tutorial tags in menu
     /*
