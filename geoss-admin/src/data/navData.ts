@@ -55,6 +55,7 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.workers,
         Icon: PickaxeIcon,
     },
+    
     // hidden tutorial tags in menu
     /*
     {

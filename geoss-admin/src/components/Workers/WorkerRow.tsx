@@ -75,17 +75,19 @@ const WorkerRow = ({ worker, fetchWorker, runWorker }: Props) => {
                             {translate("pages.workers.created")}:{" "}
                         </Text>
 
-                        {new Date(worker?.createTime || "").toDateString() +
-                            " " +
-                            new Date(worker?.createTime || "").toLocaleTimeString()}
+                        {worker?.createTime &&
+                            new Date(worker?.createTime || "").toDateString() +
+                                " " +
+                                new Date(worker?.createTime || "").toLocaleTimeString()}
                     </Text>
                     <Text fontSize="xs" color="blue.700">
                         <Text as={"span"} fontSize="sm">
                             {translate("pages.workers.started")}:{" "}
                         </Text>
-                        {new Date(worker?.startTime || "").toDateString() +
-                            " " +
-                            new Date(worker?.startTime || "").toLocaleTimeString()}{" "}
+                        {worker?.startTime &&
+                            new Date(worker?.startTime || "").toDateString() +
+                                " " +
+                                new Date(worker?.startTime || "").toLocaleTimeString()}{" "}
                     </Text>
                 </Flex>
                 <Flex direction={"column"}>
@@ -93,17 +95,19 @@ const WorkerRow = ({ worker, fetchWorker, runWorker }: Props) => {
                         <Text as={"span"} fontSize="sm">
                             {translate("pages.workers.ended")}:{" "}
                         </Text>
-                        {new Date(worker?.startTime || "").toDateString() +
-                            " " +
-                            new Date(worker?.startTime || "").toLocaleTimeString()}{" "}
+                        {worker?.endTime &&
+                            new Date(worker?.endTime || "").toDateString() +
+                                " " +
+                                new Date(worker?.endTime || "").toLocaleTimeString()}{" "}
                     </Text>
                     <Text fontSize="xs" color="blue.700">
                         <Text as={"span"} fontSize="sm">
                             {translate("pages.workers.updated")}:{" "}
                         </Text>
-                        {new Date(worker?.lastUpdated || "").toDateString() +
-                            " " +
-                            new Date(worker?.lastUpdated || "").toLocaleTimeString()}{" "}
+                        {worker?.lastUpdated &&
+                            new Date(worker?.lastUpdated || "").toDateString() +
+                                " " +
+                                new Date(worker?.lastUpdated || "").toLocaleTimeString()}{" "}
                     </Text>
                 </Flex>
             </Flex>
