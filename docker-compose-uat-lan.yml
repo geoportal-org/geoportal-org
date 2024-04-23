@@ -197,7 +197,8 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
       KC_HOSTNAME: "gpp-idp.uat.esaportal.eu"
       KC_HOSTNAME_STRICT: "false"
-      KC_PROXY: edge
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
       PROXY_ADDRESS_FORWARDING: "true"
       << : *proxy-variables
     ports:

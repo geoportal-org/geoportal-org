@@ -166,7 +166,7 @@ services:
       resources:
         limits:
           cpus: "1.00"
-          memory: "256M"
+          memory: "512M"
     command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss", "--hostname-debug=true" ]
     environment:
       - KC_DB=mariadb
@@ -179,7 +179,8 @@ services:
       - KC_SPI_THEME_CACHE_TEMPLATES=false
       - KC_SPI_THEME_STATIC_MAX_AGE=-1
       - KC_HEALTH_ENABLED=true
-      - KC_PROXY=edge
+      - KC_HOSTNAME_STRICT=false
+      - KC_PROXY_HEADERS=xforwarded
     healthcheck:
       test: /opt/utils/health-check.sh
       interval: 30s
