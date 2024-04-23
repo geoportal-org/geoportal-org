@@ -31,7 +31,7 @@
     contributors }})
                                             </div>
                                         </div>
-                                        <ViewsAndRatings :result="result" />
+                                        <ViewsAndRatings :result="result" :currentOpenId="currentOpenId"/>
                                     </div>
                                     <div v-if="summary && typeof summary === 'string'" class="dab-result-details__summary">
                                         <div v-if="isParentRef && separated" v-html-to-text="summary" class="line-clamp--2">
@@ -271,6 +271,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean;
     @Prop(Number) public index!: number;
     @Prop(String) public image!: string;
+    @Prop(String) public currentOpenId!: string;
 
     public layers = [];
     public downloads = [];
@@ -767,6 +768,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public async showDetails() {
         LogService.logElementClick(null, null, this.result.id, null, 'viewed', null, this.contributors, this.title);
         LogService.logRecommendationData('Search result', 'See more');
+        LogService.clickCounter(this.result)
         this.$store.dispatch(SearchActions.showDetailsTrigger, false);
         MouseLeaveService.initSurvey();
         const actionAfterMetadataShow = this.$store.getters[SearchGetters.actionAfterMetadataShow];
@@ -1333,6 +1335,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.getStatistics();
         }
         LogService.logRecommendationData('Search result', 'Layers');
+    }
+
+    mounted() {
+        console.log('mountDetails')
     }
 
     private toggleSingleLayer() {

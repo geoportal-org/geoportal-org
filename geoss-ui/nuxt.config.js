@@ -144,7 +144,7 @@ export default {
         baseUrl: process.env.BASE_URL,
         adminUrl: process.env.ADMIN_URL,
         matomoUrl: process.env.MATOMO_URL,
-        elkUrl: process.env.ELK_URL,
+        proxyUrl: process.env.PROXY_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
         matomoSiteId: process.env.MATOMO_SITE_ID,

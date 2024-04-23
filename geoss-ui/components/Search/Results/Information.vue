@@ -22,7 +22,7 @@
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
             </div>
             <div v-if="informationResultsPlaceholders" class="information-result placeholder">
                 <img :src="`/svg/information-gray.svg`" alt="INFORMATION" />
@@ -48,6 +48,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsInformationComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get informationResults() {
         return (this.$store.getters[SearchGetters.informationResults] ? this.$store.getters[SearchGetters.informationResults].entry : []);
     }
@@ -65,6 +67,7 @@ export default class SearchResultsInformationComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

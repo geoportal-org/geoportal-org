@@ -23,7 +23,7 @@
                 </div>
                 <CrRelationsCheckbox :result="result" />
             </div>
-            <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+            <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
         </div>
         <div v-if="nextgeossResultsPlaceholders" class="nextgeoss-result placeholder">
             <img :src="`/svg/data-gray.svg`" alt="NextGEOSS" />
@@ -48,6 +48,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsNextgeossComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get nextgeossResults() {
         return (this.$store.getters[SearchGetters.nextgeossResults] ? this.$store.getters[SearchGetters.nextgeossResults].entry : []);
     }
@@ -65,6 +67,7 @@ export default class SearchResultsNextgeossComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

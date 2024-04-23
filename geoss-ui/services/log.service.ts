@@ -203,7 +203,7 @@ const LogService: any = {
     /*-----------------------------------------------*/
     /*--- log click action/event to elastic & MATOMO ----*/
     /*-----------------------------------------------*/
-    logElementClick(
+    async logElementClick(
         id: string,
         className: string,
         entryIdVal: string,
@@ -232,16 +232,28 @@ const LogService: any = {
         })
 
         try {
-            apiClient.$post(
+            await fetch(
                 `${geossProxy.logElementClick}`,
-                JSON.stringify(body),
                 {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         accept: 'application/json',
                     },
+                    body: JSON.stringify(body),
                 }
             )
+
+            // apiClient.$post(
+            //     `${geossProxy.logElementClick}`,
+            //     JSON.stringify(body),
+            //     {
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             accept: 'application/json',
+            //         },
+            //     }
+            // )
         } catch (e: any) {
             console.log(e)
         }
@@ -522,6 +534,60 @@ const LogService: any = {
         return Promise.all(promises).then(([suggested, related]) => {
             return [suggested, related]
         })
+    },
+
+    async fetchCounter(entryId: string) {
+        try {
+            let response = await fetch(
+                window.$nuxt.$config.proxyUrl + 'counter/view/' + entryId,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            if (response.status === 200) {
+                let rJson = await response.json()
+                return rJson
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async clickCounter(entry: any) {
+        const body = LogService.addCommonProperties({
+            uiObjectId: entry.id,
+            uiObjectClass: null,
+            uiSource: entry.sourceId,
+            sessionSiteUrl: LogService.friendlySiteUrl(),
+            uiEntryId: entry.id,
+            uiAction: 'click',
+            uiLabel: entry.title,
+            uiOrganisation: entry.contributor.orgName,
+            uiResourceName: entry.title,
+            operation: null,
+        })
+        
+        try {
+            let response = await fetch(
+                window.$nuxt.$config.proxyUrl + 'counter/view',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body),
+                }
+            )
+            if (response.status === 200) {
+                let rJson = await response.json()
+                return rJson
+            }
+        } catch (error) {
+            console.log(error)
+        }
     },
 
     /*------------------------------------*/

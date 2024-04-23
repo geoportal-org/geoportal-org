@@ -21,7 +21,7 @@
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
             </div>
             <div v-if="servicesResultsPlaceholders" class="services-result placeholder">
                 <img :src="`/svg/services-gray.svg`" alt="SERVICES" />
@@ -47,6 +47,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsServicesComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get serviceResults() {
         return (this.$store.getters[SearchGetters.servicesResults] ? this.$store.getters[SearchGetters.servicesResults].entry : []);
     }
@@ -64,6 +66,7 @@ export default class SearchResultsServicesComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

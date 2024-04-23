@@ -18,7 +18,7 @@
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
             </div>
             <div v-if="wikipediaResultsPlaceholders" class="wikipedia-result placeholder">
                 <img :src="`/svg/information-gray.svg`" alt="WIKIPEDIA" />
@@ -44,6 +44,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsWikipediaComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get wikipediaResults() {
         return (this.$store.getters[SearchGetters.wikipediaResults] ? this.$store.getters[SearchGetters.wikipediaResults].entry : []);
     }
@@ -61,6 +63,8 @@ export default class SearchResultsWikipediaComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
+
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

@@ -395,7 +395,7 @@ services:
       MATOMO_SITE_ID: 1
       MATOMO_TOKEN: ${GEOSS_MATOMO_TOKEN}
       MATOMO_URL: 'https://gpp.devel.esaportal.eu/matomo/?'
-      ELK_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/statistics/'
+      PROXY_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/'
       ELS_CLIENT_ID: 'geoss-proxy'
       ELS_CLIENT_SECRET: 'uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs'
       ELS_USERNAME: 'geoss'

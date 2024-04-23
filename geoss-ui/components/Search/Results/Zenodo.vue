@@ -19,7 +19,7 @@
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result['atom:logo'])" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result['atom:logo'])" :currentOpenId="currentOpenId"/>
             </div>
             <div v-if="zenodoResultsPlaceholders" class="zenodo-result placeholder">
                 <img :src="`/svg/information-gray.svg`" alt="ZENODO" />
@@ -45,6 +45,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsZenodoComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get zenodoResults() {
         return (this.$store.getters[SearchGetters.zenodoResults] ? this.$store.getters[SearchGetters.zenodoResults].entry : []);
     }
@@ -62,6 +64,7 @@ export default class SearchResultsZenodoComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

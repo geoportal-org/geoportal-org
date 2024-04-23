@@ -106,7 +106,7 @@ const ElasticDataService = {
 
     async fetchData(endpoint: string, body: any, token: string) {
         try {
-            let response = await fetch(window.$nuxt.$config.elkUrl + endpoint, {
+            let response = await fetch(window.$nuxt.$config.proxyUrl + 'statistics/' + endpoint, {
                 method: 'POST',
                 headers: {
                     Authorization: token,

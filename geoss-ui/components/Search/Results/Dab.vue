@@ -24,7 +24,7 @@
                     <WorkflowCheckbox :result="result" />
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId" />
             </div>
             <div v-if="dabResultsPlaceholders" class="dab-result placeholder">
                 <img :src="`/svg/data-gray.svg`" alt="GEOSS" />
@@ -55,6 +55,7 @@ import LogService from '@/services/log.service';
 })
 export default class SearchResultsDabComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
 
     get dabResults() {
         return (this.$store.getters[SearchGetters.dabResults] ? this.$store.getters[SearchGetters.dabResults].entry : []);
@@ -77,6 +78,7 @@ export default class SearchResultsDabComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {

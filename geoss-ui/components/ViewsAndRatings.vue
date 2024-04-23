@@ -1,124 +1,190 @@
 <template>
     <div class="views-ratings">
-        <div class="views-ratings__views" :data-tutorial-tag="resultIdDetails === result.id ? 'result-views' : ''">
+        <div
+            class="views-ratings__views"
+            :data-tutorial-tag="
+                resultIdDetails === result.id ? 'result-views' : ''
+            "
+        >
             <i class="icomoon-editor--eye"></i>
-            <span>{{ views || 0 }}</span>
+            <span>{{ viewsNew || 0 }}</span>
         </div>
-        <div v-if="result.rating" class="views-ratings__rating" :class="{ 'no-hover': isWidget }">
-            <i class="icomoon-editor--star" :data-tutorial-tag="resultIdDetails === result.id ? 'result-ratings' : ''"></i>
+        <div
+            v-if="result.rating"
+            class="views-ratings__rating"
+            :class="{ 'no-hover': isWidget }"
+        >
+            <i
+                class="icomoon-editor--star"
+                :data-tutorial-tag="
+                    resultIdDetails === result.id ? 'result-ratings' : ''
+                "
+            ></i>
             <span>{{ Number(result.rating.averageScore).toFixed(1) }}</span>
             <div v-if="!isWidget" class="views-ratings__ratings-stars">
-                <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="views-ratings__ratings-star"
-                    :class="{ active: score === num }">
-                    <i class="icomoon-star-empty" v-show="Math.floor(result.rating.averageScore) < num"></i>
-                    <i class="icomoon-star yellow" v-show="Math.floor(result.rating.averageScore) >= num"
-                        @click="setScore(num)"></i>
+                <div
+                    v-for="num in [5, 4, 3, 2, 1]"
+                    :key="num"
+                    class="views-ratings__ratings-star"
+                    :class="{ active: score === num }"
+                >
+                    <i
+                        class="icomoon-star-empty"
+                        v-show="Math.floor(result.rating.averageScore) < num"
+                    ></i>
+                    <i
+                        class="icomoon-star yellow"
+                        v-show="Math.floor(result.rating.averageScore) >= num"
+                        @click="setScore(num)"
+                    ></i>
                 </div>
             </div>
         </div>
-        <a v-if="!isWidget && isEntryExtensionEnabled && dataSource !== DataSources.WIKIPEDIA && !extendedViewMode"
-            :class="{ disabled: !isSignedIn }" class="views-ratings__entry-extension"
-            :title="isSignedIn ? $tc('popupContent.improveTheResourceDefinition') : $tc('popupContent.youNeedToBeSignedInToImprove')"
-            @click="entryExtension()" :data-tutorial-tag="resultIdDetails === result.id ? 'result-improve' : ''">
+        <a
+            v-if="
+                !isWidget &&
+                isEntryExtensionEnabled &&
+                dataSource !== DataSources.WIKIPEDIA &&
+                !extendedViewMode
+            "
+            :class="{ disabled: !isSignedIn }"
+            class="views-ratings__entry-extension"
+            :title="
+                isSignedIn
+                    ? $tc('popupContent.improveTheResourceDefinition')
+                    : $tc('popupContent.youNeedToBeSignedInToImprove')
+            "
+            @click="entryExtension()"
+            :data-tutorial-tag="
+                resultIdDetails === result.id ? 'result-improve' : ''
+            "
+        >
             <i class="icomoon-editor--edit"></i>
         </a>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import { DataSources, DataOrigin } from '@/interfaces/DataSources';
-import { PopupActions } from '@/store/popup/popup-actions';
-import { SearchActions } from '@/store/search/search-actions';
-import { UserGetters } from '@/store/user/user-getters';
-import { SearchGetters } from '@/store/search/search-getters';
-import { GeneralGetters } from '@/store/general/general-getters';
-import UtilsService from '@/services/utils.service';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import EntryExtension from '@/components/Search/Results/EntryExtension.vue';
-import DabResultRating from '@/components/Search/Results/DabResultRating.vue';
-import to from '@/utils/to';
-import LogService from '@/services/log.service';
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { DataSources, DataOrigin } from '@/interfaces/DataSources'
+import { PopupActions } from '@/store/popup/popup-actions'
+import { SearchActions } from '@/store/search/search-actions'
+import { UserGetters } from '@/store/user/user-getters'
+import { SearchGetters } from '@/store/search/search-getters'
+import { GeneralGetters } from '@/store/general/general-getters'
+import UtilsService from '@/services/utils.service'
+import GeossSearchApiService from '@/services/geoss-search.api.service'
+import EntryExtension from '@/components/Search/Results/EntryExtension.vue'
+import DabResultRating from '@/components/Search/Results/DabResultRating.vue'
+import to from '@/utils/to'
+import LogService from '@/services/log.service'
 
 @Component
 export default class ViewsAndRatingsComponent extends Vue {
-    @Prop({ default: null, type: Object }) public result!: any;
-    @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean;
+    @Prop({ default: null, type: Object }) public result!: any
+    @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
+    @Prop(String) public currentOpenId!: string;
 
-    public score = 0;
-    public DataSources = DataSources;
+    @Watch('currentOpenId')
+    async onCurrentChange() {
+        console.log(this.currentOpenId)
+        this.viewsNew = await this.getCounter()
+    }
+
+    public score = 0
+    public DataSources = DataSources
+    public viewsNew = 0
 
     get resultIdDetails() {
-        return this.$store.getters[SearchGetters.resultIdDetails];
+        return this.$store.getters[SearchGetters.resultIdDetails]
     }
 
     get views() {
-        let data = null;
+        let data = null
         if (this.isZenodoType) {
-            data = UtilsService.getPropByString(this.result, 'stats.views');
+            data = UtilsService.getPropByString(this.result, 'stats.views')
         } else {
-            data = UtilsService.getPropByString(this.result, 'views');
+            data = UtilsService.getPropByString(this.result, 'views')
         }
-        data = data ? data : '0';
-        return data;
+        data = data ? data : '0'
+        return data
     }
 
     get rootDataOrigin() {
         // original entry's dataSource exclusively from OpenSearch
-        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(this.result, 'term', 'dataSource')[0];
-        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource;
+        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(
+            this.result,
+            'term',
+            'dataSource'
+        )[0]
+        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource
     }
 
     get dataSource() {
-        return this.$store.getters[SearchGetters.dataSource];
+        return this.$store.getters[SearchGetters.dataSource]
     }
 
     get isZenodoType() {
-        return (this.isParentRef && this.parentRef === DataSources.ZENODO) || (!this.isParentRef && this.dataSource === DataSources.ZENODO);
+        return (
+            (this.isParentRef && this.parentRef === DataSources.ZENODO) ||
+            (!this.isParentRef && this.dataSource === DataSources.ZENODO)
+        )
     }
 
     get parentRef() {
-        return this.$store.getters[SearchGetters.parentRef];
+        return this.$store.getters[SearchGetters.parentRef]
     }
 
     get isParentRef() {
-        return (this.parentRef && this.parentRef.id === this.result.id);
+        return this.parentRef && this.parentRef.id === this.result.id
     }
 
     get isWidget() {
-        return this.$store.getters[GeneralGetters.isWidget];
+        return this.$store.getters[GeneralGetters.isWidget]
     }
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn];
+        return this.$store.getters[UserGetters.isSignedIn]
     }
 
     get isEntryExtensionEnabled() {
-        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled];
+        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled]
     }
 
     public async setScore(score: number) {
-        this.score = score;
+        this.score = score
         if (this.isSignedIn) {
-            this.openRatingModal();
+            this.openRatingModal()
         } else {
-            const [, data] = await to(GeossSearchApiService.rateResource(
-                this.result.title || this.result.metadata.title,
-                this.result.id,
-                this.score,
-                '',
-                DataOrigin[this.dataSource]
-            ));
+            const [, data] = await to(
+                GeossSearchApiService.rateResource(
+                    this.result.title || this.result.metadata.title,
+                    this.result.id,
+                    this.score,
+                    '',
+                    DataOrigin[this.dataSource]
+                )
+            )
             if (data) {
-                this.$store.dispatch(SearchActions.updateDabResultRating, { id: this.result.id, rating: data });
+                this.$store.dispatch(SearchActions.updateDabResultRating, {
+                    id: this.result.id,
+                    rating: data,
+                })
             }
         }
-        LogService.logRecommendationData('Search result', 'Rating', 'internal', { score: this.score });
+        LogService.logRecommendationData(
+            'Search result',
+            'Rating',
+            'internal',
+            { score: this.score }
+        )
     }
 
     public async openRatingModal() {
-        const dataOrigin = DataOrigin[this.dataSource];
-        const [, comments] = await to(GeossSearchApiService.getComments(this.result.id, dataOrigin));
+        const dataOrigin = DataOrigin[this.dataSource]
+        const [, comments] = await to(
+            GeossSearchApiService.getComments(this.result.id, dataOrigin)
+        )
 
         const props = {
             id: this.result.id,
@@ -126,10 +192,15 @@ export default class ViewsAndRatingsComponent extends Vue {
             comments,
             userScore: this.score,
             userComment: this.result.rating.comment,
-            dataSource: this.dataSource
-        };
+            dataSource: this.dataSource,
+        }
 
-        this.$store.dispatch(PopupActions.openPopup, { contentId: 'rating', title: this.$tc('popupTitles.rateResouce'), component: DabResultRating, props });
+        this.$store.dispatch(PopupActions.openPopup, {
+            contentId: 'rating',
+            title: this.$tc('popupTitles.rateResouce'),
+            component: DabResultRating,
+            props,
+        })
     }
 
     public async entryExtension() {
@@ -137,9 +208,23 @@ export default class ViewsAndRatingsComponent extends Vue {
             const props = {
                 id: this.result.id,
                 title: this.result.title,
-                rootDataOrigin: this.rootDataOrigin
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'entry-extension', title: this.$tc('popupTitles.improveDefinition'), component: EntryExtension, props });
+                rootDataOrigin: this.rootDataOrigin,
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'entry-extension',
+                title: this.$tc('popupTitles.improveDefinition'),
+                component: EntryExtension,
+                props,
+            })
+        }
+    }
+
+    public async getCounter() {
+        const res = await LogService.fetchCounter(this.result.id)
+        if (res && res.counter !== undefined) {
+            return res.counter
+        } else {
+            return -1
         }
     }
 }
@@ -156,7 +241,7 @@ export default class ViewsAndRatingsComponent extends Vue {
         color: white;
     }
 
-    @media(max-width: $breakpoint-xs) {
+    @media (max-width: $breakpoint-xs) {
         width: 100%;
         flex-wrap: wrap;
     }
@@ -258,7 +343,7 @@ export default class ViewsAndRatingsComponent extends Vue {
             margin-bottom: 2px;
         }
 
-        >i {
+        > i {
             .is-parent-ref & {
                 color: white;
             }
@@ -320,7 +405,7 @@ export default class ViewsAndRatingsComponent extends Vue {
                 display: none !important;
             }
 
-            &~div {
+            & ~ div {
                 .icomoon-star {
                     display: block !important;
                 }

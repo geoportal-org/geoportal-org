@@ -22,7 +22,7 @@
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
             </div>
             <div v-if="amerigeossResultsPlaceholders" class="amerigeoss-result placeholder">
                 <img :src="`/svg/data-gray.svg`" alt="AmeriGEO" />
@@ -48,6 +48,8 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsAmerigeossComponent extends Vue {
     [x: string]: any;
+    public currentOpenId: string = ''
+
     get amerigeossResults() {
         return (this.$store.getters[SearchGetters.amerigeossResults] ? this.$store.getters[SearchGetters.amerigeossResults].entry : []);
     }
@@ -65,6 +67,7 @@ export default class SearchResultsAmerigeossComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
+        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
