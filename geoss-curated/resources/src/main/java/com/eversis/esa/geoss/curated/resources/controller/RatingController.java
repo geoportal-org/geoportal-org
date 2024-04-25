@@ -47,7 +47,6 @@ public class RatingController {
         return ratingService.findRatings();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{entryId}")
     public EntryRating findRating(@PathVariable long entryId) {
@@ -89,7 +88,6 @@ public class RatingController {
         return ratingService.rateWithComment(entryRatingDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withoutComment")
     public RateResponse rateWithoutComment(@RequestBody @Valid EntryRatingWithoutCommentModel entryRatingDto) {
