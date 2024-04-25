@@ -95,7 +95,6 @@ public class RatingController {
         return ratingService.rateWithoutComment(entryRatingDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findRatingsByTargetIdsAndDataSource")
     public StatsResponse findRatingsByTargetIdsAndDataSource(@RequestParam String targetIds,
@@ -104,7 +103,6 @@ public class RatingController {
         return ratingService.findRatingsByTargetIdsAndDataSource(targetIds, dataSource);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findCommentsByTargetIdAndDataSource")
     public List<CommentResponse> findCommentsByTargetIdAndDataSource(@RequestParam String targetId,
