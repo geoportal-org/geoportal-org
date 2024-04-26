@@ -159,7 +159,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public List<CommentResponse> findCommentsByTargetIdAndDataSource(String targetId, String dataSource) {
         return entryRatingRepository.findAllByTargetIdAndDataSource(targetId, dataSource).stream()
-                .filter(entryRating -> !entryRating.getComment().isEmpty())
+                .filter(entryRating -> entryRating.getComment() != null && !entryRating.getComment().isEmpty())
                 .map(entryRatingMapper::mapToCommentResponse)
                 .collect(Collectors.toList());
     }
