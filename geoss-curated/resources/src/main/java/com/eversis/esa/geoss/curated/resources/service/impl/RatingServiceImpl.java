@@ -145,9 +145,8 @@ public class RatingServiceImpl implements RatingService {
                 rateResponse.setTargetId(targetId);
                 rateResponse.setTotalEntries(entryStats.getTotalEntries());
                 rateResponse.setAverageScore(entryStats.getAverageScore());
-                EntryRating entryRating = entryRatingRepository.findByTargetIdAndDataSource(targetId, dataSource);
-                rateResponse.setScore(entryRating.getScore());
-                rateResponse.setComment(entryRating.getComment());
+                rateResponse.setScore(0.0);
+                rateResponse.setComment("");
                 stats.add(rateResponse);
             }
         } catch (UnsupportedEncodingException e) {
