@@ -47,6 +47,7 @@ public class RatingController {
         return ratingService.findRatings();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{entryId}")
     public EntryRating findRating(@PathVariable long entryId) {
@@ -80,7 +81,7 @@ public class RatingController {
         ratingService.deleteRating(entryId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('COMMENT_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withComment")
     public RateResponse rateWithComment(@RequestBody @Valid EntryRatingWithCommentModel entryRatingDto) {
@@ -88,6 +89,7 @@ public class RatingController {
         return ratingService.rateWithComment(entryRatingDto);
     }
 
+    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withoutComment")
     public RateResponse rateWithoutComment(@RequestBody @Valid EntryRatingWithoutCommentModel entryRatingDto) {
@@ -95,6 +97,7 @@ public class RatingController {
         return ratingService.rateWithoutComment(entryRatingDto);
     }
 
+    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findRatingsByTargetIdsAndDataSource")
     public StatsResponse findRatingsByTargetIdsAndDataSource(@RequestParam String targetIds,
@@ -103,6 +106,7 @@ public class RatingController {
         return ratingService.findRatingsByTargetIdsAndDataSource(targetIds, dataSource);
     }
 
+    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findCommentsByTargetIdAndDataSource")
     public List<CommentResponse> findCommentsByTargetIdAndDataSource(@RequestParam String targetId,
