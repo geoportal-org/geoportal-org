@@ -257,6 +257,7 @@ import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions'
 import ViewsAndRatings from '@/components/ViewsAndRatings.vue';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
+import RatingService from '~/services/ratings.service'
 
 @Component({
     components: {
@@ -841,14 +842,26 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
 
         if (this.metadata) {
+            const comments = await this.getComments()
+
             const props = {
                 data: this.metadata.data,
                 isSatellite,
                 resultTitle: this.result.title,
                 resultImage: this.logo,
-                popupTitle: this.metadata.title
+                popupTitle: this.metadata.title,
+                comments
             };
             this.$store.dispatch(PopupActions.openPopup, { contentId: 'metadata', title: props.popupTitle, component: DabResultMetadata, props });
+        }
+    }
+
+    public async getComments() {
+        const res = await RatingService.fetchComments(this.result.id)
+        if (res) {
+            return res
+        } else {
+            return 0
         }
     }
 
@@ -1335,10 +1348,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.getStatistics();
         }
         LogService.logRecommendationData('Search result', 'Layers');
-    }
-
-    mounted() {
-        console.log('mountDetails')
     }
 
     private toggleSingleLayer() {

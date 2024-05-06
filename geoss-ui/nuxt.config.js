@@ -37,7 +37,7 @@ export default {
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
         { src: '~/plugins/MatomoPlugin.js', ssr: false },
-        { src: './plugins/VueCarusel.js', mode: 'client' }
+        { src: './plugins/VueCarusel.js', mode: 'client' },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -137,7 +137,7 @@ export default {
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         vendor: ['ol'],
-        transpile: [/google-chart/, /zrender/]
+        transpile: [/google-chart/, /zrender/],
     },
 
     publicRuntimeConfig: {
@@ -145,6 +145,7 @@ export default {
         adminUrl: process.env.ADMIN_URL,
         matomoUrl: process.env.MATOMO_URL,
         proxyUrl: process.env.PROXY_URL,
+        curatedUrl: process.env.CURATED_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
         matomoSiteId: process.env.MATOMO_SITE_ID,

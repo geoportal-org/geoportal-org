@@ -4,224 +4,479 @@
             <div v-if="platform === 'ZENODO'" class="margin-bottom-15 top-data">
                 <span>{{ publicationDate }}</span>
                 <div>
-                    <span v-for="(item, index) in zenodoBadges" :key="index" class="badge" :class="item['color']">{{
-                        item['label']
-                    }}</span>
+                    <span
+                        v-for="(item, index) in zenodoBadges"
+                        :key="index"
+                        class="badge"
+                        :class="item['color']"
+                    >
+                        {{ item['label'] }}
+                    </span>
                 </div>
             </div>
             <div class="metadata__title">{{ title }}</div>
             <div class="overflow-hidden">
-                <a class="metadata__preview" target="_blank" v-if="getImage(preview) === preview" :href="preview">
-                    <img :src="getImage(preview)" @error="imageLoadError(preview)" alt="Resource preview not available"
-                        class="big-image">
+                <a
+                    class="metadata__preview"
+                    target="_blank"
+                    v-if="getImage(preview) === preview"
+                    :href="preview"
+                >
+                    <img
+                        :src="getImage(preview)"
+                        @error="imageLoadError(preview)"
+                        alt="Resource preview not available"
+                        class="big-image"
+                    />
                 </a>
-                <div v-if="!isSatellite" class="metadata__description" v-html="description"></div>
-                <UserContributionsMetadata :model="'summary'"
-                    :data="{ data, isSatellite, resultTitle, resultImage, popupTitle }" />
+                <div
+                    v-if="!isSatellite"
+                    class="metadata__description"
+                    v-html="description"
+                ></div>
+                <UserContributionsMetadata
+                    :model="'summary'"
+                    :data="{
+                        data,
+                        isSatellite,
+                        resultTitle,
+                        resultImage,
+                        popupTitle,
+                    }"
+                />
             </div>
         </div>
 
-        <div class="youtube-video margin-bottom-25" v-for="(video, index) in youtubeVideos" :key="index">
-            <iframe :src="video" frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div
+            class="youtube-video margin-bottom-25"
+            v-for="(video, index) in youtubeVideos"
+            :key="index"
+        >
+            <iframe
+                :src="video"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
         </div>
 
-        <div class="metadata__info-table" v-if="platform !== 'ZENODO' && platform !== 'WIKIPEDIA'">
+        <div
+            class="metadata__info-table"
+            v-if="platform !== 'ZENODO' && platform !== 'WIKIPEDIA'"
+        >
             <div v-if="isSatellite">
-                <div><b>{{ $tc('popupContent.generalInfo') }}</b></div>
-                <div><b>{{ $tc('popupContent.platform') }}:</b>{{ platform }}</div>
-                <div><b>{{ $tc('popupContent.platformId') }}:</b>{{ platformId }}</div>
-                <div><b>{{ $tc('popupContent.productType') }}:</b>{{ productType }}</div>
-                <div><b>{{ $tc('popupContent.instrument') }}:</b>{{ instrument }}</div>
-                <div><b>{{ $tc('popupContent.cloudCoverage') }}:</b>{{ cloudCoverage }}</div>
-                <div><b>{{ $tc('popupContent.daytimeStart') }}:</b>{{ daytimeStart }}</div>
-                <div><b>{{ $tc('popupContent.daytimeStop') }}:</b>{{ daytimeStop }}</div>
+                <div>
+                    <b>{{ $tc('popupContent.generalInfo') }}</b>
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.platform') }}:</b>
+                    {{ platform }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.platformId') }}:</b>
+                    {{ platformId }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.productType') }}:</b>
+                    {{ productType }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.instrument') }}:</b>
+                    {{ instrument }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.cloudCoverage') }}:</b>
+                    {{ cloudCoverage }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.daytimeStart') }}:</b>
+                    {{ daytimeStart }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.daytimeStop') }}:</b>
+                    {{ daytimeStop }}
+                </div>
             </div>
             <div v-if="isSatellite">
-                <div><b>{{ $tc('popupContent.sceneParameters') }}</b></div>
-                <div><b>{{ $tc('popupContent.size') }}:</b>{{ size }}</div>
-                <div><b>{{ $tc('popupContent.relativeOrbit') }}:</b>{{ relativeOrbit }}</div>
-                <div><b>{{ $tc('popupContent.instrument') }}:</b>{{ instrumentShort }}</div>
-                <div><b>{{ $tc('popupContent.sensorPolarisation') }}:</b>{{ sensorPolarisation }}</div>
-                <div><b>{{ $tc('popupContent.aquisitionType') }}: </b>{{ aquisitionType }}</div>
-                <div><b>{{ $tc('popupContent.missionDataTaken') }}:</b>{{ missionDataTaken }}</div>
-                <div><b>{{ $tc('popupContent.startOrbitNumber') }}:</b>{{ startOrbitNumber }}</div>
-                <div><b>{{ $tc('popupContent.stopOrbitNumber') }}:</b>{{ stopOrbitNumber }}</div>
-                <div><b>{{ $tc('popupContent.orbitDirection') }}:</b>{{ orbitDirection }}</div>
-                <div><b>{{ $tc('popupContent.productClass') }}:</b>{{ productClass }}</div>
-                <div><b>{{ $tc('popupContent.productConsolidation') }}:</b>{{ productConsolidation }}</div>
-                <div><b>{{ $tc('popupContent.stopRelativeOrbitNumber') }}:</b>{{ stopRelativeOrbitNumber }}</div>
-                <div><b>{{ $tc('popupContent.sliceNumber') }}:</b>{{ sliceNumber }}</div>
-                <div><b>{{ $tc('popupContent.status') }}:</b>{{ status }}</div>
+                <div>
+                    <b>{{ $tc('popupContent.sceneParameters') }}</b>
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.size') }}:</b>
+                    {{ size }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.relativeOrbit') }}:</b>
+                    {{ relativeOrbit }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.instrument') }}:</b>
+                    {{ instrumentShort }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.sensorPolarisation') }}:</b>
+                    {{ sensorPolarisation }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.aquisitionType') }}:</b>
+                    {{ aquisitionType }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.missionDataTaken') }}:</b>
+                    {{ missionDataTaken }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.startOrbitNumber') }}:</b>
+                    {{ startOrbitNumber }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.stopOrbitNumber') }}:</b>
+                    {{ stopOrbitNumber }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.orbitDirection') }}:</b>
+                    {{ orbitDirection }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.productClass') }}:</b>
+                    {{ productClass }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.productConsolidation') }}:</b>
+                    {{ productConsolidation }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.stopRelativeOrbitNumber') }}:</b>
+                    {{ stopRelativeOrbitNumber }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.sliceNumber') }}:</b>
+                    {{ sliceNumber }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.status') }}:</b>
+                    {{ status }}
+                </div>
             </div>
             <div v-if="!isSatellite">
-                <div><b>{{ $tc('popupContent.contactInformation') }}</b></div>
-                <div><b>{{ $tc('popupContent.contrubutor') }}:</b>{{ contributor }}</div>
-                <div><b>{{ $tc('popupContent.deliveryPoint') }}:</b>{{ deliveryPoint }}</div>
-                <div><b>{{ $tc('popupContent.city') }}:</b>{{ city }}</div>
-                <div><b>{{ $tc('popupContent.postalCode') }}:</b>{{ postalCode }}</div>
-                <div><b>{{ $tc('popupContent.country') }}:</b>{{ country }}</div>
-                <div><b>{{ $tc('popupContent.emailAddress') }}:</b>{{ email }}</div>
-                <div v-if="platform === 'ZENODO'"><b>{{ $tc('popupContent.creators') }}:</b>{{ organisationName }}</div>
-                <div v-else><b>{{ $tc('popupContent.organizationName') }}:</b>{{ organisationName }}</div>
-                <div><b>{{ $tc('popupContent.role') }}:</b>{{ city }}</div>
+                <div>
+                    <b>{{ $tc('popupContent.contactInformation') }}</b>
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.contrubutor') }}:</b>
+                    {{ contributor }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.deliveryPoint') }}:</b>
+                    {{ deliveryPoint }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.city') }}:</b>
+                    {{ city }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.postalCode') }}:</b>
+                    {{ postalCode }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.country') }}:</b>
+                    {{ country }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.emailAddress') }}:</b>
+                    {{ email }}
+                </div>
+                <div v-if="platform === 'ZENODO'">
+                    <b>{{ $tc('popupContent.creators') }}:</b>
+                    {{ organisationName }}
+                </div>
+                <div v-else>
+                    <b>{{ $tc('popupContent.organizationName') }}:</b>
+                    {{ organisationName }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.role') }}:</b>
+                    {{ city }}
+                </div>
             </div>
             <div v-if="!isSatellite">
-                <div><b>{{ $tc('popupContent.dataIdentification') }}</b></div>
-                <div><b>{{ $tc('popupContent.fileIdentifier') }}:</b>{{ fileIdentifier }}</div>
-                <div><b>{{ $tc('popupContent.parentIdentifier') }}:</b>{{ parentIdentifier }}</div>
-                <div><b>{{ $tc('popupContent.hierarchyLevel') }}:</b>{{ hierarchyLevel }}</div>
-                <div><b>{{ $tc('popupContent.dateStamp') }}:</b>{{ dateStamp }}</div>
-                <div><b>{{ $tc('popupContent.language') }}: </b>{{ language }}</div>
+                <div>
+                    <b>{{ $tc('popupContent.dataIdentification') }}</b>
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.fileIdentifier') }}:</b>
+                    {{ fileIdentifier }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.parentIdentifier') }}:</b>
+                    {{ parentIdentifier }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.hierarchyLevel') }}:</b>
+                    {{ hierarchyLevel }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.dateStamp') }}:</b>
+                    {{ dateStamp }}
+                </div>
+                <div>
+                    <b>{{ $tc('popupContent.language') }}:</b>
+                    {{ language }}
+                </div>
             </div>
         </div>
         <div class="metadata__keywords">
-            <div class="metadata__keywords-title">{{ $tc('popupContent.descriptiveKeywords') }}</div>
+            <div class="metadata__keywords-title">
+                {{ $tc('popupContent.descriptiveKeywords') }}
+            </div>
             <div class="metadata__keywords-wrap">
-                <a class="metadata__keyword" v-for="(keyword, index) of descriptiveKeywords" :key="index"
-                    @click="keywordSearch(keyword)">{{ keyword }}</a>
+                <a
+                    class="metadata__keyword"
+                    v-for="(keyword, index) of descriptiveKeywords"
+                    :key="index"
+                    @click="keywordSearch(keyword)"
+                >
+                    {{ keyword }}
+                </a>
                 <div v-if="!descriptiveKeywords.length">&#8212;</div>
             </div>
-            <UserContributionsMetadata :model="'keywords'"
-                :data="{ data, isSatellite, resultTitle, resultImage, popupTitle }"
-                @keyword-search="keywordSearch($event)" />
+            <UserContributionsMetadata
+                :model="'keywords'"
+                :data="{
+                    data,
+                    isSatellite,
+                    resultTitle,
+                    resultImage,
+                    popupTitle,
+                }"
+                @keyword-search="keywordSearch($event)"
+            />
         </div>
         <div class="metadata__additional-info" v-if="platform == 'ZENODO'">
-            <div class="metadata__additional-info-title">{{ $tc('popupContent.additionalInfo') }}</div>
-            <div class="metadata__additional-info-item"><b>{{ $tc('popupContent.publicationDate') }}: </b>{{ publicationDate
-            }}
+            <div class="metadata__additional-info-title">
+                {{ $tc('popupContent.additionalInfo') }}
             </div>
-            <div class="metadata__additional-info-item"><b>{{ $tc('popupContent.doi') }}: </b><span
-                    v-html="zenodoDOI"></span>
+            <div class="metadata__additional-info-item">
+                <b>{{ $tc('popupContent.publicationDate') }}:</b>
+                {{ publicationDate }}
             </div>
-            <div class="metadata__additional-info-item"><b>{{ $tc('popupContent.licenseForFiles') }}: </b>{{ license }}
+            <div class="metadata__additional-info-item">
+                <b>{{ $tc('popupContent.doi') }}:</b>
+                <span v-html="zenodoDOI"></span>
             </div>
-            <div class="metadata__additional-info-item"><b>{{ $tc('popupContent.publishedIn') }}: </b>{{ publishedIn }}
+            <div class="metadata__additional-info-item">
+                <b>{{ $tc('popupContent.licenseForFiles') }}:</b>
+                {{ license }}
+            </div>
+            <div class="metadata__additional-info-item">
+                <b>{{ $tc('popupContent.publishedIn') }}:</b>
+                {{ publishedIn }}
             </div>
         </div>
         <div class="metadata__coordinates">
-            <div class="metadata__coordinates__title">{{ $tc('popupContent.mapDetails') }}</div>
-            <div>
-                <b>{{ $tc('popupContent.boundingRectangle') }}:</b> {{ boundingBox }}
+            <div class="metadata__coordinates__title">
+                {{ $tc('popupContent.mapDetails') }}
             </div>
             <div>
-                <b>{{ $tc('popupContent.temporalExtent') }}:</b> {{ temporalExtent }}
+                <b>{{ $tc('popupContent.boundingRectangle') }}:</b>
+                {{ boundingBox }}
+            </div>
+            <div>
+                <b>{{ $tc('popupContent.temporalExtent') }}:</b>
+                {{ temporalExtent }}
             </div>
         </div>
-        <div id="infoMap" style="max-height: 250px; height: 250px;" class="margin-bottom-30"></div>
-        <div class="metadata__references" v-if="platform == 'ZENODO' && references.length">
-            <div class="metadata__references-title">{{ $tc('popupContent.references') }}</div>
+        <div
+            id="infoMap"
+            style="max-height: 250px; height: 250px"
+            class="margin-bottom-30"
+        ></div>
+        <div
+            class="metadata__references"
+            v-if="platform == 'ZENODO' && references.length"
+        >
+            <div class="metadata__references-title">
+                {{ $tc('popupContent.references') }}
+            </div>
             <ul class="metadata__references-list">
-                <li class="metadata__reference" v-for="(reference, index) of references" :key="index">{{ reference }}</li>
+                <li
+                    class="metadata__reference"
+                    v-for="(reference, index) of references"
+                    :key="index"
+                >
+                    {{ reference }}
+                </li>
             </ul>
         </div>
         <div class="metadata__links" v-if="platform !== 'ZENODO'">
-            <div class="metadata__links-title">{{ $tc('popupContent.onlineResources') }}</div>
+            <div class="metadata__links-title">
+                {{ $tc('popupContent.onlineResources') }}
+            </div>
             <div v-if="linksEmpty">N.A.</div>
-            <div class="metadata__links-section" v-for="(value, key) in links" :key="key">
-                <div class="metadata__links-section-title" v-if="value.items.length">
-                    <img v-if="value.items.length" :src="`/img/m-link.png`" :alt="$tc('popupContent.onlineResources')" />
+            <div
+                class="metadata__links-section"
+                v-for="(value, key) in links"
+                :key="key"
+            >
+                <div
+                    class="metadata__links-section-title"
+                    v-if="value.items.length"
+                >
+                    <img
+                        v-if="value.items.length"
+                        :src="`/img/m-link.png`"
+                        :alt="$tc('popupContent.onlineResources')"
+                    />
                     <span>{{ value.title }}</span>
                 </div>
                 <div v-for="(link, index) in value.items" :key="index">
                     <div>
-                        <div class="metadata__link" :class="link.available" :title="link.scoreText">
-                            <a target="_blank" :href="link.linkText" class="link">{{ link.linkTitle }}</a>
-                            <img v-if="link.linkTextParsed" class="layer" alt="Preview not available"
-                                :src="link.linkTextParsed">
+                        <div
+                            class="metadata__link"
+                            :class="link.available"
+                            :title="link.scoreText"
+                        >
+                            <a
+                                target="_blank"
+                                :href="link.linkText"
+                                class="link"
+                            >
+                                {{ link.linkTitle }}
+                            </a>
+                            <img
+                                v-if="link.linkTextParsed"
+                                class="layer"
+                                alt="Preview not available"
+                                :src="link.linkTextParsed"
+                            />
                             <div v-else>{{ link.linkDescription }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <UserContributionsMetadata :model="'transferOptions'"
-                :data="{ data, isSatellite, resultTitle, resultImage, popupTitle }" />
+            <UserContributionsMetadata
+                :model="'transferOptions'"
+                :data="{
+                    data,
+                    isSatellite,
+                    resultTitle,
+                    resultImage,
+                    popupTitle,
+                }"
+            />
         </div>
-        <UserContributionsMetadata v-if="showComments" :model="'comment'"
-            :data="{ data, isSatellite, resultTitle, resultImage, popupTitle }" />
+        <UserContributionsMetadata
+            v-if="showComments"
+            :model="'comment'"
+            :data="{ data, isSatellite, resultTitle, resultImage, popupTitle, comments }"
+        />
     </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
-import MapCoordinatesUtils from '@/services/map/coordinates-utils';
-import UtilsService from '@/services/utils.service';
-import { ResultService } from '@/services/result.service';
-import LayerTilesService from '@/services/map/layer-tiles.service';
-import { SearchGetters } from '@/store/search/search-getters';
-import { SearchActions } from '@/store/search/search-actions';
-import { GeneralGetters } from '@/store/general/general-getters';
-import PopupCloseService from '@/services/popup-close.service';
-import UserContributionsMetadata from './UserContributionsMetadata.vue';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import { DataOrigin } from '@/interfaces/DataSources';
-import { AppVueObj } from '~/data/global';
+import MapCoordinatesUtils from '@/services/map/coordinates-utils'
+import UtilsService from '@/services/utils.service'
+import { ResultService } from '@/services/result.service'
+import LayerTilesService from '@/services/map/layer-tiles.service'
+import { SearchGetters } from '@/store/search/search-getters'
+import { SearchActions } from '@/store/search/search-actions'
+import { GeneralGetters } from '@/store/general/general-getters'
+import PopupCloseService from '@/services/popup-close.service'
+import UserContributionsMetadata from './UserContributionsMetadata.vue'
+import GeossSearchApiService from '@/services/geoss-search.api.service'
+import { DataOrigin } from '@/interfaces/DataSources'
+import { AppVueObj } from '~/data/global'
 
 @Component({
     components: {
-        UserContributionsMetadata
-    }
+        UserContributionsMetadata,
+    },
 })
 export default class DabResultMetadataComponent extends Vue {
-    [x: string]: any;
-    @Prop({ default: false, type: Boolean }) public isSatellite!: boolean;
-    @Prop(Object) public data!: any;
-    @Prop({ default: '', type: String }) public resultTitle!: string;
-    @Prop({ default: '', type: String }) public resultImage!: string;
-    @Prop({ default: '', type: String }) public popupTitle!: string;
+    [x: string]: any
+    @Prop({ default: false, type: Boolean }) public isSatellite!: boolean
+    @Prop(Object) public data!: any
+    @Prop({ default: '', type: String }) public resultTitle!: string
+    @Prop({ default: '', type: String }) public resultImage!: string
+    @Prop({ default: '', type: String }) public popupTitle!: string
+    @Prop({ default: [], type: Array }) public comments!: any[]
 
-    public map: any = null;
-    public zenodoBadges = {};
-    public youtubeVideos = [];
-    public showComments = false;
+    public map: any = null
+    public zenodoBadges = {}
+    public youtubeVideos = []
+    public showComments = this.comments.length > 0 ? true : false
 
     get dataSource() {
-        return this.$store.getters[SearchGetters.dataSource];
+        return this.$store.getters[SearchGetters.dataSource]
     }
 
     get title() {
-        let data = null;
-        if (this.isSatellite || this.platform === 'GEOSS_CR' || this.platform === 'NEXTGEOSS' || this.platform === 'WIKIPEDIA') {
-            data = UtilsService.getPropByString(this.data, 'title');
+        let data = null
+        if (
+            this.isSatellite ||
+            this.platform === 'GEOSS_CR' ||
+            this.platform === 'NEXTGEOSS' ||
+            this.platform === 'WIKIPEDIA'
+        ) {
+            data = UtilsService.getPropByString(this.data, 'title')
         } else if (this.platform === 'ZENODO') {
-            data = UtilsService.getPropByString(this.data, 'metadata.title');
+            data = UtilsService.getPropByString(this.data, 'metadata.title')
         } else {
-            data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString');
+            data = UtilsService.getPropByString(
+                this.data,
+                'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString'
+            )
             if (!data) {
-                data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString');
+                data = UtilsService.getPropByString(
+                    this.data,
+                    'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString'
+                )
             }
         }
 
         if (data) {
-            return data;
+            return data
         }
-        return '-';
+        return '-'
     }
 
     get type() {
-        return UtilsService.getPropByString(this.data, 'type');
+        return UtilsService.getPropByString(this.data, 'type')
     }
 
     get description() {
-        let data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString', 'string');
+        let data = UtilsService.getPropByString(
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString',
+            'string'
+        )
         if (!data) {
-            data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:abstract.gco:CharacterString', 'string');
+            data = UtilsService.getPropByString(
+                this.data,
+                'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:abstract.gco:CharacterString',
+                'string'
+            )
         }
 
         if (data) {
-            return data;
+            return data
         }
 
-        if (this.platform === 'GEOSS_CR' || this.platform === 'NEXTGEOSS' || this.platform === 'WIKIPEDIA') {
+        if (
+            this.platform === 'GEOSS_CR' ||
+            this.platform === 'NEXTGEOSS' ||
+            this.platform === 'WIKIPEDIA'
+        ) {
             const data: any = UtilsService.getPropByString(
                 this.data,
                 'summary',
                 'string'
-            );
+            )
             if (data) {
-                return data;
+                return data
             }
         }
 
@@ -230,351 +485,416 @@ export default class DabResultMetadataComponent extends Vue {
                 this.data,
                 'metadata.description',
                 'string'
-            );
+            )
             if (data) {
-                return data;
+                return data
             }
         }
-        return '-';
+        return '-'
     }
 
     get preview() {
         if (this.platform === 'WIKIPEDIA') {
-            return this.data.logo;
+            return this.data.logo
         }
-        let data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:graphicOverview.gmd:MD_BrowseGraphic.gmd:fileName.gco:CharacterString');
+        let data = UtilsService.getPropByString(
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:graphicOverview.gmd:MD_BrowseGraphic.gmd:fileName.gco:CharacterString'
+        )
         if (!data) {
-            data = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:graphicOverview.gmd:MD_BrowseGraphic.gmd:fileName.gco:CharacterString');
+            data = UtilsService.getPropByString(
+                this.data,
+                'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:graphicOverview.gmd:MD_BrowseGraphic.gmd:fileName.gco:CharacterString'
+            )
         }
 
-        return data;
+        return data
     }
 
     // START: satellite props
     get platform() {
-        return this.getStringData('acquisition.platform');
+        return this.getStringData('acquisition.platform')
     }
 
     get platformId() {
-        return this.getStringData('acquisition.platformid');
+        return this.getStringData('acquisition.platformid')
     }
 
     get productType() {
-        return this.getStringData('acquisition.productType');
+        return this.getStringData('acquisition.productType')
     }
 
     get instrument() {
-        return this.getStringData('acquisition.instrument');
+        return this.getStringData('acquisition.instrument')
     }
 
     get cloudCoverage() {
-        return this.getStringData('acquisition.cloud_cover_percentage');
+        return this.getStringData('acquisition.cloud_cover_percentage')
     }
 
     get daytimeStart() {
-        return this.getStringData('dtstart');
+        return this.getStringData('dtstart')
     }
 
     get daytimeStop() {
-        return this.getStringData('dtstop');
+        return this.getStringData('dtstop')
     }
 
     get size() {
-        return this.getStringData('gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:transferSize.gco:Real');
+        return this.getStringData(
+            'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:transferSize.gco:Real'
+        )
     }
 
     get relativeOrbit() {
-        return this.getStringData('acquisition.relativeOrbit');
+        return this.getStringData('acquisition.relativeOrbit')
     }
 
     get instrumentShort() {
-        return this.getStringData('acquisition.s3InstrumentIdx');
+        return this.getStringData('acquisition.s3InstrumentIdx')
     }
 
     get sensorPolarisation() {
-        return this.getStringData('acquisition.sensorPolarisation');
+        return this.getStringData('acquisition.sensorPolarisation')
     }
 
     get aquisitionType() {
-        return this.getStringData('acquisition.acquisitiontype');
+        return this.getStringData('acquisition.acquisitiontype')
     }
 
     get missionDataTaken() {
-        return this.getStringData('acquisition.missiondatatakeid');
+        return this.getStringData('acquisition.missiondatatakeid')
     }
 
     get startOrbitNumber() {
-        return this.getStringData('acquisition.startOrbitNumber');
+        return this.getStringData('acquisition.startOrbitNumber')
     }
 
     get stopOrbitNumber() {
-        return this.getStringData('acquisition.stopOrbitNumber');
+        return this.getStringData('acquisition.stopOrbitNumber')
     }
 
     get orbitDirection() {
-        return this.getStringData('acquisition.orbitdirection');
+        return this.getStringData('acquisition.orbitdirection')
     }
 
     get productClass() {
-        return this.getStringData('acquisition.productclass');
+        return this.getStringData('acquisition.productclass')
     }
 
     get productConsolidation() {
-        return this.getStringData('acquisition.productconsolidation');
+        return this.getStringData('acquisition.productconsolidation')
     }
 
     get stopRelativeOrbitNumber() {
-        return this.getStringData('acquisition.stopRelativeOrbitNumber');
+        return this.getStringData('acquisition.stopRelativeOrbitNumber')
     }
 
     get sliceNumber() {
-        return this.getStringData('acquisition.slicenumber');
+        return this.getStringData('acquisition.slicenumber')
     }
 
     get status() {
-        return this.getStringData('acquisition.status');
+        return this.getStringData('acquisition.status')
     }
     // END: satellite props
 
     // START: not satellite props
     get langLocale() {
-        return this.$store.getters[GeneralGetters.langLocale];
+        return this.$store.getters[GeneralGetters.langLocale]
     }
 
     get publicationDate() {
-        const data = this.getStringData('metadata.publication_date');
-        return this.formatDate(data);
+        const data = this.getStringData('metadata.publication_date')
+        return this.formatDate(data)
     }
 
     get zenodoDOI() {
-        const doiBadge = this.getStringData('links.badge');
-        const doiLink = this.getStringData('links.doi');
-        const doiName = this.getStringData('metadata.doi');
-        const doi = `<a target="_blank" href="${doiLink}" title="${doiName}"><img src="${doiBadge}" alt="${doiName}"/></a>`;
-        return doi;
+        const doiBadge = this.getStringData('links.badge')
+        const doiLink = this.getStringData('links.doi')
+        const doiName = this.getStringData('metadata.doi')
+        const doi = `<a target="_blank" href="${doiLink}" title="${doiName}"><img src="${doiBadge}" alt="${doiName}"/></a>`
+        return doi
     }
 
     get license() {
-        return this.getStringData('metadata.license.id');
+        return this.getStringData('metadata.license.id')
     }
 
     get publishedIn() {
-        return this.getStringData('metadata.journal.title');
+        return this.getStringData('metadata.journal.title')
     }
 
     get references() {
-        let data = null;
-        data = UtilsService.getArrayByString(
-            this.data,
-            'metadata.references'
-        );
-        return data;
+        let data = null
+        data = UtilsService.getArrayByString(this.data, 'metadata.references')
+        return data
     }
 
     get contributor() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString'
+        )
     }
 
     get deliveryPoint() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString'
+        )
     }
 
     get city() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString'
+        )
     }
 
     get postalCode() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString'
+        )
     }
 
     get country() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString'
+        )
     }
 
     get email() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString'
+        )
     }
 
     get organisationName() {
-        const data = [];
-        if (this.data.contributor && this.data.contributor.orgName && this.dataSource !== 'zenodo') {
-            data.push(UtilsService.getPropByString(this.data, 'contributor.orgName'));
+        const data = []
+        if (
+            this.data.contributor &&
+            this.data.contributor.orgName &&
+            this.dataSource !== 'zenodo'
+        ) {
+            data.push(
+                UtilsService.getPropByString(this.data, 'contributor.orgName')
+            )
         } else if (this.data['gmd:contact'] && this.dataSource !== 'zenodo') {
-            data.push(UtilsService.getPropByString(this.data, 'gmd:contact.gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString'));
-        } else if (this.data.metadata && this.data.metadata.creators && this.dataSource === 'zenodo') {
+            data.push(
+                UtilsService.getPropByString(
+                    this.data,
+                    'gmd:contact.gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString'
+                )
+            )
+        } else if (
+            this.data.metadata &&
+            this.data.metadata.creators &&
+            this.dataSource === 'zenodo'
+        ) {
             for (const item of this.data.metadata.creators) {
-                data.push(item.name);
+                data.push(item.name)
             }
-        } else if (this.data['dc:publisher'] && this.dataSource === 'nextgeoss') {
-            data.push(UtilsService.getPropByString(this.data, 'dc:publisher'));
+        } else if (
+            this.data['dc:publisher'] &&
+            this.dataSource === 'nextgeoss'
+        ) {
+            data.push(UtilsService.getPropByString(this.data, 'dc:publisher'))
         }
-        return data ? data.join(', ') : '-';
+        return data ? data.join(', ') : '-'
     }
 
     get role() {
-        return this.getStringData('gmd:contact.gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode');
+        return this.getStringData(
+            'gmd:contact.gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode'
+        )
     }
 
     get fileIdentifier() {
         if (this.platform === 'NEXTGEOSS') {
-            return this.getStringData('id');
+            return this.getStringData('id')
         } else {
-            return this.getStringData('gmd:fileIdentifier.gco:CharacterString');
+            return this.getStringData('gmd:fileIdentifier.gco:CharacterString')
         }
     }
 
     get parentIdentifier() {
-        return this.getStringData('gmd:parentIdentifier.gco:CharacterString');
+        return this.getStringData('gmd:parentIdentifier.gco:CharacterString')
     }
 
     get hierarchyLevel() {
-        return this.getStringData('gmd:hierarchyLevel.gco:CharacterString');
+        return this.getStringData('gmd:hierarchyLevel.gco:CharacterString')
     }
 
     get dateStamp() {
         if (this.platform === 'NEXTGEOSS') {
-            return this.getStringData('published');
+            return this.getStringData('published')
         } else {
-            return this.getStringData('gmd:dateStamp.gco:DateTime');
+            return this.getStringData('gmd:dateStamp.gco:DateTime')
         }
     }
 
     get language() {
-        return this.getStringData('gmd:language.gco:CharacterString');
+        return this.getStringData('gmd:language.gco:CharacterString')
     }
     // END: not satellite props
 
     get descriptiveKeywords() {
-        let data = null;
+        let data = null
         if (this.platform === 'ZENODO') {
+            data = UtilsService.getArrayByString(this.data, 'metadata.keywords')
+            if (data.length === 1) {
+                data = data[0].split(', ')
+            }
+            return data
+        } else {
             data = UtilsService.getArrayByString(
                 this.data,
-                'metadata.keywords'
-            );
-            if (data.length === 1) {
-                data = data[0].split(', ');
-            }
-            return data;
-        } else {
-            data = UtilsService.getArrayByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords');
+                'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords'
+            )
             if (!data.length) {
-                data = UtilsService.getArrayByString(this.data, 'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:descriptiveKeywords');
+                data = UtilsService.getArrayByString(
+                    this.data,
+                    'gmd:identificationInfo.srv:SV_ServiceIdentification.gmd:descriptiveKeywords'
+                )
             }
         }
-        let filteredData = [];
+        let filteredData = []
         for (const item of data) {
-            const keywords = UtilsService.getArrayByString(item, 'gmd:MD_Keywords.gmd:keyword.gco:CharacterString');
-            filteredData.push(...keywords);
+            const keywords = UtilsService.getArrayByString(
+                item,
+                'gmd:MD_Keywords.gmd:keyword.gco:CharacterString'
+            )
+            filteredData.push(...keywords)
         }
         if (!filteredData.length) {
-            filteredData = UtilsService.extractCategoriesByAttributeValue(this.data, 'term', 'keywords');
+            filteredData = UtilsService.extractCategoriesByAttributeValue(
+                this.data,
+                'term',
+                'keywords'
+            )
         }
-        return filteredData;
+        return filteredData
     }
 
     get boundingBox() {
         if (this.platform === 'NEXTGEOSS') {
-            const polygonValue = this.getStringData('georss:polygon');
+            const polygonValue = this.getStringData('georss:polygon')
             if (polygonValue !== '-' && polygonValue !== 'None') {
-                return `georss:polygon(${polygonValue})`;
+                return `georss:polygon(${polygonValue})`
             }
         } else {
-            const { boxes, pins } = ResultService.getBoundingBoxesAndPins(this.data);
-            const outerBox = MapCoordinatesUtils.mergeBoxes(boxes);
-            const outerPin = MapCoordinatesUtils.mergeBoxes(pins);
-            let coordinate = null;
+            const { boxes, pins } = ResultService.getBoundingBoxesAndPins(
+                this.data
+            )
+            const outerBox = MapCoordinatesUtils.mergeBoxes(boxes)
+            const outerPin = MapCoordinatesUtils.mergeBoxes(pins)
+            let coordinate = null
             if (outerBox) {
-                coordinate = MapCoordinatesUtils.coordinatesForPresentation(outerBox);
+                coordinate =
+                    MapCoordinatesUtils.coordinatesForPresentation(outerBox)
             } else if (outerPin) {
-                coordinate = MapCoordinatesUtils.coordinatesForPresentation(outerPin);
+                coordinate =
+                    MapCoordinatesUtils.coordinatesForPresentation(outerPin)
             }
 
-            return (coordinate ? coordinate : 'N.A.');
+            return coordinate ? coordinate : 'N.A.'
         }
     }
 
     get temporalExtent() {
         if (this.platform === 'NEXTGEOSS') {
-            let date = this.getStringData('dc:date');
+            let date = this.getStringData('dc:date')
             if (date !== '-' && date !== '/') {
-                date = date.split('/');
-                return `Start ${date[0]} End ${date[1]}`;
+                date = date.split('/')
+                return `Start ${date[0]} End ${date[1]}`
             } else {
-                return 'N.A.';
+                return 'N.A.'
             }
         }
 
         let temporalExtentBegin = UtilsService.getPropByString(
-            this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:beginPosition'
-        );
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:beginPosition'
+        )
         if (!temporalExtentBegin || typeof temporalExtentBegin !== 'string') {
-            temporalExtentBegin = UtilsService.getPropByString(this.data, 'dtstart');
+            temporalExtentBegin = UtilsService.getPropByString(
+                this.data,
+                'dtstart'
+            )
         }
         if (!temporalExtentBegin || typeof temporalExtentBegin !== 'string') {
-            temporalExtentBegin = UtilsService.getPropByString(this.data, 'start');
+            temporalExtentBegin = UtilsService.getPropByString(
+                this.data,
+                'start'
+            )
         }
         if (temporalExtentBegin && typeof temporalExtentBegin === 'string') {
-            temporalExtentBegin = temporalExtentBegin.trim();
+            temporalExtentBegin = temporalExtentBegin.trim()
         }
 
         let temporalExtentEnd = UtilsService.getPropByString(
-            this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:endPosition'
-        );
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:endPosition'
+        )
         if (!temporalExtentEnd || typeof temporalExtentEnd !== 'string') {
-            temporalExtentEnd = UtilsService.getPropByString(this.data, 'dtend');
+            temporalExtentEnd = UtilsService.getPropByString(this.data, 'dtend')
         }
         if (!temporalExtentEnd || typeof temporalExtentEnd !== 'string') {
-            temporalExtentEnd = UtilsService.getPropByString(this.data, 'stop');
+            temporalExtentEnd = UtilsService.getPropByString(this.data, 'stop')
         }
         if (temporalExtentEnd && typeof temporalExtentEnd === 'string') {
-            temporalExtentEnd = temporalExtentEnd.trim();
+            temporalExtentEnd = temporalExtentEnd.trim()
         }
 
         if (temporalExtentBegin || temporalExtentEnd) {
             if (!temporalExtentEnd) {
-                return `Start ${temporalExtentBegin}`;
+                return `Start ${temporalExtentBegin}`
             } else {
-                return `Start ${temporalExtentBegin} End ${temporalExtentEnd}`;
+                return `Start ${temporalExtentBegin} End ${temporalExtentEnd}`
             }
         } else {
-            return 'N.A.';
+            return 'N.A.'
         }
     }
 
     get links() {
-        const arrayPdf = [];
-        const arrayTxt = [];
-        const arrayHtml = [];
-        const arrayImg = [];
-        const arrayXml = [];
-        const arrayOther = [];
-        const arrayWCS = [];
-        const arrayWMSandTMS = [];
+        const arrayPdf = []
+        const arrayTxt = []
+        const arrayHtml = []
+        const arrayImg = []
+        const arrayXml = []
+        const arrayOther = []
+        const arrayWCS = []
+        const arrayWMSandTMS = []
 
         if (this.platform === 'NEXTGEOSS') {
-            const data: any = UtilsService.getArrayByString(this.data, 'link');
+            const data: any = UtilsService.getArrayByString(this.data, 'link')
             for (const item of data) {
-                if (item._attributes && item._attributes.rel && item._attributes.rel === 'enclosure') {
-                    const scoreMapping = this.statusCheckerMapping(-1);
+                if (
+                    item._attributes &&
+                    item._attributes.rel &&
+                    item._attributes.rel === 'enclosure'
+                ) {
+                    const scoreMapping = this.statusCheckerMapping(-1)
                     const linkObject = {
                         linkText: item._attributes.href.replace('&amp;', '&'),
                         linkTitle: item._attributes.title,
                         linkDescription: '',
                         titleBox: this.resultTitle,
                         scoreText: scoreMapping.scoreMsg,
-                        available: scoreMapping.scoreClass
-                    };
+                        available: scoreMapping.scoreClass,
+                    }
 
                     /* Simple resources aggregation */
                     if (item._attributes.type) {
                         if (item._attributes.type === 'text/html') {
-                            arrayHtml.push(linkObject);
-                        } else if (item._attributes.type.indexOf('image') > -1) {
-                            arrayImg.push(linkObject);
+                            arrayHtml.push(linkObject)
+                        } else if (
+                            item._attributes.type.indexOf('image') > -1
+                        ) {
+                            arrayImg.push(linkObject)
                         } else if (item._attributes.type === 'text/xml') {
-                            arrayXml.push(linkObject);
+                            arrayXml.push(linkObject)
                         } else {
-                            arrayOther.push(linkObject);
+                            arrayOther.push(linkObject)
                         }
                     }
                 }
@@ -584,50 +904,85 @@ export default class DabResultMetadataComponent extends Vue {
         const data: any = UtilsService.getArrayByString(
             this.data,
             'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine'
-        );
+        )
         for (const item of data) {
-            const linkText = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
+            const linkText = UtilsService.getPropByString(
+                item,
+                'gmd:CI_OnlineResource.gmd:linkage.gmd:URL'
+            )
             if (linkText) {
-                if (linkText.includes('youtube.com') || linkText.includes('youtu.be')) {
-                    this.youtubeVideos.push(`https://www.youtube.com/embed/${this.extractYoutubeVideoId(linkText)}`);
+                if (
+                    linkText.includes('youtube.com') ||
+                    linkText.includes('youtu.be')
+                ) {
+                    this.youtubeVideos.push(
+                        `https://www.youtube.com/embed/${this.extractYoutubeVideoId(
+                            linkText
+                        )}`
+                    )
                 }
-                let linkTitle = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                const linkTitle2 = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:function.gmd:ci_onlinefunctioncode');
-                let linkScore = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:status.gmd:score');
+                let linkTitle = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                )
+                const linkTitle2 = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:function.gmd:ci_onlinefunctioncode'
+                )
+                let linkScore = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:status.gmd:score'
+                )
                 if (!linkScore || linkScore > 100 || linkScore < 0) {
-                    linkScore = -1;
+                    linkScore = -1
                 }
 
-                let scoreText = '';
-                let available = '';
-                const mapping = this.statusCheckerMapping(linkScore);
-                scoreText = mapping.scoreMsg;
-                available = mapping.scoreClass;
+                let scoreText = ''
+                let available = ''
+                const mapping = this.statusCheckerMapping(linkScore)
+                scoreText = mapping.scoreMsg
+                available = mapping.scoreClass
 
-                const titleBox = this.resultTitle;
+                const titleBox = this.resultTitle
 
                 if (!linkTitle) {
                     if (linkTitle2) {
-                        linkTitle = linkTitle2;
+                        linkTitle = linkTitle2
                     } else {
-                        linkTitle = titleBox;
+                        linkTitle = titleBox
                     }
                 }
 
-                let linkDescription = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString');
-                const linkDescription2 = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                const wmsAllLayerName = this.resultTitle;
-                const protocol = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString');
-                const anchor = UtilsService.getPropByString(item, 'gmd:ci_onlineresource.gmd:description');
+                let linkDescription = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:description.gco:CharacterString'
+                )
+                const linkDescription2 = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                )
+                const wmsAllLayerName = this.resultTitle
+                const protocol = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString'
+                )
+                const anchor = UtilsService.getPropByString(
+                    item,
+                    'gmd:ci_onlineresource.gmd:description'
+                )
 
                 if (linkDescription === '') {
                     if (linkDescription2 !== '') {
-                        linkDescription = linkDescription2;
+                        linkDescription = linkDescription2
                     }
                 }
 
-                if (linkText.lastIndexOf('.pdf') > -1 && !(anchor.indexOf('complex') > 0) && (linkText !== '')) {
-                    const lastPdf = linkText.substr(linkText.length - 4);
+                if (
+                    linkText.lastIndexOf('.pdf') > -1 &&
+                    !(anchor.indexOf('complex') > 0) &&
+                    linkText !== ''
+                ) {
+                    const lastPdf = linkText.substr(linkText.length - 4)
                     if (lastPdf === '.pdf') {
                         arrayPdf.push({
                             linkText,
@@ -635,11 +990,15 @@ export default class DabResultMetadataComponent extends Vue {
                             linkDescription,
                             titleBox,
                             scoreText,
-                            available
-                        });
+                            available,
+                        })
                     }
-                } else if (linkText.lastIndexOf('.txt') > -1 && !(anchor.indexOf('complex') > 0) && (linkText !== '')) {
-                    const lastTxt = linkText.substr(linkText.length - 4);
+                } else if (
+                    linkText.lastIndexOf('.txt') > -1 &&
+                    !(anchor.indexOf('complex') > 0) &&
+                    linkText !== ''
+                ) {
+                    const lastTxt = linkText.substr(linkText.length - 4)
                     if (lastTxt === '.txt') {
                         arrayTxt.push({
                             linkText,
@@ -647,33 +1006,55 @@ export default class DabResultMetadataComponent extends Vue {
                             linkDescription,
                             titleBox,
                             scoreText,
-                            available
-                        });
+                            available,
+                        })
                     }
-                } else if (((linkText.lastIndexOf('.htm') > -1) || (linkText.lastIndexOf('.html') > -1) || (linkText.lastIndexOf('.shtml') > -1) || (linkText.lastIndexOf('.htm?') > -1) || (linkText.lastIndexOf('.html?') > -1) || (linkText.lastIndexOf('.shtml?') > -1)) && !(anchor.indexOf('complex') > 0) && (linkText !== '')) {
+                } else if (
+                    (linkText.lastIndexOf('.htm') > -1 ||
+                        linkText.lastIndexOf('.html') > -1 ||
+                        linkText.lastIndexOf('.shtml') > -1 ||
+                        linkText.lastIndexOf('.htm?') > -1 ||
+                        linkText.lastIndexOf('.html?') > -1 ||
+                        linkText.lastIndexOf('.shtml?') > -1) &&
+                    !(anchor.indexOf('complex') > 0) &&
+                    linkText !== ''
+                ) {
                     arrayHtml.push({
                         linkText,
                         linkTitle,
                         linkDescription,
                         titleBox,
                         scoreText,
-                        available
-                    });
-                } else if (((linkText.lastIndexOf('.jpg') > -1) || (linkText.lastIndexOf('.png') > -1)) && (linkText.indexOf('tile') === -1) && !(anchor.indexOf('simple') > 0) && (linkText !== '')) {
-                    const lastJpg = linkText.substr(linkText.length - 4);
-                    const lastPng = linkText.substr(linkText.length - 4);
-                    if ((lastJpg === '.jpg') || (lastPng === '.png') && (linkText.indexOf('tile') === -1)) {
+                        available,
+                    })
+                } else if (
+                    (linkText.lastIndexOf('.jpg') > -1 ||
+                        linkText.lastIndexOf('.png') > -1) &&
+                    linkText.indexOf('tile') === -1 &&
+                    !(anchor.indexOf('simple') > 0) &&
+                    linkText !== ''
+                ) {
+                    const lastJpg = linkText.substr(linkText.length - 4)
+                    const lastPng = linkText.substr(linkText.length - 4)
+                    if (
+                        lastJpg === '.jpg' ||
+                        (lastPng === '.png' && linkText.indexOf('tile') === -1)
+                    ) {
                         arrayImg.push({
                             linkText,
                             linkTitle,
                             linkDescription,
                             titleBox,
                             scoreText,
-                            available
-                        });
+                            available,
+                        })
                     }
-                } else if (linkText.lastIndexOf('.xml') > -1 && !(anchor.indexOf('simple') > 0) && (linkText !== '')) {
-                    const lastXml = linkText.substr(linkText.length - 4);
+                } else if (
+                    linkText.lastIndexOf('.xml') > -1 &&
+                    !(anchor.indexOf('simple') > 0) &&
+                    linkText !== ''
+                ) {
+                    const lastXml = linkText.substr(linkText.length - 4)
                     if (lastXml === '.xml') {
                         arrayXml.push({
                             linkText,
@@ -681,34 +1062,50 @@ export default class DabResultMetadataComponent extends Vue {
                             linkDescription,
                             titleBox,
                             scoreText,
-                            available
-                        });
+                            available,
+                        })
                     }
-                } else if ((protocol.indexOf('WebMapService') > -1) && (linkText !== '')) {
-                    const wmsName = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
+                } else if (
+                    protocol.indexOf('WebMapService') > -1 &&
+                    linkText !== ''
+                ) {
+                    const wmsName = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                    )
 
                     // Regex to pick WMS version
-                    const wmsProtocol = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString');
-                    let wmsVersion = '1.0';
-                    const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(wmsProtocol);
+                    const wmsProtocol = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString'
+                    )
+                    let wmsVersion = '1.0'
+                    const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(wmsProtocol)
                     if (match) {
-                        wmsVersion = match[0];
+                        wmsVersion = match[0]
                     }
 
-                    let wmsAnchor = '';
+                    let wmsAnchor = ''
                     if (anchor !== undefined) {
                         if (anchor.indexOf('simple') > -1) {
-                            wmsAnchor = 'simple';
+                            wmsAnchor = 'simple'
                         } else if (anchor.indexOf('complex') > -1) {
-                            wmsAnchor = 'complex';
+                            wmsAnchor = 'complex'
                         }
                     }
 
                     if (anchor !== undefined) {
-                        if ((anchor.indexOf('anchor') > -1) && ((anchor.indexOf('simple') > -1) || (anchor.indexOf('complex') > -1))) {
+                        if (
+                            anchor.indexOf('anchor') > -1 &&
+                            (anchor.indexOf('simple') > -1 ||
+                                anchor.indexOf('complex') > -1)
+                        ) {
                             arrayWMSandTMS.push({
                                 linkText,
-                                linkTextParsed: linkText.replace('${z}', '0').replace('${x}', '0').replace('${y}', '0'),
+                                linkTextParsed: linkText
+                                    .replace('${z}', '0')
+                                    .replace('${x}', '0')
+                                    .replace('${y}', '0'),
                                 wmsImg: this.resultImage,
                                 url: linkText,
                                 name: wmsName,
@@ -716,8 +1113,8 @@ export default class DabResultMetadataComponent extends Vue {
                                 anchor: wmsAnchor,
                                 allName: wmsAllLayerName,
                                 scoreText,
-                                available
-                            });
+                                available,
+                            })
                         }
                     }
                 } else if (protocol.indexOf('WebCoverageService') > -1) {
@@ -727,30 +1124,47 @@ export default class DabResultMetadataComponent extends Vue {
                         linkDescription,
                         titleBox,
                         scoreText,
-                        available
-                    });
-                } else if ((protocol.indexOf('TiledMapService') > -1) && !(anchor.indexOf('complex') > 0) && (linkText !== '')) {
+                        available,
+                    })
+                } else if (
+                    protocol.indexOf('TiledMapService') > -1 &&
+                    !(anchor.indexOf('complex') > 0) &&
+                    linkText !== ''
+                ) {
                     arrayWMSandTMS.push({
                         linkText,
-                        linkTextParsed: linkText.replace('${z}', '0').replace('${x}', '0').replace('${y}', '0'),
+                        linkTextParsed: linkText
+                            .replace('${z}', '0')
+                            .replace('${x}', '0')
+                            .replace('${y}', '0'),
                         linkTitle,
                         wmsImg: this.resultImage,
-                        LAYERS: UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'),
+                        LAYERS: UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                        ),
                         scoreText,
-                        available
-                    });
-                } else if (!(anchor.indexOf('complex') > 0) && !(linkText.indexOf('WMS') > -1) && !(linkText.indexOf('wms') > -1) &&
-                    !(linkText.indexOf('WCS') > -1) && !(linkText.indexOf('wcs') > -1) &&
-                    !(linkText.indexOf('TMS') > -1) && !(linkText.indexOf('tms') > -1) &&
-                    !(protocol.indexOf('WWW:LINK-1.0-http--link') > -1) && (linkText !== '')) {
+                        available,
+                    })
+                } else if (
+                    !(anchor.indexOf('complex') > 0) &&
+                    !(linkText.indexOf('WMS') > -1) &&
+                    !(linkText.indexOf('wms') > -1) &&
+                    !(linkText.indexOf('WCS') > -1) &&
+                    !(linkText.indexOf('wcs') > -1) &&
+                    !(linkText.indexOf('TMS') > -1) &&
+                    !(linkText.indexOf('tms') > -1) &&
+                    !(protocol.indexOf('WWW:LINK-1.0-http--link') > -1) &&
+                    linkText !== ''
+                ) {
                     arrayOther.push({
                         linkText,
                         linkTitle,
                         linkDescription,
                         titleBox,
                         scoreText,
-                        available
-                    });
+                        available,
+                    })
                 }
             }
         }
@@ -762,131 +1176,145 @@ export default class DabResultMetadataComponent extends Vue {
             arrayXml: { items: arrayXml, title: 'XML' },
             arrayOther: { items: arrayOther, title: 'Other' },
             arrayWCS: { items: arrayWCS, title: 'WCS' },
-            arrayWMSandTMS: { items: arrayWMSandTMS, title: 'WMS/TMS' }
-        };
+            arrayWMSandTMS: { items: arrayWMSandTMS, title: 'WMS/TMS' },
+        }
     }
 
     get linksEmpty() {
         for (const prop in this.links) {
             if (this.links[prop].items.length) {
-                return false;
+                return false
             }
         }
 
-        return true;
+        return true
     }
 
     private formatDate(date: string) {
-        const dateObj = new Date(date);
-        let displayDate = `${dateObj.toLocaleString(this.langLocale.replace(/_/g, '-'), { month: 'long' })} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+        const dateObj = new Date(date)
+        let displayDate = `${dateObj.toLocaleString(
+            this.langLocale.replace(/_/g, '-'),
+            { month: 'long' }
+        )} ${dateObj.getDate()}, ${dateObj.getFullYear()}`
         if (this.langLocale === 'pl_PL') {
-            displayDate = `${dateObj.getDate()} ${dateObj.toLocaleString(this.langLocale.replace(/_/g, '-'), { month: 'long' })} ${dateObj.getFullYear()}`;
+            displayDate = `${dateObj.getDate()} ${dateObj.toLocaleString(
+                this.langLocale.replace(/_/g, '-'),
+                { month: 'long' }
+            )} ${dateObj.getFullYear()}`
         }
-        return displayDate;
+        return displayDate
     }
 
     private extractYoutubeVideoId(url) {
-        const href = new URL(url);
-        return href.searchParams.get('v');
+        const href = new URL(url)
+        return href.searchParams.get('v')
     }
 
     public keywordSearch(keyword) {
-        this.$store.dispatch(SearchActions.setKeyword, keyword);
-        PopupCloseService.closePopup('metadata');
+        this.$store.dispatch(SearchActions.setKeyword, keyword)
+        PopupCloseService.closePopup('metadata')
     }
 
     private statusCheckerMapping(score) {
-        let scoreMsg = '';
-        let scoreClass = '';
+        let scoreMsg = ''
+        let scoreClass = ''
         if (score >= 0 && score < 20) {
-            scoreMsg = 'Very unreliable (score ' + score + '%)';
-            scoreClass = 'av-lowest';
+            scoreMsg = 'Very unreliable (score ' + score + '%)'
+            scoreClass = 'av-lowest'
         } else if (score >= 20 && score < 40) {
-            scoreMsg = 'Frequently unavailable (score ' + score + '%)';
-            scoreClass = 'av-low';
+            scoreMsg = 'Frequently unavailable (score ' + score + '%)'
+            scoreClass = 'av-low'
         } else if (score >= 40 && score < 60) {
-            scoreMsg = 'Sometimes unavailable (score ' + score + '%)';
-            scoreClass = 'av-med';
+            scoreMsg = 'Sometimes unavailable (score ' + score + '%)'
+            scoreClass = 'av-med'
         } else if (score >= 60 && score < 80) {
-            scoreMsg = 'Mostly available (score ' + score + '%)';
-            scoreClass = 'av-high';
+            scoreMsg = 'Mostly available (score ' + score + '%)'
+            scoreClass = 'av-high'
         } else if (score >= 80 && score <= 100) {
-            scoreMsg = 'Very reliable (score ' + score + '%)';
-            scoreClass = 'av-highest';
+            scoreMsg = 'Very reliable (score ' + score + '%)'
+            scoreClass = 'av-highest'
         } else {
-            scoreMsg = 'No resource availability information';
-            scoreClass = 'av-no-info';
+            scoreMsg = 'No resource availability information'
+            scoreClass = 'av-no-info'
         }
         return {
             scoreMsg,
-            scoreClass
-        };
+            scoreClass,
+        }
     }
 
     private getStringData(propsPath: string) {
-        const data = UtilsService.getPropByString(this.data, propsPath);
+        const data = UtilsService.getPropByString(this.data, propsPath)
         if (data) {
-            return data;
+            return data
         }
-        return '-';
+        return '-'
     }
 
-    private getResourceComments() {
-        if (!this.data.userContributions) {
-            return;
-        }
-        if (!this.data.userContributions.comments) {
-            const resultId = this.data.id || UtilsService.getPropByString(this.data, 'gmd:fileIdentifier.gco:CharacterString');
-            GeossSearchApiService.getComments(resultId, DataOrigin[this.dataSource])
-                .then(comments => {
-                    this.$set(this.data.userContributions, 'comments', comments);
-                    this.showComments = true;
-                });
-        } else {
-            this.showComments = true;
-        }
-    }
+    // private getResourceComments() {
+    //     if (!this.data.userContributions) {
+    //         return
+    //     }
+    //     if (!this.data.userContributions.comments) {
+    //         const resultId =
+    //             this.data.id ||
+    //             UtilsService.getPropByString(
+    //                 this.data,
+    //                 'gmd:fileIdentifier.gco:CharacterString'
+    //             )
+    //         GeossSearchApiService.getComments(
+    //             resultId,
+    //             DataOrigin[this.dataSource]
+    //         ).then((comments) => {
+    //             this.$set(this.data.userContributions, 'comments', comments)
+    //             this.showComments = true
+    //         })
+    //     } else {
+    //         this.showComments = true
+    //     }
+    // }
 
     private created() {
         if (this.platform === 'ZENODO') {
-            if (this.data.metadata.resource_type && this.data.metadata.resource_type.title) {
+            if (
+                this.data.metadata.resource_type &&
+                this.data.metadata.resource_type.title
+            ) {
                 this.zenodoBadges[0] = {
                     label: this.data.metadata.resource_type.title,
                     color: 'default',
-                };
+                }
             }
             if (this.data.metadata.access_right) {
                 this.zenodoBadges[1] = {
                     label: this.data.metadata.access_right + ' access',
                     color: this.data.metadata.access_right_category,
-                };
+                }
             }
         }
     }
 
     private async mounted() {
-        await this.$nextTick();
+        await this.$nextTick()
         this.map = new AppVueObj.ol.Map({
             target: 'infoMap',
-            layers: [
-                LayerTilesService.WorldStreetBasemap.getLayerTile()[0]
-            ],
+            layers: [LayerTilesService.WorldStreetBasemap.getLayerTile()[0]],
             view: new AppVueObj.ol.View({
                 center: AppVueObj.ol.proj.fromLonLat([10, 20]),
                 zoom: 1,
                 minZoom: 1,
-                maxZoom: 10
+                maxZoom: 10,
             }),
             controls: [],
-            interactions: []
-        });
-        this.getResourceComments();
+            interactions: [],
+        })
+        // this.getResourceComments()
 
-        const layer = ResultService.getFeature(this.data, 0);
+        const layer = ResultService.getFeature(this.data, 0)
         if (layer) {
-            this.map.addLayer(layer);
-            const extent = layer.getSource().getExtent();
-            this.map.getView().fit(extent);
+            this.map.addLayer(layer)
+            const extent = layer.getSource().getExtent()
+            this.map.getView().fit(extent)
         }
     }
 }
@@ -918,17 +1346,16 @@ export default class DabResultMetadataComponent extends Vue {
         justify-content: space-between;
 
         .badge {
-
             background-color: #777;
             margin-left: 5px;
             display: inline-block;
             text-transform: capitalize;
-            padding: .3em .6em;
+            padding: 0.3em 0.6em;
             color: #fff;
-            border-radius: .25em;
+            border-radius: 0.25em;
 
             &.primary {
-                background-color: #428bca
+                background-color: #428bca;
             }
 
             &.success {
@@ -936,15 +1363,15 @@ export default class DabResultMetadataComponent extends Vue {
             }
 
             &.info {
-                background-color: #6aa3d5
+                background-color: #6aa3d5;
             }
 
             &.warning {
-                background-color: #f0ad4e
+                background-color: #f0ad4e;
             }
 
             &.danger {
-                background-color: #d9534f
+                background-color: #d9534f;
             }
         }
     }
@@ -984,10 +1411,10 @@ export default class DabResultMetadataComponent extends Vue {
         margin-bottom: 25px;
         word-break: break-word;
 
-        @media(max-width: $breakpoint-sm) {
+        @media (max-width: $breakpoint-sm) {
             flex-wrap: wrap;
 
-            &>div {
+            & > div {
                 width: 100%;
                 flex: unset !important;
 
@@ -1008,16 +1435,16 @@ export default class DabResultMetadataComponent extends Vue {
             left: calc(50% - 1px);
             top: 0;
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 display: none;
             }
         }
 
-        &>div {
+        & > div {
             flex: 1;
             padding: 0 25px;
 
-            &>div {
+            & > div {
                 margin-bottom: 5px;
 
                 &:first-child {
@@ -1101,18 +1528,18 @@ export default class DabResultMetadataComponent extends Vue {
             margin-bottom: 15px;
         }
 
-        &>div:nth-child(n+2) {
+        & > div:nth-child(n + 2) {
             flex: 1;
             display: flex;
             flex-direction: column;
             position: relative;
 
-            &>b {
+            & > b {
                 color: $grey-medium;
             }
         }
 
-        &>div:nth-child(2)::before {
+        & > div:nth-child(2)::before {
             content: '';
             width: 1px;
             height: 100%;
@@ -1120,10 +1547,9 @@ export default class DabResultMetadataComponent extends Vue {
             position: absolute;
             left: calc(100% - 1px);
             top: 0;
-
         }
 
-        &>div:nth-child(3) {
+        & > div:nth-child(3) {
             padding-left: 20px;
         }
     }

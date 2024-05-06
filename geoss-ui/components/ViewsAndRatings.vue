@@ -7,10 +7,10 @@
             "
         >
             <i class="icomoon-editor--eye"></i>
-            <span>{{ viewsNew || 0 }}</span>
+            <span>{{ views || 0 }}</span>
         </div>
         <div
-            v-if="result.rating"
+            v-if="avScore !== null"
             class="views-ratings__rating"
             :class="{ 'no-hover': isWidget }"
         >
@@ -20,7 +20,7 @@
                     resultIdDetails === result.id ? 'result-ratings' : ''
                 "
             ></i>
-            <span>{{ Number(result.rating.averageScore).toFixed(1) }}</span>
+            <span>{{ Number(avScore).toFixed(1) }}</span>
             <div v-if="!isWidget" class="views-ratings__ratings-stars">
                 <div
                     v-for="num in [5, 4, 3, 2, 1]"
@@ -30,11 +30,11 @@
                 >
                     <i
                         class="icomoon-star-empty"
-                        v-show="Math.floor(result.rating.averageScore) < num"
+                        v-show="Math.floor(avScore) < num"
                     ></i>
                     <i
                         class="icomoon-star yellow"
-                        v-show="Math.floor(result.rating.averageScore) >= num"
+                        v-show="Math.floor(avScore) >= num"
                         @click="setScore(num)"
                     ></i>
                 </div>
@@ -68,47 +68,63 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { DataSources, DataOrigin } from '@/interfaces/DataSources'
 import { PopupActions } from '@/store/popup/popup-actions'
-import { SearchActions } from '@/store/search/search-actions'
 import { UserGetters } from '@/store/user/user-getters'
 import { SearchGetters } from '@/store/search/search-getters'
 import { GeneralGetters } from '@/store/general/general-getters'
 import UtilsService from '@/services/utils.service'
-import GeossSearchApiService from '@/services/geoss-search.api.service'
 import EntryExtension from '@/components/Search/Results/EntryExtension.vue'
 import DabResultRating from '@/components/Search/Results/DabResultRating.vue'
-import to from '@/utils/to'
 import LogService from '@/services/log.service'
+import RatingService from '~/services/ratings.service'
+import { PopupGetters } from '~/store/popup/popup-getters'
 
 @Component
 export default class ViewsAndRatingsComponent extends Vue {
     @Prop({ default: null, type: Object }) public result!: any
     @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
-    @Prop(String) public currentOpenId!: string;
+    @Prop(String) public currentOpenId!: string
 
     @Watch('currentOpenId')
     async onCurrentChange() {
-        console.log(this.currentOpenId)
-        this.viewsNew = await this.getCounter()
+        if (this.currentOpenId === this.result.id) {
+            this.views = await this.getCounter()
+            this.avScore = await this.getRating()
+        }
+    }
+
+    @Watch('queue')
+    async onQueueChange() {
+        if (
+            !this.queue.some((content: any) => content.contentId === 'metadata')
+        ) {
+            this.views = await this.getCounter()
+            this.avScore = await this.getRating()
+        }
     }
 
     public score = 0
     public DataSources = DataSources
-    public viewsNew = 0
+    public views = 0
+    public avScore = 0
+
+    get queue() {
+        return this.$store.getters[PopupGetters.queue]
+    }
 
     get resultIdDetails() {
         return this.$store.getters[SearchGetters.resultIdDetails]
     }
 
-    get views() {
-        let data = null
-        if (this.isZenodoType) {
-            data = UtilsService.getPropByString(this.result, 'stats.views')
-        } else {
-            data = UtilsService.getPropByString(this.result, 'views')
-        }
-        data = data ? data : '0'
-        return data
-    }
+    // get views() {
+    //     let data = null
+    //     if (this.isZenodoType) {
+    //         data = UtilsService.getPropByString(this.result, 'stats.views')
+    //     } else {
+    //         data = UtilsService.getPropByString(this.result, 'views')
+    //     }
+    //     data = data ? data : '0'
+    //     return data
+    // }
 
     get rootDataOrigin() {
         // original entry's dataSource exclusively from OpenSearch
@@ -152,26 +168,34 @@ export default class ViewsAndRatingsComponent extends Vue {
     }
 
     public async setScore(score: number) {
-        this.score = score
-        if (this.isSignedIn) {
-            this.openRatingModal()
+        //@ts-ignore
+        const loggedIn = this.$nuxt.$auth.loggedIn
+        if (!loggedIn) {
+            this.score = score
+            await this.rateWithoutComment()
         } else {
-            const [, data] = await to(
-                GeossSearchApiService.rateResource(
-                    this.result.title || this.result.metadata.title,
-                    this.result.id,
-                    this.score,
-                    '',
-                    DataOrigin[this.dataSource]
-                )
-            )
-            if (data) {
-                this.$store.dispatch(SearchActions.updateDabResultRating, {
-                    id: this.result.id,
-                    rating: data,
-                })
-            }
+            this.score = score
+            this.openRatingModal()
         }
+        // if (loggedIn) {
+        //     this.openRatingModal()
+        // } else {
+        //     const [, data] = await to(
+        //         GeossSearchApiService.rateResource(
+        //             this.result.title || this.result.metadata.title,
+        //             this.result.id,
+        //             this.score,
+        //             '',
+        //             DataOrigin[this.dataSource]
+        //         )
+        //     )
+        //     if (data) {
+        //         this.$store.dispatch(SearchActions.updateDabResultRating, {
+        //             id: this.result.id,
+        //             rating: data,
+        //         })
+        //     }
+        // }
         LogService.logRecommendationData(
             'Search result',
             'Rating',
@@ -180,19 +204,24 @@ export default class ViewsAndRatingsComponent extends Vue {
         )
     }
 
+    public setAvScore(v: number) {
+        this.avScore = v
+    }
+
     public async openRatingModal() {
-        const dataOrigin = DataOrigin[this.dataSource]
-        const [, comments] = await to(
-            GeossSearchApiService.getComments(this.result.id, dataOrigin)
-        )
+        const res = await this.getComments()
+        const comments: { score: any; comment: any }[] = []
+
+        res.forEach((element: any) => {
+            comments.push({ score: element.score, comment: element.comment })
+        })
 
         const props = {
             id: this.result.id,
             title: this.result.title,
             comments,
             userScore: this.score,
-            userComment: this.result.rating.comment,
-            dataSource: this.dataSource,
+            setAvScore: this.setAvScore,
         }
 
         this.$store.dispatch(PopupActions.openPopup, {
@@ -225,6 +254,40 @@ export default class ViewsAndRatingsComponent extends Vue {
             return res.counter
         } else {
             return -1
+        }
+    }
+
+    public async getRating() {
+        const res = await RatingService.fetchRating(this.result.id)
+        if (res) {
+            return res.stats[0].averageScore
+        } else {
+            return 0
+        }
+    }
+
+    public async getComments() {
+        const res = await RatingService.fetchComments(this.result.id)
+        if (res) {
+            return res
+        } else {
+            return 0
+        }
+    }
+
+    public async rateWithoutComment() {
+        try {
+            const res = await RatingService.rateWithoutComment(
+                this.result.id,
+                this.result.title,
+                this.score
+            )
+
+            if (res) {
+                this.avScore = res.averageScore
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 }

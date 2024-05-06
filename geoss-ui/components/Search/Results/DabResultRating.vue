@@ -8,21 +8,45 @@
             <div class="dab-result-rating__rating">
                 <label>{{ $tc('popupContent.rating') }}:</label>
                 <div class="dab-result-rating__stars">
-                    <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="dab-result-rating__star"
-                        :class="{ active: score === num }">
+                    <div
+                        v-for="num in [5, 4, 3, 2, 1]"
+                        :key="num"
+                        class="dab-result-rating__star"
+                        :class="{ active: score === num }"
+                    >
                         <i class="icomoon-star-empty"></i>
                         <i class="icomoon-star" @click="setScore(num)"></i>
                     </div>
                 </div>
             </div>
             <div>
-                <button class="blue-btn-default" :disabled="!score" @click="rate()">{{ $tc('popupContent.send') }}</button>
+                <button
+                    class="blue-btn-default"
+                    :disabled="!score"
+                    @click="rate()"
+                >
+                    {{ $tc('popupContent.send') }}
+                </button>
             </div>
         </div>
-        <div class="dab-result-rating__user-comment" v-for="(comment, index) in comments" :key="index">
+        <div
+            v-if="comments && comments.length > 0"
+            class="comments-section-title"
+        >
+            {{ $tc('popupContent.userContributedTitleComment') }}
+        </div>
+        <div
+            class="dab-result-rating__user-comment"
+            v-for="(comment, index) in comments"
+            :key="index"
+        >
             <div class="dab-result-rating__stars">
-                <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="dab-result-rating__star"
-                    :class="{ active: comment.score === num }">
+                <div
+                    v-for="num in [5, 4, 3, 2, 1]"
+                    :key="num"
+                    class="dab-result-rating__star"
+                    :class="{ active: comment.score === num }"
+                >
                     <i class="icomoon-star-empty"></i>
                     <i class="icomoon-star" @click="setScore(num)"></i>
                 </div>
@@ -33,75 +57,150 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import { GeneralGetters } from '@/store/general/general-getters';
-import { SearchActions } from '@/store/search/search-actions';
-import MouseLeaveService from '@/services/mouse-leave.service';
-import PopupCloseService from '@/services/popup-close.service';
-import to from '@/utils/to';
-import LogService from '../../../services/log.service';
-import { Liferay } from '@/data/global';
-import { DataOrigin } from '@/interfaces/DataSources';
-import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { GeneralGetters } from '@/store/general/general-getters'
+import PopupCloseService from '@/services/popup-close.service'
+import LogService from '../../../services/log.service'
+import { Liferay } from '@/data/global'
+import RatingService from '~/services/ratings.service'
 
 @Component
 export default class DabResultRatingComponent extends Vue {
-    public comment: string = '';
-    public score: number = 0;
+    public comment: string = ''
+    public score: number = 0
 
-    @Prop({ default: null, type: String }) private id!: string;
-    @Prop({ default: null, type: String }) private title!: string;
-    @Prop({ default: () => [], type: Array }) public comments!: Array<{ score: number, comment: string }>;
-    @Prop({ default: null, type: Number }) private userScore!: number;
-    @Prop({ default: null, type: String }) private userComment!: string;
-    @Prop({ default: 'dab', type: String }) private dataSource!: string;
-    @Prop({ default: null, type: String }) private referer!: string;
+    @Prop({ default: null, type: String }) private id!: string
+    @Prop({ default: null, type: String }) private title!: string
+    @Prop({ default: () => [], type: Array }) public comments!: Array<{
+        score: number
+        comment: string
+    }>
+    @Prop({ default: null, type: Number }) private userScore!: number
+    @Prop({ default: () => null, type: Function }) public setAvScore!: any
 
     get isWidget() {
-        return this.$store.getters[GeneralGetters.isWidget];
+        return this.$store.getters[GeneralGetters.isWidget]
     }
 
     get isSignedIn() {
-        return (!this.isWidget ? Liferay.ThemeDisplay.isSignedIn : false);
+        return !this.isWidget ? Liferay.ThemeDisplay.isSignedIn : false
     }
 
     public setScore(score: number) {
-        this.score = score;
-        LogService.logElementClick(null, null, this.id, null, 'Edit rating', null, null, null);
+        this.score = score
+        LogService.logElementClick(
+            null,
+            null,
+            this.id,
+            null,
+            'Edit rating',
+            null,
+            null,
+            null
+        )
     }
 
     public async rate() {
-        MouseLeaveService.initSurvey();
-        const [, data] = await to(GeossSearchApiService.rateResource(
-            this.title,
-            this.id,
-            this.score,
-            this.comment,
-            (DataOrigin[this.dataSource] || this.dataSource)
-        ));
-        if (data) {
-            if (!this.referer) {
-                this.$store.dispatch(SearchActions.updateDabResultRating, { id: this.id, rating: data });
-            } else if (this.referer === 'bookmarks') {
-                this.$store.dispatch(BookmarksActions.updateResultRating, { id: this.id, rating: data });
-            }
+        if (this.comment && this.comment !== '') {
+            await this.rateWithComment()
+        } else {
+            await this.rateWithoutComment()
         }
-        LogService.logElementClick(null, null, this.id, null, 'Send rating', null, null, null);
-        PopupCloseService.closePopup('rating');
+        // MouseLeaveService.initSurvey()
+        // const [, data] = await to(
+        //     GeossSearchApiService.rateResource(
+        //         this.title,
+        //         this.id,
+        //         this.score,
+        //         this.comment,
+        //         DataOrigin[this.dataSource] || this.dataSource
+        //     )
+        // )
+        // if (data) {
+        //     if (!this.referer) {
+        //         this.$store.dispatch(SearchActions.updateDabResultRating, {
+        //             id: this.id,
+        //             rating: data,
+        //         })
+        //     } else if (this.referer === 'bookmarks') {
+        //         this.$store.dispatch(BookmarksActions.updateResultRating, {
+        //             id: this.id,
+        //             rating: data,
+        //         })
+        //     }
+        // }
+        LogService.logElementClick(
+            null,
+            null,
+            this.id,
+            null,
+            'Send rating',
+            null,
+            null,
+            null
+        )
+        PopupCloseService.closePopup('rating')
     }
 
-    private mounted() {
-        this.comment = (this.userComment ? this.userComment : '');
-        this.score = this.userScore;
-        LogService.logElementClick(null, null, this.id, null, 'Show comments', null, null, null);
+    public async rateWithComment() {
+        try {
+            //@ts-ignore
+            const token = this.$nuxt.$auth.getToken('keycloak')
+            const res = await RatingService.rateWithComment(
+                this.id,
+                this.title,
+                token,
+                this.score,
+                this.comment
+            )
+            if (res) {
+                this.setAvScore(res.averageScore)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    public async rateWithoutComment() {
+        try {
+            const res = await RatingService.rateWithoutComment(
+                this.id,
+                this.title,
+                this.score
+            )
+            if (res) {
+                this.setAvScore(res.averageScore)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    mounted() {
+        this.score = this.userScore
+        LogService.logElementClick(
+            null,
+            null,
+            this.id,
+            null,
+            'Show comments',
+            null,
+            null,
+            null
+        )
     }
 }
 </script>
 
 <style lang="scss">
 .dab-result-rating {
-    padding: 30px 25px;
+    padding: 30px 25px 50px 25px;
+
+    max-height: 50vh;
+
+    .dab-result-rating__comment {
+        word-break: break-word;
+    }
 
     &__comment,
     &__rating {
@@ -136,7 +235,7 @@ export default class DabResultRatingComponent extends Vue {
                     display: block;
                 }
 
-                &~div {
+                & ~ div {
                     .icomoon-star {
                         display: block;
                     }
@@ -157,7 +256,7 @@ export default class DabResultRatingComponent extends Vue {
                 display: block;
             }
 
-            &~div {
+            & ~ div {
                 .icomoon-star {
                     display: block;
                 }
@@ -179,13 +278,25 @@ export default class DabResultRatingComponent extends Vue {
     }
 
     &__user-comment {
-        margin-top: 40px;
+        &:hover {
+            pointer-events: none;
+        }
 
+        &:not(:hover) {
+            pointer-events: none;
+        }
+        margin-top: 20px;
+        margin-bottom: 20px;
         .dab-result-rating__stars {
             i {
                 font-size: 17px;
             }
         }
     }
+}
+
+.comments-section-title {
+    margin-top: 20px;
+    font-size: 21px;
 }
 </style>

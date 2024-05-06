@@ -229,7 +229,6 @@ export default {
     getDataProviders: async (dataProvidersUrl: string) => {
         if (process.browser) {
             SpinnerService.showSpinner()
-            console.log(dataProvidersUrl)
             const dataProvidersResponse: any = await apiClient.$get(
                 dataProvidersUrl,
                 {

@@ -1871,6 +1871,8 @@ const GeossSearchApiService = {
         } else {
             targetIdsStr = targetIds.join(',')
         }
+        //prevent 404 invoke requests
+        return []
         return GeossSearchApiService.getRatings(targetIdsStr, dataOrigin)
             .then((data: { stats: any }) => {
                 return data.stats

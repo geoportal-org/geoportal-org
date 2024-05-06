@@ -13,7 +13,7 @@
                     <b>{{ extension.userName }}</b>
                     <span>{{ formatDate(extension.modifiedDate || extension.createdDate) }}</span>
                 </div>
-                <div v-if="extension.userId.toString() === userId && showDeleteIcon && model !== 'transferOptions'"
+                <div v-if="userExtensions.userId && extension.userId.toString() === userId && showDeleteIcon && model !== 'transferOptions'"
                     :title="$tc('popupContent.userContributedRemoveEntryExtension')" class="delete-extension"
                     @click="removeExtension(extension)">
                     <i class="icomoon-editor--trash"></i>
@@ -89,7 +89,7 @@ export default class UserContributionsMetadata extends Vue {
             this.data.data,
             'userContributions.comments'
         );
-        return data;
+        return this.data.comments;
     }
 
     get langLocale() {
@@ -246,6 +246,7 @@ export default class UserContributionsMetadata extends Vue {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
+            word-break: break-word;
 
             .metadata {
                 &__link {
