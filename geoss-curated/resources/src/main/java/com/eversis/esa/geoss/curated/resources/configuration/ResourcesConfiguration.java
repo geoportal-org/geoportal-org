@@ -29,7 +29,8 @@ import java.util.stream.Stream;
                 "com.eversis.esa.geoss.curated.resources.controller",
                 "com.eversis.esa.geoss.curated.resources.event",
                 "com.eversis.esa.geoss.curated.resources.service.impl",
-                "com.eversis.esa.geoss.curated.resources.mapper"
+                "com.eversis.esa.geoss.curated.resources.mapper",
+                "com.eversis.esa.geoss.curated.resources.security"
         }
 )
 @PropertySource("classpath:application-resources.properties")
