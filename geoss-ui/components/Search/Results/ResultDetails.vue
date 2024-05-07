@@ -769,7 +769,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public async showDetails() {
         LogService.logElementClick(null, null, this.result.id, null, 'viewed', null, this.contributors, this.title);
         LogService.logRecommendationData('Search result', 'See more');
-        LogService.clickCounter(this.result)
+        // LogService.clickCounter(this.result)
         this.$store.dispatch(SearchActions.showDetailsTrigger, false);
         MouseLeaveService.initSurvey();
         const actionAfterMetadataShow = this.$store.getters[SearchGetters.actionAfterMetadataShow];
