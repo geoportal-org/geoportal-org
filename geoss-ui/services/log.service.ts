@@ -219,16 +219,16 @@ const LogService: any = {
         }
 
         const body = LogService.addCommonProperties({
-            uiObjectId: id,
-            uiObjectClass: className,
-            uiSource: entryDbVal,
+            uiObjectId: id || "",
+            uiObjectClass: className || "",
+            uiSource: entryDbVal || "",
             sessionSiteUrl: LogService.friendlySiteUrl(),
-            uiEntryId: entryIdVal,
-            uiAction: uiActionVal,
-            uiLabel: uiLabelVal,
-            uiOrganisation: uiOrganisationVal,
-            uiResourceName: uiResourceNameVal,
-            operation: pOperation,
+            uiEntryId: entryIdVal || "",
+            uiAction: uiActionVal || "",
+            uiLabel: uiLabelVal || "",
+            uiOrganisation: uiOrganisationVal || "",
+            uiResourceName: uiResourceNameVal || "",
+            operation: pOperation || "",
         })
 
         try {
