@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: 'http://10.254.7.59:8083/rest', // ,'/personaldata/rest', // 
+    apiUrl: '/personaldata/rest', //'http://10.254.7.59:8083/rest', // , 
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',
     surveys: '/surveys'
