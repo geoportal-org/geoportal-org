@@ -34,14 +34,7 @@ import java.util.stream.Stream;
  */
 @Log4j2
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.settings.instance.repository")
-@ComponentScan(
-        basePackages = {
-                "com.eversis.esa.geoss.settings.instance.controller",
-                "com.eversis.esa.geoss.settings.instance.event",
-                "com.eversis.esa.geoss.settings.instance.service.internal",
-                "com.eversis.esa.geoss.settings.instance.support.internal"
-        }
-)
+@ComponentScan(basePackages = "com.eversis.esa.geoss.settings.instance")
 @Configuration(proxyBeanMethods = false)
 public class InstanceSettingsConfiguration {
 

@@ -16,5 +16,6 @@ include 'common'
 include 'system-settings'
 include 'instance-settings'
 include 'dab'
+include 'site'
 include 'application'
 project(':geoss-common').projectDir = file("../geoss-common")

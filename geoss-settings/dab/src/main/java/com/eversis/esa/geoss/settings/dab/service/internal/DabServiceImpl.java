@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.settings.dab.service.internal;
 
+import com.eversis.esa.geoss.settings.common.properties.Constants;
 import com.eversis.esa.geoss.settings.dab.properties.DabProperties;
 import com.eversis.esa.geoss.settings.dab.service.DabService;
 import com.eversis.esa.geoss.settings.instance.domain.Catalog;
@@ -90,7 +91,8 @@ public class DabServiceImpl implements DabService {
     }
 
     private String getDabCatalogUrl(Pageable pageable) {
-        return apiSettingsRepository.findBySetAndKey(ApiSettingsSet.DAB, Dab.DAB_BASE_URL)
+        return apiSettingsRepository.findBySiteIdAndSetAndKey(Constants.DEFAULT_SITE_ID, ApiSettingsSet.DAB,
+                        Dab.DAB_BASE_URL)
                 .map(apiSettings -> {
                     String url = apiSettings.getValue() + dabProperties.getCatalogEndpoint();
                     if (pageable != null) {

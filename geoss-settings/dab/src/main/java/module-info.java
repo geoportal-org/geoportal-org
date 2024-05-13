@@ -11,6 +11,7 @@ module geoss.settings.dab {
     requires geoss.instance.settings;
     requires geoss.system.settings;
     requires io.swagger.v3.oas.annotations;
+    requires io.swagger.v3.oas.models;
     requires java.net.http;
     requires net.javacrumbs.shedlock.spring;
     requires org.apache.logging.log4j;
@@ -21,6 +22,7 @@ module geoss.settings.dab {
     requires spring.data.commons;
     requires spring.data.rest.webmvc;
     requires spring.hateoas;
+    requires spring.security.core;
     requires spring.tx;
     requires spring.web;
     requires spring.webmvc;

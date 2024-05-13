@@ -86,11 +86,18 @@ public class ApiSecurityConfiguration {
                             .requestMatchers(basePath + "/web-settings/**")
                             .hasAnyRole("WEB_WRITER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(HttpMethod.GET,
-                                    basePath + "/regional-settings/**").permitAll();
+                            .requestMatchers(HttpMethod.GET, basePath + "/regional-settings/**")
+                            .permitAll();
                     authorizationManagerRequestMatcherRegistry
                             .requestMatchers(basePath + "/regional-settings/**")
                             .hasAnyRole("SETTINGS_WRITER", "ADMIN");
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.GET, basePath + "/sites/**")
+                            .permitAll();
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/sites/**")
+                            // delegate authorization to method access-control
+                            .authenticated();
                     authorizationManagerRequestMatcherRegistry
                             .anyRequest().authenticated();
                 });

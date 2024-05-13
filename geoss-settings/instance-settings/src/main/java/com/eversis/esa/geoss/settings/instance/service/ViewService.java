@@ -1,6 +1,10 @@
 package com.eversis.esa.geoss.settings.instance.service;
 
+import com.eversis.esa.geoss.settings.instance.model.ViewModel;
 import com.eversis.esa.geoss.settings.instance.model.ViewOptionModel;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -69,4 +73,20 @@ public interface ViewService {
      * @return the view option model
      */
     ViewOptionModel updateViewOption(Long id, Long optionId, ViewOptionModel viewOptionModel);
+
+    /**
+     * Gets site views.
+     *
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the site views
+     */
+    Page<ViewModel> getSiteViews(Long siteId, Pageable pageable);
+
+    /**
+     * Delete site views.
+     *
+     * @param siteId the site id
+     */
+    void deleteSiteViews(Long siteId);
 }

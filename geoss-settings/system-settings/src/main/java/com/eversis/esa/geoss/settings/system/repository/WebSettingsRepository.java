@@ -4,14 +4,13 @@ import com.eversis.esa.geoss.settings.system.domain.WebSettings;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsKey;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,27 +22,42 @@ import java.util.Optional;
 public interface WebSettingsRepository extends JpaRepository<WebSettings, Long> {
 
     /**
-     * Find by set and key optional.
+     * Find by site page.
      *
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    @RestResource(exported = false)
+    Page<WebSettings> findBySiteId(Long siteId, Pageable pageable);
+
+    /**
+     * Find by site and set list.
+     *
+     * @param siteId the site id
+     * @param set the set
+     * @return the list
+     */
+    @RestResource(exported = false)
+    List<WebSettings> findBySiteIdAndSet(Long siteId, WebSettingsSet set);
+
+    /**
+     * Find by site and set and key optional.
+     *
+     * @param siteId the site id
      * @param set the set
      * @param key the key
      * @return the optional
      */
-    @Operation(
-            description = "Get web settings by set and key.",
-            summary = "Get web settings by set and key.")
-    @RestResource(path = "setting")
-    Optional<WebSettings> findBySetAndKey(@Param("set") WebSettingsSet set, @Param("key") WebSettingsKey key);
+    @RestResource(exported = false)
+    Optional<WebSettings> findBySiteIdAndSetAndKey(Long siteId, WebSettingsSet set, WebSettingsKey key);
 
     /**
-     * Find by set list.
+     * Delete all by site id long.
      *
-     * @param set the set
-     * @return the list
+     * @param siteId the site id
+     * @return the long
      */
-    @Operation(
-            description = "Get web settings by set.",
-            summary = "Get web settings by set.")
-    @RestResource(path = "settings")
-    List<WebSettings> findBySet(@Param("set") @NotNull WebSettingsSet set);
+    @RestResource(exported = false)
+    long deleteAllBySiteId(Long siteId);
 }

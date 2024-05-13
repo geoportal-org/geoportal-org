@@ -20,7 +20,7 @@ public enum WebSettingsSet {
     /**
      * The Logo.
      */
-    LOGO(new HashSet<>(EnumSet.allOf(Logo.class))),
+    MATOMO(new HashSet<>(EnumSet.allOf(Matomo.class))),
 
     /**
      * The Source.
@@ -33,17 +33,20 @@ public enum WebSettingsSet {
     MAP(new HashSet<>(EnumSet.allOf(Map.class)));
 
     /**
-     * The enum Logo.
+     * The enum Matomo.
      */
-    public enum Logo implements WebSettingsKey {
+    public enum Matomo implements WebSettingsKey {
+
         /**
-         * Title logo.
+         * Site id matomo.
          */
-        TITLE,
-        /**
-         * Source logo.
-         */
-        SOURCE;
+        SITE_ID("siteId");
+
+        private final String value;
+
+        Matomo(String value) {
+            this.value = value;
+        }
 
         @Override
         public String key() {
@@ -53,7 +56,7 @@ public enum WebSettingsSet {
         @JsonValue
         @Override
         public String toString() {
-            return name().toLowerCase();
+            return value;
         }
     }
 
@@ -80,12 +83,12 @@ public enum WebSettingsSet {
         /**
          * Wikipedia source.
          */
-        WIKIPEDIA(
-                "Wikipedia"),
+        WIKIPEDIA("Wikipedia"),
         /**
          * Zenodo source.
          */
         ZENODO("Zenodo");
+
         private final String value;
 
         Source(String value) {
@@ -160,7 +163,7 @@ public enum WebSettingsSet {
         }
         throw new IllegalArgumentException(
                 "Invalid key `" + key + "` for set `" + this + "`: not one of the values accepted for " + this
-                        + " set: " + this.keys);
+                + " set: " + this.keys);
     }
 
     /**
@@ -201,7 +204,7 @@ public enum WebSettingsSet {
         }
         throw new IllegalArgumentException(
                 "Cannot deserialize value of type `" + WebSettingsSet.class.getCanonicalName() + "` from String `" + key
-                        + "`: not one of the values accepted for " + WebSettingsSet.class.getCanonicalName()
-                        + " class: " + keys());
+                + "`: not one of the values accepted for " + WebSettingsSet.class.getCanonicalName()
+                + " class: " + keys());
     }
 }

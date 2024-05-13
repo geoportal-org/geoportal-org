@@ -26,23 +26,23 @@ import java.util.Set;
 public class WebSettingsController {
 
     /**
-     * Gets web settings sets.
+     * Options web settings sets enum set.
      *
-     * @return the web settings sets
+     * @return the enum set
      */
     @RequestMapping(path = "/sets", method = RequestMethod.OPTIONS)
-    EnumSet<WebSettingsSet> getWebSettingsSets() {
+    EnumSet<WebSettingsSet> optionsWebSettingsSets() {
         return EnumSet.allOf(WebSettingsSet.class);
     }
 
     /**
-     * Gets web settings keys.
+     * Options web settings keys set.
      *
      * @param webSettingsSet the web settings set
-     * @return the web settings keys
+     * @return the set
      */
     @RequestMapping(path = "/sets/{set}/keys", method = RequestMethod.OPTIONS)
-    Set<WebSettingsKey> getWebSettingsKeys(@PathVariable("set") WebSettingsSet webSettingsSet) {
+    Set<WebSettingsKey> optionsWebSettingsKeys(@PathVariable("set") WebSettingsSet webSettingsSet) {
         return webSettingsSet.getKeys();
     }
 }

@@ -57,6 +57,10 @@ public class ApiSettings {
     @Column(name = "value_")
     private String value;
 
+    @NotNull
+    @Column
+    private Long siteId;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonUnwrapped
     @NotAudited

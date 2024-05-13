@@ -16,6 +16,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,6 +46,7 @@ public class DabController {
      * @param pageable the pageable
      * @return the paged model
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/catalogs")
     PagedModel<EntityModel<Catalog>> search(@ParameterObject @PageableDefault Pageable pageable) {
         Page<Catalog> catalogs = dabService.getCatalogs(pageable);

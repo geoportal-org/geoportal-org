@@ -1,12 +1,12 @@
 package com.eversis.esa.geoss.settings.instance.domain;
 
-import com.eversis.esa.geoss.common.domain.AuditableEntity;
+import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +18,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -35,12 +36,10 @@ import java.util.List;
  * The type View.
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Audited
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class View extends AuditableEntity {
+public class View {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,6 +73,10 @@ public class View extends AuditableEntity {
     @Column(name = "default_", nullable = false)
     private boolean defaultOption;
 
+    @NotNull
+    @Column
+    private Long siteId;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
@@ -81,4 +84,10 @@ public class View extends AuditableEntity {
     @NotAudited
     @OneToMany(mappedBy = "view", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ViewOption> subOptions;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    @JsonUnwrapped
+    @NotAudited
+    @Embedded
+    private AuditableEmbeddable auditable = new AuditableEmbeddable();
 }

@@ -2,6 +2,7 @@ module geoss.instance.settings {
     exports com.eversis.esa.geoss.settings.instance.domain;
     exports com.eversis.esa.geoss.settings.instance.model;
     exports com.eversis.esa.geoss.settings.instance.repository;
+    exports com.eversis.esa.geoss.settings.instance.service;
 
     exports com.eversis.esa.geoss.settings.instance.configuration to spring.beans, spring.boot, spring.context;
 

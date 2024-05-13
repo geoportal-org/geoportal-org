@@ -26,23 +26,23 @@ import java.util.Set;
 public class ApiSettingsController {
 
     /**
-     * Gets api settings sets.
+     * Options api settings sets enum set.
      *
-     * @return the api settings sets
+     * @return the enum set
      */
     @RequestMapping(path = "/sets", method = RequestMethod.OPTIONS)
-    EnumSet<ApiSettingsSet> getApiSettingsSets() {
+    EnumSet<ApiSettingsSet> optionsApiSettingsSets() {
         return EnumSet.allOf(ApiSettingsSet.class);
     }
 
     /**
-     * Gets api settings keys.
+     * Options api settings keys set.
      *
      * @param apiSettingsSet the api settings set
-     * @return the web settings keys
+     * @return the set
      */
     @RequestMapping(path = "/sets/{set}/keys", method = RequestMethod.OPTIONS)
-    Set<ApiSettingsKey> getApiSettingsKeys(@PathVariable("set") ApiSettingsSet apiSettingsSet) {
+    Set<ApiSettingsKey> optionsApiSettingsKeys(@PathVariable("set") ApiSettingsSet apiSettingsSet) {
         return apiSettingsSet.getKeys();
     }
 }

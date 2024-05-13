@@ -1,6 +1,7 @@
 module geoss.system.settings {
     exports com.eversis.esa.geoss.settings.system.domain;
     exports com.eversis.esa.geoss.settings.system.repository;
+    exports com.eversis.esa.geoss.settings.system.service;
 
     exports com.eversis.esa.geoss.settings.system.configuration to spring.beans, spring.boot, spring.context;
 

@@ -2,8 +2,10 @@ package com.eversis.esa.geoss.settings.instance.service.internal;
 
 import com.eversis.esa.geoss.settings.instance.domain.View;
 import com.eversis.esa.geoss.settings.instance.domain.ViewOption;
+import com.eversis.esa.geoss.settings.instance.model.ViewModel;
 import com.eversis.esa.geoss.settings.instance.model.ViewOptionModel;
 import com.eversis.esa.geoss.settings.instance.repository.ViewOptionRepository;
+import com.eversis.esa.geoss.settings.instance.repository.ViewRepository;
 import com.eversis.esa.geoss.settings.instance.service.ViewService;
 import com.eversis.esa.geoss.settings.instance.support.ViewOptionModelToViewOptionMapper;
 
@@ -12,6 +14,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.MappingException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ViewServiceImpl implements ViewService {
+
+    private final ViewRepository viewRepository;
 
     private final ViewOptionRepository viewOptionRepository;
 
@@ -144,5 +150,25 @@ public class ViewServiceImpl implements ViewService {
                     return conversionService.convert(viewOption, ViewOptionModel.class);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("View option not found"));
+    }
+
+    @Override
+    public Page<ViewModel> getSiteViews(Long siteId, Pageable pageable) {
+        log.debug("siteId:{},pageable:{}", siteId, pageable);
+        Page<View> views = viewRepository.findAllBySiteId(siteId, pageable);
+        log.debug("views:{}", views);
+        return views.map(view -> {
+            log.trace("view:{}", view);
+            ViewModel viewModel = conversionService.convert(view, ViewModel.class);
+            log.trace("viewModel:{}", viewModel);
+            return viewModel;
+        });
+    }
+
+    @Override
+    public void deleteSiteViews(Long siteId) {
+        log.debug("siteId:{}", siteId);
+        long deleted = viewRepository.deleteAllBySiteId(siteId);
+        log.debug("deleted:{}", deleted);
     }
 }

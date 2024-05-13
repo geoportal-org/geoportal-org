@@ -14,6 +14,7 @@ import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.PagedModel.PageMetadata;
 import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.server.LinkBuilder;
 import org.springframework.hateoas.server.core.EmbeddedWrapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,6 +40,22 @@ public class PageMapper {
 
     @Value("${spring.data.web.pageable.one-indexed-parameters:false}")
     private boolean oneIndexedParameters;
+
+    /**
+     * Link to collection resource link.
+     *
+     * @param linkTemplateBuilder the link template builder
+     * @param relation the relation
+     * @return the link
+     */
+    public Link linkToCollectionResource(LinkBuilder linkTemplateBuilder, String relation) {
+        String templateUri = linkTemplateBuilder.toString();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(templateUri);
+        pageableResolver.enhance(uriBuilder, null, null);
+        UriTemplate uriTemplate = UriTemplate.of(templateUri)
+                .with(pageableResolver.getPaginationTemplateVariables(null, uriBuilder.build()));
+        return Link.of(uriTemplate, relation);
+    }
 
     /**
      * To collection model collection model.
@@ -74,7 +91,9 @@ public class PageMapper {
     public <T> PagedModel<EntityModel<T>> toPagedModel(Page<T> page, Class<T> type,
             Function<T, List<Link>> entityLinks, Supplier<List<Link>> collectionLinks) {
         PagedModel<EntityModel<T>> entityModels;
-        if (page.getContent().isEmpty()) {
+        if (page == null) {
+            return PagedModel.empty(collectionLinks.get());
+        } else if (page.getContent().isEmpty()) {
             entityModels = toEmptyModel(page, type, collectionLinks);
         } else {
             entityModels = toPagedModel(page, entityLinks, collectionLinks);

@@ -38,14 +38,7 @@ import java.util.stream.Stream;
  * The type System settings configuration.
  */
 @EnableJpaRepositories(basePackages = "com.eversis.esa.geoss.settings.system.repository")
-@ComponentScan(
-        basePackages = {
-                "com.eversis.esa.geoss.settings.system.controller",
-                "com.eversis.esa.geoss.settings.system.event",
-                "com.eversis.esa.geoss.settings.system.service",
-                "com.eversis.esa.geoss.settings.system.support"
-        }
-)
+@ComponentScan(basePackages = "com.eversis.esa.geoss.settings.system")
 @Configuration(proxyBeanMethods = false)
 public class SystemSettingsConfiguration {
 
@@ -87,7 +80,8 @@ public class SystemSettingsConfiguration {
             openApi.getPaths().values().stream().map(PathItem::getGet).forEach(operation -> {
                 if (operation != null) {
                     String operationId = operation.getOperationId();
-                    if ("executeSearch-apisettings-get".equals(operationId)) {
+                    if (operationId.startsWith("executeSearch-apisettings") || operationId.startsWith(
+                            "getSiteApiSettings")) {
                         List<Parameter> parameters = operation.getParameters();
                         if (parameters != null) {
                             for (Parameter parameter : parameters) {
@@ -99,7 +93,8 @@ public class SystemSettingsConfiguration {
                             }
                         }
                     }
-                    if ("executeSearch-websettings-get".equals(operationId)) {
+                    if (operationId.startsWith("executeSearch-websettings") || operationId.startsWith(
+                            "getSiteWebSettings")) {
                         List<Parameter> parameters = operation.getParameters();
                         if (parameters != null) {
                             for (Parameter parameter : parameters) {
