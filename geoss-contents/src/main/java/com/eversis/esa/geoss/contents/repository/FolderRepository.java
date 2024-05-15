@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The interface Folder repository.
@@ -42,5 +43,13 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
      * @return the page
      */
     Page<Folder> findByParentFolderId(@Param("parentFolderId") Long parentFolderId, Pageable pageable);
+
+    /**
+     * Delete by site id.
+     *
+     * @param siteId the site id
+     */
+    @Transactional
+    void deleteBySiteId(@Param("siteId") Long siteId);
 
 }

@@ -58,4 +58,12 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Query("delete from Content c where c.id in :ids")
     void deleteByIdsIn(@Param("ids") List<Long> ids);
 
+    /**
+     * Delete by site id.
+     *
+     * @param siteId the site id
+     */
+    @Transactional
+    void deleteBySiteId(@Param("siteId") Long siteId);
+
 }
