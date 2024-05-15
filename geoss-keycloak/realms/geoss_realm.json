@@ -825,6 +825,33 @@
                     "clientRole": true,
                     "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
                     "attributes": {}
+                },
+                {
+                    "id": "3203c444-c9b2-4fc7-bf79-99fdb2729605",
+                    "name": "site_reader",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "a1a8f908-d146-4170-805d-aef8c7bebc97",
+                    "name": "site_writer",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
+                },
+                {
+                    "id": "afa36154-c51e-4cce-b34c-c7b9d3d9e3e6",
+                    "name": "site_remover",
+                    "description": "",
+                    "composite": false,
+                    "clientRole": true,
+                    "containerId": "4f9df2d2-6abd-4066-8b32-2f62b72746ad",
+                    "attributes": {}
                 }
             ],
             "geoss-proxy": [
@@ -1209,7 +1236,10 @@
                     "file_writer",
                     "content_writer",
                     "menu_writer",
-                    "content_reader"
+                    "content_reader",
+                    "site_writer",
+                    "site_remover",
+                    "site_reader"
                 ],
                 "geoss-proxy": [
                     "log_writer",
