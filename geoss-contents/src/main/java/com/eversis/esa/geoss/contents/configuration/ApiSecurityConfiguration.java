@@ -51,7 +51,11 @@ public class ApiSecurityConfiguration {
                             .requestMatchers(HttpMethod.GET, basePath + "/page/**").permitAll()
                             .requestMatchers(HttpMethod.POST, basePath + "/page/**").hasAnyRole("PAGE_WRITER")
                             .requestMatchers(HttpMethod.PUT, basePath + "/page/**").hasAnyRole("PAGE_WRITER")
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/page/**").hasAnyRole("PAGE_REMOVER");
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/page/**").hasAnyRole("PAGE_REMOVER")
+                            .requestMatchers(HttpMethod.GET, basePath + "/site/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, basePath + "/site/**").hasAnyRole("SITE_WRITER")
+                            .requestMatchers(HttpMethod.PUT, basePath + "/site/**").hasAnyRole("SITE_WRITER")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/site/**").hasAnyRole("SITE_REMOVER");
                     authorizationManagerRequestMatcherRegistry
                             .anyRequest().authenticated();
                 });
