@@ -89,4 +89,10 @@ public class Menu extends AuditableEntity {
     @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
     @Column(nullable = false)
     private int levelId;
+
+    @NotNull(message = "{validation.notNull}")
+    @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
+    @Column(nullable = false)
+    private Long siteId;
+
 }

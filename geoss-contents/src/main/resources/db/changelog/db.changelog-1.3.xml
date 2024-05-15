@@ -5,10 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="51" author="Eversis">
+    <changeSet id="65" author="Eversis">
         <comment>Update counters after load data</comment>
         <addAutoIncrement tableName="content" columnName="id" columnDataType="BIGINT" startWith="100" />
         <addAutoIncrement tableName="menu" columnName="id" columnDataType="BIGINT" startWith="100" />
         <addAutoIncrement tableName="page" columnName="id" columnDataType="BIGINT" startWith="100" />
+        <addAutoIncrement tableName="site" columnName="id" columnDataType="BIGINT" startWith="100" />
+        <addAutoIncrement tableName="folder" columnName="id" columnDataType="BIGINT" startWith="100" />
+        <addAutoIncrement tableName="document" columnName="id" columnDataType="BIGINT" startWith="100" />
     </changeSet>
 </databaseChangeLog>

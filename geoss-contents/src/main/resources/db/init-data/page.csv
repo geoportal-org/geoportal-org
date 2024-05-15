@@ -1,7 +1,7 @@
-id|content_id|slug|published|created_by|created_on|modified_by|modified_on
-1|1|general-information|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-2|2|terms-conditions|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-3|3|release-notes|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-4|4|help-desk|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-5|5|documentation|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
-6|6|tutorials|true|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+id|content_id|slug|published|site_id|created_by|created_on|modified_by|modified_on
+1|1|general-information|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+2|2|terms-conditions|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+3|3|release-notes|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+4|4|help-desk|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+5|5|documentation|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"
+6|6|tutorials|true|0|"Administrator"|"2023-04-01 00:00:00"|"Administrator"|"2023-04-01 00:00:00"

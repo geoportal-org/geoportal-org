@@ -81,4 +81,9 @@ public class Page extends AuditableEntity {
     @Column(nullable = false)
     private boolean published;
 
+    @NotNull(message = "{validation.notNull}")
+    @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
+    @Column(nullable = false)
+    private Long siteId;
+
 }

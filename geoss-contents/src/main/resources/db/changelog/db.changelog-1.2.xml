@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="50" author="Eversis">
+    <changeSet id="64" author="Eversis">
         <comment>Hibernate envers</comment>
         <createSequence sequenceName="revinfo_seq" incrementBy="50" />
         <addColumn tableName="revinfo">

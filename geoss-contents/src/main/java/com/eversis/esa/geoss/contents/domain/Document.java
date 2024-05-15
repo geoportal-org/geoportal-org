@@ -65,4 +65,9 @@ public class Document extends AuditableEntity {
     @Column(nullable = false)
     private Long folderId;
 
+    @NotNull(message = "{validation.notNull}")
+    @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
+    @Column(nullable = false)
+    private Long siteId;
+
 }

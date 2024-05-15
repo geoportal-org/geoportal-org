@@ -1,7 +1,10 @@
 package com.eversis.esa.geoss.contents.domain;
 
-import com.eversis.esa.geoss.common.domain.AuditableEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 
+import com.eversis.esa.geoss.common.domain.AuditableEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,8 +20,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 /**
- * The type Folder.
+ * The type Site.
  */
 @Data
 @NoArgsConstructor
@@ -32,7 +33,7 @@ import jakarta.validation.constraints.Size;
 @Audited
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Folder extends AuditableEntity {
+public class Site extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,23 +41,18 @@ public class Folder extends AuditableEntity {
     private Long id;
 
     @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 255, message = "{validation.title}")
+    @Size(min = 1, max = 255, message = "{validation.name}")
     @Column(nullable = false)
-    private String title;
+    private String name;
+
+    @NotNull(message = "{validation.notNull}")
+    @Size(min = 1, max = 255, message = "{validation.url}")
+    @Column(nullable = false)
+    private String url;
 
     @NotNull(message = "{validation.notNull}")
     @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
     @Column(nullable = false)
-    private Long parentFolderId;
-
-    @NotNull(message = "{validation.notNull}")
-    @Size(min = 1, max = 2048, message = "{validation.path}")
-    @Column(nullable = false)
-    private String path;
-
-    @NotNull(message = "{validation.notNull}")
-    @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
-    @Column(nullable = false)
-    private Long siteId;
+    private Long logoDocumentId;
 
 }

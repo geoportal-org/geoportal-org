@@ -24,6 +24,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Locale;
@@ -67,5 +68,10 @@ public class Content extends AuditableEntity {
 
     @Column(nullable = false)
     private boolean published;
+
+    @NotNull(message = "{validation.notNull}")
+    @Min(value = 0, message = "{validation.equalToOrGreaterThanZero}")
+    @Column(nullable = false)
+    private Long siteId;
 
 }

@@ -6,11 +6,17 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet author="Eversis" id="1">
-        <createTable tableName="content">
+        <createTable tableName="site">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="published" type="BIT">
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo_document_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="VARCHAR(255)">
@@ -28,6 +34,45 @@
         </createTable>
     </changeSet>
     <changeSet author="Eversis" id="2">
+        <createTable tableName="site_aud">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="logo_document_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Eversis" id="3">
+        <createTable tableName="content">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="published" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="site_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_on" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Eversis" id="4">
         <createTable tableName="content_aud">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -37,9 +82,10 @@
             </column>
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
             <column defaultValueBoolean="false" name="published" type="BIT"/>
+            <column name="site_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="3">
+    <changeSet author="Eversis" id="5">
         <createTable tableName="content_data">
             <column name="content_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -52,7 +98,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="4">
+    <changeSet author="Eversis" id="6">
         <createTable tableName="content_data_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -69,7 +115,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="5">
+    <changeSet author="Eversis" id="7">
         <createTable tableName="content_title">
             <column name="content_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -82,7 +128,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="6">
+    <changeSet author="Eversis" id="8">
         <createTable tableName="content_title_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -99,7 +145,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="7">
+    <changeSet author="Eversis" id="9">
         <createTable tableName="document">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -119,48 +165,7 @@
             <column name="folder_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_on" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-            <column name="modified_by" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="modified_on" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="Eversis" id="8">
-        <createTable tableName="document_aud">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="rev" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
-            <column name="extension" type="VARCHAR(255)"/>
-            <column name="file_name" type="VARCHAR(255)"/>
-            <column defaultValueComputed="NULL" name="folder_id" type="BIGINT"/>
-            <column name="title" type="VARCHAR(255)"/>
-            <column name="path" type="VARCHAR(2048)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Eversis" id="9">
-        <createTable tableName="folder">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="path" type="VARCHAR(2048)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="parent_folder_id" type="BIGINT">
+            <column name="site_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="VARCHAR(255)">
@@ -178,6 +183,54 @@
         </createTable>
     </changeSet>
     <changeSet author="Eversis" id="10">
+        <createTable tableName="document_aud">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
+            <column name="extension" type="VARCHAR(255)"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column defaultValueComputed="NULL" name="folder_id" type="BIGINT"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="path" type="VARCHAR(2048)"/>
+            <column name="site_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Eversis" id="11">
+        <createTable tableName="folder">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="path" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_folder_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="site_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_on" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Eversis" id="12">
         <createTable tableName="folder_aud">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -189,9 +242,10 @@
             <column defaultValueComputed="NULL" name="parent_folder_id" type="BIGINT"/>
             <column name="path" type="VARCHAR(2048)"/>
             <column name="title" type="VARCHAR(255)"/>
+            <column name="site_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="11">
+    <changeSet author="Eversis" id="13">
         <createTable tableName="menu">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -211,6 +265,9 @@
             <column name="level_id" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="site_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_by" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -225,7 +282,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="12">
+    <changeSet author="Eversis" id="14">
         <createTable tableName="menu_aud">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -239,9 +296,10 @@
             <column defaultValueComputed="NULL" name="parent_menu_id" type="BIGINT"/>
             <column defaultValueComputed="NULL" name="priority" type="INT"/>
             <column name="url" type="VARCHAR(2048)"/>
+            <column name="site_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="13">
+    <changeSet author="Eversis" id="15">
         <createTable tableName="menu_image_title">
             <column name="menu_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -254,7 +312,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="14">
+    <changeSet author="Eversis" id="16">
         <createTable tableName="menu_image_title_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -271,7 +329,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="15">
+    <changeSet author="Eversis" id="17">
         <createTable tableName="menu_title">
             <column name="menu_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -284,7 +342,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="16">
+    <changeSet author="Eversis" id="18">
         <createTable tableName="menu_title_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -301,7 +359,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="17">
+    <changeSet author="Eversis" id="19">
         <createTable tableName="page">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -313,6 +371,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="published" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="site_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="VARCHAR(255)">
@@ -329,7 +390,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="18">
+    <changeSet author="Eversis" id="20">
         <createTable tableName="page_aud">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -341,9 +402,10 @@
             <column defaultValueComputed="NULL" name="content_id" type="BIGINT"/>
             <column defaultValueBoolean="false" name="published" type="BIT"/>
             <column name="slug" type="VARCHAR(255)"/>
+            <column name="site_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="19">
+    <changeSet author="Eversis" id="21">
         <createTable tableName="page_description">
             <column name="page_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -356,7 +418,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="20">
+    <changeSet author="Eversis" id="22">
         <createTable tableName="page_description_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -373,7 +435,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="21">
+    <changeSet author="Eversis" id="23">
         <createTable tableName="page_title">
             <column name="page_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -386,7 +448,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="22">
+    <changeSet author="Eversis" id="24">
         <createTable tableName="page_title_aud">
             <column name="rev" type="INT">
                 <constraints nullable="false"/>
@@ -403,7 +465,7 @@
             <column defaultValueComputed="NULL" name="revtype" type="TINYINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="23">
+    <changeSet author="Eversis" id="25">
         <createTable tableName="revinfo">
             <column autoIncrement="true" name="rev" type="INT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -411,55 +473,61 @@
             <column defaultValueComputed="NULL" name="revtstmp" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Eversis" id="24">
+    <changeSet author="Eversis" id="26">
         <addForeignKeyConstraint baseColumnNames="menu_id" baseTableName="menu_title" constraintName="FK1al9t69xn6hb95wrvafp74tr5" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menu" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="25">
+    <changeSet author="Eversis" id="27">
         <addForeignKeyConstraint baseColumnNames="content_id" baseTableName="content_title" constraintName="FK3lk4hqrssuwn665emgw0emqyr" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="content" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="26">
+    <changeSet author="Eversis" id="28">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_aud" constraintName="FK4r7t931m6wx6g62rqs95ekvdy" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="27">
+    <changeSet author="Eversis" id="29">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_title_aud" constraintName="FK69uyuh29swqlngneqcpbsgvin" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="28">
+    <changeSet author="Eversis" id="30">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_image_title_aud" constraintName="FK8rrb6qubkq757jgqpklfco1f6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="29">
+    <changeSet author="Eversis" id="31">
         <addForeignKeyConstraint baseColumnNames="menu_id" baseTableName="menu_image_title" constraintName="FKb3lj1476d2ux89xhss8ttrbmm" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menu" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="30">
+    <changeSet author="Eversis" id="32">
         <addForeignKeyConstraint baseColumnNames="content_id" baseTableName="content_data" constraintName="FKc1y0cr4csmnvqjs419i1n5wnp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="content" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="31">
+    <changeSet author="Eversis" id="33">
         <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="page_description" constraintName="FKcf1mlr5nxcxirw83hfnagpyjq" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="page" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="32">
+    <changeSet author="Eversis" id="34">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_aud" constraintName="FKeka5ryqgigvtp51k8vaofd1w4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="33">
+    <changeSet author="Eversis" id="35">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="menu_title_aud" constraintName="FKervvvaurd8xuxs1x24ky0hgbo" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="34">
+    <changeSet author="Eversis" id="36">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_aud" constraintName="FKfdfpl2qrgndrwh3f5wlmasi8a" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="35">
+    <changeSet author="Eversis" id="37">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="content_data_aud" constraintName="FKjnsdemt6qgs3940fsmtdic9a0" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="36">
+    <changeSet author="Eversis" id="38">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="document_aud" constraintName="FKnb1mvvdy2r5eufnxnwv45tu20" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="37">
+    <changeSet author="Eversis" id="39">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="folder_aud" constraintName="FKooxuwgiq2flx6hbh2mu3mco03" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="38">
+    <changeSet author="Eversis" id="40">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_title_aud" constraintName="FKqu8dls6a9sg41yy7okqp5k6ew" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="39">
+    <changeSet author="Eversis" id="41">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="page_description_aud" constraintName="FKrvhqh3wnin27luwuvfmc17dkh" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="Eversis" id="40">
+    <changeSet author="Eversis" id="42">
         <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="page_title" constraintName="FKt0sfaar4jmjo09o8fginqpces" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="page" validate="true"/>
+    </changeSet>
+    <changeSet author="Eversis" id="43" >
+        <addForeignKeyConstraint baseColumnNames="logo_document_id" baseTableName="site" referencedTableName="document" referencedColumnNames="id" constraintName="FKt0sfaar4jmjo09o8fginhujki" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
+    </changeSet>
+    <changeSet author="Eversis" id="44" >
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="site_aud" constraintName="FKrvhqh3wnin27luwuvfmc42juk" referencedColumnNames="rev" referencedTableName="revinfo" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
 </databaseChangeLog>
