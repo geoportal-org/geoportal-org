@@ -203,8 +203,8 @@ public enum WebSettingsSet {
             }
         }
         throw new IllegalArgumentException(
-                "Cannot deserialize value of type `" + WebSettingsSet.class.getCanonicalName() + "` from String `" + key
-                + "`: not one of the values accepted for " + WebSettingsSet.class.getCanonicalName()
+                "Cannot deserialize value of type `" + WebSettingsKey.class.getCanonicalName() + "` from String `" + key
+                + "`: not one of the values accepted for " + WebSettingsKey.class.getCanonicalName()
                 + " class: " + keys());
     }
 }
