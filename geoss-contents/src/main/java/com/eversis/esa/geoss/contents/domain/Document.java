@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.contents.validation.ExtensionType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ import jakarta.validation.constraints.Size;
 @Audited
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class Document extends AuditableEntity {
 
     @Id

@@ -12,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface RepositoryService {
 
     /**
-     * Init.
+     * Initializes the file storage by creating the root directory and the logo directory,
+     * and uploading the global site logo.
      */
     void init();
 

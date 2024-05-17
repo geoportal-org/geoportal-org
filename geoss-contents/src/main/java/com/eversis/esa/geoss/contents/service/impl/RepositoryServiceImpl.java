@@ -10,6 +10,7 @@ import com.eversis.esa.geoss.contents.service.RepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,7 @@ import java.util.List;
 public class RepositoryServiceImpl implements RepositoryService {
 
     private static final int ROOT_FOLDER_ID = 0;
+    private static final int LOGO_FOLDER_ID = 1;
     private final Path rootDirectory;
     private final FolderRepository folderRepository;
     private final DocumentRepository documentRepository;
@@ -55,15 +57,20 @@ public class RepositoryServiceImpl implements RepositoryService {
         this.rootDirectory = Paths.get(repositoryProperties.getDirectory()).toAbsolutePath().normalize();
     }
 
+    /**
+     * Initializes the file storage by creating the root directory and the logo directory,
+     * and uploading the global site logo.
+     */
     @Override
     public void init() {
         try {
-            log.info("Creating the root directory for uploaded files storage.");
-            Path rootFolderDirectory = rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID));
-            Files.createDirectories(rootFolderDirectory);
-            log.info("Root folder directory created at path {}", rootFolderDirectory);
+            log.info("Initializing file storage...");
+            createDirectory(rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)), "root folder");
+            createDirectory(rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)).resolve(String.valueOf(LOGO_FOLDER_ID)), "logo folder");
+            uploadResource("logo/geoss-portal.png", rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)).resolve(String.valueOf(LOGO_FOLDER_ID)));
+            log.info("File storage initialization completed.");
         } catch (IOException e) {
-            throw new RuntimeException("Could not create the root directory where the uploaded files will be stored.");
+            throw new RuntimeException("Could not initialize file storage.", e);
         }
     }
 
@@ -181,6 +188,19 @@ public class RepositoryServiceImpl implements RepositoryService {
         if (isFileNameNotUnique) {
             throw new FileNameNotUniqueException("fileName not unique");
         }
+    }
+
+    private void uploadResource(String resourcePath, Path targetDirectory) throws IOException {
+        log.info("Uploading resource {}...", resourcePath);
+        Resource resource = new ClassPathResource(resourcePath);
+        Files.copy(resource.getInputStream(), targetDirectory.resolve(resource.getFilename()));
+        log.info("Resource {} uploaded to {}", resourcePath, targetDirectory);
+    }
+
+    private void createDirectory(Path path, String description) throws IOException {
+        log.info("Creating the {} directory...", description);
+        Files.createDirectories(path);
+        log.info("{} directory created at path {}", description, path);
     }
 
 }
