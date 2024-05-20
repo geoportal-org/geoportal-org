@@ -6,13 +6,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.eversis.esa.geoss.contents.domain.Content;
 import com.eversis.esa.geoss.contents.domain.Page;
 import com.eversis.esa.geoss.contents.parser.model.PageCsv;
 import com.eversis.esa.geoss.contents.parser.model.PageDescriptionCsv;
 import com.eversis.esa.geoss.contents.parser.model.PageTitleCsv;
+import com.eversis.esa.geoss.contents.repository.ContentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +34,12 @@ public class PageCsvParser extends CsvParser {
 
     @Value("classpath:db/init-data/page-description.csv")
     private Resource pageDescriptionCsvFile;
+
+    private final ContentRepository contentRepository;
+
+    public PageCsvParser(ContentRepository contentRepository) {
+        this.contentRepository = contentRepository;
+    }
 
     /**
      * Parses the CSV files and returns a list of Page objects.
@@ -53,7 +62,34 @@ public class PageCsvParser extends CsvParser {
         // Parse the page CSV and map to Page objects
         return parseCsv(PageCsv.class, pageCsvFile).stream().map(pageCsv -> {
             Page page = new Page();
-            page.setContentId(1L);
+            String slug = pageCsv.getSlug();
+            Content content;
+            switch (slug) {
+                case "general-information":
+                    content = contentRepository.findByTitleAndSiteId("General information", siteId);
+                    page.setContentId(content.getId());
+                    break;
+                case "terms-conditions":
+                    content = contentRepository.findByTitleAndSiteId("Terms & Conditions", siteId);
+                    page.setContentId(content.getId());
+                    break;
+                case "release-notes":
+                    content = contentRepository.findByTitleAndSiteId("Release notes", siteId);
+                    page.setContentId(content.getId());
+                    break;
+                case "help-desk":
+                    content = contentRepository.findByTitleAndSiteId("Help desk", siteId);
+                    page.setContentId(content.getId());
+                    break;
+                case "documentation":
+                    content = contentRepository.findByTitleAndSiteId("Documentation", siteId);
+                    page.setContentId(content.getId());
+                    break;
+                case "tutorials":
+                    content = contentRepository.findByTitleAndSiteId("Tutorials", siteId);
+                    page.setContentId(content.getId());
+                    break;
+            }
             page.setSlug(pageCsv.getSlug());
             page.setPublished(pageCsv.isPublished());
             page.setSiteId(siteId);

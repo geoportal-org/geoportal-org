@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +37,7 @@ import java.util.List;
 @Service
 public class RepositoryServiceImpl implements RepositoryService {
 
-    private static final int ROOT_FOLDER_ID = 0;
+    private static final int GLOBAL_SITE_FOLDER_ID = 0;
     private static final int LOGO_FOLDER_ID = 1;
     private final Path rootDirectory;
     private final FolderRepository folderRepository;
@@ -58,16 +59,19 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
     /**
-     * Initializes the file storage by creating the root directory and the logo directory,
-     * and uploading the global site logo.
+     * Initializes the file storage by creating the root directory and the logo directory, and uploading the global site
+     * logo.
      */
     @Override
     public void init() {
         try {
             log.info("Initializing file storage...");
-            createDirectory(rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)), "root folder");
-            createDirectory(rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)).resolve(String.valueOf(LOGO_FOLDER_ID)), "logo folder");
-            uploadResource("logo/geoss-portal.png", rootDirectory.resolve(String.valueOf(ROOT_FOLDER_ID)).resolve(String.valueOf(LOGO_FOLDER_ID)));
+            createDirectory(rootDirectory.resolve(String.valueOf(GLOBAL_SITE_FOLDER_ID)), "global site folder");
+            createDirectory(rootDirectory.resolve(String.valueOf(GLOBAL_SITE_FOLDER_ID))
+                    .resolve(String.valueOf(LOGO_FOLDER_ID)), "logo folder");
+            uploadResource("logo/geoss-portal.png",
+                    rootDirectory.resolve(String.valueOf(GLOBAL_SITE_FOLDER_ID))
+                            .resolve(String.valueOf(LOGO_FOLDER_ID)));
             log.info("File storage initialization completed.");
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize file storage.", e);
@@ -193,8 +197,16 @@ public class RepositoryServiceImpl implements RepositoryService {
     private void uploadResource(String resourcePath, Path targetDirectory) throws IOException {
         log.info("Uploading resource {}...", resourcePath);
         Resource resource = new ClassPathResource(resourcePath);
-        Files.copy(resource.getInputStream(), targetDirectory.resolve(resource.getFilename()));
-        log.info("Resource {} uploaded to {}", resourcePath, targetDirectory);
+        Path targetPath = targetDirectory.resolve(resource.getFilename());
+
+        try {
+            Files.copy(resource.getInputStream(), targetPath);
+            log.info("Resource {} uploaded to {}", resourcePath, targetDirectory);
+        } catch (FileAlreadyExistsException e) {
+            log.error("File already exists at {}. Skipping upload.", targetPath);
+        } catch (IOException e) {
+            log.error("Error occurred while uploading resource: {}", e.getMessage());
+        }
     }
 
     private void createDirectory(Path path, String description) throws IOException {

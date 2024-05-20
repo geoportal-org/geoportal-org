@@ -525,9 +525,6 @@
         <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="page_title" constraintName="FKt0sfaar4jmjo09o8fginqpces" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="page" validate="true"/>
     </changeSet>
     <changeSet author="Eversis" id="43" >
-        <addForeignKeyConstraint baseColumnNames="logo_document_id" baseTableName="site" referencedTableName="document" referencedColumnNames="id" constraintName="FKt0sfaar4jmjo09o8fginhujki" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
-    </changeSet>
-    <changeSet author="Eversis" id="44" >
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="site_aud" constraintName="FKrvhqh3wnin27luwuvfmc42juk" referencedColumnNames="rev" referencedTableName="revinfo" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
 </databaseChangeLog>

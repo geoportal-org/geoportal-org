@@ -27,6 +27,25 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     Page<Menu> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
+     * Find by title and site id page.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Menu> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
+
+    /**
+     * Find by title and site id menu.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @return the menu
+     */
+    Menu findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
+
+    /**
      * Find by parent menu id page.
      *
      * @param parentMenuId the parent menu id
@@ -36,6 +55,17 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     Page<Menu> findByParentMenuId(@Param("parentMenuId") Long parentMenuId, Pageable pageable);
 
     /**
+     * Find by parent menu id and site id page.
+     *
+     * @param parentMenuId the parent menu id
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Menu> findByParentMenuIdAndSiteId(@Param("parentMenuId") Long parentMenuId, @Param("siteId") Long siteId,
+            Pageable pageable);
+
+    /**
      * Find by level id page.
      *
      * @param levelId the level id
@@ -43,6 +73,16 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      * @return the page
      */
     Page<Menu> findByLevelId(@Param("levelId") Long levelId, Pageable pageable);
+
+    /**
+     * Find by level id and site id page.
+     *
+     * @param levelId the level id
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Menu> findByLevelIdAndSiteId(@Param("levelId") Long levelId, @Param("siteId") Long siteId, Pageable pageable);
 
     /**
      * Delete by site id.

@@ -30,6 +30,17 @@ public interface PageRepository extends JpaRepository<Page, Long> {
     org.springframework.data.domain.Page<Page> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
+     * Find by title and site id org . springframework . data . domain . page.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the org . springframework . data . domain . page
+     */
+    org.springframework.data.domain.Page<Page> findByTitleAndSiteId(@Param("title") String title,
+            @Param("siteId") Long siteId, Pageable pageable);
+
+    /**
      * Find by created by org . springframework . data . domain . page.
      *
      * @param createdBy the created by
@@ -39,6 +50,17 @@ public interface PageRepository extends JpaRepository<Page, Long> {
     org.springframework.data.domain.Page<Page> findByCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
 
     /**
+     * Find by created by and site id org . springframework . data . domain . page.
+     *
+     * @param createdBy the created by
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the org . springframework . data . domain . page
+     */
+    org.springframework.data.domain.Page<Page> findByCreatedByAndSiteId(@Param("createdBy") String createdBy,
+            @Param("siteId") Long siteId, Pageable pageable);
+
+    /**
      * Find by published org . springframework . data . domain . page.
      *
      * @param published the published
@@ -46,6 +68,18 @@ public interface PageRepository extends JpaRepository<Page, Long> {
      * @return the org . springframework . data . domain . page
      */
     org.springframework.data.domain.Page<Page> findByPublished(@Param("published") boolean published,
+            Pageable pageable);
+
+    /**
+     * Find by published and site id org . springframework . data . domain . page.
+     *
+     * @param published the published
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the org . springframework . data . domain . page
+     */
+    org.springframework.data.domain.Page<Page> findByPublishedAndSiteId(@Param("published") boolean published,
+            @Param("siteId") Long siteId,
             Pageable pageable);
 
     /**

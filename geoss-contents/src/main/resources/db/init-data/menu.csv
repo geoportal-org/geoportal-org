@@ -20,4 +20,4 @@ id|image_source|url|priority|parent_menu_id|level_id|site_id|created_by|created_
 19| |"/highlighted-searches"|4|5|1|0|"admin"|"2024-01-01 00:00:00"|"admin"|"2024-01-01 00:00:00"
 20|"/svg/statistics.svg"|"/statistics"|5|0|0|0|"admin"|"2024-01-01 00:00:00"|"admin"|"2024-01-01 00:00:00"
 21|"/svg/my-workspace.svg"| |6|0|0|0|"admin"|"2024-01-01 00:00:00"|"admin"|"2024-01-01 00:00:00"
-22| |"/saved-searches"|1|22|1|0|"admin"|"2024-01-01 00:00:00"|"admin"|"2024-01-01 00:00:00"
+22| |"/saved-searches"|1|21|1|0|"admin"|"2024-01-01 00:00:00"|"admin"|"2024-01-01 00:00:00"

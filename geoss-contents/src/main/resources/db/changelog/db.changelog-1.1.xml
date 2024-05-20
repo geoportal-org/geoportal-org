@@ -5,70 +5,70 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="45" author="Eversis">
+    <changeSet id="44" author="Eversis">
         <loadData file="db/init-data/content.csv" tableName="content" separator="|" />
     </changeSet>
-    <changeSet id="46" author="Eversis">
+    <changeSet id="45" author="Eversis">
         <loadData file="db/init-data/content-title.csv" tableName="content_title" separator="|" />
     </changeSet>
-    <changeSet id="47" author="Eversis">
+    <changeSet id="46" author="Eversis">
         <loadData file="db/init-data/content-data.csv" tableName="content_data" separator="|">
             <column header="content_id" name="content_id" type="BIGINT(20)"/>
             <column header="data" name="data" type="LONGTEXT"/>
             <column header="locale" name="locale" type="VARCHAR(255)"/>
         </loadData>
     </changeSet>
-    <changeSet id="48" author="Eversis">
+    <changeSet id="47" author="Eversis">
         <loadData file="db/init-data/page.csv" tableName="page" separator="|" />
     </changeSet>
-    <changeSet id="49" author="Eversis">
+    <changeSet id="48" author="Eversis">
         <loadData file="db/init-data/page-title.csv" tableName="page_title" separator="|" />
     </changeSet>
-    <changeSet id="50" author="Eversis">
+    <changeSet id="49" author="Eversis">
         <loadData file="db/init-data/page-description.csv" tableName="page_description" separator="|" />
     </changeSet>
-    <changeSet id="51" author="Eversis">
+    <changeSet id="50" author="Eversis">
         <loadData file="db/init-data/menu.csv" tableName="menu" separator="|" />
     </changeSet>
-    <changeSet id="52" author="Eversis">
+    <changeSet id="51" author="Eversis">
         <loadData file="db/init-data/menu-title.csv" tableName="menu_title" separator="|" />
     </changeSet>
-    <changeSet id="53" author="Eversis">
+    <changeSet id="52" author="Eversis">
         <loadData file="db/init-data/menu-image-title.csv" tableName="menu_image_title" separator="|" />
     </changeSet>
-    <changeSet id="54" author="Eversis">
+    <changeSet id="53" author="Eversis">
         <loadData file="db/init-data/folder.csv" tableName="folder" separator="|" />
     </changeSet>
-    <changeSet id="55" author="Eversis">
+    <changeSet id="54" author="Eversis">
         <loadData file="db/init-data/document.csv" tableName="document" separator="|" />
     </changeSet>
-    <changeSet id="56" author="Eversis">
+    <changeSet id="55" author="Eversis">
         <sql>
             SET @OLD_SQL_MODE = @@SQL_MODE;
             SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
         </sql>
     </changeSet>
-    <changeSet id="57" author="Eversis">
+    <changeSet id="56" author="Eversis">
         <loadData file="db/init-data/site.csv" tableName="site" separator="|" />
     </changeSet>
-    <changeSet id="58" author="Eversis">
+    <changeSet id="57" author="Eversis">
         <sql>
             SET SQL_MODE=@OLD_SQL_MODE;
         </sql>
     </changeSet>
-    <changeSet id="59" author="Eversis">
+    <changeSet id="58" author="Eversis">
         <addForeignKeyConstraint baseColumnNames="site_id" baseTableName="content" referencedTableName="site" referencedColumnNames="id" constraintName="FKt0sfaar4jmjo09gfhkjgh43" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
-    <changeSet id="60" author="Eversis">
+    <changeSet id="59" author="Eversis">
         <addForeignKeyConstraint baseColumnNames="site_id" baseTableName="document" referencedTableName="site" referencedColumnNames="id" constraintName="FKt0sfaar4jmjo09gdfgfd9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
-    <changeSet id="61" author="Eversis">
+    <changeSet id="60" author="Eversis">
         <addForeignKeyConstraint baseColumnNames="site_id" baseTableName="folder" referencedTableName="site" referencedColumnNames="id" constraintName="FKt0sfaar4jmjo0jkhkjhus6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
-    <changeSet id="62" author="Eversis">
+    <changeSet id="61" author="Eversis">
         <addForeignKeyConstraint baseColumnNames="site_id" baseTableName="menu" referencedTableName="site" referencedColumnNames="id" constraintName="FKt0sfaar4jmjjiuocxjhus65" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
-    <changeSet id="63" author="Eversis">
+    <changeSet id="62" author="Eversis">
         <addForeignKeyConstraint baseColumnNames="site_id" baseTableName="page" referencedTableName="site" referencedColumnNames="id" constraintName="FKt0sfaar4jdsfggjhus43" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" validate="true"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.contents.repository;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.contents.domain.Folder;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +29,16 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     Page<Folder> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
+     * Find by title and title page.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Folder> findByTitleAndTitle(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
+
+    /**
      * Find by created by page.
      *
      * @param createdBy the created by
@@ -36,6 +48,17 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     Page<Folder> findByCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
 
     /**
+     * Find by created by and title page.
+     *
+     * @param createdBy the created by
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Folder> findByCreatedByAndTitle(@Param("createdBy") String createdBy, @Param("siteId") Long siteId,
+            Pageable pageable);
+
+    /**
      * Find by parent folder id page.
      *
      * @param parentFolderId the parent folder id
@@ -43,6 +66,16 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
      * @return the page
      */
     Page<Folder> findByParentFolderId(@Param("parentFolderId") Long parentFolderId, Pageable pageable);
+
+    /**
+     * Find by parent folder id and site id list.
+     *
+     * @param parentFolderId the parent folder id
+     * @param siteId the site id
+     * @return the list
+     */
+    List<Folder> findByParentFolderIdAndSiteId(@Param("parentFolderId") Long parentFolderId,
+            @Param("siteId") Long siteId);
 
     /**
      * Delete by site id.

@@ -17,6 +17,8 @@ public class MenuCsv {
     private String url;
     @CsvBindByName(column = "priority")
     private int priority;
+    @CsvBindByName(column = "parent_menu_id")
+    private Long parentMenuId;
     @CsvBindByName(column = "level_id")
     private int levelId;
 }

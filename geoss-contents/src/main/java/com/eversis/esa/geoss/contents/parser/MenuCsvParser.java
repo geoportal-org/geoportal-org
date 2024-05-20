@@ -48,6 +48,7 @@ public class MenuCsvParser extends CsvParser {
         // Parse the menu CSV and map to Menu objects
         return parseCsv(MenuCsv.class, menuCsvFile).stream().map(menuCsv -> {
             Menu menu = new Menu();
+            menu.setParentMenuId(menuCsv.getParentMenuId());
             menu.setImageSource(menuCsv.getImageSource());
             menu.setUrl(menuCsv.getUrl());
             menu.setPriority(menuCsv.getPriority());

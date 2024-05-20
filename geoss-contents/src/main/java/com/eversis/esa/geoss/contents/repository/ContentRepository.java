@@ -31,6 +31,16 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     Page<Content> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
+     * Find by title and site id page.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Content> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
+
+    /**
      * Find by created by page.
      *
      * @param createdBy the created by
@@ -40,6 +50,26 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     Page<Content> findByCreatedBy(@Param("createdBy") String createdBy, Pageable pageable);
 
     /**
+     * Find by created by and site id page.
+     *
+     * @param createdBy the created by
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Content> findByCreatedByAndSiteId(@Param("createdBy") String createdBy, @Param("siteId") Long siteId,
+            Pageable pageable);
+
+    /**
+     * Find by title and site id content.
+     *
+     * @param title the title
+     * @param siteId the site id
+     * @return the content
+     */
+    Content findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
+
+    /**
      * Find by published page.
      *
      * @param published the published
@@ -47,6 +77,17 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
      * @return the page
      */
     Page<Content> findByPublished(@Param("published") boolean published, Pageable pageable);
+
+    /**
+     * Find by published and site id page.
+     *
+     * @param published the published
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Content> findByPublishedAndSiteId(@Param("published") boolean published, @Param("siteId") Long siteId,
+            Pageable pageable);
 
     /**
      * Delete by ids in.
