@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -38,6 +39,8 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
      * @param pageable the pageable
      * @return the page
      */
+    @RestResource(path = "findByTitleAndSiteIdPaged", rel = "findByTitleAndSiteIdPaged")
+    @Query("SELECT c FROM Content c WHERE c.title = :title AND c.siteId = :siteId")
     Page<Content> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
 
     /**
@@ -67,6 +70,8 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
      * @param siteId the site id
      * @return the content
      */
+    @RestResource(path = "findByTitleAndSiteIdExact", rel = "findByTitleAndSiteIdExact")
+    @Query("SELECT c FROM Content c WHERE c.title = :title AND c.siteId = :siteId")
     Content findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
 
     /**

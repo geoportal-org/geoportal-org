@@ -6,8 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,6 +36,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      * @param pageable the pageable
      * @return the page
      */
+    @RestResource(path = "findByTitleAndSiteIdPaged", rel = "findByTitleAndSiteIdPaged")
+    @Query("SELECT m FROM Menu m WHERE m.title = :title AND m.siteId = :siteId")
     Page<Menu> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
 
     /**
@@ -43,6 +47,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      * @param siteId the site id
      * @return the menu
      */
+    @RestResource(path = "findByTitleAndSiteIdExact", rel = "findByTitleAndSiteIdExact")
+    @Query("SELECT m FROM Menu m WHERE m.title = :title AND m.siteId = :siteId")
     Menu findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
 
     /**
