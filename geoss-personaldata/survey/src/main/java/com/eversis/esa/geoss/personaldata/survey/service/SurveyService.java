@@ -29,4 +29,10 @@ public interface SurveyService {
      * @return the page
      */
     Page<Survey> search(List<SearchQuery> searchQueries, Pageable pageable);
+
+    /**
+     * Delete all surveys.
+     */
+    void deleteAllSurveys();
+
 }

@@ -50,4 +50,11 @@ public class SurveyServiceImpl implements SurveyService {
         log.debug("surveys:{}", surveys);
         return surveys;
     }
+
+    @Override
+    @Transactional
+    public void deleteAllSurveys() {
+        surveyRepository.deleteAll();
+    }
+
 }

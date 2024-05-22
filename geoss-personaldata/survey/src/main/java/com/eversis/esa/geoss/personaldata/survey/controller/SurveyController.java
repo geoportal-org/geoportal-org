@@ -18,6 +18,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,6 +77,17 @@ public class SurveyController {
         List<SearchQuery> searchQueries = searchQueryParser.parse(query);
         Page<Survey> search = surveyService.search(searchQueries, pageable);
         return pageMapper.toPagedModel(search, Survey.class, this::surveyLinks, this::surveyLinks);
+    }
+
+    /**
+     * Deletes all surveys.
+     *
+     * @return a response entity with no content
+     */
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllSurveys() {
+        surveyService.deleteAllSurveys();
+        return ResponseEntity.noContent().build();
     }
 
     private List<Link> surveyLinks(Survey survey) {
