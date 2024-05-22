@@ -1,3 +1,19 @@
+FROM openjdk:17.0.2-jdk-slim-buster AS java-builder
+
+ENV TZ=UTC
+ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
+ENV GRADLE_USER_HOME=/opt/app/.gradle
+
+WORKDIR /opt/app
+
+COPY ./ ./
+
+RUN chmod u+x gradlew
+RUN ./gradlew --build-cache --no-daemon assemble
+
+RUN mkdir keycloak-providers
+RUN find ./**/build/libs -type f -name '*.jar' -exec echo {} \; -exec cp {} keycloak-providers/ \;
+
 FROM quay.io/keycloak/keycloak:24.0 as builder
 
 # Enable health and metrics support
@@ -26,6 +42,7 @@ ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
+COPY --from=java-builder /opt/app/keycloak-providers/ /opt/keycloak/providers/
 COPY realms/ /opt/keycloak/data/import/
 COPY themes/geoss/account/ /opt/keycloak/themes/geoss/account/
 COPY themes/geoss/admin/ /opt/keycloak/themes/geoss/admin/

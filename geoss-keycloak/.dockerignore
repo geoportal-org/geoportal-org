@@ -8,6 +8,23 @@
 Dockerfile
 Dockerfile*
 
+### Gradle ###
+!.gradle
+build/
+**/build/
+**/build/*
+!application/build/libs
+
+### Maven ###
+target/
+**/target/
+**/target/*
+
+### IntelliJ IDEA ###
+out/
+**/out/
+**/out/*
+
 ### Node ###
 node/
 **/node/
