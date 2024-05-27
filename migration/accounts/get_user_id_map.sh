@@ -11,7 +11,7 @@ PROGNAME=$(basename "$0")
 
 usage() {
     cat >&2 << EOF
-Usage: $PROGNAME [OPTIONS] liferay_user_id
+Usage: $PROGNAME [OPTIONS]
 Options:
   --help
   --baseurl=KEYCLOAK
@@ -87,9 +87,8 @@ bearer_token() {
 
 access_token=$(bearer_token "$KC_BASE_URL" "$KC_USER_NAME" "$KC_USER_PASS")
 
-liferay_user_id=$1
-keycloak_user_id=$(curl --location --request GET "$KC_BASE_URL/admin/realms/geoss/users?q=liferay_user_id:$liferay_user_id" \
+keycloak_users=$(curl --location --request GET "$KC_BASE_URL/admin/realms/geoss/users" \
 --header "Authorization: Bearer $access_token" \
 2>/dev/null \
-| jq -r '.[].id')
-echo "$keycloak_user_id"
+| jq -r '.[] | "\(.attributes.liferay_user_id[]?),\(.id)"')
+echo "$keycloak_users"
