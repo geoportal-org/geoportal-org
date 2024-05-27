@@ -685,7 +685,7 @@ multi_server_environment = 0
 
 ; Set to 1 if you're using a proxy which is rewriting the URI.
 ; By enabling this flag the header HTTP_X_FORWARDED_URI will be considered for the current script name.
-proxy_uri_header = 0
+proxy_uri_header = 1
 
 ; If set to 1 we use the last IP in the list of proxy IPs when determining the client IP. Using the last IP can be more
 ; secure when using proxy headers in combination with a load balancer. By default the first IP is read according to RFC7239
