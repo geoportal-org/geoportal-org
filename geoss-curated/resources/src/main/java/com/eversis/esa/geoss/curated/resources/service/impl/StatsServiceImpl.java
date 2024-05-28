@@ -1,9 +1,14 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
+import com.eversis.esa.geoss.curated.resources.mapper.EntryStatsMapper;
+import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryStatsRepository;
 import com.eversis.esa.geoss.curated.resources.service.StatsService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,14 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class StatsServiceImpl implements StatsService {
 
     private final EntryStatsRepository entryStatsRepository;
+    private final EntryStatsMapper entryStatsMapper;
 
     /**
      * Instantiates a new Stats service.
      *
      * @param entryStatsRepository the entry stats repository
+     * @param entryStatsMapper the entry stats mapper
      */
-    public StatsServiceImpl(EntryStatsRepository entryStatsRepository) {
+    public StatsServiceImpl(EntryStatsRepository entryStatsRepository, EntryStatsMapper entryStatsMapper) {
         this.entryStatsRepository = entryStatsRepository;
+        this.entryStatsMapper = entryStatsMapper;
     }
 
     @Override
@@ -51,6 +59,45 @@ public class StatsServiceImpl implements StatsService {
             log.info("Updated entry stats {}", entryStats);
         }
         return entryStats;
+    }
+
+    @Override
+    public List<EntryStats> findStatsList() {
+        return entryStatsRepository.findAll();
+    }
+
+    @Override
+    public EntryStats findStats(long statsId) {
+        return entryStatsRepository.findById(statsId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Entry stats with statsId: " + statsId + " does not exist"));
+    }
+
+    @Transactional
+    @Override
+    public void createStats(EntryStatsModel entryStatsDto) {
+        entryStatsRepository.save(entryStatsMapper.mapToEntryStats(entryStatsDto));
+    }
+
+    @Transactional
+    @Override
+    public void updateStats(long statsId, EntryStatsModel entryStatsDto) {
+        final EntryStats entryStats = entryStatsRepository.findById(statsId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Entry stats entity with statsId: " + statsId + " does not exist"));
+        entryStatsRepository.save(entryStatsMapper.mapToEntryStats(entryStatsDto, entryStats));
+    }
+
+    @Transactional
+    @Override
+    public void deleteStats(long statsId) {
+        entryStatsRepository.deleteById(statsId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllStats() {
+        entryStatsRepository.deleteAll();
     }
 
 }

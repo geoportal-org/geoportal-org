@@ -1,6 +1,9 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
+import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
 
 /**
  * The interface Stats service.
@@ -26,4 +29,45 @@ public interface StatsService {
      */
     EntryStats addOrUpdateStats(String targetId, String dataSource, Double score);
 
+    /**
+     * Find stats list list.
+     *
+     * @return the list
+     */
+    List<EntryStats> findStatsList();
+
+    /**
+     * Find stats entry stats.
+     *
+     * @param statsId the stats id
+     * @return the entry stats
+     */
+    EntryStats findStats(long statsId);
+
+    /**
+     * Create stats.
+     *
+     * @param entryStatsDto the entry stats dto
+     */
+    void createStats(EntryStatsModel entryStatsDto);
+
+    /**
+     * Update stats.
+     *
+     * @param statsId the stats id
+     * @param entryStatsDto the entry stats dto
+     */
+    void updateStats(long statsId, EntryStatsModel entryStatsDto);
+
+    /**
+     * Delete stats.
+     *
+     * @param statsId the stats id
+     */
+    void deleteStats(long statsId);
+
+    /**
+     * Delete all stats.
+     */
+    void deleteAllStats();
 }
