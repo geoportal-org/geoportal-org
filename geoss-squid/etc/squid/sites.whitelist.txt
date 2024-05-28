@@ -171,3 +171,5 @@ pypi.org
 files.pythonhosted.org
 yp.geodab.eu
 geodab.eu
+oauth2.googleapis.com
+googleapis.com
