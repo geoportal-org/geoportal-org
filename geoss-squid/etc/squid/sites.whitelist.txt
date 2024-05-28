@@ -2,7 +2,6 @@
 .eu-central-1.amazonaws.com
 .matomo.org
 .youtube.com
-.googleapis.com
 thesauri.eo.esa.int
 thesauri.evo-pdgs.com
 eocat.esa.int
