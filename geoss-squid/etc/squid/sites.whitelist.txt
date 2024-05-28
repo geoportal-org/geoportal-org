@@ -173,3 +173,5 @@ yp.geodab.eu
 geodab.eu
 oauth2.googleapis.com
 googleapis.com
+www.googleapis.com
+www.oauth2.googleapis.com
