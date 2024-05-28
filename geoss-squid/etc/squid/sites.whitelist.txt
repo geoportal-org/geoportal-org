@@ -175,3 +175,6 @@ oauth2.googleapis.com
 googleapis.com
 www.googleapis.com
 www.oauth2.googleapis.com
+analyticsadmin.googleapis.com
+www.analyticsadmin.googleapis.com
+.googleapis.com
