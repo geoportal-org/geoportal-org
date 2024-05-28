@@ -86,4 +86,9 @@ public interface RatingService {
      */
     List<CommentResponse> findCommentsByTargetIdAndDataSource(String targetId, String dataSource);
 
+    /**
+     * Delete all ratings.
+     */
+    void deleteAllRatings();
+
 }

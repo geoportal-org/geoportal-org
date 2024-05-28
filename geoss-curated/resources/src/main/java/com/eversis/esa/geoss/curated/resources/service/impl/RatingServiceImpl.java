@@ -163,6 +163,13 @@ public class RatingServiceImpl implements RatingService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public void deleteAllRatings() {
+        log.info("Deleting all ratings");
+        entryRatingRepository.deleteAll();
+    }
+
     private String decodeValue(String value) throws UnsupportedEncodingException {
         return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
     }
