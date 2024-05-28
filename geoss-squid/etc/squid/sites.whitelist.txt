@@ -2,6 +2,7 @@
 .eu-central-1.amazonaws.com
 .matomo.org
 .youtube.com
+.googleapis.com
 thesauri.eo.esa.int
 thesauri.evo-pdgs.com
 eocat.esa.int
@@ -171,9 +172,4 @@ pypi.org
 files.pythonhosted.org
 yp.geodab.eu
 geodab.eu
-oauth2.googleapis.com
-googleapis.com
-www.googleapis.com
-www.oauth2.googleapis.com
-analyticsadmin.googleapis.com
-www.analyticsadmin.googleapis.com
+gpp-admin.devel.esaportal.eu
