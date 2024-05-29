@@ -1,4 +1,4 @@
-### Install Python 3.12 and check version
+Install Python 3.12 and check version
 [Python Download Page](https://www.python.org)
 ```sh
 python --version
