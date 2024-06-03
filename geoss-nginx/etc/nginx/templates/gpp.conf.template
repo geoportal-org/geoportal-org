@@ -71,6 +71,7 @@ server {
   #SP#  add_header X-Proxy-Cache $upstream_cache_status;
   #SP#  add_header Referer "https://gpp.devel.esaportal.eu";
   #SP#  proxy_set_header Referer "https://gpp.devel.esaportal.eu";
+  #SP#  proxy_set_header Origin "https://gpp.devel.esaportal.eu";
   #SP#}
 
   location /settings {
