@@ -29,26 +29,12 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     Page<Menu> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
-     * Find by title and site id page.
-     *
-     * @param title the title
-     * @param siteId the site id
-     * @param pageable the pageable
-     * @return the page
-     */
-    @RestResource(path = "findByTitleAndSiteIdPaged", rel = "findByTitleAndSiteIdPaged")
-    @Query("SELECT m FROM Menu m WHERE m.title = :title AND m.siteId = :siteId")
-    Page<Menu> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
-
-    /**
      * Find by title and site id menu.
      *
      * @param title the title
      * @param siteId the site id
      * @return the menu
      */
-    @RestResource(path = "findByTitleAndSiteIdExact", rel = "findByTitleAndSiteIdExact")
-    @Query("SELECT m FROM Menu m WHERE m.title = :title AND m.siteId = :siteId")
     Menu findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
 
     /**

@@ -32,18 +32,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     Page<Content> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
-     * Find by title and site id page.
-     *
-     * @param title the title
-     * @param siteId the site id
-     * @param pageable the pageable
-     * @return the page
-     */
-    @RestResource(path = "findByTitleAndSiteIdPaged", rel = "findByTitleAndSiteIdPaged")
-    @Query("SELECT c FROM Content c WHERE c.title = :title AND c.siteId = :siteId")
-    Page<Content> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
-
-    /**
      * Find by created by page.
      *
      * @param createdBy the created by
@@ -70,8 +58,6 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
      * @param siteId the site id
      * @return the content
      */
-    @RestResource(path = "findByTitleAndSiteIdExact", rel = "findByTitleAndSiteIdExact")
-    @Query("SELECT c FROM Content c WHERE c.title = :title AND c.siteId = :siteId")
     Content findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId);
 
     /**
