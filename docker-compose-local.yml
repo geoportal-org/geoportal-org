@@ -167,7 +167,7 @@ services:
         limits:
           cpus: "1.00"
           memory: "512M"
-    command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss", "--hostname-debug=true" ]
+    command: [ "start-dev", "--import-realm", "--spi-theme-welcome-theme=geoss", "--hostname-debug=true", "--features=token-exchange" ]
     environment:
       - KC_DB=mariadb
       - KC_DB_URL=jdbc:mariadb://geoss-db:3306/geoss_keycloak_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
