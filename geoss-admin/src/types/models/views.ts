@@ -42,6 +42,7 @@ export interface IViewData {
     value: string;
     defaultOption: boolean;
     subOptions: ISubViewData[];
+    siteId: number | null;
 }
 
 export interface ISubViewData {

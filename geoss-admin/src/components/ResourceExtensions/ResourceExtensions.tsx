@@ -180,7 +180,7 @@ export const ResourceExtensions = () => {
 
     return (
         <Flex direction="column" w={"100%"} overflowY="auto">
-            <MainContentHeader titleId="nav.users.section.resourceExtensions" />
+            <MainContentHeader titleId="nav.extensions.section.resourceExtensions" />
             <Flex direction="column" w={"100%"} padding={4}>
                 <Text fontSize="xl" mt="2" mb="2" color="grey">
                     {translate("pages.entryResources.actionsTitle")}

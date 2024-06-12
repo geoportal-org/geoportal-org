@@ -9,6 +9,7 @@ export interface IContent {
     modifiedDate: string;
     published: boolean;
     title: TranslatedData;
+    siteId: number | null;
     _links: {
         content: ILink;
         self: ILink;
@@ -19,6 +20,7 @@ export interface IContentData {
     title: TranslatedData;
     data: TranslatedData;
     published: boolean;
+    siteId: number | null;
 }
 
 export interface IContentList {

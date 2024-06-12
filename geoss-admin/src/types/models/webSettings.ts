@@ -27,4 +27,5 @@ export interface IWebSettingData {
     set: string;
     key: string;
     value: string;
+    siteId: number | null;
 }

@@ -12,6 +12,7 @@ export const pagesRoutes = {
     recommendations: "/recommendations",
     resourceExtensions: "/resource-extensions",
     signIn: "/",
+    sites: '/sites',
     survey: "/survey",
     tutorialTags: "/tutorial-tags-settings",
     views: "/views-settings",

@@ -27,4 +27,5 @@ export interface ILayerData {
     name: string;
     url: string;
     visible: boolean;
+    siteId: number | null;
 }

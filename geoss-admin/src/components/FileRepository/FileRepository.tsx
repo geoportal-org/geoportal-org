@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { Loader, MainContent, Modal, SideBar, TextContent, TextInfo } from "@/components";
 import { FileRepositoryFileInfo } from "./FileRepositoryFileInfo";
@@ -15,6 +15,7 @@ import { BreadcrumbItem, MainContentAction, ModalAction, ToastStatus } from "@/t
 import { IDocument, IFolder } from "@/types/models";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const FileRepository = () => {
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -43,16 +44,21 @@ export const FileRepository = () => {
     const currentDocuments = documentsList.filter((document) => document.folderId === currentFolder);
     const isEmptyFolder = !currentFolders.length && !currentDocuments.length;
 
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
+
     useEffect(() => {
         getFileRepositoryItems();
-    }, []);
+    }, [currentSiteId]);
 
     const getFileRepositoryItems = async () => {
         try {
             const {
                 _embedded: { folder },
             } = await FileRepositoryService.getFoldersList(initRepositoryPagination);
-            setFoldersList(() => folder);
+            //get folders for current site
+            const siteFolders = folder.filter((folderPiece) => folderPiece.siteId === currentSiteId);
+            setFoldersList(() => siteFolders);
             const {
                 _embedded: { document },
             } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);

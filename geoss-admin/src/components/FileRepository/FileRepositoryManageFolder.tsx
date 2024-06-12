@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { TextContent, PrimaryButton, FormField } from "@/components";
@@ -9,6 +9,7 @@ import { scrollbarStyles } from "@/theme/commons";
 import { createFolderForm } from "@/data/forms";
 import { ButtonType, FileRepositoryManageFolderProps } from "@/types";
 import { IFolderData } from "@/types/models";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const FileRepositoryManageFolder = ({
     folderId,
@@ -23,6 +24,9 @@ export const FileRepositoryManageFolder = ({
         folder ? setExistingFormValues(createFolderForm, folder) : setFormInitialValues(createFolderForm)
     );
     const { showToast } = useCustomToast();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         setIsSaving(true);
@@ -50,7 +54,12 @@ export const FileRepositoryManageFolder = ({
     };
 
     const createNewFolder = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
-        const folderData: IFolderData = { title: values.title, parentFolderId: currFolder, path };
+        const folderData: IFolderData = {
+            title: values.title,
+            parentFolderId: currFolder,
+            path,
+            siteId: currentSiteId,
+        };
         try {
             const addedFolder = await FileRepositoryService.createFolder(folderData);
             const newFolderId = +getIdFromUrl(addedFolder._links.folder.href);

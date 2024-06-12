@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
     ColumnDef,
     createColumnHelper,
@@ -25,6 +25,7 @@ import {
 import { IContent } from "@/types/models";
 import { ButtonVariant, LocaleNames, TableActionsSource, ToastStatus } from "@/types";
 import { initPagination, pagesRoutes } from "@/data";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const Contents = () => {
     const [contentsList, setContentsList] = useState<IContent[]>([]);
@@ -50,10 +51,13 @@ export const Contents = () => {
         () => onClose()
     );
 
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
+
     useEffect(() => {
         handlePaginationParamsChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageIndex, pageSize, sorting]);
+    }, [pageIndex, pageSize, sorting, currentSiteId]);
 
     const handlePaginationParamsChange = async () => {
         try {
@@ -67,7 +71,10 @@ export const Contents = () => {
                 size: table.getState().pagination.pageSize,
                 ...(sorting[0] && setTableSorting(sorting)),
             });
-            setContentsList(() => content);
+
+            //get content for current site
+            const siteContent = content.filter((contentPiece) => contentPiece.siteId === currentSiteId);
+            setContentsList(() => siteContent);
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e) {
             console.error(e);

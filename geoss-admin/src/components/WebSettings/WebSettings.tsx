@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Formik, FormikValues } from "formik";
 import { Flex } from "@chakra-ui/react";
 import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent, TextInfo } from "@/components";
@@ -19,6 +19,7 @@ import { IWebSetting, IWebSettingData } from "@/types/models";
 import { acceptedLogoExtensions, initRepositoryPagination } from "@/data";
 import { webSettingsForm, webSettingsFormFields } from "@/data/forms";
 import { useIntl } from "react-intl";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const WebSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +31,9 @@ export const WebSettings = () => {
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
     const { locale } = useIntl();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     const getCurrentWebSettings = useCallback(async () => {
         try {
@@ -85,7 +89,7 @@ export const WebSettings = () => {
         setIsLoading(true);
         const promises: Promise<IWebSetting>[] = [];
         const { newValues, changedValues } = getKeyValueFormChanges(values, savedValues);
-        const keyValues = createWebSettingsKeyValues(values);
+        const keyValues = createWebSettingsKeyValues(values, currentSiteId);
         const valuesToSave = getValuesToChange(keyValues, newValues);
         const valuesToUpdate = getValuesToChange(keyValues, changedValues);
 

@@ -241,8 +241,8 @@ export const setTableSorting = (sortingInfo: SortingState): { sort: string } => 
 export const getSelectedTableItemsIds = <T extends object>(table: Table<T>): number[] =>
     table.getFilteredSelectedRowModel().rows.map((row) => +getIdFromUrl(row.getValue("id")));
 
-export const createWebSettingsKeyValues = (values: FormikValues): { set: string; key: string; value: string }[] => {
-    const keyValues: { set: string; key: string; value: string }[] = [];
+export const createWebSettingsKeyValues = (values: FormikValues, currentSiteId: number | null): { set: string; key: string; value: string, siteId: number | null }[] => {
+    const keyValues: { set: string; key: string; value: string, siteId: number | null }[] = [];
     webSettingsForm.forEach(({ set, data }) => {
         data.forEach(({ name }) =>
             keyValues.push({
@@ -252,20 +252,22 @@ export const createWebSettingsKeyValues = (values: FormikValues): { set: string;
                     set === "logo" && name === "source"
                         ? `/contents/rest/document/${values[name]}/content`
                         : values[name],
+                siteId: currentSiteId
             })
         );
     });
     return keyValues;
 };
 
-export const createApiSettingsKeyValues = (values: FormikValues): { set: string; key: string; value: string }[] => {
-    const keyValues: { set: string; key: string; value: string }[] = [];
+export const createApiSettingsKeyValues = (values: FormikValues, currentSiteId: number | null): { set: string; key: string; value: string, siteId: number | null }[] => {
+    const keyValues: { set: string; key: string; value: string, siteId: number | null }[] = [];
     apiSettingsForm.forEach(({ set, data }) => {
         data.forEach(({ name }) =>
             keyValues.push({
                 set,
                 key: name,
                 value: values[name],
+                siteId: currentSiteId
             })
         );
     });

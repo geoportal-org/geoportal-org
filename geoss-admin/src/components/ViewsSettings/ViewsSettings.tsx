@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
     ColumnDef,
     createColumnHelper,
@@ -29,6 +29,7 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import { MainContentAction, TableActionsSource, ToastStatus, FormattedView, EditedViewInfo } from "@/types";
 import { ISubViewData, IViewData } from "@/types/models";
 import { extendedViewsPagination, initPagination } from "@/data";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const ViewsSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +51,9 @@ export const ViewsSettings = () => {
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const router = useRouter();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     useEffect(() => {
         handlePaginationParamsChange();
@@ -150,6 +154,7 @@ export const ViewsSettings = () => {
             value,
             title: label,
             ...(Object.keys(rest).length && { defaultOption: rest.defaultOption === "true" }),
+            siteId: currentSiteId,
         };
     };
 

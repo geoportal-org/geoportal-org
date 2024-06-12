@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { Formik, FormikValues } from "formik";
 import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent } from "@/components";
@@ -15,6 +15,7 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import { ButtonType, ToastStatus } from "@/types";
 import { IApiSetting, IApiSettingData } from "@/types/models";
 import { apiSettingsForm, apiSettingsFormFields } from "@/data/forms";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const ApiSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +24,9 @@ export const ApiSettings = () => {
     const [apiSettingsList, setApiSettingList] = useState<IApiSetting[]>([]);
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     useEffect(() => {
         getApiSettingsInfo();
@@ -54,7 +58,7 @@ export const ApiSettings = () => {
     const handleApiSettingsSubmit = async (values: FormikValues) => {
         const promises: Promise<IApiSetting>[] = [];
         const { newValues, changedValues } = getKeyValueFormChanges(values, savedValues);
-        const keyValues = createApiSettingsKeyValues(values);
+        const keyValues = createApiSettingsKeyValues(values, currentSiteId);
         const valuesToSave = getValuesToChange(keyValues, newValues);
         const valuesToUpdate = getValuesToChange(keyValues, changedValues);
 

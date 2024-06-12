@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { PrimaryButton, FormField, TextContent } from "@/components";
@@ -10,6 +10,7 @@ import { addFileForm, editFileForm } from "@/data/forms";
 import { scrollbarStyles } from "@/theme/commons";
 import { ButtonType, FileRepositoryManageFileProps, ToastStatus } from "@/types";
 import { IDocument, IErrorObject } from "@/types/models";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const FileRepositoryManageFile = ({
     fileId,
@@ -26,6 +27,9 @@ export const FileRepositoryManageFile = ({
     );
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     const handleFormSubmit = async (values: FormikValues, actions: FormikHelpers<FormikValues>) => {
         setIsSaving(true);
@@ -82,6 +86,8 @@ export const FileRepositoryManageFile = ({
         const fileInfo = getNewFileData(values);
         formData.set("files", file, file.name);
         formData.set("model", JSON.stringify(fileInfo));
+        //@ts-ignore
+        formData.set("siteId", currentSiteId);
         return formData;
     };
 

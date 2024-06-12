@@ -6,6 +6,7 @@ import { HeaderMenuToggler } from "./HeaderMenuToggler";
 import { HeaderProps } from "@/types";
 import { useRouter } from "next/router";
 import { unauthenicatedRoutes } from "@/data";
+import HeaderSiteSelect from "./HeaderSiteSelect";
 
 export const Header = ({ isMenuOpen, onMenuOpen, onMenuClose }: HeaderProps) => {
     const { data: session } = useSession();
@@ -27,7 +28,11 @@ export const Header = ({ isMenuOpen, onMenuOpen, onMenuClose }: HeaderProps) => 
         >
             {!isUnauthenticatedRoute && isUser ? (
                 <>
-                    <HeaderMenuToggler isOpen={isMenuOpen} onOpen={onMenuOpen} onClose={onMenuClose} />
+                    <Flex align={'center'}>
+                        <HeaderMenuToggler isOpen={isMenuOpen} onOpen={onMenuOpen} onClose={onMenuClose} />
+                        <HeaderSiteSelect />
+                    </Flex>
+
                     <HeaderLogo />
                     <LanguageSwitcher onMenuClose={onMenuClose} />
                 </>

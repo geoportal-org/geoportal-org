@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useContext } from "react";
 import { Formik, FormikValues, FormikHelpers, FormikTouched, FormikErrors, FormikState } from "formik";
 import { Box, useDisclosure, Flex } from "@chakra-ui/react";
 import { FormField, Loader, MainContent, Modal, PrimaryButton, TextContent } from "@/components";
@@ -19,6 +19,7 @@ import {
     setFormInitialValues,
 } from "@/utils/helpers";
 import { useIntl } from "react-intl";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
     const [currentTranslation, setCurrentTranslation] = useState<LocaleNames>(defaultUsedLang);
@@ -32,6 +33,9 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const { locale } = useIntl();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     useEffect(() => {
         if (router.isReady) {
@@ -127,6 +131,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             title,
             data,
             published: isPublished,
+            siteId: currentSiteId,
         };
     };
 

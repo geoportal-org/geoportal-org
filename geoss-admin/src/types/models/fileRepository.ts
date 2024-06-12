@@ -40,6 +40,7 @@ export interface IFolder {
     modifiedBy: string;
     modifiedDate: string;
     path: string;
+    siteId: number | null;
     _links: {
         self: ILink;
         folder: ILink;
@@ -50,6 +51,7 @@ export interface IFolderData {
     title: string;
     parentFolderId: number;
     path: string;
+    siteId: number | null;
 }
 
 export interface IFolderList {

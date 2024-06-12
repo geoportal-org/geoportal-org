@@ -65,7 +65,7 @@ const mapScopeForm: FormField[] = [
 ];
 
 export const webSettingsForm: FormSection[] = [
-    { titleId: "pages.web.logo", set: "logo", data: logoForm },
+    // { titleId: "pages.web.logo", set: "logo", data: logoForm },
     { titleId: "pages.web.default-source", set: "source", data: defaultSourceNameForm },
     { titleId: "pages.web.map", set: "map", data: mapScopeForm },
 ];

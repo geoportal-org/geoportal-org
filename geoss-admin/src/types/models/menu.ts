@@ -13,6 +13,7 @@ export interface IMenuItem {
     createdDate: string;
     modifiedBy: string;
     modifiedDate: string;
+    siteId: number | null;
     _links: {
         menu: ILink;
         self: ILink;
@@ -45,4 +46,5 @@ export interface IMenuItemData {
     priority: number;
     parentMenuId: number;
     levelId: number;
+    siteId: number | null;
 }

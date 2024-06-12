@@ -185,7 +185,7 @@ export const UsersSurvey = () => {
 
     return (
         <Flex direction="column" w={"100%"} overflowY="auto">
-            <MainContentHeader titleId="nav.users.section.usersSurvey" />
+            <MainContentHeader titleId="nav.extensions.section.usersSurvey" />
             <Flex direction="column" w={"100%"} padding={4}>
                 <Text fontSize="xl" mt="2" mb="2" color="grey">
                     {translate("pages.surveyResults.filter")}
@@ -291,17 +291,17 @@ export const UsersSurvey = () => {
                                 surveys.map((survey: SurveyInfo) => {
                                     return (
                                         <Tr key={survey.id}>
-                                            <Td>{survey.createdOn}</Td>
-                                            <Td>{survey.from}</Td>
-                                            <Td>{survey.classification}</Td>
-                                            <Td>{survey.foundLookingFor}</Td>
-                                            <Td>{survey.lookingFor}</Td>
-                                            <Td>{survey.searchCriteria}</Td>
-                                            <Td>{survey.visualization}</Td>
-                                            <Td>{survey.adequately}</Td>
-                                            <Td>{survey.interest}</Td>
-                                            <Td>{survey.organized}</Td>
-                                            <Td>{survey.impression}</Td>
+                                            <Td whiteSpace='normal' minW={'200px'}>{survey.createdOn}</Td>
+                                            <Td whiteSpace='normal'>{survey.from}</Td>
+                                            <Td whiteSpace='normal'>{survey.classification}</Td>
+                                            <Td whiteSpace='normal'>{survey.foundLookingFor}</Td>
+                                            <Td whiteSpace='normal'>{survey.lookingFor}</Td>
+                                            <Td maxW={'300px'} whiteSpace='normal'>{survey.searchCriteria}</Td>
+                                            <Td whiteSpace='normal'>{survey.visualization}</Td>
+                                            <Td whiteSpace='normal'>{survey.adequately}</Td>
+                                            <Td whiteSpace='normal'>{survey.interest}</Td>
+                                            <Td whiteSpace='normal'>{survey.organized}</Td>
+                                            <Td whiteSpace='normal'>{survey.impression}</Td>
                                         </Tr>
                                     );
                                 })}

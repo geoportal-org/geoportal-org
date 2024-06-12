@@ -284,6 +284,28 @@ export const pl = {
         resourceExtensions: {
             manage: "Zarządzaj wszystkimi wpisami rozszerzeń",
         },
+        sites: {
+            errorFetchingSelectSites: "Wystąpił błąd podczas pobierania listy witryn. Proszę spróbować ponownie.",
+            logoId: "ID dokumentu logo",
+            id: "ID",
+            image: "Obraz",
+            name: "Nazwa",
+            url: "URL",
+            modifiedOn: "Zmodyfikowano",
+            editSite: "Edytuj witrynę",
+            deleteSite: "Usuń witrynę",
+            delete: "Usuń",
+            addSite: "Dodaj witrynę",
+            addImage: "Dodaj obraz",
+            confirm: "Potwierdź",
+            confirmDeleteMsg: "Czy na pewno chcesz usunąć witrynę o ID:",
+            siteCreatedMsg: "Witryna została utworzona.",
+            siteUpdatedMsg: "Witryna została zaktualizowana.",
+            siteDeletedMsg: "Witryna została usunięta.",
+            siteCreationFail: "Wystąpił błąd podczas tworzenia witryny: ",
+            siteDeleteFail: "Wystąpił błąd podczas usuwania witryny: ",
+            siteUpdateFail: "Wystąpił błąd podczas aktualizowania witryny: ",
+        },
     },
     nav: {
         open: "Otwórz menu",
@@ -310,8 +332,8 @@ export const pl = {
                 workers: "Workery",
             },
         },
-        users: {
-            title: "Użytkownicy",
+        extensions: {
+            title: "Rozszerzenia",
             section: {
                 usersSurvey: "Wyniki ankiety",
                 entryResources: "Zasoby",

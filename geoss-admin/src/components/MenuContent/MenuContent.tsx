@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { FormikHelpers, FormikValues } from "formik";
 import { Tree, NodeModel, MultiBackend, getBackendOptions, DndProvider, TreeMethods } from "@minoru/react-dnd-treeview";
 import { DropOptions } from "@minoru/react-dnd-treeview/dist/types";
@@ -25,6 +25,7 @@ import { defaultUsedLang, initMenuPagination } from "@/data";
 import { addChildMenuItemForm, addMenuItemForm } from "@/data/forms";
 import styles from "./MenuContent.module.css";
 import { useIntl } from "react-intl";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const MenuContent = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -46,9 +47,12 @@ export const MenuContent = () => {
     const { translate } = useFormatMsg();
     const { locale } = useIntl();
 
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
+
     useEffect(() => {
         getMenuList();
-    }, []);
+    }, [currentSiteId]);
 
     const getMenuList = async () => {
         try {
@@ -56,7 +60,9 @@ export const MenuContent = () => {
                 _embedded: { menu: fullMenu },
             } = await MenuService.getMenuList(initMenuPagination);
             const menuStructure = sortMenuList(fullMenu);
-            setMenuList(() => menuStructure);
+            //get structure for current site
+            const siteStructure = menuStructure.filter((menuPiece) => menuPiece.data?.siteId === currentSiteId);
+            setMenuList(() => siteStructure);
         } catch (e) {
             setIsError(true);
         } finally {
@@ -350,7 +356,7 @@ export const MenuContent = () => {
             values[genericName][translation] = values[genericName][defaultTranslation];
         });
         const { title, imageTitle, imageSource, url } = values;
-        return { title, imageTitle, imageSource, url };
+        return { title, imageTitle, imageSource, url, siteId: currentSiteId };
     };
 
     const getNewItemData = (
@@ -374,7 +380,7 @@ export const MenuContent = () => {
         const levelId = parentMenuId === 0 ? 0 : 1;
         const priority = getNewItemPriority(parentMenuId);
         const { title, imageTitle = {}, imageSource = "", url } = values;
-        return { title, imageTitle, imageSource, url, levelId, parentMenuId, priority };
+        return { title, imageTitle, imageSource, url, levelId, parentMenuId, priority, siteId: currentSiteId };
     };
 
     const getNewItemPriority = (parentMenuId: number): number =>

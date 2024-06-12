@@ -15,6 +15,7 @@ import { pagesRoutes } from "./pagesRoutes";
 import { NavItem, NavSection } from "@/types";
 import RecommendationsIcon from "@/components/Icons/RecommendationsIcon";
 import PickaxeIcon from "@/components/Icons/PickaxeIcon";
+import { PortalIcon } from "@/components/Icons/PortalIcon";
 
 const navSettingsData: NavItem[] = [
     {
@@ -45,17 +46,6 @@ const navSettingsData: NavItem[] = [
         href: pagesRoutes.defaultLayer,
         Icon: LayerIcon,
     },
-    {
-        titleId: "nav.settings.section.recommendations",
-        href: pagesRoutes.recommendations,
-        Icon: RecommendationsIcon,
-    },
-    {
-        titleId: "nav.settings.section.workers",
-        href: pagesRoutes.workers,
-        Icon: PickaxeIcon,
-    },
-    
     // hidden tutorial tags in menu
     /*
     {
@@ -88,21 +78,36 @@ const navContentsData: NavItem[] = [
     },
 ];
 
-const navUsersData: NavItem[] = [
+const navExtensionsData: NavItem[] = [
     {
-        titleId: "nav.users.section.entryResources",
+        titleId: "nav.extensions.section.entryResources",
         href: pagesRoutes.entryResources,
         Icon: EntryIcon,
     },
     {
-        titleId: "nav.users.section.usersSurvey",
+        titleId: "nav.extensions.section.usersSurvey",
         href: pagesRoutes.survey,
         Icon: WebsiteIcon,
     },
     {
-        titleId: "nav.users.section.resourceExtensions",
+        titleId: "nav.extensions.section.resourceExtensions",
         href: pagesRoutes.resourceExtensions,
         Icon: ExtensionIcon,
+    },
+    {
+        titleId: "nav.settings.section.recommendations",
+        href: pagesRoutes.recommendations,
+        Icon: RecommendationsIcon,
+    },
+    {
+        titleId: "nav.settings.section.workers",
+        href: pagesRoutes.workers,
+        Icon: PickaxeIcon,
+    },
+    {
+        titleId: "nav.extensions.section.sites",
+        href: pagesRoutes.sites,
+        Icon: PortalIcon,
     },
 ];
 
@@ -124,7 +129,7 @@ const navProfileData: NavItem[] = [
 
 export const navData: NavSection[] = [
     { titleId: "nav.contents.title", items: navContentsData },
-    { titleId: "nav.users.title", items: navUsersData },
+    { titleId: "nav.extensions.title", items: navExtensionsData },
     { titleId: "nav.settings.title", items: navSettingsData },
     { titleId: "nav.profile.title", items: navProfileData },
 ];

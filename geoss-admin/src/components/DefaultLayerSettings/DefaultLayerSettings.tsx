@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { FormikHelpers, FormikValues } from "formik";
 import {
     ColumnDef,
@@ -20,6 +20,7 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import { TableActionsSource, ToastStatus } from "@/types";
 import { ILayer, ILayerData } from "@/types/models";
 import { initPagination } from "@/data";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const DefaultLayerSettings = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,9 @@ export const DefaultLayerSettings = () => {
     const router = useRouter();
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     useEffect(() => {
         handlePaginationParamsChange();
@@ -118,7 +122,7 @@ export const DefaultLayerSettings = () => {
     const getLayerData = (values: FormikValues): ILayerData => {
         const { name, url, visible } = values;
         const isVisible = visible === "true";
-        return { name, url, visible: isVisible };
+        return { name, url, visible: isVisible, siteId: currentSiteId };
     };
 
     const showErrorInfo = (msgId: string) =>

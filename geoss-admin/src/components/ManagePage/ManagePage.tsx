@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik, FormikErrors, FormikHelpers, FormikState, FormikTouched, FormikValues } from "formik";
 import { Flex } from "@chakra-ui/react";
 import { FormField, Loader, MainContent, PrimaryButton, TextContent } from "@/components";
@@ -19,6 +19,7 @@ import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus
 import { IContent, IPageData } from "@/types/models";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { useIntl } from "react-intl";
+import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const [currentTranslation, setCurrentTranslation] = useState<LocaleNames>(defaultUsedLang);
@@ -31,6 +32,9 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
     const { locale } = useIntl();
+
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     useEffect(() => {
         if (router.isReady) {
@@ -123,7 +127,12 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             }
             values[genericName][translation] = values[genericName][defaultTranslation];
         });
-        const pageData = { ...values, contentId: +values.contentId, published: isPublished } as IPageData;
+        const pageData = {
+            ...values,
+            contentId: +values.contentId,
+            published: isPublished,
+            siteId: currentSiteId,
+        } as IPageData;
         return pageData;
     };
 

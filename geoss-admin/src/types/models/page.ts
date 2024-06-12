@@ -11,6 +11,7 @@ export interface IPage {
     createdDate: string;
     modifiedBy: string;
     modifiedDate: string;
+    siteId: number | null;
     _links: {
         self: ILink;
         page: ILink;
@@ -23,6 +24,7 @@ export interface IPageData {
     contentId: number;
     slug: string;
     published: boolean;
+    siteId: number | null;
 }
 
 export interface IPageList {

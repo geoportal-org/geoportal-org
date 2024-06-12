@@ -467,6 +467,28 @@ export const en = {
         },
         resourceExtensions: {
             manage: "Manage all extensions entries",
+        },
+        sites: {
+            errorFetchingSelectSites: 'There was an error with fetching sites list. Please try again.',
+            logoId: 'LogoDocument ID',
+            id: 'ID',
+            image: 'Image',
+            name: 'Name',
+            url: 'URL',
+            modifiedOn: 'Modified on',
+            editSite: 'Edit site',
+            deleteSite: 'Delete site',
+            delete: 'Delete',
+            addSite: 'Add site',
+            addImage: 'Add image',
+            confirm: 'Confirm',
+            confirmDeleteMsg: "Are you sure you want to delete site with ID:",
+            siteCreatedMsg: 'Site has been created.',
+            siteUpdatedMsg: 'Site has been updated.',
+            siteDeletedMsg: 'Site has been deleted.',
+            siteCreationFail: 'There was an error while creating site: ',
+            siteDeleteFail: 'There was an error while deleting site: ',
+            siteUpdateFail: 'There was an error while updating site: '
         }
     },
     nav: {
@@ -494,12 +516,13 @@ export const en = {
                 workers: 'Workers'
             },
         },
-        users: {
-            title: "Users",
+        extensions: {
+            title: "Extensions",
             section: {
                 entryResources: "Entry resources",
                 usersSurvey: "Survey results",
-                resourceExtensions: 'Resource extensions'
+                resourceExtensions: 'Resource extensions',
+                sites: 'Community portals'
             }
         },
         profile: {
