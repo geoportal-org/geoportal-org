@@ -386,21 +386,15 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      API_URL: "https://gpp.devel.esaportal.eu"
-      BASE_URL: "https://gpp.devel.esaportal.eu"
       ADMIN_URL: "https://gpp-admin.devel.esaportal.eu"
-      KEYCLOAK_CLIENT_ID: geoss-ui
+      BASE_URL: "https://gpp.devel.esaportal.eu"
+      CURATED_URL: 'https://gpp-admin.devel.esaportal.eu/curated/rest/'
       KEYCLOAK_BASE_URL: "https://gpp-idp.devel.esaportal.eu/realms/geoss"
+      KEYCLOAK_CLIENT_ID: geoss-ui
       MATOMO_SITE_ID: 1
       MATOMO_TOKEN: ${GEOSS_MATOMO_TOKEN}
       MATOMO_URL: 'https://gpp.devel.esaportal.eu/matomo/?'
       PROXY_URL: 'https://gpp.devel.esaportal.eu/proxy/rest/'
-      CURATED_URL: 'https://gpp-admin.devel.esaportal.eu/curated/rest/'
-      ELS_CLIENT_ID: 'geoss-proxy'
-      ELS_CLIENT_SECRET: 'uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs'
-      ELS_USERNAME: 'geoss'
-      ELS_PASSWORD: 'geoss'
-      ELS_TOKEN_URL: 'https://gpp-idp.devel.esaportal.eu/realms/geoss/protocol/openid-connect/token'
       NODE_OPTIONS: "--max-old-space-size=4096"
       << : *proxy-variables
     ports:
