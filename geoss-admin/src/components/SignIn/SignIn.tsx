@@ -10,7 +10,7 @@ export const SignIn = () => {
     useEffect(() => {
         if (router.isReady) {
             setTimeout(
-                () => signIn("keycloak", { callbackUrl: `${process.env.NEXT_PUBLIC_URL}${pagesRoutes.website}` }),
+                () => signIn("keycloak", { callbackUrl: `${process.env.NEXTAUTH_URL}${pagesRoutes.website}` }),
                 0
             );
         }
