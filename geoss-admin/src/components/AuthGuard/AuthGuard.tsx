@@ -11,7 +11,7 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
     const isUser = !!session?.user;
 
     const handleUserLogout = async () => {
-        await fetch(`${process.env.NEXTAUTH_URL}/api/auth/signOutProvider`, { method: "PUT" }).then(async (res) =>
+        await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/auth/signOutProvider`, { method: "PUT" }).then(async (res) =>
             res.ok ? await signOut({ callbackUrl: pagesRoutes.signIn }) : console.error("Error with sign out.")
         );
     };
