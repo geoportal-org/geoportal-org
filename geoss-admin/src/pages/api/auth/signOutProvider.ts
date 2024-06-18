@@ -5,7 +5,7 @@ import { authOptions } from "./[...nextauth]";
 export default async function signOutProvider(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "PUT") {
         const session = await getServerSession(req, res, authOptions);
-        if (session?.tokenId) {
+        if (session?.accessToken) {
             try {
                 const endProviderSessionUrl = `${process.env.KEYCLOAK_BASE_URL}/protocol/openid-connect/logout`;
                 const endProviderSessionParams = new URLSearchParams();

@@ -65,13 +65,12 @@ export const authOptions: NextAuthOptions = {
         maxAge: 5 * 60 * 1000,
     },
     callbacks: {
-        jwt: async ({ token, account, user, profile }) => {
+        jwt: async ({ token, account, user }) => {
             if (account && user) {
                 token.accessToken = account.access_token;
-                token.accessTokenExpired = account.expires_at,
+                token.accessTokenExpired = account.expires_at;
                 token.refreshToken = account.refresh_token;
                 token.user = user;
-                token.tokenId = account.id_token;
                 return token;
                 //@ts-ignore
             } else if (Date.now() < token.accessTokenExpired) {
@@ -81,12 +80,10 @@ export const authOptions: NextAuthOptions = {
             }
         },
         session: async ({ session, token }) => {
-            console.log(token)
             session.accessToken = token.accessToken as string;
-            session.tokenId = token.tokenId as string;
             session.expires = token.refreshTokenExpired as string;
             //@ts-ignore
-            session.userId = token.user.id
+            session.userId = token.user.id;
             return session;
         },
     },
