@@ -1,12 +1,13 @@
 #!/bin/sh
 
-for cmd in basename cat getopt curl jq; do
+for cmd in basename dirname cat getopt curl jq; do
     if ! [ -x "$(command -v $cmd)" ]; then
         echo "Error: $cmd is not installed." 1>&2
         exit 1
     fi
 done
 
+PROGDIR=$(dirname "$0")
 PROGNAME=$(basename "$0")
 
 usage() {
@@ -70,21 +71,6 @@ if [ -z "${KC_USER_PASS}" ]; then
     usage
 fi
 
-bearer_token() {
-    baseurl=$1
-    username=$2
-    password=$3
-    token=$(curl --location --request POST "$baseurl/realms/geoss/protocol/openid-connect/token" \
-    --header 'Content-Type: application/x-www-form-urlencoded' \
-    --data-urlencode 'client_id=admin-cli' \
-    --data-urlencode 'grant_type=password' \
-    --data-urlencode 'username='"$username" \
-    --data-urlencode 'password='"$password" \
-    2>/dev/null \
-    | jq -r '.access_token')
-    echo "$token"
-}
-
 user_representation() {
     first_name=$1
     last_name=$2
@@ -136,7 +122,7 @@ import_user() {
     baseurl=$1
     accesstoken=$2
     userrepresentation=$3
-    response=$(curl --location --request POST "$baseurl/admin/realms/geoss/users" \
+    response=$(curl -X POST "$baseurl/admin/realms/geoss/users" \
     --header 'Content-Type: application/json' \
     --header 'Authorization: Bearer '"$accesstoken" \
     --data-raw "$userrepresentation" \
@@ -144,13 +130,17 @@ import_user() {
     echo "$response"
 }
 
-access_token=$(bearer_token "$KC_BASE_URL" "$KC_USER_NAME" "$KC_USER_PASS")
+ADMIN_ACCESS_TOKEN="$PROGDIR/get_admin_access_token.sh"
+export KC_BASE_URL=$KC_BASE_URL
+export KC_USER_NAME=$KC_USER_NAME
+export KC_USER_PASS=$KC_USER_PASS
+access_token=$($ADMIN_ACCESS_TOKEN)
 
-INPUT=liferay_users.csv
-[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
+INPUT="$PROGDIR/liferay_users.csv"
+[ ! -f "$INPUT" ] && { echo "$INPUT file not found"; exit 99; }
 OLDIFS=$IFS
 IFS=','
-exec < $INPUT
+exec < "$INPUT"
 read -r header
 echo "HEAD: $header"
 while read -r firstName lastName username enabled email emailVerified locale liferay_user_id password

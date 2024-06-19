@@ -1,12 +1,13 @@
 #!/bin/sh
 
-for cmd in basename cat getopt mysql tr; do
+for cmd in basename dirname cat getopt mysql tr; do
     if ! [ -x "$(command -v $cmd)" ]; then
         echo "Error: $cmd is not installed." 1>&2
         exit 1
     fi
 done
 
+PROGDIR=$(dirname "$0")
 PROGNAME=$(basename "$0")
 
 usage() {
@@ -92,4 +93,5 @@ fi
 
 query="SELECT firstName, lastName, screenName AS username, (CASE WHEN status = '0' THEN 'true' ELSE 'false' END) AS enabled, emailAddress AS email, (CASE WHEN emailAddressVerified = '0' THEN 'true' ELSE 'false' END) AS emailVerified, SUBSTRING(languageId, 1, 2) AS locale, userId AS liferay_user_id, password_ AS password FROM User_ WHERE defaultUser != 1;"
 
-mysql --host=$LF_DB_HOST --port=$LF_DB_PORT --database=$LF_DB_NAME --user=$LF_DB_USER --password=$LF_DB_PASS --batch -e "$query" | tr '\t' ',' | tr -d '\r' >liferay_users.csv
+OUTPUT="$PROGDIR/liferay_users.csv"
+mysql --host="$LF_DB_HOST" --port="$LF_DB_PORT" --database="$LF_DB_NAME" --user="$LF_DB_USER" --password="$LF_DB_PASS" --batch -e "$query" | tr '\t' ',' | tr -d '\r' > "$OUTPUT"

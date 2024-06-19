@@ -48,13 +48,14 @@ e.g. with environments
 export KC_BASE_URL=https://gpp-idp.devel.esaportal.eu
 export KC_USER_NAME=geoss
 export KC_USER_PASS=*****
+./import_users_from_liferay.sh
 ```
 e.g. with parameters
 ```
 ./import_users_from_liferay.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=********
 ```
 
-### get_access_token
+### get_admin_access_token
 This script login user to Keycloak and print access token to be used in other requests.
 
 e.g. with environments
@@ -62,24 +63,42 @@ e.g. with environments
 export KC_BASE_URL=https://gpp-idp.devel.esaportal.eu
 export KC_USER_NAME=geoss
 export KC_USER_PASS=*****
+./get_admin_access_token.sh
 ```
 e.g. with parameters
 ```
-./get_access_token.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=********
+./get_admin_access_token.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=********
 ```
 
-### get_user_id_map
-This script print map with old liferay user id and new user id from keycloak.
+### get_impersonation_access_token
+This script login admin user to Keycloak, next exchange token to impersonate user and print impersonate access token to be used in other requests.
+User id to impersonation should be pass to script by argument.
 
 e.g. with environments
 ```
 export KC_BASE_URL=https://gpp-idp.devel.esaportal.eu
 export KC_USER_NAME=geoss
 export KC_USER_PASS=*****
+./get_impersonation_access_token.sh 979f41e9-569f-4115-b474-af683ad8e976
 ```
 e.g. with parameters
 ```
-./get_user_id_map.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=********
+./get_impersonation_access_token.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=******** 979f41e9-569f-4115-b474-af683ad8e976
+```
+
+### get_user_id_mapping
+This script exports map from with old liferay user id and new user id from keycloak to cs file `users_ids_mapping.csv`
+
+e.g. with environments
+```
+export KC_BASE_URL=https://gpp-idp.devel.esaportal.eu
+export KC_USER_NAME=geoss
+export KC_USER_PASS=*****
+./get_user_id_mapping.sh
+```
+e.g. with parameters
+```
+./get_user_id_mapping.sh --baseurl=https://gpp-idp.devel.esaportal.eu --username=geoss --password=********
 ```
 
 ### get_user_id_by_liferay_user_id

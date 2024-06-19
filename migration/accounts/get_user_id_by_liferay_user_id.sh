@@ -1,12 +1,13 @@
 #!/bin/sh
 
-for cmd in basename cat getopt curl jq; do
+for cmd in basename dirname cat getopt curl jq; do
     if ! [ -x "$(command -v $cmd)" ]; then
         echo "Error: $cmd is not installed." 1>&2
         exit 1
     fi
 done
 
+PROGDIR=$(dirname "$0")
 PROGNAME=$(basename "$0")
 
 usage() {
@@ -69,27 +70,23 @@ if [ -z "${KC_USER_PASS}" ]; then
     echo 'error: missing environment -- KC_USER_PASS' 1>&2
     usage
 fi
+if [ $# -ne 1 ]; then
+    usage
+fi
 
-bearer_token() {
-    baseurl=$1
-    username=$2
-    password=$3
-    token=$(curl --location --request POST "$baseurl/realms/geoss/protocol/openid-connect/token" \
-    --header 'Content-Type: application/x-www-form-urlencoded' \
-    --data-urlencode 'client_id=admin-cli' \
-    --data-urlencode 'grant_type=password' \
-    --data-urlencode 'username='"$username" \
-    --data-urlencode 'password='"$password" \
-    2>/dev/null \
-    | jq -r '.access_token')
-    echo "$token"
-}
-
-access_token=$(bearer_token "$KC_BASE_URL" "$KC_USER_NAME" "$KC_USER_PASS")
+ADMIN_ACCESS_TOKEN="$PROGDIR/get_admin_access_token.sh"
+export KC_BASE_URL=$KC_BASE_URL
+export KC_USER_NAME=$KC_USER_NAME
+export KC_USER_PASS=$KC_USER_PASS
+access_token=$($ADMIN_ACCESS_TOKEN)
 
 liferay_user_id=$1
-keycloak_user_id=$(curl --location --request GET "$KC_BASE_URL/admin/realms/geoss/users?q=liferay_user_id:$liferay_user_id" \
---header "Authorization: Bearer $access_token" \
-2>/dev/null \
-| jq -r '.[].id')
-echo "$keycloak_user_id"
+keycloak_response=$(curl -X GET "$KC_BASE_URL/admin/realms/geoss/users?q=liferay_user_id:$liferay_user_id" \
+--header "Authorization: Bearer $access_token")
+keycloak_user_id=$(echo "$keycloak_response" | jq -r '.[].id')
+if [ "" = "${keycloak_user_id}" ]; then
+    echo '{"error":"invalid_liferay_user_id","error_description":"User not found"}' 1>&2
+    exit 1
+else
+    echo "$keycloak_user_id"
+fi

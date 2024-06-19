@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for cmd in basename cat getopt curl jq; do
+for cmd in basename dirname cat getopt curl jq; do
     if ! [ -x "$(command -v $cmd)" ]; then
         echo "Error: $cmd is not installed." 1>&2
         exit 1
@@ -72,23 +72,36 @@ fi
 
 bearer_token() {
     baseurl=$1
-    username=$2
-    password=$3
-    token=$(curl --location --request POST "$baseurl/realms/geoss/protocol/openid-connect/token" \
+    clientid=$2
+    username=$3
+    password=$4
+    response=$(curl -X POST "$baseurl/realms/geoss/protocol/openid-connect/token" \
     --header 'Content-Type: application/x-www-form-urlencoded' \
-    --data-urlencode 'client_id=admin-cli' \
+    --data-urlencode 'client_id='"$clientid" \
     --data-urlencode 'grant_type=password' \
     --data-urlencode 'username='"$username" \
     --data-urlencode 'password='"$password" \
-    2>/dev/null \
-    | jq -r '.access_token')
-    echo "$token"
+    --data-urlencode 'scope=openid profile roles' \
+    )
+    status=$?
+    if [ $status -ne 0 ]; then
+        echo '{"error":"curl_error","error_description":"Error getting access token"}' 1>&2
+        exit $status;
+    fi
+    token=$(echo "$response" | jq -r '.access_token')
+    if [ "null" = "${token}" ]; then
+        echo "$response" 1>&2
+        exit 9
+    else
+        echo "$token"
+    fi
+    return $status
 }
 
-access_token=$(bearer_token "$KC_BASE_URL" "$KC_USER_NAME" "$KC_USER_PASS")
-
-keycloak_users=$(curl --location --request GET "$KC_BASE_URL/admin/realms/geoss/users" \
---header "Authorization: Bearer $access_token" \
-2>/dev/null \
-| jq -r '.[] | "\(.attributes.liferay_user_id[]?),\(.id)"')
-echo "$keycloak_users"
+KC_CLIENT_ID="admin-cli"
+access_token=$(bearer_token "$KC_BASE_URL" "$KC_CLIENT_ID" "$KC_USER_NAME" "$KC_USER_PASS")
+status=$?
+if [ $status -ne 0 ]; then
+    exit $status;
+fi
+echo "$access_token"
