@@ -13,7 +13,7 @@ pip install mysql-connector-python
 pip install python-keycloak
 ```
 
-Configure database connection in the script export_users_settings_from_liferay.py
+Configure database connection in the script export_saved_runs_from_liferay.py
 ```python
 'user': 'DB_USER',
 'password': 'DB_PASSWORD',
@@ -22,15 +22,15 @@ Configure database connection in the script export_users_settings_from_liferay.p
 ```
 Run the script
 ```sh
-python export_users_settings_from_liferay.py
+python export_saved_runs_from_liferay.py
 ```
 
-A file with the exported data users_settings.json should be created.
+A file with the exported data saved_runs.json should be created.
 
-Change the configuration in the import_users_settings_from_liferay.py script to the API for the specific environment.
+Change the configuration in the import_saved_runs_from_liferay.py script to the API for the specific environment.
 For DEV, the configuration is:
 ```sh
-API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/settings'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/saved-runs'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
 KC_USER_PASS = '*****'
@@ -38,11 +38,11 @@ KC_USER_PASS = '*****'
 
 Run the script
 ```sh
-python import_users_settings_from_liferay.py
+python import_saved_runs_from_liferay.py
 ```
 
 The script processing is finished when the message 'Total execution time' appears.
 If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The users_settings.json data file needs to be archived.
+The saved_runs.json data file needs to be archived.

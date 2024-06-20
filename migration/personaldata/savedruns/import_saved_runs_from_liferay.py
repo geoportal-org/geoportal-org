@@ -6,7 +6,7 @@ from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
 from keycloak import KeycloakOpenIDConnection
 
-API_URL = 'https://gpp.devel.esaportal.eu/personaldata/rest/settings'
+API_URL = 'https://gpp.devel.esaportal.eu/personaldata/rest/saved-runs'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
 KC_USER_PASS = ''
@@ -19,7 +19,7 @@ def main():
     keycloak_openid = get_keycloak_openid()
     admin_access_token = get_admin_access_token(keycloak_openid)
 
-    data = load_data('users_settings.json')
+    data = load_data('saved_runs.json')
     failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
 
     log_end_time(start_time)
@@ -149,10 +149,10 @@ def create_headers(access_token):
 
 def create_payload(record):
     return {
-        "greeting": record.get('greeting', ''),
-        "jobTitle": record.get('jobTitle', ''),
-        "organization": record.get('organization', ''),
-        "opacity": record.get('opacity', ''),
+        "name": record.get('name', ''),
+        "runId": record.get('runId', ''),
+        "workflowId": record.get('workflowId', ''),
+        "path": record.get('path', ''),
     }
 
 
