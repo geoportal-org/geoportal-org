@@ -10,6 +10,7 @@ export interface IDocument {
     createdDate: string;
     modifiedBy: string;
     modifiedDate: string;
+    siteId: number | null;
     _links: {
         self: ILink;
         document: ILink;

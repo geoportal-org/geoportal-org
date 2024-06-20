@@ -62,7 +62,8 @@ export const FileRepository = () => {
             const {
                 _embedded: { document },
             } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
-            setDocumentsList(() => document);
+            const siteDocuments = document.filter((documentPiece) => documentPiece.siteId === currentSiteId);
+            setDocumentsList(() => siteDocuments);
         } catch (e) {
             console.error(e);
         } finally {

@@ -86,8 +86,6 @@ export const FileRepositoryManageFile = ({
         const fileInfo = getNewFileData(values);
         formData.set("files", file, file.name);
         formData.set("model", JSON.stringify(fileInfo));
-        //@ts-ignore
-        formData.set("siteId", currentSiteId);
         return formData;
     };
 
@@ -101,6 +99,7 @@ export const FileRepositoryManageFile = ({
             extension,
             path: path,
             folderId: currentFolder,
+            siteId: currentSiteId
         };
     };
 
