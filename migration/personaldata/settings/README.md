@@ -7,9 +7,10 @@ Install the package manager pip and check version
 ```sh
 pip --version
 ```
-Install the additional library mysql-connector-python using pip
+Install the additional library mysql-connector-python and python-keycloak using pip
 ```sh
 pip install mysql-connector-python
+pip install python-keycloak
 ```
 
 Configure database connection in the script export_users_settings_from_liferay.py
@@ -26,14 +27,12 @@ python export_users_settings_from_liferay.py
 
 A file with the exported data users_settings.json should be created.
 
-Change the URL in the import_users_settings.py script to the API for the specific environment. For DEV, the URL is:
+Change the configuration in the import_users_settings.py script to the API for the specific environment. For DEV, the configuration is:
 ```sh
-url = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/settings'
-```
-
-Generate an ACCESS_TOKEN and place it in the script in the header:
-```sh
-'Authorization': 'Bearer ACCESS_TOKEN'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/settings'
+KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
+KC_USER_NAME = 'geoss'
+KC_USER_PASS = '*****'
 ```
 
 Run the script

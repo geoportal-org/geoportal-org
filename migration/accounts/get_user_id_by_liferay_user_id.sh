@@ -71,6 +71,7 @@ if [ -z "${KC_USER_PASS}" ]; then
     usage
 fi
 if [ $# -ne 1 ]; then
+    echo 'error: missing argument -- liferay_user_id' 1>&2
     usage
 fi
 
