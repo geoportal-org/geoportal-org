@@ -42,7 +42,7 @@ export const FileRepositoryFileInfo = ({ document }: FileRepositoryFileInfoProps
                     >
                         {!!isLink && !!navigator && !!navigator.clipboard && !!navigator.clipboard.writeText && (
                             <IconButton
-                                onClick={() => copyText(value)}
+                                onClick={() => copyText(value?.toString() || '')}
                                 aria-label={translate("pages.file-repository.copy")}
                                 size="sm"
                                 h="auto"
@@ -71,7 +71,7 @@ export const FileRepositoryFileInfo = ({ document }: FileRepositoryFileInfoProps
                         </Text>
                     ) : (
                         <Link
-                            href={value}
+                            href={value?.toString() || ''}
                             isExternal
                             overflow="hidden"
                             textOverflow="ellipsis"
