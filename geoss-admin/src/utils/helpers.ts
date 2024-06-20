@@ -60,7 +60,7 @@ export const generateFileLink = (fileId: string): string =>
 export const getFileInformation = (
     file: IDocument,
     locale: string
-): { labelId: string; value: string; isLink: boolean }[] => {
+): { labelId: string; value: string | number | null; isLink: boolean }[] => {
     const { _links, modifiedBy, folderId, path, ...fileInfo } = file;
     const fileId = getIdFromUrl(_links.self.href);
     const extendedFileInfo = { ...fileInfo, link: generateFileLink(fileId) };
@@ -68,7 +68,7 @@ export const getFileInformation = (
         labelId: `pages.file-repository.file-${key}`,
         value: !key.toLowerCase().includes("date")
             ? extendedFileInfo[key as keyof typeof extendedFileInfo]
-            : convertIsoDate(extendedFileInfo[key as keyof typeof extendedFileInfo], locale),
+            : convertIsoDate(extendedFileInfo[key as keyof typeof extendedFileInfo]?.toString() || "", locale),
         isLink: key === "link",
     }));
 };
@@ -241,8 +241,11 @@ export const setTableSorting = (sortingInfo: SortingState): { sort: string } => 
 export const getSelectedTableItemsIds = <T extends object>(table: Table<T>): number[] =>
     table.getFilteredSelectedRowModel().rows.map((row) => +getIdFromUrl(row.getValue("id")));
 
-export const createWebSettingsKeyValues = (values: FormikValues, currentSiteId: number | null): { set: string; key: string; value: string, siteId: number | null }[] => {
-    const keyValues: { set: string; key: string; value: string, siteId: number | null }[] = [];
+export const createWebSettingsKeyValues = (
+    values: FormikValues,
+    currentSiteId: number | null
+): { set: string; key: string; value: string; siteId: number | null }[] => {
+    const keyValues: { set: string; key: string; value: string; siteId: number | null }[] = [];
     webSettingsForm.forEach(({ set, data }) => {
         data.forEach(({ name }) =>
             keyValues.push({
@@ -252,22 +255,25 @@ export const createWebSettingsKeyValues = (values: FormikValues, currentSiteId: 
                     set === "logo" && name === "source"
                         ? `/contents/rest/document/${values[name]}/content`
                         : values[name],
-                siteId: currentSiteId
+                siteId: currentSiteId,
             })
         );
     });
     return keyValues;
 };
 
-export const createApiSettingsKeyValues = (values: FormikValues, currentSiteId: number | null): { set: string; key: string; value: string, siteId: number | null }[] => {
-    const keyValues: { set: string; key: string; value: string, siteId: number | null }[] = [];
+export const createApiSettingsKeyValues = (
+    values: FormikValues,
+    currentSiteId: number | null
+): { set: string; key: string; value: string; siteId: number | null }[] => {
+    const keyValues: { set: string; key: string; value: string; siteId: number | null }[] = [];
     apiSettingsForm.forEach(({ set, data }) => {
         data.forEach(({ name }) =>
             keyValues.push({
                 set,
                 key: name,
                 value: values[name],
-                siteId: currentSiteId
+                siteId: currentSiteId,
             })
         );
     });
@@ -379,7 +385,6 @@ export const getViewsSideBarTitleId = (
     return titleId + "edit";
 };
 
-
 // create folders & documents structure ready to create directory tree
 export const createFileTree = (folders: IFolder[], documents: IDocument[]): FileRepositoryTreeItem[] => {
     const fileTree: FileRepositoryTreeItem[] = [
@@ -415,5 +420,3 @@ const assignFileTreeItem = (newItem: IFolder | IDocument, fileTreeItem: FileRepo
         }
     });
 };
-
-

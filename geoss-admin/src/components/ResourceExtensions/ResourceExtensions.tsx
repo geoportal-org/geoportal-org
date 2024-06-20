@@ -52,6 +52,7 @@ export const ResourceExtensions = () => {
 
     useEffect(() => {
         fetchExtensions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchExtensions = async (page = 0, numberOfHits = 20) => {
@@ -151,7 +152,7 @@ export const ResourceExtensions = () => {
             extension.forEach((tOption) => {
                 transferOptions.push({
                     name: tOption.name,
-                    description: tOption.description || '',
+                    description: tOption.description || "",
                     title: tOption.displayTitle,
                     protocol: {
                         value: tOption.protocol.value,

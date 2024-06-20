@@ -98,6 +98,7 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
         if (isUpdate) {
             getEntry();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady]);
 
     const getSelectOptions = async () => {

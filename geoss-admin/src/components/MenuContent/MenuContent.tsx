@@ -52,6 +52,7 @@ export const MenuContent = () => {
 
     useEffect(() => {
         getMenuList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
     const getMenuList = async () => {

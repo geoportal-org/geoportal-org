@@ -49,6 +49,7 @@ export const FileRepository = () => {
 
     useEffect(() => {
         getFileRepositoryItems();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
     const getFileRepositoryItems = async () => {

@@ -16,12 +16,14 @@ const HeaderSiteSelect = () => {
 
     useEffect(() => {
         getAllSitesList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (router.asPath === "/sites" && currentSiteId !== 0) {
             router.push("/");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
     const getAllSitesList = async () => {

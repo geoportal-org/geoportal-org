@@ -52,6 +52,7 @@ export const EntryResources = () => {
 
     useEffect(() => {
         fetchResources();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchResources = async (page = 0, numberOfHits = 20) => {
@@ -79,7 +80,9 @@ export const EntryResources = () => {
             fetchResources(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.approved")}.`,
+                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate(
+                    "pages.curatedToastsMessages.approved"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
@@ -92,7 +95,9 @@ export const EntryResources = () => {
             fetchResources(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.deleted")}.`,
+                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate(
+                    "pages.curatedToastsMessages.deleted"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
@@ -105,7 +110,9 @@ export const EntryResources = () => {
             fetchResources(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.denied")}.`,
+                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate(
+                    "pages.curatedToastsMessages.denied"
+                )}.`,
             });
         } catch (e) {
             console.log(e);
@@ -118,7 +125,9 @@ export const EntryResources = () => {
             fetchResources(pagesInfo.number, 20);
             showToast({
                 title: translate("pages.curatedToastsMessages.statusChange"),
-                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate("pages.curatedToastsMessages.pending")}.`,
+                description: `${translate("pages.curatedToastsMessages.entryID")} ${userResourceId} ${translate(
+                    "pages.curatedToastsMessages.pending"
+                )}.`,
             });
         } catch (e) {
             console.log(e);

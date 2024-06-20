@@ -73,6 +73,7 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
         if (!router.isReady) return;
         getSelectOptions();
         getEntry();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady]);
 
     const handleSubmit = async (e: any) => {
