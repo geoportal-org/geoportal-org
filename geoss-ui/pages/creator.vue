@@ -109,7 +109,7 @@
 
 <script>
 import GeossSearchApiService from '@/services/geoss-search.api.service';
-import webSettingsAPI from '@/api/webSettings'
+import WebSettingsAPI from '@/api/webSettings'
 import ContentAPI from '@/api/content'
 import defaultViews from '@/data/views'
 import NotificationService from '@/services/notification.service';
@@ -123,11 +123,10 @@ export default {
         return {
             step: 0,
             settings: null,
+            siteData: null,
             views: [],
             username: '',
             password: '',
-            nameFieldId: null,
-            logoFieldId: null,
             defaultView: null,
             baseUrl: this.$config.baseUrl,
             adminUrl: this.$config.adminUrl
@@ -158,14 +157,8 @@ export default {
                 );
                 return false
             } else {
-                await webSettingsAPI.setSiteSetting(this.nameFieldId, {
-                    set: 'logo',
-                    key: 'title',
-                    value: this.$refs.site_name.value
-                }, this.$auth.getToken('keycloak'))
 
                 const logo = await ContentAPI.addContent(this.$refs.site_logo.files[0], this.$auth.getToken('keycloak'))
-
                 if (logo.errors && logo.errors.length || logo.error) {
                     NotificationService.show(
                         'Community Portal Configuration',
@@ -178,12 +171,7 @@ export default {
                     return
                 }
 
-                await webSettingsAPI.setSiteSetting(this.logoFieldId, {
-                    set: 'logo',
-                    key: 'source',
-                    value: `/contents/rest/document/${logo}/content`
-                }, this.$auth.getToken('keycloak'))
-
+                await ContentAPI.updateSite(this.siteData, this.$auth.getToken('keycloak'))
                 this.next();
             }
         },
@@ -201,7 +189,7 @@ export default {
                     title: this.defaultView.title,
                     defaultOption: false,
                 }
-                await webSettingsAPI.updateView(this.defaultView.id, viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.updateView(this.defaultView.id, viewData, this.$auth.getToken('keycloak'));
             }
 
             const id = selectedView.attributes['data-id'].value
@@ -215,7 +203,7 @@ export default {
                     defaultOption: true,
                 }
 
-                await webSettingsAPI.updateView(id, viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.updateView(id, viewData, this.$auth.getToken('keycloak'));
                 this.next()
             }
         },
@@ -227,7 +215,7 @@ export default {
                     title: view.title,
                     defaultOption: false,
                 }
-                await webSettingsAPI.setView(viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.setView(viewData, this.$auth.getToken('keycloak'));
             }
             this.views = await GeossSearchApiService.getViewsOptions()
         },
@@ -292,9 +280,8 @@ export default {
                 } else {
                     this.getCurrentDefaultView();
                 }
-                this.settings = await webSettingsAPI.getSiteSettingsRaw()
-                this.nameFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'title') ? this.settings.find(e => e.set === 'logo' && e.key === 'title').id : null;
-                this.logoFieldId = this.settings.find(e => e.set === 'logo' && e.key === 'source') ? this.settings.find(e => e.set === 'logo' && e.key === 'source').id : null;
+                this.settings = await WebSettingsAPI.getSiteSettingsRaw()
+                this.siteData = await ContentAPI.getSiteByUrl(this.$route.params.siteurl)
             }
         },
     },

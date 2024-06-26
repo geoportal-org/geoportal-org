@@ -5,6 +5,7 @@ export enum SearchEngineActions {
     setSiteName = 'searchEngine/setSiteName',
     setSiteLogo = 'searchEngine/setSiteLogo',
     setSiteUrl = 'searchEngine/setSiteUrl',
+    setSiteId = 'searchEngine/setSiteId',
     setTourUrl = 'searchEngine/setTourUrl',
     setDabDataProvidersUrl = 'searchEngine/setDabDataProvidersUrl',
     setW3wKey = 'searchEngine/setW3wKey',

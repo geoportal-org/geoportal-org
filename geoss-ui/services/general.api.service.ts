@@ -10,6 +10,7 @@ import {
 } from './geoss-search.api.service'
 import SearchEngineService from './search-engine.service'
 import webSettingsAPI from '@/api/webSettings'
+import contentAPI from '@/api/content'
 
 axiosCancel(axios)
 
@@ -120,8 +121,8 @@ export const GeneralApiService = {
         //     })
     },
 
-    getSiteSettings() {
-        return webSettingsAPI.getSiteSettings()
+    getSiteSettings(siteUrl = 'global') {
+        return webSettingsAPI.getSiteSettings(siteUrl)
 
         // return makeRequest(
         //     'get',
@@ -158,6 +159,10 @@ export const GeneralApiService = {
         //     .catch(() => {
         //         return Promise.resolve(null)
         //     })
+    },
+
+    getSiteData(siteUrl = 'global') {
+        return contentAPI.getSiteByUrl(siteUrl)
     },
 
     getMenuItems(locale: string) {

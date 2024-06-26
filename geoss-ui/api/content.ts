@@ -62,7 +62,30 @@ interface Content {
     }
 }
 
+const getSiteId = (site: Site) => {
+    return site._links.self.href.split('/').pop() * 1
+}
+
 type Language = 'en' | 'es' | 'fr' | 'pl' | 'ru' | 'zh'
+
+interface Site {
+    [key: string]: any
+}
+interface SiteData {
+    name: string
+    url: string
+    logoUrl: string
+    siteId?: number
+}
+
+const parseSiteData = (data: Site): SiteData => {
+    return {
+        name: data.name,
+        url: data.url,
+        logoUrl: `/contents/rest/document/${data.logoDocumentId}/content`,
+        siteId: getSiteId(data)
+    }
+}
 
 const getPages = () => {
     return apiClient.$get(geossContents.page, {
@@ -91,6 +114,7 @@ const getNewFileData = (inputFile: any) => {
         extension,
         path: 0,
         folderId: 0,
+        siteId: 0,
     }
 }
 
@@ -162,6 +186,68 @@ const ContentAPI = {
             return e.response.data
         }
     },
+
+    getSiteByUrl: async (siteUrl: string = 'global') => {
+        try {
+            const site: Site = await apiClient.$get(
+                geossContents.siteByUrl + '?url=' + siteUrl,
+                {
+                    headers: {
+                        Authorization: '',
+                    },
+                }
+            )
+
+            const siteData: SiteData = parseSiteData(site)
+            return siteData
+        } catch (e: any) {
+            console.warn(e)
+            return {}
+        }
+    },
+
+    getSiteById: async (siteId: number = 0) => {
+        try {
+            const site: Site = await apiClient.$get(
+                geossContents.site + '/' + siteId,
+                {
+                    headers: {
+                        Authorization: '',
+                    },
+                }
+            )
+
+            const siteData: SiteData = parseSiteData(site)
+            return siteData
+        } catch (e: any) {
+            console.warn(e)
+            return {}
+        }
+    },
+
+    updateSite: async (siteData: SiteData, token: any = null) => {
+        if (!siteData) return
+
+        const updatedSiteData: SiteData = {...{}, ...siteData}
+        delete updatedSiteData.siteId
+
+        try {
+            const resp = await apiClient.$post(
+                geossContents.site + '/' + siteData.siteId,
+                updatedSiteData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: token ? token : '',
+                    },
+                }
+            )
+            return resp._links.document.href.split('/').slice(-1).pop()
+        } catch (e: any) {
+            console.warn(e)
+            return e.response.data
+        }
+    }
 }
 
 export default ContentAPI

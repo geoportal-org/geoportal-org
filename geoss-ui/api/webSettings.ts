@@ -49,10 +49,7 @@ interface WebSettingsData {
 }
 
 interface SiteSettings {
-    name: string
     defaultDataSource: string
-    url: string
-    logoUrl: string
     mapZoom: number
     latitude: number
     longitude: number
@@ -144,10 +141,7 @@ const parseApiSettings = (data: any): any => {
 
 const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
     return {
-        name: data.logo_title,
         defaultDataSource: data.source_GEOSS,
-        url: '/',
-        logoUrl: data.logo_source,
         mapZoom: Number(data.map_zoom),
         latitude: Number(data.map_latitude),
         longitude: Number(data.map_longitude),
@@ -183,7 +177,7 @@ export default {
         )
         return webSettings._embedded.webSettings
     },
-    getSiteSettings: async () => {
+    getSiteSettings: async (siteUrl: String = '') => {
         const webSettings: WebSettings = await apiClient.$get(
             geossSettings.webSettings,
             {

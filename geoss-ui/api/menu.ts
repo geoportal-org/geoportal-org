@@ -100,13 +100,27 @@ const buildMenu = (menu: Array<MenuElement>) => {
 }
 
 export default {
-    getMenu: async () => {
-        const menuRaw: MenuResponse = await apiClient.$get(geossContents.menu, {
-            headers: {
-                Authorization: '',
-            },
+    getMenu: async (siteId: number = 0) => {
+        const levels = [0, 1];
+        const promises = [];
+
+        for (const level of levels) {
+            promises.push(
+                new Promise((resolve) => {
+                    apiClient.$get(geossContents.menu + '&siteId=' + siteId + '&levelId=' + level, {
+                        headers: {
+                            Authorization: '',
+                        },
+                    }).then((menuRaw: MenuResponse) => {
+                        resolve(menuRaw._embedded.menu)
+                    })
+                })
+            )
+        }
+
+        return Promise.all(promises).then((menuLevels) => {
+            const menuFlat: any = menuLevels.flat();
+            return buildMenu(menuFlat)
         })
-        const menu = buildMenu(menuRaw._embedded.menu)
-        return menu
     },
 }

@@ -124,6 +124,43 @@ export default {
         },
     },
 
+    router: {
+        extendRoutes (routes, resolve) {
+            // Community Portals siteUrl support
+            const routesToAdd = [
+                {
+                    name: 'community-siteurl',
+                    path: '/community/:siteurl',
+                    component: resolve(__dirname, 'pages/index.vue'),
+                    chunkName: 'pages/index'
+                },
+                {
+                    name: 'community-siteurl-slug',
+                    path: '/community/:siteurl/:slug',
+                    component: resolve(__dirname, 'pages/_slug.vue'),
+                    chunkName: 'pages/_slug'
+                }
+            ];
+
+            const existingRoutesToRemove = routesToAdd.map(route => route.name);
+
+            const generateRoutes = routes.filter((route) => {
+                return !existingRoutesToRemove.includes(route.name);
+            });
+
+            routesToAdd.forEach(({ name, path, component, chunkName }) => {
+                generateRoutes.push({
+                    name,
+                    path,
+                    component,
+                    chunkName
+                });
+            });
+
+            routes.splice(0, routes.length, ...generateRoutes);
+        }
+    },
+
     styleResources: {
         scss: ['@/assets/scss/variables.scss'],
     },

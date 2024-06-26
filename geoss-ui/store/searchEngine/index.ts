@@ -5,6 +5,7 @@ const state = () => ({
     siteName: '',
     siteLogo: '',
     siteUrl: '/',
+    siteId: 0,
     tourUrl: '/',
     dabDataProvidersUrl: null,
     w3wKey: null,
@@ -31,6 +32,9 @@ const getters = {
     },
     siteUrl: (state: any) => {
         return state.siteUrl
+    },
+    siteId: (state: any) => {
+        return state.siteId
     },
     tourUrl: (state: any) => {
         return state.tourUrl
@@ -76,6 +80,10 @@ const actions = {
     },
     setSiteUrl: (context: any, value: string) => {
         context.commit('setStateProp', { prop: 'siteUrl', value })
+    },
+    setSiteId: (context: any, value: number) => {
+        console.log('setSiteId', value)
+        context.commit('setStateProp', { prop: 'siteId', value })
     },
     setTourUrl: (context: any, value: string) => {
         context.commit('setStateProp', { prop: 'tourUrl', value })

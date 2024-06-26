@@ -5,6 +5,7 @@ export enum SearchEngineGetters {
     siteName = 'searchEngine/siteName',
     siteLogo = 'searchEngine/siteLogo',
     siteUrl = 'searchEngine/siteUrl',
+    siteId = 'searchEngine/siteId',
     tourUrl = 'searchEngine/tourUrl',
     dabDataProvidersUrl = 'searchEngine/dabDataProvidersUrl',
     w3wKey = 'searchEngine/w3wKey',

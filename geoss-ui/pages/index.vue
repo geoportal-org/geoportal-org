@@ -387,28 +387,20 @@ export default class App extends Vue {
             const promises = [
                 this.parseQueryParams(),
                 LogService.createElasticSearchClient(),
-                GeneralApiService.getSiteSettings(),
+                GeneralApiService.getSiteSettings(this.$route.params.siteurl),
                 GeneralApiService.getSearchSettings(),
-                GeneralApiService.getUserSettings()
+                GeneralApiService.getUserSettings(),
+                GeneralApiService.getSiteData(this.$route.params.siteurl)
             ];
 
             if (this.$store.getters[UserGetters.isSignedIn]) {
                 promises.push(GeossSearchApiService.getBookmarks());
             }
-            Promise.all(promises).then(([paramsParsed, , siteSettings, searchSettings, userSettings, bookmarks]) => {
+            Promise.all(promises).then(([paramsParsed, , siteSettings, searchSettings, userSettings, siteData, bookmarks]) => {
                 if (this.$store.getters[GeneralFiltersGetters.state].phrase) {
                     this.$store.dispatch(SearchActions.setCancelConfirmSearch, true);
                 }
                 if (siteSettings) {
-                    if (siteSettings.name && siteSettings.name !== '') {
-                        this.$store.dispatch(SearchEngineActions.setSiteName, siteSettings.name);
-                    }
-                    if (siteSettings.logoUrl && siteSettings.logoUrl !== '') {
-                        this.$store.dispatch(SearchEngineActions.setSiteLogo, siteSettings.logoUrl);
-                    }
-                    if (siteSettings.url && siteSettings.url !== '') {
-                        this.$store.dispatch(SearchEngineActions.setSiteUrl, siteSettings.url);
-                    }
                     if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
                         if (!this.$store.getters[SearchGetters.dataSource]) {
                             this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
@@ -435,6 +427,7 @@ export default class App extends Vue {
                         this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
                         this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
                     }
+
                     // if (searchSettings.popularSearch) {
                     //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
                     //     if (searchSettings.popularSearch.currMap) {
@@ -476,6 +469,22 @@ export default class App extends Vue {
                         }
                     }
                 }
+
+                if (siteData) {
+                    if (siteData.name && siteData.name !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteName, siteData.name);
+                    }
+                    if (siteData.logoUrl && siteData.logoUrl !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteLogo, siteData.logoUrl);
+                    }
+                    if (siteData.url && siteData.url !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteUrl, siteData.url);
+                    }
+                    if (siteData.siteId !== '') {
+                        this.$store.dispatch(SearchEngineActions.setSiteId, siteData.siteId * 1);
+                    }
+                }
+
                 if (bookmarks && bookmarks.items) {
                     this.$store.dispatch(UserActions.setBookmarks, bookmarks.items);
                 }
@@ -512,11 +521,13 @@ export default class App extends Vue {
                     UtilsService.pushToHistory(true);
                 }
 
-                if (!siteSettings.name || siteSettings.name === '' || !siteSettings.logoUrl || siteSettings.logoUrl === '') {
+                if (!siteData.name || siteData.name === '' || !siteData.logoUrl || siteData.logoUrl === '') {
                     this.$router.push('/creator')
                 }
             });
+
             // this.$ga.page(window.location.pathname + window.location.search);
+
             LogService.logRecommendationData('Search', 'Search', 'external');
             if (this.isBulkDownloadEnabled) {
                 const bulkDownloadItems = JSON.parse(sessionStorage.getItem('bulkDownload') as string);

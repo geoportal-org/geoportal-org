@@ -98,6 +98,7 @@ import { MenuLinksWrapper } from '@/interfaces/Menu';
 import { MenuGetters } from '@/store/menu/menu-getters';
 import { MenuActions } from '@/store/menu/menu-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
 
@@ -140,6 +141,10 @@ export default class MenuComponent extends Vue {
 
     get route() {
         return this.$route;
+    }
+
+    get siteId() {
+        return this.$store.getters[SearchEngineGetters.siteId];
     }
 
     public closeMenu() {
@@ -191,7 +196,12 @@ export default class MenuComponent extends Vue {
 
     @Watch('langLocale')
     private async onLangLocaleChange() {
-        this.routes = await MenuAPI.getMenu();
+        this.routes = await MenuAPI.getMenu(this.siteId);
+    }
+
+    @Watch('siteId')
+    private async onSiteIdChange() {
+        this.routes = await MenuAPI.getMenu(this.siteId);
     }
 
     @Watch('route')
@@ -200,7 +210,6 @@ export default class MenuComponent extends Vue {
     }
 
     private async mounted() {
-        this.routes = await MenuAPI.getMenu();
         this.closeMenu();
     }
 }
