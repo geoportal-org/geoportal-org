@@ -1,10 +1,14 @@
 <template>
     <client-only>
-        <div class="yellow-pages">
-            <div class="yellow-pages__sub" v-if="storeInitialized">
-                <YellowPagesHeader />
-                <YellowPagesProviders />
-                <YellowPagesPagination />
+        <div class="sub-page">
+            <div class="sub-page__content">
+                <div class="yellow-pages">
+                    <div class="yellow-pages__sub" v-if="storeInitialized">
+                        <YellowPagesHeader />
+                        <YellowPagesProviders />
+                        <YellowPagesPagination />
+                    </div>
+                </div>
             </div>
         </div>
     </client-only>
@@ -14,10 +18,6 @@
 import { GeneralGetters } from '@/store/general/general-getters';
 
 export default {
-    layout() {
-        return 'default'
-    },
-
     computed: {
         storeInitialized() {
             return this.$store.getters[GeneralGetters.storeInitialized];

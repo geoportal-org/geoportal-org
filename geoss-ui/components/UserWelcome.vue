@@ -1,5 +1,11 @@
 <template>
-    <div class="user-welcome" v-if="isSignedIn">{{ $tc('general.hi') }}, {{ userFirstName }}</div>
+    <div>
+        <client-only>
+            <div class="user-welcome" v-if="isSignedIn">
+                {{ $tc('general.hi') }}, {{ userFirstName }}
+            </div>
+        </client-only>
+    </div>
 </template>
 
 <script>

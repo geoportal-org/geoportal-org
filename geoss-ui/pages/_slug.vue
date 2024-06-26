@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <div class="my-workspace-header">
-            {{ page.title }}
-            <NuxtLink to="/" class="close-window">
-                <div class="line-1"></div>
-                <div class="line-2"></div>
-            </NuxtLink>
+    <div class="sub-page">
+        <div class="sub-page__content">
+            <div class="my-workspace-header">
+                {{ page.title }}
+                <NuxtLink to="/" class="close-window">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                </NuxtLink>
+            </div>
+            <div class="my-workspace-tab my-workspace-content" v-html="content.data"></div>
         </div>
-        <div class="my-workspace-tab my-workspace-content" v-html="content.data"></div>
     </div>
 </template>
 
@@ -16,10 +18,6 @@ import ContentAPI from '@/api/content'
 import { GeneralGetters } from '@/store/general/general-getters'
 
 export default {
-    layout() {
-        return 'static'
-    },
-
     data() {
         return {
             page: {

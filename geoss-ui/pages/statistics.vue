@@ -1,246 +1,249 @@
 <template>
-    <div class="statistics_main">
-        <div class="my-workspace-header">
-            <h1>{{ $tc('statistics.statistics') }}</h1>
-            <NuxtLink to="/" class="close-window">
-                <div class="line-1"></div>
-                <div class="line-2"></div>
-            </NuxtLink>
-        </div>
-        <form @submit.prevent="onSubmit">
-            <div class="statistics_control" :class="{ closedStyle: !isOpen }">
-                <div v-if="isOpen">
-                    <h1>{{ $tc('statistics.chartOptions') }}</h1>
-                    <div class="statistics_element">
-                        <p>{{ $tc('statistics.source') }}</p>
 
-                        <div class="radios_box">
-                            <div class="radio">
-                                <input
-                                    v-model="form.source"
-                                    type="radio"
-                                    checked="true"
-                                    id="dataUsage"
-                                    :value="$tc('statistics.dataUsage')"
-                                    @change="
-                                        onSourceRadioChange(
-                                            $tc('statistics.dataUsage')
-                                        )
-                                    "
-                                />
-                                <label for="dataUsage">
-                                    {{ $tc('statistics.dataUsage') }}
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <input
-                                    v-model="form.source"
-                                    type="radio"
-                                    id="default"
-                                    :value="$tc('statistics.siteUsage')"
-                                    @change="
-                                        onSourceRadioChange(
-                                            $tc('statistics.siteUsage')
-                                        )
-                                    "
-                                />
-                                <label for="default">
-                                    {{ $tc('statistics.siteUsage') }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="statistics_element">
-                        <p>{{ $tc('statistics.dataset') }}</p>
-                        <select
-                            v-model="form.dataset"
-                            class="statistics_select"
-                            :disabled="isSiteUsage"
-                        >
-                            <option
-                                v-for="(option, index) of datasetOptions"
-                                :key="index"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="statistics_element">
-                        <p>{{ $tc('statistics.type') }}</p>
-                        <select
-                            v-if="isSiteUsage && isAllCatalogsSelected"
-                            v-model="form.type"
-                            class="statistics_select"
-                        >
-                            <option
-                                v-for="(option, index) of siteTypeOptions"
-                                :key="index"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                        <select
-                            v-else-if="!isSiteUsage && isAllCatalogsSelected"
-                            v-model="form.type"
-                            class="statistics_select"
-                        >
-                            <option
-                                v-for="(option, index) of dataTypeOptions"
-                                :key="index"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                        <select
-                            v-else
-                            v-model="form.type"
-                            class="statistics_select"
-                        >
-                            <option
-                                v-for="(option, index) of shortTypeOptions"
-                                :key="index"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                    </div>
-                    <h1>{{ $tc('statistics.moreOptions') }}</h1>
-                    <div v-if="isTypeNumeric" class="statistics_element">
-                        <p>{{ $tc('statistics.interval') }}</p>
-                        <input
-                            v-if="form.source === $tc('statistics.dataUsage')"
-                            type="number"
-                            min="1"
-                            v-model="form.interval"
-                        />
-                        <select v-model="form.unit" class="statistics_select">
-                            <option
-                                v-for="(option, index) of timeUnits"
-                                :key="index"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                    </div>
-                    <div v-else class="statistics_element">
-                        <p>{{ $tc('statistics.resultsPresented') }}</p>
-                        <input
-                            type="number"
-                            min="1"
-                            max="10"
-                            v-model="form.resultsNumber"
-                            :disabled="form.type === 'Returning users'"
-                        />
-                    </div>
-                </div>
-                <div v-if="isOpen">
-                    <h1>{{ $tc('statistics.analyzedPeriod') }}</h1>
-                    <div class="statistics_datepicker_wrapper">
-                        <DatePicker
-                            :placeholder="$tc('placeholders.from')"
-                            value="dateFrom"
-                            v-model="form.dateFrom"
-                            :clearable="false"
-                        ></DatePicker>
-                        <DatePicker
-                            :placeholder="$tc('placeholders.to')"
-                            value="dateTo"
-                            v-model="form.dateTo"
-                        ></DatePicker>
-                    </div>
-
-                    <div class="statistics_element statistics_element-start">
-                        <input
-                            v-model="form.period"
-                            type="radio"
-                            id="lastWeek"
-                            :value="$tc('statistics.lastWeek')"
-                            @change="onPeriodRadioChange('w')"
-                            checked="true"
-                        />
-                        <label for="lastWeek">
-                            {{ $tc('statistics.lastWeek') }}
-                        </label>
-                        <input
-                            v-model="form.period"
-                            type="radio"
-                            id="lastMonth"
-                            :value="$tc('statistics.lastMonth')"
-                            @change="onPeriodRadioChange('m')"
-                        />
-                        <label for="lastMonth">
-                            {{ $tc('statistics.lastMonth') }}
-                        </label>
-                        <input
-                            v-model="form.period"
-                            type="radio"
-                            id="lastYear"
-                            :value="$tc('statistics.lastYear')"
-                            @change="onPeriodRadioChange('y')"
-                        />
-                        <label for="lastYear">
-                            {{ $tc('statistics.lastYear') }}
-                        </label>
-                    </div>
-                </div>
-                <button
-                    type="button"
-                    v-if="isOpen"
-                    class="statistics_menu_button"
-                    @click="toggleIsOpen()"
-                >
-                    {{ $tc('statistics.hideOptions') }}
-                </button>
-                <button
-                    type="button"
-                    v-else
-                    class="statistics_menu_button"
-                    @click="toggleIsOpen()"
-                >
-                    {{ $tc('statistics.showOptions') }}
-                </button>
-                <div class="statistics_element statistics_element-end">
-                    <div
-                        v-if="chartInstance && !isResultEmpty"
-                        class="dropdown"
-                    >
-                        <button
-                            type="button"
-                            @click="toggleDropdown()"
-                            class="dropbtn"
-                        >
-                            {{ $tc('statistics.exportButton') }}
-                        </button>
-                        <div
-                            v-if="dropDownOpen"
-                            id="myDropdown"
-                            class="dropdown-content"
-                        >
-                            <a @click="downloadChartJsPDF()">PDF</a>
-                            <a @click="downloadChartJsCSV()">CSV</a>
-                        </div>
-                    </div>
-                    <button class="statistics_submit_button">
-                        {{ $tc('statistics.showChart') }}
-                    </button>
-                </div>
+    <div class="sub-page">
+        <div class="sub-page__content">
+            <div class="my-workspace-header">
+                <h1>{{ $tc('statistics.statistics') }}</h1>
+                <NuxtLink to="/" class="close-window">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                </NuxtLink>
             </div>
-        </form>
+            <form @submit.prevent="onSubmit">
+                <div class="statistics_control" :class="{ closedStyle: !isOpen }">
+                    <div v-if="isOpen">
+                        <h1>{{ $tc('statistics.chartOptions') }}</h1>
+                        <div class="statistics_element">
+                            <p>{{ $tc('statistics.source') }}</p>
 
-        <p v-if="isResultEmpty && chartInstance" class="empty_data_message">
-            {{ $tc('statistics.noDataToDisplay') }}
-        </p>
-        <div v-if="!isResultEmpty" id="chart-container" class="chart_container">
-            <canvas class="chart" id="chart"></canvas>
-        </div>
-        <div v-if="isCountires" class="map_container">
-            <GChart
-                class="gchart"
-                type="GeoChart"
-                :data="mapData"
-                :options="mapOptions"
-                :settings="mapSettings"
-            />
+                            <div class="radios_box">
+                                <div class="radio">
+                                    <input
+                                        v-model="form.source"
+                                        type="radio"
+                                        checked="true"
+                                        id="dataUsage"
+                                        :value="$tc('statistics.dataUsage')"
+                                        @change="
+                                            onSourceRadioChange(
+                                                $tc('statistics.dataUsage')
+                                            )
+                                        "
+                                    />
+                                    <label for="dataUsage">
+                                        {{ $tc('statistics.dataUsage') }}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <input
+                                        v-model="form.source"
+                                        type="radio"
+                                        id="default"
+                                        :value="$tc('statistics.siteUsage')"
+                                        @change="
+                                            onSourceRadioChange(
+                                                $tc('statistics.siteUsage')
+                                            )
+                                        "
+                                    />
+                                    <label for="default">
+                                        {{ $tc('statistics.siteUsage') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="statistics_element">
+                            <p>{{ $tc('statistics.dataset') }}</p>
+                            <select
+                                v-model="form.dataset"
+                                class="statistics_select"
+                                :disabled="isSiteUsage"
+                            >
+                                <option
+                                    v-for="(option, index) of datasetOptions"
+                                    :key="index"
+                                >
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="statistics_element">
+                            <p>{{ $tc('statistics.type') }}</p>
+                            <select
+                                v-if="isSiteUsage && isAllCatalogsSelected"
+                                v-model="form.type"
+                                class="statistics_select"
+                            >
+                                <option
+                                    v-for="(option, index) of siteTypeOptions"
+                                    :key="index"
+                                >
+                                    {{ option }}
+                                </option>
+                            </select>
+                            <select
+                                v-else-if="!isSiteUsage && isAllCatalogsSelected"
+                                v-model="form.type"
+                                class="statistics_select"
+                            >
+                                <option
+                                    v-for="(option, index) of dataTypeOptions"
+                                    :key="index"
+                                >
+                                    {{ option }}
+                                </option>
+                            </select>
+                            <select
+                                v-else
+                                v-model="form.type"
+                                class="statistics_select"
+                            >
+                                <option
+                                    v-for="(option, index) of shortTypeOptions"
+                                    :key="index"
+                                >
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                        <h1>{{ $tc('statistics.moreOptions') }}</h1>
+                        <div v-if="isTypeNumeric" class="statistics_element">
+                            <p>{{ $tc('statistics.interval') }}</p>
+                            <input
+                                v-if="form.source === $tc('statistics.dataUsage')"
+                                type="number"
+                                min="1"
+                                v-model="form.interval"
+                            />
+                            <select v-model="form.unit" class="statistics_select">
+                                <option
+                                    v-for="(option, index) of timeUnits"
+                                    :key="index"
+                                >
+                                    {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                        <div v-else class="statistics_element">
+                            <p>{{ $tc('statistics.resultsPresented') }}</p>
+                            <input
+                                type="number"
+                                min="1"
+                                max="10"
+                                v-model="form.resultsNumber"
+                                :disabled="form.type === 'Returning users'"
+                            />
+                        </div>
+                    </div>
+                    <div v-if="isOpen">
+                        <h1>{{ $tc('statistics.analyzedPeriod') }}</h1>
+                        <div class="statistics_datepicker_wrapper">
+                            <DatePicker
+                                :placeholder="$tc('placeholders.from')"
+                                value="dateFrom"
+                                v-model="form.dateFrom"
+                                :clearable="false"
+                            ></DatePicker>
+                            <DatePicker
+                                :placeholder="$tc('placeholders.to')"
+                                value="dateTo"
+                                v-model="form.dateTo"
+                            ></DatePicker>
+                        </div>
+
+                        <div class="statistics_element statistics_element-start">
+                            <input
+                                v-model="form.period"
+                                type="radio"
+                                id="lastWeek"
+                                :value="$tc('statistics.lastWeek')"
+                                @change="onPeriodRadioChange('w')"
+                                checked="true"
+                            />
+                            <label for="lastWeek">
+                                {{ $tc('statistics.lastWeek') }}
+                            </label>
+                            <input
+                                v-model="form.period"
+                                type="radio"
+                                id="lastMonth"
+                                :value="$tc('statistics.lastMonth')"
+                                @change="onPeriodRadioChange('m')"
+                            />
+                            <label for="lastMonth">
+                                {{ $tc('statistics.lastMonth') }}
+                            </label>
+                            <input
+                                v-model="form.period"
+                                type="radio"
+                                id="lastYear"
+                                :value="$tc('statistics.lastYear')"
+                                @change="onPeriodRadioChange('y')"
+                            />
+                            <label for="lastYear">
+                                {{ $tc('statistics.lastYear') }}
+                            </label>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        v-if="isOpen"
+                        class="statistics_menu_button"
+                        @click="toggleIsOpen()"
+                    >
+                        {{ $tc('statistics.hideOptions') }}
+                    </button>
+                    <button
+                        type="button"
+                        v-else
+                        class="statistics_menu_button"
+                        @click="toggleIsOpen()"
+                    >
+                        {{ $tc('statistics.showOptions') }}
+                    </button>
+                    <div class="statistics_element statistics_element-end">
+                        <div
+                            v-if="chartInstance && !isResultEmpty"
+                            class="dropdown"
+                        >
+                            <button
+                                type="button"
+                                @click="toggleDropdown()"
+                                class="dropbtn"
+                            >
+                                {{ $tc('statistics.exportButton') }}
+                            </button>
+                            <div
+                                v-if="dropDownOpen"
+                                id="myDropdown"
+                                class="dropdown-content"
+                            >
+                                <a @click="downloadChartJsPDF()">PDF</a>
+                                <a @click="downloadChartJsCSV()">CSV</a>
+                            </div>
+                        </div>
+                        <button class="statistics_submit_button">
+                            {{ $tc('statistics.showChart') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <p v-if="isResultEmpty && chartInstance" class="empty_data_message">
+                {{ $tc('statistics.noDataToDisplay') }}
+            </p>
+            <div v-if="!isResultEmpty" id="chart-container" class="chart_container">
+                <canvas class="chart" id="chart"></canvas>
+            </div>
+            <div v-if="isCountires" class="map_container">
+                <GChart
+                    class="gchart"
+                    type="GeoChart"
+                    :data="mapData"
+                    :options="mapOptions"
+                    :settings="mapSettings"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -255,9 +258,6 @@ export default {
     components: {
         GChart,
         Chart,
-    },
-    layout() {
-        return 'static'
     },
     data() {
         let datasetOptions = [
@@ -554,13 +554,6 @@ export default {
 <style lang="scss" scoped>
 .gchart {
     width: 90%;
-}
-
-.sub-page__content {
-    height: 75vh;
-    margin: 15vh auto 0;
-    width: 50%;
-    min-width: 400px;
 }
 
 .dropbtn {

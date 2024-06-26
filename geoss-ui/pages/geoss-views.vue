@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <Spinner />
-        <Notification />
+<div class="sub-page">
+    <div class="sub-page__content">
         <div class="my-workspace-header">
             GEOSS Views
             <NuxtLink to="/" class="close-window">
@@ -106,6 +105,7 @@
             </form>
         </div>
     </div>
+</div>
 </template>
 
 <script type="ts">
@@ -113,9 +113,6 @@ import SpinnerService from '@/services/spinner.service';
 import NotificationService from '@/services/notification.service';
 
 export default {
-    layout() {
-        return 'static'
-    },
     data() {
         return {
             id: '',

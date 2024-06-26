@@ -1,40 +1,44 @@
 <template>
     <div v-if="loaded">
         <client-only>
-            <div class="my-workspace-header">
-                My Workspace / Your Saved Searches
-                <NuxtLink to="/" class="close-window">
-                    <div class="line-1"></div>
-                    <div class="line-2"></div>
-                </NuxtLink>
-            </div>
-            <div class="my-workspace-tab my-workspace-content saved-searches">
-                <div v-if="!savedSearches">Loading...</div>
-                <div v-if="savedSearches && !savedSearches.length">You have no Saved Searches yet.</div>
-                <ul v-else>
-                    <li v-for="savedSearch of savedSearches" :key="savedSearch.id">
-                        <div>
-                            <a :href="savedSearch.url" class="close-window">
-                                <IconSearchEarth />
+            <div class="sub-page">
+                <div class="sub-page__content">
+                    <div class="my-workspace-header">
+                        My Workspace / Your Saved Searches
+                        <NuxtLink to="/" class="close-window">
+                            <div class="line-1"></div>
+                            <div class="line-2"></div>
+                        </NuxtLink>
+                    </div>
+                    <div class="my-workspace-tab my-workspace-content saved-searches">
+                        <div v-if="!savedSearches">Loading...</div>
+                        <div v-if="savedSearches && !savedSearches.length">You have no Saved Searches yet.</div>
+                        <ul v-else>
+                            <li v-for="savedSearch of savedSearches" :key="savedSearch.id">
                                 <div>
-                                    <span>
-                                        {{ savedSearch.phrase }}
-                                    </span>
-                                    <small>
-                                        Created on: {{ createdDate(savedSearch.createdOn) }}
-                                    </small>
+                                    <a :href="savedSearch.url" class="close-window">
+                                        <IconSearchEarth />
+                                        <div>
+                                            <span>
+                                                {{ savedSearch.phrase }}
+                                            </span>
+                                            <small>
+                                                Created on: {{ createdDate(savedSearch.createdOn) }}
+                                            </small>
+                                        </div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
 
-                        <div class="saved-searches__buttons-wrapper">
-                            <button class="red-btn-default" @click="deleteSavedSearch(savedSearch.id)">Delete</button>
-                            <button class="blue-btn-default"
-                                @click="highlightSavedSearch(savedSearch.id, savedSearch.phrase)">Publish</button>
-                            <Share :url="$config.baseUrl + savedSearch.url" :survey="false" />
-                        </div>
-                    </li>
-                </ul>
+                                <div class="saved-searches__buttons-wrapper">
+                                    <button class="red-btn-default" @click="deleteSavedSearch(savedSearch.id)">Delete</button>
+                                    <button class="blue-btn-default"
+                                        @click="highlightSavedSearch(savedSearch.id, savedSearch.phrase)">Publish</button>
+                                    <Share :url="$config.baseUrl + savedSearch.url" :survey="false" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </client-only>
     </div>
@@ -45,10 +49,6 @@ import UserAPI from '@/api/user'
 import NotificationService from '@/services/notification.service'
 
 export default {
-    layout() {
-        return 'default'
-    },
-
     data() {
         return {
             loaded: false,

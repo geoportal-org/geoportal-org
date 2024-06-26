@@ -6,8 +6,6 @@
 
 <script lang="ts">
 export default {
-    layout() {
-        return 'full'
-    }
+
 }
 </script>
