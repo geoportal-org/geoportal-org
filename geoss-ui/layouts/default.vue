@@ -22,6 +22,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue } from 'nuxt-property-decorator';
 import { MapActions } from '@/store/map/map-actions';
 import { MapGetters } from '@/store/map/map-getters';
