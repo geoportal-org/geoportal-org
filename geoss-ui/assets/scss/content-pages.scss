@@ -1,0 +1,222 @@
+/* Content pages */
+.sub-page__content {
+	.my-workspace-tab h2 {
+		color: rgb(46, 101, 116);
+		margin-bottom: 25px;
+	}
+
+	.my-workspace-tab *,
+	.my-workspace-tab .table-hover > tbody > tr:hover {
+		background-color: transparent;
+	}
+	.lfr-search-container .my-workspace-tab,
+	.my-workspace-entry .my-workspace-left {
+		padding: 0;
+	}
+
+	tr .my-workspace-entry .my-workspace-left {
+		padding: 12px 40px 12px 55px;
+	}
+	.table-bordered > tbody > tr > td,
+	.table-bordered > tbody > tr > th,
+	.table-bordered > tfoot > tr > td,
+	.table-bordered > tfoot > tr > th,
+	.table-bordered > thead > tr > td,
+	.table-bordered > thead > tr > th,
+	.table-bordered {
+		border: 1px solid #aaa;
+	}
+}
+
+.hidden--mobile {
+	@media (max-width: $breakpoint_xs) {
+		display: none;
+	}
+}
+
+.height-100 {
+	height: 100% !important;
+}
+
+.my-workspace-content {
+	div {
+		max-width: 880px;
+		margin: 0 auto;
+	}
+
+	p {
+		margin: 1.3em 0;
+		font-size: 1em;
+		line-height: 1.3em;
+	}
+	ul {
+		list-style: initial;
+		padding-left: 20px;
+	}
+	li {
+		margin-bottom: 0.5em;
+	}
+	dl {
+		margin: 0 0 10px 25px;
+		dt {
+			margin-bottom: 5px;
+        	font-size: 1.1em;
+		}
+		dd {
+			margin-left: 25px;
+        	margin-bottom: 30px;
+		}
+		ul {
+			margin-left: 0;
+		}
+	}
+
+    .documentation-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    .documentation-buttons > div {
+        display: flex;
+        align-items: center;
+        width: calc(50% - 10px);
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 0 !important;
+    }
+
+    .documentation-buttons a {
+        display: flex;
+        align-items: center;
+        white-space: normal;
+        color: #337ab7;
+        justify-content: center;
+    }
+
+    .documentation-buttons a:hover {
+        text-decoration: none;
+    }
+
+    .documentation-buttons a i {
+        margin-right: 10px;
+        font-size: 0;
+    }
+
+    .documentation-buttons a i:before {
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        .documentation-buttons {
+            flex-direction: column;
+        }
+
+        .documentation-buttons > div {
+            margin: 10px 0 !important;
+            width: 100%;
+        }
+    }
+
+    .tutorials-buttons {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+    .tutorials-buttons > div {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 5px 0 !important;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tutorials-buttons a {
+        display: flex;
+        align-items: center;
+        white-space: normal;
+        color: #337ab7;
+        justify-content: center;
+    }
+
+    .tutorials-buttons a:hover {
+        text-decoration: none;
+    }
+
+    .tutorials-buttons a i {
+        margin-right: 10px;
+        font-size: 0;
+    }
+    .tutorials-buttons a i:before {
+        font-size: 1rem;
+    }
+}
+.sub-page__content {
+	.my-workspace-entry {
+		padding-top: 15px;
+		padding-bottom: 0;
+		border-bottom: 1px solid #ccc;
+	}
+}
+
+.my-workspace-left {
+	.version {
+		cursor: pointer;
+		position: relative;
+		padding-left: 20px;
+		margin-bottom: 20px;
+
+		p {
+			margin:0;
+		}
+
+		&:before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 50%;
+			display: block;
+			border-right: 2px solid #727374;
+			border-bottom: 2px solid #727374;
+			width: 10px;
+			height: 10px;
+			transform: translate(-50%, -50%) rotate(-135deg);
+		}
+	}
+
+	&:not(.changes-visible) {
+		.version {
+			&:before {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 50%;
+				display: block;
+				border-right: 2px solid #727374;
+				border-bottom: 2px solid #727374;
+				width: 10px;
+				height: 10px;
+				transform: translate(-50%, -50%) rotate(45deg);
+			}
+		}
+		.changes {
+			display: none;
+		}
+	}
+
+    .changes {
+        padding-left: 20px;
+        padding-bottom: 20px;
+
+        ul{
+            margin: 0 0 10px 0;
+        }
+
+        > span {
+            color: rgb(158, 158, 158) !important;
+            font-style: italic;
+            padding-bottom: 5px;
+            display: block;
+        }
+    }
+}

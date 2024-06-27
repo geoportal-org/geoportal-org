@@ -129,6 +129,12 @@ export default {
             // Community Portals siteUrl support
             const routesToAdd = [
                 {
+                    name: 'slug',
+                    path: '/:slug',
+                    component: resolve(__dirname, 'pages/_slug.vue'),
+                    chunkName: 'pages/_slug'
+                },
+                {
                     name: 'community-siteurl',
                     path: '/community/:siteurl',
                     component: resolve(__dirname, 'pages/index.vue'),

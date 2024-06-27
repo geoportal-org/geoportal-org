@@ -45,6 +45,14 @@ export default {
         }
     },
 
+    mounted() {
+        document.querySelector('.my-workspace-tab').querySelectorAll('.version').forEach(element => {
+            element.addEventListener('click', () => {
+                element.closest('.my-workspace-left').classList.toggle('changes-visible');
+            });
+        });
+    },
+
     async asyncData({ params, page, content, i18n }) {
         const slug = params.slug;
         const locale = i18n.getLocaleCookie()
@@ -57,4 +65,6 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import "~/assets/scss/content-pages.scss";
+</style>
