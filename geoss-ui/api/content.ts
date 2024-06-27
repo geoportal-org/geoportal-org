@@ -134,6 +134,12 @@ const ContentAPI = {
 
     getPage: async (slug: string, locale: string = 'en') => {
         const pages: Pages = await getPages()
+
+        console.log('===== getPages, url:', geossContents.page)
+        console.log(pages)
+        console.log('slug | locale:', slug, locale)
+        console.log('')
+
         const page: Page = pages._embedded.page.filter(
             (page: { slug: string }) => page.slug === slug
         )[0]
@@ -157,6 +163,11 @@ const ContentAPI = {
                 },
             }
         )
+
+        console.log('===== getContent, url:', geossContents.content)
+        console.log(content)
+        console.log('slug | locale:', contentId, locale)
+        console.log('')
 
         const title = content.title[locale as keyof Language]
         const data = content.data[locale as keyof Language]
