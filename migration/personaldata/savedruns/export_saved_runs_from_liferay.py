@@ -5,10 +5,10 @@ import json
 def main():
     # Database connection configuration
     config = {
-        'user': 'geoss_devel',
-        'password': 'UtqTaGC2tM',
-        'host': '10.254.2.196',
-        'database': 'geoss_devel'
+        'user': 'DB_USER',
+        'password': 'DB_PASSWORD',
+        'host': 'DB_HOST',
+        'database': 'DB_NAME'
     }
 
     # Establish database connection
