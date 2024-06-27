@@ -219,6 +219,5 @@ export default {
         },
     },
 
-    // ssr: true,
-    // target: 'server',
+    ssr: false,
 }
