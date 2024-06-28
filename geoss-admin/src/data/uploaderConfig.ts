@@ -1,6 +1,6 @@
 export const uploaderConfig = {
     maxFiles: 1, // accept only single file
-    maxSize: 10485760, // up to 10MB per file
+    maxSize: 52428800, // up to 10MB per file
     multiple: false, // single file selection from dialog window
     accept: {
         "application/jrxml": [".jrxml"],
@@ -8,6 +8,7 @@ export const uploaderConfig = {
         "application/msword": [".doc", ".dot"],
         "application/pdf": [".pdf"],
         "application/rtf": [".rtf"],
+        "application/zip": [".zip"],
         "application/vnd.ms-excel": [".xls"],
         "application/vnd.ms-fontobject": [".eot"],
         "application/vnd.ms-powerpoint": [".ppt"],

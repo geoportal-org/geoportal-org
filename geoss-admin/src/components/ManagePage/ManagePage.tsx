@@ -15,7 +15,7 @@ import {
 import useCustomToast from "@/utils/useCustomToast";
 import { defaultUsedLang, initContentsPagination, pagesRoutes } from "@/data";
 import { addPageForm } from "@/data/forms";
-import { ManagePageProps, ButtonType, ButtonVariant, SelectSettings, ToastStatus, LocaleNames } from "@/types";
+import { ManagePageProps, ButtonType, ButtonVariant, ToastStatus, LocaleNames } from "@/types";
 import { IContent, IPageData } from "@/types/models";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { useIntl } from "react-intl";

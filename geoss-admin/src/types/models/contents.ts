@@ -4,9 +4,9 @@ import { TranslatedData } from "@/types";
 export interface IContent {
     data: TranslatedData;
     createdBy: string;
-    createdDate: string;
+    createdOn: string;
     modifiedBy: string;
-    modifiedDate: string;
+    modifiedOn: string;
     published: boolean;
     title: TranslatedData;
     siteId: number | null;

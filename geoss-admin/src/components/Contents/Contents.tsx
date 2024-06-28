@@ -71,7 +71,6 @@ export const Contents = () => {
                 size: table.getState().pagination.pageSize,
                 ...(sorting[0] && setTableSorting(sorting)),
             });
-
             //get content for current site
             const siteContent = content.filter((contentPiece) => contentPiece.siteId === currentSiteId);
             setContentsList(() => siteContent);
@@ -146,11 +145,11 @@ export const Contents = () => {
                 header: translate("pages.contents.content-title"),
                 cell: ({ getValue }) => cutString(getValue()[router.locale as LocaleNames], 30),
             }),
-            columnHelper.accessor("createdDate", {
+            columnHelper.accessor("createdOn", {
                 header: translate("pages.contents.creation-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
-            columnHelper.accessor("modifiedDate", {
+            columnHelper.accessor("modifiedOn", {
                 header: translate("pages.contents.modification-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
