@@ -9,6 +9,13 @@
     background: url("../img/keycloak-bg.png") no-repeat center center fixed;
     background-size: cover;
     height: 100%;
+
+    background-attachment: fixed;
+    background-image: url('https://gpp.devel.esaportal.eu/img/map-background.jpg');
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }
 
 textarea.pf-c-form-control {
@@ -84,18 +91,25 @@ div.kc-logo-text span {
 }
 
 #kc-header {
-    color: #ededed;
-    overflow: visible;
-    white-space: nowrap;
+    align-items: stretch;
+    background: linear-gradient(#000 -30%, transparent 75%);
+    display: flex;
+    justify-content: space-between;
+    left: 0;
+    padding: 30px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 302;
 }
 
 #kc-header-wrapper {
-    font-size: 29px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    line-height: 1.2em;
-    padding: 62px 10px 20px;
-    white-space: normal;
+    font-size: 0;
+    height: 30px;
+    margin: 0 auto;
+    width: 190px;
+    background: url('https://gpp.devel.esaportal.eu/contents/rest/document/1/content') center center no-repeat;
+    background-size: 100%;
 }
 
 #kc-content {
@@ -162,7 +176,7 @@ div.kc-logo-text span {
 #kc-info-wrapper {
     font-size: 13px;
     padding: 15px 35px;
-    background-color: #F0F0F0;
+    border-top: 1px solid #ccc;
 }
 
 #kc-form-options span {
@@ -468,7 +482,7 @@ ul#kc-totp-supported-apps {
 
 .select-auth-box-headline {
     font-size: var(--pf-global--FontSize--md);
-    color: var(--pf-global--primary-color--100);
+    color: rgba(6,97,169,1);
     font-weight: bold;
 }
 
@@ -488,7 +502,15 @@ ul#kc-totp-supported-apps {
     padding: 0 20px;
     max-width: 500px;
     border-top: 4px solid;
-    border-color: var(--pf-global--primary-color--100);
+    border-color: rgba(6,97,169,1);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 80%;
+    overflow: scroll;
+    margin-top: 25px;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 /*phone*/

@@ -31,8 +31,12 @@
                             <div v-show="route === activeLinksExpander">
                                 <div class="menu__links-expanded">
                                     <template v-for="(subroute, subindex) of route.links">
-                                        <NuxtLink class="menu__sublink" :key="subroute.link"
-                                            :to="subroute.link || ''" :external="isExternal(subroute.link)">
+                                        <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex"
+                                            :to="subroute.link" target="_blank">
+                                            {{ subroute.title }}
+                                        </a>
+                                        <NuxtLink v-else class="menu__sublink" :key="subroute.link"
+                                            :to="subroute.link || ''">
                                             {{ subroute.title }}
                                         </NuxtLink>
                                     </template>
@@ -40,8 +44,13 @@
                             </div>
                         </CollapseTransition>
                     </div>
+                    <a v-if="(!route.links || !route.links.length) && isExternal(route.link)" :href="route.link"
+                        class="menu__link" target="_blank">
+                        <img :src="route.imgURL" :alt="route.title" />
+                        <span>{{ route.title }}</span>
+                    </a>
                     <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="route.link || ''"
-                        class="menu__link" :external="isExternal(route.link)">
+                        class="menu__link">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </NuxtLink>
@@ -63,8 +72,12 @@
                 <CollapseTransition v-if="route.links">
                     <div v-show="route === activeLinksExpander" class="menu__links-expanded">
                         <template v-for="(subroute, subindex) of route.links">
-                            <NuxtLink class="menu__sublink" :key="subroute.link" :to="subroute.link"
-                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`" :external="isExternal(subroute.link)">
+                            <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex" :href="subroute.link"
+                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`" target="_blank">
+                                {{ subroute.title }}
+                            </a>
+                            <NuxtLink v-else class="menu__sublink" :key="subroute.link" :to="subroute.link"
+                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`">
                                 {{ subroute.title }}
                             </NuxtLink>
                         </template>
