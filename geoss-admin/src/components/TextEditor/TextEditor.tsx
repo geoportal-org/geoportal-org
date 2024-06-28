@@ -32,6 +32,8 @@ export const TextEditor = ({ onEditorChange, onEditorBlur, initialContent }: Tex
                 linkTargetNewWindow: true,
                 minHeight: "250px",
                 historyStackDelayTime: 0,
+                //@ts-ignore
+                strictMode: false
             }}
             name="editorData"
             setContents={initialContent || ""}
