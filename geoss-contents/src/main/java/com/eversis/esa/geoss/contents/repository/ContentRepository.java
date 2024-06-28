@@ -23,6 +23,15 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
     /**
+     * Find by site id page.
+     *
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Content> findBySiteId(@Param("siteId") Long siteId, Pageable pageable);
+
+    /**
      * Find by title page.
      *
      * @param title the title
