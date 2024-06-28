@@ -58,7 +58,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<ExceptionResponseMessage> handleMaxSizeException(MaxUploadSizeExceededException ex) {
         List<String> errors = Arrays.asList(new String[]{ex.getMessage()});
         ExceptionResponseMessage responseMessage =
-                new ExceptionResponseMessage("File is too large. Max file size is 10MB.",
+                new ExceptionResponseMessage("File is too large. Max file size is 50MB.",
                         HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
         return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }
