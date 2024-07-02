@@ -67,7 +67,7 @@ server {
   #SP#  proxy_pass ###SERVICES_PROVIDERS_SOURCE###;
   #SP#
   #SP#  proxy_cache service_providers_zone;
-  #SP#  proxy_cache_valid any 10m;
+  #SP#  proxy_cache_valid any 1w;
   #SP#  add_header X-Proxy-Cache $upstream_cache_status;
   #SP#  add_header Referer "https://gpp.devel.esaportal.eu";
   #SP#  proxy_set_header Referer "https://gpp.devel.esaportal.eu";
