@@ -100,4 +100,13 @@ public interface PageRepository extends JpaRepository<Page, Long> {
     @Transactional
     void deleteBySiteId(@Param("siteId") Long siteId);
 
+    /**
+     * Find by site id org . springframework . data . domain . page.
+     *
+     * @param siteId the site id
+     * @param pageable the pageable
+     * @return the org . springframework . data . domain . page
+     */
+    org.springframework.data.domain.Page<Page> findBySiteId(@Param("siteId") Long siteId, Pageable pageable);
+
 }
