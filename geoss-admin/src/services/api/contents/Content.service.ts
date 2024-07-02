@@ -6,7 +6,7 @@ export const ContentService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/contents/rest/content`,
 
     getContentList: async (query?: QueryParams): Promise<IContentList> =>
-        fetcher({ url: ContentService.baseUrl, query }),
+        fetcher({ url: `${ContentService.baseUrl}/search/findBySiteId`, query }),
 
     getContent: async (id: number): Promise<IContent> => fetcher({ url: `${ContentService.baseUrl}/${id}` }),
 

@@ -69,11 +69,10 @@ export const Contents = () => {
             } = await ContentService.getContentList({
                 page: table.getState().pagination.pageIndex,
                 size: table.getState().pagination.pageSize,
+                siteId: currentSiteId,
                 ...(sorting[0] && setTableSorting(sorting)),
             });
-            //get content for current site
-            const siteContent = content.filter((contentPiece) => contentPiece.siteId === currentSiteId);
-            setContentsList(() => siteContent);
+            setContentsList(() => content);
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e) {
             console.error(e);

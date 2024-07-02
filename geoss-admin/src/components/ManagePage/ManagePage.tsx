@@ -41,13 +41,13 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             getPageData();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.isReady]);
+    }, [router.isReady, currentSiteId]);
 
     const getPageData = async () => {
         try {
             const {
                 _embedded: { content },
-            } = await ContentService.getContentList(initContentsPagination);
+            } = await ContentService.getContentList({ ...initContentsPagination, siteId: currentSiteId });
             setContentsList(() => content);
             if (isEditMode) {
                 const id = router.query.id as string;

@@ -8,9 +8,9 @@ export interface IPage {
     slug: string;
     published: boolean;
     createdBy: string;
-    createdDate: string;
+    createdOn: string;
     modifiedBy: string;
-    modifiedDate: string;
+    modifiedOn: string;
     siteId: number | null;
     _links: {
         self: ILink;

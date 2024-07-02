@@ -147,11 +147,11 @@ export const Pages = () => {
                 header: translate("pages.page.page-title"),
                 cell: ({ getValue }) => cutString(getValue()[router.locale as LocaleNames], 30),
             }),
-            columnHelper.accessor("createdDate", {
+            columnHelper.accessor("createdOn", {
                 header: translate("pages.page.creation-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
-            columnHelper.accessor("modifiedDate", {
+            columnHelper.accessor("modifiedOn", {
                 header: translate("pages.page.modification-date"),
                 cell: (info) => (info.getValue() ? convertIsoDate(info.getValue(), router.locale || "en") : "-"),
             }),
