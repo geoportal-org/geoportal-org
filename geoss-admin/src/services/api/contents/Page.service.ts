@@ -5,7 +5,7 @@ import { fetcher } from "@/utils/fetcher";
 export const PageService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/contents/rest/page`,
 
-    getPagesList: async (query?: QueryParams): Promise<IPageList> => fetcher({ url: PageService.baseUrl, query }),
+    getPagesList: async (query?: QueryParams): Promise<IPageList> => fetcher({ url: `${PageService.baseUrl}/search/findBySiteId`, query }),
 
     getPage: async (id: number): Promise<IPage> => fetcher({ url: `${PageService.baseUrl}/${id}` }),
 

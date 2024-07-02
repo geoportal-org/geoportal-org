@@ -77,13 +77,11 @@ export const Pages = () => {
             } = await PageService.getPagesList({
                 page: table.getState().pagination.pageIndex,
                 size: table.getState().pagination.pageSize,
+                siteId: currentSiteId,
                 ...(sorting[0] && setTableSorting(sorting)),
             });
 
-            //get pages for current site
-            const sitePages = page.filter((pagePiece) => pagePiece.siteId === currentSiteId);
-
-            setPagesList(() => sitePages);
+            setPagesList(() => page);
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e) {
             console.error(e);
