@@ -59,7 +59,7 @@ public class ContentsConfiguration {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
                         if (tags.contains("contents") || tags.contains("documents") || tags.contains("folders")
-                                || tags.contains("menus") || tags.contains("pages")) {
+                                || tags.contains("menus") || tags.contains("pages") || tags.contains("sites")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }

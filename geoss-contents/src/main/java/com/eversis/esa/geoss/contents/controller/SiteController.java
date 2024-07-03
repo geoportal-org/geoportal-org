@@ -1,13 +1,15 @@
 package com.eversis.esa.geoss.contents.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.domain.Site;
 import com.eversis.esa.geoss.contents.service.SiteService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -23,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The type Site controller.
@@ -54,6 +60,29 @@ public class SiteController {
      * @param model the model
      * @return the entity model
      */
+    @RequestBody(
+            content = @Content(
+                    mediaType = "multipart/form-data",
+                    schemaProperties = {
+                            @SchemaProperty(
+                                    name = "model",
+                                    schema = @Schema(
+                                            type = "object",
+                                            implementation = Site.class
+                                    )
+                            ),
+                            @SchemaProperty(
+                                    name = "files",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    type = "string",
+                                                    format = "binary"
+                                            )
+                                    )
+                            )
+                    }
+            )
+    )
     @SneakyThrows
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
