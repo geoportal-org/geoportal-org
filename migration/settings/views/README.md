@@ -22,15 +22,16 @@ Configure database connection in the script export_saved_searches_from_liferay.p
 ```
 Run the script
 ```sh
-python export_globla_views_from_liferay.py
+python export_global_views_from_liferay.py
 ```
 
-A file with the exported data globla_views.json should be created.
+A file with the exported data global_views.json should be created.
 
-Change the configuration in the import_globla_views_from_liferay.py script to the API for the specific environment.
+Change the configuration in the import_global_views_from_liferay.py script to the API for the specific environment.
 For DEV, the configuration is:
 ```sh
-API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/saved-searches'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/views'
+SITE_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/site'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
 KC_USER_PASS = '*****'
@@ -38,11 +39,11 @@ KC_USER_PASS = '*****'
 
 Run the script
 ```sh
-python import_globla_views_from_liferay.py
+python import_global_views_from_liferay.py
 ```
 
 The script processing is finished when the message 'Total execution time' appears.
 If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The globla_views.json data file needs to be archived.
+The global_views.json data file needs to be archived.

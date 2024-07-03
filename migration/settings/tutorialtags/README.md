@@ -30,7 +30,7 @@ A file with the exported data tutorial_tags.json should be created.
 Change the configuration in the import_tutorial_tags_from_liferay.py script to the API for the specific environment.
 For DEV, the configuration is:
 ```sh
-API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/saved-runs'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/tags'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
 KC_USER_PASS = '*****'
