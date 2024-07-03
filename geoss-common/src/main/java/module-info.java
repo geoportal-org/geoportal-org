@@ -12,6 +12,7 @@ module geoss.common {
     exports com.eversis.esa.geoss.common.controller to spring.beans;
     exports com.eversis.esa.geoss.common.event to spring.beans, spring.context;
     exports com.eversis.esa.geoss.common.exception to spring.beans;
+    exports com.eversis.esa.geoss.common.rest to spring.beans;
     exports com.eversis.esa.geoss.common.security.configuration to spring.beans;
     exports com.eversis.esa.geoss.common.security.oauth2.configuration to spring.beans;
 
@@ -19,6 +20,7 @@ module geoss.common {
     opens com.eversis.esa.geoss.common.constraintvalidators;
     opens com.eversis.esa.geoss.common.domain;
     opens com.eversis.esa.geoss.common.hateoas to spring.core;
+    opens com.eversis.esa.geoss.common.rest to spring.core;
     opens com.eversis.esa.geoss.common.security.configuration to spring.core;
     opens com.eversis.esa.geoss.common.security.oauth2.configuration to spring.core;
 

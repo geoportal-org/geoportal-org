@@ -1,4 +1,4 @@
-package com.eversis.esa.geoss.settings.application.configuration;
+package com.eversis.esa.geoss.common.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
