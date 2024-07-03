@@ -28,14 +28,14 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     Page<Document> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
-     * Find by title and title page.
+     * Find by title and site id.
      *
      * @param title the title
      * @param siteId the site id
      * @param pageable the pageable
      * @return the page
      */
-    Page<Document> findByTitleAndTitle(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
+    Page<Document> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
 
     /**
      * Find by created by page.

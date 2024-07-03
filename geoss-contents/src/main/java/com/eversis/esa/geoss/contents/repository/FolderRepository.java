@@ -30,14 +30,14 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     Page<Folder> findByTitle(@Param("title") String title, Pageable pageable);
 
     /**
-     * Find by title and title page.
+     * Find by title and site id.
      *
      * @param title the title
      * @param siteId the site id
      * @param pageable the pageable
      * @return the page
      */
-    Page<Folder> findByTitleAndTitle(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
+    Page<Folder> findByTitleAndSiteId(@Param("title") String title, @Param("siteId") Long siteId, Pageable pageable);
 
     /**
      * Find by created by page.
