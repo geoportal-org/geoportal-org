@@ -42,7 +42,7 @@
     <changeSet id="54" author="Eversis">
         <loadData file="db/init-data/document.csv" tableName="document" separator="|" />
     </changeSet>
-    <changeSet id="55" author="Eversis">
+    <changeSet id="55" author="Eversis" dbms="mariad,mysql">
         <sql>
             SET @OLD_SQL_MODE = @@SQL_MODE;
             SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
@@ -51,7 +51,7 @@
     <changeSet id="56" author="Eversis">
         <loadData file="db/init-data/site.csv" tableName="site" separator="|" />
     </changeSet>
-    <changeSet id="57" author="Eversis">
+    <changeSet id="57" author="Eversis" dbms="mariad,mysql">
         <sql>
             SET SQL_MODE=@OLD_SQL_MODE;
         </sql>
