@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.contents.repository;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.contents.domain.Document;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -105,5 +107,13 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Transactional
     @DeleteMapping("/document/deleteBySiteId")
     void deleteBySiteId(@Param("siteId") Long siteId);
+
+    /**
+     * Find by site id list.
+     *
+     * @param siteId the site id
+     * @return the list
+     */
+    List<Document> findBySiteId(@Param("siteId") Long siteId);
 
 }
