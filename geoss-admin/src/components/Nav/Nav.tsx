@@ -17,6 +17,8 @@ export const Nav = ({ isOpen, onClose }: NavProps) => {
             onClose={onClose}
             variant="geossMenuDrawer"
             size={{ base: "fullWidth", sm: "xs" }}
+            autoFocus={false}
+            trapFocus={false}
         >
             <DrawerOverlay />
             <DrawerContent>
