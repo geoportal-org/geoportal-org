@@ -311,11 +311,7 @@ const SitesManager = () => {
                 blockScrollOnMount={false}
                 isOpen={modalOpen}
                 onClose={() => {
-                    setSiteData(defaultData);
-                    setModalOpen(false);
-                    setEditMode(false);
-                    setImageFile(undefined);
-                    setImageURL("");
+                    refresh();
                 }}
                 isCentered
             >
@@ -406,7 +402,7 @@ const SitesManager = () => {
                                                 src={imageURL}
                                                 alt="Selected Image"
                                                 boxSize="300px"
-                                                objectFit="cover"
+                                                objectFit="contain"
                                             />
                                         )}
                                     </Flex>
@@ -415,7 +411,13 @@ const SitesManager = () => {
                         </ModalBody>
 
                         <ModalFooter gap={2}>
-                            <Button colorScheme={"blue"} onClick={() => setModalOpen(false)}>
+                            <Button
+                                colorScheme={"blue"}
+                                onClick={() => {
+                                    setModalOpen(false);
+                                    refresh();
+                                }}
+                            >
                                 {translate("pages.recommendations.cancelButton")}
                             </Button>
                             <Button colorScheme={"green"} type="submit">
