@@ -29,7 +29,7 @@ async function refreshAccessToken(token: JWT) {
 
         return {
             ...token,
-            accessToken: refreshedToken.access_token,
+            // accessToken: refreshedToken.access_token,
             accessTokenExpired: Date.now() + refreshedToken.expires_in * 1000,
             refreshTokenExpired: Date.now() + refreshedToken.refresh_expires_in * 1000,
             refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
@@ -67,9 +67,10 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         jwt: async ({ token, account, user }) => {
             if (account && user) {
-                token.accessToken = account.access_token;
-                token.accessTokenExpired = account.expires_at;
+                // token.accessToken = account.access_token;
+                // token.accessTokenExpired = account.expires_at;
                 token.refreshToken = account.refresh_token;
+                token.tokenId = account.id_token
                 token.user = user;
                 return token;
                 //@ts-ignore
@@ -80,8 +81,9 @@ export const authOptions: NextAuthOptions = {
             }
         },
         session: async ({ session, token }) => {
-            session.accessToken = token.accessToken as string;
+            // session.accessToken = token.accessToken as string;
             session.expires = token.refreshTokenExpired as string;
+            session.tokenId = token.tokenId as string;
             //@ts-ignore
             session.userId = token.user.id;
             return session;

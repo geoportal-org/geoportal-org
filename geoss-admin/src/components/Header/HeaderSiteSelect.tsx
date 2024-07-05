@@ -44,7 +44,7 @@ const HeaderSiteSelect = () => {
     };
 
     return (
-        <Flex>
+        <Flex position={'absolute'} left='70px' zIndex={'100000'}>
             <Select
                 id="type"
                 name="type"
@@ -52,7 +52,7 @@ const HeaderSiteSelect = () => {
                 style={{ border: "none", borderBottom: "1px solid", borderRadius: "0" }}
                 _focus={{ border: "none", outline: "none", boxShadow: "none" }}
                 colorScheme={"gray"}
-                width="150px"
+                width={{base: '100px', md:'200px', lg: '300px'}}
                 value={currentSiteId}
                 onChange={handleSelectChange}
             >

@@ -66,9 +66,20 @@ const SitesManager = () => {
 
     useEffect(() => {
         getSitesList();
-        getDocumentsList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        getDocumentsList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentSiteId]);
+
+    useEffect(() => {
+        if (documentsList && documentsList?.length > 0) {
+            setModalOpen(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [documentsList]);
 
     const headingActions = [
         {
@@ -92,7 +103,10 @@ const SitesManager = () => {
         try {
             const {
                 _embedded: { document },
-            } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
+            } = await FileRepositoryService.getDocumentsListBySiteId({
+                ...initRepositoryPagination,
+                siteId: currentSiteId,
+            });
             const selectDocumentsList = createSelectItemsList(
                 document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
                 false,
@@ -194,7 +208,6 @@ const SitesManager = () => {
         setImageURL("");
         getSitesList();
         getAllSitesList();
-        getDocumentsList();
     };
 
     return (
@@ -259,7 +272,6 @@ const SitesManager = () => {
                                                         <>
                                                             <MenuItem
                                                                 onClick={() => {
-                                                                    setModalOpen(true);
                                                                     setEditMode(true);
                                                                     setCurrentSiteId(
                                                                         getIdFromUrl(site._links.self.href)

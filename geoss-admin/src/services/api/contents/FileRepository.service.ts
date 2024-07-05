@@ -12,6 +12,9 @@ export const FileRepositoryService = {
     getDocumentsList: async (query?: QueryParams): Promise<IDocumentList> =>
         fetcher({ url: FileRepositoryService.baseDocumentUrl, query }),
 
+    getDocumentsListBySiteId: async (query?: QueryParams): Promise<IDocumentList> =>
+        fetcher({ url: `${FileRepositoryService.baseDocumentUrl}/search/findBySiteId`, query }),
+
     createFolder: async (folderData: IFolderData): Promise<IFolder> =>
         fetcher({ url: FileRepositoryService.baseFolderUrl, method: "POST", body: folderData }),
 

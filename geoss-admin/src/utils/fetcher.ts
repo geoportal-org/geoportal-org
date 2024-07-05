@@ -16,13 +16,13 @@ export const fetcher = async ({
         ...(!(body instanceof FormData) && {
             headers: new Headers({
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${session?.accessToken}`,
+                Authorization: `Bearer ${session?.tokenId}`,
                 ...headers,
             }),
         }),
         ...(body instanceof FormData && {
             headers: new Headers({
-                Authorization: `Bearer ${session?.accessToken}`,
+                Authorization: `Bearer ${session?.tokenId}`,
                 ...headers,
             }),
         }),
