@@ -9,7 +9,7 @@ export default async function signOutProvider(req: NextApiRequest, res: NextApiR
             try {
                 const endProviderSessionUrl = `${process.env.KEYCLOAK_BASE_URL}/protocol/openid-connect/logout`;
                 const endProviderSessionParams = new URLSearchParams();
-                endProviderSessionParams.append("id_token_hint", session.tokenId);
+                endProviderSessionParams.append("id_token_hint", session.accessToken);
                 await fetch(`${endProviderSessionUrl}?${endProviderSessionParams}`);
                 res.status(200).json(null);
             } catch (error) {
