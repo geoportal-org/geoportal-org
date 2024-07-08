@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.contents.repository;
 
+import java.util.List;
+
 import com.eversis.esa.geoss.contents.domain.Menu;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -77,6 +79,14 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
      */
     Page<Menu> findByLevelIdAndSiteId(@Param("levelId") Long levelId, @Param("siteId") Long siteId, Pageable pageable);
 
+    /**
+     * Find by site id list.
+     *
+     * @param siteId the site id
+     * @return the list
+     */
+    List<Menu> findBySiteId(@Param("siteId") Long siteId);
+    
     /**
      * Delete by site id.
      *
