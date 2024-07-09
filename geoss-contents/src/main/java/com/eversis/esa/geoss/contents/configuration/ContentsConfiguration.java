@@ -113,18 +113,6 @@ public class ContentsConfiguration {
             pageLocalizedDescriptionSchema.setExample(
                     locales.stream().collect(Collectors.toMap(k -> k, v -> "Lorem ipsum dolor sit amet")));
             openApi.schema("PageLocalizedDescription", pageLocalizedDescriptionSchema);
-
-            StringSchema binaryStringSchema = new StringSchema();
-            binaryStringSchema.format("binary");
-            StringSchema modelStringSchema = new StringSchema();
-            modelStringSchema.setExample("{\"title\":\"example\",\"fileName\":\"example.png\",\"extension\":\"png\""
-                                         + ",\"path\":\"0\",\"folderId\":0}");
-            ArraySchema filesSchema = new ArraySchema();
-            filesSchema.items(binaryStringSchema);
-            ObjectSchema documentRequestBodySchema = new ObjectSchema();
-            documentRequestBodySchema.addProperty("files", filesSchema);
-            documentRequestBodySchema.addProperty("model", modelStringSchema);
-            openApi.schema("DocumentRequestBody", documentRequestBodySchema);
         };
     }
 

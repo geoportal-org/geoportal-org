@@ -1,14 +1,17 @@
 package com.eversis.esa.geoss.contents.controller;
 
 import com.eversis.esa.geoss.contents.domain.Document;
+import com.eversis.esa.geoss.contents.domain.Site;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
@@ -64,8 +67,25 @@ public class DocumentController {
      */
     @RequestBody(
             content = @Content(
-                    schema = @Schema(ref = AnnotationsUtils.COMPONENTS_REF + "DocumentRequestBody"),
-                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    schemaProperties = {
+                            @SchemaProperty(
+                                    name = "model",
+                                    schema = @Schema(
+                                            type = "object",
+                                            implementation = Document.class
+                                    )
+                            ),
+                            @SchemaProperty(
+                                    name = "files",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    type = "string",
+                                                    format = "binary"
+                                            )
+                                    )
+                            )
+                    }
             )
     )
     @PostMapping()
