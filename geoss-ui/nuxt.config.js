@@ -126,35 +126,36 @@ export default {
 
     router: {
         extendRoutes (routes, resolve) {
-            // Community Portals siteUrl support
+            // Register Community Portal siteUrl
             const routesToAdd = [
-                {
-                    name: 'slug',
-                    path: '/:slug',
-                    component: resolve(__dirname, 'pages/_slug.vue'),
-                    chunkName: 'pages/_slug'
-                },
                 {
                     name: 'community-siteurl',
                     path: '/community/:siteurl',
                     component: resolve(__dirname, 'pages/index.vue'),
-                    chunkName: 'pages/index'
-                },
-                {
-                    name: 'community-siteurl-slug',
-                    path: '/community/:siteurl/:slug',
-                    component: resolve(__dirname, 'pages/_slug.vue'),
-                    chunkName: 'pages/_slug'
+                    chunkName: 'pages/index',
                 }
             ];
 
-            const existingRoutesToRemove = routesToAdd.map(route => route.name);
+            // Register system routes
+            const systemRoutesToAdd = []
+            routes.filter(route => route.path.indexOf('/community/')).map(route => systemRoutesToAdd.push(
+                {
+                    name: 'community-siteurl-' + route.name,
+                    path: '/community/:siteurl' + route.path,
+                    component: route.component,
+                    chunkName: route.chunkName
+                }
+            ))
+
+            const routesToAddMerged = routesToAdd.concat(systemRoutesToAdd)
+
+            const existingRoutesToRemove = routesToAddMerged.map(route => route.name)
 
             const generateRoutes = routes.filter((route) => {
                 return !existingRoutesToRemove.includes(route.name);
             });
 
-            routesToAdd.forEach(({ name, path, component, chunkName }) => {
+            routesToAddMerged.forEach(({ name, path, component, chunkName }) => {
                 generateRoutes.push({
                     name,
                     path,

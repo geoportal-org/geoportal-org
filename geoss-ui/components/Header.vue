@@ -13,7 +13,7 @@
             </a>
         </div>
         <div class="header__middle">
-            <NuxtLink :title="siteName" to="/" data-tutorial-tag="header-logo-main">
+            <NuxtLink :title="siteName" :to="siteRoot()" data-tutorial-tag="header-logo-main">
                 <img :src="siteLogo" :alt="siteName" />
             </NuxtLink>
         </div>
@@ -127,6 +127,13 @@ export default class HeaderComponent extends Vue {
             this.$store.dispatch(GeneralActions.setLangLocale, locale);
         }
         this.toggleLangContainer();
+    }
+
+    public siteRoot() {
+        if (!this.siteUrl || this.siteUrl === 'global') {
+            return '/'
+        }
+        return '/community/' + this.siteUrl
     }
 
     private mounted() {

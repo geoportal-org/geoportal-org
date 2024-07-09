@@ -1,20 +1,14 @@
 <template>
     <nav class="menu" :class="{ alpha: alpha, active: menuOpened }" :style="{ 'padding-top': `${paddingTop}px` }"
         v-click-outside="{ fn: closeMenu, excludeSelectors: '.header, .tutorial-tag, .tutorial-mode, .tutorial-off' }">
+        <!-- Level 0 -->
         <div class="menu__inner-wrapper">
             <template v-for="(route, index) of routes">
                 <div :key="route.title + '-separator'" v-if="index === 4" class="menu__separator"></div>
                 <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
 
-                    <template v-if="!isMyWorkspace(route)">
-                        <div v-if="route.links && route.links.length" class="menu__links-expander"
-                            @click="toggleMenuSublinks(route)">
-                            <img :src="route.imgURL" :alt="route.title" />
-                            <span>{{ route.title.toUpperCase() }}</span>
-                        </div>
-                    </template>
-                    <template v-else>
+                    <template v-if="isMyWorkspace(route)">
                         <div v-if="isSignedIn && route.links && route.links.length" class="menu__links-expander"
                             @click="toggleMenuSublinks(route)">
                             <img :src="route.imgURL" :alt="route.title" />
@@ -25,31 +19,19 @@
                             <span>{{ route.title.toUpperCase() }}</span>
                         </div>
                     </template>
-
-                    <div v-if="route.links" :key="route.title" class="md-hidden-up">
-                        <CollapseTransition>
-                            <div v-show="route === activeLinksExpander">
-                                <div class="menu__links-expanded">
-                                    <template v-for="(subroute, subindex) of route.links">
-                                        <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex"
-                                            :to="subroute.link" target="_blank">
-                                            {{ subroute.title }}
-                                        </a>
-                                        <NuxtLink v-else class="menu__sublink" :key="subroute.link"
-                                            :to="subroute.link || ''">
-                                            {{ subroute.title }}
-                                        </NuxtLink>
-                                    </template>
-                                </div>
-                            </div>
-                        </CollapseTransition>
-                    </div>
+                    <template v-else>
+                        <div v-if="route.links && route.links.length" class="menu__links-expander"
+                            @click="toggleMenuSublinks(route)">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                    </template>
                     <a v-if="(!route.links || !route.links.length) && isExternal(route.link)" :href="route.link"
                         class="menu__link" target="_blank">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </a>
-                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="route.link || ''"
+                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="scopedUrl(route.link) || ''"
                         class="menu__link">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
@@ -67,16 +49,21 @@
                 </a>
             </div>
         </div>
+        <!-- Level 1 -->
         <div class="menu__inner-wrapper md-hidden-down">
             <div v-for="(route, index) of routes" :key="index" class="menu__item">
                 <CollapseTransition v-if="route.links">
                     <div v-show="route === activeLinksExpander" class="menu__links-expanded">
+                        <template  v-if="isCommunityPortals(route) && siteId">
+                            <NuxtLink class="menu__sublink" key="global-scope" to="/" @click.native="setGlobalSiteId()">Back to GEOSS</NuxtLink>
+                            <span class="menu__horizontal-separator"></span>
+                        </template>
                         <template v-for="(subroute, subindex) of route.links">
                             <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex" :href="subroute.link"
                                 :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`" target="_blank">
                                 {{ subroute.title }}
                             </a>
-                            <NuxtLink v-else class="menu__sublink" :key="subroute.link" :to="subroute.link"
+                            <NuxtLink v-else-if="!(isCommunityPortals(route) && subroute.link === '/community/' + siteUrl)" class="menu__sublink" :key="subroute.link" :to="scopedUrl(subroute.link, isCommunityPortals(route))"
                                 :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`">
                                 {{ subroute.title }}
                             </NuxtLink>
@@ -98,6 +85,7 @@ import { MenuLinksWrapper } from '@/interfaces/Menu';
 import { MenuGetters } from '@/store/menu/menu-getters';
 import { MenuActions } from '@/store/menu/menu-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
+import { GeneralActions } from '@/store/general/general-actions';
 import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
@@ -147,6 +135,10 @@ export default class MenuComponent extends Vue {
         return this.$store.getters[SearchEngineGetters.siteId];
     }
 
+    get siteUrl() {
+        return this.$store.getters[SearchEngineGetters.siteUrl];
+    }
+
     public closeMenu() {
         this.menuOpened = false;
     }
@@ -192,6 +184,21 @@ export default class MenuComponent extends Vue {
 
     public isMyWorkspace(route) {
         return route.imgURL.indexOf('my-workspace') > 0
+    }
+
+    public isCommunityPortals(route) {
+        return route.imgURL.indexOf('community-portals') > 0
+    }
+
+    public scopedUrl(route, omitChange = false) {
+        if (!this.siteUrl || this.siteUrl === 'global' || !route.indexOf('/community/') || omitChange) {
+            return route
+        }
+        return '/community/' + this.siteUrl + route
+    }
+
+    public setGlobalSiteId() {
+        this.$store.dispatch(GeneralActions.setStoreInitialized, false);
     }
 
     @Watch('langLocale')
@@ -277,6 +284,14 @@ $img_height: 50px;
             flex-direction: column;
             margin: 0;
         }
+    }
+
+    &__horizontal-separator {
+        display: block;
+        width: calc(100% + 13px);
+        height: 1px;
+        background: $white;
+        margin: 10px 0 15px -13px;
     }
 
     &__separator {

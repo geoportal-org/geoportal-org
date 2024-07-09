@@ -87,8 +87,8 @@ const parseSiteData = (data: Site): SiteData => {
     }
 }
 
-const getPages = () => {
-    return apiClient.$get(geossContents.page, {
+const getPages = (siteId: number) => {
+    return apiClient.$get(geossContents.page + '&siteId=' + siteId, {
         headers: {
             Authorization: '',
         },
@@ -119,9 +119,8 @@ const getNewFileData = (inputFile: any) => {
 }
 
 const ContentAPI = {
-    generatePage: async (slug: string, locale: Language) => {
-        const receivedPage = await ContentAPI.getPage(slug, locale)
-
+    generatePage: async (slug: string, locale: Language, siteId: number = 0) => {
+        const receivedPage = await ContentAPI.getPage(slug, locale, siteId)
         const generatedPage = receivedPage || { title: 'Missing page' }
         const generatedContent = receivedPage
             ? await ContentAPI.getContent(receivedPage.contentId as any, locale)
@@ -132,8 +131,8 @@ const ContentAPI = {
         return { generatedPage, generatedContent }
     },
 
-    getPage: async (slug: string, locale: string = 'en') => {
-        const pages: Pages = await getPages()
+    getPage: async (slug: string, locale: string = 'en', siteId: number) => {
+        const pages: Pages = await getPages(siteId)
         const page: Page = pages._embedded.page.filter(
             (page: { slug: string }) => page.slug === slug
         )[0]

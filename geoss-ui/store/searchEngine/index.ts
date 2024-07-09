@@ -82,7 +82,6 @@ const actions = {
         context.commit('setStateProp', { prop: 'siteUrl', value })
     },
     setSiteId: (context: any, value: number) => {
-        console.log('setSiteId', value)
         context.commit('setStateProp', { prop: 'siteId', value })
     },
     setTourUrl: (context: any, value: string) => {

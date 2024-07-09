@@ -13,12 +13,11 @@
         <TakeATour />
         <!-- <TutorialTags /> -->
 
-        <Nuxt />
+        <Nuxt v-if="storeInitialized" />
 
         <div class="geoss-data-pickers"></div>
         <portal-target name="custom-select-container"></portal-target>
     </main>
-
 </template>
 
 <script lang="ts">
@@ -70,6 +69,12 @@ export default {
         },
         isBulkDownloadEnabled() {
             return this.$store.getters[GeneralGetters.isBulkDownloadEnabled];
+        },
+        route() {
+            return this.$route;
+        },
+        siteUrl() {
+            return this.$store.getters[SearchEngineGetters.siteUrl];
         }
     },
 
@@ -365,12 +370,7 @@ export default {
                 }
             });
         },
-    },
-
-    mounted() {
-        AppVueObj.app.$store = this.$store;
-
-        if (!this.storeInitialized) {
+        getSettings() {
             const promises = [
                 this.parseQueryParams(),
                 LogService.createElasticSearchClient(),
@@ -537,6 +537,28 @@ export default {
             if (spinnerElem) {
                 spinnerElem.classList.add('inactive');
             }
+
+        }
+    },
+
+    watch: {
+        storeInitialized(newVal) {
+            if (!newVal) {
+                this.getSettings();
+            }
+        },
+        route(newVal) {
+            if (newVal.params.siteurl !== this.siteUrl) {
+                this.getSettings();
+            }
+        }
+    },
+
+    mounted() {
+        AppVueObj.app.$store = this.$store;
+
+        if (!this.storeInitialized) {
+            this.getSettings();
         }
     }
 }
