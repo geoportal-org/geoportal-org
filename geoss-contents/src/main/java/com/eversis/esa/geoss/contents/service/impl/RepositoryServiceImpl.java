@@ -135,7 +135,7 @@ public class RepositoryServiceImpl implements RepositoryService {
             Path uploadPath = rootDirectory.resolve(path);
             Files.copy(file.getInputStream(), uploadPath.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage(), e);
         }
         log.info("Document added.");
         return savedDocument;
