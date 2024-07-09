@@ -36,10 +36,11 @@ export const WebSettings = () => {
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     const getCurrentWebSettings = useCallback(async () => {
+        setIsLoading(true)
         try {
             const {
                 _embedded: { webSettings },
-            } = await WebSettingsService.getWebSettings();
+            } = await WebSettingsService.getWebSettings(currentSiteId);
             setWebSettingsList(webSettings);
             setSavedValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields, false));
             setInitValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields));
@@ -49,7 +50,7 @@ export const WebSettings = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [currentSiteId]);
 
     useEffect(() => {
         const getDocumentsList = async () => {
@@ -71,7 +72,7 @@ export const WebSettings = () => {
         };
         getDocumentsList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [currentSiteId]);
 
     useEffect(() => {
         const getWebSettings = async () => await getCurrentWebSettings();

@@ -31,13 +31,14 @@ export const ApiSettings = () => {
     useEffect(() => {
         getApiSettingsInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [currentSiteId]);
 
     const getApiSettingsInfo = async () => {
+        setIsLoading(true)
         try {
             const {
                 _embedded: { apiSettings },
-            } = await ApiSettingsService.getApiSettings();
+            } = await ApiSettingsService.getApiSettings(currentSiteId);
             setApiSettingList(apiSettings);
             setSavedValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields, false));
             setInitValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields));

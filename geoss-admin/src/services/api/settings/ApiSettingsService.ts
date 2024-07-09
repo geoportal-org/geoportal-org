@@ -5,8 +5,8 @@ import { fetcher } from "@/utils/fetcher";
 export const ApiSettingsService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/settings/rest/api-settings`,
 
-    getApiSettings: async (query?: QueryParams): Promise<IApiSettingsList> =>
-        fetcher({ url: ApiSettingsService.baseUrl, query }),
+    getApiSettings: async (siteId: number, query?: QueryParams): Promise<IApiSettingsList> =>
+        fetcher({ url: `${process.env.NEXT_PUBLIC_API}/settings/rest/sites/${siteId}/api-settings`, query }),
 
     getApiSetting: async (id: number): Promise<IApiSetting> => fetcher({ url: `${ApiSettingsService.baseUrl}/${id}` }),
 
