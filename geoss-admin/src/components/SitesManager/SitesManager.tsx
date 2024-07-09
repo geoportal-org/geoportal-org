@@ -110,6 +110,7 @@ const SitesManager = () => {
             const selectDocumentsList = createSelectItemsList(
                 document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
                 false,
+                false,
                 locale as LocaleNames
             );
             setDocumentsList(() => selectDocumentsList.options);

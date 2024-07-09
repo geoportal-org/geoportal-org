@@ -27,8 +27,14 @@ export type FormField = {
 export type SelectSettings = {
     isMultiselect: boolean;
     isTranslated?: boolean;
-    options: FormFieldSelect[];
+    isGroupedOptions?: boolean;
+    options: FormFieldSelect[] | GroupedFormFieldSelect[];
 };
+
+export type GroupedFormFieldSelect = {
+    label: string,
+    options: FormFieldSelect[];
+}
 
 export type FormFieldSelect = {
     label: string;

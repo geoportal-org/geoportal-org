@@ -6,6 +6,7 @@ import { FormField, Loader, MainContent, PrimaryButton, TextContent } from "@/co
 import { ContentService, PageService } from "@/services/api";
 import {
     areObjectsEqual,
+    createGroupedSelectItemsList,
     createSelectItemsList,
     createTouchedForm,
     isTranslatedValueAdded,
@@ -20,11 +21,12 @@ import { IContent, IPageData } from "@/types/models";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { useIntl } from "react-intl";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
+import { IContentGrouped } from "@/types/models/contents";
 
 export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
     const [currentTranslation, setCurrentTranslation] = useState<LocaleNames>(defaultUsedLang);
     const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addPageForm));
-    const [contentsList, setContentsList] = useState<IContent[]>([]);
+    const [contentsList, setContentsList] = useState<IContent[] | IContentGrouped[]>([]);
     const [pageId, setPageId] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDraft, setIsDraft] = useState<boolean>(false);
@@ -48,7 +50,32 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
             const {
                 _embedded: { content },
             } = await ContentService.getContentList({ ...initContentsPagination, siteId: currentSiteId });
-            setContentsList(() => content);
+            const globalSiteContent = await (
+                await ContentService.getContentList({ ...initContentsPagination, siteId: 0 })
+            )._embedded.content;
+            let groupedOptions: IContent[] | IContentGrouped[] = [];
+
+            if (currentSiteId !== 0) {
+                groupedOptions = [
+                    {
+                        label: "Current Community Portal",
+                        options: content,
+                    },
+                    {
+                        label: "Global Scope",
+                        options: globalSiteContent,
+                    },
+                ];
+            } else {
+                groupedOptions = [
+                    {
+                        label: "Global Scope",
+                        options: globalSiteContent,
+                    },
+                ];
+            }
+
+            setContentsList(() => groupedOptions);
             if (isEditMode) {
                 const id = router.query.id as string;
                 setPageId(id);
@@ -150,11 +177,21 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 : false;
             const isRequired = field.isRequired && !isInvisible;
             if (field.name === "contentId") {
-                field.selectSettings = createSelectItemsList(
-                    contentsList,
-                    field.selectSettings?.isMultiselect,
-                    locale as LocaleNames
-                );
+                if (field.selectSettings?.isGroupedOptions) {
+                    field.selectSettings = createGroupedSelectItemsList(
+                        contentsList as IContentGrouped[],
+                        field.selectSettings?.isMultiselect,
+                        field.selectSettings?.isGroupedOptions,
+                        locale as LocaleNames
+                    );
+                } else {
+                    field.selectSettings = createSelectItemsList(
+                        contentsList as IContent[],
+                        field.selectSettings?.isMultiselect,
+                        field.selectSettings?.isGroupedOptions,
+                        locale as LocaleNames
+                    );
+                }
             }
             return (
                 <FormField

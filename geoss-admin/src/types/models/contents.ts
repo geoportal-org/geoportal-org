@@ -1,4 +1,4 @@
-import { ILink, IPagination, IResponseLinks } from "@/types/models";
+import { IDocument, ILink, IPagination, IResponseLinks } from "@/types/models";
 import { TranslatedData } from "@/types";
 
 export interface IContent {
@@ -14,6 +14,11 @@ export interface IContent {
         content: ILink;
         self: ILink;
     };
+}
+
+export interface IContentGrouped {
+    label: string;
+    options: IContent[] | IDocument[];
 }
 
 export interface IContentData {

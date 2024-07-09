@@ -59,11 +59,9 @@ export const MenuContent = () => {
         try {
             const {
                 _embedded: { menu: fullMenu },
-            } = await MenuService.getMenuList(initMenuPagination);
+            } = await MenuService.getMenuListBySiteId({...initMenuPagination, siteId: currentSiteId});
             const menuStructure = sortMenuList(fullMenu);
-            //get structure for current site
-            const siteStructure = menuStructure.filter((menuPiece) => menuPiece.data?.siteId === currentSiteId);
-            setMenuList(() => siteStructure);
+            setMenuList(() => menuStructure);
         } catch (e) {
             setIsError(true);
         } finally {

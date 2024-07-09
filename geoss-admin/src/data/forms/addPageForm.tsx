@@ -148,6 +148,12 @@ export const addPageForm: FormField[] = [
         name: "contentId",
         placeholderId: "form.placeholders.select-one",
         type: "select",
+        selectSettings: {
+            isMultiselect: false,
+            isGroupedOptions: true,
+            isTranslated: true,
+            options: [],
+        },
     },
     {
         fieldType: Input,

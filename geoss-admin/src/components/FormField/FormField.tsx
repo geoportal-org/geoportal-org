@@ -9,6 +9,7 @@ import { FormFieldProps, FormFieldSelect } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { createRelativeUrl, createSlug } from "@/utils/helpers";
 import { defaultUsedLang } from "@/data";
+import { GroupedFormFieldSelect } from "@/types/data/formField";
 
 export const FormField = ({ fieldData, invisible, onInputTranslationChange, currentLang }: FormFieldProps) => {
     const { translate } = useFormatMsg();
@@ -74,19 +75,32 @@ export const FormField = ({ fieldData, invisible, onInputTranslationChange, curr
             return "";
         }
         const values: FormFieldSelect[] = [];
-        if (Array.isArray(formValues[fieldName]) && selectSettings && selectSettings.isMultiselect) {
-            formValues[fieldName].forEach((value: string) => {
-                const item = selectSettings.options.find((option) => option.value === value);
-                if (item) {
-                    values.push(item);
-                }
+        const options = selectSettings?.options as FormFieldSelect[];
+
+        if (selectSettings?.isGroupedOptions) {
+            const groupedOptions = selectSettings.options as GroupedFormFieldSelect[];
+            let match = undefined
+            groupedOptions.forEach((group) => {
+                let option = (group.options.find((option) => option.value === formValues[fieldName]))
+                if(option) match = option
             });
-        }
-        if (values.length) {
-            return values;
+            if (match) return match;
+
+        } else {
+            if (Array.isArray(formValues[fieldName]) && selectSettings && selectSettings.isMultiselect) {
+                formValues[fieldName].forEach((value: string) => {
+                    const item = options.find((option) => option.value === value);
+                    if (item) {
+                        values.push(item);
+                    }
+                });
+            }
+            if (values.length) {
+                return values;
+            }
         }
 
-        return selectSettings?.options.find((option) => option.value === formValues[fieldName]);
+        return options.find((option) => option.value === formValues[fieldName]);
     };
 
     const handleSelectChange = (options: FormFieldSelect | FormFieldSelect[]) => {

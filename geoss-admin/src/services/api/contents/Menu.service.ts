@@ -5,7 +5,7 @@ import { fetcher } from "@/utils/fetcher";
 export const MenuService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/contents/rest/menu`,
 
-    getMenuList: async (query?: QueryParams): Promise<IMenuList> => fetcher({ url: MenuService.baseUrl, query }),
+    getMenuListBySiteId: async (query?: QueryParams): Promise<IMenuList> => fetcher({ url: `${MenuService.baseUrl}/search/findBySiteId`, query }),
 
     createMenuItem: async (menuItemData: IMenuItemData): Promise<IMenuItem> =>
         fetcher({ url: MenuService.baseUrl, body: menuItemData, method: "POST" }),

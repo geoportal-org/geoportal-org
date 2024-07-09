@@ -16,6 +16,7 @@ import {
 import { IApiSetting, IContent, IDocument, IFolder, IMenuItem, IView, IWebSetting } from "@/types/models";
 import { defaultUsedLang, navSectionsUrls } from "@/data";
 import { apiSettingsForm, webSettingsForm } from "@/data/forms";
+import { IContentGrouped } from "@/types/models/contents";
 
 export const getActiveNavSection = (activeRoute: string): number => {
     const activeSectionIndex = navSectionsUrls.findIndex((section) => section.includes(activeRoute));
@@ -137,6 +138,7 @@ export const generatePath = (breadcrumb: BreadcrumbItem[]): string =>
 export const createSelectItemsList = (
     items: IContent[] | IDocument[],
     isMultiselect: boolean = false,
+    isGroupedOptions: boolean = false,
     currentLanguage: LocaleNames
 ): SelectSettings => {
     const options = items.map((item) => {
@@ -152,6 +154,37 @@ export const createSelectItemsList = (
     });
     return {
         isMultiselect,
+        isGroupedOptions,
+        options,
+    };
+};
+
+export const createGroupedSelectItemsList = (
+    items: IContentGrouped[],
+    isMultiselect: boolean = false,
+    isGroupedOptions: boolean = false,
+    currentLanguage: LocaleNames
+): SelectSettings => {
+    const options = items.map((group) => {
+        return {
+            label: group.label,
+            options: group.options.map((option) => {
+                const isDocument = "extension" in option;
+                const itemId = getIdFromUrl(option._links.self.href);
+                const label = isDocument
+                    ? `${option.title} (${option.fileName})`
+                    : `${option.title[currentLanguage]} (ID: ${itemId})`;
+                return {
+                    label,
+                    value: itemId,
+                };
+            })
+        }
+    })
+    
+    return {
+        isMultiselect,
+        isGroupedOptions,
         options,
     };
 };
