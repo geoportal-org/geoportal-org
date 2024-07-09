@@ -12,16 +12,11 @@
         http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
 >
-    <changeSet id="39" author="Eversis">
-        <comment>Catalog Settings</comment>
-        <addColumn tableName="catalog">
-            <column name="dab_id" type="varchar(254)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ix_catalog_dab_id"/>
-            </column>
-        </addColumn>
-        <addColumn tableName="catalog_aud">
-            <column name="dab_id" type="varchar(254)">
-            </column>
-        </addColumn>
+    <changeSet id="45" author="Eversis">
+        <comment>Layer Settings</comment>
+        <createIndex tableName="layer" indexName="ix_layer_site_id_name" unique="true">
+            <column name="site_id"/>
+            <column name="name"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
