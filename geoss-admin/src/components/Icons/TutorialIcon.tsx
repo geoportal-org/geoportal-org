@@ -1,6 +1,6 @@
 import { IconProps } from "@/types";
 
-export const TutorialIcon = ({ color, width, height }: IconProps) => (
+export const TutorialIcon = ({ color, width = 20, height = 20 }: IconProps) => (
     <svg
         width={width}
         height={height}

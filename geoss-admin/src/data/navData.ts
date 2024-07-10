@@ -8,6 +8,7 @@ import {
     LogoutIcon,
     MenuIcon,
     PageIcon,
+    TutorialIcon,
     WebIcon,
     WebsiteIcon,
 } from "@/components/Icons";
@@ -47,12 +48,11 @@ const navSettingsData: NavItem[] = [
         Icon: LayerIcon,
     },
     // hidden tutorial tags in menu
-    /*
     {
         titleId: "nav.settings.section.tutorial",
         href: pagesRoutes.tutorialTags,
         Icon: TutorialIcon,
-    },*/
+    },
 ];
 
 const navContentsData: NavItem[] = [
