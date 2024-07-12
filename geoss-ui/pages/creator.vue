@@ -129,7 +129,8 @@ export default {
             password: '',
             defaultView: null,
             baseUrl: this.$config.baseUrl,
-            adminUrl: this.$config.adminUrl
+            adminUrl: this.$config.adminUrl,
+            defaultSiteId: 0
         }
     },
     methods: {
@@ -280,7 +281,7 @@ export default {
                 } else {
                     this.getCurrentDefaultView();
                 }
-                this.settings = await WebSettingsAPI.getSiteSettingsRaw()
+                this.settings = await WebSettingsAPI.getSiteSettingsRaw(defaultSiteId)
                 this.siteData = await ContentAPI.getSiteByUrl(this.$route.params.siteurl)
             }
         },

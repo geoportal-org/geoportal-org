@@ -75,7 +75,10 @@ export default {
         },
         siteUrl() {
             return this.$store.getters[SearchEngineGetters.siteUrl];
-        }
+        },
+        siteId() {
+            return this.$store.getters[SearchEngineGetters.siteId];
+        },
     },
 
     methods: {
@@ -374,8 +377,8 @@ export default {
             const promises = [
                 this.parseQueryParams(),
                 LogService.createElasticSearchClient(),
-                GeneralApiService.getSiteSettings(this.$route.params.siteurl),
-                GeneralApiService.getSearchSettings(),
+                GeneralApiService.getSiteSettings(this.siteId),
+                GeneralApiService.getSearchSettings(this.siteId),
                 GeneralApiService.getUserSettings(),
                 GeneralApiService.getSiteData(this.$route.params.siteurl)
             ];

@@ -166,9 +166,9 @@ const parseCatalogsResponse = (data: string): any => {
 }
 
 export default {
-    getSiteSettingsRaw: async () => {
+    getSiteSettingsRaw: async (siteId: number) => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings,
+            `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
                     Authorization: '',
@@ -177,9 +177,9 @@ export default {
         )
         return webSettings._embedded.webSettings
     },
-    getSiteSettings: async (siteUrl: String = '') => {
+    getSiteSettings: async (siteId: number) => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings,
+            `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
                     Authorization: '',
@@ -189,9 +189,9 @@ export default {
         const webSettingsData: WebSettingsData = parseWebSettings(webSettings)
         return parseSiteSettings(webSettingsData)
     },
-    getSearchSettings: async () => {
+    getSearchSettings: async (siteId: number) => {
         const apiSettings: WebSettings = await apiClient.$get(
-            geossSettings.apiSettings,
+            `${geossSettings.apiSettings}/sites/${siteId}/api-settings`,
             {
                 headers: {
                     Authorization: '',
@@ -199,6 +199,7 @@ export default {
             }
         )
         const apiSettingsData: any = parseApiSettings(apiSettings)
+        console.log(apiSettings)
         return apiSettingsData
     },
     getCatalogs: async (catalogsUrl: string) => {

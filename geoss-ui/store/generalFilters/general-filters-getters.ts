@@ -11,4 +11,5 @@ export enum GeneralFiltersGetters {
     additionalSearchFields = 'generalFilters/additionalSearchFields',
     googlePlacesApiError = 'generalFilters/googlePlacesApiError',
     locationTypeOptions = 'generalFilters/locationTypeOptions',
+    getViewId = 'generalFilters/getViewId'
 }

@@ -121,8 +121,8 @@ export const GeneralApiService = {
         //     })
     },
 
-    getSiteSettings(siteUrl = 'global') {
-        return webSettingsAPI.getSiteSettings(siteUrl)
+    getSiteSettings(siteId = 0) {
+        return webSettingsAPI.getSiteSettings(siteId)
 
         // return makeRequest(
         //     'get',
@@ -141,8 +141,8 @@ export const GeneralApiService = {
         //     })
     },
 
-    getSearchSettings() {
-        return webSettingsAPI.getSearchSettings()
+    getSearchSettings(siteId = 0) {
+        return webSettingsAPI.getSearchSettings(siteId)
 
         // return makeRequest(
         //     'get',

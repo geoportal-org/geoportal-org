@@ -27,6 +27,7 @@ import ErrorPopup from '@/components/ErrorPopup.vue'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 import Vue from 'vue'
 import { $tc } from '~/plugins/i18n'
+import { WcFiltersActions } from '../wcFilters/wc-filters.actions'
 
 declare global {
     interface Window {
@@ -919,6 +920,20 @@ const actions = {
                     { root: true }
                 )
                 dispatch(IrisFiltersActions.setIrisFiltersAvailable, false, {
+                    root: true,
+                })
+            }
+
+            if (
+                AppVueObj.app.$store.getters[
+                    GeneralFiltersGetters.getViewId
+                ].includes('worldcereal')
+            ) {
+                dispatch(WcFiltersActions.setWcFiltersAvailable, true, {
+                    root: true,
+                })
+            } else {
+                dispatch(WcFiltersActions.setWcFiltersAvailable, false, {
                     root: true,
                 })
             }

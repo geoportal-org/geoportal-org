@@ -6,6 +6,7 @@ import generalFilters from '~/store/generalFilters'
 import facetedFilters from '~/store/facetedFilters'
 import granulaFilters from '~/store/granulaFilters'
 import irisFilters from '~/store/irisFilters'
+import wcFilters from '~/store/wcFilters' 
 import searchEngine from '~/store/searchEngine'
 import myWorkspace from '~/store/myWorkspace'
 import search from '@/store/search'
@@ -28,6 +29,7 @@ export const store = new Vuex.Store({
         facetedFilters,
         granulaFilters,
         irisFilters,
+        wcFilters,
         searchEngine,
         myWorkspace,
         search,

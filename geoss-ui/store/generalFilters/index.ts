@@ -56,6 +56,9 @@ const getters = {
     state: (state: any) => {
         return state
     },
+    getViewId: (state: any) => {
+        return state.viewId
+    },
     lastTriggerredGeneralFiltersState: () => {
         return lastTriggerredGeneralFiltersState
     },
