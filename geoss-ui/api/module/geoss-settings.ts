@@ -10,8 +10,8 @@ const config = {
 
 export default {
     url: config.apiUrl,
-    apiSettings: config.apiUrl + config.apiSettingsUrl,
-    webSettings: config.apiUrl + config.webSettingsUrl,
+    apiSettings: config.apiUrl,
+    webSettings: config.apiUrl,
     catalogs: config.apiUrl + config.catalogsUrl,
     views: config.apiUrl + config.viewsUrl,
     layers: config.apiUrl + config.layersUrl,
