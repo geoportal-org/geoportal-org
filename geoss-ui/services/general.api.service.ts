@@ -21,6 +21,7 @@ const removeJsonTextAttribute = (
     try {
         const keyNo = Object.keys(parentElement._parent).length
         const keyName = Object.keys(parentElement._parent)[keyNo - 1]
+        if(keyName === 'label') return value
         if (parentElement._parent[keyName][0]) {
             parentElement._parent[keyName].splice(-1, 1)
             parentElement._parent[keyName].push(UtilsService.nativeType(value))

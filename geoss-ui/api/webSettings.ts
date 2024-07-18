@@ -199,7 +199,6 @@ export default {
             }
         )
         const apiSettingsData: any = parseApiSettings(apiSettings)
-        console.log(apiSettings)
         return apiSettingsData
     },
     getCatalogs: async (catalogsUrl: string) => {

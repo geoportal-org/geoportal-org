@@ -3945,6 +3945,11 @@ core-js@^3.6.0, core-js@^3.8.3:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.31.1.tgz#f2b0eea9be9da0def2c5fece71064a7e5d687653"
   integrity sha512-2sKLtfq1eFST7l7v62zaqXacPc7uG8ZAya8ogijLhTtaKNcpzpB4TMoTw2Si+8GYKRwFPMMtUT0263QFWFfqyQ==
 
+core-js@^3.6.5:
+  version "3.37.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.37.1.tgz#d21751ddb756518ac5a00e4d66499df981a62db9"
+  integrity sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==
+
 core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
@@ -10156,7 +10161,7 @@ vue-chartjs@^5.2.0:
   resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-5.2.0.tgz#3d0076ccf8016d1bf8fab5ccd837e7fb81005ded"
   integrity sha512-d3zpKmGZr2OWHQ1xmxBcAn5ShTG917+/UCLaSpaCDDqT0U7DBsvFzTs69ZnHCgKoXT55GZDW8YEj9Av+dlONLA==
 
-vue-class-component@^7.2.6:
+vue-class-component@^7.1.0, vue-class-component@^7.2.6:
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.6.tgz#8471e037b8e4762f5a464686e19e5afc708502e4"
   integrity sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==
@@ -10227,6 +10232,13 @@ vue-no-ssr@^1.1.1:
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
 
+vue-property-decorator@^8.0.0:
+  version "8.5.1"
+  resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-8.5.1.tgz#571a91cf8d2b507f537d79bf8275af3184572fff"
+  integrity sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q==
+  dependencies:
+    vue-class-component "^7.1.0"
+
 vue-property-decorator@^9.0.0:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-9.1.2.tgz#266a2eac61ba6527e2e68a6933cfb98fddab5457"
@@ -10250,6 +10262,14 @@ vue-server-renderer@^2.7.10, vue-server-renderer@^2.7.14:
     resolve "^1.22.0"
     serialize-javascript "^6.0.0"
     source-map "0.5.6"
+
+vue-slider-component@^3.2.24:
+  version "3.2.24"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.2.24.tgz#9c931da3d10d0efde361138626a76d21c4359fd5"
+  integrity sha512-28hfotAL/CPXPwqHgVFyUwUEV0zweoc2wW0bgraGkoIcRZGlFjk8caYJLE8+Luug5t3b9tJm/NyDXpyIdmcYZg==
+  dependencies:
+    core-js "^3.6.5"
+    vue-property-decorator "^8.0.0"
 
 vue-social-sharing@2.3.3:
   version "2.3.3"

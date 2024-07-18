@@ -196,7 +196,6 @@ import { DataSources } from '@/interfaces/DataSources'
 import to from '@/utils/to'
 import { AppVueObj } from '@/data/global'
 import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
-import { WcFiltersActions } from '~/store/wcFilters/wc-filters.actions'
 
 declare const google: any
 

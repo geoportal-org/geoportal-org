@@ -19,7 +19,7 @@
                     :only-advanced="!currentResults"
                     v-show="activeSection === 'advanced' || !currentResults"
                 />
-                <!-- <WorldCerealFiltersComponent v-show="wcFiltersAvailable && activeSection !== 'advanced'" /> -->
+                <WorldCerealFiltersComponent v-show="inSituFiltersAvailable && activeSection !== 'advanced'" />
                 <SearchFacetedFilters
                     v-show="
                         facetedFiltersAvailable && activeSection !== 'advanced'
@@ -59,7 +59,7 @@ import UtilsService from '@/services/utils.service'
 import TutorialTagsService from '@/services/tutorial-tags.service'
 import { Timers } from '@/data/timers'
 import CollapseTransition from '@/plugins/CollapseTransition'
-import { WcFiltersGetters } from '~/store/wcFilters/wc-filters.getters'
+import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
 
 @Component({
     components: {
@@ -104,8 +104,8 @@ export default class SearchFiltersComponent extends Vue {
         return this.$store.getters[IrisFiltersGetters.irisFiltersAvailable]
     }
 
-    get wcFiltersAvailable() {
-        return this.$store.getters[WcFiltersGetters.wcFiltersAvailable]
+    get inSituFiltersAvailable() {
+        return this.$store.getters[InSituFiltersGetters.inSituFiltersAvailable]
     }
 
     get currentResults() {
@@ -152,7 +152,7 @@ export default class SearchFiltersComponent extends Vue {
                     GranulaFiltersGetters.granulaFiltersAvailable
                 ] ||
                 this.$store.getters[IrisFiltersGetters.irisFiltersAvailable] ||
-                this.$store.getters[WcFiltersGetters.wcFiltersAvailable]) &&
+                this.$store.getters[InSituFiltersGetters.inSituFiltersAvailable]) &&
             !heightLess700.matches &&
             this.currentResults
         ) {

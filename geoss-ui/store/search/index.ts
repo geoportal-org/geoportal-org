@@ -27,7 +27,8 @@ import ErrorPopup from '@/components/ErrorPopup.vue'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 import Vue from 'vue'
 import { $tc } from '~/plugins/i18n'
-import { WcFiltersActions } from '../wcFilters/wc-filters.actions'
+import { InSituFiltersActions } from '../inSituFilters/inSitu-filters.actions'
+import { InSituFiltersGetters } from '../inSituFilters/inSitu-filters.getters'
 
 declare global {
     interface Window {
@@ -332,6 +333,13 @@ const getters: { [key: string]: any } = {
             params = {
                 ...params,
                 ...AppVueObj.app.$store.getters[IrisFiltersGetters.stateMapped],
+            }
+        }
+
+        if(params.viewid === 'worldcereal'){
+            params = {
+                ...params,
+                ...AppVueObj.app.$store.getters[InSituFiltersGetters.stateMapped],
             }
         }
 
@@ -929,11 +937,11 @@ const actions = {
                     GeneralFiltersGetters.getViewId
                 ].includes('worldcereal')
             ) {
-                dispatch(WcFiltersActions.setWcFiltersAvailable, true, {
+                dispatch(InSituFiltersActions.setInSituFiltersAvailable, true, {
                     root: true,
                 })
             } else {
-                dispatch(WcFiltersActions.setWcFiltersAvailable, false, {
+                dispatch(InSituFiltersActions.setInSituFiltersAvailable, false, {
                     root: true,
                 })
             }

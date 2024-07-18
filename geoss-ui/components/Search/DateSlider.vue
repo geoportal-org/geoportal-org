@@ -220,41 +220,41 @@ export default class DateSliderComponent extends Vue {
     }
 }
 
-.vue-slider {
-    height: 12px !important;
-    padding: 0 !important;
-    margin-left: 100px;
-    width: calc(100% - 200px) !important;
-}
+// .vue-slider {
+//     height: 12px !important;
+//     padding: 0 !important;
+//     margin-left: 100px;
+//     width: calc(100% - 200px) !important;
+// }
 
-.vue-slider-dot {
-    width: 16px !important;
-    height: 16px !important;
-}
+// .vue-slider-dot {
+//     width: 16px !important;
+//     height: 16px !important;
+// }
 
-.vue-slider-dot-tooltip {
-    .date-picker {
-        top: 0;
-        position: absolute;
+// .vue-slider-dot-tooltip {
+//     .date-picker {
+//         top: 0;
+//         position: absolute;
 
-        &>input {
-            opacity: 0;
-            height: 30px;
-        }
-    }
-}
+//         &>input {
+//             opacity: 0;
+//             height: 30px;
+//         }
+//     }
+// }
 
-.vue-slider-dot-tooltip-inner {
-    border: 2px solid white;
-    border-radius: 15px;
-    color: white;
-    background: $blue;
-    padding: 5px 10px;
-}
+// .vue-slider-dot-tooltip-inner {
+//     border: 2px solid white;
+//     border-radius: 15px;
+//     color: white;
+//     background: $blue;
+//     padding: 5px 10px;
+// }
 
-.vue-slider-process,
-.vue-slider-rail {
-    background-color: #E0B318;
-    border-radius: 5px;
-}
+// .vue-slider-process,
+// .vue-slider-rail {
+//     background-color: #E0B318;
+//     border-radius: 5px;
+// }
 </style>

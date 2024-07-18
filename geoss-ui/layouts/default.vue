@@ -61,6 +61,7 @@ import WelcomePopup from '@/components/WelcomePopup.vue';
 import { Timers } from '@/data/timers';
 import { LayerData } from '@/interfaces/LayerData';
 import search from '@/store/search';
+import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions';
 
 export default {
     computed: {
@@ -343,6 +344,8 @@ export default {
                                 promises.push(this.$store.dispatch((GranulaFiltersActions as any)['set' + storeParamName], param.value));
                             } else if ((IrisFiltersActions as any)['set' + storeParamName]) {
                                 promises.push(this.$store.dispatch((IrisFiltersActions as any)['set' + storeParamName], param.value));
+                            } else if ((InSituFiltersActions as any)['set' + storeParamName]) {
+                                promises.push(this.$store.dispatch((InSituFiltersActions as any)['set' + storeParamName], param.value));
                             } else if ((SearchActions as any)['set' + storeParamName]) {
                                 if (storeParamName === 'ParentRefs') {
                                     const value = JSON.parse(param.value);

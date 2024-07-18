@@ -27,7 +27,6 @@ export const ApiSettings = () => {
 
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
-
     useEffect(() => {
         getApiSettingsInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
