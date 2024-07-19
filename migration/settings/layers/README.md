@@ -32,14 +32,16 @@ python export_default_layers_from_liferay.py
 ```
 
 A file with the exported data default_layers.json should be created.
-A directory default_layers_kml with the downloaded kml files should be created.
+A directory default_layers_kml with the downloaded kml files from liferay should be created.
 
 
 Change the configuration in the import_default_layers_from_liferay.py script to the API for the specific environment.
 For DEV, the configuration is:
 ```sh
-API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/layers'
 SITE_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/site'
+FOLDER_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/folder'
+DOCUMENT_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/document'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/layers'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
 KC_USER_PASS = '*****'
@@ -49,6 +51,8 @@ Run the script
 ```sh
 python import_default_layers_from_liferay.py
 ```
+
+This script creates folder ‘layers’ and put in them the kml files downloaded from liferay.
 
 The script processing is finished when the message 'Total execution time' appears.
 If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.

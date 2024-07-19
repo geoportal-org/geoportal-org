@@ -6,16 +6,13 @@ from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
 from keycloak import KeycloakOpenIDConnection
 
-# SITE_API_URL = 'https://gpp.devel.esaportal.eu/contents/rest/site'
-# API_URL = 'https://gpp.devel.esaportal.eu/settings/rest/layers'
-# KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
-SITE_API_URL = 'http://localhost:8888/rest/site'
-FOLDER_API_URL = 'http://localhost:8888/rest/folder'
-DOCUMENT_API_URL = 'http://localhost:8888/rest/document'
-API_URL = 'http://localhost:8880/rest/layers'
-KC_BASE_URL = 'http://geoss-keycloak:8080'
+SITE_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/site'
+FOLDER_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/folder'
+DOCUMENT_API_URL = 'https://gpp-admin.devel.esaportal.eu/contents/rest/document'
+API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/layers'
+KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
-KC_USER_PASS = 'geoss'
+KC_USER_PASS = ''
 
 
 def main():
