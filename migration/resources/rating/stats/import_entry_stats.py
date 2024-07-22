@@ -2,6 +2,8 @@ import requests
 import json
 import time
 
+RESOURCE_RATING_STATS_FILE = 'geoss_ResourceRatingStats.json'
+RESOURCE_RATING_STATS_FAILED_RECORDS_FILE = 'resource_rating_stats_failed_records.json'
 URL = 'https://gpp-admin.devel.esaportal.eu/curated/rest/stats'
 HEADERS = {
     'Content-Type': 'application/json',
@@ -11,13 +13,13 @@ HEADERS = {
 def main():
     start_time = log_start_time()
 
-    data = load_data('geoss_ResourceRatingStats.json')
+    data = load_data(RESOURCE_RATING_STATS_FILE)
     failed_records = process_records(data)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, RESOURCE_RATING_STATS_FAILED_RECORDS_FILE)
 
 def log_start_time():
     start_time = time.time()

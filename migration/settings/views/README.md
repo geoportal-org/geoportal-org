@@ -13,7 +13,7 @@ pip install mysql-connector-python
 pip install python-keycloak
 ```
 
-Configure database connection in the script export_global_views_from_liferay.py
+Configure database connection in the script `export_global_views_from_liferay.py`
 ```python
 'user': 'DB_USER',
 'password': 'DB_PASSWORD',
@@ -25,9 +25,9 @@ Run the script
 python export_global_views_from_liferay.py
 ```
 
-A file with the exported data global_views.json should be created.
+A file with the exported data `global_views.json` should be created.
 
-Change the configuration in the import_global_views_from_liferay.py script to the API for the specific environment.
+Change the configuration in the `import_global_views_from_liferay.py` script to the API for the specific environment.
 For DEV, the configuration is:
 ```sh
 API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/views'
@@ -43,7 +43,7 @@ python import_global_views_from_liferay.py
 ```
 
 The script processing is finished when the message 'Total execution time' appears.
-If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
+If there are any problems with uploading records, failed attempts will be stored in the `global_views_failed_records.json` file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The global_views.json data file needs to be archived.
+The `global_views.json` data file needs to be archived.

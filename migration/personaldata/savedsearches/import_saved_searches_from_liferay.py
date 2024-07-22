@@ -7,6 +7,8 @@ from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
 from keycloak import KeycloakOpenIDConnection
 
+SAVED_SEARCHES_FILE = 'saved_searches.json'
+SAVED_SEARCHES_FAILED_RECORDS_FILE = 'saved_searches_failed_records.json'
 API_URL = 'https://gpp.devel.esaportal.eu/personaldata/rest/saved-searches'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
 KC_USER_NAME = 'geoss'
@@ -99,13 +101,13 @@ def main():
     keycloak_openid = get_keycloak_openid()
     admin_access_token = get_admin_access_token(keycloak_openid)
 
-    data = load_data('saved_searches.json')
+    data = load_data(SAVED_SEARCHES_FILE)
     failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, SAVED_SEARCHES_FAILED_RECORDS_FILE)
 
 
 def get_keycloak_openid():

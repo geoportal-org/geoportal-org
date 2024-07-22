@@ -1,6 +1,9 @@
 import mysql.connector
 import json
 
+BOOKMARKS_FILE = 'geoss_BookmarkedResult.json'
+
+
 def main():
     # Database connection configuration
     config = {
@@ -21,7 +24,7 @@ def main():
     rows = fetch_data(cursor, query)
 
      # Save data to JSON file
-    save_to_json(rows, 'geoss_BookmarkedResult.json')
+    save_to_json(rows, BOOKMARKS_FILE)
 
     # Close the database connection
     cursor.close()

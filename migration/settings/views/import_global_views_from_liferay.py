@@ -6,6 +6,8 @@ from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
 from keycloak import KeycloakOpenIDConnection
 
+GLOBAL_VIEWS_FILE = 'global_views.json'
+GLOBAL_VIEWS_FAILED_RECORDS_FILE = 'global_views_failed_records.json'
 API_URL = 'https://gpp.devel.esaportal.eu/settings/rest/views'
 SITE_API_URL = 'https://gpp.devel.esaportal.eu/contents/rest/site'
 KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
@@ -20,13 +22,13 @@ def main():
     keycloak_openid = get_keycloak_openid()
     admin_access_token = get_admin_access_token(keycloak_openid)
 
-    data = load_data('global_views.json')
+    data = load_data(GLOBAL_VIEWS_FILE)
     failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, GLOBAL_VIEWS_FAILED_RECORDS_FILE)
 
 
 def get_keycloak_openid():

@@ -1,6 +1,8 @@
 import mysql.connector
 import json
 
+SAVED_RUNS_FILE = 'saved_runs.json'
+
 
 def main():
     # Database connection configuration
@@ -22,7 +24,7 @@ def main():
     rows = fetch_data(cursor, query)
 
     # Save data to JSON file
-    save_to_json(rows, 'saved_runs.json')
+    save_to_json(rows, SAVED_RUNS_FILE)
 
     # Close the database connection
     cursor.close()

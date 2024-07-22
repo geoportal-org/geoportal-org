@@ -2,6 +2,8 @@ import requests
 import json
 import time
 
+SURVEYS_FILE = 'prod_survey_results.json'
+SURVEYS_FAILED_RECORDS_FILE = 'survey_failed_records.json'
 URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/surveys'
 HEADERS = {
     'Content-Type': 'application/json',
@@ -10,14 +12,14 @@ HEADERS = {
 
 def main():
     start_time = log_start_time()
-    
-    data = load_data('prod_survey_results.txt')
+
+    data = load_data(SURVEYS_FILE)
     failed_records = process_records(data)
-    
+
     log_end_time(start_time)
-    
+
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, SURVEYS_FAILED_RECORDS_FILE)
 
 def log_start_time():
     start_time = time.time()

@@ -11,7 +11,7 @@ Install the additional library requests using pip
 ```sh
 pip install requests
 ```
-Download the current production data file prod_survey_results.txt from Google Docs and place it in the script folder.
+Download the current production data file `prod_survey_results.txt` from Google Docs and place it in the script folder.
 Google Drive username: geoportal2x@gmail.com, password: syspass.
 Change the URL in the script to the API for the specific environment. For DEV, the URL is:
 ```sh
@@ -26,7 +26,7 @@ Run the script
 python import_surveys.py
 ```
 The script processing is finished when the message 'Total execution time' appears.
-If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
+If there are any problems with uploading records, failed attempts will be stored in the `survey_failed_records.json` file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The prod_survey_results.txt data file needs to be archived.
+The `prod_survey_results.txt` data file needs to be archived.

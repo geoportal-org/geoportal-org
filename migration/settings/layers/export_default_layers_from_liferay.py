@@ -6,6 +6,7 @@ import urllib.request
 
 import requests
 
+DEFAULT_LAYERS_FILE = 'default_layers.json'
 LF_BASE_URL = 'https://geoss.devel.esaportal.eu/'
 KML_DIR = 'default_layers_kml'
 
@@ -42,7 +43,7 @@ def main():
         row['file'] = file_path
 
     # Save data to JSON file
-    save_to_json(rows, 'default_layers.json')
+    save_to_json(rows, DEFAULT_LAYERS_FILE)
 
     # Close the database connection
     cursor.close()

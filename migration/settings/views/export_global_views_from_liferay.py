@@ -1,6 +1,8 @@
 import mysql.connector
 import json
 
+GLOBAL_VIEWS_FILE = 'global_views.json'
+
 
 def main():
     # Database connection configuration
@@ -36,7 +38,7 @@ def main():
         row['subOptions'] = sub_options_rows
 
     # Save data to JSON file
-    save_to_json(rows, 'global_views.json')
+    save_to_json(rows, GLOBAL_VIEWS_FILE)
 
     # Close the database connection
     cursor.close()

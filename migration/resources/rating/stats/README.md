@@ -12,7 +12,7 @@ Install the additional library mysql-connector-python using pip
 pip install mysql-connector-python
 ```
 
-Configure database connection in the script export_resource_rating_stats_from_liferay.py
+Configure database connection in the script `export_resource_rating_stats_from_liferay.py`
 ```python
 'user': 'DB_USER',
 'password': 'DB_PASSWORD',
@@ -25,9 +25,9 @@ Run the script
 python export_resource_rating_stats_from_liferay.py
 ```
 
-A file with the exported data geoss_ResourceRatingStats.json should be created.
+A file with the exported data `geoss_ResourceRatingStats.json` should be created.
 
-Change the URL in the import_entry_stats.py script to the API for the specific environment. For DEV, the URL is:
+Change the URL in the `import_entry_stats.py` script to the API for the specific environment. For DEV, the URL is:
 ```sh
 url = 'https://gpp-admin.devel.esaportal.eu/curated/rest/stats'
 ```
@@ -43,7 +43,7 @@ python import_entry_stats.py
 ```
 
 The script processing is finished when the message 'Total execution time' appears.
-If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
+If there are any problems with uploading records, failed attempts will be stored in the `resource_rating_stats_failed_records.json` file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The geoss_ResourceRatingStats.json data file needs to be archived.
+The `geoss_ResourceRatingStats.json` data file needs to be archived.

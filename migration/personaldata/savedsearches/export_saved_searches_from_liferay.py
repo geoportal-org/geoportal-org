@@ -1,6 +1,8 @@
 import mysql.connector
 import json
 
+SAVED_SEARCHES_FILE = 'saved_searches.json'
+
 
 def main():
     # Database connection configuration
@@ -30,7 +32,7 @@ def main():
         row['queryParams'] = param_rows
 
     # Save data to JSON file
-    save_to_json(rows, 'saved_searches.json')
+    save_to_json(rows, SAVED_SEARCHES_FILE)
 
     # Close the database connection
     cursor.close()

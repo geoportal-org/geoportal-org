@@ -1,6 +1,9 @@
 import mysql.connector
 import json
 
+RESOUCE_RATING_ENTRIES_FILE = 'geoss_ResourceRatingEntry.json'
+
+
 def main():
     # Database connection configuration
     config = {
@@ -21,7 +24,7 @@ def main():
     rows = fetch_data(cursor, query)
 
      # Save data to JSON file
-    save_to_json(rows, 'geoss_ResourceRatingEntry.json')
+    save_to_json(rows, RESOUCE_RATING_ENTRIES_FILE)
 
     # Close the database connection
     cursor.close()

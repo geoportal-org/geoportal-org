@@ -1,6 +1,8 @@
 import mysql.connector
 import json
 
+USERS_SETTINGS_FILE = 'users_settings.json'
+
 
 def main():
     # Database connection configuration
@@ -22,7 +24,7 @@ def main():
     rows = fetch_data(cursor, query)
 
     # Save data to JSON file
-    save_to_json(rows, 'users_settings.json')
+    save_to_json(rows, USERS_SETTINGS_FILE)
 
     # Close the database connection
     cursor.close()

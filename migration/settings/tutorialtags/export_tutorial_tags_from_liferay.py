@@ -1,6 +1,8 @@
 import mysql.connector
 import json
 
+TUTORIAL_TAGS_FILE = 'tutorial_tags.json'
+
 
 def main():
     # Database connection configuration
@@ -22,7 +24,7 @@ def main():
     rows = fetch_data(cursor, query)
 
     # Save data to JSON file
-    save_to_json(rows, 'tutorial_tags.json')
+    save_to_json(rows, TUTORIAL_TAGS_FILE)
 
     # Close the database connection
     cursor.close()
