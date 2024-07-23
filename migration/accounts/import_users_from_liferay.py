@@ -1,4 +1,7 @@
+import configparser
 import json
+import os
+import sys
 import time
 
 import requests
@@ -6,41 +9,47 @@ from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
 from keycloak import KeycloakOpenIDConnection
 
-KC_BASE_URL = 'http://geoss-keycloak:8080'
-# KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
-KC_USER_NAME = 'geoss'
-KC_USER_PASS = 'geoss'
+LIFERAY_USERS_FILE = 'liferay_users.json'
+USERS_FAILED_RECORDS_FILE = 'users_failed_records.json'
 
 
 def main():
     start_time = log_start_time()
+    if os.path.exists(USERS_FAILED_RECORDS_FILE):
+        os.remove(USERS_FAILED_RECORDS_FILE)
 
-    keycloak_admin = get_keycloak_admin()
-    keycloak_openid = get_keycloak_openid()
-    admin_access_token = get_admin_access_token(keycloak_openid)
+    config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
+    print("Read configuration from file:", config_file)
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    print("Read configuration sections:", config.sections())
 
-    data = load_data('liferay_users.json')
-    failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
+    # Keycloak configuration
+    kc_conf = dict((key, value.strip("\'\"")) for key, value in config.items('KC'))
+    keycloak_admin = get_keycloak_admin(kc_conf.get('base_url'), kc_conf.get('user_name'), kc_conf.get('user_pass'))
+
+    data = load_data(LIFERAY_USERS_FILE)
+    failed_records = process_records(data, keycloak_admin)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, USERS_FAILED_RECORDS_FILE)
 
 
-def get_keycloak_openid():
+def get_keycloak_openid(kc_base_url):
     keycloak_openid = KeycloakOpenID(
-        server_url=KC_BASE_URL,
+        server_url=kc_base_url,
         realm_name="geoss",
         client_id="geoss-ui"
     )
     return keycloak_openid
 
 
-def get_admin_access_token(keycloak_openid):
+def get_admin_access_token(keycloak_openid, kc_user_name, kc_user_pass):
     token = keycloak_openid.token(
-        KC_USER_NAME,
-        KC_USER_PASS,
+        kc_user_name,
+        kc_user_pass,
         scope="openid profile roles"
     )
     return token['access_token']
@@ -62,11 +71,11 @@ def get_user_info(keycloak_openid, access_token):
     return user_info
 
 
-def get_keycloak_admin():
+def get_keycloak_admin(kc_base_url, kc_user_name, kc_user_pass):
     keycloak_connection = KeycloakOpenIDConnection(
-        server_url=KC_BASE_URL,
-        username=KC_USER_NAME,
-        password=KC_USER_PASS,
+        server_url=kc_base_url,
+        username=kc_user_name,
+        password=kc_user_pass,
         realm_name="geoss",
         user_realm_name="geoss",
         client_id="admin-cli",
@@ -108,15 +117,15 @@ def load_data(file_path):
         return []
 
 
-def process_records(data, keycloak_admin, keycloak_openid, admin_access_token):
+def process_records(data, keycloak_admin):
     failed_records = []
     for record in data:
-        if not send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+        if not send_data(record, keycloak_admin):
             failed_records.append(record)
     return failed_records
 
 
-def send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+def send_data(record, keycloak_admin):
     try:
         lf_user_id = record.get('liferay_user_id', '')
         print(f"lf_user_id: {lf_user_id}")

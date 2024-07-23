@@ -1,44 +1,26 @@
-Install Python 3.12 and check version
-[Python Download Page](https://www.python.org)
-```sh
-python --version
-```
-Install the package manager pip and check version
-```sh
-pip --version
-```
-Install the additional library mysql-connector-python and python-keycloak using pip
-```sh
-pip install mysql-connector-python
-pip install python-keycloak
-```
+# User settings migration
 
-Configure database connection in the script `export_users_settings_from_liferay.py`
-```python
-'user': 'DB_USER',
-'password': 'DB_PASSWORD',
-'host': 'DB_HOST',
-'database': 'DB_NAME'
-```
-Run the script
+## Prerequisites
+
+Prepare the environment and configuration file `environment_config.ini` for the scripts according to the instructions [migration readme](../../README.md).
+
+## Export data
+
+Place the configuration file in the script directory or run the script with the path to the configuration file as an argument.
+
 ```sh
-python export_users_settings_from_liferay.py
+python export_users_settings_from_liferay.py environment_config.ini
 ```
 
 A file with the exported data `users_settings.json` should be created.
 
-Change the configuration in the `import_users_settings_from_liferay.py` script to the API for the specific environment.
-For DEV, the configuration is:
-```sh
-API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/settings'
-KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
-KC_USER_NAME = 'geoss'
-KC_USER_PASS = '*****'
-```
+## Import data
 
-Run the script
+The file with the exported data `users_settings.json` should be in the script directory.
+Place the configuration file in the script directory or run the script with the path to the configuration file as an argument.
+
 ```sh
-python import_users_settings_from_liferay.py
+python import_users_settings_from_liferay.py environment_config.ini
 ```
 
 The script processing is finished when the message 'Total execution time' appears.

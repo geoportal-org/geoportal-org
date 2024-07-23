@@ -1,20 +1,24 @@
-import mysql.connector
+import configparser
 import json
+import sys
+
+import mysql.connector
 
 SAVED_SEARCHES_FILE = 'saved_searches.json'
 
 
 def main():
+    config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
+    print("Read configuration from file:", config_file)
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    print("Read configuration sections:", config.sections())
+
     # Database connection configuration
-    config = {
-        'user': 'DB_USER',
-        'password': 'DB_PASSWORD',
-        'host': 'DB_HOST',
-        'database': 'DB_NAME'
-    }
+    db_config = dict((key, value.strip("\'\"")) for key, value in config.items('DB'))
 
     # Establish database connection
-    cnx = get_db_connection(config)
+    cnx = get_db_connection(db_config)
     cursor = cnx.cursor(dictionary=True)
 
     # Define the SQL query

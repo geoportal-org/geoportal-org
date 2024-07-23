@@ -1,29 +1,36 @@
+import configparser
 import json
+import os
+import sys
 import time
 
 import requests
-from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
-from keycloak import KeycloakOpenIDConnection
 
 GLOBAL_VIEWS_FILE = 'global_views.json'
 GLOBAL_VIEWS_FAILED_RECORDS_FILE = 'global_views_failed_records.json'
-API_URL = 'https://gpp.devel.esaportal.eu/settings/rest/views'
-SITE_API_URL = 'https://gpp.devel.esaportal.eu/contents/rest/site'
-KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
-KC_USER_NAME = 'geoss'
-KC_USER_PASS = ''
 
 
 def main():
     start_time = log_start_time()
+    if os.path.exists(GLOBAL_VIEWS_FAILED_RECORDS_FILE):
+        os.remove(GLOBAL_VIEWS_FAILED_RECORDS_FILE)
 
-    keycloak_admin = get_keycloak_admin()
-    keycloak_openid = get_keycloak_openid()
-    admin_access_token = get_admin_access_token(keycloak_openid)
+    config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
+    print("Read configuration from file:", config_file)
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    print("Read configuration sections:", config.sections())
 
+    # Keycloak configuration
+    kc_conf = dict((key, value.strip("\'\"")) for key, value in config.items('KC'))
+    keycloak_openid = get_keycloak_openid(kc_conf.get('base_url'))
+    admin_access_token = get_admin_access_token(keycloak_openid, kc_conf.get('user_name'), kc_conf.get('user_pass'))
+
+    site_api_url = config.get('contents', 'site_api_url').strip('\'\"')
+    views_api_url = config.get('settings', 'views_api_url').strip('\'\"')
     data = load_data(GLOBAL_VIEWS_FILE)
-    failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
+    failed_records = process_records(data, admin_access_token, site_api_url, views_api_url)
 
     log_end_time(start_time)
 
@@ -31,63 +38,22 @@ def main():
         save_failed_records(failed_records, GLOBAL_VIEWS_FAILED_RECORDS_FILE)
 
 
-def get_keycloak_openid():
+def get_keycloak_openid(kc_base_url):
     keycloak_openid = KeycloakOpenID(
-        server_url=KC_BASE_URL,
+        server_url=kc_base_url,
         realm_name="geoss",
         client_id="geoss-ui"
     )
     return keycloak_openid
 
 
-def get_admin_access_token(keycloak_openid):
+def get_admin_access_token(keycloak_openid, kc_user_name, kc_user_pass):
     token = keycloak_openid.token(
-        KC_USER_NAME,
-        KC_USER_PASS,
+        kc_user_name,
+        kc_user_pass,
         scope="openid profile roles"
     )
     return token['access_token']
-
-
-def get_impersonation_access_token(keycloak_openid, admin_access_token, impersonation_user_id):
-    impersonation_token = keycloak_openid.exchange_token(
-        token=admin_access_token,
-        subject=impersonation_user_id,
-        subject_token_type="urn:ietf:params:oauth:token-type:access_token",
-        requested_token_type="urn:ietf:params:oauth:token-type:access_token",
-        scope="openid profile roles"
-    )
-    return impersonation_token['access_token']
-
-
-def get_user_info(keycloak_openid, access_token):
-    user_info = keycloak_openid.userinfo(access_token)
-    return user_info
-
-
-def get_keycloak_admin():
-    keycloak_connection = KeycloakOpenIDConnection(
-        server_url=KC_BASE_URL,
-        username=KC_USER_NAME,
-        password=KC_USER_PASS,
-        realm_name="geoss",
-        user_realm_name="geoss",
-        client_id="admin-cli",
-        verify=True)
-    keycloak_admin = KeycloakAdmin(connection=keycloak_connection)
-    return keycloak_admin
-
-
-def get_user_id_by_liferay_user_id(keycloak_admin, liferay_user_id):
-    users = keycloak_admin.get_users(query={
-        "max": 1,
-        "q": "liferay_user_id:" + str(liferay_user_id)
-    })
-    if not users:
-        raise Exception("User not found for liferay user id " + str(liferay_user_id))
-    user = users[0]
-    user_id = user.get("id")
-    return user_id
 
 
 def log_start_time():
@@ -111,23 +77,23 @@ def load_data(file_path):
         return []
 
 
-def process_records(data, keycloak_admin, keycloak_openid, admin_access_token):
+def process_records(data, admin_access_token, site_api_url, dest_api_url):
     failed_records = []
     for record in data:
-        if not send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+        if not send_data(record, admin_access_token, site_api_url, dest_api_url):
             failed_records.append(record)
     return failed_records
 
 
-def send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+def send_data(record, admin_access_token, site_api_url, dest_api_url):
     try:
         lf_friendly_url = record.get('friendlyURL', '')
         print(f"friendly_url: {lf_friendly_url}")
-        site_id = get_site_id_by_liferay_friendly_url(admin_access_token, lf_friendly_url)
+        site_id = get_site_id_by_liferay_friendly_url(admin_access_token, site_api_url, lf_friendly_url)
         print(f"site_id: {site_id}")
         headers = create_headers(admin_access_token)
         payload = create_payload(record, site_id)
-        response = requests.post(API_URL, headers=headers, json=payload)
+        response = requests.post(dest_api_url, headers=headers, json=payload)
         if response.status_code == 201:
             print_response_status(response)
             return True
@@ -142,14 +108,14 @@ def send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
         return False
 
 
-def get_site_id_by_liferay_friendly_url(access_token, lf_friendly_url):
+def get_site_id_by_liferay_friendly_url(access_token, site_api_url, lf_friendly_url):
     if '/global' == lf_friendly_url:
         raise Exception("Ommitted lf_friendly_url " + str(lf_friendly_url))
     elif '/guest' == lf_friendly_url:
         url_param = 'global'
     else:
         url_param = lf_friendly_url.lstrip('/')
-    url = SITE_API_URL + '/search/findByUrl?url=' + url_param
+    url = site_api_url + '/search/findByUrl?url=' + url_param
     headers = create_headers(access_token)
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
@@ -169,16 +135,16 @@ def create_headers(access_token):
 
 
 def create_payload(record, site_id):
-    defaultOption = record.get('defaultOption', '')
-    if defaultOption and defaultOption == 1:
-        defaultOption = 'true'
+    default_option = record.get('defaultOption', '')
+    if default_option and default_option == 1:
+        default_option = 'true'
     else:
-        defaultOption = 'false'
+        default_option = 'false'
     return {
         "label": record.get('label', ''),
         "title": record.get('title', ''),
         "value": record.get('optionValue', ''),
-        "defaultOption": defaultOption,
+        "defaultOption": default_option,
         "siteId": site_id,
         "subOptions": create_suboptions(record),
     }
