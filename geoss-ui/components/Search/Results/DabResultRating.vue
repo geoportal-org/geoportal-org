@@ -88,16 +88,16 @@ export default class DabResultRatingComponent extends Vue {
 
     public setScore(score: number) {
         this.score = score
-        LogService.logElementClick(
-            null,
-            null,
-            this.id,
-            null,
-            'Edit rating',
-            null,
-            null,
-            null
-        )
+        // LogService.logElementClick(
+        //     null,
+        //     null,
+        //     this.id,
+        //     null,
+        //     'Edit rating',
+        //     null,
+        //     null,
+        //     null
+        // )
     }
 
     public async rate() {
@@ -106,39 +106,16 @@ export default class DabResultRatingComponent extends Vue {
         } else {
             await this.rateWithoutComment()
         }
-        // MouseLeaveService.initSurvey()
-        // const [, data] = await to(
-        //     GeossSearchApiService.rateResource(
-        //         this.title,
-        //         this.id,
-        //         this.score,
-        //         this.comment,
-        //         DataOrigin[this.dataSource] || this.dataSource
-        //     )
+        // LogService.logElementClick(
+        //     null,
+        //     null,
+        //     this.id,
+        //     null,
+        //     'Send rating',
+        //     null,
+        //     null,
+        //     null
         // )
-        // if (data) {
-        //     if (!this.referer) {
-        //         this.$store.dispatch(SearchActions.updateDabResultRating, {
-        //             id: this.id,
-        //             rating: data,
-        //         })
-        //     } else if (this.referer === 'bookmarks') {
-        //         this.$store.dispatch(BookmarksActions.updateResultRating, {
-        //             id: this.id,
-        //             rating: data,
-        //         })
-        //     }
-        // }
-        LogService.logElementClick(
-            null,
-            null,
-            this.id,
-            null,
-            'Send rating',
-            null,
-            null,
-            null
-        )
         PopupCloseService.closePopup('rating')
     }
 
@@ -176,19 +153,19 @@ export default class DabResultRatingComponent extends Vue {
         }
     }
 
-    mounted() {
-        this.score = this.userScore
-        LogService.logElementClick(
-            null,
-            null,
-            this.id,
-            null,
-            'Show comments',
-            null,
-            null,
-            null
-        )
-    }
+    // mounted() {
+    //     this.score = this.userScore
+    //     LogService.logElementClick(
+    //         null,
+    //         null,
+    //         this.id,
+    //         null,
+    //         'Show comments',
+    //         null,
+    //         null,
+    //         null
+    //     )
+    // }
 }
 </script>
 
