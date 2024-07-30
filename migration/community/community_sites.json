@@ -1,0 +1,44 @@
+[
+    {
+        "name": "All-Atlantic Ocean Data Community",
+        "url": "aaod",
+        "logo_name": "All-Atlantic Ocean Data.png",
+        "logo_file": "logo/aaod.png"
+    },
+    {
+        "name": "AmeriGEO",
+        "url": "amerigeoss",
+        "logo_name": "AmeriGEOS.png",
+        "logo_file": "logo/amerigeoss.png"
+    },
+    {
+        "name": "DBAR",
+        "url": "dbar",
+        "logo_name": "Digital Belt and Road.png",
+        "logo_file": "logo/dbar.png"
+    },
+    {
+        "name": "ENERGIC OD",
+        "url": "energic-od",
+        "logo_name": "ENERGIC Open Data.png",
+        "logo_file": "logo/energic-od.png"
+    },
+    {
+        "name": "EnviDat Community",
+        "url": "envidat-community",
+        "logo_name": "EnviDat.png",
+        "logo_file": "logo/envidat.png"
+    },
+    {
+        "name": "GOS4M",
+        "url": "gos4m",
+        "logo_name": "Global Observation System for Mercury.png",
+        "logo_file": "logo/gos4m.png"
+    },
+    {
+        "name": "GTN-H Community",
+        "url": "gtn-h-community",
+        "logo_name": "Global Terrestrial Network - Hydrology.png",
+        "logo_file": "logo/gtn-h.png"
+    }
+]

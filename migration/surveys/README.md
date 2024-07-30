@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Prepare the environment and configuration file `environment_config.ini` for the scripts according to the instructions [migration readme](../../README.md).
+Prepare the environment and configuration file `environment_config.ini` for the scripts according to the instructions [migration readme](../README.md).
 
 ## Export data
 
