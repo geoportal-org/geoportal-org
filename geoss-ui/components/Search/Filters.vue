@@ -19,10 +19,16 @@
                     :only-advanced="!currentResults"
                     v-show="activeSection === 'advanced' || !currentResults"
                 />
-                <WorldCerealFiltersComponent v-show="inSituFiltersAvailable && activeSection !== 'advanced'" />
+                <InSituFiltersComponent
+                    v-show="
+                        inSituFiltersAvailable && activeSection !== 'advanced'
+                    "
+                />
                 <SearchFacetedFilters
                     v-show="
-                        facetedFiltersAvailable && activeSection !== 'advanced'
+                        facetedFiltersAvailable &&
+                        activeSection !== 'advanced' &&
+                        !inSituFiltersAvailable
                     "
                 />
                 <SearchGranulaFilters
@@ -47,7 +53,7 @@ import SearchFiltersTrigger from '@/components/Search/SearchFiltersTrigger.vue'
 import SearchGeneralFilters from '@/components/Search/SearchGeneralFilters.vue'
 import SearchFacetedFilters from '@/components/Search/SearchFacetedFilters.vue'
 import SearchGranulaFilters from '@/components/Search/SearchGranulaFilters.vue'
-import WorldCerealFiltersComponent from '@/components/Search/WorldCerealFilters.vue'
+import InSituFiltersComponent from '~/components/Search/InSituFilters.vue'
 import SearchIrisFilters from '@/components/Search/SearchIrisFilters.vue'
 import { FacetedFiltersGetters } from '@/store/facetedFilters/faceted-filters-getters'
 import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters'
@@ -60,6 +66,8 @@ import TutorialTagsService from '@/services/tutorial-tags.service'
 import { Timers } from '@/data/timers'
 import CollapseTransition from '@/plugins/CollapseTransition'
 import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
+import { DataSources } from '@/interfaces/DataSources'
+import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
 
 @Component({
     components: {
@@ -68,7 +76,7 @@ import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.gette
         SearchFacetedFilters,
         SearchGranulaFilters,
         SearchIrisFilters,
-        WorldCerealFiltersComponent,
+        InSituFiltersComponent,
         CollapseTransition,
     },
 })
@@ -116,6 +124,26 @@ export default class SearchFiltersComponent extends Vue {
         return this.$store.getters[GeneralFiltersGetters.inChangeProcess]
     }
 
+    get dataSource() {
+        return this.$store.getters[SearchGetters.dataSource]
+    }
+
+    @Watch('dataSource')
+    public onDSChange() {
+        console.log(this.dataSource)
+        if (this.dataSource === DataSources.DAB) {
+            this.$store.dispatch(
+                InSituFiltersActions.setInSituFiltersAvailable,
+                true
+            )
+        } else {
+            this.$store.dispatch(
+                InSituFiltersActions.setInSituFiltersAvailable,
+                false
+            )
+        }
+    }
+
     @Watch('activeSection')
     public onActiveSectionChange() {
         TutorialTagsService.refreshTagsGroup('filters-', false)
@@ -152,7 +180,9 @@ export default class SearchFiltersComponent extends Vue {
                     GranulaFiltersGetters.granulaFiltersAvailable
                 ] ||
                 this.$store.getters[IrisFiltersGetters.irisFiltersAvailable] ||
-                this.$store.getters[InSituFiltersGetters.inSituFiltersAvailable]) &&
+                this.$store.getters[
+                    InSituFiltersGetters.inSituFiltersAvailable
+                ]) &&
             !heightLess700.matches &&
             this.currentResults
         ) {

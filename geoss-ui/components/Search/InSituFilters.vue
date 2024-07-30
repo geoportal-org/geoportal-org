@@ -86,7 +86,6 @@ import { SearchGetters } from '@/store/search/search-getters'
 import { DataSources } from '@/interfaces/DataSources'
 import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
 import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
-
 import VueSlider from 'vue-slider-component'
 
 @Component({
@@ -152,7 +151,7 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     get cropTypesOptions() {
-        return this.$store.getters[InSituFiltersGetters.cropTypesOptions]
+        return this.prepareLabels(this.$store.getters[InSituFiltersGetters.cropTypesOptions])
     }
 
     get landCoverTypes() {
@@ -164,7 +163,7 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     get landCoverTypesOptions() {
-        return this.$store.getters[InSituFiltersGetters.landCoverTypesOptions]
+        return this.prepareLabels(this.$store.getters[InSituFiltersGetters.landCoverTypesOptions])
     }
 
     get irrigationTypes() {
@@ -176,7 +175,7 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     get irrigationTypesOptions() {
-        return this.$store.getters[InSituFiltersGetters.irrigationTypesOptions]
+        return this.prepareLabels(this.$store.getters[InSituFiltersGetters.irrigationTypesOptions])
     }
 
     get appendToBody() {
@@ -185,6 +184,15 @@ export default class InSituFiltersComponent extends Vue {
 
     get currentResults() {
         return this.$store.getters[SearchGetters.currentResults]
+    }
+
+    public prepareLabels(array: any[]) {
+        return array.map((element: { id: string; text: string }) => {
+            return {
+                ...element,
+                text: element.text.replaceAll('_', ' ')
+            }
+        })
     }
 
     public oncropTypesChange(value: string[]) {
