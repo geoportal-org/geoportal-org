@@ -1,5 +1,6 @@
 import configparser
 import json
+import os
 import sys
 
 import mysql.connector
@@ -52,7 +53,9 @@ def fetch_data(cursor, query):
     return cursor.fetchall()
 
 
-def save_to_json(data, file_path):
+def save_to_json(data, file_name):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, file_name)
     with open(file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4, default=str)
 

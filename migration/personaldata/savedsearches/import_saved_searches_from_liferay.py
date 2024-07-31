@@ -190,7 +190,9 @@ def log_end_time(start_time):
     print(f"Total execution time: {end_time - start_time:.2f} seconds")
 
 
-def load_data(file_path):
+def load_data(file_name):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, file_name)
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
@@ -412,7 +414,9 @@ def print_response_status(response):
         print('Response content:', response.content)
 
 
-def save_failed_records(failed_records, file_path):
+def save_failed_records(failed_records, file_name):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, file_name)
     try:
         with open(file_path, 'w', encoding='utf-8') as outfile:
             json.dump(failed_records, outfile, ensure_ascii=False, indent=4)
