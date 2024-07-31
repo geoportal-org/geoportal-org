@@ -74,7 +74,7 @@ SURVEYS_API_URL = 'API_BASE_URL/personaldata/rest/surveys'
 ```
 Configure API to geoss-settings in the configuration file
 ```ini
-[setting]
+[settings]
 LAYERS_API_URL = 'API_BASE_URL/settings/rest/layers'
 TAGS_API_URL = 'API_BASE_URL/settings/rest/tags'
 VIEWS_API_URL = 'API_BASE_URL/settings/rest/views'
@@ -103,7 +103,7 @@ SAVED_SEARCHES_API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest
 SETTINGS_API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/settings'
 SURVEYS_API_URL = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/surveys'
 
-[setting]
+[settings]
 LAYERS_API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/layers'
 TAGS_API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/tags'
 VIEWS_API_URL = 'https://gpp-admin.devel.esaportal.eu/settings/rest/views'

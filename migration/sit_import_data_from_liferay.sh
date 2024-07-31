@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo 'Import community sites from liferay started'
+python import_community_sites_from_liferay.py local_environment_config.ini
+echo 'Import community sites from liferay ended'
+
 echo 'Import global views from liferay started'
 python settings/views/import_global_views_from_liferay.py sit_environment_config.ini
 echo 'Import global views from liferay ended'
@@ -39,3 +43,7 @@ echo 'Import saved runs from liferay ended'
 echo 'Import bookmarks from liferay started'
 python resources/bookmarks/import_bookmarks.py sit_environment_config.ini
 echo 'Import bookmarks from liferay ended'
+
+echo 'Import surveys from liferay started'
+python import_surveys.py local_environment_config.ini
+echo 'Import surveys from liferay ended'
