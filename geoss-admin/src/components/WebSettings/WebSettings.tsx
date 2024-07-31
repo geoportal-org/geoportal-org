@@ -36,7 +36,7 @@ export const WebSettings = () => {
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
     const getCurrentWebSettings = useCallback(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             const {
                 _embedded: { webSettings },
@@ -141,8 +141,36 @@ export const WebSettings = () => {
         webSettingsForm.map((section, idx) => {
             const isLastSection = idx === webSettingsForm.length - 1;
             const sectionFields = section.data.map((field) => {
-                if (field.name === "source") {
-                    field.selectSettings = documentsList;
+                if (field.name === "defaultSource") {
+                    field.selectSettings = {
+                        isMultiselect: false,
+                        options: [
+                            {
+                                value: "GEOSS",
+                                label: "GEOSS",
+                            },
+                            {
+                                value: "GEOSS Curated",
+                                label: "GEOSS Curated",
+                            },
+                            {
+                                value: "AmeriGEO",
+                                label: "AmeriGEO",
+                            },
+                            {
+                                value: "Zenodo",
+                                label: "Zenodo",
+                            },
+                            {
+                                value: "Wikipedia",
+                                label: "Wikipedia",
+                            },
+                            {
+                                value: "NextGEOSS",
+                                label: "NextGEOSS",
+                            },
+                        ],
+                    };
                 }
                 return <FormField key={field.name} fieldData={field} />;
             });
