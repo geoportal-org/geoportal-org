@@ -15,6 +15,12 @@ def main():
     config.read(config_file)
     print("Read configuration sections:", config.sections())
 
+    # storage configuration
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = config.get('FS', 'data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
     # Database connection configuration
     db_config = dict((key, value.strip("\'\"")) for key, value in config.items('DB'))
 
@@ -37,7 +43,7 @@ def main():
         row['queryParams'] = param_rows
 
     # Save data to JSON file
-    save_to_json(rows, SAVED_SEARCHES_FILE)
+    save_to_json(rows, data_dir, SAVED_SEARCHES_FILE)
 
     # Close the database connection
     cursor.close()
@@ -53,9 +59,8 @@ def fetch_data(cursor, query):
     return cursor.fetchall()
 
 
-def save_to_json(data, file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+def save_to_json(data, data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     with open(file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4, default=str)
 

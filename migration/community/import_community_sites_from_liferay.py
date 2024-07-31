@@ -13,8 +13,6 @@ COMMUNITY_SITES_FAILED_RECORDS_FILE = 'community_sites_failed_records.json'
 
 def main():
     start_time = log_start_time()
-    if os.path.exists(COMMUNITY_SITES_FAILED_RECORDS_FILE):
-        os.remove(COMMUNITY_SITES_FAILED_RECORDS_FILE)
 
     config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
     print("Read configuration from file:", config_file)
@@ -22,19 +20,29 @@ def main():
     config.read(config_file)
     print("Read configuration sections:", config.sections())
 
+    # storage configuration
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = script_dir
+    failed_data_dir = config.get('FS', 'failed_data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(failed_data_dir):
+        os.makedirs(failed_data_dir)
+    failed_data_file = os.path.join(failed_data_dir, COMMUNITY_SITES_FAILED_RECORDS_FILE)
+    if os.path.exists(failed_data_file):
+        os.remove(failed_data_file)
+
     # Keycloak configuration
     kc_conf = dict((key, value.strip("\'\"")) for key, value in config.items('KC'))
     keycloak_openid = get_keycloak_openid(kc_conf.get('base_url'))
     admin_access_token = get_admin_access_token(keycloak_openid, kc_conf.get('user_name'), kc_conf.get('user_pass'))
 
     site_api_url = config.get('contents', 'site_api_url').strip('\'\"')
-    data = load_data(COMMUNITY_SITES_FILE)
+    data = load_data(data_dir, COMMUNITY_SITES_FILE)
     failed_records = process_records(data, admin_access_token, site_api_url)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, COMMUNITY_SITES_FAILED_RECORDS_FILE)
+        save_failed_records(failed_records, failed_data_dir, COMMUNITY_SITES_FAILED_RECORDS_FILE)
 
 
 def get_keycloak_openid(kc_base_url):
@@ -67,9 +75,8 @@ def log_end_time(start_time):
     print(f"Total execution time: {end_time - start_time:.2f} seconds")
 
 
-def load_data(file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+def load_data(data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
@@ -140,9 +147,8 @@ def print_response_status(response):
         print('Response content:', response.content)
 
 
-def save_failed_records(failed_records, file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+def save_failed_records(failed_records, data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'w', encoding='utf-8') as outfile:
             json.dump(failed_records, outfile, ensure_ascii=False, indent=4)

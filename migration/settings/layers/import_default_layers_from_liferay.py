@@ -9,18 +9,34 @@ from keycloak import KeycloakOpenID
 
 DEFAULT_LAYERS_FILE = 'default_layers.json'
 DEFAULT_LAYERS_FAILED_RECORDS_FILE = 'default_layers_failed_records.json'
+DEFAULT_KML_DIR = 'default_layers_kml'
 
 
 def main():
     start_time = log_start_time()
-    if os.path.exists(DEFAULT_LAYERS_FAILED_RECORDS_FILE):
-        os.remove(DEFAULT_LAYERS_FAILED_RECORDS_FILE)
 
     config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
     print("Read configuration from file:", config_file)
     config = configparser.ConfigParser()
     config.read(config_file)
     print("Read configuration sections:", config.sections())
+
+    # storage configuration
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = config.get('FS', 'data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    failed_data_dir = config.get('FS', 'failed_data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(failed_data_dir):
+        os.makedirs(failed_data_dir)
+    failed_data_file = os.path.join(failed_data_dir, DEFAULT_LAYERS_FAILED_RECORDS_FILE)
+    if os.path.exists(failed_data_file):
+        os.remove(failed_data_file)
+    # Create folder for kml files
+    default_kml_dir = os.path.join(script_dir, DEFAULT_KML_DIR)
+    kml_dir = config.get('FS', 'kml_dir', fallback=default_kml_dir).strip('"').strip("'")
+    if not os.path.exists(kml_dir):
+        os.makedirs(kml_dir)
 
     # Keycloak configuration
     kc_conf = dict((key, value.strip("\'\"")) for key, value in config.items('KC'))
@@ -31,13 +47,13 @@ def main():
     folder_api_url = config.get('contents', 'folder_api_url').strip('\'\"')
     document_api_url = config.get('contents', 'document_api_url').strip('\'\"')
     layers_api_url = config.get('settings', 'layers_api_url').strip('\'\"')
-    data = load_data(DEFAULT_LAYERS_FILE)
-    failed_records = process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, layers_api_url)
+    data = load_data(data_dir, DEFAULT_LAYERS_FILE)
+    failed_records = process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, layers_api_url, kml_dir)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, DEFAULT_LAYERS_FAILED_RECORDS_FILE)
+        save_failed_records(failed_records, failed_data_dir, DEFAULT_LAYERS_FAILED_RECORDS_FILE)
 
 
 def get_keycloak_openid(kc_base_url):
@@ -70,9 +86,8 @@ def log_end_time(start_time):
     print(f"Total execution time: {end_time - start_time:.2f} seconds")
 
 
-def load_data(file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+def load_data(data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
@@ -81,22 +96,22 @@ def load_data(file_name):
         return []
 
 
-def process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url):
+def process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
     failed_records = []
     for record in data:
-        if not send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url):
+        if not send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
             failed_records.append(record)
     return failed_records
 
 
-def send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url):
+def send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
     try:
         lf_friendly_url = record.get('friendlyURL', '')
         print(f"friendly_url: {lf_friendly_url}")
         site_id = get_site_id_by_liferay_friendly_url(admin_access_token, site_api_url, lf_friendly_url)
         print(f"site_id: {site_id}")
         headers = create_headers(admin_access_token)
-        payload = create_payload(record, site_id, admin_access_token, folder_api_url, document_api_url)
+        payload = create_payload(record, site_id, admin_access_token, folder_api_url, document_api_url, file_dir)
         response = requests.post(dest_api_url, headers=headers, json=payload)
         if response.status_code == 201:
             print_response_status(response)
@@ -138,7 +153,7 @@ def create_headers(access_token):
     }
 
 
-def create_payload(record, site_id, access_token, folder_api_url, document_api_url):
+def create_payload(record, site_id, access_token, folder_api_url, document_api_url, file_dir):
     visible = record.get('visible', '')
     if visible and visible == 1:
         visible = 'true'
@@ -146,19 +161,20 @@ def create_payload(record, site_id, access_token, folder_api_url, document_api_u
         visible = 'false'
     return {
         "name": record.get('name', ''),
-        "url": create_url(record, site_id, access_token, folder_api_url, document_api_url),
+        "url": create_url(record, site_id, access_token, folder_api_url, document_api_url, file_dir),
         "visible": visible,
         "siteId": site_id,
     }
 
 
-def create_url(record, site_id, access_token, folder_api_url, document_api_url):
+def create_url(record, site_id, access_token, folder_api_url, document_api_url, file_dir):
     url = record.get('url', '')
     print(url)
     file = record.get('file', '')
     if file:
         folder = create_folder(site_id, access_token, folder_api_url)
-        file_url = upload_kml_file(site_id, folder, file, access_token, document_api_url)
+        file_path = os.path.join(file_dir, file)
+        file_url = upload_kml_file(site_id, folder, file_path, access_token, document_api_url)
         print(file_url)
         return file_url
     return url
@@ -207,8 +223,7 @@ def create_folder_payload(site_id, title):
 
 
 def upload_kml_file(site_id, folder, file_path, access_token, document_api_url):
-    parts = file_path.rsplit('/', maxsplit=1)
-    file_name = parts[-1]
+    file_name = os.path.basename(file_path)
     files = {
         'files': (file_name, open(file_path, 'rb'))
     }
@@ -252,9 +267,8 @@ def print_response_status(response):
         print('Response content:', response.content)
 
 
-def save_failed_records(failed_records, file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, file_name)
+def save_failed_records(failed_records, data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'w', encoding='utf-8') as outfile:
             json.dump(failed_records, outfile, ensure_ascii=False, indent=4)
