@@ -1,48 +1,24 @@
-FROM node:16.19-alpine AS dependencies
+FROM node:16.19.0-alpine
+
+LABEL vendor="Eversis"
+LABEL maintainer="Eversis"
+LABEL project="GEOSS"
+LABEL version="1.0"
+LABEL image="geoss-admin"
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
+
 ENV NODE_ENV=production
 
-WORKDIR /opt/app
+COPY . .
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-COPY package.json package-lock.json ./
-
-RUN npm ci install --omit=dev
-
-FROM node:16.19-alpine AS builder
-
-ENV TZ=UTC
-ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
-ENV NODE_ENV=production
-
-WORKDIR /opt/app
-
-COPY --from=dependencies /opt/app/node_modules ./node_modules
-COPY --from=dependencies /opt/app/package.json ./
-COPY --from=dependencies /opt/app/package-lock.json ./
-COPY public ./public
-COPY src ./src
-COPY next.config.js .
-COPY tsconfig.json .
-
-RUN npm run build
-
-FROM node:16.19-alpine AS runner
-
-ENV TZ=UTC
-ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
-ENV NODE_ENV production
-
-WORKDIR /opt/app
-
-COPY --from=builder /opt/app/.next ./.next
-COPY --from=builder /opt/app/node_modules ./node_modules
-COPY --from=builder /opt/app/public ./public
-COPY --from=builder /opt/app/package.json ./package.json
-COPY --from=builder /opt/app/next.config.js ./next.config.js
+RUN npm install --production
+#RUN npm run build
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm", "run", "start"]
-CMD [""]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD [ "npm", "run", "start" ]
