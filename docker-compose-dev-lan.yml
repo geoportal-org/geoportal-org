@@ -18,6 +18,7 @@ services:
     environment:
       NEXT_PUBLIC_API: "https://gpp-admin.devel.esaportal.eu"
       NEXT_PUBLIC_APP_URL: "https://gpp.devel.esaportal.eu"
+      NEXT_PUBLIC_NEXTAUTH_URL: "https://gpp-admin.devel.esaportal.eu"
       NEXTAUTH_URL: "https://gpp-admin.devel.esaportal.eu"
       NEXTAUTH_SECRET: ${GEOSS_ADMIN_NEXTAUTH_SECRET}
       KEYCLOAK_CLIENT_ID: "geoss-admin"
