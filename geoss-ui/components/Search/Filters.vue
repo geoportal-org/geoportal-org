@@ -130,7 +130,6 @@ export default class SearchFiltersComponent extends Vue {
 
     @Watch('dataSource')
     public onDSChange() {
-        console.log(this.dataSource)
         if (this.dataSource === DataSources.DAB) {
             this.$store.dispatch(
                 InSituFiltersActions.setInSituFiltersAvailable,

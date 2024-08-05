@@ -53,6 +53,7 @@ interface SiteSettings {
     mapZoom: number
     latitude: number
     longitude: number
+    matomoSiteId: number
 }
 
 interface SearchEngine {
@@ -145,6 +146,7 @@ const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
         mapZoom: Number(data.map_zoom),
         latitude: Number(data.map_latitude),
         longitude: Number(data.map_longitude),
+        matomoSiteId: Number(data.matomo_siteId)
     }
 }
 

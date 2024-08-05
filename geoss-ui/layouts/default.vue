@@ -62,6 +62,8 @@ import { Timers } from '@/data/timers';
 import { LayerData } from '@/interfaces/LayerData';
 import search from '@/store/search';
 import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions';
+import MatomoPlugin from '~/plugins/MatomoPlugin';
+import VueMatomo from 'vue-matomo'
 
 export default {
     computed: {
@@ -380,8 +382,6 @@ export default {
             const promises = [
                 this.parseQueryParams(),
                 LogService.createElasticSearchClient(),
-                GeneralApiService.getSiteSettings(this.siteId),
-                GeneralApiService.getSearchSettings(this.siteId),
                 GeneralApiService.getUserSettings(),
                 GeneralApiService.getSiteData(this.$route.params.siteurl)
             ];
@@ -390,78 +390,9 @@ export default {
                 promises.push(GeossSearchApiService.getBookmarks());
             }
 
-            Promise.all(promises).then(([paramsParsed, , siteSettings, searchSettings, userSettings, siteData, bookmarks]) => {
+            Promise.all(promises).then(async ([paramsParsed, , userSettings, siteData, bookmarks]) => {
                 if (this.$store.getters[GeneralFiltersGetters.state].phrase) {
                     this.$store.dispatch(SearchActions.setCancelConfirmSearch, true);
-                }
-                if (siteSettings) {
-                    if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
-                        if (!this.$store.getters[SearchGetters.dataSource]) {
-                            this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
-                            this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
-                        }
-                    } else {
-                        this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
-                    }
-                    if (siteSettings.mapZoom) {
-                        this.$store.dispatch(MapActions.setInitialZoom, siteSettings.mapZoom);
-                    }
-                    if (siteSettings.longitude && siteSettings.latitude) {
-                        this.$store.dispatch(MapActions.setCenter, [siteSettings.longitude, siteSettings.latitude]);
-                    }
-                }
-                if (searchSettings) {
-                    if (searchSettings) {
-                        this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
-                        this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
-                        this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
-
-                        this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
-                        this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);
-                        this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
-                        this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
-                    }
-
-                    // if (searchSettings.popularSearch) {
-                    //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
-                    //     if (searchSettings.popularSearch.currMap) {
-                    //         const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
-                    //         const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
-                    //         if (notDeclared || newCommunitySite) {
-                    //             this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
-                    //         }
-                    //     }
-                    // }
-
-                    if (searchSettings.linkSharing) {
-                        const searchSettingsLayers = searchSettings.linkSharing.searchEngineLayers;
-                        if (searchSettingsLayers && searchSettingsLayers.length) {
-                            for (const layer of searchSettingsLayers) {
-                                let mapLayer = null;
-                                if (layer.type === LayerTypes.WMS) {
-                                    mapLayer = LayersUtils.createWMS(layer.title, layer.url);
-                                } else if (layer.type === LayerTypes.TMS) {
-                                    mapLayer = LayersUtils.createTMS(layer.url);
-                                } else if (layer.type === LayerTypes.KML) {
-                                    mapLayer = LayersUtils.createKML(layer.url);
-                                } else if (layer.type === LayerTypes.KMZ) {
-                                    mapLayer = LayersUtils.createKMZ(layer.url);
-                                } else {
-                                    continue;
-                                }
-                                mapLayer.setZIndex(layer.zIndex);
-
-                                const layerData = {
-                                    layer: mapLayer,
-                                    id: layer.url,
-                                    type: layer.type,
-                                    title: layer.name,
-                                    visible: layer.visible,
-                                };
-                                this.$store.dispatch(MapActions.addLayer, layerData);
-                            }
-                        }
-                    }
                 }
 
                 if (siteData) {
@@ -475,7 +406,82 @@ export default {
                         this.$store.dispatch(SearchEngineActions.setSiteUrl, siteData.url);
                     }
                     if (siteData.siteId !== '') {
-                        this.$store.dispatch(SearchEngineActions.setSiteId, siteData.siteId * 1);
+                        const siteId = siteData.siteId * 1
+                        this.$store.dispatch(SearchEngineActions.setSiteId, siteId);
+
+                        const siteSettings = await GeneralApiService.getSiteSettings(siteId)
+
+                        if (siteSettings) {
+                            if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
+                                if (!this.$store.getters[SearchGetters.dataSource]) {
+                                    this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
+                                    this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
+                                }
+                            } else {
+                                this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
+                            }
+                            if (siteSettings.mapZoom) {
+                                this.$store.dispatch(MapActions.setInitialZoom, siteSettings.mapZoom);
+                            }
+                            if (siteSettings.longitude && siteSettings.latitude) {
+                                this.$store.dispatch(MapActions.setCenter, [siteSettings.longitude, siteSettings.latitude]);
+                            }
+                            if(siteSettings.matomoSiteId && window._paq && window._paq.push){
+                                await window._paq.push(['setSiteId', siteSettings.matomoSiteId]);
+                                this.$store.dispatch(GeneralActions.setMatomoSiteId,siteSettings.matomoSiteId);
+                            }
+                        }
+
+                        const searchSettings = await GeneralApiService.getSearchSettings(siteId);
+                        if (searchSettings) {
+                            this.$store.dispatch(SearchEngineActions.setDabBaseUrl, searchSettings['dabBaseUrl']);
+                            this.$store.dispatch(SearchEngineActions.setDabDataProvidersUrl, searchSettings['dabDataProvidersUrl']);
+                            this.$store.dispatch(SearchEngineActions.setInternalOpenSearchUrl, searchSettings['geossCrOpensearchUrl']);
+
+                            this.$store.dispatch(SearchEngineActions.setW3wKey, searchSettings['w3wKey']);
+                            this.$store.dispatch(SearchEngineActions.setTourUrl, searchSettings['tourUrl']);
+                            this.$store.dispatch(MapActions.setBoxAccessToken, searchSettings['mapBoxAccessToken']);
+                            this.$store.dispatch(MapActions.setGooglesApiKey, searchSettings['googleMapsApiKey']);
+                            if (searchSettings.linkSharing) {
+                                const searchSettingsLayers = searchSettings.linkSharing.searchEngineLayers;
+                                if (searchSettingsLayers && searchSettingsLayers.length) {
+                                    for (const layer of searchSettingsLayers) {
+                                        let mapLayer = null;
+                                        if (layer.type === LayerTypes.WMS) {
+                                            mapLayer = LayersUtils.createWMS(layer.title, layer.url);
+                                        } else if (layer.type === LayerTypes.TMS) {
+                                            mapLayer = LayersUtils.createTMS(layer.url);
+                                        } else if (layer.type === LayerTypes.KML) {
+                                            mapLayer = LayersUtils.createKML(layer.url);
+                                        } else if (layer.type === LayerTypes.KMZ) {
+                                            mapLayer = LayersUtils.createKMZ(layer.url);
+                                        } else {
+                                            continue;
+                                        }
+                                        mapLayer.setZIndex(layer.zIndex);
+
+                                        const layerData = {
+                                            layer: mapLayer,
+                                            id: layer.url,
+                                            type: layer.type,
+                                            title: layer.name,
+                                            visible: layer.visible,
+                                        };
+                                        this.$store.dispatch(MapActions.addLayer, layerData);
+                                    }
+                                }
+                            }
+                            // if (searchSettings.popularSearch) {
+                            //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
+                            //     if (searchSettings.popularSearch.currMap) {
+                            //         const notDeclared = this.$store.getters[MapGetters.activeLayerTileId] === '';
+                            //         const newCommunitySite = sessionStorage.getItem('COMMUNITY_SITE_ID') !== '' + this.$store.getters[UserGetters.groupId];
+                            //         if (notDeclared || newCommunitySite) {
+                            //             this.$store.dispatch(MapActions.setActiveLayerTileId, searchSettings.popularSearch.currMap);
+                            //         }
+                            //     }
+                            // }
+                        }
                     }
                 }
 
