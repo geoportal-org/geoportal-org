@@ -12,6 +12,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearc
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.model.TransferOptionExtensionELK;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 /**
  * The type Extension document mapper.
  */
+@Log4j2
 @Component
 public class ExtensionDocumentMapper extends BaseElasticsearchDocumentMapper<Extension> {
 
@@ -43,7 +45,8 @@ public class ExtensionDocumentMapper extends BaseElasticsearchDocumentMapper<Ext
 
     @Override
     public Extension mapToObject(SearchHit searchHit) throws IOException {
-        Map source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        Map<String, Object> source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        log.debug("sourceExtension:{}", source);
         ExtensionELK extensionDocument = objectMapper.convertValue(source, ExtensionELK.class);
         return mapExtensionDocument(extensionDocument);
     }

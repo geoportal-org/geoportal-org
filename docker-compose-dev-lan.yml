@@ -340,6 +340,7 @@ services:
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
       SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      DEBUG: true
       << : *proxy-variables
     ports:
       - "8086:8080"
