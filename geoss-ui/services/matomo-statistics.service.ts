@@ -1,4 +1,6 @@
 //to change
+import { AppVueObj } from '~/data/global'
+import { GeneralGetters } from '~/store/general/general-getters'
 import { getRandomColorsArray } from '~/utils/randomColorsArray'
 
 type matomoParams = {
@@ -35,11 +37,14 @@ const MatomoDataService = {
         const start = dateFrom
         const end = dateTo || currentDate
         const dateRange = start + ',' + end
+        const matomoSiteId =
+            AppVueObj.app.$store.getters[GeneralGetters.matomoSiteId]
+        console.log('Data for matomo site ID: ' + matomoSiteId)
 
         let params: matomoParams = {
             module: 'API',
             method: '',
-            idSite: '1',
+            idSite: matomoSiteId.toString(),
             period: MatomoDataService.getPeriod(unit),
             date: dateRange,
             format: 'json',

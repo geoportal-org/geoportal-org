@@ -8,5 +8,6 @@ export enum GeneralActions {
     setIsEntryExtensionEnabled = 'general/setIsEntryExtensionEnabled',
     setIsExtendedViewEnabled = 'general/setIsExtendedViewEnabled',
     setIsBulkDownloadEnabled = 'general/setIsBulkDownloadEnabled',
+    setMatomoSiteId = 'general/setMatomoSiteId',
     setWidgetAccessKey = 'general/setWidgetAccessKey',
 }

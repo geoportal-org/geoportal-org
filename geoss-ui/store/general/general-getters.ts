@@ -8,5 +8,6 @@ export enum GeneralGetters {
     isEntryExtensionEnabled = 'general/isEntryExtensionEnabled',
     isExtendedViewEnabled = 'general/isExtendedViewEnabled',
     isBulkDownloadEnabled = 'general/isBulkDownloadEnabled',
+    matomoSiteId = 'general/matomoSiteId',
     widgetAccessKey = 'general/widgetAccessKey',
 }
