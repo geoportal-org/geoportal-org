@@ -332,8 +332,8 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
                     term: formData.sourceTerm === "customSource" ? formData.customSource : formData.sourceTerm,
                     code: formData.sourceTerm === "customSource" ? formData.customSource : formData.sourceCode,
                 },
-                dataSource: "dab",
-                displayDataSource: "dab",
+                dataSource: "geoss_cr",
+                displayDataSource: "geoss_cr",
                 definitionType: "0",
                 //@ts-ignore
                 userId: session?.data?.userId || "",
@@ -375,8 +375,8 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
                 term: formData.sourceTerm === "customSource" ? formData.customSource : formData.sourceTerm,
                 code: formData.sourceTerm === "customSource" ? formData.customSource : formData.sourceCode,
             },
-            dataSource: "dab",
-            displayDataSource: "dab",
+            dataSource: "geoss_cr",
+            displayDataSource: "geoss_cr",
             definitionType: "0",
             //@ts-ignore
             userId: session?.data?.userId || "",
