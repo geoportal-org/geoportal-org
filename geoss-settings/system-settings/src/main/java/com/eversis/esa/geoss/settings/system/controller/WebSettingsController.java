@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.settings.system.controller;
 
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsKey;
 import com.eversis.esa.geoss.settings.system.domain.WebSettingsSet;
+import com.eversis.esa.geoss.settings.system.domain.WebSettingsValue;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,18 @@ public class WebSettingsController {
     @RequestMapping(path = "/sets/{set}/keys", method = RequestMethod.OPTIONS)
     Set<WebSettingsKey> optionsWebSettingsKeys(@PathVariable("set") WebSettingsSet webSettingsSet) {
         return webSettingsSet.getKeys();
+    }
+
+    /**
+     * Options web settings values set.
+     *
+     * @param webSettingsSet the web settings set
+     * @param webSettingsKey the web settings key
+     * @return the enum set
+     */
+    @RequestMapping(path = "/sets/{set}/keys/{key}/values", method = RequestMethod.OPTIONS)
+    Set<WebSettingsValue> optionsWebSettingsValues(@PathVariable("set") WebSettingsSet webSettingsSet,
+            @PathVariable("key") WebSettingsKey webSettingsKey) {
+        return webSettingsSet.getKey(webSettingsKey.key()).keyValues();
     }
 }

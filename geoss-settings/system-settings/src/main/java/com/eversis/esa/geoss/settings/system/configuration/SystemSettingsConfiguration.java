@@ -10,7 +10,6 @@ import com.eversis.esa.geoss.settings.system.support.StringToWebSettingsSetConve
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -77,37 +76,39 @@ public class SystemSettingsConfiguration {
                 }
             });
             // override params
-            openApi.getPaths().values().stream().map(PathItem::getGet).forEach(operation -> {
-                if (operation != null) {
-                    String operationId = operation.getOperationId();
-                    if (operationId.startsWith("executeSearch-apisettings") || operationId.startsWith(
-                            "getSiteApiSettings")) {
-                        List<Parameter> parameters = operation.getParameters();
-                        if (parameters != null) {
-                            for (Parameter parameter : parameters) {
-                                if ("key".equals(parameter.getName())) {
-                                    if (parameter.getSchema() instanceof StringSchema stringSchema) {
-                                        stringSchema.setEnum(ApiSettingsSet.keys());
+            openApi.getPaths().values().stream()
+                    .flatMap(pathItem -> Stream.of(pathItem.getOptions(), pathItem.getGet()))
+                    .forEach(operation -> {
+                        if (operation != null) {
+                            String operationId = operation.getOperationId();
+                            if (operationId.startsWith("executeSearch-apisettings") || operationId.startsWith(
+                                    "getSiteApiSettings")) {
+                                List<Parameter> parameters = operation.getParameters();
+                                if (parameters != null) {
+                                    for (Parameter parameter : parameters) {
+                                        if ("key".equals(parameter.getName())) {
+                                            if (parameter.getSchema() instanceof StringSchema stringSchema) {
+                                                stringSchema.setEnum(ApiSettingsSet.keys());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (operationId.startsWith("executeSearch-websettings") || operationId.startsWith(
+                                    "getSiteWebSettings") || operationId.startsWith("optionsWebSettings")) {
+                                List<Parameter> parameters = operation.getParameters();
+                                if (parameters != null) {
+                                    for (Parameter parameter : parameters) {
+                                        if ("key".equals(parameter.getName())) {
+                                            if (parameter.getSchema() instanceof StringSchema stringSchema) {
+                                                stringSchema.setEnum(WebSettingsSet.keys());
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    if (operationId.startsWith("executeSearch-websettings") || operationId.startsWith(
-                            "getSiteWebSettings")) {
-                        List<Parameter> parameters = operation.getParameters();
-                        if (parameters != null) {
-                            for (Parameter parameter : parameters) {
-                                if ("key".equals(parameter.getName())) {
-                                    if (parameter.getSchema() instanceof StringSchema stringSchema) {
-                                        stringSchema.setEnum(WebSettingsSet.keys());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+                    });
             // override schemas
             Optional.ofNullable(openApi.getComponents())
                     .flatMap(components -> Optional.ofNullable(components.getSchemas()))
