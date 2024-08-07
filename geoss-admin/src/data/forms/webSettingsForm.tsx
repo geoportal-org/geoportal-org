@@ -26,7 +26,7 @@ const defaultSourceNameForm: FormField[] = [
         fieldType: Select,
         isRequired: true,
         labelId: "pages.web.default-source-name",
-        name: "defaultSource",
+        name: "defaultSourceName",
         placeholderId: "form.placeholders.type",
         type: "select",
         defaultValue: "GEOSS",

@@ -8,6 +8,9 @@ export const WebSettingsService = {
     getWebSettings: async (siteId: number, query?: QueryParams): Promise<IWebSettingsList> =>
         fetcher({ url: `${process.env.NEXT_PUBLIC_API}/settings/rest/sites/${siteId}/web-settings`, query }),
 
+    getDefaultSourceNameOptions: async (set = "source", key = "defaultSourceName"): Promise<any> =>
+        fetcher({ url: `${WebSettingsService.baseUrl}/sets/${set}/keys/${key}/values`, method: "OPTIONS"}),
+
     getWebSetting: async (id: number): Promise<IWebSetting> => fetcher({ url: `${WebSettingsService.baseUrl}/${id}` }),
 
     createWebSetting: async (webSettingData: IWebSettingData): Promise<IWebSetting> =>

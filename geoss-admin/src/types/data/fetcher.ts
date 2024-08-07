@@ -4,7 +4,7 @@ export type QueryParams = {
 
 export type FetcherData = {
     url: string;
-    method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+    method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
     body?: FormData | Object;
     useCredentials?: boolean;
     headers?: HeadersInit;

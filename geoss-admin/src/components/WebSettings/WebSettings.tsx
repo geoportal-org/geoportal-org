@@ -27,10 +27,10 @@ export const WebSettings = () => {
     const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(webSettingsFormFields));
     const [savedValues, setSavedValues] = useState<FormikValues>({});
     const [webSettingsList, setWebSettingsList] = useState<IWebSetting[]>([]);
-    const [documentsList, setDocumentsList] = useState<SelectSettings>();
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
-    const { locale } = useIntl();
+    // const { locale } = useIntl();
+    const [defaultSourceNameOptionsList, setDefaultSourceNameOptionsList] = useState<{ value: string; label: string }[]>([]);
 
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
@@ -53,24 +53,45 @@ export const WebSettings = () => {
     }, [currentSiteId]);
 
     useEffect(() => {
-        const getDocumentsList = async () => {
+        //this used to fetch options for logo options, this is now moved to commmunity portal management
+
+        // const getDocumentsList = async () => {
+        //     try {
+        //         const {
+        //             _embedded: { document },
+        //         } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
+        //         const selectDocumentsList = createSelectItemsList(
+        //             document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
+        //             false,
+        //             false,
+        //             locale as LocaleNames
+        //         );
+        //         setDocumentsList(() => selectDocumentsList);
+        //     } catch (e) {
+        //         console.error(e);
+        //         setIsError(true);
+        //     }
+        // };
+
+        const getDefaultSourceNameOptions = async () => {
             try {
-                const {
-                    _embedded: { document },
-                } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
-                const selectDocumentsList = createSelectItemsList(
-                    document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
-                    false,
-                    false,
-                    locale as LocaleNames
-                );
-                setDocumentsList(() => selectDocumentsList);
+                const result = await WebSettingsService.getDefaultSourceNameOptions();
+                const options: { value: string; label: string }[] = [];
+                result.forEach((option: string) => {
+                    options.push({
+                        value: option,
+                        label: option,
+                    });
+                });
+                setDefaultSourceNameOptionsList(() => options);
             } catch (e) {
                 console.error(e);
                 setIsError(true);
             }
         };
-        getDocumentsList();
+
+        // getDocumentsList();
+        getDefaultSourceNameOptions();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
@@ -120,7 +141,7 @@ export const WebSettings = () => {
             .filter(
                 ({ key, set }) =>
                     (set !== "source" && changedValues.includes(key)) ||
-                    (set === "source" && changedValues.includes("defaultSource"))
+                    (set === "source" && changedValues.includes("defaultSourceName"))
             )
             .map((value) => ({
                 ...value,
@@ -141,35 +162,10 @@ export const WebSettings = () => {
         webSettingsForm.map((section, idx) => {
             const isLastSection = idx === webSettingsForm.length - 1;
             const sectionFields = section.data.map((field) => {
-                if (field.name === "defaultSource") {
+                if (field.name === "defaultSourceName") {
                     field.selectSettings = {
                         isMultiselect: false,
-                        options: [
-                            {
-                                value: "GEOSS",
-                                label: "GEOSS",
-                            },
-                            {
-                                value: "GEOSS Curated",
-                                label: "GEOSS Curated",
-                            },
-                            {
-                                value: "AmeriGEO",
-                                label: "AmeriGEO",
-                            },
-                            {
-                                value: "Zenodo",
-                                label: "Zenodo",
-                            },
-                            {
-                                value: "Wikipedia",
-                                label: "Wikipedia",
-                            },
-                            {
-                                value: "NextGEOSS",
-                                label: "NextGEOSS",
-                            },
-                        ],
+                        options: defaultSourceNameOptionsList
                     };
                 }
                 return <FormField key={field.name} fieldData={field} />;
