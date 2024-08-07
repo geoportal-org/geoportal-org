@@ -1,7 +1,9 @@
 #!/bin/sh
 
+echo "Import start at $(date)"
+
 echo 'Import community sites from liferay started'
-python import_community_sites_from_liferay.py local_environment_config.ini
+python community/import_community_sites_from_liferay.py prod_environment_config.ini
 echo 'Import community sites from liferay ended'
 
 echo 'Import global views from liferay started'
@@ -45,5 +47,7 @@ python resources/bookmarks/import_bookmarks.py prod_environment_config.ini
 echo 'Import bookmarks from liferay ended'
 
 echo 'Import surveys from liferay started'
-python import_surveys.py local_environment_config.ini
+python surveys/import_surveys.py prod_environment_config.ini
 echo 'Import surveys from liferay ended'
+
+echo "Import ended at $(date)"

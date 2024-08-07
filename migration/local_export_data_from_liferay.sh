@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Export start at $(date)"
+
 echo 'Export global views from liferay started'
 python settings/views/export_global_views_from_liferay.py local_environment_config.ini
 echo 'Export global views from liferay ended'
@@ -39,3 +41,5 @@ echo 'Export saved runs from liferay ended'
 echo 'Export bookmarks from liferay started'
 python resources/bookmarks/export_bookmarked_result_from_liferay.py local_environment_config.ini
 echo 'Export bookmarks from liferay ended'
+
+echo "Export ended at $(date)"

@@ -37,7 +37,7 @@ def main():
 
     site_api_url = config.get('contents', 'site_api_url').strip('\'\"')
     data = load_data(data_dir, COMMUNITY_SITES_FILE)
-    failed_records = process_records(data, admin_access_token, site_api_url)
+    failed_records = process_records(data, admin_access_token, site_api_url, data_dir)
 
     log_end_time(start_time)
 
@@ -85,15 +85,15 @@ def load_data(data_dir, file_name):
         return []
 
 
-def process_records(data, admin_access_token, dest_api_url):
+def process_records(data, admin_access_token, dest_api_url, data_dir):
     failed_records = []
     for record in data:
-        if not send_data(record, admin_access_token, dest_api_url):
+        if not send_data(record, admin_access_token, dest_api_url, data_dir):
             failed_records.append(record)
     return failed_records
 
 
-def send_data(record, admin_access_token, dest_api_url):
+def send_data(record, admin_access_token, dest_api_url, data_dir):
     try:
         headers = create_headers(admin_access_token)
         payload = create_payload(record)
@@ -101,7 +101,7 @@ def send_data(record, admin_access_token, dest_api_url):
             'model': str(payload).replace("'", '"')
         }
         file_name = record.get('logo_name', '')
-        file_path = record.get('logo_file', '')
+        file_path = os.path.join(data_dir, record.get('logo_file', ''))
         files = {
             'files': (file_name, open(file_path, 'rb'))
         }
