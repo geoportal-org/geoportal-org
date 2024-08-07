@@ -390,7 +390,6 @@ services:
       ADMIN_URL: "https://gpp-admin.uat.esaportal.eu"
       KEYCLOAK_CLIENT_ID: geoss-ui
       KEYCLOAK_BASE_URL: "https://gpp-idp.uat.esaportal.eu/realms/geoss"
-      MATOMO_SITE_ID: 1
       MATOMO_TOKEN: ${GEOSS_MATOMO_TOKEN}
       MATOMO_URL: 'https://gpp.uat.esaportal.eu/matomo/?'
       PROXY_URL: 'https://gpp.uat.esaportal.eu/proxy/rest/'
