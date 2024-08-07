@@ -65,69 +65,63 @@ menu_id|title|locale
 11|AmeriGEO|pl
 11|AmeriGEO|ru
 11|AmeriGEO|zh
-12|AtlantOS|en
-12|AtlantOS|es
-12|AtlantOS|fr
-12|AtlantOS|pl
-12|AtlantOS|ru
-12|AtlantOS|zh
-13|DBAR|en
-13|DBAR|es
-13|DBAR|fr
-13|DBAR|pl
-13|DBAR|ru
-13|DBAR|zh
-14|ENERGIC OD|en
-14|ENERGIC OD|es
-14|ENERGIC OD|fr
-14|ENERGIC OD|pl
-14|ENERGIC OD|ru
-14|ENERGIC OD|zh
-15|EnviDat Community|en
-15|EnviDat Community|es
-15|EnviDat Community|fr
-15|EnviDat Community|pl
-15|EnviDat Community|ru
-15|EnviDat Community|zh
-16|GOS4M|en
-16|GOS4M|es
-16|GOS4M|fr
-16|GOS4M|pl
-16|GOS4M|ru
-16|GOS4M|zh
-17|GTN-H Community|en
-17|GTN-H Community|es
-17|GTN-H Community|fr
-17|GTN-H Community|pl
-17|GTN-H Community|ru
-17|GTN-H Community|zh
-18|Yellow Pages|en
-18|Anuncios|es
-18|Annonces|fr
-18|Ogłoszenia|pl
-18|объявления|ru
-18|公告|zh
-19|"Highlighted searches"|en
-19|"Búsquedas destacadas"|es
-19|"Recherches en surbrillance"|fr
-19|"Wyróżnione wyszukiwania"|pl
-19|"重点搜索"|zh
-19|"Популярные запросы"|ru
-20|"Statistics"|en
-20|"Estadística"|es
-20|"Statistiques"|fr
-20|"Statystyki"|pl
-20|"统计"|zh
-20|"Статистика"|ru
-21|"My workspace"|en
-21|"Mi espacio de trabajo"|es
-21|"Mon espace de travail"|fr
-21|"Moja przestrzeń robocza"|pl
-21|"我的工作区"|zh
-21|"Мое рабочее пространство"|ru
-22|"Your Saved Searches"|en
-22|"Tus búsquedas guardadas"|es
-22|"Vos recherches enregistrées"|fr
-22|"Twoje zapisane wyszukiwania"|pl
-22|"您保存的搜索"|zh
-22|"Ваши сохраненные поиски"|ru
+12|DBAR|en
+12|DBAR|es
+12|DBAR|fr
+12|DBAR|pl
+12|DBAR|ru
+12|DBAR|zh
+13|ENERGIC OD|en
+13|ENERGIC OD|es
+13|ENERGIC OD|fr
+13|ENERGIC OD|pl
+13|ENERGIC OD|ru
+13|ENERGIC OD|zh
+14|EnviDat Community|en
+14|EnviDat Community|es
+14|EnviDat Community|fr
+14|EnviDat Community|pl
+14|EnviDat Community|ru
+14|EnviDat Community|zh
+15|GOS4M|en
+15|GOS4M|es
+15|GOS4M|fr
+15|GOS4M|pl
+15|GOS4M|ru
+15|GOS4M|zh
+16|GTN-H Community|en
+16|GTN-H Community|es
+16|GTN-H Community|fr
+16|GTN-H Community|pl
+16|GTN-H Community|ru
+16|GTN-H Community|zh
+17|Yellow Pages|en
+17|Anuncios|es
+17|Annonces|fr
+17|Ogłoszenia|pl
+17|объявления|ru
+17|公告|zh
+18|"Highlighted searches"|en
+18|"Búsquedas destacadas"|es
+18|"Recherches en surbrillance"|fr
+18|"Wyróżnione wyszukiwania"|pl
+18|"重点搜索"|zh
+18|"Популярные запросы"|ru
+19|"Statistics"|en
+19|"Estadística"|es
+19|"Statistiques"|fr
+19|"Statystyki"|pl
+19|"统计"|zh
+19|"Статистика"|ru
+20|"My workspace"|en
+20|"Mi espacio de trabajo"|es
+20|"Mon espace de travail"|fr
+20|"Moja przestrzeń robocza"|pl
+20|"我的工作区"|zh
+20|"Мое рабочее пространство"|ru
+21|"Your Saved Searches"|en
+21|"Tus búsquedas guardadas"|es
+21|"Vos recherches enregistrées"|fr
+21|"Twoje zapisane wyszukiwania"|pl
+21|"您保存的搜索"|zh
+21|"Ваши сохраненные поиски"|ru

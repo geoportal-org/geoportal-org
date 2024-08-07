@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsear
 import com.eversis.esa.geoss.curatedrelationships.search.model.entity.Concept;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.Map;
 /**
  * The type Concept document mapper.
  */
+@Log4j2
 @Component
 public class ConceptDocumentMapper extends BaseElasticsearchDocumentMapper<Concept> {
 
@@ -29,7 +31,8 @@ public class ConceptDocumentMapper extends BaseElasticsearchDocumentMapper<Conce
 
     @Override
     public Concept mapToObject(SearchHit searchHit) throws IOException {
-        Map source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        Map<String, Object> source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        log.debug("sourceConcept:{}", source);
         return objectMapper.convertValue(source, Concept.class);
     }
 }

@@ -61,17 +61,18 @@ public class ResourcesConfiguration {
                         securityRequirement.addList(s);
                         return securityRequirement;
                     }).toList();
-
+            // add security schemas to operations
             Stream<Operation> operations = openApi.getPaths().values().stream()
                     .flatMap(pathItem -> pathItem.readOperations().stream());
             operations.forEach(operation -> {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("accessPolicy") || tags.contains("elasticsearch")
-                                || tags.contains("organisation") || tags.contains("resources")
-                                || tags.contains("source") || tags.contains("type")
-                                || tags.contains("userResources") || tags.contains("workflow")) {
+                        if (tags.contains("accessPolicy") || tags.contains("bookmarked")
+                                || tags.contains("organisation") || tags.contains("rating")
+                                || tags.contains("resources") || tags.contains("source")
+                                || tags.contains("stats") || tags.contains("transferOption")
+                                || tags.contains("userResources")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }
@@ -79,5 +80,4 @@ public class ResourcesConfiguration {
             });
         };
     }
-
 }

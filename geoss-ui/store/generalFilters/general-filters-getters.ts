@@ -10,5 +10,6 @@ export enum GeneralFiltersGetters {
     workflowMapDraw = 'generalFilters/workflowMapDraw',
     additionalSearchFields = 'generalFilters/additionalSearchFields',
     googlePlacesApiError = 'generalFilters/googlePlacesApiError',
-    locationTypeOptions = 'generalFilters/locationTypeOptions'
+    locationTypeOptions = 'generalFilters/locationTypeOptions',
+    getViewId = 'generalFilters/getViewId'
 }

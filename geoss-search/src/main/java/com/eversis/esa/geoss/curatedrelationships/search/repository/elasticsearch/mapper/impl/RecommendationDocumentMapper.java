@@ -6,6 +6,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.model.recommendation.Re
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.model.RecommendedResourceElk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import static com.eversis.esa.geoss.curatedrelationships.search.repository.elast
 /**
  * The type Recommendation document mapper.
  */
+@Log4j2
 @Component
 public class RecommendationDocumentMapper extends BaseElasticsearchDocumentMapper<Recommendation> {
 
@@ -37,7 +39,8 @@ public class RecommendationDocumentMapper extends BaseElasticsearchDocumentMappe
 
     @Override
     public Recommendation mapToObject(SearchHit searchHit) throws IOException {
-        Map source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        Map<String, Object> source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        log.debug("sourceRecommendation:{}", source);
         RecommendedResourceElk[] resources = objectMapper.convertValue(source.get(ENTITIES_FIELD),
                 RecommendedResourceElk[].class);
         return mapResources(resources);

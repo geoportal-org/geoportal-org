@@ -1,32 +1,26 @@
-Install Python 3.12 and check version
-[Python Download Page](https://www.python.org)
-```sh
-python --version
-```
-Install the package manager pip and check version
-```sh
-pip --version
-```
-Install the additional library requests using pip
-```sh
-pip install requests
-```
-Download the current production data file prod_survey_results.txt from Google Docs and place it in the script folder.
+# Surveys migration
+
+## Prerequisites
+
+Prepare the environment and configuration file `environment_config.ini` for the scripts according to the instructions [migration readme](../README.md).
+
+## Export data
+
+Download the current production data file `prod_survey_results.txt` from Google Docs and place it in the script folder.
 Google Drive username: geoportal2x@gmail.com, password: syspass.
-Change the URL in the script to the API for the specific environment. For DEV, the URL is:
+Rename the file `prod_survey_results.txt` to `survey_results.json`
+
+## Import data
+
+The file with the exported data `survey_results.json` should be in the script directory.
+Place the configuration file in the script directory or run the script with the path to the configuration file as an argument.
+
 ```sh
-url = 'https://gpp-admin.devel.esaportal.eu/personaldata/rest/surveys'
+python import_surveys.py environment_config.ini
 ```
-Generate an ACCESS_TOKEN and place it in the script in the header:
-```sh
-'Authorization': 'Bearer ACCESS_TOKEN'
-```
-Run the script
-```sh
-python import_surveys.py
-```
+
 The script processing is finished when the message 'Total execution time' appears.
-If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
+If there are any problems with uploading records, failed attempts will be stored in the `survey_failed_records.json` file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The prod_survey_results.txt data file needs to be archived.
+The `prod_survey_results.json` data file needs to be archived.

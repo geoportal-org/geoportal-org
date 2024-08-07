@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +54,11 @@ public enum WebSettingsSet {
             return name();
         }
 
+        @Override
+        public Set<WebSettingsValue> keyValues() {
+            return Collections.emptySet();
+        }
+
         @JsonValue
         @Override
         public String toString() {
@@ -65,39 +71,29 @@ public enum WebSettingsSet {
      */
     public enum Source implements WebSettingsKey {
         /**
-         * Geoss source.
+         * Default source nome.
          */
-        GEOSS("GEOSS"),
-        /**
-         * Geoss curated source.
-         */
-        GEOSS_CURATED("GEOSSCurated"),
-        /**
-         * Ameri geoss source.
-         */
-        AMERI_GEOSS("AmeriGEO"),
-        /**
-         * Next geoss source.
-         */
-        NEXT_GEOSS("NextGEOSS"),
-        /**
-         * Wikipedia source.
-         */
-        WIKIPEDIA("Wikipedia"),
-        /**
-         * Zenodo source.
-         */
-        ZENODO("Zenodo");
+        DEFAULT_SOURCE_NAME("defaultSourceName",
+                new HashSet<>(EnumSet.allOf(WebSettingsSourceDefaultSourceName.class)));
 
         private final String value;
 
-        Source(String value) {
+        @JsonIgnore
+        private final Set<WebSettingsValue> values;
+
+        Source(String value, Set<WebSettingsValue> values) {
             this.value = value;
+            this.values = values;
         }
 
         @Override
         public String key() {
             return name();
+        }
+
+        @Override
+        public Set<WebSettingsValue> keyValues() {
+            return values;
         }
 
         @JsonValue
@@ -127,6 +123,11 @@ public enum WebSettingsSet {
         @Override
         public String key() {
             return name();
+        }
+
+        @Override
+        public Set<WebSettingsValue> keyValues() {
+            return Collections.emptySet();
         }
 
         @JsonValue

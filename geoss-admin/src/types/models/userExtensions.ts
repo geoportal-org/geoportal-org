@@ -73,7 +73,7 @@ export interface CreateUserExtension {
     taskType: TaskType;
     entryExtension: {
         code: string;
-        dataSource: 'dab';
+        dataSource: 'geoss_cr';
         title: string;
         summary: string;
         keywords: string;

@@ -26,7 +26,9 @@ import ConfirmSearchPopup from '@/components/Search/ConfirmSearchPopup.vue'
 import ErrorPopup from '@/components/ErrorPopup.vue'
 import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
 import Vue from 'vue'
-import { $tc } from '@/plugins/i18n'
+import { $tc } from '~/plugins/i18n'
+import { InSituFiltersActions } from '../inSituFilters/inSitu-filters.actions'
+import { InSituFiltersGetters } from '../inSituFilters/inSitu-filters.getters'
 
 declare global {
     interface Window {
@@ -333,6 +335,16 @@ const getters: { [key: string]: any } = {
                 ...AppVueObj.app.$store.getters[IrisFiltersGetters.stateMapped]
             }
         }
+
+        if (params.viewid === 'worldcereal') {
+            params = {
+                ...params,
+                ...AppVueObj.app.$store.getters[
+                    InSituFiltersGetters.stateMapped
+                ]
+            }
+        }
+
         return params
     },
     actionBeforeRequest: (state: any) => {
@@ -915,6 +927,24 @@ const actions = {
                 dispatch(IrisFiltersActions.setIrisFiltersAvailable, false, {
                     root: true
                 })
+            }
+
+            if (
+                AppVueObj.app.$store.getters[
+                    GeneralFiltersGetters.getViewId
+                ].includes('worldcereal')
+            ) {
+                dispatch(InSituFiltersActions.setInSituFiltersAvailable, true, {
+                    root: true
+                })
+            } else {
+                dispatch(
+                    InSituFiltersActions.setInSituFiltersAvailable,
+                    false,
+                    {
+                        root: true
+                    }
+                )
             }
 
             if (getters.actionAfterSuccessRequest) {

@@ -32,7 +32,7 @@ public class ResourceEntryELK {
     @JsonProperty("hasChildren")
     private boolean isParent;
     @JsonProperty("childrenTypes")
-    private String childrenTypes;
+    private List<String> childrenTypes = new ArrayList<>();
     private AccessPolicy accessPolicy;
     @JsonProperty("parentId")
     private List<String> parentIds = new ArrayList<>();

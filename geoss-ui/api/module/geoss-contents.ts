@@ -1,10 +1,10 @@
 const config = {
-    apiUrl: 'http://10.254.7.59:8082/rest', //'/contents/rest', //  'http://10.254.7.59:8082/rest', //
+    apiUrl: '/contents/rest', // 'http://10.254.7.59:8082/rest', //
     menuUrl: '/menu/search/findByLevelIdAndSiteId',
     pageUrl: '/page/search/findByPublishedAndSiteId',
     contentUrl: '/content',
     documentUrl: '/document',
-    siteUrl: '/site',
+    siteUrl: '/site'
 }
 
 export default {
@@ -14,5 +14,5 @@ export default {
     content: config.apiUrl + config.contentUrl,
     document: config.apiUrl + config.documentUrl,
     site: config.apiUrl + config.siteUrl,
-    siteByUrl: config.apiUrl + config.siteUrl + '/search/findByUrl',
+    siteByUrl: config.apiUrl + config.siteUrl + '/search/findByUrl'
 }

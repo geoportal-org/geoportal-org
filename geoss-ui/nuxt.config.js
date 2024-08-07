@@ -193,7 +193,6 @@ export default {
         curatedUrl: process.env.CURATED_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
-        matomoSiteId: process.env.MATOMO_SITE_ID,
         matomoToken: process.env.MATOMO_TOKEN,
         matomoUrl: process.env.MATOMO_URL,
         proxyUrl: process.env.PROXY_URL,

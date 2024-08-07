@@ -10,6 +10,7 @@ const state = () => ({
     isEntryExtensionEnabled: true,
     isExtendedViewEnabled: true,
     isBulkDownloadEnabled: true,
+    matomoSiteId: 0,
     widgetAccessKey: null
 })
 
@@ -40,6 +41,9 @@ const getters = {
     },
     isBulkDownloadEnabled: (state: any) => {
         return state.isBulkDownloadEnabled
+    },
+    matomoSiteId: (state: any) => {
+        return state.matomoSiteId
     },
     widgetAccessKey: (state: any) => {
         return state.widgetAccessKey
@@ -83,6 +87,9 @@ const actions = {
     },
     setIsBulkDownloadEnabled({ commit }: any, value: boolean) {
         commit('setStateProp', { prop: 'isBulkDownloadEnabled', value })
+    },
+    setMatomoSiteId({ commit }: any, value: string | number) {
+        commit('setStateProp', { prop: 'matomoSiteId', value })
     },
     setWidgetAccessKey({ commit }: any, value: string) {
         commit('setStateProp', { prop: 'widgetAccessKey', value })

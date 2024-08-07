@@ -8,6 +8,8 @@ import com.eversis.esa.geoss.curated.common.service.DataSourceService;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * The type Data source service.
  */
@@ -31,4 +33,15 @@ public class DataSourceServiceImpl implements DataSourceService {
                 .orElseGet(() -> dataSourceRepository.save(DataSourceMapper.mapDataSource(dataSource)));
     }
 
+    @Override
+    public List<DataSource> getDataSources() {
+        return dataSourceRepository.findAll();
+    }
+
+    @Override
+    public List<String> getDataSourcesCodes() {
+        return dataSourceRepository.findAll().stream()
+                .map(DataSource::getCode)
+                .toList();
+    }
 }

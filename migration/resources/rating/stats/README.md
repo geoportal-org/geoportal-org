@@ -1,49 +1,30 @@
-Install Python 3.12 and check version
-[Python Download Page](https://www.python.org)
+# Resource rating stats migration
+
+## Prerequisites
+
+Prepare the environment and configuration file `environment_config.ini` for the scripts according to the instructions [migration readme](../../README.md).
+
+## Export data
+
+Place the configuration file in the script directory or run the script with the path to the configuration file as an argument.
+
 ```sh
-python --version
-```
-Install the package manager pip and check version
-```sh
-pip --version
-```
-Install the additional library mysql-connector-python using pip
-```sh
-pip install mysql-connector-python
+python export_resource_rating_stats_from_liferay.py environment_config.ini
 ```
 
-Configure database connection in the script export_resource_rating_stats_from_liferay.py
-```python
-'user': 'DB_USER',
-'password': 'DB_PASSWORD',
-'host': 'DB_HOST',
-'database': 'DB_NAME'
-```
+A file with the exported data `geoss_ResourceRatingStats.json` should be created.
 
-Run the script
+## Import data
+
+The file with the exported data `geoss_ResourceRatingStats.json` should be in the script directory.
+Place the configuration file in the script directory or run the script with the path to the configuration file as an argument.
+
 ```sh
-python export_resource_rating_stats_from_liferay.py
-```
-
-A file with the exported data geoss_ResourceRatingStats.json should be created.
-
-Change the URL in the import_entry_stats.py script to the API for the specific environment. For DEV, the URL is:
-```sh
-url = 'https://gpp-admin.devel.esaportal.eu/curated/rest/stats'
-```
-
-Generate an ACCESS_TOKEN and place it in the script in the header:
-```sh
-'Authorization': 'Bearer ACCESS_TOKEN'
-```
-
-Run the script
-```sh
-python import_entry_stats.py
+python import_entry_stats.py environment_config.ini
 ```
 
 The script processing is finished when the message 'Total execution time' appears.
-If there are any problems with uploading records, failed attempts will be stored in the failed_records.json file.
+If there are any problems with uploading records, failed attempts will be stored in the `resource_rating_stats_failed_records.json` file.
 In case of failed records, they will be reviewed and manually added via the API after analysis.
 
-The geoss_ResourceRatingStats.json data file needs to be archived.
+The `geoss_ResourceRatingStats.json` data file needs to be archived.

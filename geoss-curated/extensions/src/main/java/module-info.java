@@ -6,10 +6,12 @@ module geoss.curated.extensions {
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
     requires io.swagger.v3.oas.annotations;
+    requires io.swagger.v3.oas.models;
     requires jakarta.annotation;
     requires jakarta.persistence;
     requires jakarta.validation;
     requires org.apache.logging.log4j;
+    requires org.springdoc.openapi.common;
     requires spring.boot.autoconfigure;
     requires spring.boot;
     requires spring.context;

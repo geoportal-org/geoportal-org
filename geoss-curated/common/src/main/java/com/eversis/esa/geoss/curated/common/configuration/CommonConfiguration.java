@@ -68,7 +68,8 @@ public class CommonConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (tags.contains("endpoint") || tags.contains("protocol") || tags.contains("type")) {
+                        if (tags.contains("data-sources") || tags.contains("endpoint")
+                                || tags.contains("protocol") || tags.contains("type")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }

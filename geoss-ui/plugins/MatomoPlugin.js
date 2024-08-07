@@ -5,7 +5,7 @@ export default ({ app, $config }) => {
     Vue.use(VueMatomo, {
         router: app.router,
         host: `${$config.adminUrl}/matomo`,
-        siteId: $config.matomoSiteId,
+        siteId: '0',
         enableLinkTracking: true,
         requireConsent: false,
         trackInitialView: true,

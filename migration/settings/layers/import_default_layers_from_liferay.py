@@ -1,96 +1,77 @@
+import configparser
 import json
+import os
+import sys
 import time
 
 import requests
-from keycloak import KeycloakAdmin
 from keycloak import KeycloakOpenID
-from keycloak import KeycloakOpenIDConnection
 
-# SITE_API_URL = 'https://gpp.devel.esaportal.eu/contents/rest/site'
-# API_URL = 'https://gpp.devel.esaportal.eu/settings/rest/layers'
-# KC_BASE_URL = 'https://gpp-idp.devel.esaportal.eu'
-SITE_API_URL = 'http://localhost:8888/rest/site'
-FOLDER_API_URL = 'http://localhost:8888/rest/folder'
-DOCUMENT_API_URL = 'http://localhost:8888/rest/document'
-API_URL = 'http://localhost:8880/rest/layers'
-KC_BASE_URL = 'http://geoss-keycloak:8080'
-KC_USER_NAME = 'geoss'
-KC_USER_PASS = 'geoss'
+DEFAULT_LAYERS_FILE = 'default_layers.json'
+DEFAULT_LAYERS_FAILED_RECORDS_FILE = 'default_layers_failed_records.json'
+DEFAULT_KML_DIR = 'default_layers_kml'
 
 
 def main():
     start_time = log_start_time()
 
-    keycloak_admin = get_keycloak_admin()
-    keycloak_openid = get_keycloak_openid()
-    admin_access_token = get_admin_access_token(keycloak_openid)
+    config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
+    print("Read configuration from file:", config_file)
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    print("Read configuration sections:", config.sections())
 
-    data = load_data('default_layers.json')
-    failed_records = process_records(data, keycloak_admin, keycloak_openid, admin_access_token)
+    # storage configuration
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = config.get('FS', 'data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    failed_data_dir = config.get('FS', 'failed_data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(failed_data_dir):
+        os.makedirs(failed_data_dir)
+    failed_data_file = os.path.join(failed_data_dir, DEFAULT_LAYERS_FAILED_RECORDS_FILE)
+    if os.path.exists(failed_data_file):
+        os.remove(failed_data_file)
+    # Create folder for kml files
+    default_kml_dir = os.path.join(script_dir, DEFAULT_KML_DIR)
+    kml_dir = config.get('FS', 'kml_dir', fallback=default_kml_dir).strip('"').strip("'")
+    if not os.path.exists(kml_dir):
+        os.makedirs(kml_dir)
+
+    # Keycloak configuration
+    kc_conf = dict((key, value.strip("\'\"")) for key, value in config.items('KC'))
+    keycloak_openid = get_keycloak_openid(kc_conf.get('base_url'))
+    admin_access_token = get_admin_access_token(keycloak_openid, kc_conf.get('user_name'), kc_conf.get('user_pass'))
+
+    site_api_url = config.get('contents', 'site_api_url').strip('\'\"')
+    folder_api_url = config.get('contents', 'folder_api_url').strip('\'\"')
+    document_api_url = config.get('contents', 'document_api_url').strip('\'\"')
+    layers_api_url = config.get('settings', 'layers_api_url').strip('\'\"')
+    data = load_data(data_dir, DEFAULT_LAYERS_FILE)
+    failed_records = process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, layers_api_url, kml_dir)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, 'failed_records.json')
+        save_failed_records(failed_records, failed_data_dir, DEFAULT_LAYERS_FAILED_RECORDS_FILE)
 
 
-def get_keycloak_openid():
+def get_keycloak_openid(kc_base_url):
     keycloak_openid = KeycloakOpenID(
-        server_url=KC_BASE_URL,
+        server_url=kc_base_url,
         realm_name="geoss",
         client_id="geoss-ui"
     )
     return keycloak_openid
 
 
-def get_admin_access_token(keycloak_openid):
+def get_admin_access_token(keycloak_openid, kc_user_name, kc_user_pass):
     token = keycloak_openid.token(
-        KC_USER_NAME,
-        KC_USER_PASS,
+        kc_user_name,
+        kc_user_pass,
         scope="openid profile roles"
     )
     return token['access_token']
-
-
-def get_impersonation_access_token(keycloak_openid, admin_access_token, impersonation_user_id):
-    impersonation_token = keycloak_openid.exchange_token(
-        token=admin_access_token,
-        subject=impersonation_user_id,
-        subject_token_type="urn:ietf:params:oauth:token-type:access_token",
-        requested_token_type="urn:ietf:params:oauth:token-type:access_token",
-        scope="openid profile roles"
-    )
-    return impersonation_token['access_token']
-
-
-def get_user_info(keycloak_openid, access_token):
-    user_info = keycloak_openid.userinfo(access_token)
-    return user_info
-
-
-def get_keycloak_admin():
-    keycloak_connection = KeycloakOpenIDConnection(
-        server_url=KC_BASE_URL,
-        username=KC_USER_NAME,
-        password=KC_USER_PASS,
-        realm_name="geoss",
-        user_realm_name="geoss",
-        client_id="admin-cli",
-        verify=True)
-    keycloak_admin = KeycloakAdmin(connection=keycloak_connection)
-    return keycloak_admin
-
-
-def get_user_id_by_liferay_user_id(keycloak_admin, liferay_user_id):
-    users = keycloak_admin.get_users(query={
-        "max": 1,
-        "q": "liferay_user_id:" + str(liferay_user_id)
-    })
-    if not users:
-        raise Exception("User not found for liferay user id " + str(liferay_user_id))
-    user = users[0]
-    user_id = user.get("id")
-    return user_id
 
 
 def log_start_time():
@@ -105,7 +86,8 @@ def log_end_time(start_time):
     print(f"Total execution time: {end_time - start_time:.2f} seconds")
 
 
-def load_data(file_path):
+def load_data(data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
@@ -114,23 +96,23 @@ def load_data(file_path):
         return []
 
 
-def process_records(data, keycloak_admin, keycloak_openid, admin_access_token):
+def process_records(data, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
     failed_records = []
     for record in data:
-        if not send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+        if not send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
             failed_records.append(record)
     return failed_records
 
 
-def send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
+def send_data(record, admin_access_token, site_api_url, folder_api_url, document_api_url, dest_api_url, file_dir):
     try:
         lf_friendly_url = record.get('friendlyURL', '')
         print(f"friendly_url: {lf_friendly_url}")
-        site_id = get_site_id_by_liferay_friendly_url(admin_access_token, lf_friendly_url)
+        site_id = get_site_id_by_liferay_friendly_url(admin_access_token, site_api_url, lf_friendly_url)
         print(f"site_id: {site_id}")
         headers = create_headers(admin_access_token)
-        payload = create_payload(record, site_id, admin_access_token)
-        response = requests.post(API_URL, headers=headers, json=payload)
+        payload = create_payload(record, site_id, admin_access_token, folder_api_url, document_api_url, file_dir)
+        response = requests.post(dest_api_url, headers=headers, json=payload)
         if response.status_code == 201:
             print_response_status(response)
             return True
@@ -145,14 +127,14 @@ def send_data(record, keycloak_admin, keycloak_openid, admin_access_token):
         return False
 
 
-def get_site_id_by_liferay_friendly_url(access_token, lf_friendly_url):
+def get_site_id_by_liferay_friendly_url(access_token, site_api_url, lf_friendly_url):
     if '/global' == lf_friendly_url:
         raise Exception("Ommitted lf_friendly_url " + str(lf_friendly_url))
     elif '/guest' == lf_friendly_url:
         url_param = 'global'
     else:
         url_param = lf_friendly_url.lstrip('/')
-    url = SITE_API_URL + '/search/findByUrl?url=' + url_param
+    url = site_api_url + '/search/findByUrl?url=' + url_param
     headers = create_headers(access_token)
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
@@ -171,7 +153,7 @@ def create_headers(access_token):
     }
 
 
-def create_payload(record, site_id, access_token):
+def create_payload(record, site_id, access_token, folder_api_url, document_api_url, file_dir):
     visible = record.get('visible', '')
     if visible and visible == 1:
         visible = 'true'
@@ -179,27 +161,28 @@ def create_payload(record, site_id, access_token):
         visible = 'false'
     return {
         "name": record.get('name', ''),
-        "url": create_url(record, site_id, access_token),
+        "url": create_url(record, site_id, access_token, folder_api_url, document_api_url, file_dir),
         "visible": visible,
         "siteId": site_id,
     }
 
 
-def create_url(record, site_id, access_token):
+def create_url(record, site_id, access_token, folder_api_url, document_api_url, file_dir):
     url = record.get('url', '')
     print(url)
     file = record.get('file', '')
     if file:
-        folder = create_folder(site_id, access_token)
-        file_url = upload_kml_file(site_id, folder, file, access_token)
+        folder = create_folder(site_id, access_token, folder_api_url)
+        file_path = os.path.join(file_dir, file)
+        file_url = upload_kml_file(site_id, folder, file_path, access_token, document_api_url)
         print(file_url)
         return file_url
     return url
 
 
-def create_folder(site_id, access_token):
+def create_folder(site_id, access_token, folder_api_url):
     title = 'layers'
-    url = FOLDER_API_URL + '/search/findByTitleAndSiteId?title=' + title + '&siteId=' + site_id
+    url = folder_api_url + '/search/findByTitleAndSiteId?title=' + title + '&siteId=' + site_id
     headers = create_headers(access_token)
     response = requests.get(url, headers=headers)
     folder_id = None
@@ -218,7 +201,7 @@ def create_folder(site_id, access_token):
     if not folder_id:
         headers = create_headers(access_token)
         payload = create_folder_payload(site_id, title)
-        response = requests.post(FOLDER_API_URL, headers=headers, json=payload)
+        response = requests.post(folder_api_url, headers=headers, json=payload)
         if response.status_code == 201:
             print_response_status(response)
             response_json = response.json()
@@ -239,9 +222,8 @@ def create_folder_payload(site_id, title):
     }
 
 
-def upload_kml_file(site_id, folder, file_path, access_token):
-    parts = file_path.rsplit('/', maxsplit=1)
-    file_name = parts[-1]
+def upload_kml_file(site_id, folder, file_path, access_token, document_api_url):
+    file_name = os.path.basename(file_path)
     files = {
         'files': (file_name, open(file_path, 'rb'))
     }
@@ -261,12 +243,12 @@ def upload_kml_file(site_id, folder, file_path, access_token):
     headers = {
         'Authorization': 'Bearer ' + access_token
     }
-    response = requests.post(DOCUMENT_API_URL, headers=headers, files=files, data=data)
+    response = requests.post(document_api_url, headers=headers, files=files, data=data)
     if response.status_code == 201:
         print_response_status(response)
         response_json = response.json()
         file_id = response_json.get('id', '')
-        file_url = DOCUMENT_API_URL + '/' + str(file_id) + '/content'
+        file_url = document_api_url + '/' + str(file_id) + '/content'
         return file_url
     else:
         raise Exception("Failed to create file in site " + str(site_id))
@@ -285,7 +267,8 @@ def print_response_status(response):
         print('Response content:', response.content)
 
 
-def save_failed_records(failed_records, file_path):
+def save_failed_records(failed_records, data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
         with open(file_path, 'w', encoding='utf-8') as outfile:
             json.dump(failed_records, outfile, ensure_ascii=False, indent=4)

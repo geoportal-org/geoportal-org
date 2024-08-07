@@ -36,7 +36,7 @@ public class Entry implements Serializable {
     private Organisation organisation;
     private BoundingBox coverage;
     private boolean isParent;
-    private String childrenTypes;
+    private List<String> childrenTypes;
     private List<String> parentIds;
     private AccessPolicy accessPolicy;
     private List<EntryType> types;

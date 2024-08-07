@@ -283,7 +283,7 @@ export const createWebSettingsKeyValues = (
         data.forEach(({ name }) =>
             keyValues.push({
                 set,
-                key: set !== "source" ? name : values[name],
+                key: name,
                 value:
                     set === "logo" && name === "source"
                         ? `/contents/rest/document/${values[name]}/content`

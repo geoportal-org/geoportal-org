@@ -21,6 +21,7 @@ const removeJsonTextAttribute = (
     try {
         const keyNo = Object.keys(parentElement._parent).length
         const keyName = Object.keys(parentElement._parent)[keyNo - 1]
+        if(keyName === 'label') return value
         if (parentElement._parent[keyName][0]) {
             parentElement._parent[keyName].splice(-1, 1)
             parentElement._parent[keyName].push(UtilsService.nativeType(value))
@@ -122,8 +123,8 @@ export const GeneralApiService = {
         //     })
     },
 
-    getSiteSettings(siteUrl = 'global') {
-        return webSettingsAPI.getSiteSettings(siteUrl)
+    getSiteSettings(siteId = 0) {
+        return webSettingsAPI.getSiteSettings(siteId)
 
         // return makeRequest(
         //     'get',
@@ -142,8 +143,8 @@ export const GeneralApiService = {
         //     })
     },
 
-    getSearchSettings() {
-        return webSettingsAPI.getSearchSettings()
+    getSearchSettings(siteId = 0) {
+        return webSettingsAPI.getSearchSettings(siteId)
 
         // return makeRequest(
         //     'get',

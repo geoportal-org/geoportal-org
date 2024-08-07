@@ -11,6 +11,7 @@ import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearc
 import com.eversis.esa.geoss.curatedrelationships.search.repository.elasticsearch.model.TransferOptionELK;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 /**
  * The type Entry document mapper.
  */
+@Log4j2
 @Component
 public class EntryDocumentMapper extends BaseElasticsearchDocumentMapper<Entry> {
 
@@ -43,7 +45,8 @@ public class EntryDocumentMapper extends BaseElasticsearchDocumentMapper<Entry> 
 
     @Override
     public Entry mapToObject(SearchHit searchHit) {
-        Map source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        Map<String, Object> source = searchHit != null ? searchHit.getSourceAsMap() : Collections.emptyMap();
+        log.debug("sourceEntry:{}", source);
         ResourceEntryELK entryELK = objectMapper.convertValue(source, ResourceEntryELK.class);
         if (entryELK != null && searchHit != null) {
             entryELK.setId(searchHit.getId());

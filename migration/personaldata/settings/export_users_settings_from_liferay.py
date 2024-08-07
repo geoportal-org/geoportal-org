@@ -1,18 +1,31 @@
-import mysql.connector
+import configparser
 import json
+import os
+import sys
+
+import mysql.connector
+
+USERS_SETTINGS_FILE = 'users_settings.json'
 
 
 def main():
+    config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
+    print("Read configuration from file:", config_file)
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    print("Read configuration sections:", config.sections())
+
+    # storage configuration
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = config.get('FS', 'data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
     # Database connection configuration
-    config = {
-        'user': 'DB_USER',
-        'password': 'DB_PASSWORD',
-        'host': 'DB_HOST',
-        'database': 'DB_NAME'
-    }
+    db_config = dict((key, value.strip("\'\"")) for key, value in config.items('DB'))
 
     # Establish database connection
-    cnx = get_db_connection(config)
+    cnx = get_db_connection(db_config)
     cursor = cnx.cursor(dictionary=True)
 
     # Define the SQL query
@@ -22,7 +35,7 @@ def main():
     rows = fetch_data(cursor, query)
 
     # Save data to JSON file
-    save_to_json(rows, 'users_settings.json')
+    save_to_json(rows, data_dir, USERS_SETTINGS_FILE)
 
     # Close the database connection
     cursor.close()
@@ -38,7 +51,8 @@ def fetch_data(cursor, query):
     return cursor.fetchall()
 
 
-def save_to_json(data, file_path):
+def save_to_json(data, data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     with open(file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4, default=str)
 

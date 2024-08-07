@@ -27,7 +27,6 @@ export const ApiSettings = () => {
 
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
-
     useEffect(() => {
         getApiSettingsInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,7 +37,7 @@ export const ApiSettings = () => {
         try {
             const {
                 _embedded: { apiSettings },
-            } = await ApiSettingsService.getApiSettings(currentSiteId);
+            } = await ApiSettingsService.getApiSettings(currentSiteId, {page: 0, size: 99999});
             setApiSettingList(apiSettings);
             setSavedValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields, false));
             setInitValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields));

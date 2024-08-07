@@ -53,6 +53,7 @@ interface SiteSettings {
     mapZoom: number
     latitude: number
     longitude: number
+    matomoSiteId: number
 }
 
 interface SearchEngine {
@@ -145,6 +146,7 @@ const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
         mapZoom: Number(data.map_zoom),
         latitude: Number(data.map_latitude),
         longitude: Number(data.map_longitude),
+        matomoSiteId: Number(data.matomo_siteId)
     }
 }
 
@@ -166,9 +168,9 @@ const parseCatalogsResponse = (data: string): any => {
 }
 
 export default {
-    getSiteSettingsRaw: async () => {
+    getSiteSettingsRaw: async (siteId: number) => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings,
+            `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
                     Authorization: '',
@@ -177,9 +179,9 @@ export default {
         )
         return webSettings._embedded.webSettings
     },
-    getSiteSettings: async (siteUrl: String = '') => {
+    getSiteSettings: async (siteId: number) => {
         const webSettings: WebSettings = await apiClient.$get(
-            geossSettings.webSettings,
+            `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
                     Authorization: '',
@@ -189,9 +191,9 @@ export default {
         const webSettingsData: WebSettingsData = parseWebSettings(webSettings)
         return parseSiteSettings(webSettingsData)
     },
-    getSearchSettings: async () => {
+    getSearchSettings: async (siteId: number) => {
         const apiSettings: WebSettings = await apiClient.$get(
-            geossSettings.apiSettings,
+            `${geossSettings.apiSettings}/sites/${siteId}/api-settings`,
             {
                 headers: {
                     Authorization: '',

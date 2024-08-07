@@ -23,14 +23,26 @@ const logoForm: FormField[] = [
 
 const defaultSourceNameForm: FormField[] = [
     {
-        fieldType: Input,
+        fieldType: Select,
         isRequired: true,
         labelId: "pages.web.default-source-name",
-        name: "defaultSource",
+        name: "defaultSourceName",
+        placeholderId: "form.placeholders.type",
+        type: "select",
+        defaultValue: "GEOSS",
+    },
+];
+
+const matomoSite: FormField[] = [
+    {
+        fieldType: Input,
+        isRequired: true,
+        labelId: "pages.web.matomo",
+        name: "siteId",
         placeholderId: "form.placeholders.type",
         type: "text",
-        isReadOnly: true,
-        defaultValue: "GEOSS",
+        isReadOnly: false,
+        validationSchema: "matomo",
     },
 ];
 
@@ -68,6 +80,8 @@ export const webSettingsForm: FormSection[] = [
     // { titleId: "pages.web.logo", set: "logo", data: logoForm },
     { titleId: "pages.web.default-source", set: "source", data: defaultSourceNameForm },
     { titleId: "pages.web.map", set: "map", data: mapScopeForm },
+    { titleId: "pages.web.matomo", set: "matomo", data: matomoSite },
+
 ];
 
 export const webSettingsFormFields: FormField[] = webSettingsForm.map((section) => section.data).flat();

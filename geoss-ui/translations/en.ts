@@ -516,6 +516,15 @@ export default {
         path: 'Path'
     },
 
+    inSituFilters: {
+        cropTypes: 'Crop types',
+        landCoverTypes: 'Land cover type',
+        irrigationTypes: 'Irrigation type',
+        cropConfidence: 'Crop confidence',
+        landCoverConfidence: 'Land cover confidence',
+        irrigationConfidence: 'Irrigation confidence'
+    },
+
     sentinelLogin: {
         username: 'Username',
         password: 'Password',

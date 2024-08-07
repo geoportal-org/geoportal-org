@@ -255,6 +255,7 @@ export const en = {
             map: "Map",
             "no-changes-info": "Make changes to save web settings",
             updated: "Web settings has been updated",
+            matomo: 'Matomo site id'
         },
         layer: {
             add: "Add layer",
