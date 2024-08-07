@@ -1,16 +1,15 @@
 <template>
-    <div :style="style" :class="disabled ? [className] : [{
-        active: enabled,
-        dragging,
-        resizing,
-        draggable,
-        resizable,
-        dragged,
-        resized
-    }, className]" @mousedown="elementDown" @touchstart="elementTouchDown">
+    <div :style="disabled ? {} : style" :class="disabled ? [className] : [{
+            active: enabled,
+            dragging,
+            resizing,
+            draggable,
+            resizable,
+            dragged,
+            resized
+        }, className]" @mousedown="elementDown" @touchstart="elementTouchDown">
         <div v-for="handle in actualHandles" :key="handle" :class="['handle', 'handle-' + handle]"
-            :style="{ display: enabled ? 'block' : 'none' }" @mousedown.stop.prevent="handleDown(handle, $event)"
-            @touchstart.stop.prevent="handleTouchDown(handle, $event)">
+            :style="{ display: enabled ? 'block' : 'none' }" @mousedown.stop.prevent="handleDown(handle, $event)" @touchstart.stop.prevent="handleTouchDown(handle, $event)">
             <slot name="handle"></slot>
         </div>
         <slot></slot>
@@ -21,7 +20,6 @@
 // @ts-nocheck
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 import { matchesSelectorToParentElements, addEvent, removeEvent } from '@/utils/dom';
-import { returnStatement } from '@babel/types';
 
 const events = {
     mouse: {
@@ -79,8 +77,8 @@ export default class DraggableResizable extends Vue {
     @Prop({ default: null }) public onDragStart!: (e: any) => {};
     @Prop({ default: null }) public onResizeStart!: (handle: any, e: any) => {};
 
-    public resized = false;
-    public dragged = false;
+    private resized = false;
+    private dragged = false;
 
     private rawWidth = null;
     private rawHeight = null;
@@ -102,9 +100,9 @@ export default class DraggableResizable extends Vue {
     private maxH = this.maxHeight;
 
     private handle = null;
-    public enabled = this.active;
-    public resizing = false;
-    public dragging = false;
+    private enabled = this.active;
+    private resizing = false;
+    private dragging = false;
 
     private zIndex = this.z;
 
@@ -122,9 +120,6 @@ export default class DraggableResizable extends Vue {
     private mouseClickPosition = null;
 
     get style() {
-
-        if (this.disabled) return {};
-
         const dragged = (this.dragged && this.draggable ? {
             position: 'absolute',
             top: this.top + 'px',
@@ -178,15 +173,15 @@ export default class DraggableResizable extends Vue {
         let leftChanged = false;
         let topChanged = false;
 
-        if (this.dragged) {
+        if(this.dragged) {
             const maxLeft = this.parentWidth - this.width() - this.offsetRight;
-            if (this.left > maxLeft) {
+            if(this.left > maxLeft) {
                 this.leftBeforeWindowResize = this.leftBeforeWindowResize || this.left;
                 this.rawLeft = maxLeft;
                 leftChanged = true;
-            } else if (this.leftBeforeWindowResize !== null) {
+            } else if(this.leftBeforeWindowResize !== null) {
                 leftChanged = true;
-                if (this.leftBeforeWindowResize <= maxLeft) {
+                if(this.leftBeforeWindowResize <= maxLeft) {
                     this.rawLeft = this.leftBeforeWindowResize;
                     this.leftBeforeWindowResize = null;
                 } else {
@@ -195,13 +190,13 @@ export default class DraggableResizable extends Vue {
             }
 
             const maxTop = this.parentHeight - this.height();
-            if (this.top > maxTop) {
+            if(this.top > maxTop) {
                 this.topBeforeWindowResize = this.topBeforeWindowResize || this.top;
                 this.rawTop = maxTop;
                 topChanged = true;
-            } else if (this.topBeforeWindowResize !== null) {
+            } else if(this.topBeforeWindowResize !== null) {
                 topChanged = true;
-                if (this.topBeforeWindowResize <= maxTop) {
+                if(this.topBeforeWindowResize <= maxTop) {
                     this.rawTop = this.topBeforeWindowResize;
                     this.topBeforeWindowResize = null;
                 } else {
@@ -210,18 +205,18 @@ export default class DraggableResizable extends Vue {
             }
         }
 
-        if (this.resized) {
+        if(this.resized) {
             const rect = this.$el.getBoundingClientRect();
 
             const left = this.left || rect.left;
 
-            if (!this.dragged || (this.dragged && (!leftChanged || !left))) {
+            if(!this.dragged || (this.dragged && (!leftChanged || !left))) {
                 const maxWidth = this.parentWidth - left - this.offsetRight;
-                if (this.width() > maxWidth) {
+                if(this.width() > maxWidth) {
                     this.widthBeforeWindowResize = this.widthBeforeWindowResize || this.width();
                     this.rawWidth = maxWidth;
-                } else if (this.widthBeforeWindowResize !== null) {
-                    if (this.widthBeforeWindowResize <= maxWidth) {
+                } else if(this.widthBeforeWindowResize !== null) {
+                    if(this.widthBeforeWindowResize <= maxWidth) {
                         this.rawWidth = this.widthBeforeWindowResize;
                         this.widthBeforeWindowResize = null;
                     } else {
@@ -232,13 +227,13 @@ export default class DraggableResizable extends Vue {
 
             const top = this.top || rect.top;
 
-            if (!this.dragged || (this.dragged && (!topChanged || !top))) {
+            if(!this.dragged || (this.dragged && (!topChanged || !top))) {
                 const maxHeight = this.parentHeight - top - this.offsetTop;
-                if (this.height() > maxHeight) {
+                if(this.height() > maxHeight) {
                     this.heightBeforeWindowResize = this.heightBeforeWindowResize || this.width();
                     this.rawHeight = maxHeight;
-                } else if (this.heightBeforeWindowResize !== null) {
-                    if (this.heightBeforeWindowResize <= maxHeight) {
+                } else if(this.heightBeforeWindowResize !== null) {
+                    if(this.heightBeforeWindowResize <= maxHeight) {
                         this.rawHeight = this.heightBeforeWindowResize;
                         this.heightBeforeWindowResize = null;
                     } else {
@@ -254,10 +249,10 @@ export default class DraggableResizable extends Vue {
     }
 
     private height() {
-        if (this.rawHeight) {
-            if (this.minH && this.rawHeight < this.minH) {
+        if(this.rawHeight) {
+            if(this.minH && this.rawHeight < this.minH) {
                 return this.minH;
-            } else if (this.maxH && this.rawHeight > this.maxH) {
+            } else if(this.maxH && this.rawHeight > this.maxH) {
                 return this.maxH;
             }
             return this.rawHeight;
@@ -316,13 +311,13 @@ export default class DraggableResizable extends Vue {
         return [null, null];
     }
 
-    public elementTouchDown(e) {
+    private elementTouchDown(e) {
         eventsFor = events.touch;
 
         this.elementDown(e);
     }
 
-    public elementDown(e) {
+    private elementDown(e) {
         const target = e.target || e.srcElement;
 
         if (this.$el.contains(target)) {
@@ -348,13 +343,13 @@ export default class DraggableResizable extends Vue {
                 this.dragging = true;
             }
 
-            if (!this.dragged) {
+            if(!this.dragged) {
                 const rect = this.$el.getBoundingClientRect();
                 this.left = rect.left;
                 this.top = rect.top;
                 this.$el.style.transform = 'none';
                 this.$el.style.left = rect.left + 'px';
-                this.$el.style.top = rect.top + 'px';
+                this.$el.style.top =  rect.top + 'px';
             }
 
             this.mouseClickPosition.mouseX = e.touches ? e.touches[0].pageX : e.pageX;
@@ -399,13 +394,13 @@ export default class DraggableResizable extends Vue {
         this.resetBoundsAndMouseState();
     }
 
-    public handleTouchDown(handle, e) {
+    private handleTouchDown(handle, e) {
         eventsFor = events.touch;
 
         this.handleDown(handle, e);
     }
 
-    public handleDown(handle, e) {
+    private handleDown(handle, e) {
         if (this.onResizeStart && this.onResizeStart(handle, e) === false) {
             return;
         }
@@ -422,16 +417,16 @@ export default class DraggableResizable extends Vue {
             this.handle = handle;
         }
 
-        if (!this.resized) {
+        if(!this.resized) {
             this.rawWidth = this.$el.offsetWidth;
             this.rawHeight = this.$el.offsetHeight;
         }
 
-        if (this.widthBeforeResize === null) {
+        if(this.widthBeforeResize === null) {
             this.widthBeforeResize = this.width();
         }
 
-        if (this.heightBeforeResize === null) {
+        if(this.heightBeforeResize === null) {
             this.heightBeforeResize = this.height();
         }
 
@@ -577,9 +572,9 @@ export default class DraggableResizable extends Vue {
 
         let newWidth = this.widthBeforeResize - deltaX;
 
-        if (this.minW && newWidth < this.minW) {
+        if(this.minW && newWidth < this.minW) {
             newWidth = this.minW;
-        } else if (this.maxW && newWidth > this.maxW) {
+        } else if(this.maxW && newWidth > this.maxW) {
             newWidth = this.maxW;
         }
 
@@ -607,12 +602,12 @@ export default class DraggableResizable extends Vue {
             this.dragging = false;
             this.$emit('dragstop', this.left, this.top);
         }
-        if (!this.dragged) {
+        if(!this.dragged) {
             this.$el.style.transform = '';
             this.$el.style.left = '';
-            this.$el.style.top = '';
+            this.$el.style.top =  '';
         }
-        if (!this.resized) {
+        if(!this.resized) {
             this.$el.style.width = '';
             this.$el.style.height = '';
         }
@@ -766,10 +761,10 @@ export default class DraggableResizable extends Vue {
 
         let totalChildrenHeight = 0;
 
-        for (const item of Array.from(this.$el.children)) {
+        for(const item of Array.from(this.$el.children)) {
             const style = getComputedStyle(item);
-            if (style.position === 'relative' || style.position === 'static') {
-                if (item.classList.contains('vb')) {
+            if(style.position === 'relative' || style.position === 'static') {
+                if(item.classList.contains('vb')) {
                     totalChildrenHeight += item.querySelector('.vb-content>div').scrollHeight;
                 } else {
                     totalChildrenHeight += item.scrollHeight + parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
@@ -812,11 +807,11 @@ export default class DraggableResizable extends Vue {
             this.onMaxWidthChange(this.maxHeight);
             this.onMaxHeightChange(this.maxHeight);
 
-            if (this.dragged && this.calcDragLimits().maxTop < this.top) {
+            if(this.dragged && this.calcDragLimits().maxTop < this.top) {
                 const target = this.dragHandle ? this.$el.querySelector(this.dragHandle) : this.$el;
-                this.elementDown({ target, pageX: this.left + 1, pageY: this.top + 1 });
+                this.elementDown({target, pageX: this.left + 1, pageY: this.top + 1});
                 setTimeout(() => {
-                    this.elementMove({ pageX: this.left + 2, pageY: this.top + 2 });
+                    this.elementMove({pageX: this.left + 2, pageY: this.top + 2});
 
                     setTimeout(() => {
                         this.handleUp();

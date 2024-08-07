@@ -35,7 +35,7 @@ const MapUtils = {
         return new AppVueObj.ol.control.MousePosition({
             coordinateFormat: AppVueObj.ol.coordinate.createStringXY(4),
             projection: 'EPSG:4326',
-            undefinedHTML: '&nbsp;',
+            undefinedHTML: '&nbsp;'
         })
     },
 
@@ -63,7 +63,7 @@ const MapUtils = {
                             loadshp(
                                 {
                                     url: event.file,
-                                    encoding: 'utf-8',
+                                    encoding: 'utf-8'
                                 },
                                 (geojson: any) => {
                                     const collection =
@@ -82,21 +82,21 @@ const MapUtils = {
 
                                     resolve({
                                         id: event.file.name,
-                                        features: collection,
+                                        features: collection
                                     })
                                 }
                             )
                         } else {
                             resolve({
                                 id: event.file.name,
-                                features: event.features,
+                                features: event.features
                             })
                         }
                     })
                 )
 
                 const vectorSource = new AppVueObj.ol.source.Vector({
-                    features,
+                    features
                 })
                 const layer = new AppVueObj.ol.layer.Vector({
                     source: vectorSource,
@@ -113,7 +113,7 @@ const MapUtils = {
                                 feature.getGeometry()!.getType()
                             ]
                         }
-                    },
+                    }
                 })
                 layer.setZIndex(8)
 
@@ -121,7 +121,7 @@ const MapUtils = {
                     layer,
                     id,
                     type: LayerTypes.CUSTOM,
-                    title: id,
+                    title: id
                 })
 
                 AppVueObj.app.$store.dispatch(MapActions.zoomInLayer, id)
@@ -320,7 +320,7 @@ const MapUtils = {
                             return false
                         }
                         return layer.getOpacity()
-                    },
+                    }
                 }
             )
             if (!hitLayer || (hitLayer && !hitLayer.getOpacity())) {
@@ -331,7 +331,7 @@ const MapUtils = {
             if (!AppVueObj.app.$store.getters[MapGetters.mapTooltip]) {
                 const popupOverlay = new AppVueObj.ol.Overlay({
                     element: document.getElementById('map-tooltip'),
-                    stopEvent: false,
+                    stopEvent: false
                 } as { element: HTMLElement | undefined; stopEvent: boolean })
                 AppVueObj.app.$store.dispatch(
                     MapActions.setMapTooltip,
@@ -406,7 +406,7 @@ const MapUtils = {
                     viewResolution,
                     'EPSG:3857',
                     { INFO_FORMAT: 'text/html' }
-                )!
+                )
 
                 let message = `Layer: ${hitLayer.get('name')} <br />`
 
@@ -522,7 +522,7 @@ const MapUtils = {
                 map.addLayer(layer.value)
             }
         }
-    },
+    }
 }
 
 export default MapUtils

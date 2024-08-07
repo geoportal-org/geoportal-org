@@ -62,7 +62,7 @@ export default {
         to: '至...',
         selectContinentOrCountry: '选择大洲或国家',
         search: '搜索',
-        clearSearch: '清除搜寻',
+        clearSearch: '清除搜寻'
     },
     notifications: {
         newVersionTitle: '新版本可用',
@@ -72,9 +72,12 @@ export default {
         newVersionPart4: '造访',
         newVersionPart5: '发行说明',
         newVersionPart6: '查看详细的更改。',
-        basemapUnavailable:
-            '默认底图暂时不可用。该门户网站正在将地图更改为另一个。',
+        basemapUnavailable: '默认底图暂时不可用。该门户网站正在将地图更改为另一个。',
         basemapUnavailableTitle: '无法使用底图',
+        dashboardSavedSuccessfully: '仪表盘保存成功！您可以在“我的工作区”->“仪表板”中找到它。',
+        errorDuringDashboardSaving: '仪表板保存期间出错。 请再试一次。',
+        dashboardLoadedSuccessfully: '仪表板加载成功！',
+        errorDuringDashboardLoading: '仪表板加载期间出错。',
     },
     welcomePopup: {
         newVersionTitle: '提供GEOSS门户3.7',
@@ -83,7 +86,7 @@ export default {
         newVersionPart3: '这里',
         newVersionPart4: '造访',
         newVersionPart5: '发行说明',
-        newVersionPart6: '查看详细的更改。',
+        newVersionPart6: '查看详细的更改。'
     },
     menu: {
         toggle: '切换菜单',
@@ -103,8 +106,7 @@ export default {
         unableToFindAnyResources: '我们找不到任何资源。',
         loadingResourcesIsTakingTooLong: '资源加载比平时花费更多时间。',
         noResourcesFound: '找不到资源',
-        noResourcesFoundChooseAnotherSource:
-            '找不到此类数据的资源。请选择查看其他类型的资源或返回以前的结果',
+        noResourcesFoundChooseAnotherSource: '找不到此类数据的资源。请选择查看其他类型的资源或返回以前的结果',
         showDetails: '显示详细资料',
         hideDetails: '隐藏细节',
         hi: '你好',
@@ -114,12 +116,12 @@ export default {
         close: '关',
         ignore: '忽视',
         disable: '禁用',
-        searchResults: '搜索',
+        searchResults: '搜索'
     },
     dataSources: {
         dab: '数据',
         information: '信息',
-        services: '服务',
+        services: '服务'
     },
     pagination: {
         showing: '显示中',
@@ -127,14 +129,13 @@ export default {
         next: '下一个',
         prev: '上一个',
         of: '的',
-        results: '结果',
+        results: '结果'
     },
     errors: {
         noMetadata: '获取资源的元数据时出现问题',
         google: {
-            OVER_QUERY_LIMIT:
-                '抱歉，我们现在无法将您的请求翻译成地理术语。 明天试试。',
-        },
+            OVER_QUERY_LIMIT: '抱歉，我们现在无法将您的请求翻译成地理术语。 明天试试。'
+        }
     },
     map: {
         legend: '传说',
@@ -143,7 +144,7 @@ export default {
         centerMapOnLayer: '图层中心地图',
         layerSettings: '图层设定',
         removeLayer: '删除图层',
-        compareLayers: '比较图层（必须添加至少两层并且可见）',
+        compareLayers: '比较图层（必须添加至少两层并且可见）'
     },
     searchBar: {
         filters: '筛选器',
@@ -155,12 +156,12 @@ export default {
         popular: '流行',
         seeAlso: '也可以看看',
         moveAround: '四处走走',
-        recommendationsForYou: '为你的建议',
+        recommendationsForYou: '为你的建议'
     },
     filters: {
         advanced: '高级',
         filterBy: '过滤',
-        toggle: '切换过滤器',
+        toggle: '切换过滤器'
     },
     generalFilters: {
         filters: '筛选器',
@@ -181,7 +182,7 @@ export default {
         lastYear: '去年',
         last10Years: '最近十年',
         cancel: '明确',
-        accept: '应用',
+        accept: '应用'
     },
     customDownloadOptionsPopup: {
         title: '选择首选选项',
@@ -190,15 +191,13 @@ export default {
         subsetCRS: '子集CRS',
         subsetLowerCoordinate: '子集下坐标',
         subsetUpperCoordinate: '子集上坐标',
-        download: '下载',
+        download: '请求下载',
         addToDownloads: '添加到下载列表',
         outputDownloadFormat: '输出下载格式',
         imageResolutionInPixels: '图像分辨率（以像素为单位）（250、500）',
         coordinateReferenceSystemOfSubset: '子集的坐标参考系',
-        subsetLowerCoordinateInSpecifiedCRSFormat:
-            '以指定的CRS格式将左下坐标子集',
-        subsetUpperCoordinateInSpecifiedCRSFormat:
-            '以指定的CRS格式将右上角坐标子集',
+        subsetLowerCoordinateInSpecifiedCRSFormat: '以指定的CRS格式将左下坐标子集',
+        subsetUpperCoordinateInSpecifiedCRSFormat: '以指定的CRS格式将右上角坐标子集',
         latLongRule: '允许的纬度值：-90至90之间；经度：-180至180之间',
         xYRule: '允许的X值：在-20037508.3427892和20037508.3427892之间，对于Y：在-20037508.3427892和20037508.3427892之间',
         scaleFactor: '比例因子',
@@ -221,12 +220,13 @@ export default {
         attributesTooltip: '可用属性',
         attributesPlaceholder: '选择属性',
         addLayer: '添加图层',
-        unavailable: '联合国统计服务不可用',
+        unavailable: '联合国统计服务不可用'
     },
     dabResult: {
         organisation: '组织',
         creators: '创作者',
         exploreExtendedView: '探索扩展视图',
+        thereAreNoRelatedResources: '该商品没有相关资源',
         recentView: '最近的看法',
         recentViews: '最近的意见',
         seeMore: '查看更多',
@@ -250,8 +250,10 @@ export default {
         userContributedservices: '切换到用户提供的服务',
         file: '文件',
         other: '其他',
+        view: '看法',
         downloadNow: '现在下载',
         downloadLater: '晚些再下载',
+        thisOptionAvailableForSignedIn: '此选项仅适用于登录用户。'
     },
     popupTitles: {
         quickSurvey: '小调查',
@@ -267,13 +269,20 @@ export default {
         confirmSearch: '确认搜寻',
         downloadLinks: '下载链接',
         yourDownloads: '您的下载',
-        downloadsList: '下载清单',
+        downloadsList: '批量下载和下载列表',
         savedRuns: '保存的跑步',
         workflowandruns: '工作流程与运行',
+        dashboard: '仪表板',
+        dashboards: '仪表板',
         improveDefinition: '改善清晰度',
         entryRelations: '入境关系',
+        downloadList: '下载列表',
+        manageLayers: '管理层',
+        boundingBox: '边界框'
     },
     popupContent: {
+        addedToDownloadList: '该资源已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
+        addedCustomToDownloadList: '下载请求已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
         bookmarkSavedSuccess: '结果已保存在“我的工作区”->“已标记结果”中。',
         bookmarkSavedFail: '无法为结果添加书签。',
         bookmarkRemovedSuccess: '结果已从书签中删除。',
@@ -296,13 +305,44 @@ export default {
         cloudPlatformSelection: '云平台选择',
         optimal: '最佳',
         fetchingPlatformsData: '获取平台数据',
-        entryRelationsStart:
-            '您现在处于ENTRY RELATIONS设置模式。<br />首先，请选择所需的条目作为<b>关系源</ b>。',
+        entryRelationsStart: '您现在处于ENTRY RELATIONS设置模式。<br />首先，请选择所需的条目作为<b>关系源</ b>。',
         entryRelationsSrcSet1: '关系源已设置为',
         entryRelationsSrcSet2: '请选择<b>目标资源</ b>。',
-        entryRelationsNoDest:
-            '没有选择目标资源。 选择至少一个与源条目相关的资源。',
+        entryRelationsNoDest: '没有选择目标资源。 选择至少一个与源条目相关的资源。',
         entryRelationsRedirecting: '输入关系数据已成功发送。重定向...',
+
+        // SDG dashboards
+        createDashboard: '创建仪表板',
+        dashboardBasedOn: '仪表板基于',
+        preview: '预览',
+        downloadAsPdf: '下载为 PDF',
+        saveAsDraft: '保存为草稿',
+        dashboardName: '仪表板名称',
+        dashboardSummary: '仪表板摘要',
+        tools: '工具',
+        layout: '布局',
+        description: '描述',
+        textEditor: '文本编辑器',
+        chart: '图表',
+        map: '地图',
+        addPage: '添加页面',
+        remove: '消除',
+        removePage: '删除页面',
+        clearArea: '清除区域',
+        dragAndDropDescription: '从工具栏拖放元素<br/>开始创建仪表板',
+        dashboardInPreview: '您正在预览模式下浏览仪表板。 要修改或保存数据，请',
+        closePreview: '关闭预览',
+        goBackToCreator: '然后回到创作者那里',
+        showAs: '显示为',
+        values: '价值观',
+        percentage: '百分比',
+        creatorCloseConfirmation: '您确定要关闭创建者吗？ 所有进度都将丢失！',
+        pageOrder: '页序',
+        changePageOrder: '更改页面顺序',
+        dragAndDropPageIcons: '拖放页面图标以更改其顺序',
+        page: '页',
+        of: '的',
+        save: '节省',
 
         // metadata
         generalInfo: '一般资讯',
@@ -356,6 +396,7 @@ export default {
         references: '参考文献',
         publishedIn: '出版于',
         mapDetails: '地图详情',
+        authors: '作者',
 
         // rating
         comment: '评论',
@@ -372,8 +413,7 @@ export default {
         wouldYouLikeToContinue: '你想继续吗？',
 
         // layer not available
-        mapLayerUnavailable:
-            '目前不提供地图服务。门户维护团队已获悉。 n您要禁用此层的显示吗？',
+        mapLayerUnavailable: '目前不提供地图服务。门户维护团队已获悉。\ n您要禁用此层的显示吗？',
 
         // workflow
         saveRunSuccess: '结果已保存在我的工作区->保存的运行中。',
@@ -433,8 +473,7 @@ export default {
         userContributedCancel: '取消',
         userContributedDelete: '删除',
         userContributedRemoveEntryExtensionSuccess: '您已成功删除条目扩展',
-        userContributedRemoveUnavailable:
-            '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。',
+        userContributedRemoveUnavailable: '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。'
     },
 
     irisFilters: {
@@ -445,8 +484,8 @@ export default {
         legend: {
             depth: '深度',
             km: '公里',
-            magnitude: '大小',
-        },
+            magnitude: '大小'
+        }
     },
 
     facetedFilters: {
@@ -456,7 +495,7 @@ export default {
         source: '资源',
         protocol: '协议',
         organisation: '组织',
-        serviceHealth: '服务健康',
+        serviceHealth: '服务健康'
     },
 
     granulaFilters: {
@@ -470,14 +509,14 @@ export default {
         timeliness: '及时性',
         relativeOrbit: '相对轨道',
         row: '行',
-        path: '路径',
+        path: '路径'
     },
 
     sentinelLogin: {
         username: '用户名',
         password: '密码',
         sentinelDataAccessRegistration: '前哨数据访问注册',
-        download: '下载',
+        download: '下载'
     },
 
     fileDownloadsPopup: {
@@ -505,6 +544,7 @@ export default {
         retry: '重试',
         packagePreparation: '包装准备。',
         requestTakesLongerThanExpected: '请求花费的时间比预期的要长...',
+        bulkDownloadPackageCreation: '批量下载包创建'
     },
 
     survey: {
@@ -513,18 +553,18 @@ export default {
             question: '您对门户网站的总体印象是什么？',
             positive: '很好',
             neutral: '精细',
-            negative: '坏',
+            negative: '坏'
         },
         didYouFind: {
             thankYou: '感谢您的时间！',
             question: '你有没有找到你要找的东西？',
             yes: '是',
             no: '没有',
-            partially: '部分地',
+            partially: '部分地'
         },
         whatWereYouLookingFor: {
             question: '你在找什么',
-            placeholder: '请把它写在这里',
+            placeholder: '请把它写在这里'
         },
         interest: {
             question1: '您如何描述作为地球观测用户的兴趣？',
@@ -532,65 +572,64 @@ export default {
             options: [
                 {
                     label: '全球-全球利益',
-                    value: '全球',
+                    value: '全球'
                 },
                 {
                     label: '国家-国家特定利益',
-                    value: '国民',
+                    value: '国民'
                 },
                 {
                     label: '国家内特定地区的地理利益',
-                    value: '区域性',
+                    value: '区域性'
                 },
                 {
                     label: '当地-特定于社区的地理利益',
-                    value: '本地',
-                },
-            ],
+                    value: '本地'
+                }
+            ]
         },
         classification: {
             question: '您将如何对自己进行专业分类？',
             options: [
                 {
                     label: '科学家/研究员',
-                    value: '科学家/研究员',
+                    value: '科学家/研究员'
                 },
                 {
                     label: '决策支持官员',
-                    value: '决策支持官员',
+                    value: '决策支持官员'
                 },
                 {
                     label: '政策分析师',
-                    value: '政策分析师',
-                },
-            ],
+                    value: '政策分析师'
+                }
+            ]
         },
         organized: {
             title: '您对以下陈述的赞同程度如何？',
             question: '我发现逻辑上组织门户网站的内容',
-            stronglyAgree: '强烈反对',
-            stronglyDisagree: '强烈不同意',
+            stronglyAgree: '强烈\反对',
+            stronglyDisagree: '强烈\不同意'
         },
         adequately: {
             title: '您对以下陈述的赞同程度如何？',
             question: '我认为网站上提供的信息已得到充分描述',
-            stronglyAgree: '强烈反对',
-            stronglyDisagree: '强烈不同意',
+            stronglyAgree: '强烈\反对',
+            stronglyDisagree: '强烈\不同意'
         },
         search_criteria: {
             question: '还有其他搜索条件对您有帮助吗？',
-            placeholder: '请在这里写',
+            placeholder: '请在这里写'
         },
         visualization: {
-            question:
-                '是否有任何可视化的数据可以帮助您更好地理解可以从门户网站获得的数据？',
-            placeholder: '请在这里描述',
+            question: '是否有任何可视化的数据可以帮助您更好地理解可以从门户网站获得的数据？',
+            placeholder: '请在这里描述'
         },
         thankYouForCompleting: '感谢您完成这项调查！',
         ok: '好',
         hideInFuture: '不再显示此窗口',
         submit: '提交',
-        other: '其他',
+        other: '其他'
     },
     yellowPages: {
         title: '资料提供者',
@@ -633,15 +672,14 @@ export default {
         life_on_land: '陆地生活',
         peace_justice_and_strong_institutions: '和平，正义与强大的机构',
         partnerships_for_the_goals: '实现目标的伙伴关系',
-        biodiversity_and_ecosystem_sustainability:
-            '生物多样性与生态系统可持续性',
+        biodiversity_and_ecosystem_sustainability: '生物多样性与生态系统可持续性',
         disaster_resilience: '防灾能力',
         energy_and_mineral_resource_management: '能源和矿产资源管理',
         food_security_and_sustainable_agriculture: '粮食安全与可持续农业',
         infrastructure_and_transportation_management: '基础设施和运输管理',
         public_health_surveillance: '公共卫生监督',
         water_resources_management: '水资源管理',
-        sustainable_urban_development: '可持续城市发展',
+        sustainable_urban_development: '可持续城市发展'
     },
     bookmarks: {
         title: '我的工作区/已标记结果',
@@ -656,25 +694,24 @@ export default {
         yourListIsEmpty: '您的清单是空的。',
         recentViews: '最近的意见',
         download: '下载',
-        checked: '已检查',
+        checked: '已检查'
     },
     geoLikes: {
         title: '我的工作空间/ GEO喜欢',
     },
     privacyPolicy: {
-        statement:
-            '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。 如果您希望限製或阻止我們使用 Cookie，請按照我們的 Cookie 政策中的說明進行操作。',
+        statement: '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。 如果您希望限製或阻止我們使用 Cookie，請按照我們的 Cookie 政策中的說明進行操作。',
         cookieLink: '餅乾通知',
         cookieText: '了解更多信息或更改您的偏好。',
         accept: '接受',
-        decline: '衰退',
+        decline: '衰退'
     },
     sendFeedback: '发送反馈',
     tutorial: {
         mode: '教程模式',
         close: '关闭教学模式',
         new: '新',
-        tip: '小费',
+        tip: '小费'
     },
     mapControls: {
         zoomIn: '放大',
@@ -682,10 +719,10 @@ export default {
         resetView: '将视图重置为默认值',
         areaOfInterest: '感兴趣的领域',
         layers: '层数',
-        changeBasemap: '更改底图',
+        changeBasemap: '更改底图'
     },
     seeOtherSources: {
-        sources: '资料来源',
+        sources: '资料来源'
     },
-    poweredBy: '供电',
-}
+    poweredBy: '供电'
+};

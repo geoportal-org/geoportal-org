@@ -1,6 +1,6 @@
 const state = () => ({
     queue: [],
-    promises: [],
+    promises: []
 })
 
 const getters = {
@@ -9,7 +9,7 @@ const getters = {
     },
     promises: (state: any) => {
         return state.promises
-    },
+    }
 }
 
 const mutations = {
@@ -29,7 +29,7 @@ const mutations = {
             resolvePromise = resolve
         })
         state.promises = state.promises.concat([
-            { resolvePromise, promise, contentId: data.contentId },
+            { resolvePromise, promise, contentId: data.contentId }
         ])
     },
     removeQueueItem(state: any, contentId: string) {
@@ -61,7 +61,7 @@ const mutations = {
             state.promises.splice(popupIndex, 1)
             promiseObj.resolvePromise(data.response)
         }
-    },
+    }
 }
 
 const actions = {
@@ -98,7 +98,7 @@ const actions = {
         data: { contentId: string; response: any }
     ) {
         commit('removeQueueItemWithResponse', data)
-    },
+    }
 }
 
 export default {
@@ -106,5 +106,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

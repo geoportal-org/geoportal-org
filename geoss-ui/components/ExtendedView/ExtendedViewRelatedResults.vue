@@ -5,30 +5,45 @@
         </div>
         <div class="ev-related__tabs">
             <button @click="sectionChange('data')" class="ev-related__tab data disabled-transparent"
-                :class="{ active: activeSection === 'data' }" :disabled="!getResultsLength(dataResults)">{{
-                    $tc('dataSources.dab') }}</button>
+                    :class="{ active: activeSection === 'data' }" :disabled="!getResultsLength(dataResults)">{{
+                        $tc('dataSources.dab') }}</button>
             <button @click="sectionChange('information')" class="ev-related__tab information disabled-transparent"
-                :class="{ active: activeSection === 'information' }" :disabled="!getResultsLength(informationResults)">{{
-                    $tc('dataSources.information') }}</button>
+                    :class="{ active: activeSection === 'information' }" :disabled="!getResultsLength(informationResults)">{{
+                        $tc('dataSources.information') }}</button>
             <button @click="sectionChange('services')" class="ev-related__tab services disabled-transparent"
-                :class="{ active: activeSection === 'services' }" :disabled="!getResultsLength(servicesResults)">{{
-                    $tc('dataSources.services') }}</button>
+                    :class="{ active: activeSection === 'services' }" :disabled="!getResultsLength(servicesResults)">{{
+                        $tc('dataSources.services') }}</button>
         </div>
-        <div class="ev-related__data">
+        <div class="ev-related__data" :class="{disabled: activeTabDisabled()}">
             <div class="ev-related__left">
                 <button class="disabled-transparent" :disabled="!leftArrowActive()" @click="changePage(false)"></button>
             </div>
-            <div class="ev-related__results data" :class="{ active: activeSection === 'data' }">
-                <ExtendedViewRelatedResult :result="dataResults[index]" v-for="(item, index) in dataResults" :key="index"
-                    v-show="index >= startIndex && index < startIndex + resultsPerPage" />
+            <div class="ev-related__results data" :class="{active: activeSection === 'data', disabled: !getResultsLength(dataResults)}">
+                <div v-if="!getResultsLength(dataResults)">
+                    {{$tc('dabResult.thereAreNoRelatedResources')}}
+                </div>
+                <template v-else>
+                    <ExtendedViewRelatedResult :result="dataResults[index]" v-for="(item, index) in dataResults" :key="index"
+                        v-show="index >= startIndex && index < startIndex + resultsPerPage" />
+                </template>
             </div>
-            <div class="ev-related__results information" :class="{ active: activeSection === 'information' }">
-                <ExtendedViewRelatedResult :result="informationResults[index]" v-for="(item, index) in informationResults"
-                    :key="index" v-show="index >= startIndex && index < startIndex + resultsPerPage" />
+            <div class="ev-related__results information" :class="{active: activeSection === 'information', disabled: !getResultsLength(informationResults)}">
+                <div v-if="!getResultsLength(informationResults)">
+                    {{$tc('dabResult.thereAreNoRelatedResources')}}
+                </div>
+                <template v-else>
+                    <ExtendedViewRelatedResult :result="informationResults[index]" v-for="(item, index) in informationResults" :key="index"
+                        v-show="index >= startIndex && index < startIndex + resultsPerPage"/>
+                </template>
             </div>
-            <div class="ev-related__results services" :class="{ active: activeSection === 'services' }">
-                <ExtendedViewRelatedResult :result="servicesResults[index]" v-for="(item, index) in servicesResults"
-                    :key="index" v-show="index >= startIndex && index < startIndex + resultsPerPage" />
+            <div class="ev-related__results services" :class="{active: activeSection === 'services', disabled: !getResultsLength(servicesResults)}">
+                <div v-if="!getResultsLength(servicesResults)">
+                    {{$tc('dabResult.thereAreNoRelatedResources')}}
+                </div>
+                <template v-else>
+                    <ExtendedViewRelatedResult :result="servicesResults[index]" v-for="(item, index) in servicesResults" :key="index"
+                        v-show="index >= startIndex && index < startIndex + resultsPerPage" />
+                </template>
             </div>
             <div class="ev-related__right">
                 <button class="disabled-transparent" :disabled="!rightArrowActive()" @click="changePage(true)"></button>
@@ -98,6 +113,10 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
         }
     }
 
+    public activeTabDisabled() {
+        return (this.activeSection === 'data' && !this.getResultsLength(this.dataResults)) || (this.activeSection === 'information' && !this.getResultsLength(this.informationResults)) || (this.activeSection === 'services' && !this.getResultsLength(this.servicesResults));
+    }
+
     @Watch('chosenResult')
     private onResourceChange() {
         const activeSectionResults = this.results[this.activeSection].entry;
@@ -113,14 +132,8 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
     }
 
     // Exclude already selected resource from related list;
-    // If needed, fill data with placeholders;
     private prepareResults(type: string) {
         const entries = this.results[type].entry.filter((el: any) => el.id !== this.chosenResult.id);
-        if (entries.length % this.resultsPerPage < this.resultsPerPage) {
-            for (let i = entries.length % this.resultsPerPage; i < this.resultsPerPage; i++) {
-                entries.push({ id: 'placeholder', type });
-            }
-        }
         return entries;
     }
 
@@ -195,7 +208,7 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
                 right: -30px;
                 bottom: -15px;
                 width: 30px;
-                background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($green, 0.85) 15px) no-repeat;
+                background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($green, 0.85) 15px) no-repeat;
                 background-size: 50% 50%;
             }
         }
@@ -226,7 +239,7 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
                 right: -30px;
                 bottom: -15px;
                 width: 30px;
-                background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($green, 0.85) 15px) no-repeat;
+                background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($green, 0.85) 15px) no-repeat;
                 background-size: 50% 50%;
             }
         }
@@ -250,26 +263,22 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
 
         &.active {
             background: rgba($blue, 0.85);
-
             &.data {
                 &:before {
-                    background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($blue, 0.85) 15px) no-repeat;
+                    background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($blue, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
             }
-
             &.information {
                 &:after {
                     background: radial-gradient(circle at 0 100%, rgba(0, 0, 0, 0) 14px, rgba($blue, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
-
                 &:before {
-                    background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($blue, 0.85) 15px) no-repeat;
+                    background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($blue, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
             }
-
             &.services {
                 &:after {
                     background: radial-gradient(circle at 0 100%, rgba(0, 0, 0, 0) 14px, rgba($blue, 0.85) 15px) no-repeat;
@@ -280,26 +289,22 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
 
         &[disabled] {
             background: rgba($grey-dark, 0.85);
-
             &.data {
                 &:before {
-                    background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
+                    background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
             }
-
             &.information {
                 &:after {
                     background: radial-gradient(circle at 0 100%, rgba(0, 0, 0, 0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
-
                 &:before {
-                    background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
+                    background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
                     background-size: 50% 50%;
                 }
             }
-
             &.services {
                 &:after {
                     background: radial-gradient(circle at 0 100%, rgba(0, 0, 0, 0) 14px, rgba($grey-dark, 0.85) 15px) no-repeat;
@@ -313,6 +318,10 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
         background-color: rgba($blue, 0.85);
         display: flex;
         height: 250px;
+
+        &.disabled {
+            background-color: rgba(170, 170, 170, 0.85);
+        }
     }
 
     &__left,
@@ -345,7 +354,6 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
             }
 
             &[disabled] {
-
                 &:after,
                 &:before {
                     background: #bbb;
@@ -359,7 +367,6 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
             &:before {
                 transform: rotate(40deg);
             }
-
             &:after {
                 transform: rotate(-40deg);
             }
@@ -367,7 +374,7 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
     }
 
     &__results {
-        align-content: center;
+        padding: 10px 0;
         display: none;
         flex: 1 1 auto;
         flex-wrap: wrap;
@@ -378,6 +385,12 @@ export default class ExtendedViewRelatedResultsComponent extends Vue {
 
         &.active {
             display: flex;
+        }
+
+        &.disabled {
+            align-content: center;
+            font-size: 0.85em;
+            justify-content: center;
         }
     }
 }

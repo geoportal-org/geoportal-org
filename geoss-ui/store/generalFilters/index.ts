@@ -15,7 +15,7 @@ const state = () => ({
         W: null,
         S: null,
         E: null,
-        N: null,
+        N: null
     },
     googlePlacesInput: '',
     boundingBoxRelation: 'OVERLAPS',
@@ -33,7 +33,7 @@ const state = () => ({
     requestId: null,
     inChangeProcess: false,
     workflowMapDraw: false,
-    googlePlacesApiError: null,
+    googlePlacesApiError: null
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -73,7 +73,7 @@ const getters = {
             ct: state.resultsPerPage,
             tf: state.termFrequency,
             rel: state.boundingBoxRelation,
-            viewid: state.viewId,
+            viewid: state.viewId
         }
 
         if (state.dateFrom) {
@@ -117,7 +117,7 @@ const getters = {
             'containerVisible',
             'resultsPerPage',
             'requestId',
-            'inChangeProcess',
+            'inChangeProcess'
         ]
 
         for (const prop of Object.keys(lastTriggerredGeneralFiltersState)) {
@@ -136,7 +136,7 @@ const getters = {
         const excludeParams = [
             'containerVisible',
             'requestId',
-            'inChangeProcess',
+            'inChangeProcess'
         ]
         for (const prop of Object.keys(initialState)) {
             if (
@@ -179,7 +179,7 @@ const getters = {
             dateTo: state.dateTo,
             datePeriod: state.datePeriod,
             geossDataCore: state.geossDataCore,
-            googlePlacesInput: state.googlePlacesInput,
+            googlePlacesInput: state.googlePlacesInput
         }
     },
     googlePlacesInput(state: any) {
@@ -199,7 +199,7 @@ const getters = {
     },
     locationTypeOptions(state: any) {
         return state.locationTypeOptions
-    },
+    }
 }
 
 const mutations = {
@@ -213,7 +213,7 @@ const mutations = {
     },
     setLastTriggerredGeneralFiltersState(state: any) {
         lastTriggerredGeneralFiltersState = JSON.parse(JSON.stringify(state))
-    },
+    }
 }
 
 const actions = {
@@ -243,7 +243,7 @@ const actions = {
         ) {
             context.commit('setStateProp', {
                 prop: 'selectedAreaCoordinates',
-                value: { W: null, S: null, E: null, N: null },
+                value: { W: null, S: null, E: null, N: null }
             })
         } else if (
             value &&
@@ -251,7 +251,7 @@ const actions = {
         ) {
             context.commit('setStateProp', {
                 prop: 'selectedAreaCoordinates',
-                value,
+                value
             })
         }
     },
@@ -264,7 +264,7 @@ const actions = {
     setAdditionalSearchFields(context: any, value: string) {
         context.commit('setStateProp', {
             prop: 'additionalSearchFields',
-            value,
+            value
         })
     },
     setPhrase(context: any, value: string) {
@@ -321,13 +321,13 @@ const actions = {
             sessionStorage.removeItem('googlePlacesApiError')
             context.commit('setStateProp', {
                 prop: 'googlePlacesApiError',
-                value: null,
+                value: null
             })
         } else {
             sessionStorage.setItem('googlePlacesApiError', value)
             context.commit('setStateProp', {
                 prop: 'googlePlacesApiError',
-                value,
+                value
             })
 
             if (Array.isArray(context.state.locationTypeOptions)) {
@@ -336,18 +336,18 @@ const actions = {
                 )
                 context.commit('setStateProp', {
                     prop: 'locationTypeOptions',
-                    value: options,
+                    value: options
                 })
             }
 
             if (context.state.locationType === 'geolocation') {
                 context.commit('setStateProp', {
                     prop: 'locationType',
-                    value: 'continent_country',
+                    value: 'continent_country'
                 })
             }
         }
-    },
+    }
 }
 
 export default {
@@ -355,5 +355,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

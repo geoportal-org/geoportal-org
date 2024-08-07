@@ -2,7 +2,7 @@ const state = () => ({
     menuOpened: false,
     menuItems: [],
     menuItemsURL: '',
-    langContainerActive: false,
+    langContainerActive: false
 })
 
 const getters = {
@@ -17,13 +17,13 @@ const getters = {
     },
     langContainerActive: (state: any) => {
         return state.langContainerActive
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -33,7 +33,7 @@ const actions = {
     toggleOpened: (context: any) => {
         context.commit('setStateProp', {
             prop: 'menuOpened',
-            value: !context.state.menuOpened,
+            value: !context.state.menuOpened
         })
     },
     setItems: (context: any, value: []) => {
@@ -44,7 +44,7 @@ const actions = {
     },
     setLangContainerActive: (context: any, value: boolean) => {
         context.commit('setStateProp', { prop: 'langContainerActive', value })
-    },
+    }
 }
 
 export default {
@@ -52,5 +52,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

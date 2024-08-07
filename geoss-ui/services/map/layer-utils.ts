@@ -5,8 +5,8 @@ import GeossSearchApiService from '@/services/geoss-search.api.service'
 import ErrorPopup from '@/components/ErrorPopup.vue'
 import LogService from '../log.service'
 import to from '@/utils/to'
-import { StaticPath, AppVueObj } from '~/data/global'
-import { Timers } from '~/data/timers'
+import { AppVueObj } from '@/data/global'
+import { Timers } from '@/data/timers'
 import { LayerTypes } from '@/interfaces/LayerTypes'
 import { LayerData } from '@/interfaces/LayerData'
 import { MapGetters } from '@/store/map/map-getters'
@@ -27,7 +27,7 @@ const LayersUtils = {
         {
             coordinates,
             magnitude,
-            depth,
+            depth
         }: { coordinates: number[]; magnitude: number; depth: number },
         index: number
     ) {
@@ -40,14 +40,14 @@ const LayersUtils = {
         }
 
         const circleFeature: FeatureClass = new AppVueObj.ol.Feature({
-            geometry: new AppVueObj.ol.geom.MultiPoint(center),
+            geometry: new AppVueObj.ol.geom.MultiPoint(center)
         })
         circleFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
         const layer: any = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
-                features: [circleFeature],
-            }),
+                features: [circleFeature]
+            })
         })
 
         layer.radius = radius
@@ -63,15 +63,15 @@ const LayersUtils = {
             geometry: new AppVueObj.ol.geom.Polygon([
                 MapCoordinatesUtils.dateLineFix(
                     MapCoordinatesUtils.parsePolygon(coordinates)
-                ),
-            ]),
+                )
+            ])
         })
         boxFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
         const layer = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
-                features: [boxFeature],
-            }),
+                features: [boxFeature]
+            })
         })
 
         layer.setZIndex(index + 21)
@@ -98,16 +98,16 @@ const LayersUtils = {
             pointsArray.push([E[i], N[i]])
         }
         const iconFeature: FeatureClass = new AppVueObj.ol.Feature({
-            geometry: new AppVueObj.ol.geom.MultiPoint(pointsArray),
+            geometry: new AppVueObj.ol.geom.MultiPoint(pointsArray)
         })
         iconFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
         const vectorSource = new AppVueObj.ol.source.Vector({
-            features: [iconFeature],
+            features: [iconFeature]
         })
 
         const layer = new AppVueObj.ol.layer.Vector({
-            source: vectorSource,
+            source: vectorSource
         })
 
         layer.setZIndex(index + 21)
@@ -141,21 +141,21 @@ const LayersUtils = {
                     [E[i], S[i]],
                     [W[i], S[i]],
                     [W[i], N[i]],
-                    [E[i], N[i]],
-                ],
+                    [E[i], N[i]]
+                ]
             ])
         }
         const multiPolygon = new AppVueObj.ol.geom.MultiPolygon(boxesArray)
         const boxFeature: FeatureClass = new AppVueObj.ol.Feature({
-            geometry: multiPolygon,
+            geometry: multiPolygon
         })
 
         boxFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
 
         const layer = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
-                features: [boxFeature],
-            }),
+                features: [boxFeature]
+            })
         })
 
         const outerBox = MapCoordinatesUtils.mergeBoxes(boxes)
@@ -188,7 +188,7 @@ const LayersUtils = {
                     'rgb(255, 255, 0)',
                     'transparent',
                     'rgb(255, 255, 0)',
-                    'transparent',
+                    'transparent'
                 ]
 
                 style = LayersUtils.getBoundingBoxStyle(
@@ -224,12 +224,12 @@ const LayersUtils = {
     getBoundingBoxStyle(fillColor: string, strokeColor: string) {
         return new AppVueObj.ol.style.Style({
             fill: new AppVueObj.ol.style.Fill({
-                color: fillColor,
+                color: fillColor
             }),
             stroke: new AppVueObj.ol.style.Stroke({
                 color: strokeColor,
-                width: 2,
-            }),
+                width: 2
+            })
         })
     },
 
@@ -238,8 +238,8 @@ const LayersUtils = {
             image: new AppVueObj.ol.style.Icon({
                 anchor: [0.5, 1],
                 opacity: transparency,
-                src: `/img/marker.png`,
-            }),
+                src: `/img/marker.png`
+            })
         })
     },
 
@@ -253,8 +253,8 @@ const LayersUtils = {
                 anchor: [0.5, 0.5],
                 opacity: transparency,
                 src: `/svg/irisCircles${depth}.svg`,
-                scale: radius,
-            }),
+                scale: radius
+            })
         })
     },
 
@@ -324,9 +324,9 @@ const LayersUtils = {
                     LAYERS,
                     VERSION,
                     TILED,
-                    SRS: 'EPSG:4326',
-                },
-            }),
+                    SRS: 'EPSG:4326'
+                }
+            })
         })
 
         wms.setZIndex(8)
@@ -344,8 +344,8 @@ const LayersUtils = {
                 crossOrigin: 'Anonymous',
                 projection: 'EPSG:4326',
                 tileSize: [512, 512],
-                url: urlParsed,
-            }),
+                url: urlParsed
+            })
         })
 
         tms.setZIndex(8)
@@ -360,8 +360,8 @@ const LayersUtils = {
         const kml = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
                 url: proxyUrl,
-                format: new AppVueObj.ol.format.KML(),
-            }),
+                format: new AppVueObj.ol.format.KML()
+            })
         })
 
         kml.setZIndex(8)
@@ -376,8 +376,8 @@ const LayersUtils = {
         const kmz = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
                 url: proxyUrl,
-                format: new AppVueObj.ol.format.KML(),
-            }),
+                format: new AppVueObj.ol.format.KML()
+            })
         })
 
         kmz.setZIndex(8)
@@ -462,7 +462,7 @@ const LayersUtils = {
         if (layerData) {
             AppVueObj.app.$store.dispatch(MapActions.changeLayerVisibility, {
                 id: layer.url,
-                value: !layerData.visible,
+                value: !layerData.visible
             })
         } else {
             if (coordinates) {
@@ -491,12 +491,12 @@ const LayersUtils = {
                 } else {
                     const props = {
                         title: $tc('general.error'),
-                        subtitle: err,
+                        subtitle: err
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
                         component: ErrorPopup,
-                        props,
+                        props
                     })
                 }
             } else if (layer.type === LayerTypes.KMZ) {
@@ -508,12 +508,12 @@ const LayersUtils = {
                 } else {
                     const props = {
                         title: $tc('general.error'),
-                        subtitle: err,
+                        subtitle: err
                     }
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
                         component: ErrorPopup,
-                        props,
+                        props
                     })
                 }
             }
@@ -556,20 +556,20 @@ const LayersUtils = {
                     actions: [
                         {
                             event: 'ignore',
-                            label: $tc('general.ignore'),
+                            label: $tc('general.ignore')
                         },
                         {
                             event: 'disable',
-                            label: $tc('general.disable'),
-                        },
-                    ],
+                            label: $tc('general.disable')
+                        }
+                    ]
                 }
 
                 const [, event] = await to(
                     AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
                         component: ErrorPopup,
-                        props,
+                        props
                     })
                 )
                 if (event === 'disable') {
@@ -590,7 +590,7 @@ const LayersUtils = {
                     layerImage.indexOf('geoss-gray.svg') !== -1
                         ? null
                         : layerImage,
-                legend,
+                legend
             }
 
             if (coordinates) {
@@ -605,7 +605,7 @@ const LayersUtils = {
                     W: minLongitude,
                     S: minLatitude,
                     E: maxLongitude,
-                    N: maxLatitude,
+                    N: maxLatitude
                 }
             }
 
@@ -756,7 +756,7 @@ const LayersUtils = {
         const statisticsLayer = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
                 format: new AppVueObj.ol.format.GeoJSON(),
-                url: `/data/countriesUNSD.geojson`,
+                url: `/data/countriesUNSD.geojson`
             }),
             style: (feature: { [key: string]: any }) => {
                 const layerName = feature.get('name')
@@ -770,21 +770,21 @@ const LayersUtils = {
                                 statistics[layerName],
                                 min,
                                 max
-                            ),
+                            )
                         }),
                         stroke: new AppVueObj.ol.style.Stroke({
                             color: 'rgb(0,0,0)',
-                            width: 1,
-                        }),
+                            width: 1
+                        })
                     })
                 }
                 return new AppVueObj.ol.style.Style({
                     stroke: new AppVueObj.ol.style.Stroke({
                         color: 'rgb(0,0,0)',
-                        width: 1,
-                    }),
+                        width: 1
+                    })
                 })
-            },
+            }
         })
         statisticsLayer.set('name', 'UNEP')
         statisticsLayer.setZIndex(8)
@@ -810,7 +810,7 @@ const LayersUtils = {
         }
         const h = r * 0x10000 + g * 0x100 + b * 0x1
         return '#' + ('000000' + h.toString(16)).slice(-6)
-    },
+    }
 }
 
 export default LayersUtils

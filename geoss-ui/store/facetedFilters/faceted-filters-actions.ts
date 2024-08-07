@@ -14,5 +14,5 @@ export enum FacetedFiltersActions {
     setFacetedFiltersAvailable = 'facetedFilters/setFacetedFiltersAvailable',
     setContainerVisible = 'facetedFilters/setContainerVisible',
     toggleContainerVisible = 'facetedFilters/toggleContainerVisible',
-    reset = 'facetedFilters/reset',
+    reset = 'facetedFilters/reset'
 }

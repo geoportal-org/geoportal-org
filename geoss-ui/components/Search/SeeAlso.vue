@@ -1,11 +1,22 @@
 <template>
-    <div v-show="(recentSeeAlsoPhrases.length || recentSeeAlsoRecommendations.length) && currentResults" class="see-also"
-        :class="{ 'active': containerActive, 'container-hidden': containerFullyHidden, 'in-transition': containerInTransition }">
-        <DraggableResizable :handles="['br']" :disabled="false" :min-height="getSeeAlsoBoxHeight()" :min-width="250"
-            :resizable="true" :z="1" :className="getSeeAlsoBoxClass()" parent="body" :offset-top="90" :offset-right="0"
-            drag-handle=".see-also__drag-handle">
-            <button class="see-also-toggler" :class="{ 'container-fully-hidden': containerFullyHidden }"
-                @click="toggleSeeAlso()" :data-tutorial-tag="containerFullyHidden ? 'see-also-show' : 'see-also-hide'"
+    <div v-show="(recentSeeAlsoPhrases.length || recentSeeAlsoRecommendations.length) && currentResults" class="see-also" :class="{'active': containerActive, 'container-hidden': containerFullyHidden, 'in-transition': containerInTransition}">
+        <DraggableResizable
+            :handles="['br']"
+            :disabled="false"
+            :min-height="getSeeAlsoBoxHeight()"
+            :min-width="250"
+            :resizable="true"
+            :z="1"
+            :className="getSeeAlsoBoxClass()"
+            parent="body"
+            :offset-top="90"
+            :offset-right="0"
+            drag-handle=".see-also__drag-handle"
+            >
+            <button class="see-also-toggler"
+                :class="{'container-fully-hidden': containerFullyHidden}"
+                @click="toggleSeeAlso()"
+                :data-tutorial-tag="containerFullyHidden ? 'see-also-show' : 'see-also-hide'"
                 :style="containerFullyHidden ? '' : getTogglerStyles()">
                 <span v-if="containerFullyHidden">{{ $tc('searchBar.seeAlso') }}</span>
                 <span v-if="!containerFullyHidden" class="see-also-toggler__arrow"></span>
@@ -15,48 +26,57 @@
             </div>
             <div class="see-also__drag-handle" :title="$tc('searchBar.moveAround')"></div>
             <div class="see-also__scrollable-wrapper">
-                <button class="see-also__scroll-button scroll-left" :class="{ disabled: disableScrollLeft }"
-                    @mousedown="seeAlsoScroll('left')" @mouseleave="stopScroll()" @mouseup="stopScroll()"
-                    @touchstart="seeAlsoScroll('left')" @touchend="stopScroll()" @touchcancel="stopScroll()"></button>
+                <button class="see-also__scroll-button scroll-left"
+                    :class="{disabled: disableScrollLeft}"
+                    @mousedown="seeAlsoScroll('left')"
+                    @mouseleave="stopScroll()"
+                    @mouseup="stopScroll()"
+                    @touchstart="seeAlsoScroll('left')"
+                    @touchend="stopScroll()"
+                    @touchcancel="stopScroll()"
+                    ></button>
                 <div v-if="recentSeeAlsoPhrases.length" class="see-also__scrollable-track">
                     <b class="see-also__title" data-tutorial-tag="see-also">{{ $tc('searchBar.seeAlso') }}</b>
-                    <div v-for="(item, index) in recentSeeAlsoPhrases" :key="index" @click="selectSuggestion(item)"
-                        class="see-also__item">
-                        <i>{{ item }}</i>
+                    <div v-for="(item, index) in recentSeeAlsoPhrases" :key="index" @click="selectSuggestion(item)" class="see-also__item">
+                        <i>{{item}}</i>
                     </div>
                 </div>
-                <client-only>
-                    <div v-if="recentSeeAlsoRecommendations.length" class="see-also__scrollable-track recommendations">
-                        <b class="see-also__title recommendations" data-tutorial-tag="see-also-recommendations">{{
-                            $tc('searchBar.recommendationsForYou') }}</b>
-                        <div class="see-also__slider-wrapper">
-                            <carousel class="see-also__slider"
-                                :class="{ 'no-arrows': (this.recentSeeAlsoRecommendations.length < 4) }"
-                                :scrollPerPage="false" :mouse-drag="false" :paginationEnabled="false" :per-page="3"
-                                :navigationNextLabel="''" :navigationPrevLabel="''" :navigationEnabled="true"
-                                :autoplay="false" :loop="true">
-                                <slide v-for="(item, index) in recentSeeAlsoRecommendations" :key="index"
-                                    class="see-also__slide">
-                                    <div @click="selectRecommendation(item)">
-                                        <b class="see-also__slide--title">{{ item.title }}</b>
-                                        <p class="see-also__slide--description">{{ item.description }}</p>
-                                    </div>
-                                </slide>
-                            </carousel>
-                        </div>
+                <div v-if="recentSeeAlsoRecommendations.length" class="see-also__scrollable-track recommendations">
+                    <b class="see-also__title recommendations" data-tutorial-tag="see-also-recommendations">{{ $tc('searchBar.recommendationsForYou') }}</b>
+                    <div class="see-also__slider-wrapper">
+                        <!-- <Carousel class="see-also__slider"
+                            :class="{'no-arrows': (recentSeeAlsoRecommendations.length < 4)}"
+                            :scrollPerPage="false"
+                            :mouse-drag="true"
+                            :paginationEnabled="false"
+                            :per-page="3"
+                            :navigationNextLabel="''"
+                            :navigationPrevLabel="''"
+                            :navigationEnabled="true">
+                            <Slide v-for="(item, index) in recentSeeAlsoRecommendations" :key="index" class="see-also__slide">
+                                <div @click="selectRecommendation(item)">
+                                    <b class="see-also__slide--title">{{item.title}}</b>
+                                    <p class="see-also__slide--description">{{item.description}}</p>
+                                </div>
+                            </Slide>
+                        </Carousel> -->
                     </div>
-                </client-only>
-                <button class="see-also__scroll-button scroll-right" :class="{ disabled: disableScrollRight }"
-                    @mousedown="seeAlsoScroll('right')" @mouseleave="stopScroll()" @mouseup="stopScroll()"
-                    @touchstart="seeAlsoScroll('right')" @touchend="stopScroll()" @touchcancel="stopScroll()"></button>
+                </div>
+                <button class="see-also__scroll-button scroll-right"
+                    :class="{disabled: disableScrollRight}"
+                    @mousedown="seeAlsoScroll('right')"
+                    @mouseleave="stopScroll()"
+                    @mouseup="stopScroll()"
+                    @touchstart="seeAlsoScroll('right')"
+                    @touchend="stopScroll()"
+                    @touchcancel="stopScroll()"></button>
             </div>
         </DraggableResizable>
     </div>
 </template>
 
 <script lang="ts">
-// @ts-nocheck
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 import { SearchActions } from '@/store/search/search-actions';
 import { SearchGetters } from '@/store/search/search-getters';
 import { MapGetters } from '@/store/map/map-getters';
@@ -64,11 +84,14 @@ import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-ac
 import DraggableResizable from '@/components/DraggableResizable.vue';
 import { MapActions } from '@/store/map/map-actions';
 import TutorialTagsService from '@/services/tutorial-tags.service';
+// import { Carousel, Slide } from 'vue-carousel';
 import LogService from '@/services/log.service';
 
 @Component({
     components: {
-        DraggableResizable
+        DraggableResizable,
+        // Carousel,
+        // Slide
     }
 })
 export default class SeeAlsoComponent extends Vue {
@@ -76,10 +99,10 @@ export default class SeeAlsoComponent extends Vue {
     public containerActive = true;
     public containerFullyHidden = false;
     public containerInTransition = false;
-    public scrollInterval = null;
+    public scrollInterval: any = null;
     public disableScrollLeft = true;
     public disableScrollRight = true;
-    public scrollTarget = null;
+    public scrollTarget: any = null;
 
     get recentSeeAlsoPhrases() {
         return this.$store.getters[SearchGetters.recentSeeAlsoPhrases];
@@ -134,7 +157,7 @@ export default class SeeAlsoComponent extends Vue {
         this.$store.dispatch(SearchActions.setTargetIds, item.code);
         this.$store.dispatch(SearchActions.setDataSource, { value: item.dataSource });
         this.$store.dispatch(SearchActions.getResults);
-        LogService.logRecommendationData('Search', 'See also');
+        LogService.logRecommendationData('Select recommendation', 'recommended', item.title);
     }
 
     public selectSuggestion(item: string) {
@@ -142,7 +165,7 @@ export default class SeeAlsoComponent extends Vue {
         this.$store.dispatch(GeneralFiltersActions.setPhrase, item);
         this.resetSeeAlso();
         this.$store.dispatch(SearchActions.getResults);
-        LogService.logRecommendationData('Search', 'See also');
+        LogService.logRecommendationData('Select suggestion', 'phrase', item);
     }
 
     public resetSeeAlso() {
@@ -150,7 +173,7 @@ export default class SeeAlsoComponent extends Vue {
         this.scrollTarget.scrollLeft = 0;
     }
 
-    public seeAlsoScroll(direction) {
+    public seeAlsoScroll(direction: any) {
         if (!this.scrollInterval) {
             this.scrollInterval = setInterval(() => {
                 if (direction === 'left') {
@@ -212,7 +235,7 @@ export default class SeeAlsoComponent extends Vue {
         this.containerInTransition = true;
         await this.$nextTick();
         this.containerActive = !this.hideSeeAlso;
-        if (!this.containerActive) {
+        if(!this.containerActive) {
             setTimeout(() => {
                 this.containerFullyHidden = true;
             }, this.hideAnimationTime);
@@ -246,7 +269,6 @@ export default class SeeAlsoComponent extends Vue {
     --offset-bottom: 207px;
     --offset-bottom-with-recommendations: 340px;
     --offset-right: 45px;
-
     @media (max-width: $breakpoint-xxl) {
         --offset-left: 860px;
         --offset-right: 30px;
@@ -360,7 +382,6 @@ export default class SeeAlsoComponent extends Vue {
 
     &__slider-wrapper {
         width: 100%;
-
         @media (max-width: $breakpoint-xl) {
             padding: 0 4px;
         }
@@ -386,45 +407,43 @@ export default class SeeAlsoComponent extends Vue {
         }
     }
 
-    ::v-deep .see-also__slide {
-        display: flex;
-        flex-direction: column;
-        color: white;
-        opacity: 0.8;
-        align-self: center;
+    :v-deep(.see-also__slide) {
+        // display: flex;
+        // flex-direction: column;
+        // color: white;
+        // opacity: 0.8;
+        // align-self: center;
 
-        &:hover {
-            opacity: 1;
-            cursor: pointer;
-        }
+        // &:hover {
+        //     opacity: 1;
+        //     cursor: pointer;
+        // }
 
-        &--title,
-        &--description {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
+        // &--title,
+        // &--description {
+        //     display: -webkit-box;
+        //     -webkit-box-orient: vertical;
+        //     overflow: hidden;
+        //     text-overflow: ellipsis;
+        //     white-space: normal;
+        // }
 
-        &--title {
-            -webkit-line-clamp: 1;
-            margin-bottom: 5px;
-        }
+        // &--title {
+        //     -webkit-line-clamp: 1;
+        //     margin-bottom: 5px;
+        // }
 
-        &--description {
-            -webkit-line-clamp: 2;
+        // &--description {
+        //     -webkit-line-clamp: 2;
 
-            @media (max-width: $breakpoint-xl) {
-                -webkit-line-clamp: 1;
-            }
-        }
+        //     @media (max-width: $breakpoint-xl) {
+        //         -webkit-line-clamp: 1;
+        //     }
+        // }
     }
 
     @media (max-width: $breakpoint-xl) {
-
-        ::v-deep .VueCarousel-navigation-button {
-
+        ::v-deep(.VueCarousel-navigation-button) {
             &:before,
             &:after {
                 width: 11px;
@@ -470,14 +489,13 @@ export default class SeeAlsoComponent extends Vue {
         white-space: nowrap;
         -ms-overflow-style: none;
         scrollbar-width: none;
-
         &::-webkit-scrollbar {
             display: none;
         }
 
-        &+.see-also__scrollable-track {
+        & + .see-also__scrollable-track {
             .see-also__title {
-                border-top: 1px solid rgba(255, 255, 255, 0.8);
+                border-top: 1px solid rgba(255,255,255,0.8);
                 padding-top: 15px;
             }
         }
@@ -499,9 +517,9 @@ export default class SeeAlsoComponent extends Vue {
     }
 
     &__item {
-        background-color: rgba($grey-lighter, 0.33);
+        background-color: white;
         border-radius: 13px;
-        color: white;
+        color: #0661a9;
         cursor: pointer;
         font-size: 14px;
         margin: 8px 8px 0 0;
@@ -509,7 +527,7 @@ export default class SeeAlsoComponent extends Vue {
         user-select: none;
 
         &:hover {
-            background-color: rgba($grey-lighter, 0.66);
+            background-color: rgba($grey-lighter, 0.95);
         }
     }
 

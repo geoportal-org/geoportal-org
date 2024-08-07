@@ -53,5 +53,5 @@ export enum SearchActions {
     setHighlightResult = 'search/setHighlightResult',
     setCrRelation = 'search/setCrRelation',
     setCrRelationParams = 'search/setCrRelationParams',
-    setLongRequestInfo = 'search/setLongRequestInfo',
+    setLongRequestInfo = 'search/setLongRequestInfo'
 }

@@ -3,29 +3,29 @@
         <div class="unsd__title">{{ $tc('unitedNationsStatisticsPopup.title') }}:</div>
         <div class="unsd__params">
             <div class="unsd__param">
-                <label :title="$tc('unitedNationsStatisticsPopup.timeSeriesTooltip')" class="unsd__param-title">{{
-                    $tc('unitedNationsStatisticsPopup.timeSeries') }}:</label>
+                <label :title="$tc('unitedNationsStatisticsPopup.timeSeriesTooltip')"
+                    class="unsd__param-title">{{ $tc('unitedNationsStatisticsPopup.timeSeries') }}:</label>
                 <CustomSelect class="unsd__param-select" v-model="timeSeries" :clearable="false" :appendToBody="true"
                     :options="options.timeSeriesOptions"
                     :placeholder="$tc('unitedNationsStatisticsPopup.timeSeriesPlaceholder')" />
             </div>
             <div class="unsd__param">
-                <label :title="$tc('unitedNationsStatisticsPopup.yearTooltip')" class="unsd__param-title">{{
-                    $tc('unitedNationsStatisticsPopup.year') }}:</label>
+                <label :title="$tc('unitedNationsStatisticsPopup.yearTooltip')"
+                    class="unsd__param-title">{{ $tc('unitedNationsStatisticsPopup.year') }}:</label>
                 <CustomSelect class="unsd__param-select" v-model="year" :clearable="false" :appendToBody="true"
                     :options="options.yearOptions" :placeholder="$tc('unitedNationsStatisticsPopup.yearPlaceholder')" />
             </div>
             <div class="unsd__param">
-                <label :title="$tc('unitedNationsStatisticsPopup.attributesTooltip')" class="unsd__param-title">{{
-                    $tc('unitedNationsStatisticsPopup.attributes') }}:</label>
-                <CustomSelect class="unsd__param-select" v-model="attributesIndex" :clearable="false" :appendToBody="true"
-                    :options="options.attributesOptionsStrings"
+                <label :title="$tc('unitedNationsStatisticsPopup.attributesTooltip')"
+                    class="unsd__param-title">{{ $tc('unitedNationsStatisticsPopup.attributes') }}:</label>
+                <CustomSelect class="unsd__param-select" v-model="attributesIndex" :clearable="false"
+                    :appendToBody="true" :options="options.attributesOptionsStrings"
                     :placeholder="$tc('unitedNationsStatisticsPopup.attributesPlaceholder')" />
             </div>
         </div>
         <div class="text-center margin-top-30">
-            <button class="green-btn-default" :disabled="addLayerDisabled" @click="prepareResultsAndCreateLayer">{{
-                $tc('unitedNationsStatisticsPopup.addLayer') }}</button>
+            <button class="green-btn-default" :disabled="addLayerDisabled"
+                @click="prepareResultsAndCreateLayer">{{ $tc('unitedNationsStatisticsPopup.addLayer') }}</button>
         </div>
     </div>
 </template>
@@ -38,7 +38,7 @@ import { PopupActions } from '@/store/popup/popup-actions';
 import ErrorPopup from '@/components/ErrorPopup.vue';
 import PopupCloseService from '@/services/popup-close.service';
 import { MapActions } from '@/store/map/map-actions';
-import { StaticPath } from '@/data/global';
+
 import { LayerTypes } from '@/interfaces/LayerTypes';
 import UtilsService from '@/services/utils.service';
 import LayersUtils from '@/services/map/layer-utils';

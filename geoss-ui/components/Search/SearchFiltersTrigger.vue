@@ -1,20 +1,30 @@
 <template>
-    <div class="trigger" :class="{ active: !onlyAdvanced && (active || !activeSection) }">
-        <span data-tutorial-tag="searchbar-advanced-search"
-            :class="{ 'disable-container': onlyAdvanced && generalFiltersInChange }" @click="toggleFilters()"
-            v-show="onlyAdvanced">{{ $tc('generalFilters.advancedSearch') }}</span>
+    <div class="trigger" :class="{active: !onlyAdvanced && (active || !activeSection)}">
+        <span data-tutorial-tag="searchbar-advanced-search" :class="{'disable-container': onlyAdvanced && generalFiltersInChange}" @click="toggleFilters()" v-show="onlyAdvanced">{{ $tc('generalFilters.advancedSearch') }}</span>
         <span @click="toggleFilters()" v-show="!onlyAdvanced && !active">{{ $tc('generalFilters.filters') }}</span>
-        <button data-tutorial-tag="filters-filter-by" v-show="!onlyAdvanced && activeSection && active"
-            @click="onSectionChange('nonadvanced')" class="trigger__filters-section filter-by"
-            :class="{ active: activeSection !== 'advanced' }">
-            {{ $tc('filters.filterBy') }}</button>
-        <button data-tutorial-tag="filters-advanced" v-show="!onlyAdvanced && activeSection && active"
-            @click="onSectionChange('advanced')" class="trigger__filters-section advanced"
-            :class="{ active: activeSection === 'advanced' }">
-            {{ $tc('filters.advanced') }}</button>
-        <button @click="toggleFilters()" class="trigger__visibility" :title="$tc('filters.toggle')"
+        <button
+            data-tutorial-tag="filters-filter-by"
+            v-show="!onlyAdvanced && activeSection && active"
+            @click="onSectionChange('nonadvanced')"
+            class="trigger__filters-section filter-by"
+            :class="{active: activeSection !== 'advanced'}"
+            >
+            {{$tc('filters.filterBy') }}</button>
+        <button
+            data-tutorial-tag="filters-advanced"
+            v-show="!onlyAdvanced && activeSection && active"
+            @click="onSectionChange('advanced')"
+            class="trigger__filters-section advanced"
+            :class="{active: activeSection === 'advanced'}"
+            >
+            {{$tc('filters.advanced') }}</button>
+        <button
+            @click="toggleFilters()"
+            class="trigger__visibility"
+            :title="$tc('filters.toggle')"
             :aria-label="$tc('filters.toggle')"
-            :class="{ active: active, 'active-section': !onlyAdvanced, 'disable-container': onlyAdvanced && generalFiltersInChange }">
+            :class="{active: active, 'active-section': !onlyAdvanced, 'disable-container': onlyAdvanced && generalFiltersInChange}"
+            >
             <i></i>
         </button>
     </div>
@@ -61,10 +71,10 @@ export default class SearchFiltersTriggerComponent extends Vue {
     white-space: nowrap;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     cursor: pointer;
     width: 100%;
-    background-color: $blue-transparent;
+    background-color: $blue;
     padding: 10px 20px;
     height: 44px;
 
@@ -120,7 +130,7 @@ export default class SearchFiltersTriggerComponent extends Vue {
             &:after {
                 left: auto;
                 right: -30px;
-                background: radial-gradient(circle at 100% 0, rgba(0, 0, 0, 0) 14px, $blue-transparent 15px);
+                background: radial-gradient(circle at 100% 0, rgba(0,0,0,0) 14px, $blue-transparent 15px);
                 background-size: 50% 50%;
                 background-repeat: no-repeat;
             }
@@ -171,7 +181,7 @@ export default class SearchFiltersTriggerComponent extends Vue {
                     right: -30px;
                     bottom: -15px;
                     width: 30px;
-                    background: radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0) 14px, $green-transparent 15px);
+                    background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 14px, $green-transparent 15px);
                     background-size: 50% 50%;
                     background-repeat: no-repeat;
                 }
@@ -186,9 +196,7 @@ export default class SearchFiltersTriggerComponent extends Vue {
 
         &.active {
             i {
-
-                &:before,
-                &:after {
+                &:before, &:after {
                     transform: rotate(-45deg);
                 }
 
@@ -204,7 +212,6 @@ export default class SearchFiltersTriggerComponent extends Vue {
                 height: 44px;
                 background: $green-transparent;
                 border-bottom-left-radius: 15px;
-
                 &:after {
                     content: '';
                     height: 30px;
@@ -212,15 +219,13 @@ export default class SearchFiltersTriggerComponent extends Vue {
                     left: -15px;
                     top: 0;
                     width: 30px;
-                    background: radial-gradient(circle at 0 100%, rgba(0, 0, 0, 0) 14px, $green-transparent 15px);
+                    background: radial-gradient(circle at 0 100%, rgba(0,0,0,0) 14px, $green-transparent 15px);
                     background-size: 50% 50%;
                     background-repeat: no-repeat;
                 }
 
                 i {
-
-                    &:before,
-                    &:after {
+                    &:before, &:after {
                         top: 20px;
                         left: 16px;
                         transform: rotate(-45deg);
@@ -235,9 +240,7 @@ export default class SearchFiltersTriggerComponent extends Vue {
         }
 
         i {
-
-            &:before,
-            &:after {
+            &:before, &:after {
                 content: '';
                 top: 10px;
                 width: 14px;

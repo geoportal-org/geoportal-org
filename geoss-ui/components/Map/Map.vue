@@ -122,101 +122,101 @@ export default class MapComponent extends Vue {
 </script>
 
 <style lang="scss">
-.comparison-bar {
-    display: none;
-    height: 100%;
-    left: 50%;
-    padding: 0 8px;
-    position: absolute;
-    top: 0;
-    touch-action: none;
-    z-index: 2;
+    .comparison-bar {
+        display: none;
+        height: 100%;
+        left: 50%;
+        padding: 0 8px;
+        position: absolute;
+        top: 0;
+        touch-action: none;
+        z-index: 2;
 
-    &:hover {
-        cursor: pointer;
-    }
+        &:hover {
+            cursor: pointer;
+        }
 
-    .vertical-line {
-        background-color: white;
-        height: inherit;
-        position: relative;
-        width: 2px;
+        .vertical-line {
+            background-color: white;
+            height: inherit;
+            position: relative;
+            width: 2px;
 
-        .ball {
-            align-items: center;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            flex: 1;
-            font-size: 36px;
-            height: 40px;
-            justify-content: space-between;
-            left: 50%;
-            padding: 5px;
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
+            .ball {
+                align-items: center;
+                background: white;
+                border-radius: 50%;
+                display: flex;
+                flex: 1;
+                font-size: 36px;
+                height: 40px;
+                justify-content: space-between;
+                left: 50%;
+                padding: 5px;
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 40px;
+            }
         }
     }
-}
 
-.ol-scale-line {
-    background: rgba(0, 60, 136, 0.5);
-    border-radius: 4px;
-    bottom: 10px;
-    right: 45px; // right: 300px;
-    padding: 2px;
-    position: absolute;
+    .ol-scale-line {
+        background: rgba(0, 60, 136, 0.5);
+        border-radius: 4px;
+        bottom: 10px;
+        right: 300px;
+        padding: 2px;
+        position: absolute;
 
-    @media (max-width: $breakpoint-lg) {
-        right: 210px;
-        display: none;
+        @media (max-width: $breakpoint-lg) {
+            right: 210px;
+            display: none;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            display: none;
+        }
+
+        .ol-scale-line-inner {
+            border: 1px solid #eee;
+            border-top: none;
+            color: #eee;
+            font-size: 14px;
+            text-align: center;
+            margin: 1px;
+            will-change: contents, width;
+        }
     }
 
-    @media (max-width: $breakpoint-sm) {
-        display: none;
+    .ol-mouse-position {
+        position: absolute;
+        bottom: 40px;
+        white-space: nowrap;
+        right: 15px;
+        font-size: 12px;
+        color: white;
+        text-shadow: 0px 1px 5px black, 0px -2px 5px black;
     }
 
-    .ol-scale-line-inner {
-        border: 1px solid #eee;
-        border-top: none;
-        color: #eee;
-        font-size: 14px;
-        text-align: center;
-        margin: 1px;
-        will-change: contents, width;
+    #map-tooltip {
+        background-color: rgba(0, 60, 136, 0.8);
+        border-radius: 5px !important;
+        border: 1px solid black !important;
+        color: white;
+        margin-left: 10px;
+        padding: 5px 10px;
     }
-}
-
-.ol-mouse-position {
-    position: absolute;
-    bottom: 40px;
-    white-space: nowrap;
-    right: 15px;
-    font-size: 12px;
-    color: white;
-    text-shadow: 0px 1px 5px black, 0px -2px 5px black;
-}
-
-#map-tooltip {
-    background-color: rgba(0, 60, 136, 0.8);
-    border-radius: 5px !important;
-    border: 1px solid black !important;
-    color: white;
-    margin-left: 10px;
-    padding: 5px 10px;
-}
 </style>
 <style scoped lang="scss">
-#map {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 1;
-    background: url('/img/geo.jpg');
-}
+    #map {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+        background: url('/img/geo.jpg');
+    }
 </style>

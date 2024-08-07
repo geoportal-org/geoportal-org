@@ -1,13 +1,15 @@
 <template>
     <div>
-        <SearchFiltersTrigger :class="{ 'disable-container': currentResults && generalFiltersInChange }"
-            @on-section-change="activeSection = $event" :active-section="activeSection"
-            @toggle="containerVisible = !containerVisible" :active="containerVisible || generalFiltersInChange"
+        <SearchFiltersTrigger
+            :class="{ 'disable-container': currentResults && generalFiltersInChange }"
+            @on-section-change="activeSection = $event"
+            :active-section="activeSection"
+            @toggle="containerVisible = !containerVisible"
+            :active="containerVisible || generalFiltersInChange"
             :only-advanced="!currentResults" />
         <CollapseTransition>
             <div class="filters-container transition-force-visible" v-show="containerVisible || generalFiltersInChange">
-                <SearchGeneralFilters :only-advanced="!currentResults"
-                    v-show="activeSection === 'advanced' || !currentResults" />
+                <SearchGeneralFilters :only-advanced="!currentResults" v-show="activeSection === 'advanced' || !currentResults" />
                 <SearchFacetedFilters v-show="facetedFiltersAvailable && activeSection !== 'advanced'" />
                 <SearchGranulaFilters v-show="granulaFiltersAvailable && activeSection !== 'advanced'" />
                 <SearchIrisFilters v-show="irisFiltersAvailable && activeSection !== 'advanced'" />
@@ -24,6 +26,7 @@ import SearchGeneralFilters from '@/components/Search/SearchGeneralFilters.vue';
 import SearchFacetedFilters from '@/components/Search/SearchFacetedFilters.vue';
 import SearchGranulaFilters from '@/components/Search/SearchGranulaFilters.vue';
 import SearchIrisFilters from '@/components/Search/SearchIrisFilters.vue';
+
 import { FacetedFiltersGetters } from '@/store/facetedFilters/faceted-filters-getters';
 import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters';
 import { IrisFiltersGetters } from '@/store/irisFilters/iris-filters-getters';
@@ -33,7 +36,6 @@ import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-ac
 import UtilsService from '@/services/utils.service';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import { Timers } from '@/data/timers';
-import CollapseTransition from '@/plugins/CollapseTransition';
 
 @Component({
     components: {
@@ -41,8 +43,7 @@ import CollapseTransition from '@/plugins/CollapseTransition';
         SearchGeneralFilters,
         SearchFacetedFilters,
         SearchGranulaFilters,
-        SearchIrisFilters,
-        CollapseTransition
+        SearchIrisFilters
     }
 })
 export default class SearchFiltersComponent extends Vue {
@@ -85,10 +86,10 @@ export default class SearchFiltersComponent extends Vue {
 
     @Watch('containerVisible')
     public async toggleContainerVisibility(value: boolean) {
-        const heightLess700 = window.matchMedia('(max-height: 700px)');
+        const heightLess1000 = window.matchMedia('(max-height: 1000px)');
 
-        if (this.containerVisible && !heightLess700.matches) {
-            const mainContainer = this.$parent!.$parent!.$refs['main-container'] as HTMLElement;
+        if (this.containerVisible && !heightLess1000.matches) {
+            const mainContainer = this.$parent?.$parent?.$refs['main-container'] as HTMLElement;
             const scrollableContainer = mainContainer.querySelector('.vb-content') as HTMLElement;
             if (scrollableContainer.scrollTop !== 0) {
                 await UtilsService.scrollY(scrollableContainer, 0, 1000);
@@ -100,12 +101,12 @@ export default class SearchFiltersComponent extends Vue {
     private async onCurrentResultsChanged() {
         this.activeSection = 'nonadvanced';
 
-        const heightLess700 = window.matchMedia('(max-height: 700px)');
+        const heightLess1000 = window.matchMedia('(max-height: 1000px)');
         if (
             (this.$store.getters[FacetedFiltersGetters.facetedFiltersAvailable] ||
-                this.$store.getters[GranulaFiltersGetters.granulaFiltersAvailable] ||
-                this.$store.getters[IrisFiltersGetters.irisFiltersAvailable]) &&
-            !heightLess700.matches &&
+            this.$store.getters[GranulaFiltersGetters.granulaFiltersAvailable] ||
+            this.$store.getters[IrisFiltersGetters.irisFiltersAvailable]) &&
+            !heightLess1000.matches &&
             this.currentResults
         ) {
             await this.$nextTick(); // to remove empty space effect when some of the filters are hidden
@@ -131,4 +132,6 @@ export default class SearchFiltersComponent extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

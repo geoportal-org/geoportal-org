@@ -3,7 +3,7 @@ import apiService from '@/services/geoss-search.api.service'
 
 const state = () => ({
     files: [] as DownloadFile[],
-    openTrigger: false as boolean,
+    openTrigger: false as boolean
 })
 
 const updateSessionStorage = () => {
@@ -16,7 +16,7 @@ const getters = {
     },
     openTrigger: (state: any) => {
         return state.openTrigger
-    },
+    }
 }
 
 const mutations = {
@@ -46,7 +46,7 @@ const mutations = {
         {
             id,
             status,
-            statusObject,
+            statusObject
         }: { id: number; status: DownloadFileStatus; statusObject: any }
     ) {
         const file: DownloadFile = state.files.find(
@@ -74,7 +74,7 @@ const mutations = {
     },
     openTrigger(state: any, value: boolean) {
         state.openTrigger = value
-    },
+    }
 }
 
 const actions = {
@@ -89,7 +89,7 @@ const actions = {
                 if (data === 'error') {
                     commit('changeFileStatus', {
                         id: file.id,
-                        status: DownloadFileStatus.failed,
+                        status: DownloadFileStatus.failed
                     })
                 } else if (data && data.status === 'error') {
                     sessionStorage.setItem(
@@ -99,17 +99,17 @@ const actions = {
                     commit('changeFileStatus', {
                         id: file.id,
                         status: DownloadFileStatus.failed,
-                        statusObject: data.response,
+                        statusObject: data.response
                     })
                 } else {
                     commit('changeFileUrl', {
                         id: file.id,
                         url: data.url || data,
-                        download: data.download,
+                        download: data.download
                     })
                     commit('changeFileStatus', {
                         id: file.id,
-                        status: DownloadFileStatus.ready,
+                        status: DownloadFileStatus.ready
                     })
                 }
             })
@@ -124,7 +124,7 @@ const actions = {
     },
     openTrigger({ commit }: any, value: boolean) {
         commit('openTrigger', value)
-    },
+    }
 }
 
 export default {
@@ -132,5 +132,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

@@ -1,12 +1,12 @@
 import es from 'elasticsearch'
-import { Liferay, AppVueObj, BaseUrl } from '~/data/global'
+import { Liferay, AppVueObj, BaseUrl } from '@/data/global'
 import UAParser from 'ua-parser-js'
-import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters'
-import { GranulaFiltersGetters } from '~/store/granulaFilters/granula-filters-getters'
-import { IrisFiltersGetters } from '~/store/irisFilters/iris-filters-getters'
-import { MyWorkspaceGetters } from '~/store/myWorkspace/my-workspace-getters'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
+import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters'
+import { IrisFiltersGetters } from '@/store/irisFilters/iris-filters-getters'
+import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters'
 import { SearchGetters } from '@/store/search/search-getters'
-import { FacetedFiltersGetters } from '~/store/facetedFilters/faceted-filters-getters'
+import { FacetedFiltersGetters } from '@/store/facetedFilters/faceted-filters-getters'
 import SearchEngineService from '@/services/search-engine.service'
 import UtilsService from '@/services/utils.service'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
@@ -134,7 +134,7 @@ const LogService: any = {
                     .folder
                     ? AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
                           .folder.label
-                    : '',
+                    : ''
             },
             dsSba: null,
             dsSourcesGroup: AppVueObj.app.$store.getters[
@@ -146,7 +146,7 @@ const LogService: any = {
                       ].sources,
                       value: AppVueObj.app.$store.getters[
                           GeneralFiltersGetters.state
-                      ].sources,
+                      ].sources
                   }
                 : {},
             dsViewsGroup: AppVueObj.app.$store.getters[
@@ -158,7 +158,7 @@ const LogService: any = {
                       ].viewId,
                       value: AppVueObj.app.$store.getters[
                           GeneralFiltersGetters.state
-                      ].viewId,
+                      ].viewId
                   }
                 : {},
             dsBbox: bbox,
@@ -178,15 +178,15 @@ const LogService: any = {
             dsScore:
                 pOperation === 'search_query'
                     ? AppVueObj.app.$store.getters[FacetedFiltersGetters.score]
-                    : null,
+                    : null
         })
 
         try {
             apiClient.$post(`${geossProxy.logSearch}`, JSON.stringify(body), {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: '',
-                },
+                    'Authorization': ''
+                }
             })
         } catch (e: any) {
             console.log(e)
@@ -219,30 +219,27 @@ const LogService: any = {
         }
 
         const body = LogService.addCommonProperties({
-            uiObjectId: id || "",
-            uiObjectClass: className || "",
-            uiSource: entryDbVal || "",
+            uiObjectId: id || '',
+            uiObjectClass: className || '',
+            uiSource: entryDbVal || '',
             sessionSiteUrl: LogService.friendlySiteUrl(),
-            uiEntryId: entryIdVal || "",
-            uiAction: uiActionVal || "",
-            uiLabel: uiLabelVal || "",
-            uiOrganisation: uiOrganisationVal || "",
-            uiResourceName: uiResourceNameVal || "",
-            operation: pOperation || "",
+            uiEntryId: entryIdVal || '',
+            uiAction: uiActionVal || '',
+            uiLabel: uiLabelVal || '',
+            uiOrganisation: uiOrganisationVal || '',
+            uiResourceName: uiResourceNameVal || '',
+            operation: pOperation || ''
         })
 
         try {
-            await fetch(
-                `${geossProxy.logElementClick}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        accept: 'application/json',
-                    },
-                    body: JSON.stringify(body),
-                }
-            )
+            await fetch(`${geossProxy.logElementClick}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
 
             // apiClient.$post(
             //     `${geossProxy.logElementClick}`,
@@ -265,7 +262,7 @@ const LogService: any = {
                     'trackEvent',
                     'Click',
                     uiActionVal,
-                    uiResourceNameVal,
+                    uiResourceNameVal
                 ])
             }
         }
@@ -288,7 +285,7 @@ const LogService: any = {
             message: pMessage,
             resultDetails: pResultDetails,
             sessionSiteUrl: LogService.friendlySiteUrl(),
-            shortUrl: 'test',
+            shortUrl: 'test'
         })
 
         try {
@@ -298,8 +295,8 @@ const LogService: any = {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        accept: 'application/json',
-                    },
+                        'accept': 'application/json'
+                    }
                 }
             )
         } catch (e: any) {
@@ -328,15 +325,15 @@ const LogService: any = {
     logSignIn() {
         // if(window.$nuxt.$cookies.get('geoss_justSignedIn'))
         const body = LogService.addCommonProperties({
-            sessionSiteUrl: LogService.friendlySiteUrl(),
+            sessionSiteUrl: LogService.friendlySiteUrl()
         })
 
         try {
             apiClient.$post(`${geossProxy.logSignIn}`, JSON.stringify(body), {
                 headers: {
                     'Content-Type': 'application/json',
-                    accept: 'application/json',
-                },
+                    'accept': 'application/json'
+                }
             })
         } catch (e: any) {
             console.log(e)
@@ -358,7 +355,7 @@ const LogService: any = {
                           )
                         : null,
                 sessionTimestamp: Date.now(),
-                sessionDate: new Date().toISOString(),
+                sessionDate: new Date().toISOString()
             },
             userAgentProperties: {
                 ua: LogService.userAgent.ua,
@@ -371,12 +368,12 @@ const LogService: any = {
                 uaDeviceModel: LogService.userAgent.device.model,
                 uaDeviceVendor: LogService.userAgent.device.vendor,
                 uaDeviceType: LogService.userAgent.device.type,
-                uaCpuArchitecture: LogService.userAgent.cpu.architecture,
+                uaCpuArchitecture: LogService.userAgent.cpu.architecture
             },
             otherProperties: {
                 winWidth: window.innerWidth,
-                winHeight: window.innerHeight,
-            },
+                winHeight: window.innerHeight
+            }
         }
         return document
     },
@@ -415,7 +412,7 @@ const LogService: any = {
                         size: 10000,
                         index: 'geoss_index',
                         body: elasticesearchSearchQuery,
-                        ...UtilsService.getAccessKeyObject(),
+                        ...UtilsService.getAccessKeyObject()
                     },
                     (error: any, response: any) => {
                         if (error) {
@@ -437,8 +434,8 @@ const LogService: any = {
             apiClient
                 .$get(url, {
                     headers: {
-                        Authorization: '',
-                    },
+                        Authorization: ''
+                    }
                 })
                 .then((popular: Array<string>) => {
                     resolve(popular)
@@ -461,8 +458,8 @@ const LogService: any = {
             apiClient
                 .$get(url, {
                     headers: {
-                        Authorization: '',
-                    },
+                        Authorization: ''
+                    }
                 })
                 .then((concepts: Array<string>) => {
                     if (addMixedTerms) {
@@ -476,7 +473,7 @@ const LogService: any = {
                             'of',
                             'for',
                             'in',
-                            'to',
+                            'to'
                         ]
                         queryArray = queryArray.filter(
                             (item) =>
@@ -507,8 +504,8 @@ const LogService: any = {
             apiClient
                 .$get(url, {
                     headers: {
-                        Authorization: '',
-                    },
+                        Authorization: ''
+                    }
                 })
                 .then((recommendations: Array<string>) => {
                     resolve(recommendations)
@@ -528,7 +525,7 @@ const LogService: any = {
     ) {
         const promises = [
             LogService.getPopularWords(queryString, lenList),
-            LogService.getSeeAlsoWords(queryString, lenRelated, false),
+            LogService.getSeeAlsoWords(queryString, lenRelated, false)
         ]
 
         return Promise.all(promises).then(([suggested, related]) => {
@@ -543,8 +540,8 @@ const LogService: any = {
                 {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
             )
             if (response.status === 200) {
@@ -567,18 +564,18 @@ const LogService: any = {
             uiLabel: entry.title,
             uiOrganisation: entry.contributor.orgName,
             uiResourceName: entry.title,
-            operation: null,
+            operation: null
         })
-        
+
         try {
             let response = await fetch(
                 window.$nuxt.$config.proxyUrl + 'counter/view',
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(body),
+                    body: JSON.stringify(body)
                 }
             )
             if (response.status === 200) {
@@ -613,7 +610,7 @@ const LogService: any = {
 
         return new Promise((resolve) => {
             LogService.client = new es.Client({
-                hosts: logsearchHost,
+                hosts: logsearchHost
             })
             LogService.client.ping(
                 {
@@ -621,7 +618,7 @@ const LogService: any = {
 
                     // undocumented params are appended to the query string
                     hello: 'elasticsearch',
-                    ...UtilsService.getAccessKeyObject(),
+                    ...UtilsService.getAccessKeyObject()
                 },
                 (error: any) => {
                     LogService.elasticsearch_live = !error
@@ -629,7 +626,7 @@ const LogService: any = {
                 }
             )
         })
-    },
+    }
 }
 
 export default LogService

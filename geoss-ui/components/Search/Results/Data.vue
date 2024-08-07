@@ -2,29 +2,16 @@
     <div>
         <div class="data-results" :class="{ 'with-placeholder': dataResultsPlaceholders }">
             <div v-for="(result, index) of dataResults" :key="result.id" class="data-result">
-                <div class="data-result__wrapper"
+                <div class="data-result__wrapper" v-show="resultIdDetails !== result.id"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'data-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
-                    <div class="data-result__image"
-                        :class="{ 'data-result__image--default': (getImage(result.logo) !== result.logo) }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="result.title"
-                            v-image-preview />
-                    </div>
                     <div class="data-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="data-result__title line-clamp--2">{{ result.title }}</div>
-                        <div v-if="result.contributor && result.contributor.orgName"
-                            class="data-result__contributor line-clamp--1">({{
-                                $tc('dabResult.organisation') }}: {{ result.contributor.orgName }})
-                        </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'"
-                            class="data-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
-                            v-html-to-text="result.summary"></div>
+                        <div v-if="result.title" v-line-clamp:20="2" class="data-result__title">{{ result.title }}</div>
+                        <div v-if="result.contributor && result.contributor.orgName" class="data-result__contributor"
+                            v-line-clamp:20="1">{{ $t('dabResult.organisation') }}: {{ result.contributor.orgName }}</div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
-            </div>
-            <div v-if="dataResultsPlaceholders" class="data-result placeholder">
-                <img :src="`/svg/data-gray.svg`" alt="GEOSS" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
             </div>
         </div>
     </div>
@@ -47,8 +34,6 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsDataComponent extends Vue {
     [x: string]: any;
-    public currentOpenId: string = ''
-
     get dataResults() {
         return (this.$store.getters[SearchGetters.dataResults] ? this.$store.getters[SearchGetters.dataResults].entry : []);
     }
@@ -66,7 +51,6 @@ export default class SearchResultsDataComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
-        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
@@ -93,15 +77,8 @@ export default class SearchResultsDataComponent extends Vue {
 }
 
 .data-result {
-    width: calc(50% - 2.5px);
-    margin-bottom: 5px;
-
-    &:last-child,
-    &:nth-last-of-type(1),
-    &:nth-last-of-type(2) {
-        margin-bottom: 0;
-    }
-
+    width: 100%;
+    margin: 0 2px 5px;
 
     @media (max-width: $breakpoint-sm) {
         width: 100%;
@@ -120,7 +97,7 @@ export default class SearchResultsDataComponent extends Vue {
         }
 
         img {
-            width: 60%;
+            max-width: 60%;
             max-height: 100%;
             margin: 0 auto;
             height: auto;
@@ -128,7 +105,6 @@ export default class SearchResultsDataComponent extends Vue {
     }
 
     &__wrapper {
-        height: 125px;
         display: flex;
         position: relative;
 
@@ -144,23 +120,12 @@ export default class SearchResultsDataComponent extends Vue {
         }
 
         &.details-shown {
-            &:after {
-                display: block;
-            }
+            height: 0;
         }
 
         &:hover,
         &--highlighted {
-            box-shadow: 0 0 20px white;
-            background-color: white;
-
-            &:after {
-                border-top-color: white;
-            }
-        }
-
-        &--underemphasize {
-            opacity: 0.85;
+            outline: 2px solid $blue;
         }
     }
 
@@ -173,7 +138,6 @@ export default class SearchResultsDataComponent extends Vue {
         justify-content: center;
         align-items: center;
         flex: 0 0 auto;
-        position: relative;
 
         &--default {
             padding: 10px;
@@ -186,8 +150,8 @@ export default class SearchResultsDataComponent extends Vue {
     }
 
     &__text-data {
-        background: $white-transparent;
-        padding: 10px;
+        background: $white;
+        padding: 15px;
         flex: 1 1 auto;
         overflow: hidden;
         cursor: pointer;
@@ -207,7 +171,6 @@ export default class SearchResultsDataComponent extends Vue {
         width: auto;
         display: block;
         color: #777;
-        font-style: italic;
     }
 
     &__summary {

@@ -4,13 +4,13 @@
             <img :src="imagePreviewUrl" :style="initialImageDimensions" :alt="sourceImageTitle || 'Preview'" />
         </div>
         <button @click="close()" class="image-preview__close-btn cross" :aria-label="$tc('general.close')"></button>
-        <div class="image-preview__title line-clamp--3">{{ sourceImageTitle }}</div>
+        <div class="image-preview__title" v-line-clamp:20="3">{{ sourceImageTitle }}</div>
     </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'nuxt-property-decorator';
 import { GeneralGetters } from '@/store/general/general-getters';
 import { GeneralActions } from '@/store/general/general-actions';
 import { Timers } from '@/data/timers';
@@ -18,8 +18,8 @@ import { Timers } from '@/data/timers';
 @Component
 export default class ImagePreviewComponent extends Vue {
     public active = false;
-    public imagePreviewUrl: any = null;
-    public initialImageDimensions = {};
+    public imagePreviewUrl: string = null;
+    public initialImageDimensions = null;
     public sourceImage = null;
     public sourceImageTitle = null;
     private sourceImageElem = null;
@@ -226,7 +226,6 @@ $transitionTime: 500ms;
         transition: opacity 500ms ease-in-out;
 
         &:hover {
-
             &:before,
             &:after {
                 background-color: white;

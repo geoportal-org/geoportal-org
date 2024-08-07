@@ -3,5 +3,5 @@ export enum BulkDownloadActions {
     removeLink = 'bulkDownload/removeLink',
     removeAllLinks = 'bulkDownload/removeAllLinks',
     openTrigger = 'bulkDownload/openTrigger',
-    assignFileId = 'bulkDownload/assignFileId',
+    assignFileId = 'bulkDownload/assignFileId'
 }

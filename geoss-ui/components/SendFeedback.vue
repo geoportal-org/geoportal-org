@@ -1,5 +1,5 @@
 <template>
-    <a target="_blank" class="send-feedback" href="http://goo.gl/forms/03ehhCS8lMm8eQV22">
+    <a class="send-feedback" href="/community/guest/feedback">
         <i class="icomoon-envelope"></i>
         <span>{{ $tc('sendFeedback') }}</span>
     </a>

@@ -3,49 +3,43 @@
         <div class="custom-download__title">{{ $tc('customDownloadOptionsPopup.title') }}:</div>
         <div class="custom-download__params">
             <div class="custom-download__param">
-                <label :title="$tc('customDownloadOptionsPopup.outputDownloadFormat')"
-                    class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.format') }}:</label>
-                <CustomSelect class="custom-download__param-select" v-model="format" :clearable="false"
-                    :options="options.formatOptions" :placeholder="$tc('customDownloadOptionsPopup.format')" />
+                <label :title="$tc('customDownloadOptionsPopup.outputDownloadFormat')" class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.format') }}:</label>
+                <CustomSelect
+                    class="custom-download__param-select"
+                    v-model="format"
+                    :clearable="false"
+                    :options="options.formatOptions"
+                    :placeholder="$tc('customDownloadOptionsPopup.format')" />
             </div>
             <div class="custom-download__param">
-                <label :title="$tc('customDownloadOptionsPopup.imageResolutionInPixels')"
-                    class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.outputSize') }}
-                    (height,width):</label>
-                <input class="custom-download__param-input" type="text" v-model="outputSize"
-                    :class="{ invalid: !outputSizeValid }" @input="onOutputSizeChange()" />
+                <label :title="$tc('customDownloadOptionsPopup.imageResolutionInPixels')" class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.outputSize') }} (height,width):</label>
+                <input class="custom-download__param-input" type="text" v-model="outputSize" :class="{invalid: !outputSizeValid}" @input="onOutputSizeChange()" />
             </div>
             <div class="custom-download__param">
-                <label :title="$tc('customDownloadOptionsPopup.coordinateReferenceSystemOfSubset')"
-                    class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetCRS') }}:</label>
-                <CustomSelect class="custom-download__param-select" v-model="subsetCRS" @input="onSubsetCRSChange()"
-                    :clearable="false" :options="options.subsetCRSOptions"
+                <label :title="$tc('customDownloadOptionsPopup.coordinateReferenceSystemOfSubset')" class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetCRS') }}:</label>
+                <CustomSelect
+                    class="custom-download__param-select"
+                    v-model="subsetCRS"
+                    @input="onSubsetCRSChange()"
+                    :clearable="false"
+                    :options="options.subsetCRSOptions"
                     :placeholder="$tc('customDownloadOptionsPopup.subsetCRS')" />
             </div>
             <div class="custom-download__param" v-show="subsetCRS">
-                <label :title="$tc('customDownloadOptionsPopup.subsetLowerCoordinateInSpecifiedCRSFormat')"
-                    class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetLowerCoordinate') }}
-                    ({{ subsetCoordinatesTitle }}):</label>
-                <input class="custom-download__param-input" type="text" v-model="subsetLowerCoordinate"
-                    :class="{ invalid: !subsetCoordinatesValid(subsetLowerCoordinate) }" :disabled="!subsetCRS"
-                    @input="onSubsetCoordinates(subsetLowerCoordinate)" :title="subsetCoordinatesError + ''" />
+                <label :title="$tc('customDownloadOptionsPopup.subsetLowerCoordinateInSpecifiedCRSFormat')" class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetLowerCoordinate') }} ({{subsetCoordinatesTitle}}):</label>
+                <input class="custom-download__param-input" type="text" v-model="subsetLowerCoordinate" :class="{invalid: !subsetCoordinatesValid(subsetLowerCoordinate)}"
+                    :disabled="!subsetCRS" @input="onSubsetCoordinates(subsetLowerCoordinate)" :title="subsetCoordinatesError" />
             </div>
             <div class="custom-download__param" v-show="subsetCRS">
-                <label :title="$tc('customDownloadOptionsPopup.subsetUpperCoordinateInSpecifiedCRSFormat')"
-                    class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetUpperCoordinate') }}
-                    ({{ subsetCoordinatesTitle }}):</label>
-                <input class="custom-download__param-input" type="text" v-model="subsetUpperCoordinate"
-                    :class="{ invalid: !subsetCoordinatesValid(subsetUpperCoordinate) }" :disabled="!subsetCRS"
-                    @input="onSubsetCoordinates(subsetUpperCoordinate)" :title="subsetCoordinatesError + ''" />
+                <label :title="$tc('customDownloadOptionsPopup.subsetUpperCoordinateInSpecifiedCRSFormat')" class="custom-download__param-title">{{ $tc('customDownloadOptionsPopup.subsetUpperCoordinate') }} ({{subsetCoordinatesTitle}}):</label>
+                <input class="custom-download__param-input" type="text" v-model="subsetUpperCoordinate" :class="{invalid: !subsetCoordinatesValid(subsetUpperCoordinate)}"
+                    :disabled="!subsetCRS" @input="onSubsetCoordinates(subsetUpperCoordinate)" :title="subsetCoordinatesError" />
             </div>
         </div>
         <div class="text-center margin-top-30">
-            <button v-if="!isBulkDownloadEnabled" class="green-btn-default"
-                :disabled="!outputSizeValid || !subsetCoordinatesValid" @click="download()">{{
-                    $tc('customDownloadOptionsPopup.download') }}</button>
-            <button v-if="isBulkDownloadEnabled && !bookmarksMode"
-                class="green-btn-default custom-download__add-to-bulk-download" @click="addToBulkDownload()"
-                :disabled="!outputSizeValid || !subsetCoordinatesValid || !isSignedIn">
+            <button class="green-btn-default" :disabled="!outputSizeValid || !subsetCoordinatesValid" @click="download()">{{ $tc('customDownloadOptionsPopup.download') }}</button>
+            <button v-if="isBulkDownloadEnabled && !bookmarksMode" class="green-btn-default custom-download__add-to-bulk-download" @click="addToBulkDownload()"
+                    :disabled="!outputSizeValid || !subsetCoordinatesValid || !isSignedIn" :title="isSignedIn ? $tc('customDownloadOptionsPopup.addToDownloads') : $tc('dabResult.thisOptionAvailableForSignedIn')">
                 <i class="plus-icon"></i>
                 {{ $tc('customDownloadOptionsPopup.addToDownloads') }}
             </button>
@@ -65,18 +59,21 @@ import { GeneralGetters } from '@/store/general/general-getters';
 import PopupCloseService from '@/services/popup-close.service';
 import { BulkDownloadLink } from '@/interfaces/BulkDownloadLink';
 import LogService from '@/services/log.service';
+import NotificationService from '@/services/notification.service';
+import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue';
+import { PopupActions } from '@/store/popup/popup-actions';
 
 @Component
 export default class DabResultCustomDownloadComponent extends Vue {
-    @Prop({ default: null, type: Object }) public options!: any;
-    @Prop({ default: null, type: String }) public resultId!: string;
-    @Prop({ default: null, type: String }) public resultOrgName!: string;
-    @Prop({ default: null, type: String }) public resultTitle!: string;
-    @Prop({ default: false, type: Boolean }) public bookmarksMode!: boolean;
+    @Prop({ default: null, type: Object}) public options!: any;
+    @Prop({ default: null, type: String}) public resultId!: string;
+    @Prop({ default: null, type: String}) public resultOrgName!: string;
+    @Prop({ default: null, type: String}) public resultTitle!: string;
+    @Prop({ default: false, type: Boolean}) public bookmarksMode!: boolean;
 
-    public format: string = null;
+    public format: any = null;
     public outputSize: string = '128,256';
-    public subsetCRS: string = null;
+    public subsetCRS: any = null;
     public subsetLowerCoordinate: string = '';
     public subsetUpperCoordinate: string = '';
 
@@ -85,13 +82,13 @@ export default class DabResultCustomDownloadComponent extends Vue {
     public subsetUpperCoordinateEdited = false;
 
     public subsetCoordinatesTitle = '';
-    public subsetCoordinatesError = null;
+    public subsetCoordinatesError: any = null;
 
     get isBulkDownloadEnabled() {
         return this.$store.getters[GeneralGetters.isBulkDownloadEnabled];
     }
 
-    public subsetCoordinatesValid(coordinate) {
+    public subsetCoordinatesValid(coordinate: any) {
         const values = coordinate.split(',');
         let valid = (!this.subsetCRS || (coordinate && values.length === 2 && !isNaN(parseInt(values[0], 10)) && !isNaN(parseInt(values[1], 10))));
         if (valid && this.subsetCRS) {
@@ -116,7 +113,7 @@ export default class DabResultCustomDownloadComponent extends Vue {
         this.outputSizeEdited = true;
     }
 
-    public onSubsetCoordinates(coordinate) {
+    public onSubsetCoordinates(coordinate: any) {
         if (coordinate === this.subsetLowerCoordinate) {
             this.subsetLowerCoordinateEdited = true;
         } else if (coordinate === this.subsetUpperCoordinate) {
@@ -125,7 +122,7 @@ export default class DabResultCustomDownloadComponent extends Vue {
     }
 
     public onSubsetCRSChange() {
-        const index = this.options.subsetCRSOptions.findIndex(option => option.id === this.subsetCRS);
+        const index = this.options.subsetCRSOptions.findIndex((option: any) => option.id === this.subsetCRS);
         if (index !== 0) {
             const subsetCRSOption = this.options.subsetCRSOptions[index];
 
@@ -151,6 +148,13 @@ export default class DabResultCustomDownloadComponent extends Vue {
         }
     }
 
+    public async openBulkDownloadPopup(e: any) {
+        e.preventDefault();
+        const title = this.$tc('popupTitles.downloadsList');
+        await this.$store.dispatch(PopupActions.openPopup, {contentId: 'bulk-download', title, component: BulkDownloadPopup});
+        return false;
+    }
+
     public download() {
         const downloadFile: DownloadFile = {
             format: '',
@@ -168,7 +172,25 @@ export default class DabResultCustomDownloadComponent extends Vue {
         this.$store.dispatch(FileDownloadActions.addFile, downloadFile);
         PopupCloseService.closePopup('custom-download');
 
-        LogService.logElementClick(null, null, this.resultId, null, 'custom-download', null, this.resultOrgName, this.resultTitle);
+        NotificationService.show(
+            `${this.$tc('popupTitles.downloadList')}`,
+            `${this.$tc('popupContent.addedCustomToDownloadList')}`,
+            10000,
+            null,
+            9999,
+            'success'
+        );
+
+        setTimeout(() => {
+            const openBulkDownloadPopup = document.querySelectorAll('.openBulkDownloadPopup');
+            if (openBulkDownloadPopup && openBulkDownloadPopup.length) {
+                openBulkDownloadPopup.forEach(button => {
+                    button.addEventListener('click', this.openBulkDownloadPopup);
+                });
+            }
+        }, 200);
+
+        LogService.logElementClick(null, null, this.resultId, null, 'Custom download', null, this.resultOrgName, this.resultTitle);
     }
 
     public addToBulkDownload() {
@@ -181,7 +203,26 @@ export default class DabResultCustomDownloadComponent extends Vue {
         this.$store.dispatch(BulkDownloadActions.addLink, link);
         PopupCloseService.closePopup('custom-download');
 
-        LogService.logElementClick(null, null, this.resultId, null, 'custom-to-bulk-download', null, this.resultOrgName, this.resultTitle);
+
+        NotificationService.show(
+            `${this.$tc('popupTitles.downloadList')}`,
+            `${this.$tc('popupContent.addedToDownloadList')}`,
+            10000,
+            null,
+            9999,
+            'success'
+        );
+
+        setTimeout(() => {
+            const openBulkDownloadPopup = document.querySelectorAll('.openBulkDownloadPopup');
+            if (openBulkDownloadPopup && openBulkDownloadPopup.length) {
+                openBulkDownloadPopup.forEach(button => {
+                    button.addEventListener('click', this.openBulkDownloadPopup);
+                });
+            }
+        }, 200);
+
+        LogService.logElementClick(null, null, this.resultId, null, 'Custom to bulk download', null, this.resultOrgName, this.resultTitle);
     }
 
     get outputSizeValid() {
@@ -248,7 +289,6 @@ export default class DabResultCustomDownloadComponent extends Vue {
         &-select,
         &-input {
             width: 250px;
-
             &[type="range"] {
                 -webkit-appearance: slider-horizontal;
             }
@@ -316,8 +356,7 @@ export default class DabResultCustomDownloadComponent extends Vue {
         top: 2px;
         width: 18px;
 
-        &::before,
-        &::after {
+        &::before, &::after {
             background: #fff;
             content: "";
             height: 2px;

@@ -12,5 +12,5 @@ export enum IrisFiltersActions {
     setContainerVisible = 'irisFilters/setContainerVisible',
     toggleContainerVisible = 'irisFilters/toggleContainerVisible',
     setIrisFiltersAvailable = 'irisFilters/setIrisFiltersAvailable',
-    reset = 'irisFilters/reset',
+    reset = 'irisFilters/reset'
 }

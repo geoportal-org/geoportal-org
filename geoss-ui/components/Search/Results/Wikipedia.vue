@@ -2,26 +2,18 @@
     <div>
         <div class="wikipedia-results" :class="{ 'with-placeholder': wikipediaResultsPlaceholders }">
             <div v-for="(result, index) of wikipediaResults" :key="result.id" class="wikipedia-result">
-                <div class="wikipedia-result__wrapper"
+                <div class="wikipedia-result__wrapper" v-show="resultIdDetails !== result.id"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'wikipedia-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
-                    <div class="wikipedia-result__image"
-                        :class="{ 'wikipedia-result__image--default': (getImage(result.logo) !== result.logo) }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="result.title"
-                            v-image-preview />
-                    </div>
                     <div class="wikipedia-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="wikipedia-result__title line-clamp--2">{{ result.title }}
+                        <div v-if="result.title" v-line-clamp:20="2" class="wikipedia-result__title">{{ result.title }}
                         </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'"
-                            class="wikipedia-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
+                        <div v-if="result.summary && typeof result.summary === 'string'" v-line-clamp:20="3"
+                            class="wikipedia-result__summary" :class="{ 'checkbox-active': checkboxActive }"
                             v-html-to-text="result.summary"></div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
-            </div>
-            <div v-if="wikipediaResultsPlaceholders" class="wikipedia-result placeholder">
-                <img :src="`/svg/information-gray.svg`" alt="WIKIPEDIA" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
             </div>
         </div>
     </div>
@@ -44,8 +36,6 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsWikipediaComponent extends Vue {
     [x: string]: any;
-    public currentOpenId: string = ''
-
     get wikipediaResults() {
         return (this.$store.getters[SearchGetters.wikipediaResults] ? this.$store.getters[SearchGetters.wikipediaResults].entry : []);
     }
@@ -63,8 +53,6 @@ export default class SearchResultsWikipediaComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
-        this.currentOpenId = id
-
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
@@ -91,15 +79,8 @@ export default class SearchResultsWikipediaComponent extends Vue {
 }
 
 .wikipedia-result {
-    width: calc(50% - 2.5px);
-    margin-bottom: 5px;
-
-    &:last-child,
-    &:nth-last-of-type(1),
-    &:nth-last-of-type(2) {
-        margin-bottom: 0;
-    }
-
+    width: 100%;
+    margin: 0 2px 5px;
 
     @media (max-width: $breakpoint-sm) {
         width: 100%;
@@ -118,7 +99,7 @@ export default class SearchResultsWikipediaComponent extends Vue {
         }
 
         img {
-            width: 60%;
+            max-width: 60%;
             max-height: 100%;
             margin: 0 auto;
             height: auto;
@@ -126,7 +107,6 @@ export default class SearchResultsWikipediaComponent extends Vue {
     }
 
     &__wrapper {
-        height: 125px;
         display: flex;
         position: relative;
 
@@ -142,23 +122,12 @@ export default class SearchResultsWikipediaComponent extends Vue {
         }
 
         &.details-shown {
-            &:after {
-                display: block;
-            }
+            height: 0;
         }
 
         &:hover,
         &--highlighted {
-            box-shadow: 0 0 20px white;
-            background-color: white;
-
-            &:after {
-                border-top-color: white;
-            }
-        }
-
-        &--underemphasize {
-            opacity: 0.85;
+            outline: 2px solid $blue;
         }
     }
 
@@ -171,7 +140,6 @@ export default class SearchResultsWikipediaComponent extends Vue {
         justify-content: center;
         align-items: center;
         flex: 0 0 auto;
-        position: relative;
 
         &--default {
             padding: 10px;
@@ -184,8 +152,8 @@ export default class SearchResultsWikipediaComponent extends Vue {
     }
 
     &__text-data {
-        background: $white-transparent;
-        padding: 10px;
+        background: $white;
+        padding: 15px;
         flex: 1 1 auto;
         overflow: hidden;
         cursor: pointer;
@@ -205,13 +173,6 @@ export default class SearchResultsWikipediaComponent extends Vue {
         width: auto;
         display: block;
         color: #777;
-        font-style: italic;
-
-        span+span {
-            &:before {
-                content: ', '
-            }
-        }
     }
 
     &__summary {

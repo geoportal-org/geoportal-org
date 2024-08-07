@@ -4,7 +4,7 @@ const state = () => ({
     authToken: null,
     groupId: null,
     bookmarks: [] as string[],
-    savedRuns: [],
+    savedRuns: []
 })
 
 const getters = {
@@ -25,7 +25,7 @@ const getters = {
     },
     savedRuns: (state: any) => {
         return state.savedRuns
-    },
+    }
 }
 
 const mutations = {
@@ -39,7 +39,7 @@ const mutations = {
         state.bookmarks = state.bookmarks.filter(
             (item: { targetId: string }) => targetId !== item.targetId
         )
-    },
+    }
 }
 
 const actions = {
@@ -63,7 +63,7 @@ const actions = {
     },
     removeBookmark({ commit }: any, targetId: string) {
         commit('removeBookmark', targetId)
-    },
+    }
 }
 
 export default {
@@ -71,5 +71,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

@@ -1,9 +1,6 @@
 <template>
-    <div class="popup"
-        :class="{ visible: visible, 'on-top': (currentQueueItem && currentQueueItem.contentId === 'dab-request-too-long') }">
-        <div class="popup__wrapper"
-            v-click-outside="{ fn: closePopupOnClickOutside, excludeSelectors: '.custom-select__container, .spinner, .tutorial-tag, .tutorial-mode, .tutorial-off' }"
-            :class="`${currentQueueItem ? currentQueueItem.contentId + '-popup' : ''}`">
+    <div class="popup" :class="{visible: visible, 'on-top': (currentQueueItem && (currentQueueItem.contentId === 'dab-request-too-long' || currentQueueItem.contentId === 'close-protection'))}">
+        <div class="popup__wrapper" v-click-outside="{fn: closePopupOnClickOutside, excludeSelectors: '.custom-select__container, .spinner, .tutorial-tag, .tutorial-mode, .tutorial-off'}" :class="`${currentQueueItem ? currentQueueItem.contentId + '-popup' : ''}`">
             <div class="popup__header" v-if="currentQueueItem && currentQueueItem.title">
                 <span v-html="currentQueueItem.title"></span>
                 <button @click="closePopup()" class="cross" data-tutorial-tag="popup-close-button"></button>
@@ -18,7 +15,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
 
 import { PopupGetters } from '@/store/popup/popup-getters';
@@ -30,7 +26,7 @@ import TutorialTagsService from '@/services/tutorial-tags.service';
 @Component
 export default class PopupComponent extends Vue {
     public visible = false;
-    public currentQueueItem: { contentId: string, title: string, errorInfo?: any } | null = null;
+    public currentQueueItem: {contentId: string, title: string, errorInfo?: any, props?: any} | null = null;
 
     public closePopupOnClickOutside() {
         if (this.currentQueueItem && !this.currentQueueItem.errorInfo) {
@@ -39,14 +35,21 @@ export default class PopupComponent extends Vue {
     }
 
     public closePopup(response?: any) {
+        if (this.currentQueueItem && this.currentQueueItem.props && this.currentQueueItem.props.protected) {
+            const message: any = this.currentQueueItem.props.protected.message;
+            const closeConfirmation: boolean = confirm(message);
+            if (!closeConfirmation) {
+                return;
+            }
+        }
         if (this.visible) {
             this.visible = false;
             TutorialTagsService.refreshTagsGroup('popup-', false);
             setTimeout(() => {
                 if (response) {
-                    this.$store.dispatch(PopupActions.closePopupWithResponse, { contentId: this.currentQueueItem.contentId, response });
+                    this.$store.dispatch(PopupActions.closePopupWithResponse, { contentId: this.currentQueueItem?.contentId, response });
                 } else {
-                    this.$store.dispatch(PopupActions.closePopup, this.currentQueueItem.contentId);
+                    this.$store.dispatch(PopupActions.closePopup, this.currentQueueItem?.contentId);
                 }
             }, Timers.closePopup);
         }
@@ -93,7 +96,7 @@ export default class PopupComponent extends Vue {
     }
 
     private mounted() {
-        PopupCloseService.eventBus.$on('close', ({ contentId, response }: { contentId: string, response?: any }) => {
+        PopupCloseService.eventBus.$on('close', ({contentId, response}: {contentId: string, response?: any}) => {
             if (this.currentQueueItem && this.currentQueueItem.contentId === contentId) {
                 this.closePopup(response);
             } else {
@@ -123,11 +126,11 @@ export default class PopupComponent extends Vue {
     align-items: center;
     background-color: rgba(0, 0, 0, 0);
     transition: background-color 400ms ease-in-out,
-        opacity 400ms ease-in-out,
-        width 0ms 400ms ease-in-out,
-        height 0ms 400ms ease-in-out,
-        top 0ms 400ms ease-in-out,
-        left 0ms 400ms ease-in-out;
+                opacity 400ms ease-in-out,
+                width 0ms 400ms ease-in-out,
+                height 0ms 400ms ease-in-out,
+                top 0ms 400ms ease-in-out,
+                left 0ms 400ms ease-in-out;
 
     &.visible {
         width: 100%;
@@ -136,7 +139,7 @@ export default class PopupComponent extends Vue {
         left: 0%;
         padding: 15px 0;
         transition: opacity 300ms ease-in-out,
-            background-color 300ms ease-in-out;
+                    background-color 300ms ease-in-out;
         background-color: rgba(0, 0, 0, 0.8);
 
         .popup__wrapper {
@@ -165,6 +168,12 @@ export default class PopupComponent extends Vue {
         @media(max-width: $breakpoint-lg) {
             width: 90%;
             max-width: 370px;
+        }
+
+        &.dashboard-display-popup,
+        &.dashboard-creator-popup {
+            max-height: 90%;
+            max-width: 90%;
         }
     }
 

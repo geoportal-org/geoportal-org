@@ -8,5 +8,5 @@ export enum GeneralGetters {
     isEntryExtensionEnabled = 'general/isEntryExtensionEnabled',
     isExtendedViewEnabled = 'general/isExtendedViewEnabled',
     isBulkDownloadEnabled = 'general/isBulkDownloadEnabled',
-    widgetAccessKey = 'general/widgetAccessKey',
+    widgetAccessKey = 'general/widgetAccessKey'
 }

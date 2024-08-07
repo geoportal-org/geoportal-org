@@ -40,7 +40,7 @@ export default class SentinelLoginComponent extends Vue {
     }
 
     public downloadLinkClicked() {
-        LogService.logElementClick(null, null, this.result.id, null, 'direct-download', null, this.result.contributor.orgName, this.result.title);
+        LogService.logElementClick(null, null, this.result.id, null, 'Direct download', null, this.result.contributor.orgName, this.result.title);
     }
 }
 </script>

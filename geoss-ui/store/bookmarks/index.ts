@@ -1,6 +1,6 @@
 import to from '@/utils/to'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
-import { bookmarksTestIds } from '~/data/bookmarks-test'
+import { bookmarksTestIds } from '@/data/bookmarks-test'
 import { DataSources } from '@/interfaces/DataSources'
 
 const state = () => ({
@@ -13,7 +13,7 @@ const state = () => ({
     checkedResults: [],
     resultsOrigin: {},
     checkedOrigins: [],
-    mode: 'bookmarks',
+    mode: 'bookmarks'
 })
 
 const getters = {
@@ -46,7 +46,7 @@ const getters = {
     },
     mode: (state: any) => {
         return state.mode
-    },
+    }
 }
 
 const mutations = {
@@ -66,7 +66,7 @@ const mutations = {
                 result.rating = rating
             }
         }
-    },
+    }
 }
 
 const actions = {
@@ -93,7 +93,7 @@ const actions = {
             }
             commit('setStateProp', {
                 prop: 'checkedResults',
-                value: checkedResults,
+                value: checkedResults
             })
         } else {
             commit('setStateProp', { prop: 'checkedResults', value: [] })
@@ -115,7 +115,7 @@ const actions = {
         }
         commit('setStateProp', {
             prop: 'checkedResults',
-            value: checkedResults,
+            value: checkedResults
         })
     },
     async getResults({ state, commit }: any) {
@@ -157,7 +157,7 @@ const actions = {
             const resultsOrigin: { [key: string]: any } = {
                 byType: {},
                 byId: {},
-                byName: {}, // dab occasionaly changes ID so we should try to compare names
+                byName: {} // dab occasionaly changes ID so we should try to compare names
             }
             let bookmarks: Array<any> | string[] = []
             for (const dataType of dataTypes) {
@@ -190,7 +190,7 @@ const actions = {
                             (result) => result.id === item.targetId + ''
                         )
                     ),
-                    currMap: item.currMap || 'addsat',
+                    currMap: item.currMap || 'addsat'
                 }
                 if (item.name) {
                     resultsOrigin.byName[
@@ -203,7 +203,7 @@ const actions = {
                                 (result) => result.title === item.name
                             )
                         ),
-                        currMap: item.currMap || 'addsat',
+                        currMap: item.currMap || 'addsat'
                     }
                 }
             }
@@ -258,7 +258,7 @@ const actions = {
             commit('setStateProp', { prop: 'results', value: cleanResults })
             commit('setStateProp', {
                 prop: 'resultsOrigin',
-                value: resultsOrigin,
+                value: resultsOrigin
             })
             commit('setStateProp', { prop: 'checkedResults', value: [] })
             commit('setStateProp', { prop: 'checkAll', value: false })
@@ -266,7 +266,7 @@ const actions = {
             if (!state.pageOffset) {
                 commit('setStateProp', {
                     prop: 'resultsTotal',
-                    value: data.totalCount,
+                    value: data.totalCount
                 })
             }
             commit('setStateProp', { prop: 'resultsLoading', value: false })
@@ -331,7 +331,7 @@ const actions = {
     },
     updateResultRating({ commit }: any, data: { id: string; rating: any }) {
         commit('updateResultRating', data)
-    },
+    }
 }
 
 export default {
@@ -339,5 +339,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

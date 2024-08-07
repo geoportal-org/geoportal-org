@@ -17,13 +17,13 @@ const NotificationService = {
             duration,
             id,
             zIndex,
-            style,
+            style
         })
     },
 
     hide(id: string) {
         NotificationService.eventBus.$emit('hide', id)
-    },
+    }
 }
 
 export default NotificationService

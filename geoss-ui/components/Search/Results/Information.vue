@@ -2,30 +2,18 @@
     <div>
         <div class="information-results" :class="{ 'with-placeholder': informationResultsPlaceholders }">
             <div v-for="(result, index) of informationResults" :key="result.id" class="information-result">
-                <div class="information-result__wrapper"
+                <div class="information-result__wrapper" v-show="resultIdDetails !== result.id"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'information-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
-                    <div class="information-result__image"
-                        :class="{ 'information-result__image--default': (getImage(result.logo) !== result.logo) }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="result.title"
-                            v-image-preview />
-                    </div>
                     <div class="information-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="information-result__title line-clamp--2">{{ result.title }}
+                        <div v-if="result.title" v-line-clamp:20="2" class="information-result__title">{{ result.title }}
                         </div>
                         <div v-if="result.contributor && result.contributor.orgName"
-                            class="information-result__contributor line-clamp--1">({{ $tc('dabResult.organisation') }}: {{
-                                result.contributor.orgName }})
-                        </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'"
-                            class="information-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
-                            v-html-to-text="result.summary"></div>
+                            class="information-result__contributor" v-line-clamp:20="1">
+                            {{ $tc('dabResult.organisation') }}: {{ result.contributor.orgName }}</div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId"/>
-            </div>
-            <div v-if="informationResultsPlaceholders" class="information-result placeholder">
-                <img :src="`/svg/information-gray.svg`" alt="INFORMATION" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
             </div>
         </div>
     </div>
@@ -48,8 +36,6 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsInformationComponent extends Vue {
     [x: string]: any;
-    public currentOpenId: string = ''
-
     get informationResults() {
         return (this.$store.getters[SearchGetters.informationResults] ? this.$store.getters[SearchGetters.informationResults].entry : []);
     }
@@ -67,7 +53,6 @@ export default class SearchResultsInformationComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
-        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
@@ -94,14 +79,8 @@ export default class SearchResultsInformationComponent extends Vue {
 }
 
 .information-result {
-    width: calc(50% - 2.5px);
-    margin-bottom: 5px;
-
-    &:last-child,
-    &:nth-last-of-type(1),
-    &:nth-last-of-type(2) {
-        margin-bottom: 0;
-    }
+    width: 100%;
+    margin: 0 2px 5px;
 
 
     @media (max-width: $breakpoint-sm) {
@@ -121,7 +100,7 @@ export default class SearchResultsInformationComponent extends Vue {
         }
 
         img {
-            width: 60%;
+            max-width: 60%;
             max-height: 100%;
             margin: 0 auto;
             height: auto;
@@ -129,7 +108,6 @@ export default class SearchResultsInformationComponent extends Vue {
     }
 
     &__wrapper {
-        height: 125px;
         display: flex;
         position: relative;
 
@@ -145,23 +123,12 @@ export default class SearchResultsInformationComponent extends Vue {
         }
 
         &.details-shown {
-            &:after {
-                display: block;
-            }
+            height: 0;
         }
 
         &:hover,
         &--highlighted {
-            box-shadow: 0 0 20px white;
-            background-color: white;
-
-            &:after {
-                border-top-color: white;
-            }
-        }
-
-        &--underemphasize {
-            opacity: 0.85;
+            outline: 2px solid $blue;
         }
     }
 
@@ -174,7 +141,6 @@ export default class SearchResultsInformationComponent extends Vue {
         justify-content: center;
         align-items: center;
         flex: 0 0 auto;
-        position: relative;
 
         &--default {
             padding: 10px;
@@ -187,8 +153,8 @@ export default class SearchResultsInformationComponent extends Vue {
     }
 
     &__text-data {
-        background: $white-transparent;
-        padding: 10px;
+        background: $white;
+        padding: 15px;
         flex: 1 1 auto;
         overflow: hidden;
         cursor: pointer;
@@ -208,7 +174,6 @@ export default class SearchResultsInformationComponent extends Vue {
         width: auto;
         display: block;
         color: #777;
-        font-style: italic;
     }
 
     &__summary {

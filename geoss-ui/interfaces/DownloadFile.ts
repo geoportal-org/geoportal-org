@@ -18,5 +18,5 @@ export interface DownloadFile {
     progressData: {
         timeout: any
         promise: Promise<any>
-    }
+    } | any
 }

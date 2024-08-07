@@ -11,7 +11,7 @@ const state = () => ({
     w3wKey: null,
     userDabBaseUrl: '',
     internalOpenSearchUrl: '',
-    defaultSourceName: null,
+    defaultSourceName: null
 })
 
 const getters = {
@@ -53,13 +53,13 @@ const getters = {
     },
     defaultSourceName: (state: any) => {
         return state.defaultSourceName
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -101,7 +101,7 @@ const actions = {
     },
     setDefaultSourceName: (context: any, value: string) => {
         context.commit('setStateProp', { prop: 'defaultSourceName', value })
-    },
+    }
 }
 
 export default {
@@ -109,5 +109,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

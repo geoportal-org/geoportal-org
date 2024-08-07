@@ -1,8 +1,7 @@
 import { BulkDownloadLink } from '@/interfaces/BulkDownloadLink'
-
 const state = () => ({
     links: [] as BulkDownloadLink[],
-    openTrigger: false as boolean,
+    openTrigger: false as boolean
 })
 
 const updateSessionStorage = () => {
@@ -15,7 +14,7 @@ const getters = {
     },
     openTrigger: (state: any) => {
         return state.openTrigger
-    },
+    }
 }
 
 const mutations = {
@@ -50,7 +49,7 @@ const mutations = {
             state.links[fileIndex].assignedFileId = fileId
         }
         updateSessionStorage()
-    },
+    }
 }
 
 const actions = {
@@ -68,7 +67,7 @@ const actions = {
     },
     assignFileId({ commit }: any, fileId: number) {
         commit('assignFileId', fileId)
-    },
+    }
 }
 
 export default {
@@ -76,5 +75,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

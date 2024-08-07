@@ -30,5 +30,5 @@ export enum GranulaFiltersGetters {
     availableContinuous = 'granulaFilters/availableContinuous',
     availableInteger = 'granulaFilters/availableInteger',
     shareParams = 'granulaFilters/shareParams',
-    saveParams = 'granulaFilters/saveParams',
+    saveParams = 'granulaFilters/saveParams'
 }

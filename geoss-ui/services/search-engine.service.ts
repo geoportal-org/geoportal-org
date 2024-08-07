@@ -1,10 +1,10 @@
-import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
-import { MyWorkspaceGetters } from '~/store/myWorkspace/my-workspace-getters'
-import { BaseUrl, AppVueObj, Liferay } from '~/data/global'
-import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters'
-import { FacetedFiltersGetters } from '~/store/facetedFilters/faceted-filters-getters'
-import { GranulaFiltersGetters } from '~/store/granulaFilters/granula-filters-getters'
-import { IrisFiltersGetters } from '~/store/irisFilters/iris-filters-getters'
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
+import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters'
+import { BaseUrl, AppVueObj, Liferay } from '@/data/global'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
+import { FacetedFiltersGetters } from '@/store/facetedFilters/faceted-filters-getters'
+import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters'
+import { IrisFiltersGetters } from '@/store/irisFilters/iris-filters-getters'
 import { MapGetters } from '@/store/map/map-getters'
 import { SearchGetters } from '@/store/search/search-getters'
 import UtilsService from './utils.service'
@@ -67,7 +67,7 @@ const SearchEngineService = {
             information: SearchEngineService.getInternalOpenSearchUrl(),
             zenodo: SearchEngineService.getServiceZenodoUrl(),
             wikipedia: SearchEngineService.getInternalOpenSearchUrl(),
-            services: SearchEngineService.getInternalOpenSearchUrl(),
+            services: SearchEngineService.getInternalOpenSearchUrl()
         }
     },
 
@@ -118,7 +118,7 @@ const SearchEngineService = {
             originalKmlFileUrl = window.location.origin + originalKmlFileUrl
         }
         return SearchEngineService.getResourceUrl('LAYER_KML', {
-            url: originalKmlFileUrl,
+            url: originalKmlFileUrl
         })
     },
 
@@ -127,13 +127,13 @@ const SearchEngineService = {
             originalKmzFileUrl = window.location.origin + originalKmzFileUrl
         }
         return SearchEngineService.getResourceUrl('LAYER_KMZ', {
-            url: originalKmzFileUrl,
+            url: originalKmzFileUrl
         })
     },
 
     getLegendAccessibilityUrl(url: string) {
         return SearchEngineService.getResourceUrl('LEGEND_ACCESSIBILITY', {
-            url,
+            url
         })
     },
 
@@ -148,13 +148,13 @@ const SearchEngineService = {
             organized: form.organized,
             adequately: form.adequately,
             search_criteria: form.search_criteria,
-            visualization: form.visualization,
+            visualization: form.visualization
         })
     },
 
     getBookmarkedFeedUrl(targetIds: string) {
         return SearchEngineService.getResourceUrl('BOOKMARKED_FEED', {
-            targetIds,
+            targetIds
         })
     },
 
@@ -169,7 +169,7 @@ const SearchEngineService = {
     getCheckLayerFileUrl(urlToCheck: string, type: string) {
         return SearchEngineService.getResourceUrl('CHECK_LAYER_FILE', {
             url: urlToCheck,
-            type,
+            type
         })
     },
 
@@ -177,13 +177,13 @@ const SearchEngineService = {
         return SearchEngineService.getResourceUrl('SEARCH_QUERY_PARAMS', {
             popularSearchId:
                 AppVueObj.app.$store.getters[MyWorkspaceGetters.search]
-                    .popularSearchId,
+                    .popularSearchId
         })
     },
 
     getDhusProxyUrl(dhusResourceUrl: string) {
         return SearchEngineService.getResourceUrl('DHUS_PROXY', {
-            url: encodeURI(dhusResourceUrl),
+            url: encodeURI(dhusResourceUrl)
         })
     },
 
@@ -202,7 +202,7 @@ const SearchEngineService = {
             targetId,
             name,
             score,
-            comment,
+            comment
         })
     },
 
@@ -349,7 +349,7 @@ const SearchEngineService = {
             geoss_version: geossVersion,
             splashscreen_tooltips: splashscreenTooltips,
             dhus_username: dhusUsername,
-            dhus_password: dhusPassword,
+            dhus_password: dhusPassword
         })
     },
 
@@ -372,13 +372,13 @@ const SearchEngineService = {
         return SearchEngineService.getResourceUrl('SEARCH_SETTINGS', {
             groupId,
             savedSearchId,
-            popularSearchId,
+            popularSearchId
         })
     },
 
     getDabProvidersUrl() {
         return SearchEngineService.getResourceUrl('DATA_PROVIDERS', {})
-    },
+    }
 }
 
 export default SearchEngineService

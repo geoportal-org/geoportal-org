@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import { AppVueObj } from '~/data/global'
+import { AppVueObj } from '@/data/global'
 import { SearchActions } from '@/store/search/search-actions'
-import { $tc } from '~/plugins/i18n'
+import { $tc } from '@/plugins/i18n'
 
 const SpinnerService = {
     emitter: new Vue(),
@@ -25,7 +25,7 @@ const SpinnerService = {
             SearchActions.setLongRequestInfo,
             longRequestInfo
         )
-    },
+    }
 }
 
 export default SpinnerService

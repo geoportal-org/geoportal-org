@@ -2,17 +2,17 @@
     <div class="spinner" :class="{ visible: visible }">
         <div class="spinner__wrapper">
             <img class="spinner__img" :src="`/img/spinner.png`" alt="Spinner" />
-            <div v-show="text" class="spinner__text">{{ text }}</div>
-            <button v-show="showCancel" class="spinner__cancel-button" title="Cancel request"
-                @click="cancelRequest()"></button>
+            <div v-show="text || longRequestInfo" class="spinner__text">{{ text ? text : longRequestInfo}}</div>
+            <button v-show="showCancel" class="spinner__cancel-button" title="Cancel request" @click="cancelRequest()"></button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator';
 import SpinnerService from '@/services/spinner.service';
 import { GeneralApiService } from '@/services/general.api.service';
+import { SearchGetters } from '@/store/search/search-getters';
 
 @Component
 export default class SpinnerComponent extends Vue {
@@ -21,6 +21,10 @@ export default class SpinnerComponent extends Vue {
     public showCancel = false;
 
     private counter = 0;
+
+    get longRequestInfo() {
+		return this.$store.getters[SearchGetters.longRequestInfo];
+	}
 
     public cancelRequest() {
         GeneralApiService.cancelCurrentrequest();
@@ -86,14 +90,16 @@ export default class SpinnerComponent extends Vue {
     }
 
     &__text {
-        margin-left: 20px;
         color: #fff;
-        font-size: 52px;
+        font-size: 1.5em;
+        left: 50%;
+        top: calc(50% + 100px);
+        transform: translate(-50%, -50%);
+        position: absolute;
         white-space: nowrap;
 
         @media (max-width: $breakpoint-sm) {
-            font-size: 32px;
-            margin-left: 10px;
+            font-size: 1em;
         }
     }
 
@@ -112,8 +118,7 @@ export default class SpinnerComponent extends Vue {
             left: 5px;
         }
 
-        &:before,
-        &:after {
+        &:before, &:after {
             content: '';
             position: absolute;
             left: 5px;
@@ -139,7 +144,6 @@ export default class SpinnerComponent extends Vue {
         0% {
             transform: rotate(0deg);
         }
-
         100% {
             transform: rotate(360deg);
         }

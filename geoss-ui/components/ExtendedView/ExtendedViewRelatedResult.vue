@@ -64,7 +64,6 @@ export default class ExtendedViewRelatedResultComponent extends Vue {
         height: 95px;
         display: flex;
         position: relative;
-
         &:after {
             content: '';
             position: absolute;
@@ -107,7 +106,7 @@ export default class ExtendedViewRelatedResultComponent extends Vue {
     }
 
     &__text-data {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255 ,255 ,255, 0.9);
         padding: 5px;
         flex: 1 1 auto;
         overflow: hidden;

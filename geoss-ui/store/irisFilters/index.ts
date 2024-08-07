@@ -5,14 +5,14 @@ const state = () => ({
         { id: 'Ms', text: 'Surface wave magnitude' },
         { id: 'mb', text: 'Body wave magnitude' },
         { id: 'Mw', text: 'Moment magnitude' },
-        { id: 'all', text: 'ALL' },
+        { id: 'all', text: 'ALL' }
     ],
     sort: null,
     sortOptions: [
         { id: 'time', text: 'Time descending' },
         { id: 'time-asc', text: 'Time ascending' },
         { id: 'magnitude', text: 'Magnitude descending' },
-        { id: 'magnitude-asc', text: 'Magnitude ascending' },
+        { id: 'magnitude-asc', text: 'Magnitude ascending' }
     ],
     minMagnitude: null,
     maxMagnitude: null,
@@ -21,7 +21,7 @@ const state = () => ({
     dateFrom: '',
     dateTo: '',
     containerVisible: false,
-    irisFiltersAvailable: false,
+    irisFiltersAvailable: false
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -34,7 +34,7 @@ const paramsMap: { [key: string]: string } = {
     minDepth: 'mindepth',
     maxDepth: 'maxdepth',
     dateFrom: 'ts',
-    dateTo: 'te',
+    dateTo: 'te'
 }
 
 const saveParamsMap: { [key: string]: string } = {
@@ -45,7 +45,7 @@ const saveParamsMap: { [key: string]: string } = {
     minDepth: 'minDep',
     maxDepth: 'maxDep',
     dateFrom: 'dateFromIris',
-    dateTo: 'dateToIris',
+    dateTo: 'dateToIris'
 }
 
 const getters: { [key: string]: any } = {
@@ -73,7 +73,7 @@ const getters: { [key: string]: any } = {
             'magnitudeTypeOptions',
             'sortOptions',
             'containerVisible',
-            'irisFiltersAvailable',
+            'irisFiltersAvailable'
         ]
         for (const prop of Object.keys(initialState)) {
             if (
@@ -91,7 +91,7 @@ const getters: { [key: string]: any } = {
             params += '&'
         }
         return params
-    },
+    }
 }
 
 for (const key of Object.keys(initialState)) {
@@ -100,7 +100,7 @@ for (const key of Object.keys(initialState)) {
     }
 }
 
-const mutations: { [key: string]: any } = {
+const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
     },
@@ -108,19 +108,19 @@ const mutations: { [key: string]: any } = {
         for (const prop of Object.keys(initialState)) {
             state[prop] = JSON.parse(JSON.stringify(initialState[prop]))
         }
-    },
+    }
 }
 
 const actions: { [key: string]: any } = {
     toggleContainerVisible({ commit, getters }: any) {
         commit('setStateProp', {
             prop: 'containerVisible',
-            value: !getters.containerVisible,
+            value: !getters.containerVisible
         })
     },
     reset(context: any) {
         context.commit('resetState')
-    },
+    }
 }
 
 for (const key of Object.keys(initialState)) {
@@ -135,5 +135,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

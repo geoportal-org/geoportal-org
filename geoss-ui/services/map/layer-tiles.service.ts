@@ -36,14 +36,14 @@ const LayerTilesService: { [key: string]: any } = {
                         tileGrid: new AppVueObj.ol.tilegrid.WMTSTileGrid({
                             origin,
                             resolutions,
-                            matrixIds,
+                            matrixIds
                         }),
                         style: 'default',
-                        wrapX: true,
-                    }),
+                        wrapX: true
+                    })
                 })
             return LayerTilesService.osm.tileLayer
-        },
+        }
     },
 
     addsat: {
@@ -62,11 +62,11 @@ const LayerTilesService: { [key: string]: any } = {
                             AppVueObj.app.$store.getters[
                                 MapGetters.boxAccessToken
                             ]
-                        }`,
-                    }),
+                        }`
+                    })
                 })
             return LayerTilesService.addsat.tileLayer
-        },
+        }
     },
 
     mb_hybrid: {
@@ -85,11 +85,11 @@ const LayerTilesService: { [key: string]: any } = {
                             AppVueObj.app.$store.getters[
                                 MapGetters.boxAccessToken
                             ]
-                        }`,
-                    }),
+                        }`
+                    })
                 })
             return LayerTilesService.mb_hybrid.tileLayer
-        },
+        }
     },
 
     addhyb: {
@@ -108,11 +108,11 @@ const LayerTilesService: { [key: string]: any } = {
                             AppVueObj.app.$store.getters[
                                 MapGetters.boxAccessToken
                             ]
-                        }`,
-                    }),
+                        }`
+                    })
                 })
             return LayerTilesService.addhyb.tileLayer
-        },
+        }
     },
 
     oceanBasemap: {
@@ -126,11 +126,11 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
-                        url: 'http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer',
-                    } as any),
+                        url: 'http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer'
+                    } as any)
                 })
             return LayerTilesService.oceanBasemap.tileLayer
-        },
+        }
     },
 
     topographicBasemap: {
@@ -144,11 +144,11 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
-                        url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer',
-                    } as any),
+                        url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer'
+                    } as any)
                 })
             return LayerTilesService.topographicBasemap.tileLayer
-        },
+        }
     },
 
     WorldStreetBasemap: {
@@ -162,18 +162,18 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
-                        url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
-                    } as any),
+                        url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer'
+                    } as any)
                 }),
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.TileArcGISRest({
                         crossOrigin: 'Anonymous',
-                        url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer',
-                    } as any),
-                }),
+                        url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer'
+                    } as any)
+                })
             ]
             return LayerTilesService.WorldStreetBasemap.tileLayer
-        },
+        }
     },
 
     dark_all: {
@@ -187,11 +187,11 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
-                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
-                    }),
+                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
+                    })
                 })
             return LayerTilesService.dark_all.tileLayer
-        },
+        }
     },
 
     dark_nolabels: {
@@ -205,11 +205,11 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
-                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
-                    }),
+                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png'
+                    })
                 })
             return LayerTilesService.dark_nolabels.tileLayer
-        },
+        }
     },
 
     light_all: {
@@ -223,11 +223,11 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
-                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
-                    }),
+                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'
+                    })
                 })
             return LayerTilesService.light_all.tileLayer
-        },
+        }
     },
 
     light_nolabels: {
@@ -241,12 +241,12 @@ const LayerTilesService: { [key: string]: any } = {
                 new AppVueObj.ol.layer.Tile({
                     source: new AppVueObj.ol.source.XYZ({
                         crossOrigin: 'Anonymous',
-                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
-                    }),
+                        url: 'https://cartodb-basemaps-{1-4}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png'
+                    })
                 })
             return LayerTilesService.light_nolabels.tileLayer
-        },
-    },
+        }
+    }
 }
 
 export default LayerTilesService

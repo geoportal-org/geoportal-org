@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div class="search-container"
-            :class="{ 'active': containerActive, 'container-hidden': containerFullyHidden, 'in-transition': containerInTransition }">
-            <DraggableResizable :handles="['br']" :disabled="dragResizeDisabled" :min-height="300" :min-width="500"
-                :resizable="searchResultsActive" className="search-container__wrapper" parent="body" :offset-top="90"
-                :offset-right="searchResultsActive ? 90 : 0" :class="{ 'with-results': searchResultsActive }"
+        <div class="search-container" :class="{ 'active': containerActive, 'container-hidden': containerFullyHidden, 'in-transition': containerInTransition }">
+            <DraggableResizable :handles="['br']" :disabled="dragResizeDisabled" :min-height="300" :min-width="500" :resizable="searchResultsActive"
+                className="search-container__wrapper" parent="body" :offset-top="90" :offset-right="searchResultsActive ? 90 : 0"
+                :class="{'with-results': searchResultsActive}"
                 drag-handle=".drag-handle">
-                <button class="search-container-toggler" :class="{ 'container-fully-hidden': containerFullyHidden }"
+                <button
+                    class="search-container-toggler"
+                    :class="{ 'container-fully-hidden': containerFullyHidden }"
                     @click="toggleSearchContainer()"
                     :data-tutorial-tag="containerFullyHidden ? 'search-container-show' : 'search-container-hide'">
                     <span v-if="containerFullyHidden && searchResultsActive">{{ $tc('general.searchResults') }}</span>
@@ -16,33 +17,27 @@
                 <div slot="handle" class="resize-icon">
                     <span></span>
                 </div>
-                <div :class="{ 'd-flex flex--wrap': !searchResultsActive }">
-                    <DataSourcesComponent v-show="searchResultsActive"
-                        :class="{ 'disable-container': generalFiltersInChange }" />
-                    <SearchBar :class="{ 'disable-container': generalFiltersInChange }" />
+                <div :class="{'d-flex flex--wrap': !searchResultsActive}">
+                    <DataSourcesComponent v-show="searchResultsActive" :class="{'disable-container': generalFiltersInChange}" />
+                    <SearchBar :class="{'disable-container': generalFiltersInChange}" />
                 </div>
                 <div ref="main-container" v-bar>
                     <div>
-                        <div :class="{ 'filters-sticky-margin': filtersSticky }">
-                            <SearchFilters :class="{ 'filters-sticky': filtersSticky }" />
-                            <SearchResultDabDetails :class="{ 'disable-container': generalFiltersInChange }"
-                                :separated="true" v-if="parentRef" :result="parentRef.entry" :index="0"
-                                :image="getImage(parentRef.entry.logo)" />
-                            <Workflow v-if="workflow && !workflowMapDraw" :workflow="workflow" />
-                            <CrRelations v-if="crRelationSrc" />
-                            <div v-if="!workflowMapDraw" :class="{ 'disable-container': generalFiltersInChange }"
-                                v-show="searchResultsActive" class="search-container__results">
+                        <div :class="{'filters-sticky-margin': filtersSticky}">
+                            <SearchFilters :class="{'filters-sticky': filtersSticky}" />
+                            <SearchResultDabDetails :class="{'disable-container': generalFiltersInChange}" :separated="true" v-if="parentRef" :result="parentRef.entry" :index="0" :image="getImage(parentRef.entry.logo)" />
+                            <Workflow v-if="workflow && !workflowMapDraw" :workflow="workflow"/>
+                            <CrRelations v-if="crRelationSrc"/>
+                            <div v-if="!workflowMapDraw" :class="{'disable-container': generalFiltersInChange}" v-show="searchResultsActive" class="search-container__results">
                                 <component :is="currentResultsContainer"></component>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="search-container__footer">
-                    <SeeOtherSources :class="{ 'disable-container': generalFiltersInChange }" />
-                    <PoweredBy v-if="isWidget" :class="{ 'disable-container': generalFiltersInChange }"
-                        v-show="searchResultsActive" />
-                    <SearchResultsPagination :class="{ 'disable-container': generalFiltersInChange }"
-                        v-show="searchResultsActive" />
+                    <SeeOtherSources :class="{'disable-container': generalFiltersInChange}" />
+                    <PoweredBy v-if="isWidget" :class="{'disable-container': generalFiltersInChange}" v-show="searchResultsActive" />
+                    <SearchResultsPagination :class="{'disable-container': generalFiltersInChange}" v-show="searchResultsActive" />
                 </div>
                 <SeeAlso v-if="windowWidth < 1200" />
             </DraggableResizable>
@@ -52,7 +47,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
 
 import SearchBar from '@/components/Search/SearchBar.vue';
@@ -82,7 +76,6 @@ import { IrisFiltersGetters } from '@/store/irisFilters/iris-filters-getters';
 import { SearchActions } from '@/store/search/search-actions';
 import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters';
 import UtilsService from '@/services/utils.service';
-import { Timers } from '@/data/timers';
 import { MapGetters } from '@/store/map/map-getters';
 import { DataSources } from '@/interfaces/DataSources';
 import { MapActions } from '@/store/map/map-actions';
@@ -128,7 +121,7 @@ export default class SearchContainerComponent extends Vue {
 
     public filtersSticky = false;
 
-    private scrollableContainer = null;
+    private scrollableContainer: any = null;
 
     get isWidget() {
         return this.$store.getters[GeneralGetters.isWidget];
@@ -226,22 +219,22 @@ export default class SearchContainerComponent extends Vue {
         TutorialTagsService.refreshTagsAll();
     }
 
-    @Watch('resultIdDetails')
-    private onResultIdDetails() {
-        if (this.resultIdDetails) {
-            const targetElem = document.querySelector(`[data-id="${this.resultIdDetails}"]`) as HTMLElement;
-            if (targetElem) {
-                if (this.$store.getters[GeneralFiltersGetters.containerVisible]) {
-                    this.$store.dispatch(GeneralFiltersActions.setContainerVisible, false);
-                }
-                setTimeout(() => {
-                    if (targetElem.offsetHeight + targetElem.offsetTop > this.scrollableContainer.offsetHeight + this.scrollableContainer.scrollTop) {
-                        UtilsService.scrollY(this.scrollableContainer, targetElem.offsetHeight + targetElem.offsetTop - this.scrollableContainer.offsetHeight, 40000);
-                    }
-                }, Timers.collapseTransition + 100);
-            }
-        }
-    }
+    // @Watch('resultIdDetails')
+    // private onResultIdDetails() {
+    // 	if (this.resultIdDetails) {
+    // 		const targetElem = document.querySelector(`[data-id="${this.resultIdDetails}"]`) as HTMLElement;
+    // 		if (targetElem) {
+    // 			if (this.$store.getters[GeneralFiltersGetters.containerVisible]) {
+    // 				this.$store.dispatch(GeneralFiltersActions.setContainerVisible, false);
+    // 			}
+    // 			setTimeout(() => {
+    // 				if (targetElem.offsetHeight + targetElem.offsetTop > this.scrollableContainer.offsetHeight + this.scrollableContainer.scrollTop) {
+    // 					UtilsService.scrollY(this.scrollableContainer, targetElem.offsetHeight + targetElem.offsetTop - this.scrollableContainer.offsetHeight, 40000);
+    // 				}
+    // 			}, Timers.collapseTransition + 100);
+    // 		}
+    // 	}
+    // }
 
     @Watch('clickedLayerId')
     private onClickedLayerId() {
@@ -303,10 +296,10 @@ export default class SearchContainerComponent extends Vue {
         const mainContainer = this.$refs['main-container'] as HTMLElement;
         this.scrollableContainer = mainContainer.querySelector('.vb-content') as HTMLElement;
 
-        const heightLess700 = window.matchMedia('(max-height: 700px)');
+        const heightLess1000 = window.matchMedia('(max-height: 1000px)');
 
         this.scrollableContainer.addEventListener('scroll', () => {
-            if (heightLess700.matches) {
+            if (heightLess1000.matches) {
                 this.filtersSticky = false;
             } else {
                 if (this.scrollableContainer.scrollTop !== 0) {
@@ -338,7 +331,7 @@ export default class SearchContainerComponent extends Vue {
         this.$store.dispatch(MapActions.removeBoundingLayers);
 
         if (this.currentResults && this.currentResults.entry) {
-            this.currentResults.entry.forEach((item, index) => {
+            this.currentResults.entry.forEach((item: any, index: number) => {
                 const layer = ResultService.getFeature(item, index);
 
                 const { boxes, pins } = ResultService.getBoundingBoxesAndPins(item);

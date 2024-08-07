@@ -13,5 +13,5 @@ export enum IrisFiltersGetters {
     irisFiltersAvailable = 'irisFilters/irisFiltersAvailable',
     stateMapped = 'irisFilters/stateMapped',
     shareParams = 'irisFilters/shareParams',
-    saveParams = 'irisFilters/saveParams',
+    saveParams = 'irisFilters/saveParams'
 }

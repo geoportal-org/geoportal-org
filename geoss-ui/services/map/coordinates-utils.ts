@@ -1,4 +1,4 @@
-import { AppVueObj } from '~/data/global'
+import { AppVueObj } from '@/data/global'
 
 const MapCoordinatesUtils = {
     parseCoordinates(coordinates: string | string[]) {
@@ -55,7 +55,7 @@ const MapCoordinatesUtils = {
                         coordinates[0][3],
                         'EPSG:3857',
                         'EPSG:4326'
-                    ),
+                    )
                 ]
 
                 const W = Math.min(converted[0][0], converted[2][0])
@@ -140,8 +140,8 @@ const MapCoordinatesUtils = {
                 [E, N],
                 [E, S],
                 [W, S],
-                [W, N],
-            ],
+                [W, N]
+            ]
         ]
     },
 
@@ -183,7 +183,7 @@ const MapCoordinatesUtils = {
             const values = value.trim().split(' ')
             polygonTab.push([
                 parseFloat(values[0]),
-                parseFloat(values[values.length - 1]),
+                parseFloat(values[values.length - 1])
             ])
         })
 
@@ -400,7 +400,7 @@ const MapCoordinatesUtils = {
         const N = coordinates[3]
         // in case of mixed ractangles with icons treat all items as rectangles
         return !MapCoordinatesUtils.isPoint(W, S, E, N)
-    },
+    }
 }
 
 export default MapCoordinatesUtils

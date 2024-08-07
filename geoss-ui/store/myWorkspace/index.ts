@@ -1,12 +1,12 @@
 const state = () => ({
     settings: {
-        dhusUsername: null,
+        dhusUsername: null
     },
     search: {
         popularSearchId: 901,
         savedSearchId: 0,
-        defaultSearch: true,
-    },
+        defaultSearch: true
+    }
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -39,7 +39,7 @@ const getters = {
             params += '&'
         }
         return params
-    },
+    }
 }
 
 const mutations = {
@@ -48,7 +48,7 @@ const mutations = {
     },
     setSettingsStateProp(state: any, data: { prop: any; value: any }) {
         state.settings[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -57,7 +57,7 @@ const actions = {
     },
     setDhusUsername(context: any, value: string) {
         context.commit('setSettingsStateProp', { prop: 'dhusUsername', value })
-    },
+    }
 }
 
 export default {
@@ -65,5 +65,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

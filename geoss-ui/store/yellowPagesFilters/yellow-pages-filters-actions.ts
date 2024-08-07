@@ -3,5 +3,5 @@ export enum YellowPagesFiltersActions {
     setOrderBy = 'yellowPagesFilters/setOrderBy',
     setPerPage = 'yellowPagesFilters/setPerPage',
     setPageOffset = 'yellowPagesFilters/setPageOffset',
-    getResults = 'yellowPagesFilters/getResults',
+    getResults = 'yellowPagesFilters/getResults'
 }

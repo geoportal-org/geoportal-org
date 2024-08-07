@@ -42,7 +42,8 @@
                 </div>
                 <div class="service-workflow__resource-data" v-for="input of workflowInputs" :key="input.id"
                     v-show="!isExpert(input.id) || (isExpert(input.id) && showExpertOptions)">
-                    <div class="d-flex flex--align-center">{{ input.name }} <span v-if="isRequired(input.id)">*</span></div>
+                    <div class="d-flex flex--align-center">{{ input.name }} <span v-if="isRequired(input.id)">*</span>
+                    </div>
                     <div>
                         <div
                             v-if="workflowResource && workflowResource[input.id] && workflowResource[input.id].length && !workflowResource[input.id][0].dataInput">
@@ -117,15 +118,15 @@
                         $tc('popupContent.fetchingPlatformsData') }}<span>.</span><span>.</span><span>.</span></small>
                 </div>
                 <div class="service-workflow__platforms-choice">
-                    <label v-for="platform of cloudPlatforms" :key="platform" :for="`platform_${platform}`"
-                        :class="{ active: platform === selectedPlatform, optimal: platform === optimalPlatform, disabled: !allRequiredFilled }">
+                    <label v-for="platform of cloudPlatforms" :key="platform.id" :for="`platform_${platform.id}`"
+                        :class="{ active: platform.id === selectedPlatform.id, optimal: platform.id === optimalPlatform.id, disabled: !allRequiredFilled }">
 
                         <small>{{ $tc('popupContent.optimal') }}</small>
 
-                        <input name="platform" v-model="selectedPlatform" :id="`platform_${platform}`" type="radio"
+                        <input name="platform" v-model="selectedPlatform" :id="`platform_${platform.id}`" type="radio"
                             :value="platform" />
 
-                        <span>{{ platform }}</span>
+                        <span>{{ platform.title }}</span>
                     </label>
                 </div>
             </div>
@@ -143,79 +144,15 @@
                     :disabled="!allRequiredFilled" @click="run()">{{ $tc('popupContent.run') }}</button>
             </div>
         </div>
-        <div v-show="!showDetails">
-            <div class="d-flex flex--justify-between flex--align-center service-workflow__add-run">
-                <input placeholder="Name" class="service-workflow__add-run-name" type="text" v-model="addRunName" />
-                <input placeholder="Run ID" class="service-workflow__add-run-id" type="text" v-model="addRunId" />
-                <button class="service-workflow__add-run-btn" :disabled="!addRunId || !addRunName" @click="addRun()">{{
-                    $tc('popupContent.add') }}</button>
-            </div>
-            <div v-show="!savedRuns || !savedRuns.length">{{ $tc('popupContent.noRunsAvailable') }}</div>
-            <div class="service-workflow__saved-runs" v-if="savedRuns">
-                <div>
-                    <div class="service-workflow__saved-run" v-for="savedRun of savedRuns" :key="savedRun.id">
-                        <div class="service-workflow__saved-run-name">{{ savedRun.name }}</div>
-                        <div class="service-workflow__saved-run-id">{{ $tc('popupContent.id') }}: {{ savedRun.id }}</div>
-                        <div class="service-workflow__saved-run-status">{{ $tc('popupContent.status') }}:
-                            {{ savedRun.status }}<span v-if="savedRun.result"> - {{ savedRun.result }}</span></div>
-                        <div class="service-workflow__saved-run-button-holder d-flex">
-                            <button class="service-workflow__saved-run-btn" :class="{ active: savedRun.showLogs }"
-                                @click="toggleLogs(savedRun)" v-if="savedRun.messageList && savedRun.messageList.length">{{
-                                    $tc('popupContent.messageLog') }}</button>
-                            <button class="service-workflow__saved-run-btn" :class="{ active: savedRun.showOutputs }"
-                                @click="toggleOutputs(savedRun)"
-                                v-if="savedRun.outputs && savedRun.outputs.length && savedRun.result !== 'FAIL'">{{
-                                    $tc('popupContent.outputs') }}</button>
-                        </div>
-                        <CollapseTransition v-if="savedRun.messageList && savedRun.messageList.length">
-                            <div v-show="savedRun.showLogs" class="service-workflow__saved-logs">
-                                <div v-for="log of savedRun.messageList" :key="log">{{ log }}</div>
-                            </div>
-                        </CollapseTransition>
-                        <CollapseTransition
-                            v-if="savedRun.outputs && savedRun.status === 'COMPLETED' && savedRun.result !== 'FAIL'">
-                            <div v-show="savedRun.showOutputs" class="service-workflow__saved-outputs">
-                                <div v-for="output of savedRun.outputs" :key="output.id"
-                                    class="service-workflow__saved-output">
-                                    <div v-if="output.value && output.valueSchema === 'url'">
-                                        <a :href="output.value" target="_blank"
-                                            class="service-workflow__saved-output-link">{{ output.name }}</a>
-                                        <div class="service-workflow__saved-output-link-description">{{ output.description
-                                        }}
-                                        </div>
-                                    </div>
-                                    <div v-else-if="output.value && output.value.url" class="d-flex flex--align-center">
-                                        <button @click="showOnMap(savedRun.runId, output)"
-                                            :title="$tc('dabResult.showOnMap')">
-                                            <i class="icomoon-show-on-map"></i>
-                                        </button>
-                                        <span>{{ output.name }}</span>
-                                    </div>
-                                    <div v-else class="d-flex flex--align-center">
-                                        <button disabled="true" :title="$tc('dabResult.showOnMap')">
-                                            <i class="icomoon-show-on-map"></i>
-                                        </button>
-                                        <span>{{ output.name }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </CollapseTransition>
-                    </div>
-                </div>
-                <Pagination v-if="savedRuns && savedRuns.length" :start-index="runsStartIndex"
-                    :results-per-page="runsResultsPerPage" :total="runsTotal"
-                    @on-start-index-change="onRunsStartIndexChange($event)" />
-            </div>
+        <div v-if="!showDetails">
+            <SavedRuns :workflowRunName="workflowRunName" :workflow="workflow" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-// import { runsTest } from '@/data/saved-runs-test';
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
-
-import Pagination from '@/components/Pagination.vue';
 // import BpmnViewer from 'bpmn-js';
 import GeossSearchApiService from '@/services/geoss-search.api.service';
 import PopupCloseService from '@/services/popup-close.service';
@@ -229,20 +166,15 @@ import { DataSources } from '@/interfaces/DataSources';
 import UtilsService from '@/services/utils.service';
 import { PopupActions } from '@/store/popup/popup-actions';
 import NotificationService from '@/services/notification.service';
-import { MapActions } from '@/store/map/map-actions';
-import { LayerTypes } from '@/interfaces/LayerTypes';
-import { Timers } from '@/data/timers';
 import LogService from '@/services/log.service';
 import to from '@/utils/to';
 import { UserGetters } from '@/store/user/user-getters';
-import LayersUtils from '@/services/map/layer-utils';
 import ErrorPopup from '@/components/ErrorPopup.vue';
-import CollapseTransition from '@/plugins/CollapseTransition';
+import SavedRuns from '@/components/SavedRuns.vue';
 
 @Component({
     components: {
-        Pagination,
-        CollapseTransition
+        SavedRuns
     }
 })
 export default class ServiceWorkflowComponent extends Vue {
@@ -252,14 +184,6 @@ export default class ServiceWorkflowComponent extends Vue {
 
     public showDetails = true;
     public selectedInputName = '';
-    public savedRuns = null;
-
-    public addRunId = '';
-    public addRunName = '';
-
-    public runsResultsPerPage = 3;
-    public runsStartIndex = 0;
-    public runsTotal = 0;
 
     public showExpertOptions = false;
     public currentlyBeingEdited = [];
@@ -356,7 +280,7 @@ export default class ServiceWorkflowComponent extends Vue {
         this.$store.dispatch(SearchActions.setWorkflowCloudPlatforms, value);
     }
 
-    set selectedPlatform(value: string) {
+    set selectedPlatform(value: any) {
         this.saveWorkflowData('workflowSelectedPlatform', value);
         this.$store.dispatch(SearchActions.setWorkflowSelectedPlatform, value);
     }
@@ -467,24 +391,6 @@ export default class ServiceWorkflowComponent extends Vue {
         this.$store.dispatch(GeneralFiltersActions.setWorkflowMapDraw, true);
     }
 
-    public async getSavedRuns() {
-        // this.isSignedIn
-        const [, data] = await to(GeossSearchApiService.getSavedRuns(this.workflowUrl, this.isSignedIn, this.runsStartIndex, this.runsResultsPerPage));
-
-        // test data
-        // data = runsTest;
-
-        if (data) {
-            this.savedRuns = data.items;
-        }
-        return data;
-    }
-
-    public async onRunsStartIndexChange(startIndex: number) {
-        this.runsStartIndex = startIndex;
-        this.getSavedRuns();
-    }
-
     public close() {
         PopupCloseService.closePopup('workflow');
     }
@@ -493,87 +399,9 @@ export default class ServiceWorkflowComponent extends Vue {
         this.showExpertOptions = !this.showExpertOptions;
     }
 
-    public toggleLogs(run: any) {
-        run.showLogs = !run.showLogs;
-        run.showOutputs = false;
-    }
-
-    public toggleOutputs(run: any) {
-        run.showOutputs = !run.showOutputs;
-        run.showLogs = false;
-    }
-
     public async toggleShowDetails(value: boolean) {
         if (this.showDetails !== value) {
             this.showDetails = value;
-            if (!this.showDetails) {
-                if (!this.savedRuns) {
-                    const data = await this.getSavedRuns();
-                    if (data) {
-                        this.runsTotal = data.totalCount;
-                    }
-                }
-            }
-        }
-    }
-
-    public fetchPlatformData(workflow) {
-        if (!workflow && this.workflowResource[this.inputId] && this.workflowResource[this.inputId][0]) {
-            const uniqueId = `${this.inputId}_${this.getSceneId(this.inputId)}`;
-            if (!this.platformData[uniqueId]) {
-                const platforms = {
-                    ...this.platformData,
-                    [uniqueId]: {
-                        init: true
-                    }
-                };
-                this.$store.dispatch(SearchActions.setWorkflowPlatformData, platforms);
-                this.fetchPlatform(this.inputId, uniqueId);
-            }
-        }
-    }
-
-    public fetchPlatform(inputId, uniqueId) {
-        const sceneId = this.getSceneId(inputId);
-        GeossSearchApiService.fetchCloudPlatform(inputId, sceneId, uniqueId).then(() => {
-            this.markOptimalPlatform();
-        });
-    }
-
-    public markOptimalPlatform() {
-        const allPlatforms = [];
-        const platformRating = {};
-
-        // gather all arrays in one
-        allPlatforms.push(this.cloudPlatforms);
-        for (const i in this.workflowResource) {
-            if (this.workflowResource[i][0] && this.workflowResource[i][0].platforms && this.workflowResource[i][0].platforms.length) {
-                const input = this.workflowResource[i][0];
-                const lowercaseArray = input.platforms.join('|').toLowerCase().split('|').filter(item => item !== 'dhus'); // dhus cannot be choosen
-                allPlatforms.push(lowercaseArray);
-            }
-        }
-
-        // make it correct order of recent array
-        const recentArray = allPlatforms[allPlatforms.length - 1];
-        const missingPlatforms = this.cloudPlatforms.filter(item => !recentArray.includes(item));
-        this.cloudPlatforms = recentArray.concat(missingPlatforms);
-
-        // get ratings for all fetched platforms
-        for (let i = 1; i < allPlatforms.length; i++) {
-            for (const platform of allPlatforms[i]) {
-                platformRating[platform] = platformRating[platform] ? platformRating[platform] + 1 : 1;
-            }
-        }
-
-        // get first most rated platform
-        const maxRating = Object.keys(platformRating).length ? Object.keys(platformRating).reduce((a, b) => platformRating[a] > platformRating[b] ? a : b) : 'aws';
-        for (const platform of recentArray) {
-            if (platformRating[platform] === platformRating[maxRating]) {
-                this.optimalPlatform = platform;
-                this.selectedPlatform = platform;
-                break;
-            }
         }
     }
 
@@ -738,7 +566,7 @@ export default class ServiceWorkflowComponent extends Vue {
                         input.value = '';
                     }
                     // unique for Trends.Earth
-                } else if (this.workflow.id === 'http://eu.floraresearch.essi.core/workflow/autogenerated-1556784738669-process') {
+                } else if (this.workflow.id === 'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process') {
                     const selectedValue = UtilsService.getPropByString(this.workflowResource[input.id][0], 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
                     if (selectedValue) {
                         input.value = selectedValue;
@@ -769,7 +597,7 @@ export default class ServiceWorkflowComponent extends Vue {
                             input.valueArray.push('');
                         }
                         // unique for Trends.Earth
-                    } else if (this.workflow.id === 'http://eu.floraresearch.essi.core/workflow/autogenerated-1556784738669-process') {
+                    } else if (this.workflow.id === 'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process') {
                         const selectedValue = UtilsService.getPropByString(this.workflowResource[input.id][0], 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
                         if (selectedValue) {
                             input.valueArray.push(`${key}${selectedValue}`);
@@ -803,17 +631,15 @@ export default class ServiceWorkflowComponent extends Vue {
         this.timeEnd = performance.now();
         const workflowDuration = ((this.timeEnd - this.timeStart) / 1000).toFixed();
         this.timeStart = performance.now();
-        LogService.logRecommendationData('Search result', 'Workflow - Run', 'internal', { workflowDuration });
         const inputs = this.prepareWorkflowInputs();
+        const workflowFinalUrl = this.workflowUrl;
 
-        let workflowFinalUrl = this.workflowUrl;
-        if (this.selectedPlatform !== '' && this.selectedPlatform !== 'aws') {
-            workflowFinalUrl = workflowFinalUrl.replace('/aws/', `/${this.selectedPlatform}/`);
-        }
         const [err, data] = await to(GeossSearchApiService.runWorkflow(`${workflowFinalUrl}/run`, {
             inputs,
-            name: this.getRunName()
+            name: this.getRunName(),
+            infra: this.selectedPlatform.id
         }));
+
         if (!err) {
             const [, result] = await to(GeossSearchApiService.addSavedRun(this.getRunName(), this.workflow, data.runid));
             if (result) {
@@ -845,73 +671,7 @@ export default class ServiceWorkflowComponent extends Vue {
             };
             return this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
         }
-    }
-
-    public async showOnMap(runId, output) {
-        const { url, name, protocol, legend } = output.value;
-        const [err, coordinate] = await to(GeossSearchApiService.getRunCoordinates(runId));
-
-        this.close();
-
-        let version = '1.1.1';
-        if (protocol) {
-            if (protocol.indexOf('WebMapService') > -1) {
-                const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(protocol);
-                if (match) {
-                    version = match[0];
-                }
-            }
-        }
-
-        const layerUrl = `${url}VERSION=${version}&LAYERS=${name}&TILED=true&`;
-        const layer = LayersUtils.createWMS(name, layerUrl);
-
-        this.$store.dispatch(MapActions.addLayer, {
-            layer,
-            id: name,
-            type: LayerTypes.CUSTOM,
-            coordinate,
-            title: output.name,
-            legend: {
-                type: 'img',
-                data: legend
-            }
-        });
-
-        this.$store.dispatch(MapActions.changeLayerVisibility, { id: LayerTypes.BOUNDING, value: false });
-        this.$store.dispatch(MapActions.setShowFull, true);
-
-        setTimeout(() => {
-            this.$store.dispatch(MapActions.zoomInLayer, name);
-        }, (Timers.hideSearchContainer > Timers.closePopup ? Timers.hideSearchContainer : Timers.closePopup));
-    }
-
-    public async addRun() {
-        const run: any = {};
-        const [err, { status, messageList, result }] = await to(GeossSearchApiService.getRunStatus(this.workflowUrl, this.addRunId));
-        if (!err) {
-            GeossSearchApiService.addSavedRun(this.workflowRunName, this.workflow, this.addRunId).then(() => {
-                run.status = status;
-                run.messageList = messageList;
-                run.result = result;
-                run.showLogs = false;
-                if (status === 'COMPLETED' || status === 'SUCCESS') {
-                    return GeossSearchApiService.getRunStatus(this.workflowUrl, this.addRunId).then(({ outputs }) => {
-                        run.outputs = outputs;
-                        run.showOutputs = false;
-                    });
-                }
-            });
-        } else {
-            NotificationService.show(
-                `${this.$tc('popupTitles.savedRuns')}`,
-                `Analysis with run ID ${this.addRunId} does not exist.`,
-                10000,
-                null,
-                9999,
-                'error'
-            );
-        }
+        LogService.logElementClick(null, null, null, null, 'Run workflow', null, null, workflowFinalUrl);
     }
 
     public removeWorkflowResource(resource, inputId) {
@@ -930,11 +690,11 @@ export default class ServiceWorkflowComponent extends Vue {
             }
         }
         const styles = `
-			.bjs-container [data-element-id].djs-shape path {stroke: #cccccc !important;}
-			.bjs-container [data-element-id^="autogenerated"].djs-shape path {stroke: black !important;}
-			.bjs-container [data-element-id^="DataObject"].djs-shape path {stroke: black !important;}
-			${inputStyles}
-		`;
+            .bjs-container [data-element-id].djs-shape path {stroke: #cccccc !important;}
+            .bjs-container [data-element-id^="autogenerated"].djs-shape path {stroke: black !important;}
+            .bjs-container [data-element-id^="DataObject"].djs-shape path {stroke: black !important;}
+            ${inputStyles}
+        `;
         const css = document.createElement('style');
         css.innerHTML = styles;
         document.querySelector('head').appendChild(css);
@@ -986,6 +746,7 @@ export default class ServiceWorkflowComponent extends Vue {
         Object.freeze(this.selectedInputName);
         this.setDefaultInputValues();
         this.getWorkflowSavedData();
+        this.selectedPlatform = this.cloudPlatforms[0];
     }
 
 
@@ -993,11 +754,6 @@ export default class ServiceWorkflowComponent extends Vue {
     private onWorkflowResource() {
         this.saveWorkflowData('workflowResource', this.workflowResource);
         this.checkRequiredFilled();
-    }
-
-    @Watch('workflowDispatched')
-    private onWorkflowDispatch(val) {
-        this.fetchPlatformData(val);
     }
 }
 </script>
@@ -1011,6 +767,16 @@ export default class ServiceWorkflowComponent extends Vue {
 .service-workflow {
     padding: 15px;
     padding-bottom: 45px;
+
+    .saved-runs {
+        margin: 0 -15px -45px;
+
+        .service-workflow {
+            &__saved-run {
+                padding: 20px 30px;
+            }
+        }
+    }
 
     &__title {
         margin: 10px 0 20px;
@@ -1212,10 +978,9 @@ export default class ServiceWorkflowComponent extends Vue {
 
         &-choice {
             display: flex;
-            justify-content: space-between;
 
             label {
-                width: calc(25% - 10px);
+                width: calc(25% - 15px);
                 border: 1px solid $grey-lighter;
                 display: flex;
                 flex-direction: column;
@@ -1224,6 +989,12 @@ export default class ServiceWorkflowComponent extends Vue {
                 position: relative;
                 padding: 15px 10px;
                 cursor: pointer;
+                margin-right: 15px;
+                text-align: center;
+
+                &:last-child {
+                    margin-right: 0;
+                }
 
                 input {
                     margin-bottom: 7px;
@@ -1371,131 +1142,7 @@ export default class ServiceWorkflowComponent extends Vue {
         }
     }
 
-    &__saved-run {
-        border-bottom: 1px solid $grey-lighter;
-        padding: 20px 10px;
 
-        &:last-child {
-            border-bottom: none;
-        }
-
-        &-name,
-        &-id,
-        &-status {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        &-name {
-            color: $blue;
-            font-size: 1.2em;
-        }
-
-        &-button-holder {
-            margin-top: 15px;
-        }
-
-        &-btn {
-            font-size: 17px;
-            padding: 7px 20px;
-            border: 1px solid #efefef;
-            margin-right: -1px;
-
-            &.active {
-                color: $blue;
-                background: #efefef;
-            }
-
-            &:hover {
-                color: $blue;
-            }
-        }
-    }
-
-    &__saved-logs {
-        padding: 15px;
-        background: #efefef;
-
-        div {
-            padding-bottom: 5px;
-
-            &:first-child {
-                padding-top: 10px;
-            }
-
-            &:last-child {
-                padding-bottom: 10px;
-            }
-        }
-    }
-
-    &__saved-outputs {
-        padding: 15px;
-        background: #efefef;
-    }
-
-    &__saved-output {
-        padding-bottom: 5px;
-
-        &:first-child {
-            padding-top: 10px;
-        }
-
-        &:last-child {
-            padding-bottom: 10px;
-        }
-
-        a {
-            color: $blue;
-        }
-
-        button {
-            background-color: $yellow;
-            color: white;
-            padding: 3px;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 5px;
-        }
-    }
-
-    &__add-run {
-        margin-bottom: 15px;
-        border-bottom: 1px solid $grey-lighter;
-        padding: 15px 0;
-
-        &-id,
-        &-name,
-        &-btn {
-            width: 30%;
-
-            @media(max-width: $breakpoint-sm) {
-                width: 100%;
-            }
-        }
-
-        &-id,
-        &-name {
-            border: 2px solid $blue;
-            height: 37px;
-            outline: 0;
-            padding: 0 5px;
-            font-size: 17px;
-        }
-    }
-
-    .pagination {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: rgba($green, 0.95);
-        margin-bottom: 0;
-    }
 
     .bjs-powered-by {
         display: none;
@@ -1588,7 +1235,7 @@ export default class ServiceWorkflowComponent extends Vue {
         left: 240px;
     }
 
-    svg[data-element-id="autogenerated-1556784738669-process"],
+    svg[data-element-id="autogenerated-1664543852740-process"],
     // Trends Earth v1
     svg[data-element-id="autogenerated-1528362962211-process"],
     // INSTAR

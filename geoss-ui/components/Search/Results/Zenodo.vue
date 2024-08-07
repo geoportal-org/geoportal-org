@@ -2,27 +2,20 @@
     <div>
         <div class="zenodo-results" :class="{ 'with-placeholder': zenodoResultsPlaceholders }">
             <div v-for="(result, index) of zenodoResults" :key="result.id" class="zenodo-result">
-                <div class="zenodo-result__wrapper"
+                <div class="zenodo-result__wrapper" v-show="resultIdDetails !== result.id"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'zenodo-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
                     <div class="zenodo-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.metadata.title" class="zenodo-result__title line-clamp--2">
+                        <div v-if="result.metadata.title" v-line-clamp:20="2" class="zenodo-result__title">
                             {{ result.metadata.title }}</div>
-                        <div v-if="result.metadata && result.metadata.creators"
-                            class="zenodo-result__contributor line-clamp--1">
-                            ({{ $tc('dabResult.creators') }}: <span v-for="(creator, index) of result.metadata.creators"
+                        <div v-if="result.metadata && result.metadata.creators" class="zenodo-result__contributor"
+                            v-line-clamp:20="1">
+                            ({{ $t('dabResult.creators') }}: <span v-for="(creator, index) of result.metadata.creators"
                                 :key="index">{{ creator.name }}</span>)
-                        </div>
-                        <div v-if="result.metadata.description && typeof result.metadata.description === 'string'"
-                            class="zenodo-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
-                            v-html-to-text="result.metadata.description">
                         </div>
                     </div>
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result['atom:logo'])" :currentOpenId="currentOpenId"/>
-            </div>
-            <div v-if="zenodoResultsPlaceholders" class="zenodo-result placeholder">
-                <img :src="`/svg/information-gray.svg`" alt="ZENODO" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result['atom:logo'])" />
             </div>
         </div>
     </div>
@@ -45,8 +38,6 @@ import { SearchActions } from '@/store/search/search-actions';
 })
 export default class SearchResultsZenodoComponent extends Vue {
     [x: string]: any;
-    public currentOpenId: string = ''
-
     get zenodoResults() {
         return (this.$store.getters[SearchGetters.zenodoResults] ? this.$store.getters[SearchGetters.zenodoResults].entry : []);
     }
@@ -64,7 +55,6 @@ export default class SearchResultsZenodoComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
-        this.currentOpenId = id
         if (this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
@@ -91,15 +81,8 @@ export default class SearchResultsZenodoComponent extends Vue {
 }
 
 .zenodo-result {
-    width: calc(50% - 2.5px);
-    margin-bottom: 5px;
-
-    &:last-child,
-    &:nth-last-of-type(1),
-    &:nth-last-of-type(2) {
-        margin-bottom: 0;
-    }
-
+    width: 100%;
+    margin: 0 2px 5px;
 
     @media (max-width: $breakpoint-sm) {
         width: 100%;
@@ -118,7 +101,7 @@ export default class SearchResultsZenodoComponent extends Vue {
         }
 
         img {
-            width: 60%;
+            max-width: 60%;
             max-height: 100%;
             margin: 0 auto;
             height: auto;
@@ -126,7 +109,6 @@ export default class SearchResultsZenodoComponent extends Vue {
     }
 
     &__wrapper {
-        height: 125px;
         display: flex;
         position: relative;
 
@@ -142,23 +124,12 @@ export default class SearchResultsZenodoComponent extends Vue {
         }
 
         &.details-shown {
-            &:after {
-                display: block;
-            }
+            height: 0;
         }
 
         &:hover,
         &--highlighted {
-            box-shadow: 0 0 20px white;
-            background-color: white;
-
-            &:after {
-                border-top-color: white;
-            }
-        }
-
-        &--underemphasize {
-            opacity: 0.85;
+            outline: 2px solid $blue;
         }
     }
 
@@ -171,7 +142,6 @@ export default class SearchResultsZenodoComponent extends Vue {
         justify-content: center;
         align-items: center;
         flex: 0 0 auto;
-        position: relative;
 
         &--default {
             padding: 10px;
@@ -184,8 +154,8 @@ export default class SearchResultsZenodoComponent extends Vue {
     }
 
     &__text-data {
-        background: $white-transparent;
-        padding: 10px;
+        background: $white;
+        padding: 15px;
         flex: 1 1 auto;
         overflow: hidden;
         cursor: pointer;
@@ -205,13 +175,6 @@ export default class SearchResultsZenodoComponent extends Vue {
         width: auto;
         display: block;
         color: #777;
-        font-style: italic;
-
-        span+span {
-            &:before {
-                content: ', '
-            }
-        }
     }
 
     &__summary {

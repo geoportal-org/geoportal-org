@@ -2,7 +2,7 @@ const state = () => ({
     formType: 'simple',
     showSimpleForm: false,
     showEnhancedForm: false,
-    questionnaireSubmitted: false,
+    questionnaireSubmitted: false
 })
 
 const getters = {
@@ -17,13 +17,13 @@ const getters = {
     },
     questionnaireSubmitted: (state: any) => {
         return state.questionnaireSubmitted
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -38,7 +38,7 @@ const actions = {
     },
     setQuestionnaireSubmitted({ commit }: any, value: boolean) {
         commit('setStateProp', { prop: 'questionnaireSubmitted', value })
-    },
+    }
 }
 
 export default {
@@ -46,5 +46,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

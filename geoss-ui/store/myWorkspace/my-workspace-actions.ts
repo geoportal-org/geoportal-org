@@ -1,4 +1,4 @@
 export enum MyWorkspaceActions {
     setPopularSearchId = 'myWorkspace/setPopularSearchId',
-    setDhusUsername = 'myWorkspace/setDhusUsername',
+    setDhusUsername = 'myWorkspace/setDhusUsername'
 }

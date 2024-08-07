@@ -1,6 +1,6 @@
 const state = () => ({
     isExtendedViewActive: false,
-    result: null,
+    result: null
 })
 
 const getters = {
@@ -9,13 +9,13 @@ const getters = {
     },
     result: (state: any) => {
         return state.result
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -24,7 +24,7 @@ const actions = {
     },
     setResult(context: any, value: any) {
         context.commit('setStateProp', { prop: 'result', value })
-    },
+    }
 }
 
 export default {
@@ -32,5 +32,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

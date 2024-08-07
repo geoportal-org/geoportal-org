@@ -2,21 +2,21 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import map from '@/store/map'
-import generalFilters from '~/store/generalFilters'
-import facetedFilters from '~/store/facetedFilters'
-import granulaFilters from '~/store/granulaFilters'
-import irisFilters from '~/store/irisFilters'
-import searchEngine from '~/store/searchEngine'
-import myWorkspace from '~/store/myWorkspace'
+import generalFilters from '@/store/generalFilters'
+import facetedFilters from '@/store/facetedFilters'
+import granulaFilters from '@/store/granulaFilters'
+import irisFilters from '@/store/irisFilters'
+import searchEngine from '@/store/searchEngine'
+import myWorkspace from '@/store/myWorkspace'
 import search from '@/store/search'
 import menu from '@/store/menu'
 import popup from '@/store/popup'
-import fileDownload from '~/store/fileDownload'
-import bulkDownload from '~/store/bulkDownload'
+import fileDownload from '@/store/fileDownload'
+import bulkDownload from '@/store/bulkDownload'
 import user from '@/store/user'
-import extendedView from '~/store/extendedView'
+import extendedView from '@/store/extendedView'
 import general from '@/store/general'
-import { AppVueObj } from '~/data/global'
+import { AppVueObj } from '@/data/global'
 
 Vue.use(Vuex)
 
@@ -36,12 +36,12 @@ export const store = new Vuex.Store({
         fileDownload,
         bulkDownload,
         user,
-        extendedView,
-    },
+        extendedView
+    }
 })
 
 AppVueObj.app = new Vue({
-    store,
+    store
 })
 
 export const strict = false

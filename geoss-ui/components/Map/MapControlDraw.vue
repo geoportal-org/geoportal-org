@@ -24,6 +24,10 @@ export default class MapControlDrawComponent extends Vue {
     private draw: any = null;
     public drawActive = false;
 
+    get showFullMap() {
+        return this.$store.getters[MapGetters.showFull];
+    }
+
     get map() {
         return window['geossMap']; // this.$store.getters[MapGetters.map];
     }
@@ -50,6 +54,7 @@ export default class MapControlDrawComponent extends Vue {
     public addDrawInteraction() {
         this.drawActive = true;
         this.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
+        this.$store.dispatch(MapActions.setShowFull, true);
 
         if (this.workflow && this.workflowCoordinates) {
             this.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, this.workflowCoordinates);
@@ -80,11 +85,12 @@ export default class MapControlDrawComponent extends Vue {
                 W = normalizedLongitude[0];
                 E = normalizedLongitude[1];
 
-                this.$store.dispatch(GeneralFiltersActions.setBoundingBoxRelation, 'CONTAINS');
+                this.$store.dispatch(GeneralFiltersActions.setBoundingBoxRelation, 'OVERLAPS');
                 this.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, { W, S, E, N });
 
                 AppVueObj.ol.MapSource.clear();
             });
+            this.$store.dispatch(MapActions.setShowFull, false);
         });
 
         this.map.addInteraction(this.draw);
@@ -170,6 +176,17 @@ export default class MapControlDrawComponent extends Vue {
 <style scoped lang="scss">
 .map-control {
     color: white;
+
+    .button-caption {
+        font-size: 11px;
+        display: block;
+        width: auto;
+        white-space: nowrap;
+        transform: translateX(-50%);
+        @media (max-width: $breakpoint-lg) {
+            display: none;
+        }
+    }
 
     i {
         font-size: 32px;

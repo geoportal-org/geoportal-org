@@ -1,16 +1,18 @@
 <template>
-    <div>
-        <!-- <div class="date-slider">
+    <div class="date-slider__wrapper">
+        <div class="date-options">
             <div class="date-slider__title">{{ $tc('generalFilters.dateRanges') }}:</div>
+            <DateIntervalRadio
+                :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
+                @on-dates-change="setDates($event)"
+                class="margin-top-5 full-width" />
+        </div>
+        <div class="date-slider">
             <div class="date-slider__min">{{ minYear }}</div>
             <div class="date-slider__max">{{ maxYear }}</div>
-            <vue-slider :tooltip-placement="['left', 'right']" :min="minYear" :max="maxYear"
-                :tooltip-formatter="dateFormatter" @change="sliderChange($event)" @drag-start="dragStart()"
-                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" />
-        </div> -->
-        <div class="date-interval__title">{{ $tc('generalFilters.dateRanges') }}:</div>
-        <DateIntervalRadio :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
-            @on-dates-change="setDates($event)" class="margin-top-5 full-width" />
+            <!-- <vue-slider :tooltip-placement="['bottom', 'bottom']" :min="minYear" :max="maxYear" :tooltip-formatter="dateFormatter"
+                @change="sliderChange($event)" @drag-start="dragStart()" @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" /> -->
+        </div>
     </div>
 </template>
 
@@ -19,7 +21,7 @@
 
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 
-// import VueSlider from '~/components/Slider/vue-slider';
+// import VueSlider from '@/components/Slider/index';
 import DatepickerComponent from '@/components/DatePicker/DatePicker.vue';
 import DateIntervalRadio from '@/components/Search/DateIntervalRadio.vue';
 
@@ -27,7 +29,7 @@ import date from '@/filters/date';
 
 @Component({
     components: {
-        //  VueSlider,
+        // VueSlider,
         DateIntervalRadio
     }
 })
@@ -120,12 +122,11 @@ export default class DateSliderComponent extends Vue {
 
     private changeDates(dateFrom: string, dateTo: string, datePeriod: string) {
         if (this.dateFrom !== dateFrom || this.dateTo !== dateTo || this.datePeriod !== datePeriod) {
-            this.onChangeDates({ dateFrom, dateTo, datePeriod });
+            this.onChangeDates({dateFrom, dateTo, datePeriod});
         }
     }
 
     private mounted() {
-
         this.sliderDateFrom = this.dateFrom;
         this.sliderDateTo = this.dateTo;
 
@@ -179,82 +180,90 @@ export default class DateSliderComponent extends Vue {
                 event.stopPropagation();
             });
         }
-
     }
 }
 </script>
 
 <style lang="scss">
-.date-interval {
-    &__title {
-        margin-top: 20px;
-        font-size: 14px;
-        color: white;
-    }
-}
-.date-slider {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    position: relative;
-    width: 100%;
+    .date-slider {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
 
-    &__title {
-        margin-bottom: 20px;
-        font-size: 14px;
-        color: white;
-    }
+        &__title {
+            font-size: 14px;
+            color: white;
+        }
 
-    &__min,
-    &__max {
-        position: absolute;
-        bottom: -3px;
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        left: 30px;
-    }
+        &__min,
+        &__max {
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            left: 30px;
+        }
 
-    &__max {
-        left: auto;
-        right: 30px;
-    }
-}
+        &__max {
+            left: auto;
+            right: 30px;
+        }
 
-.vue-slider {
-    height: 12px !important;
-    padding: 0 !important;
-    margin-left: 100px;
-    width: calc(100% - 200px) !important;
-}
+        &__wrapper {
+            display: flex;
+            @media (max-width: $breakpoint-sm) {
+                    flex-direction: column;
+                }
 
-.vue-slider-dot {
-    width: 16px !important;
-    height: 16px !important;
-}
+            .date-options {
+                width: 33%;
+                padding-top: 6px;
 
-.vue-slider-dot-tooltip {
-    .date-picker {
-        top: 0;
-        position: absolute;
-
-        &>input {
-            opacity: 0;
-            height: 30px;
+                @media (max-width: $breakpoint-sm) {
+                    width: 100%;
+                }
+            }
         }
     }
-}
 
-.vue-slider-dot-tooltip-inner {
-    border: 2px solid white;
-    border-radius: 15px;
-    color: white;
-    background: $blue;
-    padding: 5px 10px;
-}
+    .vue-slider {
+        height: 12px !important;
+        padding: 0 !important;
+        margin-left: 100px;
+        width: calc(100% - 200px) !important;
+    }
+    .vue-slider-dot {
+        width: 16px !important;
+        height: 16px !important;
+    }
+    .vue-slider-dot-tooltip {
+        .date-picker {
+            top: 0;
+            position: absolute;
 
-.vue-slider-process,
-.vue-slider-rail {
-    background-color: #E0B318;
-    border-radius: 5px;
-}
+            &>input {
+                opacity: 0;
+                height: 30px;
+            }
+        }
+    }
+    .vue-slider-dot-tooltip-inner {
+        border: 2px solid white;
+        border-radius: 15px;
+        color: white;
+        background: $blue;
+        padding: 5px 10px;
+    }
+    .vue-slider-process,
+    .vue-slider-rail {
+        background-color: #ffffff;
+        border-radius: 5px;
+    }
+
+    .vue-slider-rail {
+        background-color: #E0B318;
+    }
 </style>

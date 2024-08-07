@@ -1,4 +1,4 @@
-import { AppVueObj } from '~/data/global'
+import { AppVueObj } from '@/data/global'
 
 const state = () => ({
     storeInitialized: false,
@@ -10,7 +10,7 @@ const state = () => ({
     isEntryExtensionEnabled: true,
     isExtendedViewEnabled: true,
     isBulkDownloadEnabled: true,
-    widgetAccessKey: null,
+    widgetAccessKey: null
 })
 
 const getters = {
@@ -43,20 +43,20 @@ const getters = {
     },
     widgetAccessKey: (state: any) => {
         return state.widgetAccessKey
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
     setStoreInitialized(context: any, value: boolean) {
         return context.commit('setStateProp', {
             prop: 'storeInitialized',
-            value,
+            value
         })
     },
     setLangLocale: (context: any, value: string) => {
@@ -86,7 +86,7 @@ const actions = {
     },
     setWidgetAccessKey({ commit }: any, value: string) {
         commit('setStateProp', { prop: 'widgetAccessKey', value })
-    },
+    }
 }
 
 export default {
@@ -94,5 +94,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

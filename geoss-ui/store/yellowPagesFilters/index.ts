@@ -8,7 +8,7 @@ const state = () => ({
     perPage: 5,
     pageOffset: 0,
     results: [],
-    resultsTotal: 0,
+    resultsTotal: 0
 })
 
 const getters = {
@@ -29,13 +29,13 @@ const getters = {
     },
     resultsTotal: (state: any) => {
         return state.resultsTotal
-    },
+    }
 }
 
 const mutations = {
     setStateProp(state: any, data: { prop: any; value: any }) {
         state[data.prop] = data.value
-    },
+    }
 }
 
 const actions = {
@@ -60,10 +60,10 @@ const actions = {
             commit('setStateProp', { prop: 'results', value: results })
             commit('setStateProp', {
                 prop: 'resultsTotal',
-                value: resultsTotal,
+                value: resultsTotal
             })
         })
-    },
+    }
 }
 
 export default {
@@ -71,5 +71,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

@@ -1,32 +1,25 @@
 <template>
     <div class="custom-select">
-        <button ref="optionsTrigger" class="custom-select__trigger" @click="toggleOpened"
-            :disabled="!options.length || buttonDisabled"
-            v-click-outside="{ fn: closeContainer, excludeSelectors: '.custom-select__container' }"
-            :class="{ active: opened }">
+        <button ref="optionsTrigger" class="custom-select__trigger" @click="toggleOpened":disabled="!options.length || buttonDisabled"
+            v-click-outside="{ fn: closeContainer, excludeSelectors: '.custom-select__container' }" :class="{ active: opened }">
             <slot name="trigger" v-bind:selectedOption="selectedOption">
-                <span class="line-clamp--2">{{ title }}</span>
+                <span v-line-clamp:20="2">{{title}}</span>
             </slot>
         </button>
         <div class="custom-select__icons">
-            <button v-if="options.length" @click="clear()" class="custom-select__clear cross"
-                :aria-label="$tc('generalFilters.cancel')"
-                v-show="clearable && ((value && !multiple) || (multiple && value.length))"></button>
+            <button v-if="options.length" @click="clear()" class="custom-select__clear cross" :aria-label="$tc('generalFilters.cancel')" v-show="clearable && ((value && !multiple) || (multiple && value.length))"></button>
             <span class="custom-select__icon">
                 <slot name="icon"></slot>
             </span>
         </div>
         <portal v-if="options.length && opened" to="custom-select-container" :disabled="!appendToBody">
-            <div ref="optionsContainer" class="custom-select__container" :class="{ appendToBody }"
-                :style="optionsContainerStyles">
+            <div ref="optionsContainer" class="custom-select__container" :class="{appendToBody}" :style="optionsContainerStyles">
                 <div class="custom-select__search" v-if="filterable">
                     <span class="search__icon">
                         <i class="icomoon-search"></i>
                     </span>
-                    <input type="text" :value="searchValue" @input="searchValue = $event.target.value"
-                        :placeholder="$tc('placeholders.search')" />
-                    <button class="search__clear" :title="$tc('placeholders.clearSearch')"
-                        :aria-label="$tc('placeholders.clearSearch')" @click="clearSearch()">
+                    <input type="text" :value="searchValue" @input="searchValue = $event.target.value" :placeholder="$tc('placeholders.search')" />
+                    <button class="search__clear" :title="$tc('placeholders.clearSearch')" :aria-label="$tc('placeholders.clearSearch')" @click="clearSearch()">
                         <i class="icomoon-close"></i>
                     </button>
                 </div>
@@ -61,7 +54,7 @@ export default class CustomSelectComponent extends Vue {
     @Prop({ default: false, type: Boolean }) public buttonDisabled!: boolean;
     public opened = false;
     public searchValue = '';
-    public optionsContainerStyles = {};
+    public optionsContainerStyles = null;
 
     @Prop({ default: () => [], type: Array }) public options!: any[];
     @Prop({ default: false, type: Boolean }) public appendToBody!: boolean;
@@ -97,6 +90,12 @@ export default class CustomSelectComponent extends Vue {
                     return option[this.idProp] !== this.selectedOption[this.idProp];
                 }
             });
+        }
+        if (!this.multiple && !filteredOptions.length) {
+            return [{
+                title: 'No results',
+                disabled: true
+            }];
         }
         return filteredOptions;
     }
@@ -202,7 +201,7 @@ export default class CustomSelectComponent extends Vue {
             'width': width + 'px',
             'top': top,
             'bottom': bottom,
-            'left': left + 'px',
+            'left':  left + 'px',
             'z-index': 9997
         };
     }
@@ -277,7 +276,6 @@ export default class CustomSelectComponent extends Vue {
     }
 
     &__clear {
-
         &:before,
         &:after {
             background-color: black;
@@ -351,7 +349,6 @@ export default class CustomSelectComponent extends Vue {
 
     &__options {
         overflow: auto;
-        color: initial;
     }
 
     &__option {
@@ -368,7 +365,6 @@ export default class CustomSelectComponent extends Vue {
 
         &.with-checkbox {
             padding: 13px 20px 13px 40px;
-
             &:before {
                 content: '';
                 display: block;

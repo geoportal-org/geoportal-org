@@ -6,12 +6,8 @@
             <button @click="close('cancel')" class="close-btn" :title="$tc('general.close')"
                 :aria-label="$tc('general.close')"></button>
         </div>
-        <div v-if="query" class="popup-default__subtitle">{{ $tc('popupContent.lookingFor') }}: <b>{{ query }}</b>,
-            {{ $tc('popupContent.inLocation') }}: <b>{{ location }}</b>?</div>
-        <div v-else class="popup-default__subtitle">{{ $tc('popupContent.lookingForResultInLocation') }}:<br>{{
-            location
-        }}?
-        </div>
+        <div v-if="query" class="popup-default__subtitle">{{ $tc('popupContent.lookingFor') }}: <b>{{ query }}</b>, {{ $tc('popupContent.inLocation') }}: <b>{{ location }}</b>?</div>
+        <div v-else class="popup-default__subtitle">{{ $tc('popupContent.lookingForResultInLocation') }}:<br>{{ location }}?</div>
         <div class="popup-default__actions">
             <button class="blue-btn-default" @click="close(false)">{{ $tc('general.no') }}</button>
             <button class="blue-btn-default" @click="close(true)">{{ $tc('general.yes') }}</button>

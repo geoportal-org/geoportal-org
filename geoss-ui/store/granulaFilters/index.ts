@@ -37,10 +37,10 @@ const state = () => ({
         'sarPolCh',
         's3InstrumentIdx',
         's3ProductLevel',
-        's3Timeliness',
+        's3Timeliness'
     ],
     availableContinuous: ['cloudcp'],
-    availableInteger: ['relOrbit', 'path', 'row'],
+    availableInteger: ['relOrbit', 'path', 'row']
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -58,7 +58,7 @@ const paramsMap: { [key: string]: any } = {
     row: 'path',
     path: 'row',
     fromDate: 'ts',
-    toDate: 'te',
+    toDate: 'te'
 }
 
 const saveParamsMap: { [key: string]: any } = {
@@ -74,7 +74,7 @@ const saveParamsMap: { [key: string]: any } = {
     row: 'path',
     path: 'row',
     fromDate: 'dateFromGranula',
-    toDate: 'dateToGranula',
+    toDate: 'dateToGranula'
 }
 
 const getters: { [key: string]: any } = {
@@ -130,7 +130,7 @@ const getters: { [key: string]: any } = {
             'granulaFiltersAvailable',
             'rowAvailable',
             'pathAvailable',
-            'containerVisible',
+            'containerVisible'
         ]
         for (const prop of Object.keys(initialState)) {
             if (
@@ -148,7 +148,7 @@ const getters: { [key: string]: any } = {
             params += '&'
         }
         return params
-    },
+    }
 }
 
 for (const key of Object.keys(initialState)) {
@@ -165,7 +165,7 @@ const mutations: { [key: string]: any } = {
         for (const prop of Object.keys(initialState)) {
             state[prop] = JSON.parse(JSON.stringify(initialState[prop]))
         }
-    },
+    }
 }
 
 let actions: { [key: string]: any } = {}
@@ -183,7 +183,7 @@ actions = {
     toggleContainerVisible({ commit, getters }: any) {
         commit('setStateProp', {
             prop: 'containerVisible',
-            value: !getters.containerVisible,
+            value: !getters.containerVisible
         })
     },
     reset(context: any) {
@@ -192,7 +192,7 @@ actions = {
     setGranulaFiltersAvailable(context: any, value: boolean) {
         context.commit('setStateProp', {
             prop: 'granulaFiltersAvailable',
-            value,
+            value
         })
         if (!value) {
             context.commit('resetState')
@@ -261,7 +261,7 @@ actions = {
                 }
             }
         }
-    },
+    }
 }
 
 export default {
@@ -269,5 +269,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

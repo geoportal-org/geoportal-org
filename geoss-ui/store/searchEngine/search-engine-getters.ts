@@ -11,5 +11,5 @@ export enum SearchEngineGetters {
     w3wKey = 'searchEngine/w3wKey',
     userDabBaseUrl = 'searchEngine/userDabBaseUrl',
     internalOpenSearchUrl = 'searchEngine/internalOpenSearchUrl',
-    defaultSourceName = 'searchEngine/defaultSourceName',
+    defaultSourceName = 'searchEngine/defaultSourceName'
 }

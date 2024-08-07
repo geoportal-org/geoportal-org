@@ -1,8 +1,7 @@
 <template>
     <div class="notifications" :style="zIndex">
         <transition-group name="notification">
-            <div class="notification" v-for="notification of notifications" :key="notification.id"
-                :style="`top: ${notification.top}px;`" :class="notification.style">
+            <div class="notification" v-for="notification of notifications" :key="notification.id" :style="`top: ${notification.top}px;`" :class="notification.style">
                 <div v-if="notification.title" class="notification__title">
                     <span>{{ notification.title }}</span>
                     <button class="cross" @click="closeNotification(notification.id)"></button>

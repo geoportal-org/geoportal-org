@@ -33,7 +33,8 @@
                             </span>
                             <ul>
                                 <li v-for="(type, index) of urlTypes" :key="index"
-                                    v-show="type !== link.endpointForm.urlType" @click="link.endpointForm.urlType = type">
+                                    v-show="type !== link.endpointForm.urlType"
+                                    @click="link.endpointForm.urlType = type">
                                     <i :class="`icomoon-editor--file-${type}`"></i>
                                     {{ $tc(`popupContent.${type}`) }}
                                 </li>
@@ -168,7 +169,7 @@ export default class EntryExtensionComponent extends Vue {
     }
 
     public async passToModerator() {
-        LogService.logElementClick(null, null, this.id, null, 'Pass to moderator', null, null, null);
+        LogService.logElementClick(null, null, this.id, null, 'Pass to moderator', null, null, this.title);
         const formData = this.formData;
         for (const link of formData.transferOptionsExtensionForms) {
             link.endpointForm.url = encodeURIComponent(link.endpointForm.url);
@@ -181,7 +182,7 @@ export default class EntryExtensionComponent extends Vue {
                 subtitle: this.$tc('popupContent.improveDefinitionSuccess')
             };
             this.$store.dispatch(PopupActions.openPopup, { contentId: 'general', component: GeneralPopup, props });
-            LogService.logElementClick(null, null, this.id, null, 'Entry extension sent successfuly', null, null, null);
+            LogService.logElementClick(null, null, this.id, null, 'Entry extension sent successfuly', null, null, this.title);
         } else {
             const resultError = result && result.result === 'error' ? result.commment : null;
             const props = {
@@ -189,12 +190,12 @@ export default class EntryExtensionComponent extends Vue {
                 subtitle: !resultError ? this.$tc('popupContent.improveDefinitionFail') : `${this.$tc('popupContent.improveDefinitionFail')}: ${resultError}`
             };
             this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
-            LogService.logElementClick(null, null, this.id, null, 'Failed to send entry extension', null, null, null);
+            LogService.logElementClick(null, null, this.id, null, 'Failed to send entry extension', null, null, this.title);
         }
     }
 
     private mounted() {
-        LogService.logElementClick(null, null, this.id, null, 'Entry extension start', null, null, null);
+        LogService.logElementClick(null, null, this.id, null, 'Entry extension start', null, null, this.title);
     }
 
     @Watch('getTags')
@@ -204,237 +205,238 @@ export default class EntryExtensionComponent extends Vue {
 }
 </script>
 
-<style lang="scss" scoped> .entry-extension {
-     padding: 30px 25px;
+<style lang="scss" scoped>
+.entry-extension {
+    padding: 30px 25px;
 
-     .link {
-         &-wrapper {
-             display: flex;
-             align-items: center;
+    .link {
+        &-wrapper {
+            display: flex;
+            align-items: center;
 
-             &:last-child {
-                 .link-add {
-                     display: block;
-                 }
+            &:last-child {
+                .link-add {
+                    display: block;
+                }
 
-                 .link-remove {
-                     display: none;
-                 }
-             }
+                .link-remove {
+                    display: none;
+                }
+            }
 
-             +.link-wrapper {
-                 margin-top: 10px;
-             }
-         }
+            +.link-wrapper {
+                margin-top: 10px;
+            }
+        }
 
-         &-input {
-             position: relative;
-             width: calc(100% - 40px);
+        &-input {
+            position: relative;
+            width: calc(100% - 40px);
 
-             &.with-protocol-type {
-                 input {
-                     padding-right: 110px;
-                 }
-             }
+            &.with-protocol-type {
+                input {
+                    padding-right: 110px;
+                }
+            }
 
-             div {
-                 position: absolute;
-                 right: 0px;
-                 top: 50%;
-                 transform: translateY(-50%);
-                 font-size: 0.76em;
-                 padding: 8px 10px;
-                 text-transform: uppercase;
+            div {
+                position: absolute;
+                right: 0px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 0.76em;
+                padding: 8px 10px;
+                text-transform: uppercase;
 
-                 &:before {
-                     content: '';
-                     width: 1px;
-                     height: 50%;
-                     background: $grey-lighter;
-                     left: 0;
-                     top: 50%;
-                     transform: translateY(-50%);
-                     display: block;
-                     position: absolute;
-                 }
+                &:before {
+                    content: '';
+                    width: 1px;
+                    height: 50%;
+                    background: $grey-lighter;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: block;
+                    position: absolute;
+                }
 
-                 span {
-                     color: white;
-                     background: $green;
-                     border-radius: 15px;
-                     padding: 5px 15px;
-                     cursor: pointer;
-                     display: inline-block;
-                     width: 80px;
-                     position: relative;
-                     padding-left: 35px;
+                span {
+                    color: white;
+                    background: $green;
+                    border-radius: 15px;
+                    padding: 5px 15px;
+                    cursor: pointer;
+                    display: inline-block;
+                    width: 80px;
+                    position: relative;
+                    padding-left: 35px;
 
-                     i {
-                         left: 18px;
-                     }
-                 }
+                    i {
+                        left: 18px;
+                    }
+                }
 
-                 &:hover {
-                     z-index: 1;
+                &:hover {
+                    z-index: 1;
 
-                     span {
-                         background: $green-dark;
-                     }
+                    span {
+                        background: $green-dark;
+                    }
 
-                     ul {
-                         display: block;
-                     }
+                    ul {
+                        display: block;
+                    }
 
-                     &:after {
-                         content: '';
-                         display: block;
-                         width: 8px;
-                         height: 8px;
-                         background: white;
-                         position: absolute;
-                         left: 50%;
-                         transform: translateX(-50%) rotate(45deg);
-                         bottom: -4px;
-                         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-                     }
-                 }
+                    &:after {
+                        content: '';
+                        display: block;
+                        width: 8px;
+                        height: 8px;
+                        background: white;
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%) rotate(45deg);
+                        bottom: -4px;
+                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+                    }
+                }
 
-                 i {
-                     position: absolute;
-                     left: 13px;
-                     top: 50%;
-                     transform: translateY(-50%);
+                i {
+                    position: absolute;
+                    left: 13px;
+                    top: 50%;
+                    transform: translateY(-50%);
 
-                     &.icomoon-editor--file-html {
-                         font-size: 0.91em;
-                         transform: translateY(-50%) translateX(1px);
-                     }
-                 }
+                    &.icomoon-editor--file-html {
+                        font-size: 0.91em;
+                        transform: translateY(-50%) translateX(1px);
+                    }
+                }
 
-                 ul {
-                     display: none;
-                     position: absolute;
-                     left: 50%;
-                     transform: translateX(-50%);
-                     background: white;
-                     width: calc(100% - 20px);
-                     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-                     top: 99%;
-                     padding: 5px;
-                     color: $green;
-                     z-index: 1;
+                ul {
+                    display: none;
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: white;
+                    width: calc(100% - 20px);
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+                    top: 99%;
+                    padding: 5px;
+                    color: $green;
+                    z-index: 1;
 
-                     &:after {
-                         content: '';
-                         display: block;
-                         width: 8px;
-                         height: 8px;
-                         background: white;
-                         position: absolute;
-                         left: 50%;
-                         transform: translateX(-50%) rotate(45deg);
-                         top: -4px;
-                         z-index: 1;
-                     }
+                    &:after {
+                        content: '';
+                        display: block;
+                        width: 8px;
+                        height: 8px;
+                        background: white;
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%) rotate(45deg);
+                        top: -4px;
+                        z-index: 1;
+                    }
 
-                     li {
-                         padding: 5px;
-                         cursor: pointer;
-                         position: relative;
-                         padding-left: 30px;
+                    li {
+                        padding: 5px;
+                        cursor: pointer;
+                        position: relative;
+                        padding-left: 30px;
 
-                         &:hover {
-                             background: #f3f3f3;
-                             color: $green-dark;
-                             position: relative;
-                             z-index: 2;
-                         }
-                     }
-                 }
-             }
-         }
+                        &:hover {
+                            background: #f3f3f3;
+                            color: $green-dark;
+                            position: relative;
+                            z-index: 2;
+                        }
+                    }
+                }
+            }
+        }
 
-         &-add,
-         &-remove {
-             font-size: 1.8em;
-             padding: 4px 0 0 10px;
-             width: 40px;
-             cursor: pointer;
-             color: $green;
+        &-add,
+        &-remove {
+            font-size: 1.8em;
+            padding: 4px 0 0 10px;
+            width: 40px;
+            cursor: pointer;
+            color: $green;
 
-             &:hover {
-                 color: $green-dark;
-                 text-decoration: none;
-             }
-         }
+            &:hover {
+                color: $green-dark;
+                text-decoration: none;
+            }
+        }
 
-         &-add {
-             display: none;
-         }
+        &-add {
+            display: none;
+        }
 
-         &-remove {
-             display: block;
-         }
-     }
+        &-remove {
+            display: block;
+        }
+    }
 
-     section {
-         margin-bottom: 20px;
-         display: flex;
-         flex-direction: column;
+    section {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
 
-         &.pull-right {
-             flex-direction: row;
-             justify-content: flex-end;
-             float: none;
-         }
-     }
+        &.pull-right {
+            flex-direction: row;
+            justify-content: flex-end;
+            float: none;
+        }
+    }
 
-     button,
-     a.btn {
-         background: white;
-         border: 1px solid $blue;
-         padding: 7px 20px;
-         color: $blue;
-         font-size: 1.1em;
+    button,
+    a.btn {
+        background: white;
+        border: 1px solid $blue;
+        padding: 7px 20px;
+        color: $blue;
+        font-size: 1.1em;
 
-         &:hover {
-             background: $blue;
-             color: white;
-             text-decoration: none;
-         }
+        &:hover {
+            background: $blue;
+            color: white;
+            text-decoration: none;
+        }
 
-         &.cta {
-             background: $blue;
-             color: white;
+        &.cta {
+            background: $blue;
+            color: white;
 
-             &:hover {
-                 background: white;
-                 color: $blue;
-             }
-         }
-     }
+            &:hover {
+                background: white;
+                color: $blue;
+            }
+        }
+    }
 
-     label {
-         color: $green;
-         margin-bottom: 5px;
-     }
+    label {
+        color: $green;
+        margin-bottom: 5px;
+    }
 
-     input,
-     textarea {
-         height: 48px;
-         padding: 10px;
-         width: 100%;
-         border: 1px solid $grey;
+    input,
+    textarea {
+        height: 48px;
+        padding: 10px;
+        width: 100%;
+        border: 1px solid $grey;
 
-         &:focus {
-             outline: none;
-         }
-     }
+        &:focus {
+            outline: none;
+        }
+    }
 
-     textarea {
-         height: 200px;
-     }
- }
+    textarea {
+        height: 200px;
+    }
+}
 </style>
 
 <style lang="scss">

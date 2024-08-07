@@ -8,5 +8,5 @@ export enum GeneralActions {
     setIsEntryExtensionEnabled = 'general/setIsEntryExtensionEnabled',
     setIsExtendedViewEnabled = 'general/setIsExtendedViewEnabled',
     setIsBulkDownloadEnabled = 'general/setIsBulkDownloadEnabled',
-    setWidgetAccessKey = 'general/setWidgetAccessKey',
+    setWidgetAccessKey = 'general/setWidgetAccessKey'
 }

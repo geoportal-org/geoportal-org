@@ -39,7 +39,7 @@
         "ol": "5.3.1",
         "portal-vue": "1.4.0",
         "ua-parser-js": "^1.0.33",
-        "uuid": "^9.0.0",
+        "uuid": "^10.0.0",
         "vue": "^2.7.10",
         "vue-analytics": "^5.22.1",
         "vue-carousel": "^0.18.0",
@@ -50,7 +50,9 @@
         "vue-server-renderer": "^2.7.10",
         "vue-social-sharing": "2.3.3",
         "vue-template-compiler": "^2.7.10",
+        "vue2-tinymce-editor": "0.0.1",
         "vuebar": "^0.0.20",
+        "xlsx": "^0.18.5",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {

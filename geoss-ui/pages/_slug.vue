@@ -16,7 +16,7 @@
 <script>
 import ContentAPI from '@/api/content'
 import { GeneralGetters } from '@/store/general/general-getters'
-import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
 
 export default {
     data() {
@@ -32,44 +32,55 @@ export default {
 
     computed: {
         storeInitialized() {
-            return this.$store.getters[GeneralGetters.storeInitialized];
+            return this.$store.getters[GeneralGetters.storeInitialized]
         },
         langLocale() {
-            return this.$store.getters[GeneralGetters.langLocale];
+            return this.$store.getters[GeneralGetters.langLocale]
         },
         siteId() {
-            return this.$store.getters[SearchEngineGetters.siteId];
-        },
+            return this.$store.getters[SearchEngineGetters.siteId]
+        }
     },
 
     watch: {
         async langLocale(newVal) {
-            const slug = this.$route.params.slug;
-            const locale = newVal;
-            const { generatedPage, generatedContent } = await ContentAPI.generatePage(slug, locale, this.siteId)
-            this.page = generatedPage;
-            this.content = generatedContent;
+            const slug = this.$route.params.slug
+            const locale = newVal
+            const { generatedPage, generatedContent } = await ContentAPI.generatePage(
+                slug,
+                locale,
+                this.siteId
+            )
+            this.page = generatedPage
+            this.content = generatedContent
         }
     },
 
     mounted() {
-        document.querySelector('.my-workspace-tab').querySelectorAll('.version').forEach(element => {
-            element.addEventListener('click', () => {
-                element.closest('.my-workspace-left').classList.toggle('changes-visible');
-            });
-        });
+        document
+            .querySelector('.my-workspace-tab')
+            .querySelectorAll('.version')
+            .forEach((element) => {
+                element.addEventListener('click', () => {
+                    element.closest('.my-workspace-left').classList.toggle('changes-visible')
+                })
+            })
     },
 
     async fetch() {
-        const slug = this.$route.params.slug;
-        const locale = this.langLocale;
-        const { generatedPage, generatedContent } = await ContentAPI.generatePage(slug, locale, this.siteId)
-        this.page = generatedPage;
-        this.content = generatedContent;
+        const slug = this.$route.params.slug
+        const locale = this.langLocale
+        const { generatedPage, generatedContent } = await ContentAPI.generatePage(
+            slug,
+            locale,
+            this.siteId
+        )
+        this.page = generatedPage
+        this.content = generatedContent
     }
 }
 </script>
 
 <style lang="scss">
-@import "~/assets/scss/content-pages.scss";
+@import '~/assets/scss/content-pages.scss';
 </style>

@@ -1,3 +1,3 @@
 export enum PopupGetters {
-    queue = 'popup/queue',
+    queue = 'popup/queue'
 }

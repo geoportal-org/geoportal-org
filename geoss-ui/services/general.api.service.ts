@@ -1,12 +1,12 @@
 import axios from 'axios'
 import xmljs from 'xml-js'
 import axiosCancel from 'axios-cancel'
-import { Liferay, BaseUrl } from '~/data/global'
+import { Liferay, BaseUrl } from '@/data/global'
 import SpinnerService from './spinner.service'
 import UtilsService from './utils.service'
 import {
     cancellableRequests,
-    CancelCurrentrequest,
+    CancelCurrentrequest
 } from './geoss-search.api.service'
 import SearchEngineService from './search-engine.service'
 import webSettingsAPI from '@/api/webSettings'
@@ -42,12 +42,12 @@ export const parseXMLToJSON = (data: string) => {
         ignoreComment: true,
         ignoreCdata: true,
         ignoreDoctype: true,
-        textFn: removeJsonTextAttribute,
+        textFn: removeJsonTextAttribute
     } as any)
 }
 
 export const makeRequest = (
-    type: 'post' | 'get',
+    type: string,
     url: string,
     data?: any,
     hideSpinner?: boolean,
@@ -65,11 +65,12 @@ export const makeRequest = (
     let request = null
     const finalUrl = url.indexOf('http') === 0 ? url : `${BaseUrl()}${url}`
     config = config || {}
-    config.timeout = config.timeout || 30000
+    config.timeout = config.timeout || 60000
     request = data
         ? // @ts-ignore
           axios[type](finalUrl, data, config)
-        : axios[type](finalUrl, config)
+        : // @ts-ignore
+          axios[type](finalUrl, config)
     return (
         request
             .then((response: { data: any }) => {
@@ -210,18 +211,5 @@ export const GeneralApiService = {
             .catch(() => {
                 return Promise.resolve([])
             })
-    },
-
-    shortenLink(link: string) {
-        return makeRequest(
-            'get',
-            `https://api-ssl.bitly.com/v3/shorten?access_token=${
-                process.env.NUXT_ENV_BITLY_ACCESS_TOKEN
-            }&longUrl=${encodeURIComponent(link)}`,
-            null,
-            true
-        ).then(({ data }: { data: any }) => {
-            return data.url || link
-        })
-    },
+    }
 }

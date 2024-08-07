@@ -3,8 +3,7 @@
         <div class="extended-view">
             <div class="extended-view__top">
                 <div class="extended-view__main-result">
-                    <SearchResultDabDetails :result="mainResult" :key="mainResultId" :index="0"
-                        :image="getImage(mainResult.logo)" :extendedViewMode="true" />
+                    <SearchResultDabDetails :result="mainResult" :key="mainResultId" :index="0" :image="getImage(mainResult.logo)" :extendedViewMode="true" />
                 </div>
                 <div class="extended-view__wikipedia-result">
                     <ExtendedViewWikipedia :result="wikipediaResult" />

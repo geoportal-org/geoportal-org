@@ -27,5 +27,5 @@ export enum MapActions {
     setProgressBarLoading = 'map/setProgressBarLoading',
     setProgressBarLoaded = 'map/setProgressBarLoaded',
     setProgressBarPercentage = 'map/setProgressBarPercentage',
-    setProgressBarEnable = 'map/setProgressBarEnable',
+    setProgressBarEnable = 'map/setProgressBarEnable'
 }

@@ -11,12 +11,8 @@
             {{ $tc('welcomePopup.newVersionPart1') }}
         </p>
         <p>
-            {{ $tc('welcomePopup.newVersionPart2') }} <a target="_blank" :href="tourUrl"> <i class="icomoon-tour"></i> {{
-                $tc('welcomePopup.newVersionPart3')
-            }}</a>. <br />
-            {{ $tc('welcomePopup.newVersionPart4') }} <NuxtLink to="/release-notes"><i class="icomoon-info"></i> {{
-                $tc('welcomePopup.newVersionPart5')
-            }}</NuxtLink> {{ $tc('welcomePopup.newVersionPart6') }}
+            {{ $tc('welcomePopup.newVersionPart2') }} <a target="_blank" :href="tourUrl"> <i class="icomoon-tour"></i> {{ $tc('welcomePopup.newVersionPart3') }}</a>. <br />
+            {{ $tc('welcomePopup.newVersionPart4') }} <NuxtLink to="/release-notes"><i class="icomoon-info"></i> {{ $tc('welcomePopup.newVersionPart5') }}</NuxtLink> {{ $tc('welcomePopup.newVersionPart6') }}
         </p>
     </div>
 </template>
@@ -119,8 +115,7 @@ export default class WelcomePopupComponent extends Vue {
             right: 62px;
             top: 33px;
 
-            &:before,
-            &:after {
+            &:before, &:after {
                 content: '';
                 position: absolute;
                 left: 5px;

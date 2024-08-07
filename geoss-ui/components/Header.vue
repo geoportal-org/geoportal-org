@@ -1,16 +1,28 @@
 <template>
-    <header class="header" :class="{ active: menuOpened }">
+    <header class="header" :class="{ active: menuOpened, atlantos: isAtlantOsCommunityPortal() }">
         <div class="header__left">
-            <button class="header__menu-trigger" :aria-label="$tc('menu.toggle')" @click="toggleMenu()"
-                :class="{ active: menuOpened }" data-tutorial-tag="header-menu-trigger">
+            <button class="header__menu-trigger" :aria-label="$tc('menu.toggle')" @click="toggleMenu()" :class="{ active: menuOpened }" data-tutorial-tag="header-menu-trigger">
                 <span class="top"></span>
                 <span class="middle"></span>
                 <span class="bottom"></span>
             </button>
-            <a title="GEOSec" href="http://www.earthobservations.org/index.php" target="_blank"
-                data-tutorial-tag="header-logo-geosec">
-                <img :src="`/img/geoss-logo-white.png`" alt="GEO Secretary logo" />
-            </a>
+            <div class="header__left__slider">
+                <a title="GEOSec" href="http://www.earthobservations.org/index.php" target="_blank" data-tutorial-tag="header-logo-geosec">
+                    <img :src="`/img/geoss-logo-white.png`" alt="GEO Secretary logo" />
+                </a>
+                <a :title="siteName" :href="siteUrl" data-tutorial-tag="header-logo-main">
+                    <img :src="siteLogo" :alt="siteName" />
+                </a>
+                <a v-if="isAtlantOsCommunityPortal()" title="iAtlantic" href="https://doi.org/10.3030/818123" target="_blank" data-tutorial-tag="header-logo-atlantos">
+                    <img :src="`/img/iAtlantic-Logo-Rev.png`" alt="iAtlantic" />
+                </a>
+                <a title="CNR_IIA" href="https://en.iia.cnr.it/" target="_blank" data-tutorial-tag="header-logo-cnr">
+                    <img :src="`/img/CNR_logo_IIA-1-white.png`" alt="CNR IIA logo" />
+                </a>
+                <a title="ESA" href="http://www.esa.int" target="_blank"  data-tutorial-tag="header-logo-esa">
+                    <img :src="`/img/ESA-logo-51-white.png`" alt="ESA logo" />
+                </a>
+            </div>
         </div>
         <div class="header__middle">
             <NuxtLink :title="siteName" :to="siteRoot()" data-tutorial-tag="header-logo-main">
@@ -18,22 +30,21 @@
             </NuxtLink>
         </div>
         <div class="header__right">
+            <a v-if="isAtlantOsCommunityPortal()" title="iAtlantic" href="https://doi.org/10.3030/818123" target="_blank" class="header-logo-atlantos" data-tutorial-tag="header-logo-atlantos">
+                <img :src="`/img/iAtlantic-Logo-Rev.png`" alt="iAtlantic" />
+            </a>
             <a title="CNR_IIA" href="https://en.iia.cnr.it/" target="_blank" data-tutorial-tag="header-logo-cnr">
                 <img :src="`/img/CNR_logo_IIA-1-white.png`" alt="CNR IIA logo" />
             </a>
             <a title="ESA" href="http://www.esa.int" target="_blank" data-tutorial-tag="header-logo-esa">
                 <img :src="`/img/ESA-logo-51-white.png`" alt="ESA logo" />
             </a>
-
-            <div class="header__language-switcher" v-click-outside="closeLangContainer"
-                data-tutorial-tag="header-language-switch">
-                <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')"
-                    :aria-label="$tc('menu.languageToggle')">
+            <div class="header__language-switcher" v-click-outside="closeLangContainer"  data-tutorial-tag="header-language-switch">
+                <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')":aria-label="$tc('menu.languageToggle')">
                     <i class="icomoon-language"></i>
                     <span>{{ languageMap[langLocale] }}</span>
                 </button>
-                <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')"
-                    :aria-label="$tc('menu.languageToggle')">
+                <button @click="toggleLangContainer()" :title="$tc('menu.languageToggle')":aria-label="$tc('menu.languageToggle')">
                     <span></span>
                 </button>
                 <div class="options">
@@ -68,6 +79,8 @@ import CollapseTransition from '@/plugins/CollapseTransition';
     }
 })
 export default class HeaderComponent extends Vue {
+
+    public mobileLogosAnimation: any = null;
 
     public languageMap: { [key: string]: string } = {
         en: 'English',
@@ -129,6 +142,35 @@ export default class HeaderComponent extends Vue {
         this.toggleLangContainer();
     }
 
+    public isAtlantOsCommunityPortal() {
+        return window.location.pathname.indexOf('/community/aaod') > -1;
+    }
+
+    public runMobileLogosAnimation() {
+        console.log(111)
+        const mobileLogos: any = document.querySelector('.header__left__slider')?.querySelectorAll('a');
+        if (this.mobileLogosAnimation) {
+            clearInterval(this.mobileLogosAnimation);
+        }
+        if (window.innerWidth <= 480) {
+            let i = 0;
+            this.mobileLogosAnimation = setInterval(() => {
+                for (const logo of mobileLogos) {
+                    logo.style.display = 'none';
+                }
+                mobileLogos[i].style.display = 'block';
+                i++;
+                if (i >= mobileLogos.length) {
+                    i = 0;
+                }
+            }, 2000);
+        } else {
+            for (const logo of mobileLogos) {
+                logo.style.display = '';
+            }
+        }
+    }
+
     public siteRoot() {
         if (!this.siteUrl || this.siteUrl === 'global') {
             return '/'
@@ -136,12 +178,14 @@ export default class HeaderComponent extends Vue {
         return '/community/' + this.siteUrl
     }
 
-    private mounted() {
+     private mounted() {
         if (this.$cookies.get('i18n_redirected')) {
             this.$store.dispatch(GeneralActions.setLangLocale, this.$cookies.get('i18n_redirected'));
         } else {
             this.$store.dispatch(GeneralActions.setLangLocale, 'en');
         }
+
+        this.runMobileLogosAnimation();
     }
 }
 </script>
@@ -157,7 +201,7 @@ export default class HeaderComponent extends Vue {
     justify-content: space-between;
     align-items: stretch;
     padding: 30px;
-    background: linear-gradient(black -30%, transparent 75%);
+    background: linear-gradient(black -30%, transparent 100%);
 
     &:after {
         content: '';
@@ -181,6 +225,31 @@ export default class HeaderComponent extends Vue {
 
         @media(max-width: $breakpoint-xxs) {
             max-width: 100vw;
+        }
+    }
+
+    &.atlantos {
+        .header__left {
+            width: 496px;
+
+            @media (max-width: $breakpoint-xxl) {
+                width: auto;
+            }
+        }
+
+        .header__right {
+            &>* {
+                @media (max-width: $breakpoint-xxl) {
+                    margin-right: 30px;
+                }
+            }
+
+            .header-logo-atlantos {
+                @media (max-width: $breakpoint-md) {
+                    display: none;
+                }
+            }
+
         }
     }
 
@@ -208,9 +277,42 @@ export default class HeaderComponent extends Vue {
     }
 
     .header__middle,
-    .header__right a:first-child {
+    .header__right > a {
         @media (max-width: $breakpoint-xs) {
             display: none;
+        }
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        .header__middle {
+            img {
+                height: auto !important;
+                max-width: 200px;
+                max-height: 60px;
+                margin: -15px auto;
+            }
+        }
+
+        .header__left {
+            width: 314px;
+        }
+    }
+
+    .header__left {
+        &__slider {
+            >* {
+                display: none;
+                &:first-child {
+                    display: block;
+                }
+
+                @media (min-width: $breakpoint-xs) {
+                    display: none !important;
+                    &:first-child {
+                        display: block !important;
+                    }
+                }
+            }
         }
     }
 
@@ -260,10 +362,6 @@ export default class HeaderComponent extends Vue {
 
     img {
         height: 30px;
-
-        @media (max-width: $breakpoint-lg) {
-            height: 22px;
-        }
     }
 
     $size: 5px;

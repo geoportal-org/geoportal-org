@@ -206,5 +206,5 @@ export const ResultService = {
         }
 
         return layer
-    },
+    }
 }

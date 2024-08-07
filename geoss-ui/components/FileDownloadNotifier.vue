@@ -1,70 +1,78 @@
 <template>
-    <button v-if="!isBulkDownloadEnabled" class="disabled-transparent" :class="{ pulsate }" @click="openFileDownloadPopup()"
-        :disabled="disabled" v-show="files.length">
+    <button
+        v-if="!isBulkDownloadEnabled"
+        class="disabled-transparent"
+        :class="{ pulsate }"
+        @click="openFileDownloadPopup()"
+        :disabled="disabled"
+        v-show="files.length"
+    >
         <i class="icomoon-custom-download"></i>
     </button>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
-
-// import FileDownloadPopup from '@/components/FileDownloadPopup.vue';
-
-import { DownloadFile } from '@/interfaces/DownloadFile';
-import { FileDownloadGetters } from '@/store/fileDownload/file-download-getters';
-import { FileDownloadActions } from '@/store/fileDownload/file-download-actions';
-import { PopupActions } from '@/store/popup/popup-actions';
-import { AppVueObj } from '~/data/global';
-import { GeneralGetters } from '@/store/general/general-getters';
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import FileDownloadPopup from '@/components/FileDownloadPopup.vue'
+import { DownloadFile } from '@/interfaces/DownloadFile'
+import { FileDownloadGetters } from '@/store/fileDownload/file-download-getters'
+import { FileDownloadActions } from '@/store/fileDownload/file-download-actions'
+import { PopupActions } from '@/store/popup/popup-actions'
+import { AppVueObj } from '@/data/global'
+import { GeneralGetters } from '@/store/general/general-getters'
 
 @Component
 export default class FileDownloadNotifierComponent extends Vue {
-    @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-    public pulsate = false;
+    @Prop({ default: false, type: Boolean }) public disabled!: boolean
+    public pulsate = false
 
-    private popupOpened = false;
+    private popupOpened = false
 
     public async openFileDownloadPopup() {
-        this.pulsate = false;
-        this.popupOpened = true;
+        this.pulsate = false
+        this.popupOpened = true
 
-        const title = this.$tc('popupTitles.yourDownloads');
-        // await this.$store.dispatch(PopupActions.openPopup, {contentId: 'custom-downloads', title, component: FileDownloadPopup});
-        this.popupOpened = false;
+        const title = AppVueObj.app.$t('popupTitles.yourDownloads')
+        await this.$store.dispatch(PopupActions.openPopup, {
+            contentId: 'custom-downloads',
+            title,
+            component: FileDownloadPopup
+        })
+        this.popupOpened = false
     }
 
     get files() {
-        return this.$store.getters[FileDownloadGetters.files];
+        return this.$store.getters[FileDownloadGetters.files]
     }
 
     get openTrigger() {
-        return this.$store.getters[FileDownloadGetters.openTrigger];
+        return this.$store.getters[FileDownloadGetters.openTrigger]
     }
 
     get isBulkDownloadEnabled() {
-        return this.$store.getters[GeneralGetters.isBulkDownloadEnabled];
+        return this.$store.getters[GeneralGetters.isBulkDownloadEnabled]
     }
 
     @Watch('files')
     private onFilesChanged(val: DownloadFile[], oldVal: DownloadFile[]) {
         if (val.length === oldVal.length && !this.popupOpened) {
             for (const file of val) {
-                const oldFile = oldVal.find(item => item.id === file.id);
+                const oldFile = oldVal.find((item) => item.id === file.id)
                 if (oldFile && oldFile.status !== file.status) {
-                    this.pulsate = true;
-                    break;
+                    this.pulsate = true
+                    break
                 }
             }
         } else if (val.length > oldVal.length && !this.popupOpened) {
-            this.pulsate = true;
+            this.pulsate = true
         }
     }
 
     @Watch('openTrigger')
     private onOpenChanged(val: any, oldVal: any) {
         if (val) {
-            this.openFileDownloadPopup();
-            this.$store.dispatch(FileDownloadActions.openTrigger, false);
+            this.openFileDownloadPopup()
+            this.$store.dispatch(FileDownloadActions.openTrigger, false)
         }
     }
 }
@@ -107,15 +115,12 @@ export default class FileDownloadNotifierComponent extends Vue {
         0% {
             transform: scale(1);
         }
-
         50% {
             transform: scale(1.3);
         }
-
         100% {
             transform: scale(1);
         }
     }
 }
 </style>
-

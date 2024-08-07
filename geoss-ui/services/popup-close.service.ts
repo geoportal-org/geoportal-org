@@ -5,7 +5,7 @@ const PopupCloseService = {
 
     closePopup: (contentId: string, response?: any) => {
         PopupCloseService.eventBus.$emit('close', { contentId, response })
-    },
+    }
 }
 
 export default PopupCloseService

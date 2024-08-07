@@ -38,6 +38,9 @@ export default {
         '~/plugins/AxiosPort.ts',
         { src: '~/plugins/MatomoPlugin.js', ssr: false },
         { src: './plugins/VueCarusel.js', mode: 'client' },
+        { src: './plugins/Vue2TinymceEditor.js', mode: 'client' },
+        // { src: './plugins/Xlsx.js', mode: 'client' },
+        // { src: './plugins/Uuid.js', mode: 'client' },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components

@@ -63,30 +63,31 @@ export default {
         to: 'Для того, чтобы ...',
         selectContinentOrCountry: 'Выберите континент или страну',
         search: 'Поиск',
-        clearSearch: 'Очистить поиск',
+        clearSearch: 'Очистить поиск'
     },
     notifications: {
         newVersionTitle: 'НОВАЯ ВЕРСИЯ ДОСТУПНА',
-        newVersionPart1:
-            'Портал GEOSS был обновлен для более интуитивного и гибкого пользовательского опыта.',
+        newVersionPart1: 'Портал GEOSS был обновлен для более интуитивного и гибкого пользовательского опыта.',
         newVersionPart2: 'Быстрый Тур видео основных функций доступно',
         newVersionPart3: 'Вот',
         newVersionPart4: 'Посетить',
         newVersionPart5: 'Примечания к выпуску',
         newVersionPart6: 'смотреть на подробные изменения.',
-        basemapUnavailable:
-            'Базовая карта по умолчанию временно недоступна. Портал меняет карту на другую.',
+        basemapUnavailable: 'Базовая карта по умолчанию временно недоступна. Портал меняет карту на другую.',
         basemapUnavailableTitle: 'БАЗОВАЯ КАРТА НЕ ДОСТУПНА',
+        dashboardSavedSuccessfully: 'Панель управления успешно сохранена! Вы можете найти его в МОЯ РАБОЧАЯ ОБЛАСТЬ -> Панели инструментов.',
+        errorDuringDashboardSaving: 'Ошибка при сохранении дашборда. Пожалуйста, попробуйте еще раз.',
+        dashboardLoadedSuccessfully: 'Панель успешно загружена!',
+        errorDuringDashboardLoading: 'Ошибка при загрузке дашборда.',
     },
     welcomePopup: {
         newVersionTitle: 'ПОРТАЛ ГЕОСС 3.7 ДОСТУПНЫ',
-        newVersionPart1:
-            'Портал GEOSS был обновлен для более интуитивного и гибкого пользовательского опыта.',
+        newVersionPart1: 'Портал GEOSS был обновлен для более интуитивного и гибкого пользовательского опыта.',
         newVersionPart2: 'Быстрый Тур видео клип основных функций доступен',
         newVersionPart3: 'Вот',
         newVersionPart4: 'Посетить',
         newVersionPart5: 'Примечания к выпуску',
-        newVersionPart6: 'смотреть на подробные изменения.',
+        newVersionPart6: 'смотреть на подробные изменения.'
     },
     menu: {
         toggle: 'Переключить меню',
@@ -104,11 +105,9 @@ export default {
         backendError: 'Ошибка бэкэнда',
         errorOccurred: 'произошла ошибка',
         unableToFindAnyResources: 'Мы не смогли найти никаких ресурсов.',
-        loadingResourcesIsTakingTooLong:
-            'Загрузка ресурса занимает больше времени, чем обычно.',
+        loadingResourcesIsTakingTooLong: 'Загрузка ресурса занимает больше времени, чем обычно.',
         noResourcesFound: 'Ресурсы не найдены',
-        noResourcesFoundChooseAnotherSource:
-            'Ресурсы для этого типа данных не найдены. Пожалуйста, выберите просмотр ресурсов другого типа или вернитесь к предыдущим результатам.',
+        noResourcesFoundChooseAnotherSource: 'Ресурсы для этого типа данных не найдены. Пожалуйста, выберите просмотр ресурсов другого типа или вернитесь к предыдущим результатам.',
         showDetails: 'Показать детали',
         hideDetails: 'Скрыть детали',
         hi: 'Здравствуй',
@@ -119,12 +118,12 @@ export default {
         noData: 'Нет данных',
         ignore: 'игнорировать',
         disable: 'Отключить',
-        searchResults: 'поиск',
+        searchResults: 'поиск'
     },
     dataSources: {
         dab: 'Данные',
         information: 'Информация',
-        services: 'Сервисы',
+        services: 'Сервисы'
     },
     pagination: {
         showing: 'показ',
@@ -132,14 +131,13 @@ export default {
         next: 'следующий',
         prev: 'Предыдущая',
         of: 'из',
-        results: 'полученные результаты',
+        results: 'полученные результаты'
     },
     errors: {
         noMetadata: 'Возникла проблема с получением метаданных ресурса',
         google: {
-            OVER_QUERY_LIMIT:
-                'К сожалению, сейчас мы не можем перевести ваш запрос на географические термины. Попробуй завтра.',
-        },
+            OVER_QUERY_LIMIT: 'К сожалению, сейчас мы не можем перевести ваш запрос на географические термины. Попробуй завтра.'
+        }
     },
     map: {
         legend: 'легенда',
@@ -148,8 +146,7 @@ export default {
         centerMapOnLayer: 'Центр карты на слое',
         layerSettings: 'Настройки слоя',
         removeLayer: 'Удалить слой',
-        compareLayer:
-            'Сравнить слои (по крайней мере 2 слоя должны быть добавлены и видимы)',
+        compareLayer: 'Сравнить слои (по крайней мере 2 слоя должны быть добавлены и видимы)'
     },
     searchBar: {
         filters: 'фильтры',
@@ -161,12 +158,12 @@ export default {
         popular: 'Популярный',
         seeAlso: 'Смотрите также',
         moveAround: 'Двигаться вокруг',
-        recommendationsForYou: 'Рекомендации для вас',
+        recommendationsForYou: 'Рекомендации для вас'
     },
     filters: {
         advanced: 'продвинутый',
         filterBy: 'Сортировать по',
-        toggle: 'Переключить фильтры',
+        toggle: 'Переключить фильтры'
     },
     generalFilters: {
         filters: 'фильтры',
@@ -187,7 +184,7 @@ export default {
         lastYear: 'Прошедший год',
         last10Years: 'Последние 10 лет',
         cancel: 'ясно',
-        accept: 'Подать заявление',
+        accept: 'Подать заявление'
     },
     customDownloadOptionsPopup: {
         title: 'Выберите предпочтительные варианты',
@@ -196,18 +193,14 @@ export default {
         subsetCRS: 'Подмножество CRS',
         subsetLowerCoordinate: 'Подмножество нижней координаты',
         subsetUpperCoordinate: 'Подмножество верхней координаты',
-        download: 'Скачать',
+        download: 'Запросить загрузку',
         addToDownloads: 'Добавить в список загрузок',
         outputDownloadFormat: 'Выходной формат загрузки',
         imageResolutionInPixels: 'Разрешение изображения в пикселях (250, 500)',
-        coordinateReferenceSystemOfSubset:
-            'Система координат координат подмножества',
-        subsetLowerCoordinateInSpecifiedCRSFormat:
-            'Подмножество нижней левой координаты в указанном формате CRS',
-        subsetUpperCoordinateInSpecifiedCRSFormat:
-            'Подмножество верхней правой координаты в указанном формате CRS',
-        latLongRule:
-            'Допустимые значения широты: от -90 до 90 и для долготы: от -180 до 180',
+        coordinateReferenceSystemOfSubset: 'Система координат координат подмножества',
+        subsetLowerCoordinateInSpecifiedCRSFormat: 'Подмножество нижней левой координаты в указанном формате CRS',
+        subsetUpperCoordinateInSpecifiedCRSFormat: 'Подмножество верхней правой координаты в указанном формате CRS',
+        latLongRule: 'Допустимые значения широты: от -90 до 90 и для долготы: от -180 до 180',
         xYRule: 'Допустимые значения X: между -20037508.3427892 и 20037508.3427892 и для Y: между -20037508.3427892 и 20037508.3427892',
         scaleFactor: 'Масштаб',
         rangeSubset: 'Подмножество диапазона',
@@ -229,12 +222,13 @@ export default {
         attributesTooltip: 'Доступные атрибуты',
         attributesPlaceholder: 'Выберите атрибуты',
         addLayer: 'Добавить слой',
-        unavailable: 'Статистическая служба ООН недоступна',
+        unavailable: 'Статистическая служба ООН недоступна'
     },
     dabResult: {
         organisation: 'организация',
         creators: 'Творцы',
         exploreExtendedView: 'Исследуйте расширенный вид',
+        thereAreNoRelatedResources: 'Для этого элемента нет связанных ресурсов',
         recentView: 'недавний взгляд',
         recentViews: 'последние просмотры',
         seeMore: 'Узнать больше',
@@ -258,8 +252,10 @@ export default {
         userContributedservices: 'Переключиться на пользовательские сервисы',
         file: 'файл',
         other: 'Другие',
+        view: 'вид',
         downloadNow: 'Скачать сейчас',
         downloadLater: 'Загрузить позже',
+        thisOptionAvailableForSignedIn: 'Эта опция доступна только зарегистрированным пользователям.'
     },
     popupTitles: {
         quickSurvey: 'Быстрый опрос',
@@ -275,20 +271,25 @@ export default {
         confirmSearch: 'Подтвердите поиск',
         downloadLinks: 'Скачать ссылки',
         yourDownloads: 'Ваши загрузки',
-        downloadsList: 'Список загрузок',
+        downloadsList: 'Массовая загрузка и список загрузок',
         savedRuns: 'Сохраненные пробеги',
         workflowandruns: 'Рабочий процесс и прогоны',
+        dashboard: 'приборная доска',
+        dashboards: 'приборные панели',
         improveDefinition: 'Улучшить определение',
         entryRelations: 'Вступительные отношения',
+        downloadList: 'Список загрузок',
+        manageLayers: 'Управление слоями',
+        boundingBox: 'Ограничивающая рамка'
     },
     popupContent: {
-        bookmarkSavedSuccess:
-            'Результат был сохранен в Моем рабочем пространстве -> Закладка Результаты.',
+        addedToDownloadList: 'Ресурс добавлен в ваш список загрузки. <a href="" class="openBulkDownloadPopup"><b>Просмотреть список</b></a>',
+        addedCustomToDownloadList: 'Запрос на загрузку добавлен в ваш список загрузок. <a href="" class="openBulkDownloadPopup"><b>Просмотреть список</b></a>',
+        bookmarkSavedSuccess: 'Результат был сохранен в Моем рабочем пространстве -> Закладка Результаты.',
         bookmarkSavedFail: 'Не удалось добавить в закладки результат.',
         bookmarkRemovedSuccess: 'Результат был удален из закладок.',
         bookmarkRemovedFail: 'Не удалось удалить результат из закладок.',
-        saveSearchSuccess:
-            'Ваш поиск был сохранен в Моем рабочем пространстве -> Ваши сохраненные поиски.',
+        saveSearchSuccess: 'Ваш поиск был сохранен в Моем рабочем пространстве -> Ваши сохраненные поиски.',
         saveSearchFail: 'Не удалось сохранить поиск.',
         loadOnMap: 'Загрузить на карту',
         loadingLayer: 'Загрузочный слой',
@@ -306,15 +307,44 @@ export default {
         cloudPlatformSelection: 'Выбор облачной платформы',
         optimal: 'оптимальный',
         fetchingPlatformsData: 'Извлечение данных платформ',
-        entryRelationsStart:
-            'Теперь вы находитесь в режиме настройки ВХОДНЫЕ ОТНОШЕНИЯ. <br /> Сначала выберите желаемую запись в качестве <b>источника отношения</b> .',
+        entryRelationsStart: 'Теперь вы находитесь в режиме настройки ВХОДНЫЕ ОТНОШЕНИЯ. <br /> Сначала выберите желаемую запись в качестве <b>источника отношения</b> .',
         entryRelationsSrcSet1: 'Источник связи был установлен на',
-        entryRelationsSrcSet2:
-            'Пожалуйста, выберите <b>ресурсы назначения</b> .',
-        entryRelationsNoDest:
-            'Не выбраны ресурсы назначения. Выберите хотя бы один ресурс, связанный с исходной записью.',
-        entryRelationsRedirecting:
-            'Данные о входных отношениях успешно отправлены. Перенаправление ...',
+        entryRelationsSrcSet2: 'Пожалуйста, выберите <b>ресурсы назначения</b> .',
+        entryRelationsNoDest: 'Не выбраны ресурсы назначения. Выберите хотя бы один ресурс, связанный с исходной записью.',
+        entryRelationsRedirecting: 'Данные о входных отношениях успешно отправлены. Перенаправление ...',
+
+        // SDG dashboards
+        createDashboard: 'Создать информационную панель',
+        dashboardBasedOn: 'Приборная панель на основе',
+        preview: 'вид',
+        downloadAsPdf: 'Скачать PDF',
+        saveAsDraft: 'Сохранить как черновик',
+        dashboardName: 'Название панели',
+        dashboardSummary: 'Сводная информация о приборной панели',
+        tools: 'Дай',
+        layout: 'Макет',
+        description: 'Описание',
+        textEditor: 'Текстовый редактор',
+        chart: 'Диаграмма',
+        map: 'карта',
+        addPage: 'Добавить страницу',
+        remove: 'Удалять',
+        removePage: 'Удалить страницу',
+        clearArea: 'Очистить область',
+        dragAndDropDescription: 'Перетащите элементы с панели инструментов,<br/>чтобы начать создание информационной панели.',
+        dashboardInPreview: 'Вы изучаете приборную панель в режиме предварительного просмотра. Чтобы изменить или сохранить данные, пожалуйста,',
+        closePreview: 'закрыть предварительный просмотр',
+        goBackToCreator: 'и вернуться к создателю',
+        showAs: 'Показать как',
+        values: 'Ценности',
+        percentage: 'Процент',
+        creatorCloseConfirmation: 'Вы уверены, что хотите закрыть автора? Весь прогресс будет потерян!',
+        pageOrder: 'Порядок страниц',
+        changePageOrder: 'Изменить порядок страниц',
+        dragAndDropPageIcons: 'Перетащите значки страниц, чтобы изменить их порядок',
+        page: 'Страница',
+        of: 'из',
+        save: 'Сохранять',
 
         // metadata
         generalInfo: 'General info',
@@ -368,6 +398,7 @@ export default {
         references: 'Ссылки',
         publishedIn: 'Опубликовано в',
         mapDetails: 'Детали карты',
+        authors: 'Авторы',
 
         // rating
         comment: 'Комментарий',
@@ -380,17 +411,14 @@ export default {
         inLocation: 'в месте',
 
         // dab request too long
-        resourceTakesMoreTime:
-            'Загрузка ресурса занимает больше времени, чем обычно.',
+        resourceTakesMoreTime: 'Загрузка ресурса занимает больше времени, чем обычно.',
         wouldYouLikeToContinue: 'Желаете ли вы продолжить?',
 
         // layer not available
-        mapLayerUnavailable:
-            'Картографический сервис в данный момент недоступен. Команда обслуживания портала была проинформирована.  NВы хотите отключить представление этого слоя?',
+        mapLayerUnavailable: 'Картографический сервис в данный момент недоступен. Команда обслуживания портала была проинформирована. \ NВы хотите отключить представление этого слоя?',
 
         // workflow
-        saveRunSuccess:
-            'Результат был сохранен в Моем рабочем пространстве -> Сохраненные прогоны.',
+        saveRunSuccess: 'Результат был сохранен в Моем рабочем пространстве -> Сохраненные прогоны.',
         saveFail: 'Не удалось сохранить RunId.',
         seeThisWorkflow: 'Смотрите этот рабочий процесс',
         run: 'Бег',
@@ -407,8 +435,7 @@ export default {
         cancel: 'Отмена',
         accept: 'принимать',
         removeResource: 'Удалить ресурс',
-        mustBeLoggedIn:
-            'Пожалуйста, <a href="/c/portal/login">войдите,</a> чтобы запустить сервис',
+        mustBeLoggedIn: 'Пожалуйста, <a href="/c/portal/login">войдите,</a> чтобы запустить сервис',
         mustBeLoggedIn1: 'Пожалуйста ',
         mustBeLoggedIn2: 'войдите',
         mustBeLoggedIn3: 'чтобы запустить сервис',
@@ -417,8 +444,7 @@ export default {
         workflowInput: 'Ввод рабочего процесса',
         runName: 'Имя бега',
         worldwide: 'Мировой',
-        serverResponseTimeout:
-            'Ответ сервера занимает больше времени, чем ожидалось - попробуйте еще раз.',
+        serverResponseTimeout: 'Ответ сервера занимает больше времени, чем ожидалось - попробуйте еще раз.',
 
         // resource editor
         advancedView: 'Расширенный вид',
@@ -433,29 +459,23 @@ export default {
         passToModerator: 'Перейти модератору',
         addLinkOption: 'Добавить ссылку',
         removeLinkOption: 'Удалить ссылку',
-        improveDefinitionSuccess:
-            'Улучшение определения успешно отправлено модератору',
+        improveDefinitionSuccess: 'Улучшение определения успешно отправлено модератору',
         improveDefinitionFail: 'Не удалось отправить улучшение определения',
         improveTheResourceDefinition: 'Улучшить определение ресурса',
-        youNeedToBeSignedInToImprove:
-            'Вы должны войти в систему, чтобы улучшить определение ресурса',
+        youNeedToBeSignedInToImprove: 'Вы должны войти в систему, чтобы улучшить определение ресурса',
 
         // user contributed metadata
         userContributedTitleSummary: 'Пользователь добавил описание',
         userContributedTitleKeywords: 'Пользователь добавил ключевые слова',
-        userContributedTitleTransferOptions:
-            'Пользователь добавил онлайн-ресурсы',
+        userContributedTitleTransferOptions: 'Пользователь добавил онлайн-ресурсы',
         userContributedTitleComment: 'Комментарии пользователей',
         userContributedRemoveEntryExtension: 'Удалить расширение записи',
-        userContributedAreYouSure:
-            'Вы уверены, что хотите удалить следующее расширение записи?',
+        userContributedAreYouSure: 'Вы уверены, что хотите удалить следующее расширение записи?',
         userContributedCommentOnYourDecision: 'Прокомментируйте свое решение',
         userContributedCancel: 'Отмена',
         userContributedDelete: 'Удалить',
-        userContributedRemoveEntryExtensionSuccess:
-            'Вы успешно удалили расширение записи',
-        userContributedRemoveUnavailable:
-            'Удаление расширения временно недоступно - запись в настоящее время обрабатывается в рабочем процессе.<br/>Пожалуйста, повторите попытку позже.',
+        userContributedRemoveEntryExtensionSuccess: 'Вы успешно удалили расширение записи',
+        userContributedRemoveUnavailable: 'Удаление расширения временно недоступно - запись в настоящее время обрабатывается в рабочем процессе.<br/>Пожалуйста, повторите попытку позже.'
     },
 
     irisFilters: {
@@ -466,8 +486,8 @@ export default {
         legend: {
             depth: 'глубина',
             km: 'км',
-            magnitude: 'величина',
-        },
+            magnitude: 'величина'
+        }
     },
 
     facetedFilters: {
@@ -477,7 +497,7 @@ export default {
         source: 'Источник',
         protocol: 'протокол',
         organisation: 'организация',
-        serviceHealth: 'Служба Здоровья',
+        serviceHealth: 'Служба Здоровья'
     },
 
     granulaFilters: {
@@ -491,14 +511,14 @@ export default {
         timeliness: 'своевременность',
         relativeOrbit: 'Относительная орбита',
         row: 'Ряд',
-        path: 'Путь',
+        path: 'Путь'
     },
 
     sentinelLogin: {
         username: 'имя пользователя',
         password: 'пароль',
         sentinelDataAccessRegistration: 'Регистрация доступа к данным Sentinel',
-        download: 'Скачать',
+        download: 'Скачать'
     },
 
     fileDownloadsPopup: {
@@ -519,15 +539,14 @@ export default {
         packagesList: 'Список пакетов',
         listIsEmpty: 'Список пуст',
         files: 'Файл(ы)',
-        areCurrentlyUnavailableYouCan:
-            'в настоящее время недоступны, вы можете',
+        areCurrentlyUnavailableYouCan: 'в настоящее время недоступны, вы можете',
         downloadPackageWithoutThisFiles: 'скачать пакет без этого файла(ов)',
         abort: 'преждевременное прекращение',
         or: 'или',
         retry: 'повторная попытка',
         packagePreparation: 'подготовка пакета.',
-        requestTakesLongerThanExpected:
-            'Запрос занимает больше времени, чем ожидалось...',
+        requestTakesLongerThanExpected: 'Запрос занимает больше времени, чем ожидалось...',
+        bulkDownloadPackageCreation: 'Создание пакета массовой загрузки'
     },
 
     survey: {
@@ -536,18 +555,18 @@ export default {
             question: 'Какое у вас общее впечатление от портала?',
             positive: 'Отлично',
             neutral: 'Хорошо',
-            negative: 'Плохо',
+            negative: 'Плохо'
         },
         didYouFind: {
             thankYou: 'Спасибо за ваше время!',
             question: 'Ты нашел то, что искал?',
             yes: 'да',
             no: 'нет',
-            partially: 'Частично',
+            partially: 'Частично'
         },
         whatWereYouLookingFor: {
             question: 'Что вы искали?',
-            placeholder: 'Напишите здесь, пожалуйста',
+            placeholder: 'Напишите здесь, пожалуйста'
         },
         interest: {
             question1: 'Как бы вы охарактеризовали ваш интерес',
@@ -555,68 +574,64 @@ export default {
             options: [
                 {
                     label: 'Global - всемирный интерес',
-                    value: 'Глобальный',
+                    value: 'Глобальный'
                 },
                 {
                     label: 'Национальный - специфический для страны интерес',
-                    value: 'национальный',
+                    value: 'национальный'
                 },
                 {
                     label: 'Регионально-специфические географические интересы внутри страны',
-                    value: 'региональный',
+                    value: 'региональный'
                 },
                 {
                     label: 'Местные - местные географические интересы',
-                    value: 'местный',
-                },
-            ],
+                    value: 'местный'
+                }
+            ]
         },
         classification: {
             question: 'Как бы вы классифицировали себя профессионально?',
             options: [
                 {
                     label: 'Ученый / научный сотрудник',
-                    value: 'ученый / исследователь',
+                    value: 'ученый / исследователь'
                 },
                 {
                     label: 'Официальная поддержка принятия решений',
-                    value: 'чиновник поддержки принятия решений',
+                    value: 'чиновник поддержки принятия решений'
                 },
                 {
                     label: 'Политический аналитик',
-                    value: 'политический аналитик',
-                },
-            ],
+                    value: 'политический аналитик'
+                }
+            ]
         },
         organized: {
             title: 'Насколько вы согласны со следующим утверждением?',
-            question:
-                'Я считаю, что содержание сайта Портала логично организовано',
-            stronglyAgree: 'Сильно  nagree',
-            stronglyDisagree: 'Сильно  ndisagree',
+            question: 'Я считаю, что содержание сайта Портала логично организовано',
+            stronglyAgree: 'Сильно \ nagree',
+            stronglyDisagree: 'Сильно \ ndisagree'
         },
         adequately: {
             title: 'Насколько вы согласны со следующим утверждением?',
-            question:
-                'Я думаю, что информация, предлагаемая на сайте, адекватно описана',
-            stronglyAgree: 'Сильно  nagree',
-            stronglyDisagree: 'Сильно  ndisagree',
+            question: 'Я думаю, что информация, предлагаемая на сайте, адекватно описана',
+            stronglyAgree: 'Сильно \ nagree',
+            stronglyDisagree: 'Сильно \ ndisagree'
         },
         search_criteria: {
-            question:
-                'Существуют ли другие критерии поиска, которые будут вам полезны?',
-            placeholder: 'Пожалуйста, напишите их здесь',
+            question: 'Существуют ли другие критерии поиска, которые будут вам полезны?',
+            placeholder: 'Пожалуйста, напишите их здесь'
         },
         visualization: {
-            question:
-                'Существуют ли какие-либо визуализации данных, которые могут помочь вам лучше понять, что можно извлечь из портала?',
-            placeholder: 'Пожалуйста, опишите их здесь',
+            question: 'Существуют ли какие-либо визуализации данных, которые могут помочь вам лучше понять, что можно извлечь из портала?',
+            placeholder: 'Пожалуйста, опишите их здесь'
         },
         thankYouForCompleting: 'Спасибо за заполнение этого опроса!',
         ok: 'хорошо',
         hideInFuture: 'Больше не показывать это окно',
         submit: 'Разместить',
-        other: 'Другие',
+        other: 'Другие'
     },
     yellowPages: {
         title: 'Поставщики данных',
@@ -650,30 +665,23 @@ export default {
         clean_water_and_sanitation: 'Чистая вода и санитария',
         affordable_and_clean_energy: 'Доступная и чистая энергия',
         decent_work_and_economic_growth: 'Достойный труд и экономический рост',
-        industry_innovation_and_infrastructure:
-            'Промышленность, инновации и инфраструктура',
+        industry_innovation_and_infrastructure: 'Промышленность, инновации и инфраструктура',
         reduced_inequalities: 'Уменьшенные неравенства',
         sustainable_cities_and_communities: 'Устойчивые города и сообщества',
-        responsible_consumption_and_production:
-            'Ответственное потребление и производство',
+        responsible_consumption_and_production: 'Ответственное потребление и производство',
         climate_action: 'Климатическая акция',
         life_below_water: 'Жизнь под водой',
         life_on_land: 'Жизнь на суше',
-        peace_justice_and_strong_institutions:
-            'Мир, справедливость и сильные институты',
+        peace_justice_and_strong_institutions: 'Мир, справедливость и сильные институты',
         partnerships_for_the_goals: 'Партнерство для достижения целей',
-        biodiversity_and_ecosystem_sustainability:
-            'Биоразнообразие и устойчивость экосистем',
+        biodiversity_and_ecosystem_sustainability: 'Биоразнообразие и устойчивость экосистем',
         disaster_resilience: 'Устойчивость к стихийным бедствиям',
-        energy_and_mineral_resource_management:
-            'Управление энергетическими и минеральными ресурсами',
-        food_security_and_sustainable_agriculture:
-            'Продовольственная безопасность и устойчивое сельское хозяйство',
-        infrastructure_and_transportation_management:
-            'Управление инфраструктурой и транспортом',
+        energy_and_mineral_resource_management: 'Управление энергетическими и минеральными ресурсами',
+        food_security_and_sustainable_agriculture: 'Продовольственная безопасность и устойчивое сельское хозяйство',
+        infrastructure_and_transportation_management: 'Управление инфраструктурой и транспортом',
         public_health_surveillance: 'Надзор за общественным здравоохранением',
         water_resources_management: 'Управление водными ресурсами',
-        sustainable_urban_development: 'Устойчивое развитие городов',
+        sustainable_urban_development: 'Устойчивое развитие городов'
     },
     bookmarks: {
         title: 'Мое рабочее пространство / Закладки результатов',
@@ -681,34 +689,31 @@ export default {
         showOnMap: 'Показать на карте',
         delete: 'удалять',
         incompatibleDataSources: 'Несовместимые источники данных',
-        desiredSource:
-            'Вы можете отображать на карте элементы только одного источника данных. Выберите нужный источник данных:',
+        desiredSource: 'Вы можете отображать на карте элементы только одного источника данных. Выберите нужный источник данных:',
         noItemsSelected: 'Предметы не выбраны',
         selectItems: 'Пожалуйста, выберите хотя бы один элемент из списка.',
         accept: 'хорошо',
         yourListIsEmpty: 'Ваш список пуст.',
         recentViews: 'последние просмотры',
         download: 'Скачать',
-        checked: 'проверено',
+        checked: 'проверено'
     },
     geoLikes: {
         title: 'Мое рабочее пространство / GEO Likes',
     },
     privacyPolicy: {
-        statement:
-            'Мы используем файлы cookie только для отслеживания посещений нашего веб-сайта, личная информация не собирается. Если вы хотите ограничить или заблокировать использование нами файлов cookie, следуйте инструкциям, изложенным в нашей Политике использования файлов cookie.',
+        statement: 'Мы используем файлы cookie только для отслеживания посещений нашего веб-сайта, личная информация не собирается. Если вы хотите ограничить или заблокировать использование нами файлов cookie, следуйте инструкциям, изложенным в нашей Политике использования файлов cookie.',
         cookieLink: 'Уведомление о файлах cookie',
-        cookieText:
-            'для получения дополнительной информации или для изменения ваших предпочтений.',
+        cookieText: 'для получения дополнительной информации или для изменения ваших предпочтений.',
         accept: 'Принимать',
-        decline: 'Отклонить',
+        decline: 'Отклонить'
     },
     sendFeedback: 'Комментарии',
     tutorial: {
         mode: 'Учебный режим',
         close: 'Закрыть учебный режим',
         new: 'новый',
-        tip: 'совет',
+        tip: 'совет'
     },
     mapControls: {
         zoomIn: 'Увеличить',
@@ -716,10 +721,10 @@ export default {
         resetView: 'Сбросить вид по умолчанию',
         areaOfInterest: 'Сфера интересов',
         layers: 'Слои',
-        changeBasemap: 'Изменить базовую карту',
+        changeBasemap: 'Изменить базовую карту'
     },
     seeOtherSources: {
-        sources: 'источники',
+        sources: 'источники'
     },
     wms: {
         _count: 'подсчитывать',
@@ -730,7 +735,7 @@ export default {
         area: 'Площадь',
         fid: 'В',
         ld: 'LD',
-        status: 'Положение дел',
+        status: 'Положение дел'
     },
-    poweredBy: 'Питаться от',
-}
+    poweredBy: 'Питаться от'
+};

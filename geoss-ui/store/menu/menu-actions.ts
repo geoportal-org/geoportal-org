@@ -3,5 +3,5 @@ export enum MenuActions {
     toggleOpened = 'menu/toggleOpened',
     setItems = 'menu/setItems',
     setItemsURL = 'menu/setItemsURL',
-    setLangContainerActive = 'menu/setLangContainerActive',
+    setLangContainerActive = 'menu/setLangContainerActive'
 }

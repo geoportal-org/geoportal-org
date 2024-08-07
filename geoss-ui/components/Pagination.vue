@@ -1,19 +1,13 @@
 <template>
     <div class="pagination" data-tutorial-tag="search-container-pagination">
         <span class="pagination__summary" v-if="showSummary">
-            {{ `${$tc('pagination.showing')} ${resultsFrom()} - ${resultsTo()} ${$tc('pagination.of')} ${total}
-                        ${$tc('pagination.results')}.` }}
+            {{`${$tc('pagination.showing')} ${resultsFrom()} - ${resultsTo()} ${$tc('pagination.of')} ${total} ${$tc('pagination.results')}.`}}
         </span>
-        <button :disabled="startIndex === initialIndex" @click="switchPageResults('prev', true)"
-            class="pagination__first disabled-transparent"></button>
-        <button :disabled="startIndex === initialIndex" @click="switchPageResults('prev')"
-            class="pagination__prev disabled-transparent"></button>
-        <input ref="input" type="text" :value="input" @input="validateInput(false)" @focus="onFocus"
-            @blur="validateInput(true)" @keyup.enter="blurInput()" />
-        <button :disabled="currentPage === totalPages" @click="switchPageResults('next')"
-            class="pagination__next disabled-transparent"></button>
-        <button :disabled="currentPage === totalPages" @click="switchPageResults('next', true)"
-            class="pagination__last disabled-transparent"></button>
+        <button :disabled="startIndex === initialIndex" @click="switchPageResults('prev', true)" class="pagination__first disabled-transparent"></button>
+        <button :disabled="startIndex === initialIndex" @click="switchPageResults('prev')" class="pagination__prev disabled-transparent"></button>
+        <input ref="input" type="text" :value="input" @input="validateInput(false)" @focus="onFocus" @blur="validateInput(true)" @keyup.enter="blurInput()" />
+        <button :disabled="currentPage === totalPages" @click="switchPageResults('next')" class="pagination__next disabled-transparent"></button>
+        <button :disabled="currentPage === totalPages" @click="switchPageResults('next', true)" class="pagination__last disabled-transparent"></button>
     </div>
 </template>
 
@@ -23,11 +17,11 @@ import { Component, Prop, Vue, Emit } from 'nuxt-property-decorator';
 
 @Component
 export default class PaginationComponent extends Vue {
-    @Prop({ default: false, type: Boolean }) public showSummary!: boolean;
-    @Prop({ required: true, type: Number }) public startIndex!: number;
-    @Prop({ required: true, type: Number }) public resultsPerPage!: number;
-    @Prop({ required: true, type: Number }) public total!: number;
-    @Prop({ default: 0, type: Number }) public initialIndex!: number;
+    @Prop({default: false, type: Boolean}) private showSummary!: boolean;
+    @Prop({required: true, type: Number}) private startIndex!: number;
+    @Prop({required: true, type: Number}) private resultsPerPage!: number;
+    @Prop({required: true, type: Number}) private total!: number;
+    @Prop({default: 0, type: Number}) private initialIndex!: number;
 
     private lastValue = null;
 
@@ -53,7 +47,7 @@ export default class PaginationComponent extends Vue {
         return remainder ? (this.currentPage - 1) * this.resultsPerPage + remainder : this.currentPage * this.resultsPerPage;
     }
 
-    public setCaretPosition(pos) {
+    public setCaretPosition(pos: any) {
         const inputElem = this.$refs.input as HTMLInputElement;
         inputElem.focus();
         inputElem.setSelectionRange(pos, pos);
@@ -198,9 +192,7 @@ export default class PaginationComponent extends Vue {
 
     &__next,
     &__last {
-
-        &:before,
-        &:after {
+        &:before, &:after {
             left: auto;
             right: 3px;
             transform: rotate(40deg);

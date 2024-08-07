@@ -1,6 +1,6 @@
 <template>
     <div class="map-attribution" v-if="attributionDetails" :class="'map-attribution-' + attributionType">
-        <a :href="attributionDetails.href" :target="attributionDetails.target"
+        <a v-if="attributionDetails.icon !== ''" :href="attributionDetails.href" :target="attributionDetails.target"
             :class="'attribution-logo-' + attributionType">
             <img :alt="attributionDetails.alt" :src="`/img/${attributionDetails.icon}`" :title="attributionDetails.title">
         </a>

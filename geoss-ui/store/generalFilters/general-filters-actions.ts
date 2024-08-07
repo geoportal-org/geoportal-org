@@ -22,5 +22,5 @@ export enum GeneralFiltersActions {
     setInChangeProcess = 'generalFilters/setInChangeProcess',
     parseValues = 'generalFilters/parseValues',
     setWorkflowMapDraw = 'generalFilters/setWorkflowMapDraw',
-    setGooglePlacesApiError = 'generalFilters/setGooglePlacesApiError',
+    setGooglePlacesApiError = 'generalFilters/setGooglePlacesApiError'
 }

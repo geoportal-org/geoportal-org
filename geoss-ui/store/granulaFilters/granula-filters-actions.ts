@@ -27,5 +27,5 @@ export enum GranulaFiltersActions {
     setContainerVisible = 'granulaFilters/setContainerVisible',
     toggleContainerVisible = 'granulaFilters/toggleContainerVisible',
     reset = 'granulaFilters/reset',
-    checkParamsAvailability = 'granulaFilters/checkParamsAvailability',
+    checkParamsAvailability = 'granulaFilters/checkParamsAvailability'
 }

@@ -29,7 +29,6 @@ import FileDownloadNotifier from '@/components/FileDownloadNotifier.vue';
 import BulkDownloadNotifier from '@/components/BulkDownloadNotifier.vue';
 
 import { MapGetters } from '@/store/map/map-getters';
-import { Timers } from '@/data/timers';
 import { MapActions } from '@/store/map/map-actions';
 import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters';
 import { GeneralGetters } from '@/store/general/general-getters';
@@ -97,7 +96,7 @@ export default class MapControlsComponent extends Vue {
 }
 
 .map-control {
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     width: 32px;
     height: 32px;
     background-repeat: no-repeat;

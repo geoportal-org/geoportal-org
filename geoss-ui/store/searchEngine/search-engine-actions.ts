@@ -11,5 +11,5 @@ export enum SearchEngineActions {
     setW3wKey = 'searchEngine/setW3wKey',
     setUserDabBaseUrl = 'searchEngine/setUserDabBaseUrl',
     setInternalOpenSearchUrl = 'searchEngine/setInternalOpenSearchUrl',
-    setDefaultSourceName = 'searchEngine/setDefaultSourceName',
+    setDefaultSourceName = 'searchEngine/setDefaultSourceName'
 }

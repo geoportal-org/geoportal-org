@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: '/proxy/rest', //'http://10.254.7.59:8084/rest', // 
+    apiUrl: 'http://10.254.7.59:8084/rest', // '/proxy/rest', //'http://10.254.7.59:8084/rest', //
     popularUrl: '/popular',
     logSearchUrl: '/log/logSearchResult',
     logElementClickUrl: '/log/logElementClick',

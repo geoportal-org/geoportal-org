@@ -8,8 +8,8 @@ import { LayerTypes } from '@/interfaces/LayerTypes'
 import LayersUtils from '@/services/map/layer-utils'
 import MapCoordinatesUtils from '@/services/map/coordinates-utils'
 import { MapCoordinate } from '@/interfaces/MapCoordinate'
-import { Timers } from '~/data/timers'
-import { AppVueObj } from '~/data/global'
+import { Timers } from '@/data/timers'
+import { AppVueObj } from '@/data/global'
 import { GeneralGetters } from '@/store/general/general-getters'
 import { MapGetters } from './map-getters'
 
@@ -41,8 +41,8 @@ const state = () => ({
             visible: true,
             transparency: 50,
             value: null,
-            type: LayerTypes.BOUNDING,
-        },
+            type: LayerTypes.BOUNDING
+        }
     ],
     hoveredLayerId: null,
     clickedLayerId: null,
@@ -54,7 +54,7 @@ const state = () => ({
     progressBarLoading: 0,
     progressBarLoaded: 0,
     progressBarPercentage: 0,
-    progressBarEnable: false,
+    progressBarEnable: false
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -72,7 +72,7 @@ const getters = {
         return state.googleMapsApiKey
     },
     map: (state: any) => {
-        return window.geossMap
+        return state.map
     },
     mapTooltip: (state: any) => {
         return state.mapTooltip
@@ -167,7 +167,7 @@ const getters = {
     },
     progressBarEnable: (state: any) => {
         return state.progressBarEnable
-    },
+    }
 }
 
 const mutations = {
@@ -217,7 +217,7 @@ const mutations = {
             coordinate,
             image,
             legend,
-            visible,
+            visible
         }: {
             layer: Layer
             id: string
@@ -270,7 +270,7 @@ const mutations = {
             type,
             coordinate,
             image,
-            legend,
+            legend
         } as LayerData
 
         // The index - position on result list - is used for
@@ -374,7 +374,7 @@ const mutations = {
                 denormalizedW,
                 S,
                 denormalizedE,
-                N,
+                N
             ]
             extent = AppVueObj.ol.extent.applyTransform(
                 extent,
@@ -418,10 +418,10 @@ const mutations = {
 
             window.geossMap.getView().fit(extent, {
                 padding,
-                duration: Timers.fitExtent,
+                duration: Timers.fitExtent
             })
         }
-    },
+    }
 }
 
 const actions = {
@@ -431,22 +431,22 @@ const actions = {
     setCompareBarPosition(context: any, value: number) {
         return context.commit('setStateProp', {
             prop: 'compareBarPosition',
-            value,
+            value
         })
     },
     setGoogleMapsApiKey(context: any, value: string) {
         return context.commit('setStateProp', {
             prop: 'googleMapsApiKey',
-            value,
+            value
         })
     },
     setMap(context: any, value: Map) {
         window['geossMap'] = value
         return
-        return context.commit('setStateProp', {
-            prop: 'map',
-            value,
-        })
+        // return context.commit('setStateProp', {
+        //     prop: 'map',
+        //     value,
+        // })
     },
     setMapTooltip(context: any, value: Overlay | null) {
         return context.commit('setStateProp', { prop: 'mapTooltip', value })
@@ -454,7 +454,7 @@ const actions = {
     setMapTooltipMessage(context: any, value: string) {
         return context.commit('setStateProp', {
             prop: 'mapTooltipMessage',
-            value,
+            value
         })
     },
     setInitialZoom(context: any, value: number) {
@@ -486,7 +486,7 @@ const actions = {
             coordinate,
             image,
             legend,
-            visible,
+            visible
         }: {
             layer: Layer
             id: string
@@ -510,7 +510,7 @@ const actions = {
             coordinate,
             image,
             legend,
-            visible,
+            visible
         })
 
         if (type.indexOf(LayerTypes.BOUNDING) === -1) {
@@ -519,7 +519,7 @@ const actions = {
             )
             commit('changeLayerTransparency', {
                 id,
-                value: layerData.transparency,
+                value: layerData.transparency
             })
             commit('changeLayerVisibility', { id, value: layerData.visible })
         }
@@ -584,7 +584,7 @@ const actions = {
                                 getters.map.getView().fit(extent, {
                                     size: getters.map.getSize(),
                                     duration: Timers.fitExtent,
-                                    padding,
+                                    padding
                                 })
                             }
                         }
@@ -594,7 +594,7 @@ const actions = {
                     getters.map.getView().fit(extent, {
                         size: getters.map.getSize(),
                         duration: Timers.fitExtent,
-                        padding,
+                        padding
                     })
                 }
             } else if (layerData.coordinate) {
@@ -636,7 +636,7 @@ const actions = {
     },
     setProgressBarEnable({ commit }: any, value: boolean) {
         commit('setStateProp', { prop: 'progressBarEnable', value })
-    },
+    }
 }
 
 export default {
@@ -644,5 +644,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

@@ -8,5 +8,5 @@ export enum BookmarksGetters {
     checkedResults = 'bookmarks/checkedResults',
     resultsOrigin = 'bookmarks/resultsOrigin',
     checkedOrigins = 'bookmarks/checkedOrigins',
-    mode = 'bookmarks/mode',
+    mode = 'bookmarks/mode'
 }

@@ -36,7 +36,7 @@ export const createJiraIssue = (
 
     return makeRequest('post', endpointUrl, {
         issueTitle,
-        issueDescription,
+        issueDescription
     }).catch(() => {
         return false
     })

@@ -1,4 +1,4 @@
 export enum ExtendedViewActions {
     setIsExtendedViewActive = 'extendedView/setIsExtendedViewActive',
-    setResult = 'extendedView/setResult',
+    setResult = 'extendedView/setResult'
 }

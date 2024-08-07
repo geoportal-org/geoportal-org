@@ -54,5 +54,5 @@ export enum SearchGetters {
     highlightResult = 'search/highlightResult',
     crRelation = 'search/crRelation',
     crRelationParams = 'search/crRelationParams',
-    longRequestInfo = 'search/longRequestInfo',
+    longRequestInfo = 'search/longRequestInfo'
 }

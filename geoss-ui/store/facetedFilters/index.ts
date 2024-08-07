@@ -12,7 +12,7 @@ const state = () => ({
     score: null,
     scoreOptions: [],
     facetedFiltersAvailable: false,
-    containerVisible: false,
+    containerVisible: false
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -23,7 +23,7 @@ const paramsMap: { [key: string]: string } = {
     source: 'sources',
     protocol: 'prot',
     organisation: 'organisationName',
-    score: 'sscScore',
+    score: 'sscScore'
 }
 
 const getters = {
@@ -80,7 +80,7 @@ const getters = {
             'source',
             'protocol',
             'organisation',
-            'score',
+            'score'
         ]) {
             if (state[param]) {
                 params[paramsMap[param]] = state[param]
@@ -96,7 +96,7 @@ const getters = {
             'source',
             'protocol',
             'organisation',
-            'score',
+            'score'
         ]) {
             if (state[param]) {
                 params[param] = state[param]
@@ -114,7 +114,7 @@ const getters = {
             'organisationOptions',
             'scoreOptions',
             'facetedFiltersAvailable',
-            'containerVisible',
+            'containerVisible'
         ]
         for (const prop of Object.keys(initialState)) {
             if (
@@ -132,7 +132,7 @@ const getters = {
             params += '&'
         }
         return params
-    },
+    }
 }
 
 const mutations = {
@@ -143,7 +143,7 @@ const mutations = {
         for (const prop of Object.keys(initialState)) {
             state[prop] = JSON.parse(JSON.stringify(initialState[prop]))
         }
-    },
+    }
 }
 
 const actions = {
@@ -186,7 +186,7 @@ const actions = {
     setFacetedFiltersAvailable(context: any, value: boolean) {
         context.commit('setStateProp', {
             prop: 'facetedFiltersAvailable',
-            value,
+            value
         })
         if (!value) {
             context.commit('resetState')
@@ -198,12 +198,12 @@ const actions = {
     toggleContainerVisible({ commit, getters }: any) {
         commit('setStateProp', {
             prop: 'containerVisible',
-            value: !getters.containerVisible,
+            value: !getters.containerVisible
         })
     },
     reset(context: any) {
         context.commit('resetState')
-    },
+    }
 }
 
 export default {
@@ -211,5 +211,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

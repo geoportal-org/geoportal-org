@@ -1,33 +1,22 @@
 <template>
     <div>
         <div class="dab-results" :class="{ 'with-placeholder': dabResultsPlaceholders }">
-            <div v-for="(result, index) of dabResults" :key="result.id" class="dab-result"
-                @mouseenter="toggleHighlightBounding(result.id)" @mouseleave="toggleHighlightBounding()"
+            <div v-for="(result, index) of dabResults" :key="result.id"
+                class="dab-result"
+                @mouseenter="toggleHighlightBounding(result.id)"
+                @mouseleave="toggleHighlightBounding()"
                 :data-layer-id="result.id">
                 <div class="dab-result__wrapper"
+                    v-show="resultIdDetails !== result.id"
                     :class="{ 'details-shown': resultIdDetails === result.id, 'dab-result__wrapper--highlighted': (activeBoundingBoxLayerId === result.id || resultIdDetails === result.id), 'dab-result__wrapper--underemphasize': (resultIdDetails && resultIdDetails !== result.id) }">
-                    <div class="dab-result__image"
-                        :class="{ 'dab-result__image--default': (getImage(result.logo) !== result.logo) }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="result.title"
-                            v-image-preview />
-                    </div>
                     <div class="dab-result__text-data" @click="showResultDetails(result.id)">
-                        <div v-if="result.title" class="dab-result__title line-clamp--2">{{ result.title }}</div>
-                        <div v-if="result.contributor && result.contributor.orgName"
-                            class="dab-result__contributor line-clamp--1">({{
-                                $tc('dabResult.organisation') }}: {{ result.contributor.orgName }})
-                        </div>
-                        <div v-if="result.summary && typeof result.summary === 'string'"
-                            class="dab-result__summary line-clamp--3" :class="{ 'checkbox-active': checkboxActive }"
-                            v-html-to-text="result.summary"></div>
+                        <div v-if="result.title" v-line-clamp:20="2" class="dab-result__title">{{ result.title }}</div>
+                        <div v-if="result.contributor && result.contributor.orgName" class="dab-result__contributor" v-line-clamp:20="1">{{ $tc('dabResult.organisation') }}: {{ result.contributor.orgName }}</div>
                     </div>
                     <WorkflowCheckbox :result="result" />
                     <CrRelationsCheckbox :result="result" />
                 </div>
-                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" :currentOpenId="currentOpenId" />
-            </div>
-            <div v-if="dabResultsPlaceholders" class="dab-result placeholder">
-                <img :src="`/svg/data-gray.svg`" alt="GEOSS" />
+                <SearchResultDabDetails :result="result" :index="index" :image="getImage(result.logo)" />
             </div>
         </div>
     </div>
@@ -44,7 +33,6 @@ import { MapActions } from '@/store/map/map-actions';
 import { SearchGetters } from '@/store/search/search-getters';
 import { SearchActions } from '@/store/search/search-actions';
 import { MapGetters } from '@/store/map/map-getters';
-import LogService from '@/services/log.service';
 
 @Component({
     components: {
@@ -55,7 +43,6 @@ import LogService from '@/services/log.service';
 })
 export default class SearchResultsDabComponent extends Vue {
     [x: string]: any;
-    public currentOpenId: string = ''
 
     get dabResults() {
         return (this.$store.getters[SearchGetters.dabResults] ? this.$store.getters[SearchGetters.dabResults].entry : []);
@@ -78,17 +65,15 @@ export default class SearchResultsDabComponent extends Vue {
     }
 
     public showResultDetails(id: string) {
-        this.currentOpenId = id
-        if (this.resultIdDetails === id) {
+        if(this.resultIdDetails === id) {
             this.$store.dispatch(SearchActions.setResultIdDetails, null);
         } else {
             this.$store.dispatch(SearchActions.setResultIdDetails, id);
-            LogService.logRecommendationData('Search result', 'Expand');
         }
     }
 
-    public toggleHighlightBounding(id?: string | null) {
-        //       id = id || null;
+    public toggleHighlightBounding(id?: string) {
+        //  id = id || null;
         this.$store.dispatch(MapActions.setHoveredLayerId, id);
         this.$store.dispatch(MapActions.repaintBoudingLayers);
     }
@@ -113,14 +98,8 @@ export default class SearchResultsDabComponent extends Vue {
 }
 
 .dab-result {
-    width: calc(50% - 2.5px);
-    margin-bottom: 5px;
-
-    &:last-child,
-    &:nth-last-of-type(1),
-    &:nth-last-of-type(2) {
-        margin-bottom: 0;
-    }
+    width: 100%;
+    margin: 0 2px 5px;
 
     @media (max-width: $breakpoint-sm) {
         width: 100%;
@@ -147,10 +126,8 @@ export default class SearchResultsDabComponent extends Vue {
     }
 
     &__wrapper {
-        height: 125px;
         display: flex;
         position: relative;
-
         &:after {
             content: '';
             position: absolute;
@@ -163,23 +140,11 @@ export default class SearchResultsDabComponent extends Vue {
         }
 
         &.details-shown {
-            &:after {
-                display: block;
-            }
+            height: 0;
         }
 
-        &:hover,
-        &--highlighted {
-            box-shadow: 0 0 20px white;
-            background-color: white;
-
-            &:after {
-                border-top-color: white;
-            }
-        }
-
-        &--underemphasize {
-            opacity: 0.85;
+        &:hover, &--highlighted {
+            outline: 2px solid $blue;
         }
     }
 
@@ -204,8 +169,8 @@ export default class SearchResultsDabComponent extends Vue {
     }
 
     &__text-data {
-        background: $white-transparent;
-        padding: 10px;
+        background: $white;
+        padding: 15px;
         flex: 1 1 auto;
         overflow: hidden;
         cursor: pointer;

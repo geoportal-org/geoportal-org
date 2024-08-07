@@ -1,5 +1,5 @@
 export enum MyWorkspaceGetters {
     search = 'myWorkspace/search',
     settings = 'myWorkspace/settings',
-    shareParams = 'myWorkspace/shareParams',
+    shareParams = 'myWorkspace/shareParams'
 }

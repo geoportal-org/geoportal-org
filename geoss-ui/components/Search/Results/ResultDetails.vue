@@ -6,213 +6,211 @@
             <i :class="`icomoon-data-source--${parentDataSourceGroup}`"></i>
             <span class="title" @click="showDabResultParentRefDetails()">{{ title }}</span>
         </div>
-        <CollapseTransition>
-            <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''"
-                :class="{ 'is-parent-ref': isParentRef && separated, odd: (index % 2 && typeof index !== 'undefined') }"
-                :data-id="result.id"
-                v-show="(resultIdDetails === result.id && result.userContributions) || extendedViewMode">
-                <div class="dab-result-details__wrapper">
-                    <div>
-                        <div v-if="isParentRef && separated" class="dab-result-details__image"
-                            :class="{ 'dab-result-details__image--default': (getImage(result.logo) !== result.logo) }">
-                            <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="title"
-                                v-image-preview />
-                        </div>
-                        <div class="dab-result-details__text-actions"
-                            :class="{ 'set-parent-ref-available': addParentRefAvailable(result) }">
+        <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''"
+            :class="{ 'is-parent-ref': isParentRef && separated, odd: (index % 2 && typeof index !== 'undefined') }"
+            :data-id="result.id" v-show="resultIdDetails === result.id || extendedViewMode">
+            <div class="dab-result-details__wrapper">
+                <div>
+                    <div v-if="isParentRef && separated" class="dab-result-details__image"
+                        :class="{ 'dab-result-details__image--default': (getImage(result.logo) !== result.logo) }">
+                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="title"
+                            v-image-preview />
+                    </div>
+                    <div class="dab-result-details__text-actions"
+                        :class="{ 'set-parent-ref-available': addParentRefAvailable(result) }">
+                        <div class="d-flex flex--column flex--1">
                             <div class="d-flex flex--column flex--1">
-                                <div class="d-flex flex--column flex--1">
-                                    <div class="d-flex flex--wrap flex--justify-between flex--align-start flex--no-shrink">
-                                        <div class="dab-result-details__text">
-                                            <div v-if="title" class="dab-result-details__title">{{ title }}</div>
-                                            <div v-if="contributors" class="dab-result-details__contributor">
-                                                (<span v-if="dataSource !== 'zenodo'">{{ $tc('dabResult.organisation')
-                                                }}</span><span v-else>{{ $tc('dabResult.creators') }}</span>: {{
-    contributors }})
-                                            </div>
+                                <div class="d-flex flex--wrap flex--justify-between flex--align-start flex--no-shrink">
+                                    <div class="dab-result-details__text">
+                                        <div v-if="title" class="dab-result-details__title">{{ title }}</div>
+                                        <div v-if="result.contributor && result.contributor.orgName"
+                                            class="dab-result__contributor" v-line-clamp:20="1">
+                                            {{ $tc('dabResult.organisation') }}: {{ result.contributor.orgName }}</div>
+                                        <div v-if="contributors" class="dab-result-details__contributor">
+                                            (<span
+                                                v-if="dataSource !== 'zenodo'">{{ $tc('dabResult.organisation') }}</span><span
+                                                v-else>{{ $tc('dabResult.creators') }}</span>: {{ contributors }})
                                         </div>
-                                        <ViewsAndRatings :result="result" :currentOpenId="currentOpenId"/>
                                     </div>
-                                    <div v-if="summary && typeof summary === 'string'" class="dab-result-details__summary">
-                                        <div v-if="isParentRef && separated" v-html-to-text="summary" class="line-clamp--2">
-                                        </div>
-                                        <div v-else v-html-to-text="summary"></div>
-                                    </div>
-                                    <div>
-                                        <button @click="showDetails()" class="dab-result-details__more"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-see-more' : ''">
-                                            <span>{{ $tc('dabResult.seeMore') }}</span>
-                                            <span class="arrow"></span>
-                                        </button>
-                                    </div>
+                                    <ViewsAndRatings :result="result" />
                                 </div>
-                                <div class="dab-result-details__actions">
-                                    <div class="dab-result-details__actions--main">
-                                        <button :title="$tc('dabResult.exploreExtendedView')" @click="toggleExtendedView()"
-                                            v-if="isExtendedViewEnabled && !isWidget && dataSource !== DataSources.WIKIPEDIA && !workflowDispatched"
-                                            class="extended-view-switcher" :class="{ return: isExtendedViewActive }"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-extended-view' : ''">
-                                            <i v-if="!isExtendedViewActive" class="icomoon-expand-view"></i>
-                                            <i v-else class="icomoon-collapse-view"></i>
-                                        </button>
-                                        <button :title="$tc('dabResult.showOnMap')" :disabled="!layerData"
-                                            @click="showOnMap()"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-show-on-map' : ''">
-                                            <i class="icomoon-show-on-map"></i>
-                                        </button>
-                                        <button :title="$tc('dabResult.addAsBookmark')" v-if="!isWidget"
-                                            v-show="isSignedIn && !resultBookmarked" :disabled="!isSignedIn"
-                                            @click="addBookmark()"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
-                                            <i class="icomoon-plus"></i>
-                                        </button>
-                                        <button :title="$tc('dabResult.removeFromBookmarks')" v-if="!isWidget"
-                                            v-show="isSignedIn && resultBookmarked" :disabled="!isSignedIn"
-                                            @click="removeBookmark()"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
-                                            <i class="icomoon-minus"></i>
-                                        </button>
+                                <div v-if="summary && typeof summary === 'string'" class="dab-result-details__summary">
+                                    <div v-if="isParentRef && separated" v-line-clamp:20="2" v-html-to-text="summary">
                                     </div>
-                                    <div class="dab-result-details__actions--side">
-                                        <button :title="$tc('dabResult.share')" @click="toggleShowShare()"
-                                            :class="{ active: showShare }"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-share' : ''">
-                                            <i class="icomoon-share"></i>
-                                        </button>
-                                        <button :title="$tc('dabResult.layers')" @click="layerButtonAction()"
-                                            :class="{ 'single-layer-active': layers.length === 1 && isLayerDisplayed(layers[0].url) }"
-                                            :disabled="!layers.length && !statisticsId"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-layers' : ''">
-                                            <i class="icomoon-layers"></i>
-                                        </button>
-                                        <button :title="$tc('dabResult.downloads')" @click="toggleShowDownloads()"
-                                            :disabled="!downloads.length"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-downloads' : ''">
-                                            <i class="icomoon-arrow down"></i>
-                                        </button>
-                                        <button class="dab-result-details__actions-workflow" :title="buttonWorkflowTitle"
-                                            @click="openWorkflow(true)" v-show="workflow"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? 'result-workflow' : ''"></button>
-                                        <template v-for="hub of ['data', 'information', 'services']">
-                                            <button :key="`${hub}_1`"
-                                                v-show="!hiddenDataSources.includes(hub) && dataSourceGroup !== hub"
-                                                :title="$tc(`dabResult.${hub}`)" @click="switchToDataSource(hub, result)"
-                                                :disabled="!isDrillAvailable(result, `${hub}_hub`)"
-                                                :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-${hub}` : ''">
-                                                <i :class="`icomoon-data-source--${hub}`"></i>
-                                            </button>
-                                            <button :key="`${hub}_2`" v-if="isEntryExtensionEnabled"
-                                                v-show="!hiddenDataSources.includes(hub) && isUserContributedDrillAvailable(result, `${hub}_hub`)"
-                                                :title="$tc(`dabResult.userContributed${hub}`)"
-                                                @click="switchToUserContributedDataSource(hub, result)"
-                                                :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-contributed-${hub}` : ''">
-                                                <i :class="`icomoon-data-source--${hub}`"></i>
-                                                <i class="icon-small icomoon-editor--user"></i>
-                                            </button>
-                                        </template>
-                                    </div>
-                                    <div class="dab-result-details__downloads" v-if="downloads.length">
-                                        <CollapseTransition>
-                                            <div v-show="showDownloads" class="dab-result-details__downloads-wrapper">
-                                                <div>
-                                                    <span v-for="(download, index) of downloads" :key="index">
-                                                        <button v-if="download.links"
-                                                            @click="openDownloadLinksPopup(download.links)"
-                                                            :title="getDownloadButtonLabel(download.type)">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                            <i v-else
-                                                                class="dab-result-details__file-icon icomoon-doc-file"></i>
-                                                        </button>
-                                                        <button v-else-if="download.url.indexOf('/dhus/odata/') !== -1"
-                                                            @click="openSentinelLoginPopup(download.url)"
-                                                            :title="getDownloadButtonLabel(download.type)">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                            <i v-else
-                                                                class="dab-result-details__file-icon icomoon-doc-file"></i>
-                                                        </button>
-                                                        <button
-                                                            v-else-if="download.url.indexOf('/sdg/Series/DataCSV') !== -1"
-                                                            @click="getUnepFile(download.postData)"
-                                                            :title="getDownloadButtonLabel(download.type)">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                            <i v-else
-                                                                class="dab-result-details__file-icon icomoon-doc-file"></i>
-                                                        </button>
-                                                        <button v-else-if="download.type === 'custom-download'"
-                                                            @click="initCustomDownloadPopup(download.url)"
-                                                            :title="$tc('general.customDownload')">
-                                                            <i
-                                                                class="dab-result-details__file-icon icomoon-custom-download"></i>
-                                                        </button>
-                                                        <a v-else-if="download.type === 'html'"
-                                                            @click="downloadLinkClicked(download.url)" target="_blank"
-                                                            :title="getDownloadButtonLabel(download.type)">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                            <i v-else
-                                                                class="dab-result-details__file-icon icomoon-doc-file"></i>
-                                                        </a>
-                                                        <a v-else-if="!isBulkDownloadEnabled"
-                                                            @click="downloadLinkClicked(download.url)" target="_blank"
-                                                            :title="getDownloadButtonLabel(download.type)">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                            <i v-else
-                                                                class="dab-result-details__file-icon icomoon-doc-file"></i>
-                                                        </a>
-                                                        <a v-else-if="isBulkDownloadEnabled" target="_blank"
-                                                            :title="getDownloadButtonLabel(download.type)"
-                                                            class="expandable"
-                                                            :class="{ 'expanded': index === expandedDownloadIndex }">
-                                                            <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
-                                                                :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
-                                                                @click="setExpandedDownloadIndex(index)"></i>
-                                                            <i v-else class="dab-result-details__file-icon icomoon-doc-file"
-                                                                @click="setExpandedDownloadIndex(index)"></i>
-                                                            <p @click="downloadLinkClicked(download.url)"
-                                                                class="dab-result-details__direct-download-button"
-                                                                :title="$tc('dabResult.downloadNow')">
-                                                                <span class="icomoon-arrow arrow-circled"></span> Download
-                                                            </p>
-                                                            <p class="dab-result-details__bulk-download-button"
-                                                                :title="$tc('dabResult.downloadLater')"
-                                                                :class="{ disabled: !isSignedIn }"
-                                                                @click="addToDownloadsList(download.url, download.type)">
-                                                                <span class="plus-icon"></span> Add to downloads list
-                                                            </p>
-                                                        </a>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </CollapseTransition>
-                                    </div>
-                                    <div class="dab-result-details__share">
-                                        <CollapseTransition>
-                                            <div v-show="showShare" class="dab-result-details__share-wrapper">
-                                                <Share :url="shareUrl" :survey="true" />
-                                            </div>
-                                        </CollapseTransition>
-                                    </div>
+                                    <div v-else v-html-to-text="summary"></div>
+                                </div>
+                                <div class="dab-result-details__more__wrapper">
+                                    <button @click="showDetails()" class="dab-result-details__more"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-see-more' : ''">
+                                        <span>{{ $tc('dabResult.seeMore') }}</span>
+                                        <!-- <span class="arrow"></span> -->
+                                    </button>
                                 </div>
                             </div>
-                            <button :data-tutorial-tag="resultIdDetails === result.id ? 'result-drill-down' : ''"
-                                :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
-                                v-if="addParentRefAvailable(result) && !isParentRef" @click="showInsideFolder(result)">
-                            </button>
+                            <div class="dab-result-details__actions">
+                                <div class="dab-result-details__actions--main">
+                                    <button :title="$tc('dabResult.exploreExtendedView')" @click="toggleExtendedView()"
+                                        v-if="isExtendedViewEnabled && !isWidget && dataSource !== DataSources.WIKIPEDIA && !workflowDispatched"
+                                        class="extended-view-switcher" :class="{ return: isExtendedViewActive }"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-extended-view' : ''">
+                                        <i v-if="!isExtendedViewActive" class="icomoon-expand-view"></i>
+                                        <i v-else class="icomoon-collapse-view"></i>
+                                    </button>
+                                    <button :title="$tc('dabResult.showOnMap')" :disabled="!layerData"
+                                        @click="showOnMap()"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-show-on-map' : ''">
+                                        <i class="icomoon-show-on-map"></i>
+                                    </button>
+                                    <button :title="$tc('dabResult.addAsBookmark')" v-if="!isWidget"
+                                        v-show="isSignedIn && !resultBookmarked" :disabled="!isSignedIn"
+                                        @click="addBookmark()"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
+                                        <i class="icomoon-plus"></i>
+                                    </button>
+                                    <button :title="$tc('dabResult.removeFromBookmarks')" v-if="!isWidget"
+                                        v-show="isSignedIn && resultBookmarked" :disabled="!isSignedIn"
+                                        @click="removeBookmark()"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
+                                        <i class="icomoon-minus"></i>
+                                    </button>
+                                </div>
+                                <div class="dab-result-details__actions--side">
+                                    <Share :data-tutorial-tag="resultIdDetails === result.id ? 'result-share' : ''"
+                                        :url="shareUrl" />
+                                    <button :title="$tc('dabResult.layers')" @click="layerButtonAction()"
+                                        :class="{ 'single-layer-active': layers.length === 1 && isLayerDisplayed(layers[0].url) }"
+                                        :disabled="!layers.length && !statisticsId"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-layers' : ''">
+                                        <i class="icomoon-layers"></i>
+                                    </button>
+                                    <button v-if="downloads.length === 1"
+                                        :title="$tc('sentinelLogin.download') + ' - ' + getDownloadButtonLabel(downloads[0].type)"
+                                        @click="instantSingleDownload(downloads[0])" :class="{ open: showDownloads }"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-downloads' : ''">
+                                        <i class="icomoon-arrow down"></i>
+                                    </button>
+                                    <button v-else :title="$tc('dabResult.downloads')" @click="toggleShowDownloads()"
+                                        :class="{ open: showDownloads }" :disabled="!downloads.length"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-downloads' : ''">
+                                        <i class="icomoon-arrow down"></i>
+                                    </button>
+
+                                    <button class="dab-result-details__actions-workflow" :title="buttonWorkflowTitle"
+                                        @click="openWorkflow(true)" v-show="workflow"
+                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-workflow' : ''"></button>
+                                    <template v-for="hub of ['data', 'information', 'services']">
+                                        <button :key="`${hub}_1`"
+                                            v-show="!hiddenDataSources.includes(hub) && dataSourceGroup !== hub"
+                                            :title="$tc(`dabResult.${hub}`)" @click="switchToDataSource(hub, result)"
+                                            :disabled="!isDrillAvailable(result, `${hub}_hub`)"
+                                            :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-${hub}` : ''">
+                                            <i :class="`icomoon-data-source--${hub}`"></i>
+                                        </button>
+                                        <button :key="`${hub}_2`" v-if="isEntryExtensionEnabled"
+                                            v-show="!hiddenDataSources.includes(hub) && isUserContributedDrillAvailable(result, `${hub}_hub`)"
+                                            :title="$tc(`dabResult.userContributed${hub}`)"
+                                            @click="switchToUserContributedDataSource(hub, result)"
+                                            :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-contributed-${hub}` : ''">
+                                            <i :class="`icomoon-data-source--${hub}`"></i>
+                                            <i class="icon-small icomoon-editor--user"></i>
+                                        </button>
+                                    </template>
+                                </div>
+                                <div class="dab-result-details__downloads" v-if="downloads.length">
+                                    <CollapseTransition>
+                                        <div v-show="showDownloads" class="dab-result-details__downloads-wrapper">
+                                            <div>
+                                                <span v-for="(download, index) of downloads" :key="index">
+                                                    <button v-if="download.links"
+                                                        @click="openDownloadLinksPopup(download.links)"
+                                                        :title="getDownloadButtonLabel(download.type)">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
+                                                        <i v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    </button>
+                                                    <button v-else-if="download.url.indexOf('/dhus/odata/') !== -1"
+                                                        @click="openSentinelLoginPopup(download.url)"
+                                                        :title="getDownloadButtonLabel(download.type)">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
+                                                        <i v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    </button>
+                                                    <button
+                                                        v-else-if="download.url.indexOf('/sdg/Series/DataCSV') !== -1"
+                                                        @click="getUnepFile(download.postData)"
+                                                        :title="getDownloadButtonLabel(download.type)">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
+                                                        <i v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    </button>
+                                                    <button v-else-if="download.type === 'custom-download'"
+                                                        @click="initCustomDownloadPopup(download.url)"
+                                                        :title="$tc('general.customDownload')">
+                                                        <i
+                                                            class="dab-result-details__file-icon icomoon-custom-download"></i>
+                                                    </button>
+                                                    <a v-else-if="download.type === 'html'"
+                                                        @click="downloadLinkClicked(download.url)" target="_blank"
+                                                        :title="getDownloadButtonLabel(download.type)">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
+                                                        <i v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    </a>
+                                                    <a v-else-if="!isBulkDownloadEnabled"
+                                                        @click="downloadLinkClicked(download.url)" target="_blank"
+                                                        :title="getDownloadButtonLabel(download.type)">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
+                                                        <i v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    </a>
+                                                    <a v-else-if="isBulkDownloadEnabled" target="_blank"
+                                                        :title="getDownloadButtonLabel(download.type)"
+                                                        class="expandable expandable-on-click"
+                                                        :class="{ 'expanded': index === expandedDownloadIndex || !showExpandableDownload() }">
+                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                            @click="setExpandedDownloadIndex(index)"></i>
+                                                        <i v-else class="dab-result-details__file-icon icomoon-doc-file"
+                                                            @click="setExpandedDownloadIndex(index)"></i>
+                                                        <p @click="downloadLinkClicked(download.url)"
+                                                            class="dab-result-details__direct-download-button"
+                                                            :title="$tc('dabResult.downloadNow')">
+                                                            <span class="icomoon-arrow arrow-circled"></span> Download
+                                                            now
+                                                        </p>
+                                                        <p class="dab-result-details__bulk-download-button"
+                                                            :title="isSignedIn ? $tc('dabResult.downloadLater') : $tc('dabResult.thisOptionAvailableForSignedIn')"
+                                                            :class="{ disabled: !isSignedIn }"
+                                                            @click="addToDownloadsList(download.url, download.type)">
+                                                            <i
+                                                                class="bulk-download__icon"></i>{{ $tc('customDownloadOptionsPopup.addToDownloads') }}
+                                                        </p>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </CollapseTransition>
+                                </div>
+                            </div>
                         </div>
+                        <button :data-tutorial-tag="resultIdDetails === result.id ? 'result-drill-down' : ''"
+                            :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
+                            v-if="addParentRefAvailable(result) && !isParentRef" @click="showInsideFolder(result)">
+                        </button>
                     </div>
                 </div>
             </div>
-        </CollapseTransition>
+        </div>
     </div>
 </template>
 
 
 <script lang="ts">
-
 // @ts-nocheck
 import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator';
 
@@ -256,23 +254,21 @@ import { ExtendedViewActions } from '@/store/extendedView/extended-view-actions'
 import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions';
 import ViewsAndRatings from '@/components/ViewsAndRatings.vue';
 import TutorialTagsService from '@/services/tutorial-tags.service';
-import CollapseTransition from '@/plugins/CollapseTransition';
-import RatingService from '~/services/ratings.service'
+import DashboardService from '@/services/dashboard.service';
+import NotificationService from '@/services/notification.service';
+import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue';
 
 @Component({
     components: {
-        ViewsAndRatings,
-        CollapseTransition
+        ViewsAndRatings
     }
 })
 export default class SearchResultDabDetailsComponent extends Vue {
-    [x: string]: any;
     @Prop({ default: null, type: Object }) public result!: any;
     @Prop({ default: false, type: Boolean }) public separated!: boolean;
     @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean;
     @Prop(Number) public index!: number;
     @Prop(String) public image!: string;
-    @Prop(String) public currentOpenId!: string;
 
     public layers = [];
     public downloads = [];
@@ -283,7 +279,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public shareUrl = '';
     public showDownloads = false;
     public customDownloadOptions = null;
-    public showShare = false;
     public expandedDownloadIndex = null;
 
     public score = 0;
@@ -291,6 +286,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public FileFormatsIcons = FileFormatsIcons;
     public DataSources = DataSources;
     public logo = typeof this.result.logo === 'string' ? this.result.logo : '';
+
+    get dashboardContent() {
+        return UtilsService.getPropByString(this.result, 'dashboard.content');
+    }
 
     get title() {
         let data = null;
@@ -431,7 +430,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         this.$store.dispatch(ExtendedViewActions.setResult, this.result);
         this.$store.dispatch(MapActions.setShowFull, !this.showFullMap);
         this.$store.dispatch(ExtendedViewActions.setIsExtendedViewActive, !this.isExtendedViewActive);
-        LogService.logRecommendationData('Search result', 'Extended View');
+        LogService.logElementClick(null, null, this.result.id, null, 'Extended view', null, this.contributors, this.title);
     }
 
     public showDabResultParentRefDetails() {
@@ -528,7 +527,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                         if (linkTitle2) {
                             linkTitle = linkTitle2;
                         } else {
-                            linkTitle = titleBox;
+                            linkTitle = linkText;
                         }
                     }
 
@@ -540,9 +539,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
                         }
                     }
 
-                    if (extension === 'pdf' && !complex) {
+                    if ((extension === 'pdf' || protocol.indexOf('PDF') > -1) && !complex) {
                         downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'pdf', title: titleBox, score: linkScore });
-                    } else if (extension === 'txt' && !complex) {
+                    } else if ((extension === 'txt' || protocol.indexOf('TXT') > -1) && !complex) {
                         downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'txt', title: titleBox, score: linkScore });
                     } else if ((extension === 'htm' || extension === 'html' || extension === 'shtml') && !complex) {
                         if (linkText.indexOf('opendap') > -1) {
@@ -550,14 +549,34 @@ export default class SearchResultDabDetailsComponent extends Vue {
                         } else {
                             downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
                         }
-                    } else if ((extension === 'jpg' || extension === 'png') && linkText.indexOf('tile') === -1 && !complex) {
+                    } else if ((extension === 'jpg' || extension === 'jpeg' || protocol.indexOf('JPG') > -1 || protocol.indexOf('JPEG') > -1) && linkText.indexOf('tile') === -1 && !complex) {
                         if (linkDescription) {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'img', title: titleBox, score: linkScore });
+                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'jpg', title: titleBox, score: linkScore });
+                        }
+                    } else if ((extension === 'png' || protocol.indexOf('PNG') > -1) && linkText.indexOf('tile') === -1 && !complex) {
+                        if (linkDescription) {
+                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'png', title: titleBox, score: linkScore });
                         }
                     } else if (extension === 'xml' && !complex) {
                         downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'xml', title: titleBox, score: linkScore });
-                    } else if (protocol.indexOf('information-html') > -1 && !complex) {
+                    } else if ((protocol.indexOf('information-html') > -1 || protocol.indexOf('information') > -1 || protocol.indexOf('HTTP') > -1 || protocol.indexOf('HTML') > -1) && !complex) {
                         downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
+                    } else if (protocol === 'gwp_un_sd_/v1/sdg') {
+                        // Take SDG ID from title which is in format "SDG 6.b.1 Indicator".
+                        // Enable statistics visualisation and download for this ID.
+                        const wordsArray = this.result.title.split(' ');
+                        if (wordsArray.length === 3 && wordsArray[0] === 'SDG' && wordsArray[2] === 'Indicator') {
+                            this.statisticsId = wordsArray[1];
+                            let seriesId = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString')[0];
+                            const seriesDesc = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString')[0];
+                            // Quick fix: take key from url
+                            if (seriesId.includes('https://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode=')) {
+                                seriesId = seriesId.split('seriesCode=')[1];
+                            }
+                            this.timeSeriesArray.push({ id: seriesId, text: seriesDesc });
+                            const postData = { indicator: this.statisticsId, series: [seriesId] };
+                            downloads.push({ name: `SDG-${this.statisticsId}-${seriesId}.csv`, url: 'https://unstats.un.org/SDGAPI/v1/sdg/Series/DataCSV', postData, desc: `${this.statisticsId}, ${seriesDesc}`, type: 'csv' });
+                        }
                     } else if (protocol.indexOf('WebMapService') > -1 && linkText) {
                         const urlName = linkText;
                         const allName = wmsAllLayerName;
@@ -639,7 +658,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                         && !(linkText.indexOf('WMS') > -1) && !(linkText.indexOf('wms') > -1)
                         && !(linkText.indexOf('WCS') > -1) && !(linkText.indexOf('wcs') > -1)
                         && !(linkText.indexOf('TMS') > -1) && !(linkText.indexOf('tms') > -1)) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'link', title: titleBox, score: linkScore });
+                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
                     } else if ((extension === 'kml' || linkText.indexOf('format=KML') > -1 ||
                         linkText.indexOf('/application/xml') > -1 && kmlKeyword) && !complex) {
                         downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'kml', title: titleBox, score: linkScore });
@@ -668,23 +687,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             url: UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL') + '/' +
                                 encodeURIComponent(UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'))
                         };
-                    }
-                    // Take SDG ID from title which is in format "SDG 6.b.1 Indicator".
-                    // Enable statistics visualisation and download for this ID.
-                    if (protocol === 'gwp_un_sd_/v1/sdg') {
-                        const wordsArray = this.result.title.split(' ');
-                        if (wordsArray.length === 3 && wordsArray[0] === 'SDG' && wordsArray[2] === 'Indicator') {
-                            this.statisticsId = wordsArray[1];
-                            let seriesId = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString')[0];
-                            const seriesDesc = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString')[0];
-                            // Quick fix: take key from url
-                            if (seriesId.includes('https://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode=')) {
-                                seriesId = seriesId.split('seriesCode=')[1];
-                            }
-                            this.timeSeriesArray.push({ id: seriesId, text: seriesDesc });
-                            const postData = { indicator: this.statisticsId, series: [seriesId] };
-                            downloads.push({ name: `SDG-${this.statisticsId}-${seriesId}.csv`, url: 'https://unstats.un.org/SDGAPI/v1/sdg/Series/DataCSV', postData, desc: `${this.statisticsId}, ${seriesDesc}`, type: 'csv' });
-                        }
                     }
                 }
 
@@ -760,16 +762,13 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.$store.dispatch(MapActions.setClickedLayerId, this.result.id);
             this.$store.dispatch(MapActions.setShowFull, true);
             const coordinates = `${this.layerData.coordinate.S} ${this.layerData.coordinate.W} ${this.layerData.coordinate.N} ${this.layerData.coordinate.E}`;
-            LogService.logElementClick(coordinates, null, this.result.id, 'dab', 'showOnMap', null, this.result.contributor.orgName, this.result.title);
+            LogService.logElementClick(coordinates, null, this.result.id, 'dab', 'Show on map', null, this.result.contributor.orgName, this.result.title);
         }
-        LogService.logRecommendationData('Search result', 'Show on map');
         MouseLeaveService.initSurvey();
     }
 
     public async showDetails() {
-        LogService.logElementClick(null, null, this.result.id, null, 'viewed', null, this.contributors, this.title);
-        LogService.logRecommendationData('Search result', 'See more');
-        // LogService.clickCounter(this.result)
+        LogService.logElementClick(null, null, this.result.id, null, 'Show details', null, this.contributors, this.title);
         this.$store.dispatch(SearchActions.showDetailsTrigger, false);
         MouseLeaveService.initSurvey();
         const actionAfterMetadataShow = this.$store.getters[SearchGetters.actionAfterMetadataShow];
@@ -826,9 +825,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     data.userContributions = this.result.userContributions;
                     this.metadata = {
                         title: `<div class="d-flex flex--justify-between flex--align-center padding-right-30">
-									<span>${this.$tc('popupTitles.resourceDetails')}</span>
-									<a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(this.result.id)}">${this.$tc('popupTitles.rawMetadata')}</a>
-								</div>`,
+                                    <span>${this.$tc('popupTitles.resourceDetails')}</span>
+                                    <a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(this.result.id)}">${this.$tc('popupTitles.rawMetadata')}</a>
+                                </div>`,
                         data
                     };
                 }
@@ -841,27 +840,17 @@ export default class SearchResultDabDetailsComponent extends Vue {
             }
         }
 
-        if (this.metadata) {
-            const comments = await this.getComments()
-
+        if (this.dashboardContent && this.dashboardContent !== '') {
+            DashboardService.showDashboard(this.dashboardContent, null);
+        } else if (this.metadata) {
             const props = {
                 data: this.metadata.data,
                 isSatellite,
                 resultTitle: this.result.title,
                 resultImage: this.logo,
-                popupTitle: this.metadata.title,
-                comments
+                popupTitle: this.metadata.title
             };
             this.$store.dispatch(PopupActions.openPopup, { contentId: 'metadata', title: props.popupTitle, component: DabResultMetadata, props });
-        }
-    }
-
-    public async getComments() {
-        const res = await RatingService.fetchComments(this.result.id)
-        if (res) {
-            return res
-        } else {
-            return 0
         }
     }
 
@@ -891,7 +880,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
     }
 
-    public showInsideFolder(result, dataSource) {
+    public showInsideFolder(result, dataSource?) {
         if (this.isExtendedViewActive) {
             this.toggleExtendedView();
         }
@@ -960,8 +949,35 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     public toggleShowDownloads() {
-        this.showShare = false;
         this.showDownloads = !this.showDownloads;
+    }
+
+    public instantSingleDownload(download) {
+        if (download.links) {
+            this.openDownloadLinksPopup(download.links);
+        } else if (download.url.indexOf('/dhus/odata/') !== -1) {
+            this.openSentinelLoginPopup(download.url);
+        } else if (download.url.indexOf('/sdg/Series/DataCSV') !== -1) {
+            this.getUnepFile(download.postData);
+        } else if (download.type === 'custom-download') {
+            this.initCustomDownloadPopup(download.url);
+        } else if (download.type === 'html') {
+            this.downloadLinkClicked(download.url);
+        } else {
+            this.downloadLinkClicked(download.url);
+        }
+    }
+
+    public showExpandableDownload() {
+        if (this.downloads && this.downloads.length) {
+            if (this.downloads.length > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public async initCustomDownloadPopup(baseUrl) {
@@ -1108,22 +1124,14 @@ export default class SearchResultDabDetailsComponent extends Vue {
         } else {
             this.$store.dispatch(PopupActions.openPopup, { contentId: 'custom-download', title: this.$tc('popupTitles.customizeDownload'), component: DabResultCustomDownload, props });
         }
-        LogService.logRecommendationData('Search result', 'Download - Custom');
     }
 
-    public toggleShowShare() {
-        this.showDownloads = false;
-        this.showShare = !this.showShare;
-        if (this.showShare) {
-            GeneralApiService.shortenLink(SearchEngineService.getShareUrl(this.result.id.toString())).then(url => {
-                this.shareUrl = url;
-            });
-        }
+    public prepareShareUrl() {
+        this.shareUrl = SearchEngineService.getShareUrl(this.result.id.toString());
     }
 
     public async addBookmark() {
         MouseLeaveService.initSurvey();
-        LogService.logRecommendationData('Search result', 'Bookmark');
         const resultId = this.result.id.toString();
         const resultTitle = this.dataSource === DataSources.ZENODO ? this.result.metadata.title : this.result.title;
         const [err, result] = await to(GeossSearchApiService.addBookmark(
@@ -1207,9 +1215,15 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
         window.open(url);
 
-        LogService.logElementClick(null, null, id, null, 'direct-download', null, orgName, title);
-        LogService.logRecommendationData('Search result', 'Download - Direct');
+        LogService.logElementClick(null, null, id, null, 'Sirect download', null, orgName, title);
         MouseLeaveService.initSurvey();
+    }
+
+    public async openBulkDownloadPopup(e) {
+        e.preventDefault();
+        const title = this.$tc('popupTitles.downloadsList');
+        await this.$store.dispatch(PopupActions.openPopup, { contentId: 'bulk-download', title, component: BulkDownloadPopup });
+        return false;
     }
 
     public addToDownloadsList(url, format) {
@@ -1226,7 +1240,25 @@ export default class SearchResultDabDetailsComponent extends Vue {
         this.$store.dispatch(BulkDownloadActions.addLink, link);
         PopupCloseService.closePopup('custom-download');
 
-        LogService.logElementClick(null, null, this.result.id, null, 'direct-to-bulk-download', null, this.result.contributor.orgName, this.result.title);
+        NotificationService.show(
+            `${this.$tc('popupTitles.downloadList')}`,
+            `${this.$tc('popupContent.addedToDownloadList')}`,
+            10000,
+            null,
+            9999,
+            'success'
+        );
+
+        setTimeout(() => {
+            const openBulkDownloadPopup = document.querySelectorAll('.openBulkDownloadPopup');
+            if (openBulkDownloadPopup && openBulkDownloadPopup.length) {
+                openBulkDownloadPopup.forEach(button => {
+                    button.addEventListener('click', this.openBulkDownloadPopup);
+                });
+            }
+        }, 200);
+
+        LogService.logElementClick(null, null, this.result.id, null, 'Direct to bulk download', null, this.result.contributor.orgName, this.result.title);
     }
 
     public openSentinelLoginPopup(url: string) {
@@ -1249,8 +1281,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             UtilsService.createAndOpenFile(data, `SDG-${params.indicator}-${params.series[0]}.csv`, 'text/csv');
         }
 
-        LogService.logElementClick(null, null, this.result.id, null, 'direct-download', null, this.result.contributor.orgName, this.result.title);
-        LogService.logRecommendationData('Search result', 'Download - Direct');
+        LogService.logElementClick(null, null, this.result.id, null, 'Direct download', null, this.result.contributor.orgName, this.result.title);
     }
 
     public openDownloadLinksPopup(links) {
@@ -1269,7 +1300,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
         if (actionAfterDownloadPopupShow) {
             actionAfterDownloadPopupShow();
         }
-        LogService.logRecommendationData('Search result', 'Download - Download list');
     }
 
     public workflowHasSavedData() {
@@ -1284,7 +1314,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     public async openWorkflow(reset?: boolean) {
-        LogService.logRecommendationData('Search result', 'Workflow - Open');
         if (this.isWidget) {
             // Redirect widget users to native portal
             window.open(SearchEngineService.getShareUrl(this.result.id.toString()));
@@ -1347,7 +1376,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
         } else if (this.statisticsId) {
             this.getStatistics();
         }
-        LogService.logRecommendationData('Search result', 'Layers');
     }
 
     private toggleSingleLayer() {
@@ -1408,6 +1436,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
             label = this.$tc('dabResult.file');
         } else if (label === 'other') {
             label = this.$tc('dabResult.other');
+        } else if (label === 'html') {
+            label = this.$tc('dabResult.view');
         }
         return label.toUpperCase();
     }
@@ -1473,6 +1503,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 }
             }
         });
+        this.prepareShareUrl();
     }
 
     @Watch('dataSource')
@@ -1501,14 +1532,22 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 this.$set(this.result, 'userContributions', {});
             }
         }
+        this.prepareShareUrl();
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .dab-result-details {
-    width: calc(200% + 5px);
     position: relative;
+
+    .dab-result__contributor {
+        font-size: 12px;
+        margin-bottom: 10px;
+        width: auto;
+        display: block;
+        color: #777;
+    }
 
     &__is-parent-ref-trigger {
         color: white;
@@ -1567,14 +1606,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
         width: 100%;
     }
 
-    &:not(.is-parent-ref) {
-        &.odd {
-            @media (min-width: ($breakpoint-sm + 1)) {
-                left: calc(-100% - 5px);
-            }
-        }
-    }
-
     &__outer-wrapper {
         &.is-parent-ref {
             margin-top: 5px;
@@ -1585,10 +1616,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     &__wrapper>div {
         display: flex;
-        padding-top: 15px;
+        margin-top: -1px;
         background: rgba(255, 255, 255, 0.9);
         background-clip: content-box;
-        height: 270px;
+        height: 250px;
+        outline: 2px solid $blue;
 
         .is-parent-ref & {
             margin-top: 5px;
@@ -1642,7 +1674,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     &__text-actions {
         background: white;
-        padding: 25px 30px;
+        padding: 15px;
         display: flex;
         flex: 1 1 auto;
         overflow: hidden;
@@ -1691,7 +1723,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     &__title {
         color: $blue;
         line-height: 20px;
-        font-size: 14px;
+        font-size: 17px;
         font-weight: 700;
         word-break: break-word;
         max-height: 42px;
@@ -1700,6 +1732,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
         -webkit-line-clamp: 2;
         display: -webkit-box;
         -webkit-box-orient: vertical;
+        margin-bottom: 3px;
+        margin-top: -4px;
 
         .is-parent-ref & {
             color: white;
@@ -1756,6 +1790,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
             height: 30px;
             width: 100%;
         }
+    }
+
+    &__more__wrapper {
+        display: flex;
+        justify-content: flex-end;
     }
 
     &__more {
@@ -1888,6 +1927,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 transition: all 250ms ease-in-out;
             }
 
+            &.open,
             &:hover {
                 background: white;
                 border-color: $yellow;
@@ -2037,6 +2077,12 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 border-top: 1px solid #ddd;
                 justify-content: flex-end;
                 padding: 10px 5px 0;
+
+                >span {
+                    @media (max-width: $breakpoint-sm) {
+                        width: 100%;
+                    }
+                }
             }
         }
 
@@ -2086,9 +2132,23 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     color: $green;
                     cursor: default;
                     background: white;
-                    border: 1px solid $green;
                     text-decoration: none;
-                    width: 310px;
+                    width: auto;
+                    border: none !important;
+
+                    &.expandable-on-click {
+                        border: 1px solid $green !important;
+                        width: 340px;
+
+                        @media (max-width: $breakpoint-sm) {
+                            max-height: none;
+                            flex-direction: column;
+                            gap: 5px;
+                            width: 100%;
+                            padding: 5px;
+                            margin: 0;
+                        }
+                    }
 
                     .dab-result-details__file-icon {
                         &::after {
@@ -2101,6 +2161,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             top: 13px;
                             transform: rotate(45deg);
                             width: 7px;
+                        }
+
+                        @media (max-width: $breakpoint-sm) {
+                            display: none !important;
                         }
 
                         &:hover {
@@ -2131,7 +2195,13 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             }
 
                             .arrow-circled {
-                                border: 2px solid $green-dark;
+                                color: $green;
+                            }
+
+                            .expandable-on-click {
+                                .arrow-circled {
+                                    border: 2px solid $green-dark;
+                                }
                             }
                         }
 
@@ -2146,6 +2216,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
                                 &::after {
                                     background: $grey-dark;
                                 }
+                            }
+
+                            .bulk-download__icon {
+                                border: 2px solid $grey-dark;
+                                background: url('/svg/bulk-download-2-disabled.svg') center center no-repeat;
                             }
                         }
                     }
@@ -2194,22 +2269,56 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
     }
 
+    .bulk-download__icon {
+        background: url('/svg/bulk-download-2.svg') center center no-repeat;
+        border: 2px solid $green;
+        border-radius: 50%;
+        display: inline-block;
+        height: 24px;
+        margin-right: 3px;
+        position: relative;
+        width: 24px;
+        background-size: 16px;
+    }
+
+    .expandable-on-click {
+        .bulk-download__icon {
+            height: 18px;
+            transform: scale(0.8);
+            width: 18px;
+            background-size: 12px;
+
+        }
+    }
+
     .arrow-circled {
         border: 2px solid $green;
         border-radius: 50%;
         display: inline-block;
-        height: 18px;
+        height: 24px;
         margin-right: 3px;
         position: relative;
-        top: -1px;
-        transform: scale(0.8);
-        width: 18px;
+        width: 24px;
 
         &::before {
-            font-size: 10px;
-            left: 2px;
+            font-size: 14px;
+            left: 3px;
             position: absolute;
-            top: 3px;
+            top: 4px;
+        }
+    }
+
+    .expandable-on-click {
+        .arrow-circled {
+            height: 18px;
+            transform: scale(0.8);
+            width: 18px;
+
+            &::before {
+                font-size: 10px;
+                left: 2px;
+                top: 3px;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Timers } from '~/data/timers'
+import { Timers } from '@/data/timers'
 
 const TutorialTagsService = {
     eventBus: new Vue(),
@@ -20,7 +20,7 @@ const TutorialTagsService = {
             top: 0,
             left: 0,
             width: 0,
-            height: 0,
+            height: 0
         }
 
         const document = element && element.ownerDocument
@@ -70,7 +70,7 @@ const TutorialTagsService = {
                 box.left +
                 window.pageXOffset -
                 documentElem.clientLeft +
-                (addBoxWidth ? box.width : 0),
+                (addBoxWidth ? box.width : 0)
         }
     },
 
@@ -103,7 +103,7 @@ const TutorialTagsService = {
             setTimeout(() => {
                 this.eventBus.$emit('getPositions', {
                     group,
-                    action: tagAction,
+                    action: tagAction
                 })
             }, timeout + 100)
         } else {
@@ -142,7 +142,7 @@ const TutorialTagsService = {
             ) {
                 return {
                     top: 0,
-                    left: 0,
+                    left: 0
                 }
             }
 
@@ -154,12 +154,12 @@ const TutorialTagsService = {
                 left: TutorialTagsService.offset(
                     element,
                     tagPlacement
-                ).left.toFixed(),
+                ).left.toFixed()
             }
         } else {
             return {
                 top: 0,
-                left: 0,
+                left: 0
             }
         }
     },
@@ -189,7 +189,7 @@ const TutorialTagsService = {
         )
 
         return isTagInView
-    },
+    }
 }
 
 export default TutorialTagsService

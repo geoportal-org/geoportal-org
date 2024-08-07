@@ -1,4 +1,4 @@
-import { AppVueObj, Liferay } from '~/data/global'
+import { AppVueObj, Liferay } from '@/data/global'
 import { UserActions } from '@/store/user/user-actions'
 
 const LiferayService = {
@@ -19,7 +19,7 @@ const LiferayService = {
             UserActions.setGroupId,
             Liferay.ThemeDisplay.getScopeGroupId()
         )
-    },
+    }
 }
 
 export default LiferayService

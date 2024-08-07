@@ -16,5 +16,5 @@ export enum FacetedFiltersGetters {
     containerVisible = 'facetedFilters/containerVisible',
     stateMapped = 'facetedFilters/stateMapped',
     shareParams = 'facetedFilters/shareParams',
-    saveParams = 'facetedFilters/saveParams',
+    saveParams = 'facetedFilters/saveParams'
 }

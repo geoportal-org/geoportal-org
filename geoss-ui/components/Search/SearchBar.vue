@@ -1,51 +1,29 @@
 <template>
-    <div class="search-bar" :class="{ 'share-mode': showShare }" data-tutorial-tag="searchbar">
+    <div class="search-bar" data-tutorial-tag="searchbar">
         <div class="drag-handle" title="Move around"></div>
-        <input data-tutorial-tag="searchbar-input" aria-label="phrase" class="search-bar__input" type="text"
-            v-model="phrase" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @focus="getSuggestions()"
-            @blur="resetSuggestions()" :placeholder="$tc('placeholders.searchBar')" />
-        <button data-tutorial-tag="searchbar-search" class="search-bar__search-trigger disabled-transparent"
-            @click="search()" :disabled="(!generalFiltersNotEmpty && phrase === '') || !dataSource"
-            :title="$tc('searchBar.search')">
+        <input data-tutorial-tag="searchbar-input" aria-label="phrase" class="search-bar__input" type="text" v-model="phrase" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @focus="getSuggestions()" @blur="resetSuggestions()" :placeholder="$tc('placeholders.searchBar')" />
+        <button data-tutorial-tag="searchbar-search" class="search-bar__search-trigger disabled-transparent" @click="search()" :disabled="(!generalFiltersNotEmpty && this.phrase === '') || !dataSource" :title="$tc('searchBar.search')">
             <i class="icomoon-search"></i>
         </button>
         <span class="search-bar__separator"></span>
-        <button data-tutorial-tag="searchbar-share" class="search-bar__share-trigger disabled-transparent"
-            :disabled="!searchResultsActive" @click="openShare()" :title="$tc('searchBar.shareSearch')">
-            <i class="icomoon-share"></i>
-        </button>
-        <button data-tutorial-tag="searchbar-save" class="search-bar__save-search disabled-transparent"
-            :disabled="!searchResultsActive || searchJustSaved" v-if="isSignedIn" @click="saveSearch()"
-            :title="$tc('searchBar.saveSearch')">
+        <Share data-tutorial-tag="searchbar-share" class="search-bar__share-trigger disabled-transparent" :disabled="!searchResultsActive" :url="shareUrl" />
+        <button data-tutorial-tag="searchbar-save" class="search-bar__save-search disabled-transparent" :disabled="!searchResultsActive || searchJustSaved" v-if="isSignedIn" @click="saveSearch()" :title="$tc('searchBar.saveSearch')">
             <i class="icomoon-save"></i>
         </button>
-        <button data-tutorial-tag="searchbar-clear" class="search-bar__clear-search-container disabled-transparent"
-            :title="$tc('searchBar.clearSearch')"
-            :disabled="!generalFiltersNotEmpty && !searchResultsActive && phrase === ''"
-            @click="resetGeneralFiltersAndResults()">
+        <button data-tutorial-tag="searchbar-clear" class="search-bar__clear-search-container disabled-transparent" :title="$tc('searchBar.clearSearch')"
+                :disabled="!generalFiltersNotEmpty && !searchResultsActive && phrase === ''" @click="resetGeneralFiltersAndResults()">
             <i class="icomoon-close"></i>
         </button>
-        <div class="search-bar__share" :class="{ active: showShare }">
-            <div class="search-bar__share-wrapper"
-                v-click-outside="{ fn: closeShare, excludeSelectors: '.search-bar__share-trigger' }">
-                <Share :url="shareUrl" :survey="true" />
-                <button class="close-btn" @click="closeShare()" :title="$tc('general.close')"
-                    :aria-label="$tc('general.close')"></button>
-            </div>
-        </div>
         <div class="search-bar__autocomplete" v-show="suggestions.length || seeAlso.length">
             <div class="suggestions" v-if="suggestions.length">
                 <i class="icomoon-star-empty"></i>
                 <b>{{ $tc('searchBar.popular') }}</b>
-                <div v-for="suggestion in suggestions" :key="suggestion"
-                    :class="{ selected: selectedSuggestion === suggestion }" @mousedown="selectSuggestion(suggestion)">
-                    {{ suggestion }}</div>
+                <div v-for="suggestion in suggestions" :key="suggestion" :class="{selected: selectedSuggestion === suggestion}" @mousedown="selectSuggestion(suggestion)">{{ suggestion }}</div>
             </div>
             <div class="see-also" v-if="seeAlso.length">
                 <i class="icomoon-search-share"></i>
                 <b>{{ $tc('searchBar.seeAlso') }}</b>
-                <div v-for="related in seeAlso" :key="related" :class="{ selected: selectedSuggestion === related }"
-                    @mousedown="selectSuggestion(related)">{{ related }}</div>
+                <div v-for="related in seeAlso" :key="related" :class="{selected: selectedSuggestion === related}" @mousedown="selectSuggestion(related)">{{ related }}</div>
             </div>
         </div>
     </div>
@@ -70,7 +48,6 @@ import { SearchGetters } from '@/store/search/search-getters';
 import { PopupActions } from '@/store/popup/popup-actions';
 import SearchEngineService from '@/services/search-engine.service';
 import UtilsService from '@/services/utils.service';
-import { GeneralApiService } from '@/services/general.api.service';
 import { DataSource } from '@/interfaces/DataSources';
 import LogService from '@/services/log.service';
 import to from '@/utils/to';
@@ -84,13 +61,14 @@ import { Timers } from '@/data/timers';
 
 @Component
 export default class SearchBarComponent extends Vue {
+[x: string]: any;
 
     public showShare = false;
     public shareUrl = '';
     public suggestions = [];
     public seeAlso = [];
     public selectedSuggestion: any = null;
-    public lastPhrase = null;
+    public lastPhrase: any = null;
     public suggestionsActiveCalls = 0;
     public cancelSuggestions = false;
 
@@ -197,23 +175,10 @@ export default class SearchBarComponent extends Vue {
 
                 this.$store.dispatch(SearchActions.setParentRefs, null);
                 this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false);
-                this.$store.dispatch(SearchActions.getResults, { noPushToHistory: !!this.workflow });
+                this.$store.dispatch(SearchActions.getResults, {noPushToHistory: !!this.workflow});
             }
-            LogService.logRecommendationData('Search', 'Search');
         }
-    }
-
-    public async openShare() {
-        this.showShare = true;
-        this.shareUrl = SearchEngineService.getShareUrl();
-        const [, url] = await to(GeneralApiService.shortenLink(this.shareUrl));
-        if (url) {
-            this.shareUrl = url;
-        }
-    }
-
-    public closeShare() {
-        this.showShare = false;
+        this.prepareShareUrl();
     }
 
     public async saveSearch() {
@@ -353,6 +318,10 @@ export default class SearchBarComponent extends Vue {
         }
     }
 
+    public async prepareShareUrl() {
+        this.shareUrl = SearchEngineService.getShareUrl();
+    }
+
     @Watch('keyword')
     public onKeywordChange() {
         this.phrase = this.keyword;
@@ -363,7 +332,7 @@ export default class SearchBarComponent extends Vue {
 
 <style lang="scss" scoped>
 .search-bar {
-    background: rgba(170, 170, 170, 0.3);
+    background: rgb(255, 255, 255);
     display: flex;
     align-items: stretch;
     flex: 1 0 auto;
@@ -378,13 +347,6 @@ export default class SearchBarComponent extends Vue {
 
     @media (max-width: $breakpoint-sm) {
         padding-left: 5px;
-    }
-
-    &.share-mode {
-        &>*:not(.search-bar__share) {
-            transition: opacity 250ms ease-in-out;
-            opacity: 0;
-        }
     }
 
     &>* {
@@ -423,17 +385,19 @@ export default class SearchBarComponent extends Vue {
         }
     }
 
-    button {
-        color: white;
+    ::v-deep(button) {
+        color: #1c786f;
         font-size: 25px;
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        &[disabled][disabled][disabled] {
+            color: #636363;
+        }
 
         i {
             margin: auto 0;
-            text-shadow: $text-shadow-black;
         }
     }
 
@@ -449,10 +413,9 @@ export default class SearchBarComponent extends Vue {
         display: block;
         font-size: 22px;
         outline: 0;
-        color: white;
+        color: #424242;
         font-style: italic;
         box-sizing: border-box;
-        text-shadow: $text-shadow-black;
 
         @media (max-width: $breakpoint-xs) {
             font-size: 18px;
@@ -460,70 +423,18 @@ export default class SearchBarComponent extends Vue {
         }
 
         &::placeholder {
-            color: white;
+            color: #636363 ;
         }
     }
 
     &__separator {
         width: 2px;
         height: 50px;
-        background: white;
+        background: #636363;
         margin: 5px 0;
 
         @media (max-width: $breakpoint-sm) {
             height: 40px;
-        }
-    }
-
-    &__share {
-        position: absolute;
-        height: 100%;
-        width: 0%;
-        top: 0;
-        right: 0;
-        margin: 0;
-        overflow: hidden;
-        transition: width 0ms 450ms linear;
-
-        &.active {
-            transition: width 0ms 250ms linear;
-            width: 100%;
-
-            .search-bar__share-wrapper {
-                transition: transform 450ms 250ms linear;
-                transform: translate(0%, -50%);
-            }
-        }
-
-        .search-bar__share-wrapper {
-            transition: transform 450ms linear;
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(calc(100% + 50px), -50%);
-            display: flex;
-            align-items: center;
-        }
-
-        .close-btn {
-            margin-left: 20px;
-            margin-right: 15px;
-
-            @media (max-width: $breakpoint-sm) {
-                margin-left: 10px;
-                margin-right: 0;
-            }
-
-            &:before,
-            &:after {
-                height: 2px;
-                width: 30px;
-                left: 0;
-
-                @media (max-width: $breakpoint-sm) {
-                    width: 20px;
-                }
-            }
         }
     }
 
@@ -568,7 +479,7 @@ export default class SearchBarComponent extends Vue {
 
         >div {
             div {
-                color: $grey-darker;
+                color: '#424242';
                 font-size: 19px;
                 cursor: pointer;
                 padding: 5px;

@@ -7,5 +7,5 @@ export enum BookmarksActions {
     setCheckedResults = 'bookmarks/setCheckedResults',
     checkboxChange = 'bookmarks/checkboxChange',
     setCheckedOrigins = 'bookmarks/setCheckedOrigins',
-    updateResultRating = 'bookmarks/updateResultRating',
+    updateResultRating = 'bookmarks/updateResultRating'
 }

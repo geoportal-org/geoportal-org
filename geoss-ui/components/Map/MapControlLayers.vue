@@ -2,9 +2,10 @@
     <div class="map-control-layers">
         <button class="map-control-layers__trigger disabled-transparent" @click="toggleBox()"
             :title="$tc('mapControls.layers')"
-            :disabled="(!boundingLayers.length && mapLayers.length < 2) || isExtendedViewActive"
-            v-click-outside="{ fn: closeBox, excludeSelectors: '.map-control-layers__inner-wrapper, .tutorial-tag, .tutorial-mode, .tutorial-off' }">
+                :disabled="(!boundingLayers.length && mapLayers.length < 2) || isExtendedViewActive"
+                v-click-outside="{ fn: closeBox, excludeSelectors: '.map-control-layers__inner-wrapper, .tutorial-tag, .tutorial-mode, .tutorial-off' }">
             <i class="icomoon-layers"></i>
+            <span class="button-caption">{{ $t('popupTitles.manageLayers') }}</span>
         </button>
         <div class="map-control-layers__wrapper" :class="{ active: showBox }" v-if="mapLayers.length">
             <div class="map-control-layers__inner-wrapper">
@@ -448,6 +449,17 @@ export default class MapControlLayersComponent extends Vue {
     width: auto;
     height: auto;
 
+    .button-caption {
+        font-size: 11px;
+        display: block;
+        width: auto;
+        white-space: nowrap;
+        transform: translateX(-50%);
+        @media (max-width: $breakpoint-lg) {
+            display: none;
+        }
+    }
+
     &__trigger {
         width: 32px;
         height: 32px;
@@ -638,8 +650,7 @@ export default class MapControlLayersComponent extends Vue {
             border-radius: 50%;
             padding: 2px;
 
-            &:hover,
-            &.active {
+            &:hover, &.active {
                 background: #ABAAAC;
 
                 &:not(:disabled) i {
@@ -652,7 +663,7 @@ export default class MapControlLayersComponent extends Vue {
                 color: #ABAAAC;
             }
 
-            &+button {
+            & + button {
                 margin-left: 5px;
             }
         }
@@ -672,7 +683,6 @@ export default class MapControlLayersComponent extends Vue {
     &__remove {
         min-height: 20px !important;
         min-width: 20px !important;
-
         &:hover {
 
             &:before,

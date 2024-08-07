@@ -1,235 +1,135 @@
 <template>
     <div class="views-ratings">
-        <div
-            class="views-ratings__views"
-            :data-tutorial-tag="
-                resultIdDetails === result.id ? 'result-views' : ''
-            "
-        >
+        <div class="views-ratings__views" :data-tutorial-tag="resultIdDetails === result.id ? 'result-views' : ''">
             <i class="icomoon-editor--eye"></i>
             <span>{{ views || 0 }}</span>
         </div>
-        <div
-            v-if="avScore !== null"
-            class="views-ratings__rating"
-            :class="{ 'no-hover': isWidget }"
-        >
-            <i
-                class="icomoon-editor--star"
-                :data-tutorial-tag="
-                    resultIdDetails === result.id ? 'result-ratings' : ''
-                "
-            ></i>
-            <span>{{ Number(avScore).toFixed(1) }}</span>
+        <div v-if="result.rating" class="views-ratings__rating" :class="{'no-hover': isWidget}">
+            <i class="icomoon-editor--star" :data-tutorial-tag="resultIdDetails === result.id ? 'result-ratings' : ''"></i>
+            <span>{{ Number(result.rating.averageScore).toFixed(1) }}</span>
             <div v-if="!isWidget" class="views-ratings__ratings-stars">
-                <div
-                    v-for="num in [5, 4, 3, 2, 1]"
-                    :key="num"
-                    class="views-ratings__ratings-star"
-                    :class="{ active: score === num }"
-                >
-                    <i
-                        class="icomoon-star-empty"
-                        v-show="Math.floor(avScore) < num"
-                    ></i>
-                    <i
-                        class="icomoon-star yellow"
-                        v-show="Math.floor(avScore) >= num"
-                        @click="setScore(num)"
-                    ></i>
+                <div v-for="num in [5, 4, 3, 2, 1]" :key="num" class="views-ratings__ratings-star" :class="{active: score === num}">
+                    <i class="icomoon-star-empty" v-show="Math.floor(result.rating.averageScore) < num"></i>
+                    <i class="icomoon-star yellow" v-show="Math.floor(result.rating.averageScore) >= num" @click="setScore(num)"></i>
                 </div>
             </div>
         </div>
-        <a
-            v-if="
-                !isWidget &&
-                isEntryExtensionEnabled &&
-                dataSource !== DataSources.WIKIPEDIA &&
-                !extendedViewMode
-            "
-            :class="{ disabled: !isSignedIn }"
-            class="views-ratings__entry-extension"
-            :title="
-                isSignedIn
-                    ? $tc('popupContent.improveTheResourceDefinition')
-                    : $tc('popupContent.youNeedToBeSignedInToImprove')
-            "
-            @click="entryExtension()"
-            :data-tutorial-tag="
-                resultIdDetails === result.id ? 'result-improve' : ''
-            "
-        >
+        <a v-if="!isWidget && isEntryExtensionEnabled && dataSource !== DataSources.WIKIPEDIA && !extendedViewMode"
+                :class="{disabled: !isSignedIn}" class="views-ratings__entry-extension"
+                :title="isSignedIn ? $tc('popupContent.improveTheResourceDefinition') : $tc('popupContent.youNeedToBeSignedInToImprove')"
+                @click="entryExtension()"
+                :data-tutorial-tag="resultIdDetails === result.id ? 'result-improve' : ''">
             <i class="icomoon-editor--edit"></i>
         </a>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-import { DataSources, DataOrigin } from '@/interfaces/DataSources'
-import { PopupActions } from '@/store/popup/popup-actions'
-import { UserGetters } from '@/store/user/user-getters'
-import { SearchGetters } from '@/store/search/search-getters'
-import { GeneralGetters } from '@/store/general/general-getters'
-import UtilsService from '@/services/utils.service'
-import EntryExtension from '@/components/Search/Results/EntryExtension.vue'
-import DabResultRating from '@/components/Search/Results/DabResultRating.vue'
-import LogService from '@/services/log.service'
-import RatingService from '~/services/ratings.service'
-import { PopupGetters } from '~/store/popup/popup-getters'
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { DataSources, DataOrigin } from '@/interfaces/DataSources';
+import { PopupActions } from '@/store/popup/popup-actions';
+import { SearchActions } from '@/store/search/search-actions';
+import { UserGetters } from '@/store/user/user-getters';
+import { SearchGetters } from '@/store/search/search-getters';
+import { GeneralGetters } from '@/store/general/general-getters';
+import UtilsService from '@/services/utils.service';
+import GeossSearchApiService from '@/services/geoss-search.api.service';
+import EntryExtension from '@/components/Search/Results/EntryExtension.vue';
+import DabResultRating from '@/components/Search/Results/DabResultRating.vue';
+import to from '@/utils/to';
+import LogService from '@/services/log.service';
 
 @Component
 export default class ViewsAndRatingsComponent extends Vue {
-    @Prop({ default: null, type: Object }) public result!: any
-    @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
-    @Prop(String) public currentOpenId!: string
+    @Prop({ default: null, type: Object}) public result!: any;
+    @Prop({ default: false, type: Boolean}) public extendedViewMode!: boolean;
 
-    @Watch('currentOpenId')
-    async onCurrentChange() {
-        if (this.currentOpenId === this.result.id) {
-            this.views = await this.getCounter()
-            this.avScore = await this.getRating()
-        }
-    }
-
-    @Watch('queue')
-    async onQueueChange() {
-        if (
-            !this.queue.some((content: any) => content.contentId === 'metadata')
-        ) {
-            this.views = await this.getCounter()
-            this.avScore = await this.getRating()
-        }
-    }
-
-    public score = 0
-    public DataSources = DataSources
-    public views = 0
-    public avScore = 0
-
-    get queue() {
-        return this.$store.getters[PopupGetters.queue]
-    }
+    public score = 0;
+    public DataSources = DataSources;
 
     get resultIdDetails() {
-        return this.$store.getters[SearchGetters.resultIdDetails]
+        return this.$store.getters[SearchGetters.resultIdDetails];
     }
 
-    // get views() {
-    //     let data = null
-    //     if (this.isZenodoType) {
-    //         data = UtilsService.getPropByString(this.result, 'stats.views')
-    //     } else {
-    //         data = UtilsService.getPropByString(this.result, 'views')
-    //     }
-    //     data = data ? data : '0'
-    //     return data
-    // }
+    get views() {
+        let data = null;
+        if (this.isZenodoType) {
+            data = UtilsService.getPropByString(this.result, 'stats.views');
+        } else {
+            data = UtilsService.getPropByString(this.result, 'views');
+        }
+        data = data ? data : '0';
+        return data;
+    }
 
     get rootDataOrigin() {
         // original entry's dataSource exclusively from OpenSearch
-        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(
-            this.result,
-            'term',
-            'dataSource'
-        )[0]
-        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource
+        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(this.result, 'term', 'dataSource')[0];
+        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource;
     }
 
     get dataSource() {
-        return this.$store.getters[SearchGetters.dataSource]
+        return this.$store.getters[SearchGetters.dataSource];
     }
 
     get isZenodoType() {
-        return (
-            (this.isParentRef && this.parentRef === DataSources.ZENODO) ||
-            (!this.isParentRef && this.dataSource === DataSources.ZENODO)
-        )
+        return (this.isParentRef && this.parentRef === DataSources.ZENODO) || (!this.isParentRef && this.dataSource === DataSources.ZENODO);
     }
 
     get parentRef() {
-        return this.$store.getters[SearchGetters.parentRef]
+        return this.$store.getters[SearchGetters.parentRef];
     }
 
     get isParentRef() {
-        return this.parentRef && this.parentRef.id === this.result.id
+        return (this.parentRef && this.parentRef.id === this.result.id);
     }
 
     get isWidget() {
-        return this.$store.getters[GeneralGetters.isWidget]
+        return this.$store.getters[GeneralGetters.isWidget];
     }
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn]
+        return this.$store.getters[UserGetters.isSignedIn];
     }
 
     get isEntryExtensionEnabled() {
-        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled]
+        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled];
     }
 
     public async setScore(score: number) {
-        //@ts-ignore
-        const loggedIn = this.$nuxt.$auth.loggedIn
-        if (!loggedIn) {
-            this.score = score
-            await this.rateWithoutComment()
+        const resultTitle = this.result.title || this.result.metadata.title;
+        this.score = score;
+        if(this.isSignedIn) {
+            this.openRatingModal();
         } else {
-            this.score = score
-            this.openRatingModal()
+            const [, data] = await to(GeossSearchApiService.rateResource(
+                resultTitle,
+                this.result.id,
+                this.score,
+                '',
+                DataOrigin[this.dataSource]
+            ));
+            if(data) {
+                this.$store.dispatch(SearchActions.updateDabResultRating, {id: this.result.id, rating: data});
+            }
         }
-        // if (loggedIn) {
-        //     this.openRatingModal()
-        // } else {
-        //     const [, data] = await to(
-        //         GeossSearchApiService.rateResource(
-        //             this.result.title || this.result.metadata.title,
-        //             this.result.id,
-        //             this.score,
-        //             '',
-        //             DataOrigin[this.dataSource]
-        //         )
-        //     )
-        //     if (data) {
-        //         this.$store.dispatch(SearchActions.updateDabResultRating, {
-        //             id: this.result.id,
-        //             rating: data,
-        //         })
-        //     }
-        // }
-        LogService.logRecommendationData(
-            'Search result',
-            'Rating',
-            'internal',
-            { score: this.score }
-        )
-    }
-
-    public setAvScore(v: number) {
-        this.avScore = v
+        LogService.logRecommendationData('Set score', resultTitle, this.score);
     }
 
     public async openRatingModal() {
-        const res = await this.getComments()
-        const comments: { score: any; comment: any }[] = []
-
-        res.forEach((element: any) => {
-            comments.push({ score: element.score, comment: element.comment })
-        })
+        const dataOrigin = DataOrigin[this.dataSource];
+        const [, comments] = await to(GeossSearchApiService.getComments(this.result.id, dataOrigin));
 
         const props = {
             id: this.result.id,
             title: this.result.title,
             comments,
             userScore: this.score,
-            setAvScore: this.setAvScore,
-        }
+            userComment: this.result.rating.comment,
+            dataSource: this.dataSource
+        };
 
-        this.$store.dispatch(PopupActions.openPopup, {
-            contentId: 'rating',
-            title: this.$tc('popupTitles.rateResouce'),
-            component: DabResultRating,
-            props,
-        })
+        this.$store.dispatch(PopupActions.openPopup, {contentId: 'rating', title: this.$tc('popupTitles.rateResouce'), component: DabResultRating, props});
     }
 
     public async entryExtension() {
@@ -237,145 +137,81 @@ export default class ViewsAndRatingsComponent extends Vue {
             const props = {
                 id: this.result.id,
                 title: this.result.title,
-                rootDataOrigin: this.rootDataOrigin,
-            }
-            this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'entry-extension',
-                title: this.$tc('popupTitles.improveDefinition'),
-                component: EntryExtension,
-                props,
-            })
-        }
-    }
-
-    public async getCounter() {
-        const res = await LogService.fetchCounter(this.result.id)
-        if (res && res.counter !== undefined) {
-            return res.counter
-        } else {
-            return -1
-        }
-    }
-
-    public async getRating() {
-        const res = await RatingService.fetchRating(this.result.id)
-        if (res) {
-            return res.stats[0].averageScore
-        } else {
-            return 0
-        }
-    }
-
-    public async getComments() {
-        const res = await RatingService.fetchComments(this.result.id)
-        if (res) {
-            return res
-        } else {
-            return 0
-        }
-    }
-
-    public async rateWithoutComment() {
-        try {
-            const res = await RatingService.rateWithoutComment(
-                this.result.id,
-                this.result.title,
-                this.score
-            )
-
-            if (res) {
-                this.avScore = res.averageScore
-            }
-        } catch (e) {
-            console.log(e)
+                rootDataOrigin: this.rootDataOrigin
+            };
+            this.$store.dispatch(PopupActions.openPopup, {contentId: 'entry-extension', title: this.$tc('popupTitles.improveDefinition'), component: EntryExtension, props});
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.views-ratings {
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto;
-    margin: 0 0 5px;
-
-    .is-parent-ref & {
-        color: white;
-    }
-
-    @media (max-width: $breakpoint-xs) {
-        width: 100%;
-        flex-wrap: wrap;
-    }
-
-    &__views {
+    .views-ratings {
         display: flex;
         align-items: center;
+        flex: 0 0 auto;
+        margin: 0 0 5px;
 
-        i {
-            color: $green;
-            font-size: 25px;
-            margin-right: 6px;
-            margin-bottom: 1px;
-
-            .is-parent-ref & {
-                color: white;
-            }
+        .is-parent-ref & {
+            color: white;
         }
 
-        span {
-            white-space: nowrap;
-            font-size: 14px;
+        @media(max-width: $breakpoint-xs) {
+            width: 100%;
+            flex-wrap: wrap;
         }
-    }
 
-    &__entry-extension {
-        cursor: pointer;
-        margin-left: 15px;
-        text-decoration: none;
+        &__views {
+            display: flex;
+            align-items: center;
 
-        &.disabled {
             i {
-                color: $grey;
+                color: $green;
+                font-size: 25px;
+                margin-right: 6px;
+                margin-bottom: 1px;
+
+                .is-parent-ref & {
+                    color: white;
+                }
+            }
+
+            span {
+                white-space: nowrap;
+                font-size: 14px;
             }
         }
 
-        i {
-            color: $blue;
-            font-size: 20px;
+        &__entry-extension {
+            cursor: pointer;
+            margin-left: 15px;
+            text-decoration: none;
 
-            .is-parent-ref & {
-                color: white;
+            &.disabled {
+                i {
+                    color: $grey;
+                }
+            }
+
+            i {
+                color: $blue;
+                font-size: 20px;
+
+                .is-parent-ref & {
+                    color: white;
+                }
             }
         }
-    }
 
-    &__rating {
-        display: flex;
-        align-items: center;
-        margin-left: 15px;
-        cursor: pointer;
-        position: relative;
-        padding: 10px 0;
+        &__rating {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+            cursor: pointer;
+            position: relative;
+            padding: 10px 0;
 
-        &:hover {
-            &:after {
-                content: '';
-                display: block;
-                width: 8px;
-                height: 8px;
-                background: white;
-                position: absolute;
-                left: 25%;
-                transform: translateX(-50%) rotate(45deg);
-                bottom: -4px;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            }
-
-            .views-ratings__ratings-stars {
-                display: inline-flex;
-
+            &:hover	{
                 &:after {
                     content: '';
                     display: block;
@@ -383,92 +219,99 @@ export default class ViewsAndRatingsComponent extends Vue {
                     height: 8px;
                     background: white;
                     position: absolute;
-                    left: 64%;
+                    left: 25%;
                     transform: translateX(-50%) rotate(45deg);
-                    top: -4px;
-                    z-index: 1;
+                    bottom: -4px;
+                    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                }
+
+                .views-ratings__ratings-stars {
+                    display: inline-flex;
+
+                    &:after {
+                        content: '';
+                        display: block;
+                        width: 8px;
+                        height: 8px;
+                        background: white;
+                        position: absolute;
+                        left: 64%;
+                        transform: translateX(-50%) rotate(45deg);
+                        top: -4px;
+                        z-index: 1;
+                    }
+                }
+            }
+
+            &.no-hover {
+                cursor: default;
+
+                &:after {
+                    content: none;
+                }
+            }
+
+            i {
+                color: $green;
+                font-size: 20px;
+                margin-right: 5px;
+                margin-bottom: 2px;
+            }
+
+            > i {
+                .is-parent-ref & {
+                    color: white;
+                }
+            }
+
+            span {
+                white-space: nowrap;
+                font-size: 14px;
+            }
+        }
+
+        &__ratings-stars {
+            display: none;
+            flex-direction: row-reverse;
+            align-items: center;
+            position: absolute;
+            top: 100%;
+            left: 0%;
+            transform: translateX(-57%);
+            background: white;
+            box-shadow: 0 1px 10px rgba(0,0,0,0.2);
+            padding: 10px;
+            z-index: 1;
+
+            &:hover {
+                .icomoon-star {
+                    display: none !important;
+                }
+
+                .icomoon-star-empty {
+                    display: block !important;
                 }
             }
         }
 
-        &.no-hover {
-            cursor: default;
+        &__ratings-star {
+            padding-right: 8px;
+            font-size: 0;
 
-            &:after {
-                content: none;
-            }
-        }
-
-        i {
-            color: $green;
-            font-size: 20px;
-            margin-right: 5px;
-            margin-bottom: 2px;
-        }
-
-        > i {
-            .is-parent-ref & {
-                color: white;
-            }
-        }
-
-        span {
-            white-space: nowrap;
-            font-size: 14px;
-        }
-    }
-
-    &__ratings-stars {
-        display: none;
-        flex-direction: row-reverse;
-        align-items: center;
-        position: absolute;
-        top: 100%;
-        left: 0%;
-        transform: translateX(-57%);
-        background: white;
-        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        z-index: 1;
-
-        &:hover {
-            .icomoon-star {
-                display: none !important;
+            &:first-child {
+                padding: 0;
             }
 
-            .icomoon-star-empty {
-                display: block !important;
-            }
-        }
-    }
+            i {
+                font-size: 13px;
+                margin: 0 !important;
 
-    &__ratings-star {
-        padding-right: 8px;
-        font-size: 0;
-
-        &:first-child {
-            padding: 0;
-        }
-
-        i {
-            font-size: 13px;
-            margin: 0 !important;
-
-            &.yellow {
-                color: $yellow;
-            }
-        }
-
-        &:hover {
-            .icomoon-star {
-                display: block !important;
+                &.yellow {
+                    color: $yellow;
+                }
             }
 
-            .icomoon-star-empty {
-                display: none !important;
-            }
-
-            & ~ div {
+            &:hover {
                 .icomoon-star {
                     display: block !important;
                 }
@@ -476,8 +319,17 @@ export default class ViewsAndRatingsComponent extends Vue {
                 .icomoon-star-empty {
                     display: none !important;
                 }
+
+                & ~ div {
+                    .icomoon-star {
+                        display: block !important;
+                    }
+
+                    .icomoon-star-empty {
+                        display: none !important;
+                    }
+                }
             }
         }
     }
-}
 </style>

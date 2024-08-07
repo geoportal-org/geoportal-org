@@ -1,7 +1,6 @@
 <template>
     <div class="google-places">
-        <input v-if="visible" v-model="googlePlacesInput" slot="trigger" type="text"
-            :placeholder="$tc('placeholders.googlePlaces')" />
+        <input :disabled="!visible" v-model="googlePlacesInput" slot="trigger" type="text":placeholder="$tc('placeholders.googlePlaces')" :class="{ disabled: !visible }"/>
         <button @click="clearGooglePlaces()" :class="{ 'active': isGooglePlacesActive() }">✕</button>
     </div>
 </template>
@@ -74,18 +73,50 @@ export default class GooglePlacesSelectComponent extends Vue {
             /**
              * Google Places API quota exceeded error capture
              */
+
             const defaultConsoleError = console.error;
             console.error = (message, ...args) => {
+                if (!message || (message && (typeof message !== 'string' && !Array.isArray(message)))) {
+                    return;
+                }
                 if (message.includes('You have exceeded your daily request quota for this API.')) {
                     console.log('We have reached our Google Maps daily requests for today.');
                     this.googlePlacesApiError = 'OVER_QUERY_LIMIT';
                     return false;
                 }
+                if (message.includes('There was a problem contacting the Google servers.')) {
+                    console.log('There was a problem contacting the Google servers.');
+                    return false;
+                }
+                if (message.includes('This request was invalid.')) {
+                    console.log('This request was invalid.');
+                    return false;
+                }
+                if (message.includes('The response contains a valid result.')) {
+                    console.log('The response contains a valid result.');
+                    return false;
+                }
+                if (message.includes('The referenced location was not found in the Places database.')) {
+                    console.log('The referenced location was not found in the Places database.');
+                    return false;
+                }
+                if (message.includes('The webpage is not allowed to use the PlacesService.')) {
+                    console.log('The webpage is not allowed to use the PlacesService.');
+                    return false;
+                }
+                if (message.includes('The PlacesService request could not be processed due to a server error. The request may succeed if you try again.')) {
+                    console.log('The PlacesService request could not be processed due to a server error. The request may succeed if you try again.');
+                    return false;
+                }
+                if (message.includes('No result was found for this request.')) {
+                    console.log('No result was found for this request.');
+                    return false;
+                }
                 defaultConsoleError.apply(console, args);
             };
 
-            const autocompleteInput = this.$el.querySelector('input');
-            autocompleteInput.addEventListener('input', event => {
+            const autocompleteInput: any = this.$el.querySelector('input');
+            autocompleteInput.addEventListener('input', (event: any) => {
                 if (autocompleteInput.value.length && autocompleteInput.value.length < this.phraseThreshold) {
                     event.stopImmediatePropagation();
                 }
@@ -144,6 +175,11 @@ export default class GooglePlacesSelectComponent extends Vue {
         align-items: center;
         width: 100%;
         border: none;
+
+        &.disabled {
+            opacity: 0.66;
+        }
     }
 }
+
 </style>
