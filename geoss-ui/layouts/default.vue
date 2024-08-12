@@ -50,7 +50,7 @@ import SearchEngineService from '@/services/search-engine.service';
 import { UserGetters } from '@/store/user/user-getters';
 import LiferayService from '@/services/liferay.service';
 import { ParentRef } from '@/interfaces/ParentRef';
-import { DataSources, DataOrigin } from '@/interfaces/DataSources';
+import { DataSources, DataOrigin, AlternateSourcesMap } from '@/interfaces/DataSources';
 import { SearchGetters } from '@/store/search/search-getters';
 import { GeneralApiService } from '@/services/general.api.service';
 import { GeneralActions } from '@/store/general/general-actions';
@@ -412,11 +412,15 @@ export default {
                         const siteSettings = await GeneralApiService.getSiteSettings(siteId)
 
                         if (siteSettings) {
-                            if (siteSettings.defaultDataSource && siteSettings.defaultDataSource !== '') {
-                                if (!this.$store.getters[SearchGetters.dataSource]) {
-                                    this.$store.dispatch(SearchEngineActions.setDefaultSourceName, siteSettings.defaultDataSource);
-                                    this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB, checkDefault: true });
-                                }
+                            if (siteSettings.defaultSourceName && siteSettings.defaultSourceName !== '') {
+                                    let parsedDefaultSourceName = '' 
+                                    for(let key in AlternateSourcesMap) {
+                                        if(AlternateSourcesMap[key] === siteSettings.defaultSourceName){
+                                            parsedDefaultSourceName = key
+                                        }
+                                    }
+                                    this.$store.dispatch(SearchEngineActions.setDefaultSourceName, parsedDefaultSourceName);
+                                    this.$store.dispatch(SearchActions.setDataSource, { value: parsedDefaultSourceName, checkDefault: true });
                             } else {
                                 this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
                             }
