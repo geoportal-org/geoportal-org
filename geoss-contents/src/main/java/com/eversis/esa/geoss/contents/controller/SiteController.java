@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,6 +94,12 @@ public class SiteController {
             @RequestParam("model") String model) {
         ObjectMapper mapper = new ObjectMapper();
         Site siteDTO = mapper.readValue(model, Site.class);
+
+        if (!isLowercaseAlphabeticOrHyphen(siteDTO.getUrl())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "URL can only contain lowercase letters (a-z) and hyphen (-): " + siteDTO.getUrl());
+        }
+
         Site createdSite = siteService.createSite(siteDTO, files[0]);
         return EntityModel.of(createdSite, siteLinks(createdSite));
     }
@@ -115,6 +122,10 @@ public class SiteController {
         return Arrays.asList(
                 entityLinks.linkToItemResource(Site.class, site.getId())
         );
+    }
+
+    private boolean isLowercaseAlphabeticOrHyphen(String url) {
+        return url.matches("^[a-z-]+$");
     }
 
 }
