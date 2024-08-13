@@ -95,6 +95,11 @@ public class SiteController {
         ObjectMapper mapper = new ObjectMapper();
         Site siteDTO = mapper.readValue(model, Site.class);
 
+        if (siteService.existsByUrl(siteDTO.getUrl())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "URL already exists: " + siteDTO.getUrl());
+        }
+
         if (!isLowercaseAlphabeticOrHyphen(siteDTO.getUrl())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "URL can only contain lowercase letters (a-z) and hyphen (-): " + siteDTO.getUrl());

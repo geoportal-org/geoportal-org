@@ -112,6 +112,11 @@ public class SiteServiceImpl implements SiteService {
         return createdSite;
     }
 
+    @Override
+    public boolean existsByUrl(String url) {
+        return siteRepository.findByUrl(url) != null;
+    }
+
     private void deleteSiteEntities(long siteId) {
         menuRepository.deleteBySiteId(siteId);
         pageRepository.deleteBySiteId(siteId);
