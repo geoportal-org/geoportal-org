@@ -75,11 +75,11 @@ const SitesManager = () => {
     }, [currentSiteId]);
 
     useEffect(() => {
-        if (documentsList && documentsList?.length > 0) {
+        if (documentsList && documentsList?.length > 0 && editMode) {
             setModalOpen(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [documentsList]);
+    }, [documentsList, editMode]);
 
     const headingActions = [
         {
