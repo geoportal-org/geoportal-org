@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -95,15 +96,8 @@ public class SiteController {
         ObjectMapper mapper = new ObjectMapper();
         Site siteDTO = mapper.readValue(model, Site.class);
 
-        if (siteService.existsByUrl(siteDTO.getUrl())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "URL already exists: " + siteDTO.getUrl());
-        }
-
-        if (!isLowercaseAlphabeticOrHyphen(siteDTO.getUrl())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "URL can only contain lowercase letters (a-z) and hyphen (-): " + siteDTO.getUrl());
-        }
+        validateUrl(siteDTO.getUrl());
+        validateFileName(files[0]);
 
         Site createdSite = siteService.createSite(siteDTO, files[0]);
         return EntityModel.of(createdSite, siteLinks(createdSite));
@@ -129,8 +123,45 @@ public class SiteController {
         );
     }
 
+    private void validateUrl(String url) {
+        if (siteService.existsByUrl(url)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "URL already exists: " + url);
+        }
+
+        if (!isLowercaseAlphabeticOrHyphen(url)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "URL can only contain lowercase letters (a-z) and hyphen (-): " + url);
+        }
+    }
+
     private boolean isLowercaseAlphabeticOrHyphen(String url) {
         return url.matches("^[a-z-]+$");
+    }
+
+    private void validateFileName(MultipartFile file) {
+        String fileName = file.getOriginalFilename().trim();
+
+        if (fileName.length() > 255) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name exceeds maximum length of 255 characters: " + fileName);
+        }
+
+        if (!fileName.matches("^[a-zA-Z0-9-_.]+$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name can only contain alphanumeric characters, hyphens (-), underscores (_), and dots (.): "
+                            + fileName);
+        }
+
+        if (!StandardCharsets.UTF_8.newEncoder().canEncode(fileName)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name is not in valid UTF-8 format: " + fileName);
+        }
+
+        if (fileName.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name cannot be empty.");
+        }
     }
 
 }
