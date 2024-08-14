@@ -29,6 +29,7 @@ import {
     FormLabel,
     Image,
     Select,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MainContentHeader } from "../MainContent/MainContentHeader";
@@ -60,6 +61,8 @@ const SitesManager = () => {
     const [imageURL, setImageURL] = useState<string>("");
     const fileInputRef = useRef(null);
     const { locale } = useIntl();
+    const [urlDuplicateError, setURLDuplicateError] = useState(false);
+    const [urlValidError, setUrlValidError] = useState(false);
 
     const { showToast } = useCustomToast();
     const { setAllSites } = useContext<SiteContextValue>(SiteContext);
@@ -153,7 +156,7 @@ const SitesManager = () => {
                 description:
                     translate(`${editMode ? "pages.sites.siteUpdateFail" : "pages.sites.siteCreationFail"}`) +
                     " " +
-                    e?.errorInfo?.errors[0]?.message,
+                    `${e?.errorInfo?.errors ? e?.errorInfo?.errors[0]?.message : e?.detail}`,
                 status: ToastStatus.ERROR,
             });
         }
@@ -178,8 +181,34 @@ const SitesManager = () => {
         refresh();
     };
 
+    const checkURLDuplicates = (value: string) => {
+        return sites.some((site) => {
+            if (currentSiteId) {
+                return site.url === value && site.id !== Number(currentSiteId);
+            } else {
+                return site.url === value;
+            }
+        });
+    };
+
+    const validateUrl = (value: string) => {
+        const regex = /^[a-z-]+$/;
+        return !regex.test(value);
+    };
+
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
+        if (name === "url") {
+            if (value === "") {
+                setURLDuplicateError(false);
+                setUrlValidError(false);
+            } else {
+                const isDuplicate = checkURLDuplicates(value);
+                const isInvalid = validateUrl(value);
+                isDuplicate ? setURLDuplicateError(true) : setURLDuplicateError(false);
+                isInvalid ? setUrlValidError(true) : setUrlValidError(false);
+            }
+        }
         setSiteData({
             ...siteData,
             [name]: value,
@@ -206,6 +235,8 @@ const SitesManager = () => {
         setModalOpen(false);
         setEditMode(false);
         setImageFile(undefined);
+        setURLDuplicateError(false);
+        setUrlValidError(false);
         setImageURL("");
         getSitesList();
         getAllSitesList();
@@ -336,7 +367,7 @@ const SitesManager = () => {
                                     onChange={(event: any) => handleInputChange(event)}
                                 />
                             </FormControl>
-                            <FormControl isRequired mb={4}>
+                            <FormControl isRequired isInvalid={urlDuplicateError || urlValidError} mb={4}>
                                 <FormLabel fontSize={14} htmlFor="url" mb={0}>
                                     {translate("pages.sites.url")}
                                 </FormLabel>
@@ -348,6 +379,12 @@ const SitesManager = () => {
                                     onChange={(event: any) => handleInputChange(event)}
                                     mt={1}
                                 />
+                                {urlDuplicateError && <FormErrorMessage>Duplicate URL.</FormErrorMessage>}
+                                {urlValidError && (
+                                    <FormErrorMessage>
+                                        URL must consists of lowercase letters and optionally hyphens.
+                                    </FormErrorMessage>
+                                )}
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel fontSize={14} htmlFor="image" mb={0}>
@@ -421,7 +458,7 @@ const SitesManager = () => {
                             >
                                 {translate("pages.recommendations.cancelButton")}
                             </Button>
-                            <Button colorScheme={"green"} type="submit">
+                            <Button isDisabled={urlDuplicateError || urlValidError} colorScheme={"green"} type="submit">
                                 {translate("pages.sites.confirm")}
                             </Button>
                         </ModalFooter>

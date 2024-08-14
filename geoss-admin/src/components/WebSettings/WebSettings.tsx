@@ -2,12 +2,11 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Formik, FormikValues } from "formik";
 import { Flex } from "@chakra-ui/react";
 import { FormField, FormSection, Loader, MainContent, PrimaryButton, TextContent, TextInfo } from "@/components";
-import { FileRepositoryService, WebSettingsService } from "@/services/api";
-import { ButtonType, LocaleNames, SelectSettings, ToastStatus } from "@/types";
+import { WebSettingsService } from "@/services/api";
+import { ButtonType, ToastStatus } from "@/types";
 import {
     areObjectsEqual,
     createWebSettingsKeyValues,
-    createSelectItemsList,
     setFormInitialValues,
     setExistingWebSettingsKeyValues,
     setFormValuesAsString,
@@ -16,9 +15,7 @@ import {
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { IWebSetting, IWebSettingData } from "@/types/models";
-import { acceptedLogoExtensions, initRepositoryPagination } from "@/data";
 import { webSettingsForm, webSettingsFormFields } from "@/data/forms";
-import { useIntl } from "react-intl";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const WebSettings = () => {

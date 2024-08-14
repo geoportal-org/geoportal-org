@@ -31,8 +31,8 @@ export const ValidationService = {
             regExp: regExp["relative-full-url"],
             errorMsgId: "form.errors.invalid-url",
         },
-        "zero-or-positive-integer": {
-            regExp: regExp["zero-or-positive-integer"],
+        "float-0-20": {
+            regExp: regExp["float-0-20"],
             errorMsgId: "form.errors.invalid-zero-positive-integer",
         },
         latitude: {
