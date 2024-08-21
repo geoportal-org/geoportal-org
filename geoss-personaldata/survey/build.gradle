@@ -30,7 +30,7 @@ dependencies {
     implementation project(':common')
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
+    annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen:${hibernateJpamodelgenVersion}"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
 }
