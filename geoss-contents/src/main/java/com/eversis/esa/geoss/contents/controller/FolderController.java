@@ -53,7 +53,7 @@ public class FolderController {
      * @param folder the folder
      * @return the entity model
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     EntityModel<Folder> saveFolder(@Valid @RequestBody Folder folder) {
         Folder savedFolder = repositoryService.addFolder(folder);

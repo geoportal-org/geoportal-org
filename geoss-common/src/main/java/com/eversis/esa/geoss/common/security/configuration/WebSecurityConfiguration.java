@@ -22,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Web security configuration.
@@ -35,7 +36,7 @@ public class WebSecurityConfiguration {
 
     private final List<DefaultSecurityFilterChainCustomizer> defaultSecurityFilterChainCustomizers;
 
-    private final ObjectProvider<PersistentTokenRepository> persistentTokenRepository;
+    private final Optional<PersistentTokenRepository> persistentTokenRepository;
 
     /**
      * H 2 console security filter chain security filter chain.
@@ -154,8 +155,10 @@ public class WebSecurityConfiguration {
             }
         } else {
             http.formLogin(Customizer.withDefaults());
-            http.rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer
-                    .tokenRepository(persistentTokenRepository.getIfAvailable()));
+            if (persistentTokenRepository.isPresent()) {
+                http.rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer
+                        .tokenRepository(persistentTokenRepository.get()));
+            }
             http.logout(Customizer.withDefaults());
         }
         return http.build();

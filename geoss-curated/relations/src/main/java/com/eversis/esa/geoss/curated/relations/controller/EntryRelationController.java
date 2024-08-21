@@ -134,7 +134,7 @@ public class EntryRelationController {
      */
     @PreAuthorize("hasAnyRole('RELATION_REMOVER', 'ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping()
+    @DeleteMapping
     public void removeEntryRelation(
             @RequestParam String srcId,
             @RequestParam int srcDataSourceId,

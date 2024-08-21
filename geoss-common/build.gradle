@@ -23,14 +23,11 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://jakarta.oss.sonatype.org/content/groups/staging/' }
 }
 
 dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-        mavenBom "net.javacrumbs.shedlock:shedlock-bom:${shedlockVersion}"
     }
 }
 
@@ -50,7 +47,7 @@ dependencies {
     compileOnly 'org.springframework:spring-jdbc'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
+    annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen:${hibernateJpamodelgenVersion}"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
 }
