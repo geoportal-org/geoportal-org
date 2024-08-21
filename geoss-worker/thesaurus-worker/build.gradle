@@ -49,8 +49,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'org.glassfish.jaxb:jaxb-runtime'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    integrationTestImplementation "com.squareup.okhttp3:mockwebserver:${okHttpVersion}"
-    integrationTestImplementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    integrationTestImplementation 'com.squareup.okhttp3:mockwebserver'
+    integrationTestImplementation 'com.squareup.okhttp3:okhttp'
     integrationTestCompileOnly 'org.projectlombok:lombok'
     integrationTestRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
     integrationTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
