@@ -1,21 +1,23 @@
 <template>
     <div class="general-filters-radio-choice" data-tutorial-tag="filters-general-relation-type">
-        <div class="general-filters-radio-choice__title">{{ $tc('generalFilters.relationToSelectedArea') }}:</div>
+        <div class="general-filters-radio-choice__title">
+            {{ $tc('generalFilters.relationToSelectedArea') }}:
+        </div>
         <div class="general-filters-radio-choice__options">
             <div v-for="option of options" :key="option.value" class="general-filters-radio-choice__option">
                 <input v-model="value" type="radio" :value="option.value" :id="`boundingBoxRelation${option.title}`" />
-                <label :for="`boundingBoxRelation${option.title}`"
-                    :data-tutorial-tag="'filters-general-relation-type-' + getLowercaseTitle(option.title)">{{ option.title
-                    }}</label>
+                <label :for="`boundingBoxRelation${option.title}`" :data-tutorial-tag="'filters-general-relation-type-' +
+                    getLowercaseTitle(option.title)
+                    ">{{ option.title }}</label>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'nuxt-property-decorator';
+import { Component, Vue, Emit } from 'nuxt-property-decorator'
 
-import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters';
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
 
 @Component
 export default class BoundingBoxRelationRadio extends Vue {
@@ -32,25 +34,26 @@ export default class BoundingBoxRelationRadio extends Vue {
             {
                 title: this.$tc('generalFilters.disjoint'),
                 value: 'DISJOINT'
-            },
-        ];
+            }
+        ]
     }
 
     get value() {
-        return this.$store.getters[GeneralFiltersGetters.state].boundingBoxRelation;
+        return this.$store.getters[GeneralFiltersGetters.state]
+            .boundingBoxRelation
     }
 
     @Emit()
     public input(value: any) {
-        return value;
+        return value
     }
 
     set value(value) {
-        this.input(value);
+        this.input(value)
     }
 
     public getLowercaseTitle(title: string) {
-        return title.toLowerCase();
+        return title.toLowerCase()
     }
 }
 </script>
@@ -66,12 +69,19 @@ export default class BoundingBoxRelationRadio extends Vue {
 
     &__options {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
+        flex-direction: column;
+        gap: 10px;
+
+        @media (max-width: $breakpoint-sm) {
+            flex-direction: row;
+            white-space: nowrap;
+            gap: 5px;
+        }
     }
 
     &__option {
-        flex: 0 1 140px;
-
         input {
             width: 0;
             height: 0;
@@ -95,7 +105,6 @@ export default class BoundingBoxRelationRadio extends Vue {
             text-transform: capitalize;
             cursor: pointer;
             width: 100%;
-            font-style: italic;
 
             &:before,
             &:after {

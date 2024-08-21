@@ -1,40 +1,39 @@
 <template>
-    <button :title="$tc('general.copyLink')" class="copy-link" :disabled="disabled" @click="shareLog('direct link')" ref="copyButton">
+    <button :title="$tc('general.copyLink')" class="copy-link" :disabled="disabled" @click="shareLog('direct link')"
+        ref="copyButton">
         <i class="copy-link__success-icon"></i>
         <i class="icomoon-share"></i>
     </button>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import ClipboardJS from 'clipboard';
-import MouseLeaveService from '@/services/mouse-leave.service';
-import LogService from '@/services/log.service';
+// @ts-nocheck
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import ClipboardJS from 'clipboard'
+import MouseLeaveService from '@/services/mouse-leave.service'
+import LogService from '@/services/log.service'
 
 @Component
 export default class ShareComponent extends Vue {
-    @Prop(String) public url: string = '';
-    @Prop(Boolean) public disabled: boolean = false;
-    @Prop(Boolean) public survey: boolean = true;
+    @Prop(String) public url: string
+    @Prop(Boolean) public disabled: boolean
 
     public initSurveyOnLeave() {
-        MouseLeaveService.initSurvey();
+        MouseLeaveService.initSurvey()
     }
 
     public shareLog(network: string) {
-        LogService.logRecommendationData('Share - ' + network, 'url', this.url);
+        LogService.logRecommendationData('Share - ' + network, 'url', this.url)
     }
 
     private mounted() {
-        const button = (this.$refs.copyButton as HTMLElement);
+        const button = this.$refs.copyButton as HTMLElement
         const copyButton = new ClipboardJS(button, {
             text: () => {
-                if (this.survey) {
-                    this.initSurveyOnLeave();
-                }
-                return this.url;
+                this.initSurveyOnLeave()
+                return this.url
             }
-        });
+        })
     }
 }
 </script>
@@ -55,6 +54,7 @@ export default class ShareComponent extends Vue {
         .copy-link__success-icon {
             opacity: 1;
         }
+
         .icomoon-share {
             opacity: 0;
         }

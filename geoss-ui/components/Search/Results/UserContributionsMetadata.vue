@@ -1,7 +1,12 @@
 <template>
     <div class="user-contributions" v-if="userExtensions.length && showSection()">
         <div class="user-contributions__label">
-            {{ $tc(`popupContent.userContributedTitle${model.charAt(0).toUpperCase() + model.slice(1)}`) }}
+            {{
+                $tc(
+                    `popupContent.userContributedTitle${model.charAt(0).toUpperCase() + model.slice(1)
+                    }`
+                )
+            }}
         </div>
         <div class="user-contributions__item" v-for="(extension, index) in userExtensions" :key="index"
             v-show="showItem(extension)">
@@ -11,11 +16,19 @@
                 </div>
                 <div>
                     <b>{{ extension.userName }}</b>
-                    <span>{{ formatDate(extension.modifiedDate || extension.createdDate) }}</span>
+                    <span>{{
+                        formatDate(
+                            extension.modifiedDate || extension.createdDate
+                        )
+                    }}</span>
                 </div>
-                <div v-if="userExtensions.userId && extension.userId.toString() === userId && showDeleteIcon && model !== 'transferOptions'"
-                    :title="$tc('popupContent.userContributedRemoveEntryExtension')" class="delete-extension"
-                    @click="removeExtension(extension)">
+                <div v-if="
+                    userExtensions.userId &&
+                    extension.userId.toString() === userId &&
+                    showDeleteIcon &&
+                    model !== 'transferOptions'
+                " :title="$tc('popupContent.userContributedRemoveEntryExtension')
+                    " class="delete-extension" @click="removeExtension(extension)">
                     <i class="icomoon-editor--trash"></i>
                 </div>
             </div>
@@ -31,11 +44,20 @@
                 <div v-for="(link, index) in extension[model]" :key="index">
                     <div class="metadata__link" :title="link.displayTitle">
                         <div>
-                            <a target="_blank" :href="link.url" class="link">{{ link.name ? link.name : link.url }}</a>
-                            <div v-if="link.description && link.description !== ''">{{ link.description }}</div>
+                            <a target="_blank" :href="link.url" class="link">{{
+                                link.name ? link.name : link.url
+                            }}</a>
+                            <div v-if="
+                                link.description && link.description !== ''
+                            ">
+                                {{ link.description }}
+                            </div>
                         </div>
-                        <div v-if="extension.userId.toString() === userId && showDeleteIcon && model === 'transferOptions'"
-                            class="delete-extension" @click="removeExtension(extension, index)">
+                        <div v-if="
+                            extension.userId.toString() === userId &&
+                            showDeleteIcon &&
+                            model === 'transferOptions'
+                        " class="delete-extension" @click="removeExtension(extension, index)">
                             <i class="icomoon-editor--trash"></i>
                         </div>
                     </div>
@@ -50,145 +72,198 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import _ from 'lodash';
-import { Liferay } from '@/data/global';
-import UtilsService from '@/services/utils.service';
-import { GeneralGetters } from '@/store/general/general-getters';
-import PopupCloseService from '@/services/popup-close.service';
-import { PopupActions } from '@/store/popup/popup-actions';
-import ExtensionRemovePopup from './ExtensionRemovePopup.vue';
-import ErrorPopup from '@/components/ErrorPopup.vue';
-import to from '@/utils/to';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import GeneralPopup from '@/components/GeneralPopup.vue';
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
+import _ from 'lodash'
+import { Liferay } from '@/data/global'
+import UtilsService from '@/services/utils.service'
+import { GeneralGetters } from '@/store/general/general-getters'
+import PopupCloseService from '@/services/popup-close.service'
+import { PopupActions } from '@/store/popup/popup-actions'
+import ExtensionRemovePopup from './ExtensionRemovePopup.vue'
+import ErrorPopup from '@/components/ErrorPopup.vue'
+import to from '@/utils/to'
+import GeossSearchApiService from '@/services/geoss-search.api.service'
+import GeneralPopup from '@/components/GeneralPopup.vue'
 
 @Component
 export default class UserContributionsMetadata extends Vue {
-    @Prop(String) public model!: string;
-    @Prop(Object) public data!: any;
-    public showDeleteIcon = true;
-    public userExtensions = this.model === 'comment' ? this.userContributionsComments : this.userContributionsExtensions;
+    @Prop(String) public model!: string
+    @Prop(Object) public data!: any
+    public showDeleteIcon = true
+    public userExtensions =
+        this.model && this.model === 'comment'
+            ? this.userContributionsComments
+            : this.userContributionsExtensions
 
     get userId() {
-        return (!UtilsService.isWidget() && typeof Liferay !== 'undefined' ? Liferay.ThemeDisplay.getUserId() : null);
+        return !UtilsService.isWidget() && typeof Liferay !== 'undefined'
+            ? Liferay.ThemeDisplay.getUserId()
+            : null
     }
 
     get userContributionsExtensions() {
-        let data = null;
+        let data = null
         data = UtilsService.getArrayByString(
             this.data.data,
             'userContributions.extensions'
-        );
-        return data;
+        )
+        return data
     }
 
     get userContributionsComments() {
-        let data = null;
+        let data = null
         data = UtilsService.getArrayByString(
             this.data.data,
             'userContributions.comments'
-        );
-        return this.data.comments;
+        )
+        return this.data.comments
     }
 
     get langLocale() {
-        return this.$store.getters[GeneralGetters.langLocale];
+        return this.$store.getters[GeneralGetters.langLocale]
     }
 
     public formatDate(date: string) {
-        const dateObj = new Date(date);
-        let displayDate = `${dateObj.toLocaleString(this.langLocale.replace(/_/g, '-'), { month: 'long' })} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+        const dateObj = new Date(date)
+        let displayDate = `${dateObj.toLocaleString(
+            this.langLocale.replace(/_/g, '-'),
+            { month: 'long' }
+        )} ${dateObj.getDate()}, ${dateObj.getFullYear()}`
         if (this.langLocale === 'pl_PL') {
-            displayDate = `${dateObj.getDate()} ${dateObj.toLocaleString(this.langLocale.replace(/_/g, '-'), { month: 'long' })} ${dateObj.getFullYear()}`;
+            displayDate = `${dateObj.getDate()} ${dateObj.toLocaleString(
+                this.langLocale.replace(/_/g, '-'),
+                { month: 'long' }
+            )} ${dateObj.getFullYear()}`
         }
-        return displayDate;
+        return displayDate
     }
 
     public showSection() {
-        return this.userExtensions.find(el =>
-            (typeof el[this.model] === 'string' && el[this.model] !== '') ||
-            (typeof el[this.model] === 'object' && Array.isArray(el[this.model]) && el[this.model].length)
-        );
+        return this.userExtensions.find(
+            (el) =>
+                (typeof el[this.model] === 'string' && el[this.model] !== '') ||
+                (typeof el[this.model] === 'object' &&
+                    Array.isArray(el[this.model]) &&
+                    el[this.model].length)
+        )
     }
 
     public showItem(extension) {
         return (
-            (typeof extension[this.model] === 'string' && extension[this.model] !== '') ||
-            (typeof extension[this.model] === 'object' && Array.isArray(extension[this.model]) && extension[this.model].length)
-        );
+            (typeof extension[this.model] === 'string' &&
+                extension[this.model] !== '') ||
+            (typeof extension[this.model] === 'object' &&
+                Array.isArray(extension[this.model]) &&
+                extension[this.model].length)
+        )
     }
 
-    public checkTransferOptionsAvailable(model, extensionLinkToDelete, availableLinks) {
-        let linkBlocked = true;
+    public checkTransferOptionsAvailable(
+        model,
+        extensionLinkToDelete,
+        availableLinks
+    ) {
+        let linkBlocked = true
         if (!availableLinks.length) {
-            return linkBlocked;
+            return linkBlocked
         } else {
             for (const link of availableLinks) {
                 if (!link.description) {
-                    link.description = null;
+                    link.description = null
                 }
                 if (_.isEqual(extensionLinkToDelete, link)) {
-                    linkBlocked = false;
-                    break;
+                    linkBlocked = false
+                    break
                 }
             }
-            return linkBlocked;
+            return linkBlocked
         }
     }
 
     public async removeExtension(extension: any, index = 0) {
-        let err;
-        let data;
+        let err
+        let data
         if (this.model === 'comment') {
             data = {
                 result: 'success'
-            };
+            }
         } else {
-            [err, data] = await to(GeossSearchApiService.entryExtensionRemoveAvailable(extension.entryExtensionId));
+            ;[err, data] = await to(
+                GeossSearchApiService.entryExtensionRemoveAvailable(
+                    extension.entryExtensionId
+                )
+            )
         }
-        PopupCloseService.closePopup('metadata');
+        PopupCloseService.closePopup('metadata')
         if (err || (data && data.result === 'error')) {
             const props = {
                 title: this.$tc('general.error'),
                 subtitle: err || data.comment,
-                actions: [{
-                    event: 'extension-remove-error',
-                    label: 'OK'
-                }]
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+                actions: [
+                    {
+                        event: 'extension-remove-error',
+                        label: 'OK'
+                    }
+                ]
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'error',
+                component: ErrorPopup,
+                props
+            })
         } else if (data && data.result === 'success') {
             if (
-                (this.model === 'summary' && data.canDeleteDescription === 'false') ||
-                (this.model === 'keywords' && data.canDeleteKeywords === 'false') ||
-                (this.model === 'transferOptions' && this.checkTransferOptionsAvailable(this.model, extension[this.model][index], data.transferOptionsExtensionsToDelete))
+                (this.model === 'summary' &&
+                    data.canDeleteDescription === 'false') ||
+                (this.model === 'keywords' &&
+                    data.canDeleteKeywords === 'false') ||
+                (this.model === 'transferOptions' &&
+                    this.checkTransferOptionsAvailable(
+                        this.model,
+                        extension[this.model][index],
+                        data.transferOptionsExtensionsToDelete
+                    ))
             ) {
                 const props = {
-                    title: this.$tc('popupContent.userContributedRemoveEntryExtension'),
-                    subtitle: this.$tc('popupContent.userContributedRemoveUnavailable'),
-                    actions: [{
-                        event: 'extension-remove-unavailable',
-                        label: 'OK'
-                    }]
-                };
-                this.$store.dispatch(PopupActions.openPopup, { contentId: 'general', component: GeneralPopup, props });
+                    title: this.$tc(
+                        'popupContent.userContributedRemoveEntryExtension'
+                    ),
+                    subtitle: this.$tc(
+                        'popupContent.userContributedRemoveUnavailable'
+                    ),
+                    actions: [
+                        {
+                            event: 'extension-remove-unavailable',
+                            label: 'OK'
+                        }
+                    ]
+                }
+                this.$store.dispatch(PopupActions.openPopup, {
+                    contentId: 'general',
+                    component: GeneralPopup,
+                    props
+                })
             } else {
-                const extensionDetails = this.data.data.userContributions;
+                const extensionDetails = this.data.data.userContributions
                 const props = {
                     metadata: this.data,
                     extension,
                     model: this.model,
                     arrayIndex: index
-                };
-                this.$store.dispatch(PopupActions.openPopup, { contentId: 'extension-remove', title: 'Remove entry extension', component: ExtensionRemovePopup, props });
+                }
+                this.$store.dispatch(PopupActions.openPopup, {
+                    contentId: 'extension-remove',
+                    title: 'Remove entry extension',
+                    component: ExtensionRemovePopup,
+                    props
+                })
             }
         }
     }
 
     @Emit()
     public keywordSearch(keyword) {
-        return keyword;
+        return keyword
     }
 }
 </script>

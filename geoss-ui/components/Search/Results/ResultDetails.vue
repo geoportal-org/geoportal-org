@@ -1,116 +1,202 @@
 <template>
-    <div class="dab-result-details__outer-wrapper"
-        :class="{ 'is-parent-ref': isParentRef && separated, 'extended-view-mode': extendedViewMode }">
+    <div class="dab-result-details__outer-wrapper" :class="{
+        'is-parent-ref': isParentRef && separated,
+        'extended-view-mode': extendedViewMode
+    }">
         <div class="dab-result-details__is-parent-ref-trigger" v-if="isParentRef && separated">
             <button @click="popParentRefResult()" data-tutorial-tag="result-back"></button>
             <i :class="`icomoon-data-source--${parentDataSourceGroup}`"></i>
-            <span class="title" @click="showDabResultParentRefDetails()">{{ title }}</span>
+            <span class="title" @click="showDabResultParentRefDetails()">{{
+                title
+                }}</span>
         </div>
-        <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''"
-            :class="{ 'is-parent-ref': isParentRef && separated, odd: (index % 2 && typeof index !== 'undefined') }"
-            :data-id="result.id" v-show="resultIdDetails === result.id || extendedViewMode">
+        <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''
+            " :class="{
+                'is-parent-ref': isParentRef && separated,
+                'odd': index % 2 && typeof index !== 'undefined'
+            }" :data-id="result.id" v-show="resultIdDetails === result.id || extendedViewMode">
             <div class="dab-result-details__wrapper">
                 <div>
-                    <div v-if="isParentRef && separated" class="dab-result-details__image"
-                        :class="{ 'dab-result-details__image--default': (getImage(result.logo) !== result.logo) }">
+                    <div v-if="isParentRef && separated" class="dab-result-details__image" :class="{
+                        'dab-result-details__image--default':
+                            getImage(result.logo) !== result.logo
+                    }">
                         <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="title"
                             v-image-preview />
                     </div>
-                    <div class="dab-result-details__text-actions"
-                        :class="{ 'set-parent-ref-available': addParentRefAvailable(result) }">
+                    <div class="dab-result-details__text-actions" :class="{
+                        'set-parent-ref-available':
+                            addParentRefAvailable(result)
+                    }">
                         <div class="d-flex flex--column flex--1">
                             <div class="d-flex flex--column flex--1">
                                 <div class="d-flex flex--wrap flex--justify-between flex--align-start flex--no-shrink">
                                     <div class="dab-result-details__text">
-                                        <div v-if="title" class="dab-result-details__title">{{ title }}</div>
-                                        <div v-if="result.contributor && result.contributor.orgName"
-                                            class="dab-result__contributor" v-line-clamp:20="1">
-                                            {{ $tc('dabResult.organisation') }}: {{ result.contributor.orgName }}</div>
+                                        <div v-if="title" class="dab-result-details__title">
+                                            {{ title }}
+                                        </div>
+                                        <div v-if="
+                                            result.contributor &&
+                                            result.contributor.orgName
+                                        " class="dab-result__contributor" v-line-clamp:20="1">
+                                            {{ $tc('dabResult.organisation') }}:
+                                            {{ result.contributor.orgName }}
+                                        </div>
                                         <div v-if="contributors" class="dab-result-details__contributor">
-                                            (<span
-                                                v-if="dataSource !== 'zenodo'">{{ $tc('dabResult.organisation') }}</span><span
-                                                v-else>{{ $tc('dabResult.creators') }}</span>: {{ contributors }})
+                                            (<span v-if="dataSource !== 'zenodo'">{{
+                                                $tc(
+                                                    'dabResult.organisation'
+                                                )
+                                            }}</span><span v-else>{{
+                                                    $tc('dabResult.creators')
+                                                }}</span>: {{ contributors }})
                                         </div>
                                     </div>
                                     <ViewsAndRatings :result="result" />
                                 </div>
-                                <div v-if="summary && typeof summary === 'string'" class="dab-result-details__summary">
+                                <div v-if="
+                                    summary && typeof summary === 'string'
+                                " class="dab-result-details__summary">
                                     <div v-if="isParentRef && separated" v-line-clamp:20="2" v-html-to-text="summary">
                                     </div>
                                     <div v-else v-html-to-text="summary"></div>
                                 </div>
                                 <div class="dab-result-details__more__wrapper">
-                                    <button @click="showDetails()" class="dab-result-details__more"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-see-more' : ''">
-                                        <span>{{ $tc('dabResult.seeMore') }}</span>
+                                    <button @click="showDetails()" class="dab-result-details__more" :data-tutorial-tag="resultIdDetails === result.id
+                                            ? 'result-see-more'
+                                            : ''
+                                        ">
+                                        <span>{{
+                                            $tc('dabResult.seeMore')
+                                            }}</span>
                                         <!-- <span class="arrow"></span> -->
                                     </button>
                                 </div>
                             </div>
                             <div class="dab-result-details__actions">
                                 <div class="dab-result-details__actions--main">
-                                    <button :title="$tc('dabResult.exploreExtendedView')" @click="toggleExtendedView()"
-                                        v-if="isExtendedViewEnabled && !isWidget && dataSource !== DataSources.WIKIPEDIA && !workflowDispatched"
-                                        class="extended-view-switcher" :class="{ return: isExtendedViewActive }"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-extended-view' : ''">
+                                    <button :title="$tc('dabResult.exploreExtendedView')
+                                        " @click="toggleExtendedView()" v-if="
+                                            isExtendedViewEnabled &&
+                                            !isWidget &&
+                                            dataSource !==
+                                            DataSources.WIKIPEDIA &&
+                                            !workflowDispatched
+                                        " class="extended-view-switcher" :class="{
+                                            return: isExtendedViewActive
+                                        }" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-extended-view'
+                                                : ''
+                                            ">
                                         <i v-if="!isExtendedViewActive" class="icomoon-expand-view"></i>
                                         <i v-else class="icomoon-collapse-view"></i>
                                     </button>
                                     <button :title="$tc('dabResult.showOnMap')" :disabled="!layerData"
-                                        @click="showOnMap()"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-show-on-map' : ''">
+                                        @click="showOnMap()" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-show-on-map'
+                                                : ''
+                                            ">
                                         <i class="icomoon-show-on-map"></i>
                                     </button>
                                     <button :title="$tc('dabResult.addAsBookmark')" v-if="!isWidget"
                                         v-show="isSignedIn && !resultBookmarked" :disabled="!isSignedIn"
-                                        @click="addBookmark()"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
+                                        @click="addBookmark()" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-bookmark'
+                                                : ''
+                                            ">
                                         <i class="icomoon-plus"></i>
                                     </button>
-                                    <button :title="$tc('dabResult.removeFromBookmarks')" v-if="!isWidget"
-                                        v-show="isSignedIn && resultBookmarked" :disabled="!isSignedIn"
-                                        @click="removeBookmark()"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-bookmark' : ''">
+                                    <button :title="$tc('dabResult.removeFromBookmarks')
+                                        " v-if="!isWidget" v-show="isSignedIn && resultBookmarked"
+                                        :disabled="!isSignedIn" @click="removeBookmark()" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-bookmark'
+                                                : ''
+                                            ">
                                         <i class="icomoon-minus"></i>
                                     </button>
                                 </div>
                                 <div class="dab-result-details__actions--side">
-                                    <Share :data-tutorial-tag="resultIdDetails === result.id ? 'result-share' : ''"
-                                        :url="shareUrl" />
-                                    <button :title="$tc('dabResult.layers')" @click="layerButtonAction()"
-                                        :class="{ 'single-layer-active': layers.length === 1 && isLayerDisplayed(layers[0].url) }"
-                                        :disabled="!layers.length && !statisticsId"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-layers' : ''">
+                                    <Share :data-tutorial-tag="resultIdDetails === result.id
+                                            ? 'result-share'
+                                            : ''
+                                        " :url="shareUrl" />
+                                    <button :title="$tc('dabResult.layers')" @click="layerButtonAction()" :class="{
+                                        'single-layer-active':
+                                            layers.length === 1 &&
+                                            isLayerDisplayed(layers[0].url)
+                                    }" :disabled="!layers.length && !statisticsId
+                                            " :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-layers'
+                                                : ''
+                                            ">
                                         <i class="icomoon-layers"></i>
                                     </button>
-                                    <button v-if="downloads.length === 1"
-                                        :title="$tc('sentinelLogin.download') + ' - ' + getDownloadButtonLabel(downloads[0].type)"
-                                        @click="instantSingleDownload(downloads[0])" :class="{ open: showDownloads }"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-downloads' : ''">
+                                    <button v-if="downloads.length === 1" :title="$tc('sentinelLogin.download') +
+                                        ' - ' +
+                                        getDownloadButtonLabel(
+                                            downloads[0].type
+                                        )
+                                        " @click="
+                                            instantSingleDownload(downloads[0])
+                                            " :class="{ open: showDownloads }" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-downloads'
+                                                : ''
+                                            ">
                                         <i class="icomoon-arrow down"></i>
                                     </button>
                                     <button v-else :title="$tc('dabResult.downloads')" @click="toggleShowDownloads()"
                                         :class="{ open: showDownloads }" :disabled="!downloads.length"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-downloads' : ''">
+                                        :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-downloads'
+                                                : ''
+                                            ">
                                         <i class="icomoon-arrow down"></i>
                                     </button>
 
                                     <button class="dab-result-details__actions-workflow" :title="buttonWorkflowTitle"
-                                        @click="openWorkflow(true)" v-show="workflow"
-                                        :data-tutorial-tag="resultIdDetails === result.id ? 'result-workflow' : ''"></button>
-                                    <template v-for="hub of ['data', 'information', 'services']">
-                                        <button :key="`${hub}_1`"
-                                            v-show="!hiddenDataSources.includes(hub) && dataSourceGroup !== hub"
-                                            :title="$tc(`dabResult.${hub}`)" @click="switchToDataSource(hub, result)"
-                                            :disabled="!isDrillAvailable(result, `${hub}_hub`)"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-${hub}` : ''">
+                                        @click="openWorkflow(true)" v-show="workflow" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-workflow'
+                                                : ''
+                                            "></button>
+                                    <template v-for="hub of [
+                                        'data',
+                                        'information',
+                                        'services'
+                                    ]">
+                                        <button :key="`${hub}_1`" v-show="!hiddenDataSources.includes(
+                                            hub
+                                        ) && dataSourceGroup !== hub
+                                            " :title="$tc(`dabResult.${hub}`)" @click="
+                                                switchToDataSource(hub, result)
+                                                " :disabled="!isDrillAvailable(
+                                                result,
+                                                `${hub}_hub`
+                                            )
+                                                " :data-tutorial-tag="resultIdDetails === result.id
+                                                    ? `result-switch-to-${hub}`
+                                                    : ''
+                                                ">
                                             <i :class="`icomoon-data-source--${hub}`"></i>
                                         </button>
-                                        <button :key="`${hub}_2`" v-if="isEntryExtensionEnabled"
-                                            v-show="!hiddenDataSources.includes(hub) && isUserContributedDrillAvailable(result, `${hub}_hub`)"
-                                            :title="$tc(`dabResult.userContributed${hub}`)"
-                                            @click="switchToUserContributedDataSource(hub, result)"
-                                            :data-tutorial-tag="resultIdDetails === result.id ? `result-switch-to-contributed-${hub}` : ''">
+                                        <button :key="`${hub}_2`" v-if="isEntryExtensionEnabled" v-show="!hiddenDataSources.includes(
+                                            hub
+                                        ) &&
+                                            isUserContributedDrillAvailable(
+                                                result,
+                                                `${hub}_hub`
+                                            )
+                                            " :title="$tc(
+                                                `dabResult.userContributed${hub}`
+                                            )
+                                                " @click="
+                                                switchToUserContributedDataSource(
+                                                    hub,
+                                                    result
+                                                )
+                                                " :data-tutorial-tag="resultIdDetails === result.id
+                                                    ? `result-switch-to-contributed-${hub}`
+                                                    : ''
+                                                ">
                                             <i :class="`icomoon-data-source--${hub}`"></i>
                                             <i class="icon-small icomoon-editor--user"></i>
                                         </button>
@@ -120,75 +206,182 @@
                                     <CollapseTransition>
                                         <div v-show="showDownloads" class="dab-result-details__downloads-wrapper">
                                             <div>
-                                                <span v-for="(download, index) of downloads" :key="index">
-                                                    <button v-if="download.links"
-                                                        @click="openDownloadLinksPopup(download.links)"
-                                                        :title="getDownloadButtonLabel(download.type)">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                <span v-for="(
+                                                        download, index
+                                                    ) of downloads" :key="index">
+                                                    <button v-if="download.links" @click="
+                                                        openDownloadLinksPopup(
+                                                            download.links
+                                                        )
+                                                        " :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            ">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
                                                         <i v-else
                                                             class="dab-result-details__file-icon icomoon-doc-file"></i>
                                                     </button>
-                                                    <button v-else-if="download.url.indexOf('/dhus/odata/') !== -1"
-                                                        @click="openSentinelLoginPopup(download.url)"
-                                                        :title="getDownloadButtonLabel(download.type)">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                    <button v-else-if="
+                                                        download.url.indexOf(
+                                                            '/dhus/odata/'
+                                                        ) !== -1
+                                                    " @click="
+                                                            openSentinelLoginPopup(
+                                                                download.url
+                                                            )
+                                                            " :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            ">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
                                                         <i v-else
                                                             class="dab-result-details__file-icon icomoon-doc-file"></i>
                                                     </button>
-                                                    <button
-                                                        v-else-if="download.url.indexOf('/sdg/Series/DataCSV') !== -1"
-                                                        @click="getUnepFile(download.postData)"
-                                                        :title="getDownloadButtonLabel(download.type)">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                    <button v-else-if="
+                                                        download.url.indexOf(
+                                                            '/sdg/Series/DataCSV'
+                                                        ) !== -1
+                                                    " @click="
+                                                            getUnepFile(
+                                                                download.postData
+                                                            )
+                                                            " :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            ">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
                                                         <i v-else
                                                             class="dab-result-details__file-icon icomoon-doc-file"></i>
                                                     </button>
-                                                    <button v-else-if="download.type === 'custom-download'"
-                                                        @click="initCustomDownloadPopup(download.url)"
-                                                        :title="$tc('general.customDownload')">
+                                                    <button v-else-if="
+                                                        download.type ===
+                                                        'custom-download'
+                                                    " @click="
+                                                            initCustomDownloadPopup(
+                                                                download.url
+                                                            )
+                                                            " :title="$tc(
+                                                            'general.customDownload'
+                                                        )
+                                                            ">
                                                         <i
                                                             class="dab-result-details__file-icon icomoon-custom-download"></i>
                                                     </button>
-                                                    <a v-else-if="download.type === 'html'"
-                                                        @click="downloadLinkClicked(download.url)" target="_blank"
-                                                        :title="getDownloadButtonLabel(download.type)">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                    <a v-else-if="
+                                                        download.type ===
+                                                        'html'
+                                                    " @click="
+                                                            downloadLinkClicked(
+                                                                download.url
+                                                            )
+                                                            " target="_blank" :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            ">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
                                                         <i v-else
                                                             class="dab-result-details__file-icon icomoon-doc-file"></i>
                                                     </a>
-                                                    <a v-else-if="!isBulkDownloadEnabled"
-                                                        @click="downloadLinkClicked(download.url)" target="_blank"
-                                                        :title="getDownloadButtonLabel(download.type)">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                    <a v-else-if="
+                                                        !isBulkDownloadEnabled
+                                                    " @click="
+                                                            downloadLinkClicked(
+                                                                download.url
+                                                            )
+                                                            " target="_blank" :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            ">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
                                                         <i v-else
                                                             class="dab-result-details__file-icon icomoon-doc-file"></i>
                                                     </a>
-                                                    <a v-else-if="isBulkDownloadEnabled" target="_blank"
-                                                        :title="getDownloadButtonLabel(download.type)"
-                                                        class="expandable expandable-on-click"
-                                                        :class="{ 'expanded': index === expandedDownloadIndex || !showExpandableDownload() }">
-                                                        <i v-if="FileFormatsIcons.indexOf(download.type) !== -1"
+                                                    <a v-else-if="
+                                                        isBulkDownloadEnabled
+                                                    " target="_blank" :title="getDownloadButtonLabel(
+                                                            download.type
+                                                        )
+                                                            " class="expandable expandable-on-click" :class="{
+                                                            expanded:
+                                                                index ===
+                                                                expandedDownloadIndex ||
+                                                                !showExpandableDownload()
+                                                        }">
+                                                        <i v-if="
+                                                            FileFormatsIcons.indexOf(
+                                                                download.type
+                                                            ) !== -1
+                                                        "
                                                             :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
-                                                            @click="setExpandedDownloadIndex(index)"></i>
+                                                            @click="
+                                                                setExpandedDownloadIndex(
+                                                                    index
+                                                                )
+                                                                "></i>
                                                         <i v-else class="dab-result-details__file-icon icomoon-doc-file"
-                                                            @click="setExpandedDownloadIndex(index)"></i>
-                                                        <p @click="downloadLinkClicked(download.url)"
-                                                            class="dab-result-details__direct-download-button"
-                                                            :title="$tc('dabResult.downloadNow')">
-                                                            <span class="icomoon-arrow arrow-circled"></span> Download
-                                                            now
+                                                            @click="
+                                                                setExpandedDownloadIndex(
+                                                                    index
+                                                                )
+                                                                "></i>
+                                                        <p @click="
+                                                            downloadLinkClicked(
+                                                                download.url
+                                                            )
+                                                            " class="dab-result-details__direct-download-button"
+                                                            :title="$tc(
+                                                                'dabResult.downloadNow'
+                                                            )
+                                                                ">
+                                                            <span class="icomoon-arrow arrow-circled"></span>
+                                                            Download now
                                                         </p>
-                                                        <p class="dab-result-details__bulk-download-button"
-                                                            :title="isSignedIn ? $tc('dabResult.downloadLater') : $tc('dabResult.thisOptionAvailableForSignedIn')"
-                                                            :class="{ disabled: !isSignedIn }"
-                                                            @click="addToDownloadsList(download.url, download.type)">
-                                                            <i
-                                                                class="bulk-download__icon"></i>{{ $tc('customDownloadOptionsPopup.addToDownloads') }}
+                                                        <p class="dab-result-details__bulk-download-button" :title="isSignedIn
+                                                                ? $tc(
+                                                                    'dabResult.downloadLater'
+                                                                )
+                                                                : $tc(
+                                                                    'dabResult.thisOptionAvailableForSignedIn'
+                                                                )
+                                                            " :class="{
+                                                                disabled:
+                                                                    !isSignedIn
+                                                            }" @click="
+                                                                addToDownloadsList(
+                                                                    download.url,
+                                                                    download.type
+                                                                )
+                                                                ">
+                                                            <i class="bulk-download__icon"></i>{{
+                                                                $tc(
+                                                                    'customDownloadOptionsPopup.addToDownloads'
+                                                                )
+                                                            }}
                                                         </p>
                                                     </a>
                                                 </span>
@@ -198,10 +391,12 @@
                                 </div>
                             </div>
                         </div>
-                        <button :data-tutorial-tag="resultIdDetails === result.id ? 'result-drill-down' : ''"
-                            :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
-                            v-if="addParentRefAvailable(result) && !isParentRef" @click="showInsideFolder(result)">
-                        </button>
+                        <button :data-tutorial-tag="resultIdDetails === result.id
+                                ? 'result-drill-down'
+                                : ''
+                            " :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
+                            v-if="addParentRefAvailable(result) && !isParentRef"
+                            @click="showInsideFolder(result)"></button>
                     </div>
                 </div>
             </div>
@@ -209,267 +404,348 @@
     </div>
 </template>
 
-
 <script lang="ts">
 // @ts-nocheck
-import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator'
 
-import DabResultMetadata from '@/components/Search/Results/DabResultMetadata.vue';
-import DabResultLayers from '@/components/Search/Results/DabResultLayers.vue';
-import DabResultCustomDownload from '@/components/Search/Results/DabResultCustomDownload.vue';
-import CustomDownloadWCS from '@/components/Search/Results/CustomDownloadWCS.vue';
-import UnitedNationsStatistics from '@/components/Search/Results/UnitedNationsStatistics.vue';
-import SentinelLogin from '@/components/Search/SentinelLogin.vue';
-import DabResultDownloads from '@/components/Search/Results/DabResultDownloads.vue';
-import ServiceWorkflow from '@/components/Search/Results/ServiceWorkflow.vue';
-import ErrorPopup from '@/components/ErrorPopup.vue';
-import GeneralPopup from '@/components/GeneralPopup.vue';
+import DabResultMetadata from '@/components/Search/Results/DabResultMetadata.vue'
+import DabResultLayers from '@/components/Search/Results/DabResultLayers.vue'
+import DabResultCustomDownload from '@/components/Search/Results/DabResultCustomDownload.vue'
+import CustomDownloadWCS from '@/components/Search/Results/CustomDownloadWCS.vue'
+import UnitedNationsStatistics from '@/components/Search/Results/UnitedNationsStatistics.vue'
+import SentinelLogin from '@/components/Search/SentinelLogin.vue'
+import DabResultDownloads from '@/components/Search/Results/DabResultDownloads.vue'
+import ServiceWorkflow from '@/components/Search/Results/ServiceWorkflow.vue'
+import ErrorPopup from '@/components/ErrorPopup.vue'
+import GeneralPopup from '@/components/GeneralPopup.vue'
 
-import { SearchActions } from '@/store/search/search-actions';
-import { SearchGetters } from '@/store/search/search-getters';
-import { MapActions } from '@/store/map/map-actions';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import { PopupActions } from '@/store/popup/popup-actions';
-import UtilsService from '@/services/utils.service';
-import { MapGetters } from '@/store/map/map-getters';
-import { UserGetters } from '@/store/user/user-getters';
-import { FileFormatsIcons } from '@/data/file-formats-icons';
-import LogService from '@/services/log.service';
-import MouseLeaveService from '@/services/mouse-leave.service';
-import { LayerData } from '@/interfaces/LayerData';
-import SearchEngineService from '@/services/search-engine.service';
-import { GeneralGetters } from '@/store/general/general-getters';
-import { GeneralApiService } from '@/services/general.api.service';
-import { UserActions } from '@/store/user/user-actions';
-import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions';
-import { DataSource, DataSources, DataSourceGroup, DataOrigin } from '@/interfaces/DataSources';
-import to from '@/utils/to';
-import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters';
-import { ParentRef } from '@/interfaces/ParentRef';
-import LayersUtils from '@/services/map/layer-utils';
-import { BulkDownloadLink } from '@/interfaces/BulkDownloadLink';
-import PopupCloseService from '@/services/popup-close.service';
-import { ExtendedViewGetters } from '@/store/extendedView/extended-view-getters';
-import { ExtendedViewActions } from '@/store/extendedView/extended-view-actions';
-import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions';
-import ViewsAndRatings from '@/components/ViewsAndRatings.vue';
-import TutorialTagsService from '@/services/tutorial-tags.service';
-import DashboardService from '@/services/dashboard.service';
-import NotificationService from '@/services/notification.service';
-import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue';
+import { SearchActions } from '@/store/search/search-actions'
+import { SearchGetters } from '@/store/search/search-getters'
+import { MapActions } from '@/store/map/map-actions'
+import GeossSearchApiService from '@/services/geoss-search.api.service'
+import { PopupActions } from '@/store/popup/popup-actions'
+import UtilsService from '@/services/utils.service'
+import { MapGetters } from '@/store/map/map-getters'
+import { UserGetters } from '@/store/user/user-getters'
+import { FileFormatsIcons } from '@/data/file-formats-icons'
+import LogService from '@/services/log.service'
+import MouseLeaveService from '@/services/mouse-leave.service'
+import { LayerData } from '@/interfaces/LayerData'
+import SearchEngineService from '@/services/search-engine.service'
+import { GeneralGetters } from '@/store/general/general-getters'
+import { GeneralApiService } from '@/services/general.api.service'
+import { UserActions } from '@/store/user/user-actions'
+import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions'
+import {
+    DataSource,
+    DataSources,
+    DataSourceGroup,
+    DataOrigin
+} from '@/interfaces/DataSources'
+import to from '@/utils/to'
+import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters'
+import { ParentRef } from '@/interfaces/ParentRef'
+import LayersUtils from '@/services/map/layer-utils'
+import { BulkDownloadLink } from '@/interfaces/BulkDownloadLink'
+import PopupCloseService from '@/services/popup-close.service'
+import { ExtendedViewGetters } from '@/store/extendedView/extended-view-getters'
+import { ExtendedViewActions } from '@/store/extendedView/extended-view-actions'
+import { BulkDownloadActions } from '@/store/bulkDownload/bulk-download-actions'
+import ViewsAndRatings from '@/components/ViewsAndRatings.vue'
+import TutorialTagsService from '@/services/tutorial-tags.service'
+import DashboardService from '@/services/dashboard.service'
+import NotificationService from '@/services/notification.service'
+import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue'
+import CollapseTransition from '@/plugins/CollapseTransition'
 
 @Component({
     components: {
-        ViewsAndRatings
+        ViewsAndRatings,
+        CollapseTransition
     }
 })
 export default class SearchResultDabDetailsComponent extends Vue {
-    @Prop({ default: null, type: Object }) public result!: any;
-    @Prop({ default: false, type: Boolean }) public separated!: boolean;
-    @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean;
-    @Prop(Number) public index!: number;
-    @Prop(String) public image!: string;
+    @Prop({ default: null, type: Object }) public result!: any
+    @Prop({ default: false, type: Boolean }) public separated!: boolean
+    @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
+    @Prop(Number) public index!: number
+    @Prop(String) public image!: string
 
-    public layers = [];
-    public downloads = [];
-    public workflow = null;
-    public statisticsId = null;
-    public timeSeriesArray = [];
-    public metadata = null;
-    public shareUrl = '';
-    public showDownloads = false;
-    public customDownloadOptions = null;
-    public expandedDownloadIndex = null;
+    public layers = []
+    public downloads = []
+    public workflow = null
+    public statisticsId = null
+    public timeSeriesArray = []
+    public metadata = null
+    public shareUrl = ''
+    public showDownloads = false
+    public customDownloadOptions = null
+    public expandedDownloadIndex = null
 
-    public score = 0;
+    public score = 0
 
-    public FileFormatsIcons = FileFormatsIcons;
-    public DataSources = DataSources;
-    public logo = typeof this.result.logo === 'string' ? this.result.logo : '';
+    public FileFormatsIcons = FileFormatsIcons
+    public DataSources = DataSources
+    public logo = typeof this.result.logo === 'string' ? this.result.logo : ''
 
     get dashboardContent() {
-        return UtilsService.getPropByString(this.result, 'dashboard.content');
+        return UtilsService.getPropByString(this.result, 'dashboard.content')
     }
 
     get title() {
-        let data = null;
+        let data = null
         if (this.isZenodoType) {
-            data = UtilsService.getPropByString(this.result, 'metadata.title');
+            data = UtilsService.getPropByString(this.result, 'metadata.title')
         } else {
-            data = UtilsService.getPropByString(this.result, 'title');
+            data = UtilsService.getPropByString(this.result, 'title')
         }
-        data = data ? data : '-';
-        return data;
+        data = data ? data : '-'
+        return data
     }
 
     get contributors() {
-        const data = [];
-        if (this.result.contributor && this.result.contributor.orgName && this.isZenodoType) {
-            data.push(UtilsService.getPropByString(this.result, 'contributor.orgName'));
-        } else if (this.result.metadata && this.result.metadata.creators && this.isZenodoType) {
+        const data = []
+        if (
+            this.result.contributor &&
+            this.result.contributor.orgName &&
+            this.isZenodoType
+        ) {
+            data.push(
+                UtilsService.getPropByString(this.result, 'contributor.orgName')
+            )
+        } else if (
+            this.result.metadata &&
+            this.result.metadata.creators &&
+            this.isZenodoType
+        ) {
             for (const item of this.result.metadata.creators) {
-                data.push(item.name);
+                data.push(item.name)
             }
         }
-        return data ? data.join(', ') : '-';
+        return data ? data.join(', ') : '-'
     }
 
     get views() {
-        let data = null;
+        let data = null
         if (this.isZenodoType) {
-            data = UtilsService.getPropByString(this.result, 'stats.views');
+            data = UtilsService.getPropByString(this.result, 'stats.views')
         } else {
-            data = UtilsService.getPropByString(this.result, 'views');
+            data = UtilsService.getPropByString(this.result, 'views')
         }
-        data = data ? data : '0';
-        return data;
+        data = data ? data : '0'
+        return data
     }
 
     get summary() {
-        let data = null;
+        let data = null
         if (this.isZenodoType) {
-            data = UtilsService.getPropByString(this.result, 'metadata.description');
+            data = UtilsService.getPropByString(
+                this.result,
+                'metadata.description'
+            )
         } else {
-            data = UtilsService.getPropByString(this.result, 'summary');
+            data = UtilsService.getPropByString(this.result, 'summary')
         }
-        data = data ? data : '-';
-        return data;
+        data = data ? data : '-'
+        return data
     }
 
     get parentRef() {
-        return this.$store.getters[SearchGetters.parentRef];
+        return this.$store.getters[SearchGetters.parentRef]
     }
 
     get isParentRef() {
-        return (this.parentRef && this.parentRef.id === this.result.id);
+        return this.parentRef && this.parentRef.id === this.result.id
     }
 
     get isZenodoType() {
-        return (this.isParentRef && this.parentRef === DataSources.ZENODO) || (!this.isParentRef && this.dataSource === DataSources.ZENODO);
+        return (
+            (this.isParentRef && this.parentRef === DataSources.ZENODO) ||
+            (!this.isParentRef && this.dataSource === DataSources.ZENODO)
+        )
     }
 
     get layerData(): LayerData | undefined {
-        return this.$store.getters[MapGetters.layers].find((layerData: LayerData) => layerData.id === this.result.id);
+        return this.$store.getters[MapGetters.layers].find(
+            (layerData: LayerData) => layerData.id === this.result.id
+        )
     }
 
     get isWidget() {
-        return this.$store.getters[GeneralGetters.isWidget];
+        return this.$store.getters[GeneralGetters.isWidget]
     }
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn];
+        return this.$store.getters[UserGetters.isSignedIn]
     }
 
     get isEntryExtensionEnabled() {
-        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled];
+        return this.$store.getters[GeneralGetters.isEntryExtensionEnabled]
     }
 
     get isExtendedViewEnabled() {
-        return this.$store.getters[GeneralGetters.isExtendedViewEnabled];
+        return this.$store.getters[GeneralGetters.isExtendedViewEnabled]
     }
 
     get isBulkDownloadEnabled() {
-        return this.$store.getters[GeneralGetters.isBulkDownloadEnabled];
+        return this.$store.getters[GeneralGetters.isBulkDownloadEnabled]
     }
 
     get bookmarks() {
-        return this.$store.getters[UserGetters.bookmarks];
+        return this.$store.getters[UserGetters.bookmarks]
     }
 
     get resultBookmarked() {
-        return !!this.bookmarks.find(bookmark => this.result.id.toString() === bookmark.targetId);
+        return !!this.bookmarks.find(
+            (bookmark) => this.result.id.toString() === bookmark.targetId
+        )
     }
 
     get resultIdDetails() {
-        return this.$store.getters[SearchGetters.resultIdDetails];
+        return this.$store.getters[SearchGetters.resultIdDetails]
     }
 
     get dataSource() {
-        return this.$store.getters[SearchGetters.dataSource];
+        return this.$store.getters[SearchGetters.dataSource]
     }
 
     get dataSourceGroup() {
-        return DataSourceGroup[this.dataSource];
+        return DataSourceGroup[this.dataSource]
     }
 
     get parentDataSourceGroup() {
-        return DataSourceGroup[this.parentRef.dataSource];
+        return DataSourceGroup[this.parentRef.dataSource]
     }
 
     get hiddenDataSources() {
-        return this.$store.getters[SearchGetters.hiddenDataSources];
+        return this.$store.getters[SearchGetters.hiddenDataSources]
     }
 
     get showDetailsTrigger() {
-        return this.$store.getters[SearchGetters.showDetailsTrigger];
+        return this.$store.getters[SearchGetters.showDetailsTrigger]
     }
 
     get buttonWorkflowTitle() {
-        return this.isWidget ? this.$tc('dabResult.workflowRedirect') : this.$tc('dabResult.workflow');
+        return this.isWidget
+            ? this.$tc('dabResult.workflowRedirect')
+            : this.$tc('dabResult.workflow')
     }
 
     get rootDataOrigin() {
         // original entry's dataSource exclusively from OpenSearch
-        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(this.result, 'term', 'dataSource')[0];
-        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource;
+        const rootDataOrigin = UtilsService.extractCategoriesByAttributeValue(
+            this.result,
+            'term',
+            'dataSource'
+        )[0]
+        return rootDataOrigin || DataOrigin[this.dataSource] || this.dataSource
     }
 
     get isExtendedViewActive() {
-        return this.$store.getters[ExtendedViewGetters.isExtendedViewActive];
+        return this.$store.getters[ExtendedViewGetters.isExtendedViewActive]
     }
 
     get showFullMap() {
-        return this.$store.getters[MapGetters.showFull];
+        return this.$store.getters[MapGetters.showFull]
     }
 
     get workflowDispatched() {
-        return this.$store.getters[SearchGetters.workflow];
+        return this.$store.getters[SearchGetters.workflow]
     }
 
     public async toggleExtendedView() {
-        this.$store.dispatch(ExtendedViewActions.setResult, this.result);
-        this.$store.dispatch(MapActions.setShowFull, !this.showFullMap);
-        this.$store.dispatch(ExtendedViewActions.setIsExtendedViewActive, !this.isExtendedViewActive);
-        LogService.logElementClick(null, null, this.result.id, null, 'Extended view', null, this.contributors, this.title);
+        this.$store.dispatch(ExtendedViewActions.setResult, this.result)
+        this.$store.dispatch(MapActions.setShowFull, !this.showFullMap)
+        this.$store.dispatch(
+            ExtendedViewActions.setIsExtendedViewActive,
+            !this.isExtendedViewActive
+        )
+        LogService.logElementClick(
+            null,
+            null,
+            this.result.id,
+            null,
+            'Extended view',
+            null,
+            this.contributors,
+            this.title
+        )
     }
 
     public showDabResultParentRefDetails() {
         if (this.resultIdDetails === this.result.id) {
-            this.$store.dispatch(SearchActions.setResultIdDetails, null);
-            TutorialTagsService.refreshTagsGroup('result', false);
+            this.$store.dispatch(SearchActions.setResultIdDetails, null)
+            TutorialTagsService.refreshTagsGroup('result', false)
         } else {
-            this.$store.dispatch(SearchActions.setResultIdDetails, this.result.id);
-            TutorialTagsService.refreshTagsGroup('result', true, 450);
+            this.$store.dispatch(
+                SearchActions.setResultIdDetails,
+                this.result.id
+            )
+            TutorialTagsService.refreshTagsGroup('result', true, 450)
         }
     }
     public initResultLayersAndDownloads() {
-        this.layers = [];
-        this.downloads = [];
-        this.timeSeriesArray = [];
+        this.layers = []
+        this.downloads = []
+        this.timeSeriesArray = []
 
-        const layers = [];
-        const downloads = [];
+        const layers = []
+        const downloads = []
 
         if (this.dataSource === DataSources.NEXTGEOSS) {
-            const data: any = UtilsService.getArrayByString(this.result, 'link');
+            const data: any = UtilsService.getArrayByString(this.result, 'link')
             for (const item of data) {
-                if (item._attributes && item._attributes.rel && item._attributes.rel === 'enclosure') {
-                    const linkText = item._attributes.href.replace('&amp;', '&');
-                    const linkTitle = item._attributes.title;
-                    const linkDescription = '';
-                    const titleBox = this.result.title;
-                    const linkScore = -1;
+                if (
+                    item._attributes &&
+                    item._attributes.rel &&
+                    item._attributes.rel === 'enclosure'
+                ) {
+                    const linkText = item._attributes.href.replace('&amp;', '&')
+                    const linkTitle = item._attributes.title
+                    const linkDescription = ''
+                    const titleBox = this.result.title
+                    const linkScore = -1
 
                     /* Simple resources aggregation */
                     if (item._attributes.type) {
                         if (item._attributes.type === 'text/html') {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
-                        } else if (item._attributes.type.indexOf('image') > -1) {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'img', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'html',
+                                title: titleBox,
+                                score: linkScore
+                            })
+                        } else if (
+                            item._attributes.type.indexOf('image') > -1
+                        ) {
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'img',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         } else if (item._attributes.type === 'text/xml') {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'xml', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'xml',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         } else {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'other', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'other',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         }
                     }
                 }
@@ -477,278 +753,674 @@ export default class SearchResultDabDetailsComponent extends Vue {
         } else if (this.dataSource === DataSources.ZENODO) {
             if (this.result.files) {
                 for (const file of this.result.files) {
-                    const knownFileTypes = ['pdf', 'png', 'jpg', 'xml', 'txt'];
-                    const linkTitle = file.key;
-                    const linkText = file.links.self;
-                    const linkDescription = file.key;
-                    const linkType = knownFileTypes.includes(file.type) ? file.type : 'file'; // supported individual icons, 'file' if default
-                    downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: linkType });
+                    const knownFileTypes = ['pdf', 'png', 'jpg', 'xml', 'txt']
+                    const linkTitle = file.key
+                    const linkText = file.links.self
+                    const linkDescription = file.key
+                    const linkType = knownFileTypes.includes(file.type)
+                        ? file.type
+                        : 'file' // supported individual icons, 'file' if default
+                    downloads.push({
+                        name: linkTitle,
+                        url: linkText,
+                        desc: linkDescription,
+                        type: linkType
+                    })
                 }
-                downloads.push({ name: this.result.metadata.title, url: this.result.links.doi, desc: this.result.metadata.description, type: 'html' });
+                downloads.push({
+                    name: this.result.metadata.title,
+                    url: this.result.links.doi,
+                    desc: this.result.metadata.description,
+                    type: 'html'
+                })
             }
         } else {
             const data = UtilsService.getArrayByString(
                 this.result,
                 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine'
-            );
+            )
             for (const item of data) {
-                const linkText = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
-                let linkTitle = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                let protocol = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString') || '';
+                const linkText = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:linkage.gmd:URL'
+                )
+                let linkTitle = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                )
+                let protocol =
+                    UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString'
+                    ) || ''
                 if (linkText) {
-                    let linkScore = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:status.gmd:score');
+                    let linkScore = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:status.gmd:score'
+                    )
                     if (!linkScore || linkScore > 100 || linkScore < 0) {
-                        linkScore = -1;
+                        linkScore = -1
                     }
-                    const wmsAllLayerName = this.result.title;
-                    let anchor = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:description.gmx:Anchor') || '';
-                    anchor = (anchor && anchor._attributes ? anchor._attributes['xlink:href'] : anchor);
-                    protocol = (typeof protocol === 'string' ? protocol : '');
-                    let titleBox = wmsAllLayerName;
-                    let kmlKeyword = false;
-                    for (const category of UtilsService.getArrayByString(this.result, 'category._attributes')) {
-                        if (category.label === 'kml' && category.term === 'keywords') {
-                            kmlKeyword = true;
-                            break;
+                    const wmsAllLayerName = this.result.title
+                    let anchor =
+                        UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:description.gmx:Anchor'
+                        ) || ''
+                    anchor =
+                        anchor && anchor._attributes
+                            ? anchor._attributes['xlink:href']
+                            : anchor
+                    protocol = typeof protocol === 'string' ? protocol : ''
+                    let titleBox = wmsAllLayerName
+                    let kmlKeyword = false
+                    for (const category of UtilsService.getArrayByString(
+                        this.result,
+                        'category._attributes'
+                    )) {
+                        if (
+                            category.label === 'kml' &&
+                            category.term === 'keywords'
+                        ) {
+                            kmlKeyword = true
+                            break
                         }
                     }
 
                     // parse file extension if any
-                    let url = linkText;
-                    url = url.substring(0, (url.indexOf('#') === -1) ? url.length : url.indexOf('#'));
-                    url = url.substring(0, (url.indexOf('?') === -1) ? url.length : url.indexOf('?'));
-                    url = url.substring(url.lastIndexOf('/') + 1, url.length);
-                    const extension = (url.indexOf('.') > -1) ? url.split('.').pop().toLowerCase() : '';
+                    let url = linkText
+                    url = url.substring(
+                        0,
+                        url.indexOf('#') === -1 ? url.length : url.indexOf('#')
+                    )
+                    url = url.substring(
+                        0,
+                        url.indexOf('?') === -1 ? url.length : url.indexOf('?')
+                    )
+                    url = url.substring(url.lastIndexOf('/') + 1, url.length)
+                    const extension =
+                        url.indexOf('.') > -1
+                            ? url.split('.').pop().toLowerCase()
+                            : ''
 
-                    const complex = anchor.indexOf('complex') > 0;
+                    const complex = anchor.indexOf('complex') > 0
 
-                    const linkTitle2 = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode.codeList');
+                    const linkTitle2 = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode.codeList'
+                    )
                     if (!linkTitle || typeof linkTitle !== 'string') {
                         if (linkTitle2) {
-                            linkTitle = linkTitle2;
+                            linkTitle = linkTitle2
                         } else {
-                            linkTitle = linkText;
+                            linkTitle = linkText
                         }
                     }
 
-                    let linkDescription = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString');
-                    const linkDescription2 = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                    if (!linkDescription || typeof linkDescription !== 'string') {
+                    let linkDescription = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:description.gco:CharacterString'
+                    )
+                    const linkDescription2 = UtilsService.getPropByString(
+                        item,
+                        'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                    )
+                    if (
+                        !linkDescription ||
+                        typeof linkDescription !== 'string'
+                    ) {
                         if (linkDescription2) {
-                            linkDescription = linkDescription2;
+                            linkDescription = linkDescription2
                         }
                     }
 
-                    if ((extension === 'pdf' || protocol.indexOf('PDF') > -1) && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'pdf', title: titleBox, score: linkScore });
-                    } else if ((extension === 'txt' || protocol.indexOf('TXT') > -1) && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'txt', title: titleBox, score: linkScore });
-                    } else if ((extension === 'htm' || extension === 'html' || extension === 'shtml') && !complex) {
+                    if (
+                        (extension === 'pdf' || protocol.indexOf('PDF') > -1) &&
+                        !complex
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'pdf',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                    } else if (
+                        (extension === 'txt' || protocol.indexOf('TXT') > -1) &&
+                        !complex
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'txt',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                    } else if (
+                        (extension === 'htm' ||
+                            extension === 'html' ||
+                            extension === 'shtml') &&
+                        !complex
+                    ) {
                         if (linkText.indexOf('opendap') > -1) {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'link', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'link',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         } else {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'html',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         }
-                    } else if ((extension === 'jpg' || extension === 'jpeg' || protocol.indexOf('JPG') > -1 || protocol.indexOf('JPEG') > -1) && linkText.indexOf('tile') === -1 && !complex) {
+                    } else if (
+                        (extension === 'jpg' ||
+                            extension === 'jpeg' ||
+                            protocol.indexOf('JPG') > -1 ||
+                            protocol.indexOf('JPEG') > -1) &&
+                        linkText.indexOf('tile') === -1 &&
+                        !complex
+                    ) {
                         if (linkDescription) {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'jpg', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'jpg',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         }
-                    } else if ((extension === 'png' || protocol.indexOf('PNG') > -1) && linkText.indexOf('tile') === -1 && !complex) {
+                    } else if (
+                        (extension === 'png' || protocol.indexOf('PNG') > -1) &&
+                        linkText.indexOf('tile') === -1 &&
+                        !complex
+                    ) {
                         if (linkDescription) {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'png', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'png',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         }
                     } else if (extension === 'xml' && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'xml', title: titleBox, score: linkScore });
-                    } else if ((protocol.indexOf('information-html') > -1 || protocol.indexOf('information') > -1 || protocol.indexOf('HTTP') > -1 || protocol.indexOf('HTML') > -1) && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'xml',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                    } else if (
+                        (protocol.indexOf('information-html') > -1 ||
+                            protocol.indexOf('information') > -1 ||
+                            protocol.indexOf('HTTP') > -1 ||
+                            protocol.indexOf('HTML') > -1) &&
+                        !complex
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'html',
+                            title: titleBox,
+                            score: linkScore
+                        })
                     } else if (protocol === 'gwp_un_sd_/v1/sdg') {
                         // Take SDG ID from title which is in format "SDG 6.b.1 Indicator".
                         // Enable statistics visualisation and download for this ID.
-                        const wordsArray = this.result.title.split(' ');
-                        if (wordsArray.length === 3 && wordsArray[0] === 'SDG' && wordsArray[2] === 'Indicator') {
-                            this.statisticsId = wordsArray[1];
-                            let seriesId = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString')[0];
-                            const seriesDesc = UtilsService.getArrayByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString')[0];
+                        const wordsArray = this.result.title.split(' ')
+                        if (
+                            wordsArray.length === 3 &&
+                            wordsArray[0] === 'SDG' &&
+                            wordsArray[2] === 'Indicator'
+                        ) {
+                            this.statisticsId = wordsArray[1]
+                            let seriesId = UtilsService.getArrayByString(
+                                item,
+                                'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                            )[0]
+                            const seriesDesc = UtilsService.getArrayByString(
+                                item,
+                                'gmd:CI_OnlineResource.gmd:description.gco:CharacterString'
+                            )[0]
                             // Quick fix: take key from url
-                            if (seriesId.includes('https://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode=')) {
-                                seriesId = seriesId.split('seriesCode=')[1];
+                            if (
+                                seriesId.includes(
+                                    'https://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode='
+                                )
+                            ) {
+                                seriesId = seriesId.split('seriesCode=')[1]
                             }
-                            this.timeSeriesArray.push({ id: seriesId, text: seriesDesc });
-                            const postData = { indicator: this.statisticsId, series: [seriesId] };
-                            downloads.push({ name: `SDG-${this.statisticsId}-${seriesId}.csv`, url: 'https://unstats.un.org/SDGAPI/v1/sdg/Series/DataCSV', postData, desc: `${this.statisticsId}, ${seriesDesc}`, type: 'csv' });
+                            this.timeSeriesArray.push({
+                                id: seriesId,
+                                text: seriesDesc
+                            })
+                            const postData = {
+                                indicator: this.statisticsId,
+                                series: [seriesId]
+                            }
+                            downloads.push({
+                                name: `SDG-${this.statisticsId}-${seriesId}.csv`,
+                                url: 'https://unstats.un.org/SDGAPI/v1/sdg/Series/DataCSV',
+                                postData,
+                                desc: `${this.statisticsId}, ${seriesDesc}`,
+                                type: 'csv'
+                            })
                         }
-                    } else if (protocol.indexOf('WebMapService') > -1 && linkText) {
-                        const urlName = linkText;
-                        const allName = wmsAllLayerName;
-                        const wmsName = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                        const wmsNameDesc = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString');
+                    } else if (
+                        protocol.indexOf('WebMapService') > -1 &&
+                        linkText
+                    ) {
+                        const urlName = linkText
+                        const allName = wmsAllLayerName
+                        const wmsName = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                        )
+                        const wmsNameDesc = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:description.gco:CharacterString'
+                        )
 
                         // Regex to pick WMS version
-                        const wmsProtocol = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString');
-                        let wmsVersion = '1.0';
-                        const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(wmsProtocol);
+                        const wmsProtocol = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString'
+                        )
+                        let wmsVersion = '1.0'
+                        const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(
+                            wmsProtocol
+                        )
                         if (match) {
-                            wmsVersion = match[0];
+                            wmsVersion = match[0]
                         }
 
-                        let wmsAnchor = null;
+                        let wmsAnchor = null
                         if (anchor !== undefined) {
                             if (anchor.indexOf('simple') > -1) {
-                                wmsAnchor = 'simple';
+                                wmsAnchor = 'simple'
                             } else if (anchor.indexOf('complex') > -1) {
-                                wmsAnchor = 'complex';
+                                wmsAnchor = 'complex'
                             }
                         }
 
                         if (anchor !== undefined) {
-                            if (((anchor.indexOf('simple') > -1) || (anchor.indexOf('complex') > -1))) {
-                                let url = null;
-                                let legendUrl = null;
-                                if (linkText.indexOf('LAYERS=') > -1 || linkText.indexOf('layers=') > -1) {
-                                    let startLayers = linkText.indexOf('LAYERS=');
+                            if (
+                                anchor.indexOf('simple') > -1 ||
+                                anchor.indexOf('complex') > -1
+                            ) {
+                                let url = null
+                                let legendUrl = null
+                                if (
+                                    linkText.indexOf('LAYERS=') > -1 ||
+                                    linkText.indexOf('layers=') > -1
+                                ) {
+                                    let startLayers =
+                                        linkText.indexOf('LAYERS=')
                                     if (startLayers === -1) {
-                                        startLayers = linkText.indexOf('layers=');
+                                        startLayers =
+                                            linkText.indexOf('layers=')
                                     }
-                                    const endLayers = linkText.indexOf('&', startLayers);
-                                    const LAYERS = linkText.slice(startLayers + 7, endLayers);
-                                    titleBox = wmsNameDesc !== '' ? wmsNameDesc : LAYERS;
+                                    const endLayers = linkText.indexOf(
+                                        '&',
+                                        startLayers
+                                    )
+                                    const LAYERS = linkText.slice(
+                                        startLayers + 7,
+                                        endLayers
+                                    )
+                                    titleBox =
+                                        wmsNameDesc !== ''
+                                            ? wmsNameDesc
+                                            : LAYERS
 
-                                    url = linkText;
-                                    const urlBeginning = linkText.slice(0, startLayers);
-                                    legendUrl = `${urlBeginning}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`;
+                                    url = linkText
+                                    const urlBeginning = linkText.slice(
+                                        0,
+                                        startLayers
+                                    )
+                                    legendUrl = `${urlBeginning}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`
                                 } else {
-                                    titleBox = wmsNameDesc !== '' ? wmsNameDesc : wmsName;
-                                    const LAYERS = wmsName;
-                                    url = `${linkText}&&&LAYERS=${LAYERS}&VERSION=${wmsVersion}&ANCHOR=${wmsAnchor}`;
-                                    legendUrl = `${linkText}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`;
+                                    titleBox =
+                                        wmsNameDesc !== ''
+                                            ? wmsNameDesc
+                                            : wmsName
+                                    const LAYERS = wmsName
+                                    url = `${linkText}&&&LAYERS=${LAYERS}&VERSION=${wmsVersion}&ANCHOR=${wmsAnchor}`
+                                    legendUrl = `${linkText}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`
                                 }
-                                layers.push({ name: wmsName, url, type: 'wms', title: titleBox, img: this.logo, legend: { type: 'img', data: legendUrl } });
+                                layers.push({
+                                    name: wmsName,
+                                    url,
+                                    type: 'wms',
+                                    title: titleBox,
+                                    img: this.logo,
+                                    legend: { type: 'img', data: legendUrl }
+                                })
                             }
                         }
                     } else if (protocol.indexOf('WebCoverageService') > -1) {
-                        let wcsUrl = linkText;
-                        const wcsId = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
+                        let wcsUrl = linkText
+                        const wcsId = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                        )
 
                         // Regex to pick WCS version
-                        const wcsProtocol = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString');
-                        let wcsVersion = '1.0';
-                        const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(wcsProtocol);
+                        const wcsProtocol = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString'
+                        )
+                        let wcsVersion = '1.0'
+                        const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(
+                            wcsProtocol
+                        )
                         if (match) {
-                            wcsVersion = match[0];
+                            wcsVersion = match[0]
                         }
 
-                        let wcsAnchor = null;
+                        let wcsAnchor = null
                         if (anchor !== undefined) {
                             if (anchor.indexOf('simple') > -1) {
-                                wcsAnchor = 'simple';
+                                wcsAnchor = 'simple'
                             } else if (anchor.indexOf('complex') > -1) {
-                                wcsAnchor = 'complex';
+                                wcsAnchor = 'complex'
                             }
                         }
                         if (!wcsAnchor || wcsAnchor === 'simple') {
-                            downloads.push({ name: linkTitle, url: wcsUrl, desc: linkDescription, type: 'wcs', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: wcsUrl,
+                                desc: linkDescription,
+                                type: 'wcs',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         } else if (wcsAnchor === 'complex') {
-                            wcsUrl = `${wcsUrl}&version=${wcsVersion}&coverageId=${wcsId}`;
-                            downloads.push({ name: linkTitle, url: wcsUrl, desc: linkDescription, type: 'custom-download', boxTitle: titleBox, score: 0 });
+                            wcsUrl = `${wcsUrl}&version=${wcsVersion}&coverageId=${wcsId}`
+                            downloads.push({
+                                name: linkTitle,
+                                url: wcsUrl,
+                                desc: linkDescription,
+                                type: 'custom-download',
+                                boxTitle: titleBox,
+                                score: 0
+                            })
                         }
-                    } else if (protocol.indexOf('TiledMapService') > -1 && !complex && linkText) {
-                        const tmsName = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString');
-                        layers.push({ name: tmsName, url: linkText, type: 'tms', title: titleBox, img: this.logo });
-                    } else if (protocol.indexOf('WWW:LINK-1.0-http--link') > -1 && !(complex && linkText)
-                        && !(linkText.indexOf('WMS') > -1) && !(linkText.indexOf('wms') > -1)
-                        && !(linkText.indexOf('WCS') > -1) && !(linkText.indexOf('wcs') > -1)
-                        && !(linkText.indexOf('TMS') > -1) && !(linkText.indexOf('tms') > -1)) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'html', title: titleBox, score: linkScore });
-                    } else if ((extension === 'kml' || linkText.indexOf('format=KML') > -1 ||
-                        linkText.indexOf('/application/xml') > -1 && kmlKeyword) && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'kml', title: titleBox, score: linkScore });
-                        layers.push({ name: titleBox, url: linkText, type: 'kml', title: titleBox, img: null });
-                    } else if ((extension === 'kmz' || linkText.indexOf('format=KMZ') > -1 ||
-                        linkText.indexOf('/application/zip') > -1 && kmlKeyword) && !complex) {
-                        downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'kmz', title: titleBox, score: linkScore });
-                        layers.push({ name: titleBox, url: linkText, type: 'kmz', title: titleBox, img: null });
-                    } else if (linkText && !(linkText.indexOf('WMS') > -1) && !(linkText.indexOf('wms') > -1)
-                        && !(linkText.indexOf('WCS') > -1) && !(linkText.indexOf('wcs') > -1)
-                        && !(linkText.indexOf('TMS') > -1) && !(linkText.indexOf('tms') > -1) && !(anchor.indexOf('complex') > 0)) {
-                        const lastChar = linkText.substr(linkText.length - 1);
-                        if ((lastChar === '/') && linkDescription) {
+                    } else if (
+                        protocol.indexOf('TiledMapService') > -1 &&
+                        !complex &&
+                        linkText
+                    ) {
+                        const tmsName = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                        )
+                        layers.push({
+                            name: tmsName,
+                            url: linkText,
+                            type: 'tms',
+                            title: titleBox,
+                            img: this.logo
+                        })
+                    } else if (
+                        protocol.indexOf('WWW:LINK-1.0-http--link') > -1 &&
+                        !(complex && linkText) &&
+                        !(linkText.indexOf('WMS') > -1) &&
+                        !(linkText.indexOf('wms') > -1) &&
+                        !(linkText.indexOf('WCS') > -1) &&
+                        !(linkText.indexOf('wcs') > -1) &&
+                        !(linkText.indexOf('TMS') > -1) &&
+                        !(linkText.indexOf('tms') > -1)
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'html',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                    } else if (
+                        (extension === 'kml' ||
+                            linkText.indexOf('format=KML') > -1 ||
+                            (linkText.indexOf('/application/xml') > -1 &&
+                                kmlKeyword)) &&
+                        !complex
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'kml',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                        layers.push({
+                            name: titleBox,
+                            url: linkText,
+                            type: 'kml',
+                            title: titleBox,
+                            img: null
+                        })
+                    } else if (
+                        (extension === 'kmz' ||
+                            linkText.indexOf('format=KMZ') > -1 ||
+                            (linkText.indexOf('/application/zip') > -1 &&
+                                kmlKeyword)) &&
+                        !complex
+                    ) {
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'kmz',
+                            title: titleBox,
+                            score: linkScore
+                        })
+                        layers.push({
+                            name: titleBox,
+                            url: linkText,
+                            type: 'kmz',
+                            title: titleBox,
+                            img: null
+                        })
+                    } else if (
+                        linkText &&
+                        !(linkText.indexOf('WMS') > -1) &&
+                        !(linkText.indexOf('wms') > -1) &&
+                        !(linkText.indexOf('WCS') > -1) &&
+                        !(linkText.indexOf('wcs') > -1) &&
+                        !(linkText.indexOf('TMS') > -1) &&
+                        !(linkText.indexOf('tms') > -1) &&
+                        !(anchor.indexOf('complex') > 0)
+                    ) {
+                        const lastChar = linkText.substr(linkText.length - 1)
+                        if (lastChar === '/' && linkDescription) {
                             if (linkTitle.indexOf('GET DATA') > -1) {
-                                downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'link', title: titleBox, score: linkScore });
+                                downloads.push({
+                                    name: linkTitle,
+                                    url: linkText,
+                                    desc: linkDescription,
+                                    type: 'link',
+                                    title: titleBox,
+                                    score: linkScore
+                                })
                             } else if (linkTitle.indexOf('VIEW') > -1) {
-                                downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'other', title: titleBox, score: linkScore });
+                                downloads.push({
+                                    name: linkTitle,
+                                    url: linkText,
+                                    desc: linkDescription,
+                                    type: 'other',
+                                    title: titleBox,
+                                    score: linkScore
+                                })
                             }
                         } else {
-                            downloads.push({ name: linkTitle, url: linkText, desc: linkDescription, type: 'other', title: titleBox, score: linkScore });
+                            downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'other',
+                                title: titleBox,
+                                score: linkScore
+                            })
                         }
                     }
 
                     if (protocol === 'ecopotential_workflow_api') {
                         this.workflow = {
-                            url: UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL') + '/' +
-                                encodeURIComponent(UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'))
-                        };
+                            url:
+                                UtilsService.getPropByString(
+                                    item,
+                                    'gmd:CI_OnlineResource.gmd:linkage.gmd:URL'
+                                ) +
+                                '/' +
+                                encodeURIComponent(
+                                    UtilsService.getPropByString(
+                                        item,
+                                        'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
+                                    )
+                                )
+                        }
                     }
                 }
 
                 // Direct Link - replace existing or add new URL
-                const directLink = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:directAccessLink');
+                const directLink = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:directAccessLink'
+                )
                 if (directLink) {
                     if (downloads.length === 1) {
-                        downloads[0].url = directLink;
+                        downloads[0].url = directLink
                     } else if (!downloads.length) {
-                        let linkScore = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource gmd:status gmd:score');
+                        let linkScore = UtilsService.getPropByString(
+                            item,
+                            'gmd:CI_OnlineResource gmd:status gmd:score'
+                        )
                         if (!linkScore || linkScore > 100 || linkScore < 0) {
-                            linkScore = -1;
+                            linkScore = -1
                         }
-                        downloads.push({ name: 'Link', url: directLink, desc: '', type: 'wcs', boxTitle: '', score: linkScore });
+                        downloads.push({
+                            name: 'Link',
+                            url: directLink,
+                            desc: '',
+                            type: 'wcs',
+                            boxTitle: '',
+                            score: linkScore
+                        })
                     }
                 }
 
                 // Custom Download
-                const advancedLink = UtilsService.getPropByString(item, 'gmd:CI_OnlineResource.gmd:advancedAccessLink');
+                const advancedLink = UtilsService.getPropByString(
+                    item,
+                    'gmd:CI_OnlineResource.gmd:advancedAccessLink'
+                )
                 if (advancedLink) {
-                    if (protocol.indexOf('sentinel') > -1) { // Custom Download for Sentinel collection
-                        const sentinelCustomDownloadSuffix = '?service=WPS&request=execute&identifier=gi-axe-transform&storeexecuteresponse=true&DataInputs=outputFormat%3DIMAGE_PNG%3BoutputSize%3D256%252C256';
-                        downloads.push({ name: linkTitle, url: advancedLink + sentinelCustomDownloadSuffix, desc: '', type: 'Advanced access link', boxTitle: '', score: 0 });
+                    if (protocol.indexOf('sentinel') > -1) {
+                        // Custom Download for Sentinel collection
+                        const sentinelCustomDownloadSuffix =
+                            '?service=WPS&request=execute&identifier=gi-axe-transform&storeexecuteresponse=true&DataInputs=outputFormat%3DIMAGE_PNG%3BoutputSize%3D256%252C256'
+                        downloads.push({
+                            name: linkTitle,
+                            url: advancedLink + sentinelCustomDownloadSuffix,
+                            desc: '',
+                            type: 'Advanced access link',
+                            boxTitle: '',
+                            score: 0
+                        })
                     } else {
-                        downloads.push({ name: 'Custom download', url: advancedLink, desc: '', type: 'custom-download', boxTitle: '', score: 0 });
+                        downloads.push({
+                            name: 'Custom download',
+                            url: advancedLink,
+                            desc: '',
+                            type: 'custom-download',
+                            boxTitle: '',
+                            score: 0
+                        })
                     }
                 }
             }
 
             if (!this.workflow) {
-                const resources = UtilsService.getArrayByString(this.result, 'gmd:distributionInfo.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource');
+                const resources = UtilsService.getArrayByString(
+                    this.result,
+                    'gmd:distributionInfo.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource'
+                )
                 for (const resource of resources) {
-                    if (UtilsService.getPropByString(resource, 'gmd:protocol.gco:CharacterString') === 'ecopotential_workflow_api') {
+                    if (
+                        UtilsService.getPropByString(
+                            resource,
+                            'gmd:protocol.gco:CharacterString'
+                        ) === 'ecopotential_workflow_api'
+                    ) {
                         this.workflow = {
-                            url: UtilsService.getPropByString(resource, 'gmd:linkage.gmd:URL') + '/' +
-                                encodeURIComponent(UtilsService.getPropByString(resource, 'gmd:name.gco:CharacterString'))
-                        };
+                            url:
+                                UtilsService.getPropByString(
+                                    resource,
+                                    'gmd:linkage.gmd:URL'
+                                ) +
+                                '/' +
+                                encodeURIComponent(
+                                    UtilsService.getPropByString(
+                                        resource,
+                                        'gmd:name.gco:CharacterString'
+                                    )
+                                )
+                        }
                     }
                 }
             }
         }
 
-        this.layers = layers;
+        this.layers = layers
         for (const download of downloads) {
-            const downloadFileSameFormatIndex = this.downloads.findIndex(file => file.type === download.type);
+            const downloadFileSameFormatIndex = this.downloads.findIndex(
+                (file) => file.type === download.type
+            )
 
-            const { scoreText, scoreClass } = this.getDownloadLinkStatus(download.score);
+            const { scoreText, scoreClass } = this.getDownloadLinkStatus(
+                download.score
+            )
 
-            download.scoreText = scoreText;
-            download.scoreClass = scoreClass;
+            download.scoreText = scoreText
+            download.scoreClass = scoreClass
 
-            if (downloadFileSameFormatIndex !== -1 && !this.downloads[downloadFileSameFormatIndex].links) {
-                const file = this.downloads.splice(downloadFileSameFormatIndex, 1)[0];
+            if (
+                downloadFileSameFormatIndex !== -1 &&
+                !this.downloads[downloadFileSameFormatIndex].links
+            ) {
+                const file = this.downloads.splice(
+                    downloadFileSameFormatIndex,
+                    1
+                )[0]
                 this.downloads.push({
                     type: download.type,
                     links: [download, file]
-                });
+                })
             } else if (downloadFileSameFormatIndex !== -1) {
-                const downloadFileSameFormat = this.downloads[downloadFileSameFormatIndex];
-                downloadFileSameFormat.links.push(download);
+                const downloadFileSameFormat =
+                    this.downloads[downloadFileSameFormatIndex]
+                downloadFileSameFormat.links.push(download)
             } else {
-                this.downloads.push(download);
+                this.downloads.push(download)
             }
         }
     }
@@ -756,26 +1428,48 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public showOnMap() {
         if (this.layerData.coordinate) {
             if (this.isExtendedViewActive) {
-                this.toggleExtendedView();
+                this.toggleExtendedView()
             }
-            this.$store.dispatch(MapActions.centerMap, this.layerData.coordinate);
-            this.$store.dispatch(MapActions.setClickedLayerId, this.result.id);
-            this.$store.dispatch(MapActions.setShowFull, true);
-            const coordinates = `${this.layerData.coordinate.S} ${this.layerData.coordinate.W} ${this.layerData.coordinate.N} ${this.layerData.coordinate.E}`;
-            LogService.logElementClick(coordinates, null, this.result.id, 'dab', 'Show on map', null, this.result.contributor.orgName, this.result.title);
+            this.$store.dispatch(
+                MapActions.centerMap,
+                this.layerData.coordinate
+            )
+            this.$store.dispatch(MapActions.setClickedLayerId, this.result.id)
+            this.$store.dispatch(MapActions.setShowFull, true)
+            const coordinates = `${this.layerData.coordinate.S} ${this.layerData.coordinate.W} ${this.layerData.coordinate.N} ${this.layerData.coordinate.E}`
+            LogService.logElementClick(
+                coordinates,
+                null,
+                this.result.id,
+                'dab',
+                'Show on map',
+                null,
+                this.result.contributor.orgName,
+                this.result.title
+            )
         }
-        MouseLeaveService.initSurvey();
+        MouseLeaveService.initSurvey()
     }
 
     public async showDetails() {
-        LogService.logElementClick(null, null, this.result.id, null, 'Show details', null, this.contributors, this.title);
-        this.$store.dispatch(SearchActions.showDetailsTrigger, false);
-        MouseLeaveService.initSurvey();
-        const actionAfterMetadataShow = this.$store.getters[SearchGetters.actionAfterMetadataShow];
-        let isSatellite = false;
+        LogService.logElementClick(
+            null,
+            null,
+            this.result.id,
+            null,
+            'Show details',
+            null,
+            this.contributors,
+            this.title
+        )
+        this.$store.dispatch(SearchActions.showDetailsTrigger, false)
+        MouseLeaveService.initSurvey()
+        const actionAfterMetadataShow =
+            this.$store.getters[SearchGetters.actionAfterMetadataShow]
+        let isSatellite = false
         if (!this.metadata) {
             if (this.dataSource === DataSources.ZENODO) {
-                isSatellite = false;
+                isSatellite = false
                 this.metadata = {
                     title: this.$tc('popupTitles.resourceDetails'),
                     data: {
@@ -784,9 +1478,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             platform: 'ZENODO'
                         }
                     }
-                };
+                }
             } else if (this.dataSource === DataSources.WIKIPEDIA) {
-                isSatellite = false;
+                isSatellite = false
                 this.metadata = {
                     title: this.$tc('popupTitles.resourceDetails'),
                     data: {
@@ -795,9 +1489,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             platform: 'WIKIPEDIA'
                         }
                     }
-                };
+                }
             } else if (this.dataSource === DataSources.NEXTGEOSS) {
-                isSatellite = false;
+                isSatellite = false
                 this.metadata = {
                     title: this.$tc('popupTitles.resourceDetails'),
                     data: {
@@ -806,42 +1500,53 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             platform: 'NEXTGEOSS'
                         }
                     }
-                };
-            } else if ((this.result.acquisition && Object.keys(this.result.acquisition.platform).length)) {
+                }
+            } else if (
+                this.result.acquisition &&
+                Object.keys(this.result.acquisition.platform).length
+            ) {
                 if (this.result.acquisition.platform === 'GEOSS_CR') {
-                    isSatellite = false;
+                    isSatellite = false
                 } else {
-                    isSatellite = true;
+                    isSatellite = true
                 }
                 this.metadata = {
                     title: this.$tc('popupTitles.resourceDetails'),
                     data: {
-                        ...this.result,
+                        ...this.result
                     }
-                };
+                }
             } else {
-                const [, data] = await to(GeossSearchApiService.getDabResultMetadata(this.result.id));
+                const [, data] = await to(
+                    GeossSearchApiService.getDabResultMetadata(this.result.id)
+                )
                 if (data) {
-                    data.userContributions = this.result.userContributions;
+                    data.userContributions = this.result.userContributions
                     this.metadata = {
                         title: `<div class="d-flex flex--justify-between flex--align-center padding-right-30">
-                                    <span>${this.$tc('popupTitles.resourceDetails')}</span>
-                                    <a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(this.result.id)}">${this.$tc('popupTitles.rawMetadata')}</a>
+                                    <span>${this.$tc(
+                            'popupTitles.resourceDetails'
+                        )}</span>
+                                    <a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(
+                            this.result.id
+                        )}">${this.$tc(
+                            'popupTitles.rawMetadata'
+                        )}</a>
                                 </div>`,
                         data
-                    };
+                    }
                 }
             }
 
-            Object.freeze(this.metadata);
+            Object.freeze(this.metadata)
 
             if (actionAfterMetadataShow) {
-                actionAfterMetadataShow();
+                actionAfterMetadataShow()
             }
         }
 
         if (this.dashboardContent && this.dashboardContent !== '') {
-            DashboardService.showDashboard(this.dashboardContent, null);
+            DashboardService.showDashboard(this.dashboardContent, null)
         } else if (this.metadata) {
             const props = {
                 data: this.metadata.data,
@@ -849,189 +1554,239 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 resultTitle: this.result.title,
                 resultImage: this.logo,
                 popupTitle: this.metadata.title
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'metadata', title: props.popupTitle, component: DabResultMetadata, props });
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'metadata',
+                title: props.popupTitle,
+                component: DabResultMetadata,
+                props
+            })
         }
     }
 
     public addParentRefAvailable(result) {
-        const parentRefAvailable = UtilsService.extractCategoriesByAttributeValue(result, 'label', 'series');
-        return !(parentRefAvailable.indexOf('hlevel') === -1);
+        const parentRefAvailable =
+            UtilsService.extractCategoriesByAttributeValue(
+                result,
+                'label',
+                'series'
+            )
+        return !(parentRefAvailable.indexOf('hlevel') === -1)
     }
 
     public isDrillAvailable(result, dataHub) {
-        dataHub = dataHub.replace('services', 'service');
-        const drillAvailable = UtilsService.extractCategoriesByAttributeValue(result, 'label', 'series');
-        return !(drillAvailable.indexOf(dataHub) === -1);
+        dataHub = dataHub.replace('services', 'service')
+        const drillAvailable = UtilsService.extractCategoriesByAttributeValue(
+            result,
+            'label',
+            'series'
+        )
+        return !(drillAvailable.indexOf(dataHub) === -1)
     }
 
     public isUserContributedDrillAvailable(result, dataHub) {
-        dataHub = dataHub.replace('services', 'service');
-        const drillAvailable = [];
-        if (result.userContributions && result.userContributions.relations && result.userContributions.relations.length) {
+        dataHub = dataHub.replace('services', 'service')
+        const drillAvailable = []
+        if (
+            result.userContributions &&
+            result.userContributions.relations &&
+            result.userContributions.relations.length
+        ) {
             for (const relation of result.userContributions.relations) {
                 if (relation.destEntryCode !== result.id) {
-                    drillAvailable.push(relation.destType.replace('resource', 'hub'));
+                    drillAvailable.push(
+                        relation.destType.replace('resource', 'hub')
+                    )
                 }
             }
-            return !(drillAvailable.indexOf(dataHub) === -1);
+            return !(drillAvailable.indexOf(dataHub) === -1)
         } else {
-            return false;
+            return false
         }
     }
 
     public showInsideFolder(result, dataSource?) {
         if (this.isExtendedViewActive) {
-            this.toggleExtendedView();
+            this.toggleExtendedView()
         }
 
         const parentRef: ParentRef = {
             id: result.id,
             entry: result,
             dataSource: this.dataSource
-        };
+        }
         /*
          * regular drill-down doesn't have dataSource parameter
          * if regular drill-down, fetch only within the same dataSource (not same origin, not same tab)
          * else if switching data sources, fetch other sources asynchronously
          */
-        const targetSource = !dataSource ? this.dataSource : dataSource;
-        const fetchOtherSources = !dataSource ? false : true;
-        const theSameSource = !dataSource ? true : false;
+        const targetSource = !dataSource ? this.dataSource : dataSource
+        const fetchOtherSources = !dataSource ? false : true
+        const theSameSource = !dataSource ? true : false
 
-        this.$store.dispatch(SearchActions.addParentRef, parentRef);
-        this.$store.dispatch(SearchActions.setResultIdDetails, null);
-        this.$store.dispatch(FacetedFiltersActions.reset);
-        this.$store.dispatch(SearchActions.getResults, { fetchOtherSources, targetSource, theSameSource });
+        this.$store.dispatch(SearchActions.addParentRef, parentRef)
+        this.$store.dispatch(SearchActions.setResultIdDetails, null)
+        this.$store.dispatch(FacetedFiltersActions.reset)
+        this.$store.dispatch(SearchActions.getResults, {
+            fetchOtherSources,
+            targetSource,
+            theSameSource
+        })
     }
 
     // Switches to related results within GEOSS Curated
     public switchToDataSource(switchTarget: DataSource, result) {
         if (this.isExtendedViewActive) {
-            this.toggleExtendedView();
+            this.toggleExtendedView()
         }
 
-        this.showInsideFolder(result, switchTarget);
-        this.$store.dispatch(SearchActions.setDataSource, { value: switchTarget });
+        this.showInsideFolder(result, switchTarget)
+        this.$store.dispatch(SearchActions.setDataSource, {
+            value: switchTarget
+        })
     }
 
     public switchToUserContributedDataSource(switchTarget: DataSource, result) {
         if (this.isExtendedViewActive) {
-            this.toggleExtendedView();
+            this.toggleExtendedView()
         }
 
-        const hub = switchTarget === 'services' ? 'service' : switchTarget;
-        const targetIdsObject = {};
-        const filteredRelations = result.userContributions.relations.filter(el => el.destType === `${hub}_resource`);
+        const hub = switchTarget === 'services' ? 'service' : switchTarget
+        const targetIdsObject = {}
+        const filteredRelations = result.userContributions.relations.filter(
+            (el) => el.destType === `${hub}_resource`
+        )
 
         for (const relation of filteredRelations) {
             for (const source in DataOrigin) {
                 if (DataOrigin[source] === relation.destDataSource) {
-                    if ((DataOrigin[source] === 'geoss_cr' && source === switchTarget) || DataOrigin[source] !== 'geoss_cr') {
+                    if (
+                        (DataOrigin[source] === 'geoss_cr' &&
+                            source === switchTarget) ||
+                        DataOrigin[source] !== 'geoss_cr'
+                    ) {
                         if (!targetIdsObject[source]) {
-                            targetIdsObject[source] = [];
+                            targetIdsObject[source] = []
                         }
-                        targetIdsObject[source].push(relation.destEntryCode);
+                        targetIdsObject[source].push(relation.destEntryCode)
                     }
                 }
             }
         }
 
-        this.$store.dispatch(SearchActions.setTargetIds, JSON.stringify(targetIdsObject));
-        this.showInsideFolder(result, null);
+        this.$store.dispatch(
+            SearchActions.setTargetIds,
+            JSON.stringify(targetIdsObject)
+        )
+        this.showInsideFolder(result, null)
     }
 
     public popParentRefResult() {
-        this.$store.dispatch(SearchActions.setDataSource, { value: this.parentRef.dataSource });
-        this.$store.dispatch(SearchActions.popParentRef);
-        this.$store.dispatch(FacetedFiltersActions.reset);
-        this.$store.dispatch(SearchActions.getResults);
+        this.$store.dispatch(SearchActions.setDataSource, {
+            value: this.parentRef.dataSource
+        })
+        this.$store.dispatch(SearchActions.popParentRef)
+        this.$store.dispatch(FacetedFiltersActions.reset)
+        this.$store.dispatch(SearchActions.getResults)
     }
 
     public toggleShowDownloads() {
-        this.showDownloads = !this.showDownloads;
+        this.showDownloads = !this.showDownloads
     }
 
     public instantSingleDownload(download) {
         if (download.links) {
-            this.openDownloadLinksPopup(download.links);
+            this.openDownloadLinksPopup(download.links)
         } else if (download.url.indexOf('/dhus/odata/') !== -1) {
-            this.openSentinelLoginPopup(download.url);
+            this.openSentinelLoginPopup(download.url)
         } else if (download.url.indexOf('/sdg/Series/DataCSV') !== -1) {
-            this.getUnepFile(download.postData);
+            this.getUnepFile(download.postData)
         } else if (download.type === 'custom-download') {
-            this.initCustomDownloadPopup(download.url);
+            this.initCustomDownloadPopup(download.url)
         } else if (download.type === 'html') {
-            this.downloadLinkClicked(download.url);
+            this.downloadLinkClicked(download.url)
         } else {
-            this.downloadLinkClicked(download.url);
+            this.downloadLinkClicked(download.url)
         }
     }
 
     public showExpandableDownload() {
         if (this.downloads && this.downloads.length) {
             if (this.downloads.length > 1) {
-                return true;
+                return true
             } else {
-                return false;
+                return false
             }
         } else {
-            return false;
+            return false
         }
     }
 
     public async initCustomDownloadPopup(baseUrl) {
         if (baseUrl.startsWith('http:')) {
-            baseUrl = baseUrl.replace('http:', 'https:');
+            baseUrl = baseUrl.replace('http:', 'https:')
         }
         if (!this.customDownloadOptions) {
             if (baseUrl.includes('service=WCS&version=2.0.1')) {
-                const [err, data] = await to(GeossSearchApiService.getCustomDownloadOptionsWCS(baseUrl));
+                const [err, data] = await to(
+                    GeossSearchApiService.getCustomDownloadOptionsWCS(baseUrl)
+                )
                 if (err) {
                     const props = {
                         title: this.$tc('general.error'),
                         subtitle: err
-                    };
-                    return this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+                    }
+                    return this.$store.dispatch(PopupActions.openPopup, {
+                        contentId: 'error',
+                        component: ErrorPopup,
+                        props
+                    })
                 }
 
                 let formatOptions = UtilsService.getArrayByString(
                     data.getCapabilities,
                     'wcs:Capabilities.wcs:ServiceMetadata.wcs:formatSupported'
-                );
-                formatOptions = formatOptions.map(option => ({ id: option, text: option }));
+                )
+                formatOptions = formatOptions.map((option) => ({
+                    id: option,
+                    text: option
+                }))
 
                 const nativeFormat = UtilsService.getPropByString(
                     data.describeCoverage,
                     'wcs:CoverageDescriptions.wcs:CoverageDescription.wcs:ServiceParameters.wcs:nativeFormat'
-                );
+                )
 
                 let rangeSubset = UtilsService.getArrayByString(
                     data.describeCoverage,
                     'wcs:CoverageDescriptions.wcs:CoverageDescription.gmlcov:rangeType.swe:DataRecord.swe:field.swe:Quantity.swe:description'
-                );
-                rangeSubset = rangeSubset.map(option => ({ id: option, text: option }));
+                )
+                rangeSubset = rangeSubset.map((option) => ({
+                    id: option,
+                    text: option
+                }))
 
-                const outputCRS = [];
+                const outputCRS = []
                 const outputCRSRaw = UtilsService.getArrayByString(
                     data.getCapabilities,
                     'wcs:Capabilities.wcs:ServiceMetadata.wcs:Extension.wcscrs:crsSupported'
-                );
+                )
                 for (const option of outputCRSRaw) {
-                    const arrayCRS = option.split('/');
-                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${arrayCRS[arrayCRS.length - 1]}`;
-                    outputCRS.push({ id: option, text: nameCRS });
+                    const arrayCRS = option.split('/')
+                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${arrayCRS[arrayCRS.length - 1]
+                        }`
+                    outputCRS.push({ id: option, text: nameCRS })
                 }
 
                 const lowerCorner = UtilsService.getPropByString(
                     data.describeCoverage,
                     'wcs:CoverageDescriptions.wcs:CoverageDescription.gml:boundedBy.gml:Envelope.gml:lowerCorner'
-                );
+                )
 
                 const upperCorner = UtilsService.getPropByString(
                     data.describeCoverage,
                     'wcs:CoverageDescriptions.wcs:CoverageDescription.gml:boundedBy.gml:Envelope.gml:upperCorner'
-                );
+                )
 
                 this.customDownloadOptions = {
                     formatOptions,
@@ -1042,60 +1797,78 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     lowerCorner,
                     upperCorner,
                     baseUrl
-                };
-
+                }
             } else {
-                const [err, data] = await to(GeossSearchApiService.getCustomDownloadOptions(baseUrl));
+                const [err, data] = await to(
+                    GeossSearchApiService.getCustomDownloadOptions(baseUrl)
+                )
                 if (err) {
                     const props = {
                         title: this.$tc('general.error'),
                         subtitle: err
-                    };
-                    return this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+                    }
+                    return this.$store.dispatch(PopupActions.openPopup, {
+                        contentId: 'error',
+                        component: ErrorPopup,
+                        props
+                    })
                 }
                 let formatOptions = UtilsService.getArrayByString(
                     data,
                     'ns2:format'
-                );
-                formatOptions = formatOptions.map(option => ({ id: option, text: option }));
+                )
+                formatOptions = formatOptions.map((option) => ({
+                    id: option,
+                    text: option
+                }))
 
                 const options = UtilsService.getArrayByString(
                     data,
                     'ns2:spatialGrid'
-                );
+                )
 
-                const outputSize = [];
-                const subsetCRSOptions = [{ id: null, text: 'Default subset' }];
-                const subsetLowerCoordinates = [];
-                const subsetUpperCoordinates = [];
-                const crs = [];
+                const outputSize = []
+                const subsetCRSOptions = [{ id: null, text: 'Default subset' }]
+                const subsetLowerCoordinates = []
+                const subsetUpperCoordinates = []
+                const crs = []
 
                 for (const item of options) {
-                    let outputSizeVal: string | string[] = UtilsService.getArrayByString(
-                        item,
-                        'spatialAxis.numberOfPoints'
-                    );
-                    outputSizeVal = outputSizeVal.join(',');
-                    outputSize.push(outputSizeVal);
+                    let outputSizeVal: string | string[] =
+                        UtilsService.getArrayByString(
+                            item,
+                            'spatialAxis.numberOfPoints'
+                        )
+                    outputSizeVal = outputSizeVal.join(',')
+                    outputSize.push(outputSizeVal)
 
                     const subsetCRSOption = UtilsService.getPropByString(
                         item,
                         'crs.identifier'
-                    );
-                    subsetCRSOptions.push({ id: subsetCRSOption, text: subsetCRSOption });
+                    )
+                    subsetCRSOptions.push({
+                        id: subsetCRSOption,
+                        text: subsetCRSOption
+                    })
 
-                    let subsetLowerCoordinatesVal: string | number[] = UtilsService.getArrayByString(
-                        item,
-                        'totalExtent.lowerCorner.coordinates'
-                    );
-                    let subsetUpperCoordinatesVal: string | number[] = UtilsService.getArrayByString(
-                        item,
-                        'totalExtent.upperCorner.coordinates'
-                    );
-                    subsetLowerCoordinatesVal = subsetLowerCoordinatesVal.map(item => Math.round(10 * item) / 10).join(',');
-                    subsetUpperCoordinatesVal = subsetUpperCoordinatesVal.map(item => Math.round(10 * item) / 10).join(',');
-                    subsetLowerCoordinates.push(subsetLowerCoordinatesVal);
-                    subsetUpperCoordinates.push(subsetUpperCoordinatesVal);
+                    let subsetLowerCoordinatesVal: string | number[] =
+                        UtilsService.getArrayByString(
+                            item,
+                            'totalExtent.lowerCorner.coordinates'
+                        )
+                    let subsetUpperCoordinatesVal: string | number[] =
+                        UtilsService.getArrayByString(
+                            item,
+                            'totalExtent.upperCorner.coordinates'
+                        )
+                    subsetLowerCoordinatesVal = subsetLowerCoordinatesVal
+                        .map((item) => Math.round(10 * item) / 10)
+                        .join(',')
+                    subsetUpperCoordinatesVal = subsetUpperCoordinatesVal
+                        .map((item) => Math.round(10 * item) / 10)
+                        .join(',')
+                    subsetLowerCoordinates.push(subsetLowerCoordinatesVal)
+                    subsetUpperCoordinates.push(subsetUpperCoordinatesVal)
                 }
 
                 this.customDownloadOptions = {
@@ -1106,139 +1879,210 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     subsetUpperCoordinates,
                     crs: subsetCRSOptions[0].id,
                     baseUrl
-                };
+                }
             }
 
-            Object.freeze(this.customDownloadOptions);
+            Object.freeze(this.customDownloadOptions)
         }
 
         const props = {
             options: this.customDownloadOptions,
             resultId: this.result.id,
             resultOrgName: this.result.contributor.orgName,
-            resultTitle: this.result.title,
-        };
+            resultTitle: this.result.title
+        }
 
         if (baseUrl.includes('service=WCS&version=2.0.1')) {
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'custom-download', title: this.$tc('popupTitles.customizeDownload'), component: CustomDownloadWCS, props });
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'custom-download',
+                title: this.$tc('popupTitles.customizeDownload'),
+                component: CustomDownloadWCS,
+                props
+            })
         } else {
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'custom-download', title: this.$tc('popupTitles.customizeDownload'), component: DabResultCustomDownload, props });
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'custom-download',
+                title: this.$tc('popupTitles.customizeDownload'),
+                component: DabResultCustomDownload,
+                props
+            })
         }
     }
 
     public prepareShareUrl() {
-        this.shareUrl = SearchEngineService.getShareUrl(this.result.id.toString());
+        this.shareUrl = SearchEngineService.getShareUrl(
+            this.result.id.toString()
+        )
     }
 
     public async addBookmark() {
-        MouseLeaveService.initSurvey();
-        const resultId = this.result.id.toString();
-        const resultTitle = this.dataSource === DataSources.ZENODO ? this.result.metadata.title : this.result.title;
-        const [err, result] = await to(GeossSearchApiService.addBookmark(
-            resultTitle,
-            resultId,
-            this.$store.getters[MapGetters.activeLayerTileId],
-            DataOrigin[this.dataSource]
-        ));
+        MouseLeaveService.initSurvey()
+        const resultId = this.result.id.toString()
+        const resultTitle =
+            this.dataSource === DataSources.ZENODO
+                ? this.result.metadata.title
+                : this.result.title
+        const [err, result] = await to(
+            GeossSearchApiService.addBookmark(
+                resultTitle,
+                resultId,
+                this.$store.getters[MapGetters.activeLayerTileId],
+                DataOrigin[this.dataSource]
+            )
+        )
         if (result && !err) {
-            this.$store.dispatch(UserActions.addBookmark, result);
+            this.$store.dispatch(UserActions.addBookmark, result)
             const props = {
                 title: this.$tc('popupTitles.bookmarkResult'),
                 subtitle: this.$tc('popupContent.bookmarkSavedSuccess')
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'general', component: GeneralPopup, props });
-            let organisation = null;
-            if (this.result.contributor && this.result.contributor.orgName) {
-                organisation = this.result.contributor.orgName;
             }
-            LogService.logElementClick(null, null, resultId, null, 'Bookmark saved in My Workspace', null, organisation, resultTitle);
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'general',
+                component: GeneralPopup,
+                props
+            })
+            let organisation = null
+            if (this.result.contributor && this.result.contributor.orgName) {
+                organisation = this.result.contributor.orgName
+            }
+            LogService.logElementClick(
+                null,
+                null,
+                resultId,
+                null,
+                'Bookmark saved in My Workspace',
+                null,
+                organisation,
+                resultTitle
+            )
         } else {
             const props = {
                 title: this.$tc('popupTitles.bookmarkResult'),
                 subtitle: this.$tc('popupContent.bookmarkSavedFail')
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'error',
+                component: ErrorPopup,
+                props
+            })
         }
     }
 
     public async removeBookmark() {
-        const resultId = this.result.id.toString();
-        const resultTitle = this.dataSource === DataSources.ZENODO ? this.result.metadata.title : this.result.title;
-        const bookmarkedResult = this.bookmarks.find(bookmark => bookmark.targetId === resultId);
-        const dataOrigin = DataOrigin[this.dataSource];
-        const [err, result] = await to(GeossSearchApiService.removeBookmark(
-            bookmarkedResult.targetId,
-            dataOrigin
-        ));
+        const resultId = this.result.id.toString()
+        const resultTitle =
+            this.dataSource === DataSources.ZENODO
+                ? this.result.metadata.title
+                : this.result.title
+        const bookmarkedResult = this.bookmarks.find(
+            (bookmark) => bookmark.targetId === resultId
+        )
+        const dataOrigin = DataOrigin[this.dataSource]
+        const [err, result] = await to(
+            GeossSearchApiService.removeBookmark(
+                bookmarkedResult.targetId,
+                dataOrigin
+            )
+        )
         if (result) {
-            this.$store.dispatch(UserActions.removeBookmark, resultId);
+            this.$store.dispatch(UserActions.removeBookmark, resultId)
             const props = {
                 title: this.$tc('popupTitles.bookmarkResult'),
                 subtitle: this.$tc('popupContent.bookmarkRemovedSuccess')
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'general', component: GeneralPopup, props });
-            let organisation = null;
-            if (this.result.contributor && this.result.contributor.orgName) {
-                organisation = this.result.contributor.orgName;
             }
-            LogService.logElementClick(null, null, resultId, null, 'Bookmark removed from My Workspace', null, organisation, resultTitle);
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'general',
+                component: GeneralPopup,
+                props
+            })
+            let organisation = null
+            if (this.result.contributor && this.result.contributor.orgName) {
+                organisation = this.result.contributor.orgName
+            }
+            LogService.logElementClick(
+                null,
+                null,
+                resultId,
+                null,
+                'Bookmark removed from My Workspace',
+                null,
+                organisation,
+                resultTitle
+            )
         } else {
             const props = {
                 title: this.$tc('popupTitles.bookmarkResult'),
                 subtitle: this.$tc('popupContent.bookmarkRemovedFail')
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'error',
+                component: ErrorPopup,
+                props
+            })
         }
     }
 
     public setExpandedDownloadIndex(index) {
         if (index !== this.expandedDownloadIndex) {
-            this.expandedDownloadIndex = index;
+            this.expandedDownloadIndex = index
         } else {
-            this.expandedDownloadIndex = null;
+            this.expandedDownloadIndex = null
         }
     }
 
     public downloadLinkClicked(url) {
-        const id = this.result.id;
-        let orgName = '';
-        let title = '';
+        const id = this.result.id
+        let orgName = ''
+        let title = ''
         if (this.dataSource === 'zenodo') {
-            const orgNameArray = this.result.metadata.creators;
-            orgName = orgNameArray.join(', ');
-            title = this.result.metadata.title;
+            const orgNameArray = this.result.metadata.creators
+            orgName = orgNameArray.join(', ')
+            title = this.result.metadata.title
         } else if (this.dataSource === 'nextgeoss') {
-            orgName = this.result['dc:publisher'];
+            orgName = this.result['dc:publisher']
         } else {
-            orgName = this.result.contributor.orgName;
-            title = this.result.title;
+            orgName = this.result.contributor.orgName
+            title = this.result.title
         }
-        window.open(url);
+        window.open(url)
 
-        LogService.logElementClick(null, null, id, null, 'Sirect download', null, orgName, title);
-        MouseLeaveService.initSurvey();
+        LogService.logElementClick(
+            null,
+            null,
+            id,
+            null,
+            'Sirect download',
+            null,
+            orgName,
+            title
+        )
+        MouseLeaveService.initSurvey()
     }
 
     public async openBulkDownloadPopup(e) {
-        e.preventDefault();
-        const title = this.$tc('popupTitles.downloadsList');
-        await this.$store.dispatch(PopupActions.openPopup, { contentId: 'bulk-download', title, component: BulkDownloadPopup });
-        return false;
+        e.preventDefault()
+        const title = this.$tc('popupTitles.downloadsList')
+        await this.$store.dispatch(PopupActions.openPopup, {
+            contentId: 'bulk-download',
+            title,
+            component: BulkDownloadPopup
+        })
+        return false
     }
 
     public addToDownloadsList(url, format) {
         if (!this.isSignedIn) {
-            return;
+            return
         }
 
         const link: BulkDownloadLink = {
             name: `${this.title}`,
             desc: `Format: ${format || 'other'}`,
             url
-        };
+        }
 
-        this.$store.dispatch(BulkDownloadActions.addLink, link);
-        PopupCloseService.closePopup('custom-download');
+        this.$store.dispatch(BulkDownloadActions.addLink, link)
+        PopupCloseService.closePopup('custom-download')
 
         NotificationService.show(
             `${this.$tc('popupTitles.downloadList')}`,
@@ -1247,292 +2091,419 @@ export default class SearchResultDabDetailsComponent extends Vue {
             null,
             9999,
             'success'
-        );
+        )
 
         setTimeout(() => {
-            const openBulkDownloadPopup = document.querySelectorAll('.openBulkDownloadPopup');
+            const openBulkDownloadPopup = document.querySelectorAll(
+                '.openBulkDownloadPopup'
+            )
             if (openBulkDownloadPopup && openBulkDownloadPopup.length) {
-                openBulkDownloadPopup.forEach(button => {
-                    button.addEventListener('click', this.openBulkDownloadPopup);
-                });
+                openBulkDownloadPopup.forEach((button) => {
+                    button.addEventListener('click', this.openBulkDownloadPopup)
+                })
             }
-        }, 200);
+        }, 200)
 
-        LogService.logElementClick(null, null, this.result.id, null, 'Direct to bulk download', null, this.result.contributor.orgName, this.result.title);
+        LogService.logElementClick(
+            null,
+            null,
+            this.result.id,
+            null,
+            'Direct to bulk download',
+            null,
+            this.result.contributor.orgName,
+            this.result.title
+        )
     }
 
     public openSentinelLoginPopup(url: string) {
         if (this.isWidget) {
-            window.open(url);
-        } else if (!this.isSignedIn || !this.$store.getters[MyWorkspaceGetters.settings].dhusUsername) {
+            window.open(url)
+        } else if (
+            !this.isSignedIn ||
+            !this.$store.getters[MyWorkspaceGetters.settings].dhusUsername
+        ) {
             const props = {
                 url,
                 result: this.result
-            };
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'sentinel-login', title: this.$tc('popupTitles.sentinelDataAccess'), component: SentinelLogin, props });
+            }
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'sentinel-login',
+                title: this.$tc('popupTitles.sentinelDataAccess'),
+                component: SentinelLogin,
+                props
+            })
         } else {
-            window.open(SearchEngineService.getDhusProxyUrl(url));
+            window.open(SearchEngineService.getDhusProxyUrl(url))
         }
     }
 
     public async getUnepFile(params) {
-        const [, data] = await to(GeossSearchApiService.getUnepFileUrl(params.series));
+        const [, data] = await to(
+            GeossSearchApiService.getUnepFileUrl(params.series)
+        )
         if (data) {
-            UtilsService.createAndOpenFile(data, `SDG-${params.indicator}-${params.series[0]}.csv`, 'text/csv');
+            UtilsService.createAndOpenFile(
+                data,
+                `SDG-${params.indicator}-${params.series[0]}.csv`,
+                'text/csv'
+            )
         }
 
-        LogService.logElementClick(null, null, this.result.id, null, 'Direct download', null, this.result.contributor.orgName, this.result.title);
+        LogService.logElementClick(
+            null,
+            null,
+            this.result.id,
+            null,
+            'Direct download',
+            null,
+            this.result.contributor.orgName,
+            this.result.title
+        )
     }
 
     public openDownloadLinksPopup(links) {
         const props = {
             result: this.result,
             links
-        };
+        }
 
-        this.$store.dispatch(PopupActions.openPopup, { contentId: 'download-links', title: this.$tc('popupTitles.downloadLinks'), component: DabResultDownloads, props }).then((sentinelUrl: string) => {
-            if (sentinelUrl) {
-                this.openSentinelLoginPopup(sentinelUrl);
-            }
-        });
+        this.$store
+            .dispatch(PopupActions.openPopup, {
+                contentId: 'download-links',
+                title: this.$tc('popupTitles.downloadLinks'),
+                component: DabResultDownloads,
+                props
+            })
+            .then((sentinelUrl: string) => {
+                if (sentinelUrl) {
+                    this.openSentinelLoginPopup(sentinelUrl)
+                }
+            })
 
-        const actionAfterDownloadPopupShow = this.$store.getters[SearchGetters.actionAfterDownloadPopupShow];
+        const actionAfterDownloadPopupShow =
+            this.$store.getters[SearchGetters.actionAfterDownloadPopupShow]
         if (actionAfterDownloadPopupShow) {
-            actionAfterDownloadPopupShow();
+            actionAfterDownloadPopupShow()
         }
     }
 
     public workflowHasSavedData() {
-        let hasSavedData = false;
+        let hasSavedData = false
         if (sessionStorage.getItem('SERVICE_WORKFLOW')) {
-            const serviceWorkflowObject = JSON.parse(sessionStorage.getItem('SERVICE_WORKFLOW'));
+            const serviceWorkflowObject = JSON.parse(
+                sessionStorage.getItem('SERVICE_WORKFLOW')
+            )
             if (serviceWorkflowObject[this.workflow.url]) {
-                hasSavedData = true;
+                hasSavedData = true
             }
         }
-        return hasSavedData;
+        return hasSavedData
     }
 
     public async openWorkflow(reset?: boolean) {
         if (this.isWidget) {
             // Redirect widget users to native portal
-            window.open(SearchEngineService.getShareUrl(this.result.id.toString()));
-            return;
+            window.open(
+                SearchEngineService.getShareUrl(this.result.id.toString())
+            )
+            return
         } else if (this.extendedViewMode) {
             // Switch to "normal view" and trigger workflow button there.
-            const workflowButton = document.querySelector(`.search-container .dab-result-details[data-id="${this.result.id}"] .dab-result-details__actions-workflow`) as HTMLElement;
-            this.toggleExtendedView();
+            const workflowButton = document.querySelector(
+                `.search-container .dab-result-details[data-id="${this.result.id}"] .dab-result-details__actions-workflow`
+            ) as HTMLElement
+            this.toggleExtendedView()
             setTimeout(() => {
-                workflowButton.click();
-            }, 450);
-            return;
+                workflowButton.click()
+            }, 450)
+            return
         } else if (reset) {
             if (!this.workflowHasSavedData) {
-                this.$store.dispatch(SearchActions.setWorkflowResource, null);
+                this.$store.dispatch(SearchActions.setWorkflowResource, null)
             }
-            this.$store.dispatch(SearchActions.setWorkflowInputId, null);
-            this.$store.dispatch(SearchActions.setWorkflowInputType, null);
+            this.$store.dispatch(SearchActions.setWorkflowInputId, null)
+            this.$store.dispatch(SearchActions.setWorkflowInputType, null)
         }
 
         if (this.workflow) {
             if (!this.workflow.data) {
-                const [err, data] = await to(GeossSearchApiService.getWorkflow(this.workflow.url));
+                const [err, data] = await to(
+                    GeossSearchApiService.getWorkflow(this.workflow.url)
+                )
                 if (!err) {
-                    this.workflow.data = data;
+                    this.workflow.data = data
                 } else {
-                    const message = UtilsService.getPropByString(err, 'response.data.message') || this.$tc('popupContent.serverResponseTimeout');
+                    const message =
+                        UtilsService.getPropByString(
+                            err,
+                            'response.data.message'
+                        ) || this.$tc('popupContent.serverResponseTimeout')
                     const props = {
                         title: this.$tc('general.error'),
                         subtitle: message ? message : err
-                    };
-                    return this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+                    }
+                    return this.$store.dispatch(PopupActions.openPopup, {
+                        contentId: 'error',
+                        component: ErrorPopup,
+                        props
+                    })
                 }
             }
 
-            let urlToResource = '';
+            let urlToResource = ''
             if (!this.isSignedIn) {
-                urlToResource = SearchEngineService.getRedirectUrl(this.result.id.toString(), 'openWorkflow');
+                urlToResource = SearchEngineService.getRedirectUrl(
+                    this.result.id.toString(),
+                    'openWorkflow'
+                )
             }
 
             const props = {
                 workflow: this.workflow.data,
                 workflowUrl: this.workflow.url,
                 urlToResource
-            };
+            }
 
-            this.$store.dispatch(PopupActions.openPopup, { contentId: 'workflow', title: this.$tc('popupTitles.workflowandruns'), noCloseOutside: true, component: ServiceWorkflow, props });
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'workflow',
+                title: this.$tc('popupTitles.workflowandruns'),
+                noCloseOutside: true,
+                component: ServiceWorkflow,
+                props
+            })
         }
     }
 
     public isLayerDisplayed(id) {
-        return LayersUtils.isLayerDisplayed(id);
+        return LayersUtils.isLayerDisplayed(id)
     }
 
     public layerButtonAction() {
         if (this.layers.length === 1) {
-            this.toggleSingleLayer();
+            this.toggleSingleLayer()
         } else if (this.layers.length > 1) {
-            this.toggleLayersPopup();
+            this.toggleLayersPopup()
         } else if (this.statisticsId) {
-            this.getStatistics();
+            this.getStatistics()
         }
     }
 
     private toggleSingleLayer() {
-        const coordinates = (this.result.box && typeof this.result.box === 'string' ? this.result.box : null);
-        LayersUtils.toggleLayer(this.layers[0], coordinates, this.image);
+        const coordinates =
+            this.result.box && typeof this.result.box === 'string'
+                ? this.result.box
+                : null
+        LayersUtils.toggleLayer(this.layers[0], coordinates, this.image)
     }
 
     private toggleLayersPopup() {
         const props = {
             data: this.layers,
-            resultCoordinates: (this.result.box && typeof this.result.box === 'string' ? this.result.box : null),
+            resultCoordinates:
+                this.result.box && typeof this.result.box === 'string'
+                    ? this.result.box
+                    : null,
             image: this.image
-        };
+        }
 
-        this.$store.dispatch(PopupActions.openPopup, { contentId: 'layers', title: this.$tc('popupTitles.layers'), component: DabResultLayers, props });
+        this.$store.dispatch(PopupActions.openPopup, {
+            contentId: 'layers',
+            title: this.$tc('popupTitles.layers'),
+            component: DabResultLayers,
+            props
+        })
     }
 
     private async getStatistics() {
         const props = {
             indicator: this.statisticsId,
             timeSeriesArray: this.timeSeriesArray
-        };
-        this.$store.dispatch(PopupActions.openPopup, { contentId: 'unsd', title: this.$tc('popupTitles.unsd'), component: UnitedNationsStatistics, props });
+        }
+        this.$store.dispatch(PopupActions.openPopup, {
+            contentId: 'unsd',
+            title: this.$tc('popupTitles.unsd'),
+            component: UnitedNationsStatistics,
+            props
+        })
     }
 
     private getDownloadLinkStatus(score) {
-        let scoreText;
-        let scoreClass;
+        let scoreText
+        let scoreClass
 
         if (score >= 0 && score < 20) {
-            scoreText = `${this.$tc('fileDownloadsPopup.veryUnreliable')} (${this.$tc('fileDownloadsPopup.score')} ${score}%`;
-            scoreClass = 'av-lowest';
+            scoreText = `${this.$tc(
+                'fileDownloadsPopup.veryUnreliable'
+            )} (${this.$tc('fileDownloadsPopup.score')} ${score}%`
+            scoreClass = 'av-lowest'
         } else if (score >= 20 && score < 40) {
-            scoreText = `${this.$tc('fileDownloadsPopup.frequentlyUnavailable')} (${this.$tc('fileDownloadsPopup.score')} ${score}%`;
-            scoreClass = 'av-low';
+            scoreText = `${this.$tc(
+                'fileDownloadsPopup.frequentlyUnavailable'
+            )} (${this.$tc('fileDownloadsPopup.score')} ${score}%`
+            scoreClass = 'av-low'
         } else if (score >= 40 && score < 60) {
-            scoreText = `${this.$tc('fileDownloadsPopup.sometimesUnavailable')} (${this.$tc('fileDownloadsPopup.score')} ${score}%`;
-            scoreClass = 'av-med';
+            scoreText = `${this.$tc(
+                'fileDownloadsPopup.sometimesUnavailable'
+            )} (${this.$tc('fileDownloadsPopup.score')} ${score}%`
+            scoreClass = 'av-med'
         } else if (score >= 60 && score < 80) {
-            scoreText = `${this.$tc('fileDownloadsPopup.mostlyAvailable')} (${this.$tc('fileDownloadsPopup.score')} ${score}%`;
-            scoreClass = 'av-high';
+            scoreText = `${this.$tc(
+                'fileDownloadsPopup.mostlyAvailable'
+            )} (${this.$tc('fileDownloadsPopup.score')} ${score}%`
+            scoreClass = 'av-high'
         } else if (score >= 80 && score <= 100) {
-            scoreText = `${this.$tc('fileDownloadsPopup.veryReliable')} (${this.$tc('fileDownloadsPopup.score')} ${score}%`;
-            scoreClass = 'av-highest';
+            scoreText = `${this.$tc(
+                'fileDownloadsPopup.veryReliable'
+            )} (${this.$tc('fileDownloadsPopup.score')} ${score}%`
+            scoreClass = 'av-highest'
         } else {
-            scoreText = `${this.$tc('fileDownloadsPopup.noInfo')}`;
-            scoreClass = 'av-no-info';
+            scoreText = `${this.$tc('fileDownloadsPopup.noInfo')}`
+            scoreClass = 'av-no-info'
         }
         return {
             scoreText,
             scoreClass
-        };
+        }
     }
 
     private getDownloadButtonLabel(downloadType) {
-        let label = downloadType;
+        let label = downloadType
         if (label === 'file') {
-            label = this.$tc('dabResult.file');
+            label = this.$tc('dabResult.file')
         } else if (label === 'other') {
-            label = this.$tc('dabResult.other');
+            label = this.$tc('dabResult.other')
         } else if (label === 'html') {
-            label = this.$tc('dabResult.view');
+            label = this.$tc('dabResult.view')
         }
-        return label.toUpperCase();
+        return label.toUpperCase()
     }
 
     private updateUserContributions(removedExtensionData) {
-        const model = removedExtensionData.model;
-        const target = removedExtensionData.target;
-        const extensionId = removedExtensionData.target.entryExtensionId || null;
-        const arrayIndex = removedExtensionData.arrayIndex || null;
+        const model = removedExtensionData.model
+        const target = removedExtensionData.target
+        const extensionId = removedExtensionData.target.entryExtensionId || null
+        const arrayIndex = removedExtensionData.arrayIndex || null
 
-        const updatedUserContributions = this.result.userContributions;
-        let elementToUpdate = updatedUserContributions.extensions.find(e => e.entryExtensionId === extensionId)[model];
+        const updatedUserContributions = this.result.userContributions
+        let elementToUpdate = updatedUserContributions.extensions.find(
+            (e) => e.entryExtensionId === extensionId
+        )[model]
         switch (model) {
             case 'summary':
-                elementToUpdate = '';
-                break;
+                elementToUpdate = ''
+                break
             case 'keywords':
-                elementToUpdate = [];
-                break;
+                elementToUpdate = []
+                break
             case 'transferOptions':
                 if (arrayIndex) {
-                    elementToUpdate = elementToUpdate.filter(e => JSON.stringify(e) !== JSON.stringify(target[model][arrayIndex]));
+                    elementToUpdate = elementToUpdate.filter(
+                        (e) =>
+                            JSON.stringify(e) !==
+                            JSON.stringify(target[model][arrayIndex])
+                    )
                 }
-                break;
+                break
             case 'comment':
-                updatedUserContributions.comments = updatedUserContributions.comments.filter(e => JSON.stringify(e) !== JSON.stringify(target));
-                break;
+                updatedUserContributions.comments =
+                    updatedUserContributions.comments.filter(
+                        (e) => JSON.stringify(e) !== JSON.stringify(target)
+                    )
+                break
             default:
-                break;
+                break
         }
-        this.$set(this.result, 'userContributions', updatedUserContributions);
+        this.$set(this.result, 'userContributions', updatedUserContributions)
     }
 
     private mounted() {
-        this.initResultLayersAndDownloads();
-        const resultToHighlight = this.$store.getters[SearchGetters.highlightResult];
+        this.initResultLayersAndDownloads()
+        const resultToHighlight =
+            this.$store.getters[SearchGetters.highlightResult]
 
-        if (this.$store.getters[SearchGetters.workflow] && this.resultIdDetails === this.result.id) {
-            this.openWorkflow();
-            this.$store.dispatch(SearchActions.setWorkflow, null);
+        if (
+            this.$store.getters[SearchGetters.workflow] &&
+            this.resultIdDetails === this.result.id
+        ) {
+            this.openWorkflow()
+            this.$store.dispatch(SearchActions.setWorkflow, null)
         } else if (resultToHighlight) {
-            this.$store.dispatch(SearchActions.setResultIdDetails, resultToHighlight);
-            const trigger = UtilsService.getUrlParam('trigger');
+            this.$store.dispatch(
+                SearchActions.setResultIdDetails,
+                resultToHighlight
+            )
+            const trigger = UtilsService.getUrlParam('trigger')
             if (trigger && trigger === 'openWorkflow') {
                 setTimeout(() => {
-                    this.openWorkflow();
-                }, 450);
+                    this.openWorkflow()
+                }, 450)
             }
-            this.$store.dispatch(SearchActions.setHighlightResult, null);
+            this.$store.dispatch(SearchActions.setHighlightResult, null)
         }
-        PopupCloseService.eventBus.$on('close', ({ contentId, response }: { contentId: string, response?: any }) => {
-            if (this.resultIdDetails === this.result.id) {
-                if (
-                    contentId === 'extension-remove' && response === 'cancel' ||
-                    contentId === 'error' && response === 'extension-remove-error' ||
-                    contentId === 'general' && response && response.id === 'extension-remove-success' ||
-                    contentId === 'general' && response && response.id === 'extension-remove-unavailable'
-                ) {
-                    if (response && response.data) {
-                        this.updateUserContributions(response.data);
+        PopupCloseService.eventBus.$on(
+            'close',
+            ({
+                contentId,
+                response
+            }: {
+                contentId: string
+                response?: any
+            }) => {
+                if (this.resultIdDetails === this.result.id) {
+                    if (
+                        (contentId === 'extension-remove' &&
+                            response === 'cancel') ||
+                        (contentId === 'error' &&
+                            response === 'extension-remove-error') ||
+                        (contentId === 'general' &&
+                            response &&
+                            response.id === 'extension-remove-success') ||
+                        (contentId === 'general' &&
+                            response &&
+                            response.id === 'extension-remove-unavailable')
+                    ) {
+                        if (response && response.data) {
+                            this.updateUserContributions(response.data)
+                        }
+                        this.showDetails()
                     }
-                    this.showDetails();
                 }
             }
-        });
-        this.prepareShareUrl();
+        )
+        this.prepareShareUrl()
     }
 
     @Watch('dataSource')
     private onDataSourceChange() {
-        this.initResultLayersAndDownloads();
+        this.initResultLayersAndDownloads()
     }
 
     @Watch('showDetailsTrigger')
     private onShowDetailsTrigger() {
         if (this.showDetailsTrigger) {
-            this.showDetails();
+            this.showDetails()
         }
     }
 
     @Watch('resultIdDetails')
     private onResultIdDetailsChange() {
-        if (this.resultIdDetails === this.result.id && !this.result.userContributions) {
+        if (
+            this.resultIdDetails === this.result.id &&
+            !this.result.userContributions
+        ) {
             if (this.isEntryExtensionEnabled) {
                 GeossSearchApiService.getUserContributions(
                     this.result.id,
                     this.rootDataOrigin
-                ).then(data => {
-                    this.$set(this.result, 'userContributions', data);
-                });
+                ).then((data) => {
+                    this.$set(this.result, 'userContributions', data)
+                })
             } else {
-                this.$set(this.result, 'userContributions', {});
+                this.$set(this.result, 'userContributions', {})
             }
         }
-        this.prepareShareUrl();
+        this.prepareShareUrl()
     }
 }
 </script>
@@ -1753,7 +2724,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
         span+span {
             &:before {
-                content: ', '
+                content: ', ';
             }
         }
     }
@@ -1785,7 +2756,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
             bottom: 0;
             left: 0;
             content: '';
-            background: linear-gradient(rgba(white, 0.001), rgba(white, 0.75) 50%, white 100%);
+            background: linear-gradient(rgba(white, 0.001),
+                    rgba(white, 0.75) 50%,
+                    white 100%);
             z-index: 0;
             height: 30px;
             width: 100%;
@@ -2085,7 +3058,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 }
             }
         }
-
     }
 
     &__downloads {
@@ -2256,7 +3228,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         &::before,
         &::after {
             background: $green;
-            content: "";
+            content: '';
             height: 2px;
             left: 3px;
             position: absolute;
@@ -2287,7 +3259,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
             transform: scale(0.8);
             width: 18px;
             background-size: 12px;
-
         }
     }
 

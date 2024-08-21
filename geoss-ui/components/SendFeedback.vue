@@ -1,17 +1,15 @@
 <template>
-    <a class="send-feedback" href="/community/guest/feedback">
+    <NuxtLink class="send-feedback" to="/feedback">
         <i class="icomoon-envelope"></i>
         <span>{{ $tc('sendFeedback') }}</span>
-    </a>
+    </NuxtLink>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class SendFeedbackComponent extends Vue {
-
-}
+export default class SendFeedbackComponent extends Vue { }
 </script>
 
 <style lang="scss" scoped>
@@ -70,7 +68,6 @@ export default class SendFeedbackComponent extends Vue {
             font-size: 13px;
             bottom: 10px;
             right: 41px;
-
         }
 
         i {

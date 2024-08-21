@@ -4,29 +4,22 @@
             <div class="date-slider__title">
                 {{ $tc('generalFilters.dateRanges') }}:
             </div>
-            <DateIntervalRadio
-                :date-from="dateFrom"
-                :date-to="dateTo"
-                :date-period="datePeriod"
-                @on-dates-change="setDates($event)"
-                class="margin-top-5 full-width"
-            />
+            <DateIntervalRadio :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
+                @on-dates-change="setDates($event)" class="margin-top-5 full-width" />
         </div>
         <div class="date-slider">
             <div class="date-slider__min">{{ minYear }}</div>
             <div class="date-slider__max">{{ maxYear }}</div>
-            <!-- <vue-slider :tooltip-placement="['bottom', 'bottom']" :min="minYear" :max="maxYear" :tooltip-formatter="dateFormatter"
-                @change="sliderChange($event)" @drag-start="dragStart()" @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" /> -->
+            <vue-slider :tooltip-placement="['bottom', 'bottom']" :min="minYear" :max="maxYear"
+                :tooltip-formatter="dateFormatter" @change="sliderChange($event)" @drag-start="dragStart()"
+                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-// @ts-nocheck
-
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
-
-// import VueSlider from '@/components/Slider/index';
+import VueSlider from 'vue-slider-component'
 import DatepickerComponent from '@/components/DatePicker/DatePicker.vue'
 import DateIntervalRadio from '@/components/Search/DateIntervalRadio.vue'
 
@@ -34,7 +27,7 @@ import date from '@/filters/date'
 
 @Component({
     components: {
-        // VueSlider,
+        VueSlider,
         DateIntervalRadio
     }
 })
@@ -47,9 +40,9 @@ export default class DateSliderComponent extends Vue {
 
     private currentDay = new Date().getDate()
     private currentMonth = new Date().getMonth()
-    private calendars = []
-    private sliderDateFrom = null
-    private sliderDateTo = null
+    private calendars: any[] = []
+    private sliderDateFrom: any = ''
+    private sliderDateTo: any = ''
     private dragAction = false
 
     get dateYears() {
@@ -58,26 +51,26 @@ export default class DateSliderComponent extends Vue {
         return [startYear, endYear]
     }
 
-    set dateYears([startYear, endYear]) {
-        this.calendars[0].value = this.getCaledarDateFrom(startYear)
-        this.calendars[1].value = this.getCaledarDateTo(endYear)
+    set dateYears(dates) {
+        this.calendars[0].value = this.getCaledarDateFrom(dates[0])
+        this.calendars[1].value = this.getCaledarDateTo(dates[1])
     }
 
     public dragStart() {
         this.dragAction = true
     }
 
-    public dragStop($event) {
+    public dragStop(event: any) {
         this.dragAction = false
-        this.dateYears = $event
+        this.dateYears = event
     }
 
-    public sliderChange($event) {
+    public sliderChange(event: any) {
         if (!this.dragAction) {
-            this.dateYears = $event
+            this.dateYears = event
         }
-        this.sliderDateFrom = $event[0].toString()
-        this.sliderDateTo = $event[1].toString()
+        this.sliderDateFrom = event[0].toString()
+        this.sliderDateTo = event[1].toString()
     }
 
     public setDates(value: {
@@ -88,7 +81,7 @@ export default class DateSliderComponent extends Vue {
         this.changeDates(value.dateFrom, value.dateTo, value.datePeriod)
     }
 
-    public getCaledarDateFrom(startYear) {
+    public getCaledarDateFrom(startYear: any) {
         const startDate = new Date(
             startYear,
             this.currentMonth,
@@ -107,7 +100,7 @@ export default class DateSliderComponent extends Vue {
         return date(startDate.toISOString(), 'YYYY-MM-DD')
     }
 
-    public getCaledarDateTo(endYear) {
+    public getCaledarDateTo(endYear: number) {
         const startDate = new Date(
             this.sliderDateFrom,
             this.currentMonth,
@@ -153,7 +146,7 @@ export default class DateSliderComponent extends Vue {
     }
 
     @Emit()
-    private onChangeDates(value) {
+    private onChangeDates(value: any) {
         return value
     }
 
@@ -178,6 +171,7 @@ export default class DateSliderComponent extends Vue {
         )
         for (let i = 0; i < calendarTriggers.length; i++) {
             const trigger = calendarTriggers[i] as HTMLElement
+            // @ts-ignore
             const ComponentClass = Vue.extend(DatepickerComponent)
             const tomorrow = new Date()
             tomorrow.setDate(tomorrow.getDate() + 1)
@@ -191,10 +185,10 @@ export default class DateSliderComponent extends Vue {
                 i === 0
                     ? new Date(this.minYear, this.currentMonth, this.currentDay)
                     : new Date(
-                          this.maxYear,
-                          this.currentMonth,
-                          this.currentDay
-                      ),
+                        this.maxYear,
+                        this.currentMonth,
+                        this.currentDay
+                    ),
                 'YYYY-MM-DD'
             )
             if (i === 0 && this.dateFrom) {
@@ -219,7 +213,7 @@ export default class DateSliderComponent extends Vue {
                 }
             })
 
-            calendarInstance.$on('input', (val) => {
+            calendarInstance.$on('input', (val: any) => {
                 const date = new Date(val)
                 if (i === 0) {
                     this.changeDates(val, this.dateTo, '')
@@ -233,7 +227,7 @@ export default class DateSliderComponent extends Vue {
             trigger.appendChild(calendarInstance.$el)
             trigger.addEventListener('mousedown', (event: Event) => {
                 event.stopPropagation()
-                ;(calendarInstance as any).fp.toggle()
+                    ; (calendarInstance as any).fp.toggle()
             })
             trigger.addEventListener('click', (event: Event) => {
                 event.stopPropagation()
@@ -273,6 +267,7 @@ export default class DateSliderComponent extends Vue {
 
     &__wrapper {
         display: flex;
+
         @media (max-width: $breakpoint-sm) {
             flex-direction: column;
         }
@@ -288,40 +283,46 @@ export default class DateSliderComponent extends Vue {
     }
 }
 
-//.vue-slider {
-//    height: 12px !important;
-//    padding: 0 !important;
-//    margin-left: 100px;
-//    width: calc(100% - 200px) !important;
-//}
-//.vue-slider-dot {
-//    width: 16px !important;
-//    height: 16px !important;
-//}
-//.vue-slider-dot-tooltip {
-//    .date-picker {
-//        top: 0;
-//        position: absolute;
-//
-//        & > input {
-//            opacity: 0;
-//            height: 30px;
-//        }
-//    }
-//}
-//.vue-slider-dot-tooltip-inner {
-//    border: 2px solid white;
-//    border-radius: 15px;
-//    color: white;
-//    background: $blue;
-//    padding: 5px 10px;
-//}
-//.vue-slider-process,
-//.vue-slider-rail {
-//    background-color: #ffffff;
-//    border-radius: 5px;
-//}
-//.vue-slider-rail {
-//    background-color: #e0b318;
-//}
+.vue-slider {
+    height: 12px !important;
+    padding: 0 !important;
+    margin-left: 100px;
+    width: calc(100% - 200px) !important;
+}
+
+.vue-slider-dot {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.vue-slider-dot-tooltip {
+    .date-picker {
+        top: 0;
+        position: absolute;
+
+        &>input {
+            opacity: 0;
+            height: 30px;
+        }
+    }
+}
+
+.vue-slider-dot-tooltip-inner {
+    border: 2px solid white;
+    border-radius: 15px;
+    color: white;
+    background: $blue;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.vue-slider-process,
+.vue-slider-rail {
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.vue-slider-rail {
+    background-color: #e0b318;
+}
 </style>

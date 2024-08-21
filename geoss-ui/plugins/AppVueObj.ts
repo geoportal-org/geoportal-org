@@ -8,6 +8,7 @@ import Vuebar from 'vuebar'
 //import SocialSharing from 'vue-social-sharing'
 
 import VueAnalytics from 'vue-analytics'
+import LineClamp from 'vue-line-clamp'
 // import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // import 'element-closest-polyfill'
 // import 'events-polyfill/src/constructors/Event.js'
@@ -26,6 +27,7 @@ import { GeneralGetters } from '@/store/general/general-getters'
 Vue.config.devtools = true
 
 // plugins
+Vue.use(LineClamp)
 Vue.use(PortalVue)
 Vue.use(Vuebar)
 //Vue.use(SocialSharing)
@@ -36,7 +38,7 @@ Vue.use(VueAnalytics, {
                 return response ? response.analytics.googleAnalyticsId : null
             }
         ),
-    checkDuplicatedScript: true,
+    checkDuplicatedScript: true
 })
 
 // directives
@@ -51,7 +53,7 @@ const staticPath = 'staticPath'
 Vue.mixin({
     data() {
         return {
-            invalidImages: [],
+            invalidImages: []
         }
     },
     methods: {
@@ -72,6 +74,6 @@ Vue.mixin({
         },
         imageLoadError(imagePath) {
             ;(this as any)[invalidImages].push(imagePath)
-        },
-    },
+        }
+    }
 })

@@ -27,17 +27,19 @@
                 @blur="relativeOrbit = $event.target.value" v-show="relativeOrbitAvailable"
                 :placeholder="$tc('granulaFilters.relativeOrbit')" data-tutorial-tag="filters-granula-relative-orbit" />
             <input class="granula-filters__filter input" type="number" :value="row" @blur="row = $event.target.value"
-                v-show="rowAvailable" :placeholder="$tc('granulaFilters.row')" data-tutorial-tag="filters-granula-row" />
+                v-show="rowAvailable" :placeholder="$tc('granulaFilters.row')"
+                data-tutorial-tag="filters-granula-row" />
             <input class="granula-filters__filter input" type="number" :value="path" @blur="path = $event.target.value"
-                v-show="pathAvailable" :placeholder="$tc('granulaFilters.path')" data-tutorial-tag="filters-granula-path" />
+                v-show="pathAvailable" :placeholder="$tc('granulaFilters.path')"
+                data-tutorial-tag="filters-granula-path" />
             <DateSlider class="granula-filters__filter full-width" :min-year="minYear" :max-year="maxYear"
                 :date-from="fromDate" :date-to="toDate" @on-change-dates="changeDates($event)"
                 data-tutorial-tag="filters-date-range" />
             <div class="iris-filters__filter slider" v-show="cloudCoverageAvailable"
                 data-tutorial-tag="filters-granula-cloud-coverage">
                 <label>Cloud coverage: {{ cloudCoverage.join(' - ') }}%</label>
-                <!-- <vue-slider :min="0" :max="100" :value="cloudCoverage" @drag-start="dragStart()"
-                    @drag-end="dragStop('cloudCoverage', $event)" @change="sliderChange('cloudCoverage', $event)" /> -->
+                <vue-slider :min="0" :max="100" :value="cloudCoverage" @drag-start="dragStart()"
+                    @drag-end="dragStop('cloudCoverage', $event)" @change="sliderChange('cloudCoverage', $event)" />
             </div>
         </div>
     </div>
@@ -45,268 +47,319 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 
-// import VueSlider from '@/components/Slider/index';
-import DateSlider from '@/components/Search/DateSlider.vue';
-import { SearchGetters } from '@/store/search/search-getters';
-import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters';
-import { GranulaFiltersActions } from '@/store/granulaFilters/granula-filters-actions';
-import { SearchActions } from '@/store/search/search-actions';
-import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions';
-import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters';
-import { DataSources } from '@/interfaces/DataSources';
+import VueSlider from 'vue-slider-component'
+import DateSlider from '@/components/Search/DateSlider.vue'
+import { SearchGetters } from '@/store/search/search-getters'
+import { GranulaFiltersGetters } from '@/store/granulaFilters/granula-filters-getters'
+import { GranulaFiltersActions } from '@/store/granulaFilters/granula-filters-actions'
+import { SearchActions } from '@/store/search/search-actions'
+import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
+import { DataSources } from '@/interfaces/DataSources'
 
 @Component({
     components: {
-        //  VueSlider,
+        VueSlider,
         DateSlider
     }
 })
 export default class SearchGranulaFiltersComponent extends Vue {
-
-    public minYear = new Date().getFullYear() - 20;
-    public maxYear = new Date().getFullYear();
-    public dragAction = false;
+    public minYear = new Date().getFullYear() - 20
+    public maxYear = new Date().getFullYear()
+    public dragAction = false
 
     get appendToBody() {
-        return (this.containerVisible || this.generalFiltersInChange);
+        return this.containerVisible || this.generalFiltersInChange
     }
 
     get containerVisible() {
-        return this.$store.getters[GeneralFiltersGetters.containerVisible];
+        return this.$store.getters[GeneralFiltersGetters.containerVisible]
     }
 
     get generalFiltersInChange() {
-        return this.$store.getters[GeneralFiltersGetters.inChangeProcess];
+        return this.$store.getters[GeneralFiltersGetters.inChangeProcess]
     }
 
     get productType() {
-        return this.$store.getters[GranulaFiltersGetters.productType];
+        return this.$store.getters[GranulaFiltersGetters.productType]
     }
 
     set productType(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setProductType, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setProductType, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get productTypeOptions() {
-        return this.$store.getters[GranulaFiltersGetters.productTypeOptions];
+        return this.$store.getters[GranulaFiltersGetters.productTypeOptions]
     }
 
     get sensorPolarisation() {
-        return this.$store.getters[GranulaFiltersGetters.sensorPolarisation];
+        return this.$store.getters[GranulaFiltersGetters.sensorPolarisation]
     }
 
     set sensorPolarisation(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setSensorPolarisation, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setSensorPolarisation, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get sensorPolarisationOptions() {
-        return this.$store.getters[GranulaFiltersGetters.sensorPolarisationOptions];
+        return this.$store.getters[
+            GranulaFiltersGetters.sensorPolarisationOptions
+        ]
     }
 
     get sensorMode() {
-        return this.$store.getters[GranulaFiltersGetters.sensorMode];
+        return this.$store.getters[GranulaFiltersGetters.sensorMode]
     }
 
     set sensorMode(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setSensorMode, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setSensorMode, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get sensorModeOptions() {
-        return this.$store.getters[GranulaFiltersGetters.sensorModeOptions];
+        return this.$store.getters[GranulaFiltersGetters.sensorModeOptions]
     }
 
     get sensorSwath() {
-        return this.$store.getters[GranulaFiltersGetters.sensorSwath];
+        return this.$store.getters[GranulaFiltersGetters.sensorSwath]
     }
 
     set sensorSwath(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setSensorSwath, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setSensorSwath, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get sensorSwathOptions() {
-        return this.$store.getters[GranulaFiltersGetters.sensorSwathOptions];
+        return this.$store.getters[GranulaFiltersGetters.sensorSwathOptions]
     }
 
     get instrument() {
-        return this.$store.getters[GranulaFiltersGetters.instrument];
+        return this.$store.getters[GranulaFiltersGetters.instrument]
     }
 
     set instrument(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setInstrument, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setInstrument, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get instrumentOptions() {
-        return this.$store.getters[GranulaFiltersGetters.instrumentOptions];
+        return this.$store.getters[GranulaFiltersGetters.instrumentOptions]
     }
 
     get productLevel() {
-        return this.$store.getters[GranulaFiltersGetters.productLevel];
+        return this.$store.getters[GranulaFiltersGetters.productLevel]
     }
 
     set productLevel(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setProductLevel, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setProductLevel, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get productLevelOptions() {
-        return this.$store.getters[GranulaFiltersGetters.productLevelOptions];
+        return this.$store.getters[GranulaFiltersGetters.productLevelOptions]
     }
 
     get timeliness() {
-        return this.$store.getters[GranulaFiltersGetters.timeliness];
+        return this.$store.getters[GranulaFiltersGetters.timeliness]
     }
 
     set timeliness(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setTimeliness, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setTimeliness, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get timelinessOptions() {
-        return this.$store.getters[GranulaFiltersGetters.timelinessOptions];
+        return this.$store.getters[GranulaFiltersGetters.timelinessOptions]
     }
 
     get cloudCoverageAvailable() {
-        return this.$store.getters[GranulaFiltersGetters.cloudCoverageAvailable];
+        return this.$store.getters[GranulaFiltersGetters.cloudCoverageAvailable]
     }
 
     get cloudCoverage() {
-        return this.$store.getters[GranulaFiltersGetters.cloudCoverage];
+        return this.$store.getters[GranulaFiltersGetters.cloudCoverage]
     }
 
     set cloudCoverage(value: number[]) {
-        this.$store.dispatch(GranulaFiltersActions.setCloudCoverage, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setCloudCoverage, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get relativeOrbit() {
-        return this.$store.getters[GranulaFiltersGetters.relativeOrbit];
+        return this.$store.getters[GranulaFiltersGetters.relativeOrbit]
     }
 
     set relativeOrbit(value: string) {
         if (value !== this.relativeOrbit) {
-            this.$store.dispatch(GranulaFiltersActions.setRelativeOrbit, value);
-            this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+            this.$store.dispatch(GranulaFiltersActions.setRelativeOrbit, value)
+            this.$store.dispatch(SearchActions.getResults, {
+                targetSource: DataSources.DAB
+            })
         }
     }
 
     get relativeOrbitAvailable() {
-        return this.$store.getters[GranulaFiltersGetters.relativeOrbitAvailable];
+        return this.$store.getters[GranulaFiltersGetters.relativeOrbitAvailable]
     }
 
     get row() {
-        return this.$store.getters[GranulaFiltersGetters.row];
+        return this.$store.getters[GranulaFiltersGetters.row]
     }
 
     set row(value: string) {
         if (value !== this.row) {
-            this.$store.dispatch(GranulaFiltersActions.setRow, value);
-            this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+            this.$store.dispatch(GranulaFiltersActions.setRow, value)
+            this.$store.dispatch(SearchActions.getResults, {
+                targetSource: DataSources.DAB
+            })
         }
     }
 
     get rowAvailable() {
-        return this.$store.getters[GranulaFiltersGetters.rowAvailable];
+        return this.$store.getters[GranulaFiltersGetters.rowAvailable]
     }
 
     get path() {
-        return this.$store.getters[GranulaFiltersGetters.path];
+        return this.$store.getters[GranulaFiltersGetters.path]
     }
 
     set path(value: string) {
         if (value !== this.path) {
-            this.$store.dispatch(GranulaFiltersActions.setPath, value);
-            this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+            this.$store.dispatch(GranulaFiltersActions.setPath, value)
+            this.$store.dispatch(SearchActions.getResults, {
+                targetSource: DataSources.DAB
+            })
         }
     }
 
     get pathAvailable() {
-        return this.$store.getters[GranulaFiltersGetters.pathAvailable];
+        return this.$store.getters[GranulaFiltersGetters.pathAvailable]
     }
 
     get fromDate() {
-        return this.$store.getters[GranulaFiltersGetters.fromDate];
+        return this.$store.getters[GranulaFiltersGetters.fromDate]
     }
 
     set fromDate(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setFromDate, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setFromDate, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get toDate() {
-        return this.$store.getters[GranulaFiltersGetters.toDate];
+        return this.$store.getters[GranulaFiltersGetters.toDate]
     }
 
     set toDate(value: string) {
-        this.$store.dispatch(GranulaFiltersActions.setToDate, value);
-        this.$store.dispatch(SearchActions.getResults, { targetSource: DataSources.DAB });
+        this.$store.dispatch(GranulaFiltersActions.setToDate, value)
+        this.$store.dispatch(SearchActions.getResults, {
+            targetSource: DataSources.DAB
+        })
     }
 
     get currentResults() {
-        return this.$store.getters[SearchGetters.currentResults];
+        return this.$store.getters[SearchGetters.currentResults]
     }
 
     public dragStart() {
-        this.dragAction = true;
+        this.dragAction = true
     }
 
     public dragStop(target, value) {
-        this.dragAction = false;
-        this[target] = value;
+        this.dragAction = false
+        this[target] = value
     }
 
     public sliderChange(target, value) {
         if (!this.dragAction) {
-            this[target] = value;
+            this[target] = value
         }
     }
 
-    public changeDates(value: { dateFrom: string, dateTo: string }) {
-        this.$store.dispatch(GranulaFiltersActions.setFromDate, value.dateFrom);
-        this.$store.dispatch(GranulaFiltersActions.setToDate, value.dateTo);
-        this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false);
-        this.$store.dispatch(SearchActions.getResults, { theSameTab: true, targetSource: DataSources.DAB });
+    public changeDates(value: { dateFrom: string; dateTo: string }) {
+        this.$store.dispatch(GranulaFiltersActions.setFromDate, value.dateFrom)
+        this.$store.dispatch(GranulaFiltersActions.setToDate, value.dateTo)
+        this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false)
+        this.$store.dispatch(SearchActions.getResults, {
+            theSameTab: true,
+            targetSource: DataSources.DAB
+        })
     }
 
     private updateFilterOptions(storeAction: string, filter: string) {
-        const options = [];
-        const filterOptionsRaw = this.currentResults['dm:termFrequency'][`dm:${filter}`];
+        const options = []
+        const filterOptionsRaw =
+            this.currentResults['dm:termFrequency'][`dm:${filter}`]
 
         if (filterOptionsRaw && filterOptionsRaw[`dm:item`]) {
-
             if (filterOptionsRaw[`dm:item`].constructor !== Array) {
-                filterOptionsRaw[`dm:item`] = [filterOptionsRaw[`dm:item`]];
+                filterOptionsRaw[`dm:item`] = [filterOptionsRaw[`dm:item`]]
             }
 
             for (const item of filterOptionsRaw[`dm:item`]) {
-                const name = item['dm:decodedTerm'];
+                const name = item['dm:decodedTerm']
 
                 options.push({
                     text: `${name} (${item['dm:freq']})`,
                     id: item['dm:decodedTerm']
-                });
+                })
             }
         }
 
-        this.$store.dispatch(storeAction, options);
+        this.$store.dispatch(storeAction, options)
     }
 
     @Watch('currentResults')
     private async onCurrentResultsChanged() {
         if (this.currentResults && this.currentResults['dm:termFrequency']) {
-            this.updateFilterOptions(GranulaFiltersActions.setProductTypeOptions, 'prodType');
-            this.updateFilterOptions(GranulaFiltersActions.setSensorPolarisationOptions, 'sarPolCh');
-            this.updateFilterOptions(GranulaFiltersActions.setSensorModeOptions, 'sensorOpMode');
-            this.updateFilterOptions(GranulaFiltersActions.setSensorSwathOptions, 'sensorSwath');
-            this.updateFilterOptions(GranulaFiltersActions.setInstrumentOptions, 's3InstrumentIdx');
-            this.updateFilterOptions(GranulaFiltersActions.setProductLevelOptions, 's3ProductLevel');
-            this.updateFilterOptions(GranulaFiltersActions.setTimelinessOptions, 's3Timeliness');
+            this.updateFilterOptions(
+                GranulaFiltersActions.setProductTypeOptions,
+                'prodType'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setSensorPolarisationOptions,
+                'sarPolCh'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setSensorModeOptions,
+                'sensorOpMode'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setSensorSwathOptions,
+                'sensorSwath'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setInstrumentOptions,
+                's3InstrumentIdx'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setProductLevelOptions,
+                's3ProductLevel'
+            )
+            this.updateFilterOptions(
+                GranulaFiltersActions.setTimelinessOptions,
+                's3Timeliness'
+            )
         }
     }
 }

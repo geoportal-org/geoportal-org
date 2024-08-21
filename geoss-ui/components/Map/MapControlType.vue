@@ -1,9 +1,10 @@
 <template>
     <div class="map-control-type">
         <button class="map-control-type__trigger disabled-transparent" :class="{ active: showSlider }"
-            :title="$tc('mapControls.changeBasemap')" :disabled="disabled"
-            v-click-outside="{ fn: closeSlider, excludeSelectors: '.map-control-type__slider-wrapper' }"
-            @click="toggleSlider()">
+            :title="$tc('mapControls.changeBasemap')" :disabled="disabled" v-click-outside="{
+                fn: closeSlider,
+                excludeSelectors: '.map-control-type__slider-wrapper'
+            }" @click="toggleSlider()">
             <i class="icomoon-map-type"></i>
         </button>
         <div class="map-control-type__slider-wrapper" :class="{ active: showSlider }">
@@ -18,7 +19,7 @@
 					:navigationEnabled="true">
 				<Slide v-for="(type, key) in types" :key="key" class="map-control-type__slide" :class="{active: mapActiveLayerTileId === key}">
 					<button @touchstart="touchMapType(type.title)" @touchend="touchMapTypeReset" @click="switchMapLayerTile(key)" :disabled="type.disabled" :title="`${type.title} ${type.disabled ? '(Unavailable)' : ''}`">
-						<img :alt="type.title" :src="`${staticPath()}/img/layer-tiles/${type.img}`" />
+						<img :alt="type.title" :src="`/img/layer-tiles/${type.img}`" />
 						<span class="mapname-tip" :class="{show: showTip == type.title}">{{ type.title }}</span>
 					</button>
 				</Slide>
@@ -28,12 +29,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 // import { Carousel, Slide } from 'vue-carousel';
 
-import LayerTilesService from '@/services/map/layer-tiles.service';
-import { MapActions } from '@/store/map/map-actions';
-import { MapGetters } from '@/store/map/map-getters';
+import LayerTilesService from '@/services/map/layer-tiles.service'
+import { MapActions } from '@/store/map/map-actions'
+import { MapGetters } from '@/store/map/map-getters'
 
 @Component({
     components: {
@@ -42,44 +43,44 @@ import { MapGetters } from '@/store/map/map-getters';
     }
 })
 export default class MapControlTypeComponent extends Vue {
-    @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-    public types = LayerTilesService;
-    public showTip = '';
-    public tipTimeout: any;
+    @Prop({ default: false, type: Boolean }) public disabled!: boolean
+    public types = LayerTilesService
+    public showTip = ''
+    public tipTimeout: any
 
-    public showSlider = false;
+    public showSlider = false
 
     get mapActiveLayerTileId() {
-        return this.$store.getters[MapGetters.activeLayerTileId];
+        return this.$store.getters[MapGetters.activeLayerTileId]
     }
 
     public switchMapLayerTile(tileId: string) {
-        this.$store.dispatch(MapActions.setActiveLayerTileId, tileId);
+        this.$store.dispatch(MapActions.setActiveLayerTileId, tileId)
     }
 
     public toggleSlider() {
-        this.showSlider = !this.showSlider;
-        let activeTileIndex = 0;
+        this.showSlider = !this.showSlider
+        let activeTileIndex = 0
         for (const prop of Object.keys(LayerTilesService)) {
             if (prop === this.mapActiveLayerTileId) {
-                break;
+                break
             }
-            activeTileIndex++;
+            activeTileIndex++
         }
-        (this.$refs.slider as any).goToPage(activeTileIndex);
+        ; (this.$refs.slider as any).goToPage(activeTileIndex)
     }
 
     public closeSlider() {
-        this.showSlider = false;
+        this.showSlider = false
     }
 
     public touchMapType(name: string) {
-        this.showTip = name;
+        this.showTip = name
     }
 
     public touchMapTypeReset() {
-        clearTimeout(this.tipTimeout);
-        this.tipTimeout = setTimeout(() => this.showTip = '', 666);
+        clearTimeout(this.tipTimeout)
+        this.tipTimeout = setTimeout(() => (this.showTip = ''), 666)
     }
 }
 </script>
@@ -204,7 +205,6 @@ export default class MapControlTypeComponent extends Vue {
             //     }
             // }
         }
-
     }
 
     &__slide {
@@ -212,7 +212,7 @@ export default class MapControlTypeComponent extends Vue {
         &.active,
         &:hover {
             button:not(:disabled) {
-                border-color: #EB6220;
+                border-color: #eb6220;
             }
         }
 

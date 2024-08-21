@@ -161,7 +161,7 @@ const parseCatalogsResponse = (data: string): any => {
             subOptions: [],
             label: cat.title,
             title: cat.title,
-            value: cat.id,
+            value: cat.id
         })
     }
     return catalogs
@@ -173,8 +173,8 @@ export default {
             `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
-                    Authorization: '',
-                },
+                    Authorization: ''
+                }
             }
         )
         return webSettings._embedded.webSettings
@@ -184,8 +184,8 @@ export default {
             `${geossSettings.webSettings}/sites/${siteId}/web-settings`,
             {
                 headers: {
-                    Authorization: '',
-                },
+                    Authorization: ''
+                }
             }
         )
         const webSettingsData: WebSettingsData = parseWebSettings(webSettings)
@@ -196,8 +196,8 @@ export default {
             `${geossSettings.apiSettings}/sites/${siteId}/api-settings`,
             {
                 headers: {
-                    Authorization: '',
-                },
+                    Authorization: ''
+                }
             }
         )
         const apiSettingsData: any = parseApiSettings(apiSettings)
@@ -207,19 +207,22 @@ export default {
         if (process.browser) {
             const catalogsResponse: any = await apiClient.$get(catalogsUrl, {
                 headers: {
-                    Authorization: '',
-                },
+                    Authorization: ''
+                }
             })
             return parseCatalogsResponse(catalogsResponse)
         }
         return []
     },
-    getViews: async () => {
-        const views: any = await apiClient.$get(geossSettings.views, {
-            headers: {
-                Authorization: '',
-            },
-        })
+    getViews: async (siteId: number) => {
+        const views: any = await apiClient.$get(
+            `${geossSettings.apiSettings}/sites/${siteId}/views`,
+            {
+                headers: {
+                    Authorization: ''
+                }
+            }
+        )
         return views._embedded.views
     },
     getDataProviders: async (dataProvidersUrl: string) => {
@@ -229,8 +232,8 @@ export default {
                 dataProvidersUrl,
                 {
                     headers: {
-                        Authorization: '',
-                    },
+                        Authorization: ''
+                    }
                 }
             )
             SpinnerService.hideSpinner()
@@ -251,16 +254,16 @@ export default {
         return apiClient[method](url, JSON.stringify(webSettingData), {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: token ? token : '',
-            },
+                'Authorization': token ? token : ''
+            }
         })
     },
     setView: async (view: any, token: any = null) => {
         return apiClient.$post(`${geossSettings.views}`, JSON.stringify(view), {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: token ? token : '',
-            },
+                'Authorization': token ? token : ''
+            }
         })
     },
     updateView: async (id: number, view: any, token: any = null) => {
@@ -270,9 +273,9 @@ export default {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token ? token : '',
-                },
+                    'Authorization': token ? token : ''
+                }
             }
         )
-    },
+    }
 }

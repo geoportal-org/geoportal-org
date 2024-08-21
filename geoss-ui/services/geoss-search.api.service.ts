@@ -144,8 +144,8 @@ const GeossSearchApiService = {
         // )
     },
 
-    getViewsOptions(): Promise<Source[]> {
-        return webSettingsAPI.getViews()
+    getViewsOptions(siteId: number = 0): Promise<Source[]> {
+        return webSettingsAPI.getViews(siteId)
 
         // if (cache.views) {
         //     return Promise.resolve(cache.views)

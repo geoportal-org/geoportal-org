@@ -1,35 +1,16 @@
 <template>
-    <div
-        class="filters general-filters"
-        :class="{ 'only-advanced': onlyAdvanced }"
-    >
-        <div
-            class="general-filters__absolute-box"
-            :class="{ stretched: generalFiltersInChange }"
-        >
-            <div
-                class="general-filters__filter--geoss-submit d-flex margin-right-15"
-                v-if="generalFiltersInChange"
-            >
-                <button
-                    @click="cancelChanges()"
-                    class="general-filters__action cancel"
-                >
+    <div class="filters general-filters" :class="{ 'only-advanced': onlyAdvanced }">
+        <div class="general-filters__absolute-box" :class="{ stretched: generalFiltersInChange }">
+            <div class="general-filters__filter--geoss-submit d-flex margin-right-15" v-if="generalFiltersInChange">
+                <button @click="cancelChanges()" class="general-filters__action cancel">
                     {{ $tc('generalFilters.cancel') }}
                 </button>
-                <button
-                    :disabled="!isNonEmpty"
-                    @click="acceptChanges()"
-                    class="general-filters__action accept"
-                >
+                <button :disabled="!isNonEmpty" @click="acceptChanges()" class="general-filters__action accept">
                     {{ $tc('generalFilters.accept') }}
                 </button>
             </div>
         </div>
-        <div
-            v-if="googlePlacesApiError === 'OVER_QUERY_LIMIT'"
-            class="general-filters__google-api-error"
-        >
+        <div v-if="googlePlacesApiError === 'OVER_QUERY_LIMIT'" class="general-filters__google-api-error">
             {{ getGooglePlacesApiError() }}
         </div>
         <div class="general-filters__wrapper">
@@ -37,86 +18,37 @@
                 <div class="general-filters__column__header">
                     Choose location:
                 </div>
-                <CustomSelect
-                    class="general-filters__filter location-type"
-                    @input="onLocationTypeChanged($event)"
-                    :value="locationType"
-                    :options="availableLocationTypeOptions"
-                    :appendToBody="appendToBody"
-                    :clearable="false"
-                    data-tutorial-tag="filters-general-location-type"
-                >
+                <CustomSelect class="general-filters__filter location-type" @input="onLocationTypeChanged($event)"
+                    :value="locationType" :options="availableLocationTypeOptions" :appendToBody="appendToBody"
+                    :clearable="false" data-tutorial-tag="filters-general-location-type">
                     <i slot="icon" class="icomoon-earth"></i>
                 </CustomSelect>
-                <GooglePlacesSelect
-                    v-show="generalFilters.locationType === 'geolocation'"
-                    @input="onGooglePlacesSelect($event)"
-                    class="general-filters__filter geolocation"
-                    data-tutorial-tag="filters-general-geolocation"
-                />
-                <CustomSelect
-                    v-show="generalFilters.locationType === 'continent_country'"
-                    class="general-filters__filter location"
-                    @input="onContryOrContinentChanged($event)"
-                    :value="selectedAreaCoordsConcat"
-                    :options="countriesAndContinents"
-                    textProp="title"
-                    idProp="coordinates"
-                    :appendToBody="appendToBody"
-                    :filterable="true"
+                <GooglePlacesSelect v-show="generalFilters.locationType === 'geolocation'"
+                    @input="onGooglePlacesSelect($event)" class="general-filters__filter geolocation"
+                    data-tutorial-tag="filters-general-geolocation" />
+                <CustomSelect v-show="generalFilters.locationType === 'continent_country'"
+                    class="general-filters__filter location" @input="onContryOrContinentChanged($event)"
+                    :value="selectedAreaCoordsConcat" :options="countriesAndContinents" textProp="title"
+                    idProp="coordinates" :appendToBody="appendToBody" :filterable="true"
                     :placeholder="$t('placeholders.selectContinentOrCountry')"
-                    data-tutorial-tag="filters-general-continent-country"
-                >
+                    data-tutorial-tag="filters-general-continent-country">
                     <i slot="icon" class="icomoon-all-directions-arrows"></i>
                 </CustomSelect>
-                <div
-                    class="general-filters__filter general-filters__filter--coordinates location"
+                <div class="general-filters__filter general-filters__filter--coordinates location"
                     v-show="generalFilters.locationType === 'coordinates'"
-                    data-tutorial-tag="filters-general-coordinates"
-                >
+                    data-tutorial-tag="filters-general-coordinates">
                     <div class="coordinates-inputs">
-                        <input
-                            type="number"
-                            v-model="coordinates.W"
-                            @change="onCoordinatesChange('W', $event)"
-                            min="-180"
-                            max="180"
-                            step="any"
-                            placeholder="First longitude"
-                        />
-                        <input
-                            type="number"
-                            v-model="coordinates.S"
-                            @change="onCoordinatesChange('S', $event)"
-                            min="-90"
-                            max="90"
-                            step="any"
-                            placeholder="First latitude"
-                        />
-                        <input
-                            type="number"
-                            v-model="coordinates.E"
-                            @change="onCoordinatesChange('E', $event)"
-                            min="-180"
-                            max="180"
-                            step="any"
-                            placeholder="Second longitude"
-                        />
-                        <input
-                            type="number"
-                            v-model="coordinates.N"
-                            @change="onCoordinatesChange('N', $event)"
-                            min="-90"
-                            max="90"
-                            step="any"
-                            placeholder="Second latitude"
-                        />
+                        <input type="number" v-model="coordinates.W" @change="onCoordinatesChange('W', $event)"
+                            min="-180" max="180" step="any" placeholder="First longitude" />
+                        <input type="number" v-model="coordinates.S" @change="onCoordinatesChange('S', $event)"
+                            min="-90" max="90" step="any" placeholder="First latitude" />
+                        <input type="number" v-model="coordinates.E" @change="onCoordinatesChange('E', $event)"
+                            min="-180" max="180" step="any" placeholder="Second longitude" />
+                        <input type="number" v-model="coordinates.N" @change="onCoordinatesChange('N', $event)"
+                            min="-90" max="90" step="any" placeholder="Second latitude" />
                     </div>
                     <div class="coordinates-buttons">
-                        <button
-                            @click="clearCoordinates()"
-                            :class="{ active: isCoordinateFilled() }"
-                        >
+                        <button @click="clearCoordinates()" :class="{ active: isCoordinateFilled() }">
                             ✕ {{ $tc('generalFilters.cancel') }}
                         </button>
                     </div>
@@ -126,71 +58,36 @@
                 <div class="general-filters__column__header">
                     Choose data catalogues and Thematic areas:
                 </div>
-                <CustomSelect
-                    class="general-filters__filter sources"
-                    @input="onSourcesChanged($event)"
-                    :value="generalFilters.sources"
-                    :options="sourceOptions"
-                    :multiple="true"
-                    :filterable="true"
-                    textProp="label"
-                    idProp="value"
-                    :placeholder="$t('generalFilters.earthObservationCatalogs')"
-                    :appendToBody="appendToBody"
-                    :buttonDisabled="dataSource !== DataSources.DAB"
-                    data-tutorial-tag="filters-general-sources"
-                />
+                <CustomSelect class="general-filters__filter sources" @input="onSourcesChanged($event)"
+                    :value="generalFilters.sources" :options="sourceOptions" :multiple="true" :filterable="true"
+                    textProp="label" idProp="value" :placeholder="$t('generalFilters.earthObservationCatalogs')"
+                    :appendToBody="appendToBody" :buttonDisabled="dataSource !== DataSources.DAB"
+                    data-tutorial-tag="filters-general-sources" />
 
-                <ExtendedCustomSelect
-                    class="general-filters__filter views"
-                    @input="onViewChanged($event)"
-                    :value="generalFilters.viewId"
-                    :options="viewOptions"
-                    nestedOptionsFieldName="subOptions"
-                    :filterable="true"
-                    textProp="label"
-                    idProp="value"
-                    :placeholder="$t('generalFilters.thematicAreas')"
-                    :appendToBody="appendToBody"
-                    :buttonDisabled="
-                        dataSource !== DataSources.DAB ||
+                <ExtendedCustomSelect class="general-filters__filter views" @input="onViewChanged($event)"
+                    :value="generalFilters.viewId" :options="viewOptions" nestedOptionsFieldName="subOptions"
+                    :filterable="true" textProp="label" idProp="value" :placeholder="$t('generalFilters.thematicAreas')"
+                    :appendToBody="appendToBody" :buttonDisabled="dataSource !== DataSources.DAB ||
                         onlyDefaultViewAvailable()
-                    "
-                    :clearable="!onlyDefaultViewAvailable()"
-                    data-tutorial-tag="filters-general-views"
-                />
+                        " :clearable="!onlyDefaultViewAvailable()" data-tutorial-tag="filters-general-views" />
             </div>
             <div class="general-filters__column narrow">
                 <div class="general-filters__column__header"></div>
-                <GeossDataCoreCheckbox
-                    class="general-filters__filter general-filters__filter--geoss-data-core"
-                    @input="
-                        generalFiltersGeossDataCore =
-                            $event.target.value != 'true'
-                    "
-                    :buttonDisabled="dataSource !== DataSources.DAB"
-                    data-tutorial-tag="filters-general-data-core"
-                />
+                <GeossDataCoreCheckbox class="general-filters__filter general-filters__filter--geoss-data-core" @input="
+                    generalFiltersGeossDataCore =
+                    $event.target.value != 'true'
+                    " :buttonDisabled="dataSource !== DataSources.DAB" data-tutorial-tag="filters-general-data-core" />
             </div>
         </div>
         <div class="general-filters__wrapper">
             <div class="general-filters__column narrow">
-                <BoundingBoxRelationRadio
-                    @input="setBoundingBoxRelation($event)"
-                    class="margin-top-5 general-filters__filter location"
-                />
+                <BoundingBoxRelationRadio @input="setBoundingBoxRelation($event)"
+                    class="margin-top-5 general-filters__filter location" />
             </div>
             <div class="general-filters__column wide">
-                <DateSlider
-                    class="general-filters__filter full-width"
-                    :min-year="minYear"
-                    :max-year="maxYear"
-                    :date-from="dateFrom"
-                    :date-to="dateTo"
-                    :date-period="datePeriod"
-                    @on-change-dates="changeDates($event)"
-                    data-tutorial-tag="filters-general-date-range"
-                />
+                <DateSlider class="general-filters__filter full-width" :min-year="minYear" :max-year="maxYear"
+                    :date-from="dateFrom" :date-to="dateTo" :date-period="datePeriod"
+                    @on-change-dates="changeDates($event)" data-tutorial-tag="filters-general-date-range" />
             </div>
         </div>
     </div>
@@ -220,6 +117,7 @@ import { MapCoordinate } from '@/interfaces/MapCoordinate'
 import { DataSources } from '@/interfaces/DataSources'
 import to from '@/utils/to'
 import { AppVueObj } from '@/data/global'
+import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
 
 declare const google: any
 
@@ -297,6 +195,10 @@ export default class SearchGeneralFiltersComponent extends Vue {
 
     get containerVisible() {
         return this.$store.getters[GeneralFiltersGetters.containerVisible]
+    }
+
+    get siteId() {
+        return this.$store.getters[SearchEngineGetters.siteId]
     }
 
     get coordinates() {
@@ -570,10 +472,10 @@ export default class SearchGeneralFiltersComponent extends Vue {
             this.lastState = lastState
                 ? lastState
                 : JSON.parse(
-                      JSON.stringify(
-                          this.$store.getters[GeneralFiltersGetters.values]
-                      )
-                  )
+                    JSON.stringify(
+                        this.$store.getters[GeneralFiltersGetters.values]
+                    )
+                )
             this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, true)
         } else {
             /**
@@ -593,7 +495,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
                     const inChangeProcess =
                         this.lastState.datePeriod === ''
                             ? currentGeneralFilters !==
-                              JSON.stringify(this.lastState)
+                            JSON.stringify(this.lastState)
                             : false
                     this.$store.dispatch(
                         GeneralFiltersActions.setInChangeProcess,
@@ -686,7 +588,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
         }
 
         const [, viewOptions] = await to(
-            GeossSearchApiService.getViewsOptions()
+            GeossSearchApiService.getViewsOptions(this.siteId)
         )
         if (viewOptions) {
             this.viewOptions = viewOptions
@@ -917,6 +819,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
                 padding: 4px 6px;
                 font-size: 12px;
                 -moz-appearance: textfield;
+
                 &:hover {
                     -moz-appearance: initial;
                 }
