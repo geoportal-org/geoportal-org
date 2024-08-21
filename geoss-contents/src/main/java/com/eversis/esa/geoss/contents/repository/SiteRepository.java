@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.contents.repository;
 
 import com.eversis.esa.geoss.contents.domain.Site;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

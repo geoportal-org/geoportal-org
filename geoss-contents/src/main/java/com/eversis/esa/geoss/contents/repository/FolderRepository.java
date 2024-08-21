@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.contents.repository;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.domain.Folder;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.List;
 
 /**
  * The interface Folder repository.
