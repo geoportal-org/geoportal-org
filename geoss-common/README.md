@@ -4,7 +4,7 @@ Common module for all backend application. (Java / Spring)
 
 ## Prerequisites
 
-- `Java 17`
+- `Java 21`
 
 ## Build Project
 

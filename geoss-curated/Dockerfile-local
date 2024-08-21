@@ -1,4 +1,4 @@
-FROM openjdk:17.0.2-jdk-slim-buster AS builder
+FROM openjdk:21-jdk-slim AS builder
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
@@ -13,7 +13,7 @@ RUN chmod u+x gradlew
 RUN ./gradlew --build-cache --no-daemon assemble
 
 
-FROM openjdk:17.0.2-jdk-slim AS runner
+FROM openjdk:21-jdk-slim AS runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"

@@ -6,7 +6,7 @@ The application is based on the **Spring Boot 3 framework**.
 
 ## Prerequisites
 
-- `Java 17`
+- `Java 21`
 ## Build project
 
 ```shell

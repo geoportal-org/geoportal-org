@@ -9,7 +9,7 @@ The resource presentation format is the [HAL](https://en.wikipedia.org/wiki/Hype
 
 ## Prerequisites
 
-- `Java 17`
+- `Java 21`
 ## Build project
 
 ```shell

@@ -18,7 +18,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 To run this server on your local machine you need to have installed:
 
-- `Java 17`
+- `Java 21`
 - `Elasticsearch 8.9.0`
 
 Currently, the connection to Elasticsearch 8 is provided through RestHighLevelClient with API compatibility mode.
