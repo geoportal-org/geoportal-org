@@ -12,14 +12,19 @@ import { Component, Vue, Watch } from 'nuxt-property-decorator';
 import { SearchGetters } from '@/store/search/search-getters';
 import { DataSourceGroup, AlternateSourcesMap } from '@/interfaces/DataSources';
 import { SearchActions } from '@/store/search/search-actions';
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters';
 
 @Component
 export default class SeeOtherSourcesComponent extends Vue {
 
-    public selectedSource = this.dataSource;
+    public selectedSource = this.defaultDataSource || this.dataSource;
 
     get dataSource() {
         return this.$store.getters[SearchGetters.dataSource];
+    }
+
+    get defaultDataSource () {
+        return this.$store.getters[SearchEngineGetters.defaultSourceName] || undefined
     }
 
     get currentResults() {

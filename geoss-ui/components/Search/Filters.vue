@@ -130,7 +130,7 @@ export default class SearchFiltersComponent extends Vue {
 
     @Watch('dataSource')
     public onDSChange() {
-        if (this.dataSource === DataSources.DAB) {
+        if (this.dataSource === DataSources.DAB && this.$store.getters[GeneralFiltersGetters.getViewId].includes('worldcereal')) {
             this.$store.dispatch(
                 InSituFiltersActions.setInSituFiltersAvailable,
                 true

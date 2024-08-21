@@ -1,5 +1,7 @@
 package com.eversis.esa.geoss.contents.service;
 
+import com.eversis.esa.geoss.contents.domain.Content;
+
 import java.util.List;
 
 /**
@@ -13,5 +15,14 @@ public interface ContentService {
      * @param ids the ids
      */
     void deleteByIdsIn(List<Long> ids);
+
+    /**
+     * Update content content.
+     *
+     * @param contentId  the content id
+     * @param contentDto the content dto
+     * @return the content
+     */
+    Content updateContent(long contentId, Content contentDto);
 
 }

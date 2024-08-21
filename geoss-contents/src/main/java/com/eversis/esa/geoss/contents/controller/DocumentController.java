@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -95,6 +97,9 @@ public class DocumentController {
             @RequestParam("files") MultipartFile[] files,
             @Parameter(hidden = true)
             @RequestParam("model") String model) {
+
+        validateFileName(files[0]);
+
         Document savedDocument;
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -126,4 +131,30 @@ public class DocumentController {
                 entityLinks.linkToItemResource(Document.class, document.getId())
         );
     }
+
+    private void validateFileName(MultipartFile file) {
+        String fileName = file.getOriginalFilename().trim();
+
+        if (fileName.length() > 255) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name exceeds maximum length of 255 characters: " + fileName);
+        }
+
+        if (!fileName.matches("^[a-zA-Z0-9-_.]+$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name can only contain alphanumeric characters, hyphens (-), underscores (_), and dots (.): "
+                            + fileName);
+        }
+
+        if (!StandardCharsets.UTF_8.newEncoder().canEncode(fileName)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name is not in valid UTF-8 format: " + fileName);
+        }
+
+        if (fileName.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "File name cannot be empty.");
+        }
+    }
+
 }

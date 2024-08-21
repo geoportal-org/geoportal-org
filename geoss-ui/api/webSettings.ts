@@ -49,7 +49,7 @@ interface WebSettingsData {
 }
 
 interface SiteSettings {
-    defaultDataSource: string
+    defaultSourceName: string
     mapZoom: number
     latitude: number
     longitude: number
@@ -142,7 +142,7 @@ const parseApiSettings = (data: any): any => {
 
 const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
     return {
-        defaultDataSource: data.source_GEOSS,
+        defaultSourceName: data.source_defaultSourceName,
         mapZoom: Number(data.map_zoom),
         latitude: Number(data.map_latitude),
         longitude: Number(data.map_longitude),

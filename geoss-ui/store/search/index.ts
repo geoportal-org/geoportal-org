@@ -1279,9 +1279,10 @@ const actions = {
         dispatch(SearchActions.setWikipediaResults, null, { root: true })
         dispatch(SearchActions.setServicesResults, null, { root: true })
         dispatch(SearchActions.setParentRefs, null, { root: true })
+        const defaultDS = AppVueObj.app.$store.getters[SearchEngineGetters.defaultSourceName]
         dispatch(
             SearchActions.setDataSource,
-            { value: DataSources.DAB, checkDefault: true },
+            { value: defaultDS ? defaultDS : DataSources.DAB, checkDefault: true },
             { root: true }
         )
         dispatch(SearchActions.setPreviousQueryParams, null, { root: true })

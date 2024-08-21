@@ -72,7 +72,7 @@ const mapScopeForm: FormField[] = [
         name: "zoom",
         placeholderId: "form.placeholders.type",
         type: "number",
-        validationSchema: "zero-or-positive-integer",
+        validationSchema: "float-0-20",
     },
 ];
 

@@ -44,7 +44,7 @@ export const en = {
             "invalid-relative-url": "Invalid relative URL",
             "invalid-zero-positive-integer": "An integer between 0 - 20 is required",
             "invalid-latitude": "Invalid latitude (from -90 to 90, up to six decimal places)",
-            "invalid-longitude": "Invalid longitude (from -180 to 180, up to six decimal places)",
+            "invalid-longitude": "Invalid longitude (from 0 to 360, up to six decimal places)",
         },
         actions: {
             submit: "Submit",

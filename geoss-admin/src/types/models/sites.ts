@@ -7,6 +7,7 @@ export interface CreateSiteBody {
 }
 
 export interface SiteData {
+    id: number;
     createdBy: string;
     createdOn: string;
     logoDocumentId: number;

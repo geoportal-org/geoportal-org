@@ -24,4 +24,12 @@ public interface SiteService {
      */
     Site createSite(Site site, MultipartFile file);
 
+    /**
+     * Exists by url boolean.
+     *
+     * @param url the url
+     * @return the boolean
+     */
+    boolean existsByUrl(String url);
+
 }
