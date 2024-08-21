@@ -1,11 +1,5 @@
 package com.eversis.esa.geoss.curated.elasticsearch.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.eversis.esa.geoss.curated.elasticsearch.model.EntryExtensionELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.ExtensionELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.RelationExtensionELK;
@@ -16,8 +10,15 @@ import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionReposit
 import com.eversis.esa.geoss.curated.extensions.repository.TransferOptionExtensionRepository;
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.relations.repository.EntryRelationRepository;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The type Extension mapper.
@@ -31,7 +32,7 @@ public class ExtensionMapper {
     private final EntryExtensionRepository entryExtensionRepository;
 
     private final EntryRelationRepository entryRelationRepository;
- 
+
     /**
      * Instantiates a new Extension mapper.
      *
@@ -64,7 +65,8 @@ public class ExtensionMapper {
         entryExtensionELK.setId(extension.getCode());
         entryExtensionELK.setDataSource(extension.getDataSource().getCode());
         entryExtensionELK.setEntryCode(extension.getCode());
-        Set<TransferOptionExtension> transferOptions = transferOptionExtensionRepository.findByEntryExtension(extension);
+        Set<TransferOptionExtension> transferOptions = transferOptionExtensionRepository
+                .findByEntryExtension(extension);
         if (transferOptions != null && !transferOptions.isEmpty()) {
             List<TransferOptionExtensionELK> transferOptionELKList = new ArrayList<>();
             for (TransferOptionExtension transferOption : transferOptions) {

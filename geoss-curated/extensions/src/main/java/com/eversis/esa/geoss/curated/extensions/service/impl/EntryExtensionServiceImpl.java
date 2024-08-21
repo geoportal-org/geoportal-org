@@ -5,8 +5,8 @@ import com.eversis.esa.geoss.curated.extensions.mapper.EntryExtensionMapper;
 import com.eversis.esa.geoss.curated.extensions.model.EntryExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
-
 import com.eversis.esa.geoss.curated.extensions.service.TransferOptionExtensionService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,10 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.common.domain.TaskType;
@@ -25,10 +20,8 @@ import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.model.OrganisationModel;
 import com.eversis.esa.geoss.curated.resources.model.SourceModel;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
+import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.EntryService;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +30,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type User resources mapper test.
@@ -48,11 +49,14 @@ class UserResourcesMapperTest {
     @MockBean
     private EntryService entryService;
 
+    @MockBean
+    private UserResourceRepository userResourceRepository;
+
     @Autowired
     private UserResourcesMapper userResourcesMapper;
 
     /**
-     * Method under test: {@link UserResourcesMapper#mapToUserResource(UserResourceModel)}
+     * Test map to user resource.
      */
     @Test
     void testMapToUserResource() {
@@ -179,7 +183,7 @@ class UserResourcesMapperTest {
     }
 
     /**
-     * Method under test: {@link UserResourcesMapper#mapToUserResource(UserResourceModel, UserResource)}
+     * Test map to user resource 2.
      */
     @Test
     void testMapToUserResource2() {
@@ -254,6 +258,7 @@ class UserResourcesMapperTest {
         entry.setType(type);
         entry.setWorkflowInstanceId(1L);
         when(entryService.getOrCreateEntry(Mockito.<EntryModel>any())).thenReturn(entry);
+        when(entryService.saveEntry(Mockito.<EntryModel>any())).thenReturn(entry);
 
         AccessPolicyModel accessPolicy2 = new AccessPolicyModel();
         accessPolicy2.setCode("Code");
@@ -378,7 +383,7 @@ class UserResourcesMapperTest {
         userResource.setTaskType(TaskType.CREATE);
         userResource.setUserId("42");
         UserResource actualMapToUserResourceResult = userResourcesMapper.mapToUserResource(model, userResource);
-        verify(entryService).getOrCreateEntry(Mockito.<EntryModel>any());
+        verify(entryService).saveEntry(Mockito.<EntryModel>any());
         assertEquals("42", actualMapToUserResourceResult.getUserId());
         assertEquals("Entry Name", actualMapToUserResourceResult.getEntryName());
         assertEquals(TaskType.CREATE, actualMapToUserResourceResult.getTaskType());

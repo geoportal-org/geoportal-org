@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.curated.elasticsearch.service.impl;
 
-import java.util.Set;
-
 import com.eversis.esa.geoss.curated.common.repository.DataSourceRepository;
 import com.eversis.esa.geoss.curated.common.repository.TypeRepository;
 import com.eversis.esa.geoss.curated.elasticsearch.mapper.ExtensionMapper;
@@ -12,12 +10,14 @@ import com.eversis.esa.geoss.curated.elasticsearch.service.ElasticsearchService;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.relations.domain.EntryRelation;
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
-
 import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Set;
 
 /**
  * The type Elasticsearch service.
@@ -42,6 +42,17 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
     private final ExtensionMapper extensionMapper;
 
+    /**
+     * Instantiates a new Elasticsearch service.
+     *
+     * @param resourceRepository the resource repository
+     * @param resourceEntryMapper the resource entry mapper
+     * @param entryRepository the entry repository
+     * @param extensionRepository the extension repository
+     * @param typeRepository the type repository
+     * @param dataSourceRepository the data source repository
+     * @param extensionMapper the extension mapper
+     */
     public ElasticsearchServiceImpl(ResourceRepository resourceRepository, ResourceEntryMapper resourceEntryMapper,
             EntryRepository entryRepository, ExtensionRepository extensionRepository, TypeRepository typeRepository,
             DataSourceRepository dataSourceRepository, ExtensionMapper extensionMapper) {

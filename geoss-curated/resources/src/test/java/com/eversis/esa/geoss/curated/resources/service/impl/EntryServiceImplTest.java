@@ -1,9 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Type;
 import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
@@ -23,10 +19,6 @@ import com.eversis.esa.geoss.curated.resources.model.OrganisationModel;
 import com.eversis.esa.geoss.curated.resources.model.SourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -34,6 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Entry service impl test.
@@ -52,7 +52,7 @@ class EntryServiceImplTest {
     private EntryServiceImpl entryServiceImpl;
 
     /**
-     * Method under test: {@link EntryServiceImpl#getOrCreateEntry(EntryModel)}
+     * Test get or create entry.
      */
     @Test
     void testGetOrCreateEntry() {

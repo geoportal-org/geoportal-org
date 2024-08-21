@@ -1,8 +1,5 @@
 package com.eversis.esa.geoss.curated.extensions.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
@@ -22,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class implements the UserExtensionService interface and provides the business logic for managing UserExtension

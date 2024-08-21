@@ -1,11 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Type;
 import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
@@ -30,9 +24,6 @@ import com.eversis.esa.geoss.curated.resources.service.DefinitionTypeService;
 import com.eversis.esa.geoss.curated.resources.service.OrganisationService;
 import com.eversis.esa.geoss.curated.resources.service.SourceService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -40,6 +31,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Entry mapper test.
@@ -73,7 +73,7 @@ class EntryMapperTest {
     private TypeService typeService;
 
     /**
-     * Method under test: {@link EntryMapper#mapToEntry(EntryModel)}
+     * Test map to entry.
      */
     @Test
     void testMapToEntry() {
@@ -190,7 +190,7 @@ class EntryMapperTest {
     }
 
     /**
-     * Method under test: {@link EntryMapper#mapToEntry(EntryModel, Entry)}
+     * Test map to entry 2.
      */
     @Test
     void testMapToEntry2() {

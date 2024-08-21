@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.curated.extensions.mapper;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.extensions.domain.UserExtension;
 import com.eversis.esa.geoss.curated.extensions.dto.UserExtensionDTO;
@@ -10,6 +8,8 @@ import com.eversis.esa.geoss.curated.extensions.repository.UserExtensionReposito
 import com.eversis.esa.geoss.curated.extensions.service.EntryExtensionService;
 
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * The type User extension mapper.

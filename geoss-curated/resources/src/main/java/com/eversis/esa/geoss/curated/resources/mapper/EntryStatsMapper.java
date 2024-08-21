@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.curated.resources.mapper;
 
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
 import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
+
 import org.springframework.stereotype.Component;
 
 /**

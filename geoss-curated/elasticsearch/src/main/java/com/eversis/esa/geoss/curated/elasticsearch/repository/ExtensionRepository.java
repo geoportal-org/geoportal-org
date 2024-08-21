@@ -1,10 +1,11 @@
 package com.eversis.esa.geoss.curated.elasticsearch.repository;
 
-import java.util.Optional;
-
 import com.eversis.esa.geoss.curated.elasticsearch.model.EntryExtensionELK;
+
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * The interface Extension repository.

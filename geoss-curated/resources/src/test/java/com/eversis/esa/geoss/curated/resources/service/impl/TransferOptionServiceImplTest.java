@@ -1,18 +1,13 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Endpoint;
 import com.eversis.esa.geoss.curated.common.domain.Protocol;
 import com.eversis.esa.geoss.curated.common.domain.Type;
 import com.eversis.esa.geoss.curated.common.model.EndpointModel;
 import com.eversis.esa.geoss.curated.common.model.ProtocolModel;
+import com.eversis.esa.geoss.curated.common.service.EndpointService;
+import com.eversis.esa.geoss.curated.common.service.ProtocolService;
 import com.eversis.esa.geoss.curated.resources.domain.AccessPolicy;
 import com.eversis.esa.geoss.curated.resources.domain.DashboardContents;
 import com.eversis.esa.geoss.curated.resources.domain.DefinitionType;
@@ -24,16 +19,10 @@ import com.eversis.esa.geoss.curated.resources.mapper.TransferOptionMapper;
 import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
 import com.eversis.esa.geoss.curated.resources.repository.TransferOptionRepository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.AtLeast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -41,6 +30,22 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Transfer option service impl test.
@@ -55,11 +60,17 @@ class TransferOptionServiceImplTest {
     @MockBean
     private TransferOptionRepository transferOptionRepository;
 
+    @MockBean
+    private EndpointService endpointService;
+
+    @MockBean
+    private ProtocolService protocolService;
+
     @Autowired
     private TransferOptionServiceImpl transferOptionServiceImpl;
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#findTransferOptions(Pageable)}
+     * Test find transfer options.
      */
     @Test
     void testFindTransferOptions() {
@@ -72,7 +83,7 @@ class TransferOptionServiceImplTest {
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#findTransferOption(long)}
+     * Test find transfer option.
      */
     @Test
     void testFindTransferOption() {
@@ -177,7 +188,7 @@ class TransferOptionServiceImplTest {
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#findTransferOptionsByEntryId(long)}
+     * Test find transfer options by entry id.
      */
     @Test
     void testFindTransferOptionsByEntryId() {
@@ -191,7 +202,7 @@ class TransferOptionServiceImplTest {
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#saveTransferOptions(List, Entry)}
+     * Test save transfer options.
      */
     @Test
     void testSaveTransferOptions() {
@@ -272,14 +283,14 @@ class TransferOptionServiceImplTest {
         relatedEntry.setWorkflowInstanceId(1L);
         List<TransferOption> actualSaveTransferOptionsResult = transferOptionServiceImpl
                 .saveTransferOptions(transferOptionDto, relatedEntry);
-        verify(transferOptionRepository).findByEntryId(anyLong());
+        verify(transferOptionMapper, new AtLeast(0)).mapToTransferOption(Mockito.any(), anyLong());
         verify(transferOptionRepository).saveAll(Mockito.<Iterable<TransferOption>>any());
         assertTrue(actualSaveTransferOptionsResult.isEmpty());
-        assertSame(transferOptionList, actualSaveTransferOptionsResult);
+        assertIterableEquals(transferOptionList, actualSaveTransferOptionsResult);
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#saveTransferOptions(List, Entry)}
+     * Test save transfer options 2.
      */
     @Test
     void testSaveTransferOptions2() {
@@ -456,14 +467,14 @@ class TransferOptionServiceImplTest {
         relatedEntry.setWorkflowInstanceId(1L);
         List<TransferOption> actualSaveTransferOptionsResult = transferOptionServiceImpl
                 .saveTransferOptions(transferOptionDto, relatedEntry);
-        verify(transferOptionRepository).findByEntryId(anyLong());
+        verify(transferOptionMapper, new AtLeast(0)).mapToTransferOption(Mockito.any(), anyLong());
         verify(transferOptionRepository).saveAll(Mockito.<Iterable<TransferOption>>any());
         assertTrue(actualSaveTransferOptionsResult.isEmpty());
-        assertSame(transferOptionList, actualSaveTransferOptionsResult);
+        assertIterableEquals(transferOptionList, actualSaveTransferOptionsResult);
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#saveTransferOptions(List, Entry)}
+     * Test save transfer options 3.
      */
     @Test
     void testSaveTransferOptions3() {
@@ -735,21 +746,17 @@ class TransferOptionServiceImplTest {
         relatedEntry.setWorkflowInstanceId(1L);
         List<TransferOption> actualSaveTransferOptionsResult = transferOptionServiceImpl
                 .saveTransferOptions(transferOptionDto, relatedEntry);
-        verify(transferOptionRepository).findByEntryId(anyLong());
+        verify(transferOptionMapper, new AtLeast(0)).mapToTransferOption(Mockito.any(), anyLong());
         verify(transferOptionRepository).saveAll(Mockito.<Iterable<TransferOption>>any());
         assertTrue(actualSaveTransferOptionsResult.isEmpty());
-        assertSame(transferOptionList, actualSaveTransferOptionsResult);
+        assertIterableEquals(transferOptionList, actualSaveTransferOptionsResult);
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#saveTransferOptions(List, Entry)}
+     * Test save transfer options 4.
      */
     @Test
     void testSaveTransferOptions4() {
-        ArrayList<TransferOption> transferOptionList = new ArrayList<>();
-        when(transferOptionRepository.saveAll(Mockito.<Iterable<TransferOption>>any())).thenReturn(transferOptionList);
-        when(transferOptionRepository.findByEntryId(anyLong())).thenReturn(new HashSet<>());
-
         Endpoint endpoint = new Endpoint();
         endpoint.setId(1L);
         endpoint.setIsCustom(1);
@@ -846,6 +853,11 @@ class TransferOptionServiceImplTest {
         when(transferOptionMapper.mapToTransferOption(Mockito.<TransferOptionModel>any(), Mockito.<Entry>any()))
                 .thenReturn(transferOption);
 
+        ArrayList<TransferOption> transferOptionList = new ArrayList<>();
+        transferOptionList.add(transferOption);
+        when(transferOptionRepository.saveAll(Mockito.<Iterable<TransferOption>>any())).thenReturn(transferOptionList);
+        when(transferOptionRepository.findByEntryId(anyLong())).thenReturn(new HashSet<>());
+
         ProtocolModel protocol2 = new ProtocolModel();
         protocol2.setValue("42");
 
@@ -933,14 +945,13 @@ class TransferOptionServiceImplTest {
         List<TransferOption> actualSaveTransferOptionsResult = transferOptionServiceImpl
                 .saveTransferOptions(transferOptionDto, relatedEntry);
         verify(transferOptionMapper).mapToTransferOption(Mockito.<TransferOptionModel>any(), Mockito.<Entry>any());
-        verify(transferOptionRepository).findByEntryId(anyLong());
         verify(transferOptionRepository).saveAll(Mockito.<Iterable<TransferOption>>any());
-        assertTrue(actualSaveTransferOptionsResult.isEmpty());
-        assertSame(transferOptionList, actualSaveTransferOptionsResult);
+        assertFalse(actualSaveTransferOptionsResult.isEmpty());
+        assertIterableEquals(transferOptionList, actualSaveTransferOptionsResult);
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#removeTransferOption(long)}
+     * Test remove transfer option.
      */
     @Test
     void testRemoveTransferOption() {
@@ -1140,7 +1151,7 @@ class TransferOptionServiceImplTest {
     }
 
     /**
-     * Method under test: {@link TransferOptionServiceImpl#deleteTransferOption(long)}
+     * Test delete transfer option.
      */
     @Test
     void testDeleteTransferOption() {

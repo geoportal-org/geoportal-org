@@ -1,8 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
-import java.util.List;
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryRating;
 import com.eversis.esa.geoss.curated.resources.model.CommentResponse;
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingModel;
@@ -11,6 +8,7 @@ import com.eversis.esa.geoss.curated.resources.model.EntryRatingWithoutCommentMo
 import com.eversis.esa.geoss.curated.resources.model.RateResponse;
 import com.eversis.esa.geoss.curated.resources.model.StatsResponse;
 import com.eversis.esa.geoss.curated.resources.service.RatingService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import jakarta.validation.Valid;
+import java.util.List;
+
 /**
  * The type Rating controller.
  */
@@ -40,6 +41,11 @@ public class RatingController {
 
     private final RatingService ratingService;
 
+    /**
+     * Find ratings list.
+     *
+     * @return the list
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -48,6 +54,12 @@ public class RatingController {
         return ratingService.findRatings();
     }
 
+    /**
+     * Find rating entry rating.
+     *
+     * @param entryId the entry id
+     * @return the entry rating
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{entryId}")
@@ -56,6 +68,11 @@ public class RatingController {
         return ratingService.findRating(entryId);
     }
 
+    /**
+     * Create rating.
+     *
+     * @param entryRatingDto the entry rating dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -64,6 +81,12 @@ public class RatingController {
         ratingService.createRating(entryRatingDto);
     }
 
+    /**
+     * Update rating.
+     *
+     * @param entryId the entry id
+     * @param entryRatingDto the entry rating dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{entryId}")
@@ -74,6 +97,11 @@ public class RatingController {
         ratingService.updateRating(entryId, entryRatingDto);
     }
 
+    /**
+     * Delete rating.
+     *
+     * @param entryId the entry id
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{entryId}")
@@ -82,6 +110,12 @@ public class RatingController {
         ratingService.deleteRating(entryId);
     }
 
+    /**
+     * Rate with comment rate response.
+     *
+     * @param entryRatingDto the entry rating dto
+     * @return the rate response
+     */
     @PreAuthorize("hasAnyRole('COMMENT_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withComment")
@@ -90,6 +124,12 @@ public class RatingController {
         return ratingService.rateWithComment(entryRatingDto);
     }
 
+    /**
+     * Rate without comment rate response.
+     *
+     * @param entryRatingDto the entry rating dto
+     * @return the rate response
+     */
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withoutComment")
@@ -98,6 +138,13 @@ public class RatingController {
         return ratingService.rateWithoutComment(entryRatingDto);
     }
 
+    /**
+     * Find ratings by target ids and data source stats response.
+     *
+     * @param targetIds the target ids
+     * @param dataSource the data source
+     * @return the stats response
+     */
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findRatingsByTargetIdsAndDataSource")
@@ -107,6 +154,13 @@ public class RatingController {
         return ratingService.findRatingsByTargetIdsAndDataSource(targetIds, dataSource);
     }
 
+    /**
+     * Find comments by target id and data source list.
+     *
+     * @param targetId the target id
+     * @param dataSource the data source
+     * @return the list
+     */
     @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findCommentsByTargetIdAndDataSource")
@@ -116,6 +170,11 @@ public class RatingController {
         return ratingService.findCommentsByTargetIdAndDataSource(targetId, dataSource);
     }
 
+    /**
+     * Delete all ratings response entity.
+     *
+     * @return the response entity
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/all")

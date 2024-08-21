@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryRating;
 import com.eversis.esa.geoss.curated.resources.model.CommentResponse;
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingModel;
@@ -9,6 +7,8 @@ import com.eversis.esa.geoss.curated.resources.model.EntryRatingWithCommentModel
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingWithoutCommentModel;
 import com.eversis.esa.geoss.curated.resources.model.RateResponse;
 import com.eversis.esa.geoss.curated.resources.model.StatsResponse;
+
+import java.util.List;
 
 /**
  * The interface Rating service.

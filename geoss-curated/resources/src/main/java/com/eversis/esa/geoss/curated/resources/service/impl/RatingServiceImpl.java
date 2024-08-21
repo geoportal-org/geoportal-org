@@ -1,13 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryRating;
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
 import com.eversis.esa.geoss.curated.resources.mapper.EntryRatingMapper;
@@ -20,10 +12,19 @@ import com.eversis.esa.geoss.curated.resources.model.StatsResponse;
 import com.eversis.esa.geoss.curated.resources.repository.EntryRatingRepository;
 import com.eversis.esa.geoss.curated.resources.service.RatingService;
 import com.eversis.esa.geoss.curated.resources.service.StatsService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Rating service.

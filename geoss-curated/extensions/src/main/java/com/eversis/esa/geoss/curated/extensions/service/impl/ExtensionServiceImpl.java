@@ -3,6 +3,7 @@ package com.eversis.esa.geoss.curated.extensions.service.impl;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.repository.EntryExtensionRepository;
 import com.eversis.esa.geoss.curated.extensions.service.ExtensionService;
+
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 

@@ -1,19 +1,20 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.BookmarkedResult;
 import com.eversis.esa.geoss.curated.resources.mapper.BookmarkedResultMapper;
 import com.eversis.esa.geoss.curated.resources.model.AddBookmarkedResultModel;
 import com.eversis.esa.geoss.curated.resources.model.BookmarkedResultModel;
 import com.eversis.esa.geoss.curated.resources.repository.BookmarkedResultRepository;
 import com.eversis.esa.geoss.curated.resources.service.BookmarkedService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type Bookmarked service.
@@ -69,7 +70,8 @@ public class BookmarkedServiceImpl implements BookmarkedService {
         final BookmarkedResult bookmarkedResult = bookmarkedResultRepository.findById(bookmarkId).orElseThrow(
                 () -> new ResourceNotFoundException(
                         "Bookmark entity with id: " + bookmarkId + " does not exist"));
-        bookmarkedResultRepository.save(bookmarkedResultMapper.mapToBookmarkedResult(bookmarkedResultDto, bookmarkedResult));
+        bookmarkedResultRepository
+                .save(bookmarkedResultMapper.mapToBookmarkedResult(bookmarkedResultDto, bookmarkedResult));
         log.info("Updated bookmark with id: {}", bookmarkedResult.getId());
     }
 
@@ -91,8 +93,8 @@ public class BookmarkedServiceImpl implements BookmarkedService {
     @Override
     public void addBookmark(AddBookmarkedResultModel addBookmarkedResultDto) {
         log.info("Adding bookmark - {}", addBookmarkedResultDto);
-        BookmarkedResult bookmarkedResult =
-                bookmarkedResultRepository.save(bookmarkedResultMapper.mapToAddBookmarkedResult(addBookmarkedResultDto));
+        BookmarkedResult bookmarkedResult = bookmarkedResultRepository
+                .save(bookmarkedResultMapper.mapToAddBookmarkedResult(addBookmarkedResultDto));
         log.info("Added bookmark with id: {}", bookmarkedResult.getId());
     }
 

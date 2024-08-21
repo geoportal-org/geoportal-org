@@ -1,14 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.resources.domain.Organisation;
 import com.eversis.esa.geoss.curated.resources.model.OrganisationModel;
 import com.eversis.esa.geoss.curated.resources.repository.OrganisationRepository;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Organisation service impl test.
@@ -32,7 +32,7 @@ class OrganisationServiceImplTest {
     private OrganisationServiceImpl organisationServiceImpl;
 
     /**
-     * Method under test: {@link OrganisationServiceImpl#getOrCreateOrganisation(OrganisationModel)}
+     * Test get or create organisation.
      */
     @Test
     void testGetOrCreateOrganisation() {
@@ -57,7 +57,7 @@ class OrganisationServiceImplTest {
     }
 
     /**
-     * Method under test: {@link OrganisationServiceImpl#getOrCreateOrganisation(OrganisationModel)}
+     * Test get or create organisation 2.
      */
     @Test
     void testGetOrCreateOrganisation2() {

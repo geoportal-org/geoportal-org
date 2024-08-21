@@ -1,14 +1,9 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.resources.domain.AccessPolicy;
 import com.eversis.esa.geoss.curated.resources.model.AccessPolicyModel;
 import com.eversis.esa.geoss.curated.resources.repository.AccessPolicyRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -16,6 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Access policy service impl test.
@@ -31,7 +32,7 @@ class AccessPolicyServiceImplTest {
     private AccessPolicyServiceImpl accessPolicyServiceImpl;
 
     /**
-     * Method under test: {@link AccessPolicyServiceImpl#getOrCreateAccessPolicy(AccessPolicyModel)}
+     * Test get or create access policy.
      */
     @Test
     void testGetOrCreateAccessPolicy() {
@@ -52,7 +53,7 @@ class AccessPolicyServiceImplTest {
     }
 
     /**
-     * Method under test: {@link AccessPolicyServiceImpl#getOrCreateAccessPolicy(AccessPolicyModel)}
+     * Test get or create access policy 2.
      */
     @Test
     void testGetOrCreateAccessPolicy2() {
