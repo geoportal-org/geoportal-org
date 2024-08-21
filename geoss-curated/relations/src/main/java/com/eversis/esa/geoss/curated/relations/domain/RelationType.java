@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.curated.relations.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import jakarta.persistence.Column;
@@ -23,14 +22,7 @@ import java.util.Objects;
 public class RelationType {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "native"
-    )
-    @GenericGenerator(
-            name = "native",
-            strategy = "native"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NaturalId
