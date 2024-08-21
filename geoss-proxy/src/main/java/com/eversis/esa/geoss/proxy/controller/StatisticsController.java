@@ -1,10 +1,5 @@
 package com.eversis.esa.geoss.proxy.controller;
 
-import java.util.List;
-import jakarta.validation.Valid;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 import com.eversis.esa.geoss.proxy.domain.MostPopular;
 import com.eversis.esa.geoss.proxy.domain.MostPopularAreasModel;
 import com.eversis.esa.geoss.proxy.domain.MostPopularCatalogsModel;
@@ -14,6 +9,7 @@ import com.eversis.esa.geoss.proxy.domain.MostPopularResourcesModel;
 import com.eversis.esa.geoss.proxy.domain.NumberOfSearchesModel;
 import com.eversis.esa.geoss.proxy.domain.Search;
 import com.eversis.esa.geoss.proxy.service.StatisticsService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * The type Statistics controller.

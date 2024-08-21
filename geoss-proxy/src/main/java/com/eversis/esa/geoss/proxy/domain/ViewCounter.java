@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.proxy.domain;
 
-import jakarta.validation.constraints.Min;
-
 import lombok.Data;
+
+import jakarta.validation.constraints.Min;
 
 /**
  * Represents a view counter with a non-negative value.
