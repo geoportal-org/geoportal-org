@@ -21,7 +21,7 @@ ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
 WORKDIR /opt/app
 
-ARG JAR_FILE=./build/libs/geoss-proxy-boot.jar
+ARG JAR_FILE=./build/libs/geoss-proxy-*-boot.jar
 COPY ${JAR_FILE} ./application-boot.jar
 
 RUN mkdir -p "tomcat/temp"
