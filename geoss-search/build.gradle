@@ -25,8 +25,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://jakarta.oss.sonatype.org/content/groups/staging/' }
 }
 
 dependencyManagement {
@@ -38,6 +36,7 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -46,10 +45,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
-    implementation 'co.elastic.clients:elasticsearch-java:8.9.0'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.12'
+    implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchRestHighLevelClientVersion}"
     implementation 'org.locationtech.jts:jts-core:1.19.0'
     implementation 'org.locationtech.spatial4j:spatial4j:0.8'
     implementation "com.rometools:rome:${rometoolsRomeVersion}"
