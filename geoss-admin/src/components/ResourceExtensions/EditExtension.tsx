@@ -2,6 +2,7 @@ import { ResourceExtensionsService } from "@/services/api/users/curatedResourceE
 import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
 import { ButtonVariant, ToastStatus } from "@/types";
 import { LinkType, TaskType } from "@/types/models/userResources";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import {
@@ -92,13 +93,8 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
             await ResourceExtensionsService.updateTransferOptionsForExtension(tOptions, Number(router.query.entryId));
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -187,13 +183,8 @@ let msg = "";
             setFormData(data);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -250,13 +241,8 @@ let msg = "";
             }
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

@@ -14,7 +14,7 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { TutorialTagsSettingsManage } from "./TutorialTagsSettingsManage";
 import { TutorialTagsService } from "@/services/api";
 import { TutorialTagsContext } from "@/context";
-import { cutString, isTranslatedValueAdded, setTableSorting } from "@/utils/helpers";
+import { cutString, generateGenericErrorMessage, isTranslatedValueAdded, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { LocaleNames, TableActionsSource, ToastStatus } from "@/types";
@@ -62,12 +62,8 @@ export const TutorialTagsSettings = () => {
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                msg = e.errorInfo.message || e.errorInfo.errors[0].message;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -107,7 +103,7 @@ export const TutorialTagsSettings = () => {
             });
         } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+            const { errorStatus } = err;
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-tag-id" : "new-tag");
         }
     };

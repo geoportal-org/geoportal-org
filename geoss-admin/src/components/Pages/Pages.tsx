@@ -18,6 +18,7 @@ import useCustomToast from "@/utils/useCustomToast";
 import {
     convertIsoDate,
     cutString,
+    generateGenericErrorMessage,
     getIdFromUrl,
     getSelectedTableItemsIds,
     setDecisionModalActions,
@@ -85,13 +86,8 @@ export const Pages = () => {
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

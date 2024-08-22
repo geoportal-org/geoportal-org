@@ -31,6 +31,7 @@ import { useSession } from "next-auth/react";
 import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
 import { UserExtensionContent } from "@/types/models/userExtensions";
 import { ToastStatus } from "@/types";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 const statuses = {
     draft: "#68a1fc",
@@ -70,13 +71,8 @@ export const ResourceExtensions = () => {
             setPagesInfo(pInfo);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -99,13 +95,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -126,13 +117,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -153,13 +139,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -180,13 +161,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -233,13 +209,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

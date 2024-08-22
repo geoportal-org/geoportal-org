@@ -25,6 +25,7 @@ import "jspdf-autotable";
 import { Loader } from "../Loader/Loader";
 import useCustomToast from "@/utils/useCustomToast";
 import { ToastStatus } from "@/types";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 const datePickerStyle: any = {
     width: "300px",
@@ -60,13 +61,8 @@ export const UsersSurvey = () => {
             setPagesInfo(response.page);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -90,13 +86,8 @@ let msg = "";
             }
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

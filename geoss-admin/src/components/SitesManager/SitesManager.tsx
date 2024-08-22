@@ -35,7 +35,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { MainContentHeader } from "../MainContent/MainContentHeader";
 import { SitesService } from "@/services/api/SitesService";
 import { SiteData } from "@/types/models/sites";
-import { createSelectItemsList, getIdFromUrl } from "@/utils/helpers";
+import { createSelectItemsList, generateGenericErrorMessage, getIdFromUrl } from "@/utils/helpers";
 import { LocaleNames, ToastStatus } from "@/types";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 import { FileRepositoryService } from "@/services/api";
@@ -118,9 +118,11 @@ const SitesManager = () => {
             );
             setDocumentsList(() => selectDocumentsList.options);
         } catch (e: any) {
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
-                description: translate("pages.sites.siteCreationFail") + " " + e.errorInfo.errors[0].message,
+                description: translate("pages.sites.siteCreationFail") + " " + msg,
                 status: ToastStatus.ERROR,
             });
         }
@@ -151,14 +153,9 @@ const SitesManager = () => {
                 });
             }
         } catch (e: any) {
-            console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description:
@@ -180,9 +177,11 @@ let msg = "";
                 description: translate("pages.sites.siteDeletedMsg") + " ID: " + currentSiteId,
             });
         } catch (e: any) {
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
-                description: translate("pages.sites.siteDeleteFail") + " " + e?.errorInfo?.errors[0]?.message,
+                description: translate("pages.sites.siteDeleteFail") + " " + msg,
                 status: ToastStatus.ERROR,
             });
         }

@@ -15,7 +15,7 @@ import {
     LocaleNames,
 } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { setDecisionModalActions } from "@/utils/helpers";
+import { generateGenericErrorMessage, setDecisionModalActions } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { ILayer, ITutorialTag } from "@/types/models";
 import { useIntl } from "react-intl";
@@ -102,9 +102,9 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 }),
             });
         } catch (e: any) {
-            const { errorStatus, errorInfo } = e;
+            const { errorStatus } = e;
             console.log(errorStatus);
-            const msg = JSON.parse(errorInfo).detail;
+            const msg = generateGenericErrorMessage(e)
             errorStatus &&
                 showToast({
                     title: translate("general.error"),
@@ -171,14 +171,8 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 }),
             });
         } catch (e: any) {
-            const { errorStatus, errorInfo } = e;
-            let msg = "";
-            if (errorInfo.errors.length) {
-                msg = errorInfo.errors[0].message;
-            } else {
-                console.log(errorStatus);
-                msg = JSON.parse(errorInfo).detail;
-            }
+            const { errorStatus } = e;
+            const msg = generateGenericErrorMessage(e)
             errorStatus &&
                 showToast({
                     title: translate("general.error"),

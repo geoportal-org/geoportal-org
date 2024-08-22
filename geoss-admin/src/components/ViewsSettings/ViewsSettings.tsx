@@ -19,6 +19,7 @@ import { ViewsService } from "@/services/api";
 import { ViewsContext } from "@/context";
 import {
     cutString,
+    generateGenericErrorMessage,
     getViewsActionsMsgIds,
     getViewsSideBarTitleId,
     prepareViewsToShow,
@@ -76,13 +77,8 @@ export const ViewsSettings = () => {
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -132,13 +128,8 @@ let msg = "";
             showInfo("general.created", successMsgId, { title: viewData.label }, ToastStatus.SUCCESS);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -167,13 +158,8 @@ let msg = "";
             showInfo("general.updated", successMsgId, { title: viewData.label }, ToastStatus.SUCCESS);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

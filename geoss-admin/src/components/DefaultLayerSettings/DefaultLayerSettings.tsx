@@ -14,7 +14,7 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { DefaultLayerSettingsManage } from "./DefaultLayerSettingsManage";
 import { DefaultLayerService } from "@/services/api";
 import { DefaultLayerContext } from "@/context";
-import { convertIsoDate, cutString, setTableSorting } from "@/utils/helpers";
+import { convertIsoDate, cutString, generateGenericErrorMessage, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { TableActionsSource, ToastStatus } from "@/types";
@@ -64,14 +64,8 @@ export const DefaultLayerSettings = () => {
             setLayersList(() => layers);
             setDataInfo(() => ({ totalPages, totalElements }));
         } catch (e: any) {
-            console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

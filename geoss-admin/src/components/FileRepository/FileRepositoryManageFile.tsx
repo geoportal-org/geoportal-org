@@ -5,7 +5,7 @@ import { PrimaryButton, FormField, TextContent } from "@/components";
 import { FileRepositoryService } from "@/services/api";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
+import { areObjectsEqual, generateGenericErrorMessage, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { addFileForm, editFileForm } from "@/data/forms";
 import { scrollbarStyles } from "@/theme/commons";
 import { ButtonType, FileRepositoryManageFileProps, ToastStatus } from "@/types";
@@ -50,14 +50,8 @@ export const FileRepositoryManageFile = ({
                 description: "File title updated",
             });
         } catch (e: any) {
-            const { errorStatus, errorInfo } = e;
-            let msg = "";
-            if (errorInfo.errors.length) {
-                msg = errorInfo.errors[0].message;
-            } else {
-                console.log(errorStatus);
-                msg = JSON.parse(errorInfo).detail;
-            }
+            const { errorStatus } = e;
+            const msg = generateGenericErrorMessage(e)
             showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };
@@ -77,13 +71,7 @@ export const FileRepositoryManageFile = ({
             });
         } catch (e: any) {
             const { errorStatus, errorInfo } = e;
-            let msg = "";
-            if (errorInfo.errors.length) {
-                msg = errorInfo.errors[0].message;
-            } else {
-                console.log(errorStatus);
-                msg = JSON.parse(errorInfo).detail;
-            }
+            const msg = generateGenericErrorMessage(e)
             showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };

@@ -6,6 +6,7 @@ import { ApiSettingsService } from "@/services/api";
 import {
     areObjectsEqual,
     createApiSettingsKeyValues,
+    generateGenericErrorMessage,
     getKeyValueFormChanges,
     setExistingApiSettingsKeyValues,
     setFormInitialValues,
@@ -42,14 +43,8 @@ export const ApiSettings = () => {
             setSavedValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields, false));
             setInitValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields));
         } catch (e: any) {
-            console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -86,14 +81,8 @@ let msg = "";
                 showInfo("general.updated", "pages.api.updated", ToastStatus.SUCCESS);
             })
             .catch((e: any) => {
-                console.error(e)
-let msg = "";
-                if (e.errorInfo?.length) {
-                    msg = JSON.parse(e.errorInfo).detail;
-                } else {
-                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-                }
+                console.error(e);
+                const msg = generateGenericErrorMessage(e)
                 showToast({
                     title: translate("general.error"),
                     description: `${msg || ""}`,

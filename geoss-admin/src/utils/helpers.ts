@@ -23,6 +23,18 @@ export const getActiveNavSection = (activeRoute: string): number => {
     return activeSectionIndex !== -1 ? activeSectionIndex : 0;
 };
 
+export const generateGenericErrorMessage = (e: any) => {
+    const { errorInfo } = e;
+    const errorObj = typeof errorInfo === "object" ? errorInfo : JSON.parse(errorInfo);
+    let msg = "";
+    if (errorObj.errors !== undefined) {
+        msg = errorObj.errors[0].message;
+    } else {
+        msg = errorObj.detail;
+    }
+    return msg
+}
+
 export const flattenMessages = (nestedMessages: NestedMsgs, prefix = ""): { [key: string]: string } => {
     if (nestedMessages === null) {
         return {};

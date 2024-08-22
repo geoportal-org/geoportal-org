@@ -3,7 +3,7 @@ import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { TextContent, PrimaryButton, FormField } from "@/components";
 import { FileRepositoryService } from "@/services/api";
-import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
+import { areObjectsEqual, generateGenericErrorMessage, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { scrollbarStyles } from "@/theme/commons";
 import { createFolderForm } from "@/data/forms";
@@ -51,12 +51,8 @@ export const FileRepositoryManageFolder = ({
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                msg = e.errorInfo.message || e.errorInfo.errors[0].message;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -83,14 +79,8 @@ export const FileRepositoryManageFolder = ({
                 description: `Folder ${newFolder.title} has been created`,
             });
         } catch (e: any) {
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                msg = e.errorInfo.message || e.errorInfo.errors[0].message;
-            }
-            console.log(e);
-            console.log(msg);
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

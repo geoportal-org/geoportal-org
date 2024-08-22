@@ -31,6 +31,7 @@ import { PrimaryButton } from "../PrimaryButton/PrimaryButton";
 import { initialPagesInfo } from "../Recommendations/DefaultValues";
 import { useSession } from "next-auth/react";
 import { ToastStatus } from "@/types";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 const statuses = {
     draft: "#68a1fc",
@@ -70,13 +71,8 @@ export const EntryResources = () => {
             setPagesInfo(pInfo);
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -99,13 +95,8 @@ export const EntryResources = () => {
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -126,13 +117,8 @@ export const EntryResources = () => {
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -153,13 +139,8 @@ export const EntryResources = () => {
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -180,13 +161,8 @@ export const EntryResources = () => {
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -241,13 +217,8 @@ export const EntryResources = () => {
             });
         } catch (e: any) {
             console.error(e);
-            let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

@@ -3,6 +3,7 @@ import { WorkflowService } from "@/services/api/users/curatedWorkflowService";
 import { ToastStatus } from "@/types";
 import { PagesInfo } from "@/types/models/page";
 import { ResourceEntry } from "@/types/models/userResources";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -63,13 +64,8 @@ export const ManageEntities = () => {
             setPagesInfo(pInfo);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -92,13 +88,8 @@ let msg = "";
             });
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,

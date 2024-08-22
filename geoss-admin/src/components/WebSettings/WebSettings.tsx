@@ -11,6 +11,7 @@ import {
     setExistingWebSettingsKeyValues,
     setFormValuesAsString,
     getKeyValueFormChanges,
+    generateGenericErrorMessage,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
@@ -45,13 +46,8 @@ export const WebSettings = () => {
             setInitValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields));
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -97,13 +93,8 @@ let msg = "";
                 setDefaultSourceNameOptionsList(() => options);
             } catch (e: any) {
                 console.error(e)
-let msg = "";
-                if (e.errorInfo?.length) {
-                    msg = JSON.parse(e.errorInfo).detail;
-                } else {
-                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-                }
+                const msg = generateGenericErrorMessage(e)
+
                 showToast({
                     title: translate("general.error"),
                     description: `${msg || ""}`,

@@ -30,6 +30,7 @@ import { initialAddFormValue, initialNewEntity, initialPagesInfo } from "./Defau
 import { PagesInfo } from "@/types/models/page";
 import { ToastStatus } from "@/types";
 import useCustomToast from "@/utils/useCustomToast";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 interface addForm {
     keywords: string;
@@ -71,13 +72,8 @@ export const RecommendationsConfig = () => {
             setPagesInfo(response.page);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -114,13 +110,7 @@ let msg = "";
                 fetchRecommendations(pagesInfo.number - 1);
             } catch (e: any) {
                 console.error(e)
-let msg = "";
-                if (e.errorInfo?.length) {
-                    msg = JSON.parse(e.errorInfo).detail;
-                } else {
-                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-                }
+                const msg = generateGenericErrorMessage(e)
                 showToast({
                     title: translate("general.error"),
                     description: `${msg || ""}`,
@@ -136,13 +126,8 @@ let msg = "";
             fetchRecommendations(pagesInfo.number - 1);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -164,13 +149,8 @@ let msg = "";
             setModalOpen(false);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -198,13 +178,8 @@ let msg = "";
                 setNewEntity(initialNewEntity);
             } catch (e: any) {
                 console.error(e)
-let msg = "";
-                if (e.errorInfo?.length) {
-                    msg = JSON.parse(e.errorInfo).detail;
-                } else {
-                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-                }
+                const msg = generateGenericErrorMessage(e)
+
                 showToast({
                     title: translate("general.error"),
                     description: `${msg || ""}`,
@@ -221,13 +196,8 @@ let msg = "";
             setModalOpen(false);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
@@ -243,13 +213,8 @@ let msg = "";
             setModalOpen(false);
         } catch (e: any) {
             console.error(e)
-let msg = "";
-            if (e.errorInfo?.length) {
-                msg = JSON.parse(e.errorInfo).detail;
-            } else {
-                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
-;
-            }
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
                 description: `${msg || ""}`,
