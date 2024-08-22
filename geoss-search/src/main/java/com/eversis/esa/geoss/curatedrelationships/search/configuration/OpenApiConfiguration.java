@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * The type Open api configuration.
  */
-@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Curated API"))
+@OpenAPIDefinition(info = @Info(title = "OpenAPI definition", version = "v0", description = "GEOSS Search API"))
 @SecuritySchemes(
         value = {
                 @SecurityScheme(name = "Basic",
