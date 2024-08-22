@@ -62,7 +62,7 @@ export const MenuContent = () => {
             } = await MenuService.getMenuListBySiteId({...initMenuPagination, siteId: currentSiteId});
             const menuStructure = sortMenuList(fullMenu);
             setMenuList(() => menuStructure);
-        } catch (e) {
+        } catch (e: any) {
             setIsError(true);
         } finally {
             setIsLoading(false);
@@ -98,7 +98,7 @@ export const MenuContent = () => {
 
         await Promise.all(updatePromises)
             .then(() => setMenuList(formattedTree))
-            .catch((e) => handlePriorityChangeError());
+            .catch((e: any) => handlePriorityChangeError());
     };
 
     const getMovedItemUpdatedData = (itemTree: NodeModel<IMenuItem>[], dropData: DropOptions): MovedItemData => {
@@ -252,7 +252,7 @@ export const MenuContent = () => {
         const deletePromises = itemsIds.map((id) => MenuService.deleteMenuItem(id));
         await Promise.all(deletePromises.concat(updatePromises))
             .then(() => handleItemsDelete(itemsIds, itemsList, itemTitle))
-            .catch((e) => showErrorInfo("pages.menu.delete-error"));
+            .catch((e: any) => showErrorInfo("pages.menu.delete-error"));
     };
 
     const handleItemsDelete = (itemsIds: number[], itemsList: NodeModel<IMenuItem>[], title: string) => {
@@ -307,7 +307,7 @@ export const MenuContent = () => {
                     title: updatedMenuItem.title[(locale as LocaleNames) || defaultUsedLang],
                 }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showErrorInfo("pages.menu.update-item-error");
         }
     };
@@ -332,7 +332,7 @@ export const MenuContent = () => {
                     title: addedMenuItem.title[(locale as LocaleNames) || defaultUsedLang],
                 }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showErrorInfo("pages.menu.create-error");
         }
     };

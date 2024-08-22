@@ -1,7 +1,8 @@
 import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
 import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
-import { ButtonVariant } from "@/types";
+import { ButtonVariant, ToastStatus } from "@/types";
 import { LinkType, TaskType } from "@/types/models/userResources";
+import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import {
     Box,
@@ -57,6 +58,7 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
     const [formData, setFormData] = useState(defaultFormState);
     const [links, setLinks] = useState([defaultLinkState]);
     const [defaultEntryVal, setDefaultEntryVal] = useState<any>();
+    const { showToast } = useCustomToast();
 
     const session = useSession();
     const router = useRouter();
@@ -88,8 +90,20 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
             }
             const tOptions = getTransferOptions();
             await ResourceExtensionsService.updateTransferOptionsForExtension(tOptions, Number(router.query.entryId));
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             router.push("/resource-extensions");
         }
@@ -171,8 +185,20 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
             });
             setLinks(links);
             setFormData(data);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -222,8 +248,20 @@ export const EditExtension = ({ isUpdateUserExtension = false }: Props) => {
                 localStorage.setItem("protocols", JSON.stringify(newProtocols));
                 setProtocols(newProtocols);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

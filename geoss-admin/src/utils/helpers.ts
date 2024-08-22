@@ -107,6 +107,8 @@ export const setFormInitialValues = (formFields: FormField[]): FormikValues => {
 };
 
 export const setExistingFormValues = (formFields: FormField[], values: FormikValues): FormikValues => {
+    console.log(formFields)
+    console.log(values)
     const existingValues: FormikValues = {};
     formFields.forEach((field) => {
         if (!field.translationInfo) {
@@ -117,7 +119,7 @@ export const setExistingFormValues = (formFields: FormField[], values: FormikVal
             if (!existingValues[genericName]) {
                 existingValues[genericName] = {};
             }
-            existingValues[genericName][translation] = values[genericName][translation].toString();
+            existingValues[genericName][translation] = values[genericName][translation]?.toString() || "";
         }
     });
     return existingValues;

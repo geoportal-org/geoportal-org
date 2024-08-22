@@ -20,6 +20,7 @@ export interface IErrorObject {
     message: string;
     status: number;
     timestamp: string;
+    detail: string;
 }
 
 export interface IErrorInformation {

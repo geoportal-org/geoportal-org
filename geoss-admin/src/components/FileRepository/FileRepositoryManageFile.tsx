@@ -49,12 +49,16 @@ export const FileRepositoryManageFile = ({
                 title: "File updated",
                 description: "File title updated",
             });
-        } catch (e) {
-            const err = e as { errorInfo: IErrorObject; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
-            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
+        } catch (e: any) {
+            const { errorStatus, errorInfo } = e;
+            let msg = "";
+            if (errorInfo.errors.length) {
+                msg = errorInfo.errors[0].message;
+            } else {
+                console.log(errorStatus);
+                msg = JSON.parse(errorInfo).detail;
+            }
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };
 
@@ -71,12 +75,16 @@ export const FileRepositoryManageFile = ({
                 title: "File uploaded",
                 description: `File ${addedFile.title} has been uploaded`,
             });
-        } catch (e) {
-            const err = e as { errorInfo: IErrorObject; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
-            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
+        } catch (e: any) {
+            const { errorStatus, errorInfo } = e;
+            let msg = "";
+            if (errorInfo.errors.length) {
+                msg = errorInfo.errors[0].message;
+            } else {
+                console.log(errorStatus);
+                msg = JSON.parse(errorInfo).detail;
+            }
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };
 
@@ -99,7 +107,7 @@ export const FileRepositoryManageFile = ({
             extension,
             path: path,
             folderId: currentFolder,
-            siteId: currentSiteId
+            siteId: currentSiteId,
         };
     };
 

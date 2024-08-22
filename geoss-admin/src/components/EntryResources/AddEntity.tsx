@@ -1,6 +1,7 @@
 import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
-import { ButtonVariant } from "@/types";
+import { ButtonVariant, ToastStatus } from "@/types";
 import { LinkType, TaskType } from "@/types/models/userResources";
+import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import {
     Box,
@@ -92,6 +93,8 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
         },
     ];
 
+    const { showToast } = useCustomToast();
+
     useEffect(() => {
         if (!router.isReady) return;
         getSelectOptions();
@@ -172,8 +175,20 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
                 localStorage.setItem("protocols", JSON.stringify(newProtocols));
                 setProtocols(newProtocols);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -245,8 +260,20 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
             });
             setLinks(links);
             setFormData(data);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -286,8 +313,20 @@ export const AddEntity = ({ isUpdate = false, isUpdateResource = false }: Props)
                     const body = createResourceBody();
                     await UserResourcesService.createResource(body);
                 }
-            } catch (e) {
-                console.log(e);
+            } catch (e: any) {
+                console.error(e)
+let msg = "";
+                if (e.errorInfo?.length) {
+                    msg = JSON.parse(e.errorInfo).detail;
+                } else {
+                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+                }
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
             } finally {
                 router.push("/entry-resources");
             }

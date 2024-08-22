@@ -1,5 +1,8 @@
 import { WorkersService } from "@/services/api/settings/WorkersService";
+import { ToastStatus } from "@/types";
 import { WorkerData, WorkerType } from "@/types/models/workers";
+import useCustomToast from "@/utils/useCustomToast";
+import useFormatMsg from "@/utils/useFormatMsg";
 import { Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { MainContentHeader } from "../MainContent/MainContentHeader";
@@ -20,6 +23,8 @@ export const Workers = () => {
     const [esaWorker, setEsaWorker] = useState<WorkerData>();
     const [eostermWorker, setEostermWorker] = useState<WorkerData>();
     const [earthWorker, setEarthWorker] = useState<WorkerData>();
+    const { translate } = useFormatMsg();
+    const { showToast } = useCustomToast();
 
     useEffect(() => {
         fetchWorkers();
@@ -39,7 +44,19 @@ export const Workers = () => {
             await fetchEostermWorker();
             await fetchEarthWorker();
         } catch (e: any) {
-            console.log(e);
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -48,7 +65,19 @@ export const Workers = () => {
             const resEsa = await WorkersService.getWorker(WorkerType.ESA);
             setEsaWorker(resEsa);
         } catch (e: any) {
-            console.log(e);
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -57,7 +86,19 @@ export const Workers = () => {
             const resEosterm = await WorkersService.getWorker(WorkerType.EOSTERM);
             setEostermWorker(resEosterm);
         } catch (e: any) {
-            console.log(e);
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -66,7 +107,19 @@ export const Workers = () => {
             const resEarth = await WorkersService.getWorker(WorkerType.EARTH);
             setEarthWorker(resEarth);
         } catch (e: any) {
-            console.log(e);
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

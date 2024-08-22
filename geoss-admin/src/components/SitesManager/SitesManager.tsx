@@ -151,12 +151,20 @@ const SitesManager = () => {
                 });
             }
         } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
             showToast({
                 title: translate("general.error"),
                 description:
                     translate(`${editMode ? "pages.sites.siteUpdateFail" : "pages.sites.siteCreationFail"}`) +
                     " " +
-                    `${e?.errorInfo?.errors ? e?.errorInfo?.errors[0]?.message : e?.detail}`,
+                    `${msg || ""}`,
                 status: ToastStatus.ERROR,
             });
         }

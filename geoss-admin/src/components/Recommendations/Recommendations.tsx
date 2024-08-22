@@ -1,9 +1,5 @@
 import { RecommendationsService } from "@/services/api/settings/RecommendationsService";
-import {
-    RecommendationData,
-    RecommendationEntityData,
-    SavedRecommendationData,
-} from "@/types/models/recommendations";
+import { RecommendationData, RecommendationEntityData, SavedRecommendationData } from "@/types/models/recommendations";
 import {
     Alert,
     AlertIcon,
@@ -32,6 +28,8 @@ import PagesControls from "../PagesControls/PagesControls";
 import EntityRow from "./EntityRow";
 import { initialAddFormValue, initialNewEntity, initialPagesInfo } from "./DefaultValues";
 import { PagesInfo } from "@/types/models/page";
+import { ToastStatus } from "@/types";
+import useCustomToast from "@/utils/useCustomToast";
 
 interface addForm {
     keywords: string;
@@ -49,6 +47,7 @@ export const RecommendationsConfig = () => {
     const [currentRecommendationData, setCurrentRecommendationData] = useState<any>();
     const [newEntity, setNewEntity] = useState<RecommendationEntityData>(initialNewEntity);
     const { translate } = useFormatMsg();
+    const { showToast } = useCustomToast();
 
     //errors
     const [addFormError, setAddFormError] = useState<boolean>(false);
@@ -62,7 +61,7 @@ export const RecommendationsConfig = () => {
 
     const handleModal = (id: number) => {
         setModalOpen(true);
-        setCurrentRecommendationData(recommendations.find((e) => e.id === id));
+        setCurrentRecommendationData(recommendations.find((e: any) => e.id === id));
     };
 
     const fetchRecommendations = async (page = 0) => {
@@ -70,8 +69,20 @@ export const RecommendationsConfig = () => {
             let response = await RecommendationsService.getRecommendations(page);
             setRecommendations(response._embedded.recommendationModels);
             setPagesInfo(response.page);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -101,8 +112,20 @@ export const RecommendationsConfig = () => {
             try {
                 await RecommendationsService.createRecommendation(body);
                 fetchRecommendations(pagesInfo.number - 1);
-            } catch (e) {
-                console.log(e);
+            } catch (e: any) {
+                console.error(e)
+let msg = "";
+                if (e.errorInfo?.length) {
+                    msg = JSON.parse(e.errorInfo).detail;
+                } else {
+                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+                }
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
             }
         }
     };
@@ -111,8 +134,20 @@ export const RecommendationsConfig = () => {
         try {
             await RecommendationsService.deleteRecommendation(id);
             fetchRecommendations(pagesInfo.number - 1);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -127,8 +162,20 @@ export const RecommendationsConfig = () => {
             await RecommendationsService.updateKeywordsForRecommendation(currentRecommendationData.id, keywords);
             fetchRecommendations(pagesInfo.number - 1);
             setModalOpen(false);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -149,8 +196,20 @@ export const RecommendationsConfig = () => {
                 fetchRecommendations(pagesInfo.number - 1);
                 setModalOpen(false);
                 setNewEntity(initialNewEntity);
-            } catch (e) {
-                console.log(e);
+            } catch (e: any) {
+                console.error(e)
+let msg = "";
+                if (e.errorInfo?.length) {
+                    msg = JSON.parse(e.errorInfo).detail;
+                } else {
+                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+                }
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
             }
         }
     };
@@ -160,8 +219,20 @@ export const RecommendationsConfig = () => {
             await RecommendationsService.deleteEntityForRecommendation(recommendationId, entityId);
             fetchRecommendations(pagesInfo.number - 1);
             setModalOpen(false);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -170,8 +241,20 @@ export const RecommendationsConfig = () => {
             await RecommendationsService.updateEntity(recommendationId, entityData.id, entityData);
             fetchRecommendations(pagesInfo.number - 1);
             setModalOpen(false);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -397,7 +480,9 @@ export const RecommendationsConfig = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button onClick={() => setModalOpen(false)}>{translate("pages.recommendations.cancelButton")}</Button>
+                        <Button onClick={() => setModalOpen(false)}>
+                            {translate("pages.recommendations.cancelButton")}
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

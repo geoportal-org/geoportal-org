@@ -23,6 +23,8 @@ import useFormatMsg from "@/utils/useFormatMsg";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { Loader } from "../Loader/Loader";
+import useCustomToast from "@/utils/useCustomToast";
+import { ToastStatus } from "@/types";
 
 const datePickerStyle: any = {
     width: "300px",
@@ -44,6 +46,7 @@ export const UsersSurvey = () => {
     const direction = useBreakpointValue({ base: "column", lg: "row" }) as any;
     const justify = useBreakpointValue({ base: "center", lg: "flex-start" }) as any;
     const { translate } = useFormatMsg();
+    const { showToast } = useCustomToast();
 
     useEffect(() => {
         fetchSurveys();
@@ -55,8 +58,20 @@ export const UsersSurvey = () => {
             let response = await SurveysService.getSurveys(page, numberOfHits);
             setSurveys(response._embedded.surveys);
             setPagesInfo(response.page);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -73,8 +88,20 @@ export const UsersSurvey = () => {
                 setPagesInfo(response.page);
                 setIsFiltered(true);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }

@@ -83,8 +83,20 @@ export const Pages = () => {
 
             setPagesList(() => page);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsPageChange(false);
             setIsLoading(false);
@@ -100,7 +112,7 @@ export const Pages = () => {
                 title: translate("general.deleted"),
                 description: translate("pages.page.selected-deleted"),
             });
-        } catch (e) {
+        } catch (e: any) {
             console.log(e);
             showToast({
                 title: translate("general.error"),

@@ -33,16 +33,28 @@ export const ApiSettings = () => {
     }, [currentSiteId]);
 
     const getApiSettingsInfo = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             const {
                 _embedded: { apiSettings },
-            } = await ApiSettingsService.getApiSettings(currentSiteId, {page: 0, size: 99999});
+            } = await ApiSettingsService.getApiSettings(currentSiteId, { page: 0, size: 99999 });
             setApiSettingList(apiSettings);
             setSavedValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields, false));
             setInitValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields));
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -73,9 +85,20 @@ export const ApiSettings = () => {
                 await getApiSettingsInfo();
                 showInfo("general.updated", "pages.api.updated", ToastStatus.SUCCESS);
             })
-            .catch((e) => {
-                console.log(e);
-                showInfo("general.error", "information.error.updated-api");
+            .catch((e: any) => {
+                console.error(e)
+let msg = "";
+                if (e.errorInfo?.length) {
+                    msg = JSON.parse(e.errorInfo).detail;
+                } else {
+                                    msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+                }
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
             })
             .finally(() => setIsLoading(false));
     };

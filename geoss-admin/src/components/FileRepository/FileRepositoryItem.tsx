@@ -39,7 +39,7 @@ export const FileRepositoryItem = ({
                 description: `Item ${item.title} (ID: ${fileId}) has been moved to folder ${folder.title}`,
                 status: ToastStatus.SUCCESS,
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: "Error occured",
                 description: "File has not been moved - try again",

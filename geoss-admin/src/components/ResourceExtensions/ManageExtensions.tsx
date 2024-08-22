@@ -1,5 +1,6 @@
 import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
 import { WorkflowService } from "@/services/api/users/curatedWorkflowService";
+import { ToastStatus } from "@/types";
 import { PagesInfo } from "@/types/models/page";
 import { ExtensionContent } from "@/types/models/userExtensions";
 import useCustomToast from "@/utils/useCustomToast";
@@ -59,8 +60,20 @@ export const ManageExtensions = () => {
                 number: response.number,
             };
             setPagesInfo(pInfo);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -76,8 +89,20 @@ export const ManageExtensions = () => {
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

@@ -7,9 +7,10 @@ import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialVal
 import useCustomToast from "@/utils/useCustomToast";
 import { scrollbarStyles } from "@/theme/commons";
 import { createFolderForm } from "@/data/forms";
-import { ButtonType, FileRepositoryManageFolderProps } from "@/types";
+import { ButtonType, FileRepositoryManageFolderProps, ToastStatus } from "@/types";
 import { IFolderData } from "@/types/models";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
+import useFormatMsg from "@/utils/useFormatMsg";
 
 export const FileRepositoryManageFolder = ({
     folderId,
@@ -24,7 +25,7 @@ export const FileRepositoryManageFolder = ({
         folder ? setExistingFormValues(createFolderForm, folder) : setFormInitialValues(createFolderForm)
     );
     const { showToast } = useCustomToast();
-
+    const { translate } = useFormatMsg();
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
@@ -48,8 +49,19 @@ export const FileRepositoryManageFolder = ({
                 title: "Folder updated",
                 description: "Folder title updated",
             });
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                msg = e.errorInfo.message || e.errorInfo.errors[0].message;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -70,8 +82,20 @@ export const FileRepositoryManageFolder = ({
                 title: "Folder created",
                 description: `Folder ${newFolder.title} has been created`,
             });
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                msg = e.errorInfo.message || e.errorInfo.errors[0].message;
+            }
+            console.log(e);
+            console.log(msg);
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

@@ -101,13 +101,14 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                     itemId,
                 }),
             });
-        } catch (error) {
-            const err = error as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+        } catch (e: any) {
+            const { errorStatus, errorInfo } = e;
+            console.log(errorStatus);
+            const msg = JSON.parse(errorInfo).detail;
             errorStatus &&
                 showToast({
                     title: translate("general.error"),
-                    description: `${errorStatus}`,
+                    description: `${errorStatus} + ${msg}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -169,13 +170,19 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                     itemId,
                 }),
             });
-        } catch (error) {
-            const err = error as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+        } catch (e: any) {
+            const { errorStatus, errorInfo } = e;
+            let msg = "";
+            if (errorInfo.errors.length) {
+                msg = errorInfo.errors[0].message;
+            } else {
+                console.log(errorStatus);
+                msg = JSON.parse(errorInfo).detail;
+            }
             errorStatus &&
                 showToast({
                     title: translate("general.error"),
-                    description: translate("information.error.general"),
+                    description: `${errorStatus} + ${msg}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -221,7 +228,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate("pages.layer.delete-confirmation", { title: item.name, itemId }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate("pages.layer.delete-error", { title: item.name, itemId }),
@@ -270,7 +277,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate("pages.tags.delete-confirmation", { title: item.name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate("pages.tags.delete-error", { title: item.name }),
@@ -346,7 +353,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate(successMsgId, { title: item.label }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate(errorMsgId, { title: item.label }),

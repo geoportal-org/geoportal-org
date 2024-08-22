@@ -63,7 +63,20 @@ export const DefaultLayerSettings = () => {
             });
             setLayersList(() => layers);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
+        } catch (e: any) {
+            console.error(e)
+let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             console.error(e);
         } finally {
             setIsPageChange(false);
@@ -91,11 +104,9 @@ export const DefaultLayerSettings = () => {
                 title: translate("general.created"),
                 description: translate("pages.layer.layer-added", { title: name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name" : "new-layer");
         }
     };
@@ -110,11 +121,9 @@ export const DefaultLayerSettings = () => {
                 title: translate("general.updated"),
                 description: translate("pages.layer.layer-updated", { title: updatedLayer.name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name-update" : "updated-layer");
         }
     };

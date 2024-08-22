@@ -30,6 +30,7 @@ import PagesControls from "../PagesControls/PagesControls";
 import { PrimaryButton } from "../PrimaryButton/PrimaryButton";
 import { initialPagesInfo } from "../Recommendations/DefaultValues";
 import { useSession } from "next-auth/react";
+import { ToastStatus } from "@/types";
 
 const statuses = {
     draft: "#68a1fc",
@@ -67,8 +68,20 @@ export const EntryResources = () => {
                 number: response.number,
             };
             setPagesInfo(pInfo);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -84,8 +97,20 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.approved"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -99,8 +124,20 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -114,8 +151,20 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.denied"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -129,8 +178,20 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.pending"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -178,8 +239,20 @@ export const EntryResources = () => {
                 title: translate("pages.curatedToastsMessages.statusChange"),
                 description: `${translate("pages.curatedToastsMessages.updateResource")}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            let msg = "";
+            if (e.errorInfo?.length) {
+                msg = JSON.parse(e.errorInfo).detail;
+            } else {
+                                msg = e.errorInfo.message || e.errorInfo.errors[0].message
+;
+            }
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
