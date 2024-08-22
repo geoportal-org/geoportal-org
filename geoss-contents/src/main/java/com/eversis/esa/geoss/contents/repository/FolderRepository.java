@@ -87,4 +87,12 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     @DeleteMapping("/folder/deleteBySiteId")
     void deleteBySiteId(@Param("siteId") Long siteId);
 
+    /**
+     * Find by site id list.
+     *
+     * @param siteId the site id
+     * @return the list
+     */
+    List<Folder> findBySiteId(@Param("siteId") Long siteId);
+
 }
