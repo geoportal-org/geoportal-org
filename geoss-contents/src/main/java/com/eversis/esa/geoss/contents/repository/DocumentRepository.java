@@ -89,6 +89,17 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     Page<Document> findByFolderId(@Param("folderId") Long folderId, Pageable pageable);
 
     /**
+     * Find by folder id a and site id page.
+     *
+     * @param folderId the folder id
+     * @param siteId   the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Document> findByFolderIdAndSiteId(@Param("folderId") Long folderId, @Param("siteId") Long siteId,
+                                            Pageable pageable);
+
+    /**
      * Find by folder id and title page.
      *
      * @param folderId the folder id
