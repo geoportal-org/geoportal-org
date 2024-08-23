@@ -150,7 +150,7 @@ public class SiteServiceImpl implements SiteService {
         return repositoryService.addFolder(
                 Folder.builder()
                         .title("Logo")
-                        .parentFolderId(siteId)
+                        .parentFolderId(0L)
                         .path(String.valueOf(siteId))
                         .siteId(siteId)
                         .build());
