@@ -29,6 +29,7 @@ export const FileRepository = () => {
     const [sideBarContent, setSideBarContent] = useState<ReactNode>();
     const [currentFolder, setCurrentFolder] = useState<number>(0);
     const [breadcrumb, setBreadcrumb] = useState<BreadcrumbItem[]>([
+        { folderId: currentSiteId, folderTitle: '/' },
         { folderId: 0, folderTitle: translate("pages.file-repository.root-folder") },
     ]);
     const [foldersList, setFoldersList] = useState<IFolder[]>([]);
@@ -50,7 +51,10 @@ export const FileRepository = () => {
     useEffect(() => {
         getFileRepositoryItems();
         setCurrentFolder(0);
-        setBreadcrumb([{ folderId: 0, folderTitle: translate("pages.file-repository.root-folder") }]);
+        setBreadcrumb([
+            { folderId: currentSiteId, folderTitle: '/' },
+            { folderId: 0, folderTitle: translate("pages.file-repository.root-folder") },
+        ]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
@@ -69,7 +73,7 @@ export const FileRepository = () => {
             setDocumentsList(() => document);
         } catch (e: any) {
             console.error(e);
-            const msg = generateGenericErrorMessage(e)
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -187,7 +191,7 @@ export const FileRepository = () => {
             onCloseModal();
         } catch (e: any) {
             console.error(e);
-            const msg = generateGenericErrorMessage(e)
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
