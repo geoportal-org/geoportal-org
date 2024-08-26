@@ -151,7 +151,7 @@ public class SiteServiceImpl implements SiteService {
                 Folder.builder()
                         .title("Logo")
                         .parentFolderId(0L)
-                        .path(String.valueOf(siteId))
+                        .path(siteId + "/0")
                         .siteId(siteId)
                         .build());
     }
