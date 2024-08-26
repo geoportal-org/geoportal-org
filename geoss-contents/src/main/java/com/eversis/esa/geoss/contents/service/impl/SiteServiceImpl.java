@@ -163,7 +163,7 @@ public class SiteServiceImpl implements SiteService {
                 .title(originalFilename)
                 .fileName(originalFilename)
                 .extension(extension)
-                .path(siteId + "/" + folderId)
+                .path(siteId + "/0/" + folderId)
                 .folderId(folderId)
                 .siteId(siteId)
                 .build();
