@@ -143,9 +143,15 @@ public class RatingServiceImpl implements RatingService {
             for (String targetId : targetIdList) {
                 RateResponse rateResponse = new RateResponse();
                 EntryStats entryStats = statsService.findStatsByTargetIdAndDataSource(targetId, dataSource);
+
+                if (entryStats != null) {
+                    rateResponse.setTotalEntries(entryStats.getTotalEntries());
+                    rateResponse.setAverageScore(entryStats.getAverageScore());
+                } else {
+                    rateResponse.setTotalEntries(0);
+                    rateResponse.setAverageScore(0.0);
+                }
                 rateResponse.setTargetId(targetId);
-                rateResponse.setTotalEntries(entryStats.getTotalEntries());
-                rateResponse.setAverageScore(entryStats.getAverageScore());
                 rateResponse.setScore(0.0);
                 rateResponse.setComment("");
                 stats.add(rateResponse);
