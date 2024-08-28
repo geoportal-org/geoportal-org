@@ -2,7 +2,7 @@
     <div class="dab-result-rating">
         <div class="dab-result-rating__comment">
             <label>{{ $tc('popupContent.comment') }}:</label>
-            <textarea v-model="comment" :disabled="!isSignedIn"></textarea>
+            <textarea maxlength="500" v-model="comment" :disabled="!isSignedIn"></textarea>
         </div>
         <div class="d-flex flex--justify-between flex--align-end">
             <div class="dab-result-rating__rating">
