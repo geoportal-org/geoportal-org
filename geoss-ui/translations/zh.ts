@@ -397,6 +397,13 @@ export default {
         publishedIn: '出版于',
         mapDetails: '地图详情',
         authors: '作者',
+        license: '许可证',
+		citation: '引文',
+        confidence: '置信度',
+        crop: '作物',
+        irrigation: '灌溉',
+        landCover: '土地覆盖',
+
 
         // rating
         comment: '评论',

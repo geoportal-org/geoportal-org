@@ -54,6 +54,35 @@
                                     </div>
                                     <ViewsAndRatings :result="result" />
                                 </div>
+                                <div v-if="confidence && confidence.length" class="confidence">
+                                    <div class="confidence__label">
+                                        {{ $tc('popupContent.confidence') }}:
+                                    </div>
+                                    <div class="confidence__box">
+                                        <div class="confidence__number">
+                                            {{ confidence[0] }}
+                                        </div>
+                                        <div class="confidence__type">
+                                            {{ $tc('popupContent.crop') }}
+                                        </div>
+                                    </div>
+                                    <div class="confidence__box">
+                                        <div class="confidence__number">
+                                            {{ confidence[1] }}
+                                        </div>
+                                        <div class="confidence__type">
+                                            {{ $tc('popupContent.irrigation') }}
+                                        </div>
+                                    </div>
+                                    <div class="confidence__box">
+                                        <div class="confidence__number">
+                                            {{ confidence[2] }}
+                                        </div>
+                                        <div class="confidence__type">
+                                            {{ $tc('popupContent.landCover') }}
+                                        </div>
+                                    </div>
+                                </div>
                                 <div v-if="
                                     summary && typeof summary === 'string'
                                 " class="dab-result-details__summary">
@@ -548,6 +577,18 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
         data = data ? data : '-'
         return data
+    }
+
+    get confidence() {
+        const crop = UtilsService.getPropByString(this.result, 'cropConfidence');
+        const irrigation = UtilsService.getPropByString(this.result, 'irrigationConfidence');
+        const landCover = UtilsService.getPropByString(this.result, 'landCoverConfidence');
+
+        if (crop === '' || irrigation === '' || landCover === '') {
+            return null;
+        }
+
+        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)];
     }
 
     get parentRef() {

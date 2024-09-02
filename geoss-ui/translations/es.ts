@@ -397,7 +397,13 @@ export default {
         references: 'Referencias',
         publishedIn: 'Publicado en',
         mapDetails: 'Detalles del mapa',
-        authors: 'Autores',
+        authors: 'Authores',
+		license: 'Licencia',
+		citation: 'Cita',
+        confidence: 'Confianza',
+        crop: 'Cultivo',
+        irrigation: 'Riego',
+        landCover: 'Cobertura del suelo',
 
         // rating
         comment: 'Comentario',

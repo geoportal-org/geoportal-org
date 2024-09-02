@@ -399,6 +399,12 @@ export default {
         publishedIn: 'Опубликовано в',
         mapDetails: 'Детали карты',
         authors: 'Авторы',
+        license: 'Лицензия',
+		citation: 'Ссылка',
+        confidence: 'Уверенность',
+        crop: 'Урожай',
+        irrigation: 'Ирригация',
+        landCover: 'Почвенный покров',
 
         // rating
         comment: 'Комментарий',

@@ -400,7 +400,13 @@ export default {
         references: 'References',
         publishedIn: 'Published in',
         mapDetails: 'Map details',
-        authors: 'Authors',
+        authors: 'Author(s)',
+		license: 'License',
+		citation: 'Citation',
+        confidence: 'Confidence',
+        crop: 'Crop',
+        irrigation: 'Irrigation',
+        landCover: 'Land cover',
 
         // rating
         comment: 'Comment',

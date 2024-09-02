@@ -398,6 +398,12 @@ export default {
         publishedIn: 'Publié dans',
         mapDetails: 'Détails de la carte',
         authors: 'Auteurs',
+        license: 'License',
+		citation: 'Citation',
+        confidence: 'Confiance',
+        crop: 'Culture',
+        irrigation: 'Irrigation',
+        landCover: 'Couverture du sol',
 
         // rating
         comment: 'Commentaire',

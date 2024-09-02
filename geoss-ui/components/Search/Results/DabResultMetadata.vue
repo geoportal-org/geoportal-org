@@ -12,6 +12,41 @@
             <div v-if="authors" class="metadata__authors">
                 {{ $tc('popupContent.authors') }}: {{ authors }}
             </div>
+            <div v-if="useLimitation" class="metadata__license">
+                {{ $tc('popupContent.license') }}: {{ useLimitation }}
+            </div>
+            <div v-if="otherConstraints" class="metadata__citation">
+                {{ $tc('popupContent.citation') }}: {{ otherConstraints }}
+            </div>
+            <div v-if="confidence && confidence.length" class="confidence">
+                <div class="confidence__label">
+                    {{ $tc('popupContent.confidence') }}:
+                </div>
+                <div class="confidence__box">
+                    <div class="confidence__number">
+                        {{ confidence[0] }}
+                    </div>
+                    <div class="confidence__type">
+                        {{ $tc('popupContent.crop') }}
+                    </div>
+                </div>
+                <div class="confidence__box">
+                    <div class="confidence__number">
+                        {{ confidence[1] }}
+                    </div>
+                    <div class="confidence__type">
+                        {{ $tc('popupContent.irrigation') }}
+                    </div>
+                </div>
+                <div class="confidence__box">
+                    <div class="confidence__number">
+                        {{ confidence[2] }}
+                    </div>
+                    <div class="confidence__type">
+                        {{ $tc('popupContent.landCover') }}
+                    </div>
+                </div>
+            </div>
             <div class="overflow-hidden">
                 <a class="metadata__preview" target="_blank" v-if="getImage(preview) === preview" :href="preview">
                     <img :src="getImage(preview)" @error="imageLoadError(preview)" alt="Resource preview not available"
@@ -297,7 +332,11 @@ export default class DabResultMetadataComponent extends Vue {
                     pointOfContact,
                     'gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString'
                 )
-                authors.push(author)
+                const organisation = UtilsService.getPropByString(
+                    pointOfContact,
+                    'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString'
+                );
+                authors.push(organisation || author);
             }
         }
         return authors.join('; ')
@@ -479,6 +518,43 @@ export default class DabResultMetadataComponent extends Vue {
 
     get license() {
         return this.getStringData('metadata.license.id')
+    }
+
+    get useLimitation() {
+        return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:useLimitation.gco:CharacterString');
+    }
+
+    get otherConstraints() {
+        return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:otherConstraints.gco:CharacterString');
+    }
+
+    get confidence() {
+        const reports = UtilsService.getArrayByString(this.data, 'gmd:dataQualityInfo.gmd:DQ_DataQuality.gmd:report');
+
+        if (!reports || !reports.length) {
+            return null;
+        }
+
+        let crop, irrigation, landCover;
+
+        for (const report of reports) {
+            const nameOfMeasure = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:nameOfMeasure.gco:CharacterString');
+            if (nameOfMeasure === 'cropConfidence') {
+                crop = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+            }
+            if (nameOfMeasure === 'irrigationConfidence') {
+                irrigation = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+            }
+            if (nameOfMeasure === 'landCoverConfidence') {
+                landCover = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+            }
+        }
+
+        if (crop === '' || irrigation === '' || landCover === '') {
+            return null;
+        }
+
+        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)];
     }
 
     get publishedIn() {
@@ -1247,13 +1323,16 @@ export default class DabResultMetadataComponent extends Vue {
         font-size: 20px;
     }
 
-    &__authors {
-        margin-bottom: 15px;
+    &__authors,
+    &__license,
+    &__citation {
+        margin-bottom: 10px;
         color: #777;
         font-size: 14px;
     }
 
     &__description {
+        margin-top: 5px;
         line-height: normal;
     }
 
@@ -1475,6 +1554,35 @@ export default class DabResultMetadataComponent extends Vue {
                 color: $grey-medium;
             }
         }
+    }
+}
+
+
+.confidence {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    gap: 10px;
+    margin-bottom: 5px;
+
+    &__number {
+        font-size: 14px;
+    }
+
+    &__type {
+        font-size: 8px;
+        text-wrap: nowrap;
+    }
+
+    &__box {
+        display: flex;
+        background: #eee;
+        align-items: center;
+        flex-direction: column;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        justify-content: center;
     }
 }
 </style>

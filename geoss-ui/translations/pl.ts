@@ -400,6 +400,12 @@ export default {
         publishedIn: 'Opublikowane w',
         mapDetails: 'Szczegóły mapy',
         authors: 'Autorzy',
+        license: 'Licencja',
+		citation: 'Cytat',
+        confidence: 'Pewność',
+        crop: 'Uprawa',
+        irrigation: 'Nawadnianie',
+        landCover: 'Pokrycie',
 
         // rating
         comment: 'Komentarz',
