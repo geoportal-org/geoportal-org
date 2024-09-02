@@ -1,14 +1,15 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
 import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.EntryService;
+
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * The type User resources mapper.

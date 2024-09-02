@@ -1,14 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.common.domain.TaskType;
@@ -34,11 +25,6 @@ import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -50,6 +36,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type User resource service impl test.
@@ -71,7 +71,7 @@ class UserResourceServiceImplTest {
     private UserResourcesMapper userResourcesMapper;
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#findAllUserResources(String, Pageable)}
+     * Test find all user resources.
      */
     @Test
     void testFindAllUserResources() {
@@ -84,7 +84,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#findAllUserResources(String, Pageable)}
+     * Test find all user resources 2.
      */
     @Test
     void testFindAllUserResources2() {
@@ -95,7 +95,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#findAllUserResources(Pageable)}
+     * Test find all user resources 3.
      */
     @Test
     void testFindAllUserResources3() {
@@ -108,7 +108,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#findAllUserResources(Pageable)}
+     * Test find all user resources 4.
      */
     @Test
     void testFindAllUserResources4() {
@@ -119,7 +119,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#findUserResource(long)}
+     * Test find user resource.
      */
     @Test
     void testFindUserResource() {
@@ -211,7 +211,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#createUserResource(UserResourceModel)}
+     * Test create user resource.
      */
     @Test
     void testCreateUserResource() {
@@ -434,7 +434,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#createUserResource(UserResourceModel)}
+     * Test create user resource 2.
      */
     @Test
     void testCreateUserResource2() {
@@ -654,7 +654,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#updateUserResource(long, UserResourceModel)}
+     * Test update user resource.
      */
     @Test
     void testUpdateUserResource() {
@@ -791,7 +791,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#updateUserResource(long, UserResourceModel)}
+     * Test update user resource 2.
      */
     @Test
     void testUpdateUserResource2() {
@@ -1088,8 +1088,6 @@ class UserResourceServiceImplTest {
         userResourceDto.setUserId("42");
         userResourceServiceImpl.updateUserResource(1L, userResourceDto);
         verify(userResourcesMapper).mapToUserResource(Mockito.<UserResourceModel>any(), Mockito.<UserResource>any());
-        verify(transferOptionService).saveTransferOptions(Mockito.<List<TransferOptionModel>>any(),
-                Mockito.<Entry>any());
         verify(userResourceRepository).findById(Mockito.<Long>any());
         verify(userResourceRepository).save(Mockito.<UserResource>any());
         assertEquals("42", userResourceDto.getUserId());
@@ -1099,7 +1097,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#removeUserResource(long)}
+     * Test remove user resource.
      */
     @Test
     void testRemoveUserResource() {
@@ -1273,7 +1271,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#removeUserResource(long)}
+     * Test remove user resource 2.
      */
     @Test
     void testRemoveUserResource2() {
@@ -1367,28 +1365,111 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#deleteUserResource(long)}
+     * Test delete user resource.
      */
     @Test
     void testDeleteUserResource() {
+        AccessPolicy accessPolicy = new AccessPolicy();
+        accessPolicy.setCode("Code");
+        accessPolicy.setId(1L);
+        accessPolicy.setIsCustom(1);
+        accessPolicy.setName("Name");
+
+        DashboardContents dashboardContents = new DashboardContents();
+        dashboardContents.setContent("Not all who wander are lost");
+        dashboardContents.setId(1L);
+
+        DataSource dataSource = new DataSource();
+        dataSource.setCode("Code");
+        dataSource.setId(1L);
+        dataSource.setIsCustom(1);
+        dataSource.setName("Name");
+
+        DefinitionType definitionType = new DefinitionType();
+        definitionType.setCode(1);
+        definitionType.setId(1L);
+        definitionType.setName("Name");
+
+        DataSource displayDataSource = new DataSource();
+        displayDataSource.setCode("Code");
+        displayDataSource.setId(1L);
+        displayDataSource.setIsCustom(1);
+        displayDataSource.setName("Name");
+
+        Organisation organisation = new Organisation();
+        organisation.setContact("Contact");
+        organisation.setContactEmail("jane.doe@example.org");
+        organisation.setEmail("jane.doe@example.org");
+        organisation.setId(1L);
+        organisation.setIsCustom(1);
+        organisation.setTitle("Dr");
+
+        Source source = new Source();
+        source.setCode("Code");
+        source.setId(1L);
+        source.setIsCustom(1);
+        source.setTerm("Term");
+
+        Type type = new Type();
+        type.setCode("Code");
+        type.setId(1L);
+        type.setIsCustom(1);
+        type.setName("Name");
+
+        Entry entry = new Entry();
+        entry.setAccessPolicy(accessPolicy);
+        entry.setCode("Code");
+        entry.setCoverage("Coverage");
+        entry.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        entry.setDashboardContents(dashboardContents);
+        entry.setDataSource(dataSource);
+        entry.setDefinitionType(definitionType);
+        entry.setDeleted(1);
+        entry.setDisplayDataSource(displayDataSource);
+        entry.setId(1L);
+        entry.setKeywords("Keywords");
+        entry.setLogo("Logo");
+        entry.setModifiedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        entry.setOrganisation(organisation);
+        entry.setPublishDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        entry.setScoreWeight(10.0d);
+        entry.setSource(source);
+        entry.setSummary("Summary");
+        entry.setTags("Tags");
+        entry.setTitle("Dr");
+        entry.setType(type);
+        entry.setWorkflowInstanceId(1L);
+
+        UserResource userResource = new UserResource();
+        userResource.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        userResource.setEntry(entry);
+        userResource.setEntryName("Entry Name");
+        userResource.setId(1L);
+        userResource.setModifiedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        userResource.setStatus(Status.DRAFT);
+        userResource.setTaskType(TaskType.CREATE);
+        userResource.setUserId("42");
+        Optional<UserResource> ofResult = Optional.of(userResource);
+        when(userResourceRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
         doNothing().when(userResourceRepository).deleteById(Mockito.<Long>any());
         userResourceServiceImpl.deleteUserResource(1L);
         verify(userResourceRepository).deleteById(Mockito.<Long>any());
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#deleteUserResource(long)}
+     * Test delete user resource 2.
      */
     @Test
     void testDeleteUserResource2() {
         doThrow(new ResourceNotFoundException("An error occurred")).when(userResourceRepository)
                 .deleteById(Mockito.<Long>any());
         assertThrows(ResourceNotFoundException.class, () -> userResourceServiceImpl.deleteUserResource(1L));
-        verify(userResourceRepository).deleteById(Mockito.<Long>any());
+        verify(userResourceRepository).findById(Mockito.<Long>any());
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#restoreUserResource(long)}
+     * Test restore user resource.
      */
     @Test
     void testRestoreUserResource() {
@@ -1562,7 +1643,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#restoreUserResource(long)}
+     * Test restore user resource 2.
      */
     @Test
     void testRestoreUserResource2() {
@@ -1656,7 +1737,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#approveUserResource(long)}
+     * Test approve user resource.
      */
     @Test
     void testApproveUserResource() {
@@ -1832,7 +1913,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#approveUserResource(long)}
+     * Test approve user resource 2.
      */
     @Test
     void testApproveUserResource2() {
@@ -1926,7 +2007,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#denyUserResource(long)}
+     * Test deny user resource.
      */
     @Test
     void testDenyUserResource() {
@@ -2100,7 +2181,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#denyUserResource(long)}
+     * Test deny user resource 2.
      */
     @Test
     void testDenyUserResource2() {
@@ -2194,7 +2275,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#pendingUserResource(long)}
+     * Test pending user resource.
      */
     @Test
     void testPendingUserResource() {
@@ -2368,7 +2449,7 @@ class UserResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link UserResourceServiceImpl#pendingUserResource(long)}
+     * Test pending user resource 2.
      */
     @Test
     void testPendingUserResource2() {

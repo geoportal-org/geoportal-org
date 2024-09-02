@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.curated.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,8 +19,7 @@ import jakarta.persistence.Table;
 public class Endpoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
@@ -36,6 +34,8 @@ public class Endpoint {
 
     /**
      * Instantiates a new Endpoint.
+     *
+     * @param url the url
      */
     public Endpoint(String url) {
         this.url = url;

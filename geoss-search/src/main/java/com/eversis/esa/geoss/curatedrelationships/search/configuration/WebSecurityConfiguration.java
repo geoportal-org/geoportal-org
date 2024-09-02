@@ -34,35 +34,11 @@ public class WebSecurityConfiguration {
 
     private final BaseUri baseUri;
 
-    private final ObjectProvider<PersistentTokenRepository> persistentTokenRepository;
+    private final Optional<PersistentTokenRepository> persistentTokenRepository;
 
     private final ObjectProvider<LogoutSuccessHandler> oidcLogoutSuccessHandler;
 
     private final Optional<SecurityOauth2Properties> securityOauth2Properties;
-
-    /**
-     * H 2 console security filter chain security filter chain.
-     *
-     * @param http the http
-     * @return the security filter chain
-     * @throws Exception the exception
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "spring.h2.console", name = "enabled", havingValue = "true")
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher(PathRequest.toH2Console());
-        http.authorizeHttpRequests(
-                authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers(PathRequest.toH2Console()).authenticated()
-        );
-        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer
-                .ignoringRequestMatchers(PathRequest.toH2Console()));
-        http.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer
-                .frameOptions(FrameOptionsConfig::sameOrigin));
-        http.formLogin(Customizer.withDefaults());
-        return http.build();
-    }
 
     /**
      * Swagger ui security filter chain security filter chain.
@@ -193,8 +169,10 @@ public class WebSecurityConfiguration {
                     .logoutSuccessHandler(oidcLogoutSuccessHandler.getIfAvailable()));
         } else {
             http.formLogin(Customizer.withDefaults());
-            http.rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer
-                    .tokenRepository(persistentTokenRepository.getIfAvailable()));
+            if (persistentTokenRepository.isPresent()) {
+                http.rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer
+                        .tokenRepository(persistentTokenRepository.get()));
+            }
             http.logout(Customizer.withDefaults());
         }
         return http.build();

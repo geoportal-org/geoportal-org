@@ -7,7 +7,7 @@ export const FileRepositoryService = {
     baseDocumentUrl: `${process.env.NEXT_PUBLIC_API}/contents/rest/document`,
 
     getFoldersList: async (query?: QueryParams): Promise<IFolderList> =>
-        fetcher({ url: FileRepositoryService.baseFolderUrl, query }),
+        fetcher({ url: `${FileRepositoryService.baseFolderUrl}/search/findBySiteId`, query }),
 
     getDocumentsList: async (query?: QueryParams): Promise<IDocumentList> =>
         fetcher({ url: FileRepositoryService.baseDocumentUrl, query }),

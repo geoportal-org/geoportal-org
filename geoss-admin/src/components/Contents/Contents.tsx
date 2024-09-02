@@ -17,6 +17,7 @@ import useCustomToast from "@/utils/useCustomToast";
 import {
     convertIsoDate,
     cutString,
+    generateGenericErrorMessage,
     getIdFromUrl,
     getSelectedTableItemsIds,
     setDecisionModalActions,
@@ -74,8 +75,14 @@ export const Contents = () => {
             });
             setContentsList(() => content);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
+            const msg = generateGenericErrorMessage(e)
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsPageChange(false);
             setIsLoading(false);
@@ -91,11 +98,13 @@ export const Contents = () => {
                 title: translate("general.deleted"),
                 description: translate("pages.contents.selected-deleted"),
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
             showToast({
                 title: translate("general.error"),
-                description: translate("information.error.loading"),
+                description: translate("information.error.loading") + `${msg || ""}`,
                 status: ToastStatus.ERROR,
             });
         }

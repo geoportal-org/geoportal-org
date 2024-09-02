@@ -1,9 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.resources.domain.UserResource;
 import com.eversis.esa.geoss.curated.resources.dto.UserResourceDTO;
@@ -12,6 +8,7 @@ import com.eversis.esa.geoss.curated.resources.model.UserResourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.UserResourceRepository;
 import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 import com.eversis.esa.geoss.curated.resources.service.UserResourceService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +17,10 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type User resource service.

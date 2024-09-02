@@ -1,7 +1,9 @@
 import { UserResourcesService } from "@/services/api/users/curatedUserResourcesService";
 import { WorkflowService } from "@/services/api/users/curatedWorkflowService";
+import { ToastStatus } from "@/types";
 import { PagesInfo } from "@/types/models/page";
 import { ResourceEntry } from "@/types/models/userResources";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -60,8 +62,15 @@ export const ManageEntities = () => {
                 number: response.number,
             };
             setPagesInfo(pInfo);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -77,8 +86,15 @@ export const ManageEntities = () => {
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

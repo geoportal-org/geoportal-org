@@ -30,6 +30,8 @@ import PagesControls from "../PagesControls/PagesControls";
 import { PrimaryButton } from "../PrimaryButton/PrimaryButton";
 import { initialPagesInfo } from "../Recommendations/DefaultValues";
 import { useSession } from "next-auth/react";
+import { ToastStatus } from "@/types";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 const statuses = {
     draft: "#68a1fc",
@@ -67,8 +69,15 @@ export const EntryResources = () => {
                 number: response.number,
             };
             setPagesInfo(pInfo);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -84,8 +93,15 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.approved"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -99,8 +115,15 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -114,8 +137,15 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.denied"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -129,8 +159,15 @@ export const EntryResources = () => {
                     "pages.curatedToastsMessages.pending"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -178,8 +215,15 @@ export const EntryResources = () => {
                 title: translate("pages.curatedToastsMessages.statusChange"),
                 description: `${translate("pages.curatedToastsMessages.updateResource")}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

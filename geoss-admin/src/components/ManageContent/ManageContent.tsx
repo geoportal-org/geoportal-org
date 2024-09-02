@@ -52,7 +52,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             setInitValues(() => setExistingFormValues(addContentForm, editedContent));
             setIsDraft(!editedContent.published);
             setIsLoading(false);
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus } = err;
             const is404Error = errorStatus === 404;

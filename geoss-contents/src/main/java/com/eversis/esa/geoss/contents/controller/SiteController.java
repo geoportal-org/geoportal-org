@@ -86,7 +86,7 @@ public class SiteController {
             )
     )
     @SneakyThrows
-    @PostMapping("")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     EntityModel<Site> createSite(
             @Parameter(hidden = true)

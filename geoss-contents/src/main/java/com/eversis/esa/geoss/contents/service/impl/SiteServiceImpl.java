@@ -1,10 +1,5 @@
 package com.eversis.esa.geoss.contents.service.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-
 import com.eversis.esa.geoss.contents.configuration.RepositoryProperties;
 import com.eversis.esa.geoss.contents.domain.Document;
 import com.eversis.esa.geoss.contents.domain.Folder;
@@ -21,12 +16,18 @@ import com.eversis.esa.geoss.contents.repository.PageRepository;
 import com.eversis.esa.geoss.contents.repository.SiteRepository;
 import com.eversis.esa.geoss.contents.service.RepositoryService;
 import com.eversis.esa.geoss.contents.service.SiteService;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the SiteService interface. This service manages the creation and deletion of sites.
@@ -149,8 +150,8 @@ public class SiteServiceImpl implements SiteService {
         return repositoryService.addFolder(
                 Folder.builder()
                         .title("Logo")
-                        .parentFolderId(siteId)
-                        .path(String.valueOf(siteId))
+                        .parentFolderId(0L)
+                        .path(siteId + "/0")
                         .siteId(siteId)
                         .build());
     }
@@ -162,7 +163,7 @@ public class SiteServiceImpl implements SiteService {
                 .title(originalFilename)
                 .fileName(originalFilename)
                 .extension(extension)
-                .path(siteId + "/" + folderId)
+                .path(siteId + "/0/" + folderId)
                 .folderId(folderId)
                 .siteId(siteId)
                 .build();

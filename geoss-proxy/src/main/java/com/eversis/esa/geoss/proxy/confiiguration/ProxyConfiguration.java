@@ -46,7 +46,7 @@ public class ProxyConfiguration {
                 if (operation != null) {
                     List<String> tags = operation.getTags();
                     if (tags != null) {
-                        if (!tags.contains("popular-controller")) {
+                        if (tags.contains("statistics-controller")) {
                             operation.setSecurity(securityRequirements);
                         }
                     }

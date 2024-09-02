@@ -1,22 +1,23 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.0'
-    id 'io.spring.dependency-management' version '1.1.0'
     id 'checkstyle'
     id 'jacoco'
+    id 'org.sonarqube'
     id 'project-report'
+    id 'org.springframework.boot'
+    id "io.spring.dependency-management"
+    id 'com.gorylenko.gradle-git-properties'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-checkstyle {
-    configFile "${project.rootDir}/../eversis_checks.xml" as File
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
+    configureEach {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -26,28 +27,39 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.webjars:swagger-ui:4.11.1'
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2"
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocScribeVersion}"
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocScribeVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-springBoot {
-    buildInfo()
-    mainClass = 'com.eversis.esa.geoss.proxy.GeossProxyApplication'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:elasticsearch'
+    testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -59,12 +71,34 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.named('jar') {
+    archiveClassifier = ''
+    exclude('application-local*.properties')
+}
+
 tasks.named('bootJar') {
     archiveClassifier = 'boot'
     exclude('application-local*.properties')
 }
 
-tasks.named('jar') {
-    archiveClassifier = ''
-    exclude('application-local*.properties')
+springBoot {
+    buildInfo()
+}
+
+gitProperties {
+    failOnNoGitDirectory = false
+}
+
+checkstyle {
+    configFile "${project.rootDir}/../eversis_checks.xml" as File
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}
+
+clean {
+    delete 'tomcat'
 }

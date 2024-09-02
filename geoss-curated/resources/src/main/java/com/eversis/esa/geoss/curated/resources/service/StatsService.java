@@ -1,9 +1,9 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
 import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
+
+import java.util.List;
 
 /**
  * The interface Stats service.

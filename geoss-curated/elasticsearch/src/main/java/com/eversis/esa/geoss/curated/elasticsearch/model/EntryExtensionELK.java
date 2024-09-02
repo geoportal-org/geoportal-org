@@ -1,9 +1,5 @@
 package com.eversis.esa.geoss.curated.elasticsearch.model;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +8,10 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Entry extension elk.

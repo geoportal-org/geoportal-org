@@ -9,8 +9,6 @@ allprojects {
     apply plugin: 'project-report'
     repositories {
         mavenCentral()
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://jakarta.oss.sonatype.org/content/groups/staging/' }
     }
 }
 

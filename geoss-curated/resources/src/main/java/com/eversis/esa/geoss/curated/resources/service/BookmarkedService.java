@@ -1,12 +1,13 @@
 package com.eversis.esa.geoss.curated.resources.service;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.eversis.esa.geoss.curated.resources.domain.BookmarkedResult;
 import com.eversis.esa.geoss.curated.resources.model.AddBookmarkedResultModel;
 import com.eversis.esa.geoss.curated.resources.model.BookmarkedResultModel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The interface Bookmarked service.

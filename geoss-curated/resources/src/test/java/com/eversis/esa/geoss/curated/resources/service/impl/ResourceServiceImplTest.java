@@ -1,14 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Type;
 import com.eversis.esa.geoss.curated.common.model.DataSourceModel;
@@ -27,10 +18,7 @@ import com.eversis.esa.geoss.curated.resources.model.EntryModel;
 import com.eversis.esa.geoss.curated.resources.model.OrganisationModel;
 import com.eversis.esa.geoss.curated.resources.model.SourceModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryRepository;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Optional;
+import com.eversis.esa.geoss.curated.resources.service.TransferOptionService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +31,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Resource service impl test.
@@ -57,11 +58,14 @@ class ResourceServiceImplTest {
     @MockBean
     private EntryRepository entryRepository;
 
+    @MockBean
+    private TransferOptionService transferOptionService;
+
     @Autowired
     private ResourceServiceImpl resourceServiceImpl;
 
     /**
-     * Method under test: {@link ResourceServiceImpl#findEntries(Pageable)}
+     * Test find entries.
      */
     @Test
     void testFindEntries() {
@@ -74,7 +78,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#findEntries(Pageable)}
+     * Test find entries 2.
      */
     @Test
     void testFindEntries2() {
@@ -85,7 +89,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#findEntry(long)}
+     * Test find entry.
      */
     @Test
     void testFindEntry() {
@@ -167,7 +171,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#createEntry(EntryModel)}
+     * Test create entry.
      */
     @Test
     void testCreateEntry() {
@@ -373,7 +377,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#createEntry(EntryModel)}
+     * Test create entry 2.
      */
     @Test
     void testCreateEntry2() {
@@ -420,7 +424,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#updateEntry(long, EntryModel)}
+     * Test update entry.
      */
     @Test
     void testUpdateEntry() {
@@ -700,7 +704,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#updateEntry(long, EntryModel)}
+     * Test update entry 2.
      */
     @Test
     void testUpdateEntry2() {
@@ -820,7 +824,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#removeEntry(long)}
+     * Test remove entry.
      */
     @Test
     void testRemoveEntry() {
@@ -974,7 +978,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#removeEntry(long)}
+     * Test remove entry 2.
      */
     @Test
     void testRemoveEntry2() {
@@ -1057,7 +1061,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#deleteEntry(long)}
+     * Test delete entry.
      */
     @Test
     void testDeleteEntry() {
@@ -1067,7 +1071,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#deleteEntry(long)}
+     * Test delete entry 2.
      */
     @Test
     void testDeleteEntry2() {
@@ -1078,7 +1082,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#restoreEntry(long)}
+     * Test restore entry.
      */
     @Test
     void testRestoreEntry() {
@@ -1232,7 +1236,7 @@ class ResourceServiceImplTest {
     }
 
     /**
-     * Method under test: {@link ResourceServiceImpl#restoreEntry(long)}
+     * Test restore entry 2.
      */
     @Test
     void testRestoreEntry2() {

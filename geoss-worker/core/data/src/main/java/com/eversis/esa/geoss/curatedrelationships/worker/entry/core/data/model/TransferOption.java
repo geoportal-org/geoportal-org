@@ -32,8 +32,7 @@ import jakarta.persistence.Table;
 public class TransferOption extends Auditable implements Identifiable<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column

@@ -1,18 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.resources.domain.DashboardContents;
 import com.eversis.esa.geoss.curated.resources.model.DashboardContentsModel;
 import com.eversis.esa.geoss.curated.resources.repository.DashboardContentsRepository;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Dashboard contents service impl test.
@@ -36,7 +36,7 @@ class DashboardContentsServiceImplTest {
     private DashboardContentsServiceImpl dashboardContentsServiceImpl;
 
     /**
-     * Method under test: {@link DashboardContentsServiceImpl#getOrCreateDashboardContents(DashboardContentsModel)}
+     * Test get or create dashboard contents.
      */
     @Test
     void testGetOrCreateDashboardContents() {
@@ -55,7 +55,7 @@ class DashboardContentsServiceImplTest {
     }
 
     /**
-     * Method under test: {@link DashboardContentsServiceImpl#getOrCreateDashboardContents(DashboardContentsModel)}
+     * Test get or create dashboard contents 2.
      */
     @Test
     void testGetOrCreateDashboardContents2() {
@@ -76,7 +76,7 @@ class DashboardContentsServiceImplTest {
     }
 
     /**
-     * Method under test: {@link DashboardContentsServiceImpl#getOrCreateDashboardContents(DashboardContentsModel)}
+     * Test get or create dashboard contents 3.
      */
     @Test
     void testGetOrCreateDashboardContents3() {

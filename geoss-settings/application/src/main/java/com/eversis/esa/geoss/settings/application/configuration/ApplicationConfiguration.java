@@ -7,7 +7,6 @@ import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -26,7 +25,6 @@ import javax.sql.DataSource;
 @EnableAsync
 @EnableScheduling
 @EnableSchedulerLock(defaultLockAtMostFor = "10m")
-@EnableJdbcAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @Configuration(proxyBeanMethods = false)
 public class ApplicationConfiguration {

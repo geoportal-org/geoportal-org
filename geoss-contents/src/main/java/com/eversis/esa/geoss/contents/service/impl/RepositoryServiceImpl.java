@@ -183,7 +183,8 @@ public class RepositoryServiceImpl implements RepositoryService {
         int page = 0;
         int size = Integer.MAX_VALUE;
         Pageable paging = PageRequest.of(page, size);
-        Page<Document> documentPage = documentRepository.findByFolderId(document.getFolderId(), paging);
+        Page<Document> documentPage = documentRepository.findByFolderIdAndSiteId(document.getFolderId(),
+                document.getSiteId(), paging);
         List<Document> documents = documentPage.getContent();
 
         boolean isFileNameNotUnique = documents.stream()

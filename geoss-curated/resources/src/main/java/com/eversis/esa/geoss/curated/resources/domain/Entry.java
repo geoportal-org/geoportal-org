@@ -5,7 +5,6 @@ import com.eversis.esa.geoss.curated.common.domain.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -33,8 +32,7 @@ import java.time.LocalDateTime;
 public class Entry {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 

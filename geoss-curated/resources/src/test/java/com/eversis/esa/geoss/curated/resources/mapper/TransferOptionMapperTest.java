@@ -1,10 +1,5 @@
 package com.eversis.esa.geoss.curated.resources.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.common.domain.Endpoint;
 import com.eversis.esa.geoss.curated.common.domain.Protocol;
@@ -21,8 +16,7 @@ import com.eversis.esa.geoss.curated.resources.domain.Organisation;
 import com.eversis.esa.geoss.curated.resources.domain.Source;
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.model.TransferOptionModel;
-
-import java.time.LocalDate;
+import com.eversis.esa.geoss.curated.resources.service.EntryService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Transfer option mapper test.
@@ -45,11 +46,14 @@ class TransferOptionMapperTest {
     @MockBean
     private ProtocolService protocolService;
 
+    @MockBean
+    private EntryService entryService;
+
     @Autowired
     private TransferOptionMapper transferOptionMapper;
 
     /**
-     * Method under test: {@link TransferOptionMapper#mapToTransferOption(TransferOptionModel, Entry)}
+     * Test map to transfer option.
      */
     @Test
     void testMapToTransferOption() {

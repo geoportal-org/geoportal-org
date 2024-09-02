@@ -6,6 +6,7 @@ import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
 import com.eversis.esa.geoss.curated.extensions.domain.TransferOptionExtension;
 import com.eversis.esa.geoss.curated.extensions.model.TransferOptionExtensionModel;
 import com.eversis.esa.geoss.curated.extensions.service.ExtensionService;
+
 import org.springframework.stereotype.Component;
 
 /**

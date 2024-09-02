@@ -23,8 +23,7 @@ import jakarta.persistence.Table;
 public class Endpoint implements Identifiable<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column

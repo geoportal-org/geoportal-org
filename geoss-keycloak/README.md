@@ -4,17 +4,15 @@ Authorization provider module.
 
 ## Prerequisites
 
-- `NodeJS >= 16`
-- `npm`
+- `Java 21`
 
 ## Setup local environment
 
-### Build Theme
+### Build providers
 
 ```shell
-cd geoss-keycloak/themes/geoss/account/src/
-npm install
-npm run build
+cd geoss-keycloak
+./gradlew clean assemble
 ```
 
 ### Build Docker Image

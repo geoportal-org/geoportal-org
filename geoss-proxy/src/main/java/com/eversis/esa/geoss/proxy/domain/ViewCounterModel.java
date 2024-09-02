@@ -1,13 +1,15 @@
 package com.eversis.esa.geoss.proxy.domain;
 
-import jakarta.validation.constraints.NotNull;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type View counter model.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ViewCounterModel extends LoggedModel {
 
     private String uiObjectId;

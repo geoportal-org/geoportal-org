@@ -84,7 +84,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                 setIsDraft(!editedPage.published);
             }
             setIsLoading(false);
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus } = err;
             const is404Error = errorStatus === 404;
@@ -133,7 +133,7 @@ export const ManagePage = ({ isEditMode = false }: ManagePageProps) => {
                     title: title[(locale as LocaleNames) || defaultUsedLang],
                 }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate("information.error.page-submit"),

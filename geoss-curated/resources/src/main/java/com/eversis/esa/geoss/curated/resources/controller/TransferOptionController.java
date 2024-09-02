@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.Set;
 import jakarta.validation.Valid;
+import java.util.Set;
 
 /**
  * The type Transfer option controller.
@@ -92,7 +92,7 @@ public class TransferOptionController {
      * Update transfer options by entry id set.
      *
      * @param entryId the entry id
-     * @return the set
+     * @param transferOptions the transfer options
      */
     @PreAuthorize("hasAnyRole('RESOURCE_WRITER', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)

@@ -1,15 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.eversis.esa.geoss.curated.resources.domain.DefinitionType;
 import com.eversis.esa.geoss.curated.resources.model.DefinitionTypeModel;
 import com.eversis.esa.geoss.curated.resources.repository.DefinitionTypeRepository;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The type Definition type service impl test.
@@ -33,7 +33,7 @@ class DefinitionTypeServiceImplTest {
     private DefinitionTypeServiceImpl definitionTypeServiceImpl;
 
     /**
-     * Method under test: {@link DefinitionTypeServiceImpl#getOrCreateDefinitionType(DefinitionTypeModel)}
+     * Test get or create definition type.
      */
     @Test
     void testGetOrCreateDefinitionType() {
@@ -50,7 +50,7 @@ class DefinitionTypeServiceImplTest {
     }
 
     /**
-     * Method under test: {@link DefinitionTypeServiceImpl#getOrCreateDefinitionType(DefinitionTypeModel)}
+     * Test get or create definition type 2.
      */
     @Test
     void testGetOrCreateDefinitionType2() {
@@ -69,7 +69,7 @@ class DefinitionTypeServiceImplTest {
     }
 
     /**
-     * Method under test: {@link DefinitionTypeServiceImpl#getOrCreateDefinitionType(DefinitionTypeModel)}
+     * Test get or create definition type 3.
      */
     @Test
     void testGetOrCreateDefinitionType3() {
@@ -86,7 +86,7 @@ class DefinitionTypeServiceImplTest {
     }
 
     /**
-     * Method under test: {@link DefinitionTypeServiceImpl#getOrCreateDefinitionType(DefinitionTypeModel)}
+     * Test get or create definition type 4.
      */
     @Test
     void testGetOrCreateDefinitionType4() {

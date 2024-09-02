@@ -7,7 +7,7 @@ import { FileRepositoryItem } from "./FileRepositoryItem";
 import { FileRepositoryManageFolder } from "./FileRepositoryManageFolder";
 import { FileRepositoryManageFile } from "./FileRepositoryManageFile";
 import { FileRepositoryService } from "@/services/api";
-import { generatePath, getIdFromUrl, setDecisionModalActions } from "@/utils/helpers";
+import { generateGenericErrorMessage, generatePath, getIdFromUrl, setDecisionModalActions } from "@/utils/helpers";
 import useFormatMsg from "@/utils/useFormatMsg";
 import useCustomToast from "@/utils/useCustomToast";
 import { initRepositoryPagination } from "@/data";
@@ -18,6 +18,9 @@ import { DndProvider } from "react-dnd";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
 
 export const FileRepository = () => {
+    //siteId
+    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
+
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { translate } = useFormatMsg();
@@ -26,6 +29,7 @@ export const FileRepository = () => {
     const [sideBarContent, setSideBarContent] = useState<ReactNode>();
     const [currentFolder, setCurrentFolder] = useState<number>(0);
     const [breadcrumb, setBreadcrumb] = useState<BreadcrumbItem[]>([
+        { folderId: currentSiteId, folderTitle: '/' },
         { folderId: 0, folderTitle: translate("pages.file-repository.root-folder") },
     ]);
     const [foldersList, setFoldersList] = useState<IFolder[]>([]);
@@ -44,11 +48,13 @@ export const FileRepository = () => {
     const currentDocuments = documentsList.filter((document) => document.folderId === currentFolder);
     const isEmptyFolder = !currentFolders.length && !currentDocuments.length;
 
-    //siteId
-    const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
-
     useEffect(() => {
         getFileRepositoryItems();
+        setCurrentFolder(0);
+        setBreadcrumb([
+            { folderId: currentSiteId, folderTitle: '/' },
+            { folderId: 0, folderTitle: translate("pages.file-repository.root-folder") },
+        ]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSiteId]);
 
@@ -56,17 +62,24 @@ export const FileRepository = () => {
         try {
             const {
                 _embedded: { folder },
-            } = await FileRepositoryService.getFoldersList(initRepositoryPagination);
-            //get folders for current site
-            const siteFolders = folder.filter((folderPiece) => folderPiece.siteId === currentSiteId);
-            setFoldersList(() => siteFolders);
+            } = await FileRepositoryService.getFoldersList({ ...initRepositoryPagination, siteId: currentSiteId });
+            setFoldersList(() => folder);
             const {
                 _embedded: { document },
-            } = await FileRepositoryService.getDocumentsList(initRepositoryPagination);
-            const siteDocuments = document.filter((documentPiece) => documentPiece.siteId === currentSiteId);
-            setDocumentsList(() => siteDocuments);
-        } catch (e) {
+            } = await FileRepositoryService.getDocumentsListBySiteId({
+                ...initRepositoryPagination,
+                siteId: currentSiteId,
+            });
+            setDocumentsList(() => document);
+        } catch (e: any) {
             console.error(e);
+            const msg = generateGenericErrorMessage(e);
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -176,8 +189,15 @@ export const FileRepository = () => {
                 description: `Folder ${title} (ID: ${id}) has been deleted along with its contents`,
             });
             onCloseModal();
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             showErrorInfo("pages.file-repository.delete-folder-error");
         }
     };
@@ -193,7 +213,7 @@ export const FileRepository = () => {
                 description: `File ${title} (ID: ${id}) has been delted`,
             });
             onCloseModal();
-        } catch (e) {
+        } catch (e: any) {
             console.log(e);
             showToast({
                 title: "Error occured",

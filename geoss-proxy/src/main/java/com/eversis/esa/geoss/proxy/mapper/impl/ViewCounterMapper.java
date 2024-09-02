@@ -3,13 +3,14 @@ package com.eversis.esa.geoss.proxy.mapper.impl;
 import com.eversis.esa.geoss.proxy.document.ViewCounterDoc;
 import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 import com.eversis.esa.geoss.proxy.mapper.ElasticsearchDocumentMapper;
+
 import org.springframework.stereotype.Component;
 
 /**
  * The type View counter mapper.
  */
 @Component
-public class ViewCounterMapper implements ElasticsearchDocumentMapper<ViewCounterModel>{
+public class ViewCounterMapper implements ElasticsearchDocumentMapper<ViewCounterModel> {
 
     @Override
     public ViewCounterDoc mapToDocument(ViewCounterModel model) {

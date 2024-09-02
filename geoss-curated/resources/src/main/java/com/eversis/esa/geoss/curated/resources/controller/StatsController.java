@@ -1,11 +1,9 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
-import java.util.List;
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
 import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
 import com.eversis.esa.geoss.curated.resources.service.StatsService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.validation.Valid;
+import java.util.List;
 
 /**
  * The type Stats controller.
@@ -61,6 +62,11 @@ public class StatsController {
         return statsService.findStats(statsId);
     }
 
+    /**
+     * Create stats.
+     *
+     * @param entryStatsDto the entry stats dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -69,6 +75,12 @@ public class StatsController {
         statsService.createStats(entryStatsDto);
     }
 
+    /**
+     * Update stats.
+     *
+     * @param statsId the stats id
+     * @param entryStatsDto the entry stats dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{statsId}")
@@ -79,6 +91,11 @@ public class StatsController {
         statsService.updateStats(statsId, entryStatsDto);
     }
 
+    /**
+     * Delete stats.
+     *
+     * @param statsId the stats id
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{statsId}")
@@ -87,6 +104,11 @@ public class StatsController {
         statsService.deleteStats(statsId);
     }
 
+    /**
+     * Delete all stats response entity.
+     *
+     * @return the response entity
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/all")

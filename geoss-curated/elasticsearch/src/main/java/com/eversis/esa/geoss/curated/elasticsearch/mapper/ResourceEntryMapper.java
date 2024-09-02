@@ -7,9 +7,9 @@ import com.eversis.esa.geoss.curated.elasticsearch.model.ResourceEntryELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.SourceELK;
 import com.eversis.esa.geoss.curated.elasticsearch.model.TransferOptionELK;
 import com.eversis.esa.geoss.curated.resources.domain.Entry;
-
 import com.eversis.esa.geoss.curated.resources.domain.TransferOption;
 import com.eversis.esa.geoss.curated.resources.repository.TransferOptionRepository;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;
 import org.springframework.data.geo.Point;
@@ -28,6 +28,11 @@ public class ResourceEntryMapper {
 
     private final TransferOptionRepository transferOptionRepository;
 
+    /**
+     * Instantiates a new Resource entry mapper.
+     *
+     * @param transferOptionRepository the transfer option repository
+     */
     public ResourceEntryMapper(TransferOptionRepository transferOptionRepository) {
         this.transferOptionRepository = transferOptionRepository;
     }

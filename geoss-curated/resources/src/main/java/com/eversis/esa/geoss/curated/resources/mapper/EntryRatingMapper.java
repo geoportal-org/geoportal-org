@@ -5,6 +5,7 @@ import com.eversis.esa.geoss.curated.resources.model.CommentResponse;
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingModel;
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingWithCommentModel;
 import com.eversis.esa.geoss.curated.resources.model.EntryRatingWithoutCommentModel;
+
 import org.springframework.stereotype.Component;
 
 /**

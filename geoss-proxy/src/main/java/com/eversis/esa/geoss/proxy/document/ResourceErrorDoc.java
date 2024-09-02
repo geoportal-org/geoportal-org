@@ -2,6 +2,7 @@ package com.eversis.esa.geoss.proxy.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -12,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  */
 @Document(indexName = "geoss_index", createIndex = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResourceErrorDoc extends Doc {

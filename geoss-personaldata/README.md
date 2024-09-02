@@ -12,7 +12,7 @@ Access to private data requires authorization.
 
 ## Prerequisites
 
-- `Java 17`
+- `Java 21`
 
 ## Build Project
 

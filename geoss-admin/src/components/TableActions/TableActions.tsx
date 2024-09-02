@@ -15,7 +15,7 @@ import {
     LocaleNames,
 } from "@/types";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { setDecisionModalActions } from "@/utils/helpers";
+import { generateGenericErrorMessage, setDecisionModalActions } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { ILayer, ITutorialTag } from "@/types/models";
 import { useIntl } from "react-intl";
@@ -101,13 +101,14 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                     itemId,
                 }),
             });
-        } catch (error) {
-            const err = error as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+        } catch (e: any) {
+            const { errorStatus } = e;
+            console.log(errorStatus);
+            const msg = generateGenericErrorMessage(e)
             errorStatus &&
                 showToast({
                     title: translate("general.error"),
-                    description: `${errorStatus}`,
+                    description: `${errorStatus} + ${msg}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -169,13 +170,13 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                     itemId,
                 }),
             });
-        } catch (error) {
-            const err = error as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+        } catch (e: any) {
+            const { errorStatus } = e;
+            const msg = generateGenericErrorMessage(e)
             errorStatus &&
                 showToast({
                     title: translate("general.error"),
-                    description: translate("information.error.general"),
+                    description: `${errorStatus} + ${msg}`,
                     status: ToastStatus.ERROR,
                 });
         }
@@ -221,7 +222,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate("pages.layer.delete-confirmation", { title: item.name, itemId }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate("pages.layer.delete-error", { title: item.name, itemId }),
@@ -270,7 +271,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate("pages.tags.delete-confirmation", { title: item.name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate("pages.tags.delete-error", { title: item.name }),
@@ -346,7 +347,7 @@ export const TableActions = ({ itemId, actionsSource, item, onDeleteAction, disa
                 title: translate("general.deleted"),
                 description: translate(successMsgId, { title: item.label }),
             });
-        } catch (e) {
+        } catch (e: any) {
             showToast({
                 title: translate("general.error"),
                 description: translate(errorMsgId, { title: item.label }),

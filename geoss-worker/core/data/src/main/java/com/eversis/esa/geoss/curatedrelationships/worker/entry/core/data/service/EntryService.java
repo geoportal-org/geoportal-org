@@ -1,10 +1,10 @@
 package com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.service;
 
 import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.Entry;
-import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryEventRepository;
-import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryRepository;
 import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.EntryEvent;
 import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.model.EntryEventType;
+import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryEventRepository;
+import com.eversis.esa.geoss.curatedrelationships.worker.entry.core.data.repository.EntryRepository;
 
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;

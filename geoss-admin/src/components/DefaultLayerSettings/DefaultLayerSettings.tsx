@@ -14,7 +14,7 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { DefaultLayerSettingsManage } from "./DefaultLayerSettingsManage";
 import { DefaultLayerService } from "@/services/api";
 import { DefaultLayerContext } from "@/context";
-import { convertIsoDate, cutString, setTableSorting } from "@/utils/helpers";
+import { convertIsoDate, cutString, generateGenericErrorMessage, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { TableActionsSource, ToastStatus } from "@/types";
@@ -63,7 +63,14 @@ export const DefaultLayerSettings = () => {
             });
             setLayersList(() => layers);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             console.error(e);
         } finally {
             setIsPageChange(false);
@@ -91,11 +98,9 @@ export const DefaultLayerSettings = () => {
                 title: translate("general.created"),
                 description: translate("pages.layer.layer-added", { title: name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name" : "new-layer");
         }
     };
@@ -110,11 +115,9 @@ export const DefaultLayerSettings = () => {
                 title: translate("general.updated"),
                 description: translate("pages.layer.layer-updated", { title: updatedLayer.name }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-layer-name-update" : "updated-layer");
         }
     };

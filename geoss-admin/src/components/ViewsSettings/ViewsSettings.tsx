@@ -19,6 +19,7 @@ import { ViewsService } from "@/services/api";
 import { ViewsContext } from "@/context";
 import {
     cutString,
+    generateGenericErrorMessage,
     getViewsActionsMsgIds,
     getViewsSideBarTitleId,
     prepareViewsToShow,
@@ -74,8 +75,15 @@ export const ViewsSettings = () => {
             const viewsData = prepareViewsToShow(views);
             setViewsList(() => viewsData);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsPageChange(false);
             setIsLoading(false);
@@ -118,8 +126,15 @@ export const ViewsSettings = () => {
             handlePaginationParamsChange();
             actions.resetForm();
             showInfo("general.created", successMsgId, { title: viewData.label }, ToastStatus.SUCCESS);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             showInfo("general.error", errorMsgId);
         }
     };
@@ -141,8 +156,15 @@ export const ViewsSettings = () => {
             handlePaginationParamsChange();
             updateFormState(values);
             showInfo("general.updated", successMsgId, { title: viewData.label }, ToastStatus.SUCCESS);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             showInfo("general.error", errorMsgId);
         }
     };

@@ -1,11 +1,10 @@
 package com.eversis.esa.geoss.curated.resources.controller;
 
-import jakarta.validation.Valid;
-
 import com.eversis.esa.geoss.curated.resources.domain.BookmarkedResult;
 import com.eversis.esa.geoss.curated.resources.model.AddBookmarkedResultModel;
 import com.eversis.esa.geoss.curated.resources.model.BookmarkedResultModel;
 import com.eversis.esa.geoss.curated.resources.service.BookmarkedService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import jakarta.validation.Valid;
+
 /**
  * The type Bookmarked controller.
  */
@@ -36,6 +37,13 @@ public class BookmarkedController {
 
     private final BookmarkedService bookmarkedService;
 
+    /**
+     * Find bookmarks page.
+     *
+     * @param page the page
+     * @param size the size
+     * @return the page
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -46,6 +54,12 @@ public class BookmarkedController {
         return bookmarkedService.findBookmarks(PageRequest.of(page, size));
     }
 
+    /**
+     * Find bookmark bookmarked result.
+     *
+     * @param bookmarkId the bookmark id
+     * @return the bookmarked result
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{bookmarkId}")
@@ -54,6 +68,11 @@ public class BookmarkedController {
         return bookmarkedService.findBookmark(bookmarkId);
     }
 
+    /**
+     * Create bookmark.
+     *
+     * @param bookmarkedResultDto the bookmarked result dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -62,6 +81,12 @@ public class BookmarkedController {
         bookmarkedService.createBookmark(bookmarkedResultDto);
     }
 
+    /**
+     * Update bookmark.
+     *
+     * @param bookmarkId the bookmark id
+     * @param bookmarkedResultDto the bookmarked result dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{bookmarkId}")
@@ -72,6 +97,11 @@ public class BookmarkedController {
         bookmarkedService.updateBookmark(bookmarkId, bookmarkedResultDto);
     }
 
+    /**
+     * Delete bookmark.
+     *
+     * @param bookmarkId the bookmark id
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{bookmarkId}")
@@ -80,6 +110,14 @@ public class BookmarkedController {
         bookmarkedService.deleteBookmark(bookmarkId);
     }
 
+    /**
+     * Find bookmarks by user id page.
+     *
+     * @param userId the user id
+     * @param page the page
+     * @param size the size
+     * @return the page
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/findBookmarksByUserId")
@@ -91,6 +129,11 @@ public class BookmarkedController {
         return bookmarkedService.findBookmarksByUserId(userId, PageRequest.of(page, size));
     }
 
+    /**
+     * Add bookmark.
+     *
+     * @param addBookmarkedResultDto the add bookmarked result dto
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
@@ -99,6 +142,12 @@ public class BookmarkedController {
         bookmarkedService.addBookmark(addBookmarkedResultDto);
     }
 
+    /**
+     * Delete bookmark by target id and data source.
+     *
+     * @param targetId the target id
+     * @param dataSource the data source
+     */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/delete/byTargetIdAndDataSource")

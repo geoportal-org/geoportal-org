@@ -1,14 +1,15 @@
 package com.eversis.esa.geoss.curated.extensions.dto;
 
-import java.time.LocalDateTime;
-
 import com.eversis.esa.geoss.curated.common.domain.Status;
 import com.eversis.esa.geoss.curated.common.domain.TaskType;
 import com.eversis.esa.geoss.curated.extensions.domain.EntryExtension;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  * The type User extension dto.

@@ -13,6 +13,7 @@ export const TutorialTagsSettingsManage = () => {
     const [currentTranslation, setCurrentTranslation] = useState<LocaleNames>(defaultUsedLang);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { addNewTag, updateTag, editedTag } = useContext(TutorialTagsContext);
+
     const [initValues, setInitValues] = useState<FormikValues>(
         editedTag ? setExistingFormValues(addTutorialTagForm, editedTag) : setFormInitialValues(addTutorialTagForm)
     );

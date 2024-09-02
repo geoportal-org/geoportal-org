@@ -14,7 +14,7 @@ import { Loader, MainContent, SideBar, Table, TableActions, TablePagination, Tex
 import { TutorialTagsSettingsManage } from "./TutorialTagsSettingsManage";
 import { TutorialTagsService } from "@/services/api";
 import { TutorialTagsContext } from "@/context";
-import { cutString, isTranslatedValueAdded, setTableSorting } from "@/utils/helpers";
+import { cutString, generateGenericErrorMessage, isTranslatedValueAdded, setTableSorting } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import { LocaleNames, TableActionsSource, ToastStatus } from "@/types";
@@ -60,8 +60,15 @@ export const TutorialTagsSettings = () => {
             });
             setTagsList(() => tags);
             setDataInfo(() => ({ totalPages, totalElements }));
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsPageChange(false);
             setIsLoading(false);
@@ -94,9 +101,9 @@ export const TutorialTagsSettings = () => {
                 title: translate("general.created"),
                 description: translate("pages.tags.tag-added", { title: tagTitle }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
+            const { errorStatus } = err;
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-tag-id" : "new-tag");
         }
     };
@@ -117,7 +124,7 @@ export const TutorialTagsSettings = () => {
                 title: translate("general.updated"),
                 description: translate("pages.tags.tag-updated", { title: updatedTag.title }),
             });
-        } catch (e) {
+        } catch (e: any) {
             const err = e as { errorInfo: any; errorStatus: number };
             const { errorStatus, errorInfo } = err;
             showErrorInfo(errorStatus && errorStatus === 409 ? "not-unique-tag-id-update" : "updated-tag");

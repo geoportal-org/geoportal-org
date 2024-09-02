@@ -23,19 +23,21 @@ export const FileRepositoryBreadcrumb = ({ breadcrumb, handleBreadcrumbClick }: 
         >
             {breadcrumb.map((item, idx) => {
                 const isLastItem = breadcrumb.length - 1 === idx;
-                return (
-                    <BreadcrumbItem key={item.folderId} onClick={() => handleBreadcrumbClick(item.folderId, idx)}>
-                        <BreadcrumbLink
-                            as={Button}
-                            fontWeight={isLastItem ? "bold" : "normal"}
-                            size="sm"
-                            minW="auto"
-                            variant="geossBreadcrumb"
-                        >
-                            {idx !== 0 ? item.folderTitle : translate("pages.file-repository.root-folder")}
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                );
+                if (idx !== 0) {
+                    return (
+                        <BreadcrumbItem key={item.folderId} onClick={() => handleBreadcrumbClick(item.folderId, idx)}>
+                            <BreadcrumbLink
+                                as={Button}
+                                fontWeight={isLastItem ? "bold" : "normal"}
+                                size="sm"
+                                minW="auto"
+                                variant="geossBreadcrumb"
+                            >
+                                {item.folderTitle || translate("pages.file-repository.root-folder")}
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                    );
+                }
             })}
         </Breadcrumb>
     );

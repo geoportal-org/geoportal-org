@@ -1,11 +1,12 @@
 package com.eversis.esa.geoss.curated.resources.repository;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.common.domain.DataSource;
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
 
 /**
  * The interface Entry stats repository.

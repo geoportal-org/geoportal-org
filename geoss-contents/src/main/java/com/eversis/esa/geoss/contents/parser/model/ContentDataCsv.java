@@ -1,9 +1,9 @@
 package com.eversis.esa.geoss.contents.parser.model;
 
-import java.util.Locale;
-
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
+
+import java.util.Locale;
 
 /**
  * The type Content data csv.

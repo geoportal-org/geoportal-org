@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.proxy.document;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -10,6 +11,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  */
 @Document(indexName = "geoss_index", createIndex = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ViewCounterDoc extends Doc {
 
     /**

@@ -90,7 +90,7 @@ public class DocumentController {
                     }
             )
     )
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     EntityModel<Document> saveDocument(
             @Parameter(hidden = true)

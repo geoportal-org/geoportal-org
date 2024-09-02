@@ -11,6 +11,7 @@ import {
     setExistingWebSettingsKeyValues,
     setFormValuesAsString,
     getKeyValueFormChanges,
+    generateGenericErrorMessage,
 } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
@@ -27,7 +28,9 @@ export const WebSettings = () => {
     const { showToast } = useCustomToast();
     const { translate } = useFormatMsg();
     // const { locale } = useIntl();
-    const [defaultSourceNameOptionsList, setDefaultSourceNameOptionsList] = useState<{ value: string; label: string }[]>([]);
+    const [defaultSourceNameOptionsList, setDefaultSourceNameOptionsList] = useState<
+        { value: string; label: string }[]
+    >([]);
 
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
@@ -41,8 +44,15 @@ export const WebSettings = () => {
             setWebSettingsList(webSettings);
             setSavedValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields, false));
             setInitValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields));
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
             setIsError(true);
         } finally {
             setIsLoading(false);
@@ -64,8 +74,8 @@ export const WebSettings = () => {
         //             locale as LocaleNames
         //         );
         //         setDocumentsList(() => selectDocumentsList);
-        //     } catch (e) {
-        //         console.error(e);
+        //     } catch (e: any) {
+        //         console.error(e: any);
         //         setIsError(true);
         //     }
         // };
@@ -81,8 +91,15 @@ export const WebSettings = () => {
                     });
                 });
                 setDefaultSourceNameOptionsList(() => options);
-            } catch (e) {
-                console.error(e);
+            } catch (e: any) {
+                console.error(e)
+                const msg = generateGenericErrorMessage(e)
+
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
                 setIsError(true);
             }
         };
@@ -123,7 +140,7 @@ export const WebSettings = () => {
                 await getCurrentWebSettings();
                 showInfo("general.updated", "pages.web.updated", ToastStatus.SUCCESS);
             })
-            .catch((e) => {
+            .catch((e: any) => {
                 console.log(e);
                 showInfo("general.error", "information.error.updated-web");
             })
@@ -162,7 +179,7 @@ export const WebSettings = () => {
                 if (field.name === "defaultSourceName") {
                     field.selectSettings = {
                         isMultiselect: false,
-                        options: defaultSourceNameOptionsList
+                        options: defaultSourceNameOptionsList,
                     };
                 }
                 return <FormField key={field.name} fieldData={field} />;

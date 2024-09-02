@@ -3,13 +3,14 @@ import { Formik, FormikHelpers, FormikValues } from "formik";
 import { Box, Flex } from "@chakra-ui/react";
 import { TextContent, PrimaryButton, FormField } from "@/components";
 import { FileRepositoryService } from "@/services/api";
-import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
+import { areObjectsEqual, generateGenericErrorMessage, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import useCustomToast from "@/utils/useCustomToast";
 import { scrollbarStyles } from "@/theme/commons";
 import { createFolderForm } from "@/data/forms";
-import { ButtonType, FileRepositoryManageFolderProps } from "@/types";
+import { ButtonType, FileRepositoryManageFolderProps, ToastStatus } from "@/types";
 import { IFolderData } from "@/types/models";
 import { SiteContext, SiteContextValue } from "@/context/CurrentSiteContext";
+import useFormatMsg from "@/utils/useFormatMsg";
 
 export const FileRepositoryManageFolder = ({
     folderId,
@@ -24,7 +25,7 @@ export const FileRepositoryManageFolder = ({
         folder ? setExistingFormValues(createFolderForm, folder) : setFormInitialValues(createFolderForm)
     );
     const { showToast } = useCustomToast();
-
+    const { translate } = useFormatMsg();
     //siteId
     const { currentSiteId } = useContext<SiteContextValue>(SiteContext);
 
@@ -48,8 +49,15 @@ export const FileRepositoryManageFolder = ({
                 title: "Folder updated",
                 description: "Folder title updated",
             });
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -70,8 +78,14 @@ export const FileRepositoryManageFolder = ({
                 title: "Folder created",
                 description: `Folder ${newFolder.title} has been created`,
             });
-        } catch (e) {
-            console.error(e);
+        } catch (e: any) {
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

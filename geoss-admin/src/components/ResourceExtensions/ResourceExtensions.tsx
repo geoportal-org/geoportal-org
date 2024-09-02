@@ -30,6 +30,8 @@ import { initialPagesInfo } from "../Recommendations/DefaultValues";
 import { useSession } from "next-auth/react";
 import { ResourceExtensionsService } from "@/services/api/users/curatedResourceExtensionsService";
 import { UserExtensionContent } from "@/types/models/userExtensions";
+import { ToastStatus } from "@/types";
+import { generateGenericErrorMessage } from "@/utils/helpers";
 
 const statuses = {
     draft: "#68a1fc",
@@ -67,8 +69,15 @@ export const ResourceExtensions = () => {
                 number: response.number,
             };
             setPagesInfo(pInfo);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -84,8 +93,15 @@ export const ResourceExtensions = () => {
                     "pages.curatedToastsMessages.approved"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -99,8 +115,15 @@ export const ResourceExtensions = () => {
                     "pages.curatedToastsMessages.deleted"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -114,8 +137,15 @@ export const ResourceExtensions = () => {
                     "pages.curatedToastsMessages.denied"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -129,8 +159,15 @@ export const ResourceExtensions = () => {
                     "pages.curatedToastsMessages.pending"
                 )}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 
@@ -170,8 +207,15 @@ export const ResourceExtensions = () => {
                 title: translate("pages.curatedToastsMessages.statusChange"),
                 description: `${translate("pages.curatedToastsMessages.updateExtension")}.`,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            console.error(e)
+            const msg = generateGenericErrorMessage(e)
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

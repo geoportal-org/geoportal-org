@@ -6,6 +6,7 @@ import { ApiSettingsService } from "@/services/api";
 import {
     areObjectsEqual,
     createApiSettingsKeyValues,
+    generateGenericErrorMessage,
     getKeyValueFormChanges,
     setExistingApiSettingsKeyValues,
     setFormInitialValues,
@@ -33,16 +34,22 @@ export const ApiSettings = () => {
     }, [currentSiteId]);
 
     const getApiSettingsInfo = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             const {
                 _embedded: { apiSettings },
-            } = await ApiSettingsService.getApiSettings(currentSiteId, {page: 0, size: 99999});
+            } = await ApiSettingsService.getApiSettings(currentSiteId, { page: 0, size: 99999 });
             setApiSettingList(apiSettings);
             setSavedValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields, false));
             setInitValues(setExistingApiSettingsKeyValues(apiSettings, apiSettingsFormFields));
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
+            const msg = generateGenericErrorMessage(e)
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -73,9 +80,14 @@ export const ApiSettings = () => {
                 await getApiSettingsInfo();
                 showInfo("general.updated", "pages.api.updated", ToastStatus.SUCCESS);
             })
-            .catch((e) => {
-                console.log(e);
-                showInfo("general.error", "information.error.updated-api");
+            .catch((e: any) => {
+                console.error(e);
+                const msg = generateGenericErrorMessage(e)
+                showToast({
+                    title: translate("general.error"),
+                    description: `${msg || ""}`,
+                    status: ToastStatus.ERROR,
+                });
             })
             .finally(() => setIsLoading(false));
     };

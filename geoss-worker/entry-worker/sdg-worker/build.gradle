@@ -5,8 +5,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${springdocOpenapiVersion}"
     implementation 'org.hibernate.orm:hibernate-jcache'
-    implementation "org.ehcache:ehcache:${ehcacheVersion}"
+    implementation 'org.ehcache:ehcache'
     implementation 'org.apache.commons:commons-lang3'
     implementation "org.jsoup:jsoup:${jsoupVersion}"
     implementation project(':core:common')

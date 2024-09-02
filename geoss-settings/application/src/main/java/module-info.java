@@ -8,11 +8,13 @@ module geoss.settings.application {
 
     requires static lombok;
     requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.databind;
     requires com.zaxxer.hikari;
     requires io.swagger.v3.oas.annotations;
     requires io.swagger.v3.oas.models;
     requires jakarta.persistence;
     requires jakarta.validation;
+    requires jakarta.xml.bind;
     requires java.net.http;
     requires java.sql;
     requires net.javacrumbs.shedlock.core;
@@ -27,7 +29,6 @@ module geoss.settings.application {
     requires spring.context;
     requires spring.core;
     requires spring.data.commons;
-    requires spring.data.jdbc;
     requires spring.data.jpa;
     requires spring.data.rest.core;
     requires spring.data.rest.webmvc;

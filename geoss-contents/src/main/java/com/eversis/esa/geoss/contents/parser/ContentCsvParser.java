@@ -1,19 +1,20 @@
 package com.eversis.esa.geoss.contents.parser;
 
+import com.eversis.esa.geoss.contents.domain.Content;
+import com.eversis.esa.geoss.contents.parser.model.ContentCsv;
+import com.eversis.esa.geoss.contents.parser.model.ContentDataCsv;
+import com.eversis.esa.geoss.contents.parser.model.ContentTitleCsv;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.eversis.esa.geoss.contents.domain.Content;
-import com.eversis.esa.geoss.contents.parser.model.ContentCsv;
-import com.eversis.esa.geoss.contents.parser.model.ContentDataCsv;
-import com.eversis.esa.geoss.contents.parser.model.ContentTitleCsv;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
 
 /**
  * Service class for parsing CSV files related to content.

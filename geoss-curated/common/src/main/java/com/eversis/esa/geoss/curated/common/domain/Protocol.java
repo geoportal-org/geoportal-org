@@ -2,7 +2,6 @@ package com.eversis.esa.geoss.curated.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import jakarta.persistence.Column;
@@ -21,8 +20,7 @@ import jakarta.persistence.Table;
 public class Protocol {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 

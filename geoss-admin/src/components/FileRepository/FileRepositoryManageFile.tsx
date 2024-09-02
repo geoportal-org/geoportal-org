@@ -5,7 +5,7 @@ import { PrimaryButton, FormField, TextContent } from "@/components";
 import { FileRepositoryService } from "@/services/api";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
-import { areObjectsEqual, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
+import { areObjectsEqual, generateGenericErrorMessage, getIdFromUrl, setExistingFormValues, setFormInitialValues } from "@/utils/helpers";
 import { addFileForm, editFileForm } from "@/data/forms";
 import { scrollbarStyles } from "@/theme/commons";
 import { ButtonType, FileRepositoryManageFileProps, ToastStatus } from "@/types";
@@ -49,12 +49,10 @@ export const FileRepositoryManageFile = ({
                 title: "File updated",
                 description: "File title updated",
             });
-        } catch (e) {
-            const err = e as { errorInfo: IErrorObject; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
-            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
+        } catch (e: any) {
+            const { errorStatus } = e;
+            const msg = generateGenericErrorMessage(e)
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };
 
@@ -71,12 +69,10 @@ export const FileRepositoryManageFile = ({
                 title: "File uploaded",
                 description: `File ${addedFile.title} has been uploaded`,
             });
-        } catch (e) {
-            const err = e as { errorInfo: IErrorObject; errorStatus: number };
-            const { errorStatus, errorInfo } = err;
-            console.log(errorInfo);
-            console.log(errorStatus);
-            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : errorStatus.toString());
+        } catch (e: any) {
+            const { errorStatus, errorInfo } = e;
+            const msg = generateGenericErrorMessage(e)
+            showErrorInfo(errorStatus && errorStatus === 417 ? "not-unique-file-name" : msg);
         }
     };
 
@@ -99,7 +95,7 @@ export const FileRepositoryManageFile = ({
             extension,
             path: path,
             folderId: currentFolder,
-            siteId: currentSiteId
+            siteId: currentSiteId,
         };
     };
 

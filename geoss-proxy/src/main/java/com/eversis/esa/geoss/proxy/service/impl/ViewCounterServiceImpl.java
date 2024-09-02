@@ -1,23 +1,27 @@
 package com.eversis.esa.geoss.proxy.service.impl;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
 import com.eversis.esa.geoss.proxy.domain.ViewCounter;
 import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 import com.eversis.esa.geoss.proxy.exception.ViewCounterException;
 import com.eversis.esa.geoss.proxy.mapper.impl.ViewCounterMapper;
 import com.eversis.esa.geoss.proxy.repository.ViewCounterRepository;
 import com.eversis.esa.geoss.proxy.service.ViewCounterService;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * The type View counter service.
+ */
 @Slf4j
 @Service
 public class ViewCounterServiceImpl implements ViewCounterService {
@@ -35,6 +39,7 @@ public class ViewCounterServiceImpl implements ViewCounterService {
      *
      * @param viewCounterRepository the score repository
      * @param viewCounterMapper the score mapper
+     * @param elasticsearchClient the elasticsearch client
      */
     public ViewCounterServiceImpl(ViewCounterRepository viewCounterRepository, ViewCounterMapper viewCounterMapper,
             ElasticsearchClient elasticsearchClient) {

@@ -49,7 +49,7 @@ services:
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_CONTENTS_OA2_KCSECRET}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8082:8080"
@@ -88,7 +88,7 @@ services:
       SPRING_MAIL_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
       SPRING_MAIL_PROTOCOL: smtp
       SPRING_MAIL_PROPERTIES_MAIL_DEBUG: 'true'
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8085:8080"
@@ -282,7 +282,7 @@ services:
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PERSONALDATA_OA2_KCSECRET}
       KEYTOOL_STOREPASS: notusedyet
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8083:8080"
@@ -302,13 +302,13 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      SPRING_ELASTICSEARCH_REST_URIS: "geoss-elasticsearch-1:9200"
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      SPRING_ELASTICSEARCH_URIS: "http://geoss-elasticsearch-1:9200"
+      SPRING_ELASTICSEARCH_USERNAME: elastic
+      SPRING_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_PROXY_OA2_KCSECRET}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8084:8082"
@@ -328,17 +328,16 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
+      SPRING_ELASTICSEARCH_URIS: "http://geoss-elasticsearch-1:9200"
+      SPRING_ELASTICSEARCH_USERNAME: elastic
+      SPRING_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
+      DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: "true"
       DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "https://data.amerigeoss.org/api/3/action"
       DATASOURCE_ZENODO_BASE_URL: "https://zenodo.org"
-      DATASOURCE_ELASTICSEARCH_HOST: "geoss-elasticsearch-1"
-      DATASOURCE_ELASTICSEARCH_USERNAME: elastic
-      DATASOURCE_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
-      DATASOURCE_ELASTICSEARCH_PORT: "9200"
-      DATASOURCE_ELASTICSEARCH_COMPATIBILITYMODE: "true"
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SEARCH_OA2_KCSECRET}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8086:8080"
@@ -365,7 +364,7 @@ services:
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_SETTINGS_OA2_KCSECRET}
       KEYTOOL_STOREPASS: notusedyet
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8080:8080"
@@ -428,7 +427,7 @@ services:
       CONFIG_DAB_GEODAB_BASE_URL: "https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha"
       CONFIG_DAB_VLAB_BASE_URL: "https://vlabdev.geodab.org/vlab"
       CONFIG_DAB_VLAB_API_TOKEN: ${VLAB_API_TOKEN}
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8091:8080"
@@ -457,7 +456,7 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET}
       CONFIG_SDG_DEFAULT_LOGO: "https://unstats.un.org/home/assets/img/logos/logo_StatisticsDivision.png"
       CONFIG_SDG_UN_BASE_URL: "https://unstats.un.org/SDGAPI/v1/sdg"
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8092:8080"
@@ -487,7 +486,7 @@ services:
       WIKIDATA_API_URL: "https://en.wikipedia.org/w/api.php"
       WIKIDATA_CATEGORIES_SPARQL_URL: "https://live.dbpedia.org/sparql"
       WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI: "https://dbpedia.org"
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8093:8080"
@@ -518,7 +517,7 @@ services:
       THESAURUS_ESA_TOP_CONCEPTS_URIS: "https://earth.esa.int/concept/5c476560-e0a3-554a-9187-187a90da1309,https://earth.esa.int/concept/c98c8eae-7561-55de-bf01-2fb866693c14,https://earth.esa.int/concept/738c519f-48db-5344-bebc-030c16781c22"
       THESAURUS_EOSTERM_BASE_URI: "https://vocabularyserver.com/cnr/ml/eosterm/en/services.php"
       THESAURUS_EARTH_BASE_URI: "https://vocabularyserver.com/cnr/ml/earth/en/services.php"
-      SERVER_MAX_HTTP_HEADER_SIZE: "32KB"
+      SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
       - "8094:8080"

@@ -1,7 +1,5 @@
 package com.eversis.esa.geoss.contents.repository;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.contents.domain.Document;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.List;
 
 /**
  * The interface Document repository.
@@ -87,6 +87,17 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
      * @return the page
      */
     Page<Document> findByFolderId(@Param("folderId") Long folderId, Pageable pageable);
+
+    /**
+     * Find by folder id a and site id page.
+     *
+     * @param folderId the folder id
+     * @param siteId   the site id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Document> findByFolderIdAndSiteId(@Param("folderId") Long folderId, @Param("siteId") Long siteId,
+                                            Pageable pageable);
 
     /**
      * Find by folder id and title page.

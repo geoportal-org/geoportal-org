@@ -12,7 +12,7 @@ export const SearchBar = ({ setQuery }: SearchBarProps) => {
 
     return (
         <InputGroup size="sm" w="3xs">
-            <Input placeholder={translate("general.type")} onChange={(e) => handleQueryChange(e.target.value)} />
+            <Input placeholder={translate("general.type")} onChange={(e: any) => handleQueryChange(e.target.value)} />
             <InputRightElement>
                 <SearchIcon color="blackAlpha.700" />
             </InputRightElement>

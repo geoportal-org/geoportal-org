@@ -1,15 +1,9 @@
 package com.eversis.esa.geoss.proxy.controller;
 
-import java.util.List;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 import com.eversis.esa.geoss.proxy.domain.ViewCounter;
+import com.eversis.esa.geoss.proxy.domain.ViewCounterModel;
 import com.eversis.esa.geoss.proxy.service.ViewCounterService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * The type View counter controller.
@@ -75,7 +76,8 @@ public class ViewCounterController {
      * @return the view counters for multiple entries
      */
     @GetMapping("/list")
-    public ResponseEntity<List<ViewCounter>> getViewCountersForMultipleEntries(@RequestParam @NotEmpty List<String> entryIds) {
+    public ResponseEntity<List<ViewCounter>> getViewCountersForMultipleEntries(
+            @RequestParam @NotEmpty List<String> entryIds) {
         log.info("Getting view counters for entryIds: {}", entryIds);
         List<ViewCounter> viewCounter = viewCounterService.getCounter(entryIds);
         return ResponseEntity.ok(viewCounter);

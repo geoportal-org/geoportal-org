@@ -3,14 +3,17 @@ package com.eversis.esa.geoss.contents.exception;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,21 +52,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     /**
-     * Handle max size exception response entity.
-     *
-     * @param ex the ex
-     * @return the response entity
-     */
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ExceptionResponseMessage> handleMaxSizeException(MaxUploadSizeExceededException ex) {
-        List<String> errors = Arrays.asList(new String[]{ex.getMessage()});
-        ExceptionResponseMessage responseMessage =
-                new ExceptionResponseMessage("File is too large. Max file size is 50MB.",
-                        HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
-        return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
-    }
-
-    /**
      * Handle file name not unique exception response entity.
      *
      * @param ex the ex
@@ -75,6 +63,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ExceptionResponseMessage responseMessage =
                 new ExceptionResponseMessage(
                         "fileName is not unique. File with the same name is already in upload folder. Change file name",
+                        HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
+        return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        ExceptionResponseMessage responseMessage =
+                new ExceptionResponseMessage("File is too large. Max file size is 50MB.",
                         HttpStatus.EXPECTATION_FAILED.value(), new Date(), errors);
         return new ResponseEntity<>(responseMessage, new HttpHeaders(), HttpStatus.EXPECTATION_FAILED);
     }

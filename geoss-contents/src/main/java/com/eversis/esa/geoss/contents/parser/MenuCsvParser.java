@@ -1,19 +1,20 @@
 package com.eversis.esa.geoss.contents.parser;
 
+import com.eversis.esa.geoss.contents.domain.Menu;
+import com.eversis.esa.geoss.contents.parser.model.MenuCsv;
+import com.eversis.esa.geoss.contents.parser.model.MenuImageTitleCsv;
+import com.eversis.esa.geoss.contents.parser.model.MenuTitleCsv;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.eversis.esa.geoss.contents.domain.Menu;
-import com.eversis.esa.geoss.contents.parser.model.MenuCsv;
-import com.eversis.esa.geoss.contents.parser.model.MenuImageTitleCsv;
-import com.eversis.esa.geoss.contents.parser.model.MenuTitleCsv;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
 
 /**
  * Service class for parsing CSV files related to menu.
@@ -32,6 +33,12 @@ public class MenuCsvParser extends CsvParser {
     @Value("classpath:db/init-data/menu-image-title.csv")
     private Resource menuImageTitleCsvFile;
 
+    /**
+     * Gets menus from csv.
+     *
+     * @param siteId the site id
+     * @return the menus from csv
+     */
     public List<Menu> getMenusFromCsv(Long siteId) {
 
         // Parse the title CSV and group by menu ID

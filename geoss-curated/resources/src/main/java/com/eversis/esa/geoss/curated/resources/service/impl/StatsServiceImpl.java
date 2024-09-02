@@ -1,16 +1,17 @@
 package com.eversis.esa.geoss.curated.resources.service.impl;
 
-import java.util.List;
-
 import com.eversis.esa.geoss.curated.resources.domain.EntryStats;
 import com.eversis.esa.geoss.curated.resources.mapper.EntryStatsMapper;
 import com.eversis.esa.geoss.curated.resources.model.EntryStatsModel;
 import com.eversis.esa.geoss.curated.resources.repository.EntryStatsRepository;
 import com.eversis.esa.geoss.curated.resources.service.StatsService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * The type Stats service.

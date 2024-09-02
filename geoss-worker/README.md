@@ -13,3 +13,7 @@ In general project consists of several components:
 
 * [entry-worker](entry-worker) - project containing all workers related to main resources stored in primary data-store
 * [thesaurus-worker](thesaurus-worker) - worker, which fetches thesaurus data and loads it directly into Elasticsearch
+
+## Prerequisites
+
+- `Java 21`

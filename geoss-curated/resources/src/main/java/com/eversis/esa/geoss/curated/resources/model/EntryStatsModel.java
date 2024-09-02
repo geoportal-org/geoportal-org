@@ -1,8 +1,8 @@
 package com.eversis.esa.geoss.curated.resources.model;
 
-import jakarta.validation.constraints.NotNull;
-
 import lombok.Data;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type Entry stats model.

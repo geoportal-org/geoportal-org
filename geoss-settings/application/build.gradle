@@ -5,8 +5,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -19,33 +19,21 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.eclipse.angus:jakarta.mail:1.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-	implementation 'org.springframework.boot:spring-boot-starter-cache'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
-    implementation 'org.springframework.security:spring-security-acl'
-    implementation 'org.springframework.security:spring-security-data'
-    implementation 'org.springframework.security:spring-security-messaging'
-	implementation 'org.springframework.session:spring-session-jdbc'
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
     implementation 'org.liquibase:liquibase-core'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'net.javacrumbs.shedlock:shedlock-spring'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
     implementation project(':geoss-common')
@@ -72,6 +60,7 @@ dependencies {
 	testImplementation 'org.testcontainers:mysql'
 	testImplementation 'org.testcontainers:postgresql'
     testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
@@ -81,7 +70,6 @@ gitProperties {
 
 springBoot {
     buildInfo()
-    mainClass = 'com.eversis.esa.geoss.settings.application.Application'
 }
 
 tasks.named('test') {
