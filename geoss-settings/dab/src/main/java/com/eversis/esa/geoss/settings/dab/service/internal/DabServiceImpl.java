@@ -24,6 +24,7 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,12 @@ public class DabServiceImpl implements DabService {
         } catch (ExecutionException | InterruptedException | TimeoutException | IOException | FeedException e) {
             throw new DataAccessResourceFailureException(e.getMessage(), e);
         }
+    }
+
+    @Async
+    @Override
+    public void syncCatalogs() {
+        syncCatalogsFromDab();
     }
 
     @Scheduled(cron = "${geoss.settings.dab.catalog-sync-cron-expression}")

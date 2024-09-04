@@ -17,4 +17,9 @@ public interface DabService {
      * @return the catalogs
      */
     Page<Catalog> getCatalogs(Pageable pageable);
+
+    /**
+     * Sync catalogs.
+     */
+    void syncCatalogs();
 }
