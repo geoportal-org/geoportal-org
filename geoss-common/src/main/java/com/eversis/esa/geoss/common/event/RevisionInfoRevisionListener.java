@@ -19,6 +19,8 @@ import java.util.Optional;
 @Configurable
 public class RevisionInfoRevisionListener implements RevisionListener {
 
+    private static final String DEFAULT_REVISION_USERNAME = "xxxxxxxx-xxxx-cron-xxxx-xxxxxxxxxxxx";
+
     private final ObjectProvider<AuditorAware<?>> auditorAware;
 
     @Override
@@ -28,7 +30,7 @@ public class RevisionInfoRevisionListener implements RevisionListener {
         String username = Optional.ofNullable(auditorAware.getIfAvailable())
                 .flatMap(AuditorAware::getCurrentAuditor)
                 .map(Object::toString)
-                .orElse("unknown");
+                .orElse(DEFAULT_REVISION_USERNAME);
 
         revisionInfo.setUsername(username);
         log.debug("revisionEntity:{}", revisionInfo);

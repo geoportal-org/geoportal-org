@@ -16,9 +16,12 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collections;
@@ -48,9 +51,18 @@ public class DabController {
      */
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/catalogs")
-    PagedModel<EntityModel<Catalog>> search(@ParameterObject @PageableDefault Pageable pageable) {
+    PagedModel<EntityModel<Catalog>> getCatalogs(@ParameterObject @PageableDefault Pageable pageable) {
         Page<Catalog> catalogs = dabService.getCatalogs(pageable);
         return pageMapper.toPagedModel(catalogs, Catalog.class, this::catalogLinks, this::catalogLinks);
+    }
+
+    /**
+     * Synchronize catalogs from dab.
+     */
+    @PostMapping("/synchronize")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    void synchronize() {
+        dabService.syncCatalogs();
     }
 
     private List<Link> catalogLinks(Catalog model) {
