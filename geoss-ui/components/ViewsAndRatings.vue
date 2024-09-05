@@ -4,7 +4,7 @@
             <i class="icomoon-editor--eye"></i>
             <span>{{ views || 0 }}</span>
         </div>
-        <div v-if="result.rating" class="views-ratings__rating" :class="{'no-hover': isWidget}">
+        <div v-if="result.rating" class="views-ratings__rating" :class="{'no-hover': isWidget}" title="Stars are used to mark relevant resources">
             <i class="icomoon-editor--star" :data-tutorial-tag="resultIdDetails === result.id ? 'result-ratings' : ''"></i>
             <span>{{ Number(result.rating.averageScore).toFixed(1) }}</span>
             <div v-if="!isWidget" class="views-ratings__ratings-stars">

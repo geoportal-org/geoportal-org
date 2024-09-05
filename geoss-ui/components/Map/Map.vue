@@ -113,6 +113,7 @@ export default class MapComponent extends Vue {
 
         MapUtils.addBoundingBoxInteractions(this.map);
         MapUtils.addUNSDStatisticsInteractions(this.map);
+        MapUtils.addFeatureSelectionAsAOI(this.map);
         MapUtils.addOnErrorMapSwitcher();
         MapUtils.loadQueuedLayers(this.map);
 
@@ -206,6 +207,17 @@ export default class MapComponent extends Vue {
         color: white;
         margin-left: 10px;
         padding: 5px 10px;
+
+        .poi-param {
+            &__name {
+                width: 220px;
+            }
+        }
+
+        a {
+            color: white;
+            text-decoration: underline;
+        }
     }
 </style>
 <style scoped lang="scss">

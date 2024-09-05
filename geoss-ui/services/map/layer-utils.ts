@@ -18,6 +18,7 @@ import Layer from 'ol/layer/Layer'
 import VectorLayer from 'ol/layer/Vector'
 import TileLayer from 'ol/layer/Tile'
 import { $tc } from '~/plugins/i18n'
+import UtilsService from '@/services/utils.service';
 
 // @ts-ignore
 const ol = Vue.ol
@@ -80,7 +81,7 @@ const LayersUtils = {
         return layer
     },
 
-    getPinLayerData(coordinates: any[], index: number) {
+    getPinLayerData(coordinates: any[], index: number, item: any = null) {
         const W = []
         const S = []
         const E = []
@@ -101,6 +102,32 @@ const LayersUtils = {
             geometry: new AppVueObj.ol.geom.MultiPoint(pointsArray)
         })
         iconFeature.getGeometry()!.transform('EPSG:4326', 'EPSG:3857')
+
+        if (item && item['poi-id']) {
+            const poiLinks = [];
+            const links: any = UtilsService.getArrayByString(item, 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine');
+            for(const link of links) {
+                const linkTitle = UtilsService.getPropByString(link, 'gmd:CI_OnlineResource.gmd:description.gco:CharacterString');
+                const linkUrl = UtilsService.getPropByString(link, 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
+                poiLinks.push({
+                    title: linkTitle,
+                    url: linkUrl
+                });
+            }
+            const poiData = {
+                title: item.title,
+                links: poiLinks,
+                elevation: item.verticalextent.minimum === item.verticalextent.maximum ? item.verticalextent.minimum : `${item.verticalextent.minimum} - ${item.verticalextent.maximum}`,
+                cateogry: item['poi-category'],
+                country: item['poi-country'],
+                id: item['poi-id'],
+                network: item['poi-network'],
+                organization: item['poi-organization'],
+                parameters: item['poi-parameters']
+            };
+            // @ts-ignore
+            iconFeature.poi = poiData;
+        }
 
         const vectorSource = new AppVueObj.ol.source.Vector({
             features: [iconFeature]
@@ -710,12 +737,12 @@ const LayersUtils = {
                                 `Can not add file type kml to map layer, because it is error: ${String(
                                     data.resultDetails
                                 )}.
-							  	However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
+                                  However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
                             )
                         } else {
                             return Promise.reject(
                                 `Can not add file type kml to map layer, because the file is too big.
-								However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
+                                However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
                             )
                         }
                     } else if (
@@ -729,12 +756,12 @@ const LayersUtils = {
                                 `Can not add file type kmz to map layer, because it is error: ${String(
                                     data.resultDetails
                                 )}.
-							  	However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
+                                  However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
                             )
                         } else {
                             return Promise.reject(
                                 `Can not add file type kmz to map layer, because the file is too big.
-								However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
+                                However, the file can be downloaded <a href="${urlToResource}" target="_blank">here</a>.`
                             )
                         }
                     }

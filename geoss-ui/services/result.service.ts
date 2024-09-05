@@ -197,7 +197,7 @@ export const ResultService = {
             layer = LayersUtils.getBoxLayerData(boxes, index)
             type = LayerTypes.BOUNDINGBOX
         } else if (pins.length && item.content !== 'QuakeML') {
-            layer = LayersUtils.getPinLayerData(pins, index)
+            layer = LayersUtils.getPinLayerData(pins, index, item)
             type = LayerTypes.BOUNDINGPIN
         }
 

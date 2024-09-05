@@ -23,6 +23,8 @@ import to from '@/utils/to'
 import { FeatureClass } from 'ol/Feature'
 import Map from 'ol/Map'
 import { $tc } from '~/plugins/i18n'
+import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions';
+import MapCoordinatesUtils from '@/services/map/coordinates-utils';
 
 declare let loadshp: any
 
@@ -383,9 +385,9 @@ const MapUtils = {
                                 desc = truncatedDesc
                             }
                             const message = `Layer: ${desc} <br />
-							Country: ${outmostFeature.get('name')} <br />
-							Year: ${outmostFeature.get('stats_year')} <br />
-							Value: ${UtilsService.roundToFirstDecimal(+outmostFeature.get('stats_value'))}`
+                            Country: ${outmostFeature.get('name')} <br />
+                            Year: ${outmostFeature.get('stats_year')} <br />
+                            Value: ${UtilsService.roundToFirstDecimal(+outmostFeature.get('stats_value'))}`
                             AppVueObj.app.$store.dispatch(
                                 MapActions.setMapTooltipMessage,
                                 message
@@ -464,6 +466,84 @@ const MapUtils = {
                 }
             }
         })
+    },
+
+    /**
+     * Selects AOI from extent of a selected feature
+     * @param map
+     */
+    addFeatureSelectionAsAOI: (map: any) => {
+        map.on('singleclick', (e: any) => {
+            const popupOverlay = AppVueObj.app.$store.getters[MapGetters.mapTooltip];
+            const clearAOI = async () => {
+                AppVueObj.app.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, null);
+                popupOverlay.setPosition(undefined);
+                AppVueObj.app.$store.dispatch(MapActions.setShowFull, false);
+                AppVueObj.app.$store.dispatch(GeneralFiltersActions.parseValues, null);
+                await AppVueObj.app.$nextTick();
+                AppVueObj.app.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false);
+            };
+
+            // Create placeholder for map popup
+            if (!AppVueObj.app.$store.getters[MapGetters.mapTooltip]) {
+                const popupOverlay = new AppVueObj.ol.Overlay({
+                    element: document.getElementById('map-tooltip'),
+                    stopEvent: false
+                });
+                AppVueObj.app.$store.dispatch(MapActions.setMapTooltip, popupOverlay);
+                map.addOverlay(popupOverlay);
+            }
+
+            const feature = map.forEachFeatureAtPixel(e.pixel, (feature: any) => feature);
+            if (feature) {
+                const values = feature.values_;
+                if (values && values.Country && values.Source) {
+                    const coords = feature.getGeometry().getCoordinates();
+                    const geometry = new AppVueObj.ol.geom.Polygon(coords);
+                    const extent = geometry.transform('EPSG:3857', 'EPSG:4326').getExtent();
+                    const coordsWSEN = MapCoordinatesUtils.parseCoordinates(extent);
+
+                    let W = coordsWSEN[0];
+                    const S = coordsWSEN[1];
+                    let E = coordsWSEN[2];
+                    const N = coordsWSEN[3];
+
+                    const normalizedLongitude = MapCoordinatesUtils.normalizeLongitude(W, E);
+                    W = normalizedLongitude[0];
+                    E = normalizedLongitude[1];
+
+                    AppVueObj.app.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, {W, S, E, N});
+                    AppVueObj.app.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
+
+                    const tooltipMessage = `${values.name}<hr />${values.Country}`;
+                    AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
+                    popupOverlay.setPosition(e.coordinate);
+                    AppVueObj.app.$store.dispatch(MapActions.setShowFull, true);
+                } else if (feature.poi) {
+                    const poi = feature.poi;
+                    let tooltipMessage = '<table><tbody>';
+                    tooltipMessage += poi.id ? `<tr><td class="poi-param__name">GEO Mountains ID:</td><td>${poi.id}</td></tr>` : '';
+                    tooltipMessage += poi.title ? `<tr><td class="poi-param__name">Name:</td><td>${poi.title}</td></tr>` : '';
+                    tooltipMessage += poi.category ? `<tr><td class="poi-param__name">Category:</td><td>${poi.category}</td></tr>` : '';
+                    tooltipMessage += poi.elevation ? `<tr><td class="poi-param__name">Elevation and/or range (m a.s.l):</td><td>${poi.elevation}</td></tr>` : '';
+                    tooltipMessage += poi.organization ? `<tr><td class="poi-param__name">Operating Organisation:</td><td>${poi.organization}</td></tr>` : '';
+                    tooltipMessage += poi.country ? `<tr><td class="poi-param__name">Country:</td><td>${poi.country}</td></tr>` : '';
+                    if (poi.links.length) {
+                        for (let i = 0; i < poi.links.length; i++) {
+                            tooltipMessage += `<tr>${!i ? `<td class="poi-param__name" rowspan="${poi.links.length}">URL(s) to data repository and download:</td>` : ''}<td><a href="${poi.links[i].url}" title="${poi.links[i].title}" target="_blank">${poi.links[i].title}</a></td></tr>`;
+                        }
+                    }
+                    tooltipMessage += poi.network ? `<tr><td class="poi-param__name">Parent network and/or other comment(s):</td><td>${poi.network}</td></tr>` : '';
+                    tooltipMessage += poi.parameters ? `<tr><td class="poi-param__name">Parameters:</td><td>${poi.parameters}</td></tr>` : '';
+                    tooltipMessage += '</tbody></table>';
+
+                    AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
+                    popupOverlay.setPosition(e.coordinate);
+                }
+            } else {
+                clearAOI();
+            }
+        });
     },
 
     /**
