@@ -1,5 +1,5 @@
 <template>
-    <div class="filters insitu-filters">
+        <div class="filters insitu-filters" :class="{'only-advanced': onlyAdvanced}">
         <div class="insitu-filters__wrapper">
             <CustomSelect
                 class="insitu-filters__filter cropType"
@@ -45,6 +45,7 @@
                     <vue-slider
                         v-model="cropConfidence"
                         :enable-cross="false"
+                        @drag-end="getResults()"
                     ></vue-slider>
                 </div>
                 <div class="slider-container landCoverConfidence">
@@ -54,6 +55,7 @@
                     <vue-slider
                         v-model="landCoverConfidence"
                         :enable-cross="false"
+                        @drag-end="getResults()"
                     ></vue-slider>
                 </div>
                 <div class="slider-container irrigationConfidence">
@@ -63,6 +65,7 @@
                     <vue-slider
                         v-model="irrigationConfidence"
                         :enable-cross="false"
+                        @drag-end="getResults()"
                     ></vue-slider>
                 </div>
             </div>
@@ -72,7 +75,7 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Watch, Prop } from 'nuxt-property-decorator'
 
 import GeossDataCoreCheckbox from '@/components/Search/GeneralFilters/GeossDataCoreCheckbox.vue'
 import GooglePlacesSelect from '@/components/Search/GeneralFilters/GooglePlacesSelect.vue'
@@ -84,9 +87,10 @@ import { Source, View } from '@/interfaces/GeneralFilters'
 import { CountriesAndContinents } from '@/data/general-filters'
 import { SearchGetters } from '@/store/search/search-getters'
 import { DataSources } from '@/interfaces/DataSources'
-import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
-import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
+import { InSituFiltersActions } from '@/store/inSituFilters/inSitu-filters.actions'
+import { InSituFiltersGetters } from '@/store/inSituFilters/inSitu-filters.getters'
 import VueSlider from 'vue-slider-component'
+import { SearchActions } from '@/store/search/search-actions';
 
 @Component({
     components: {
@@ -100,6 +104,8 @@ import VueSlider from 'vue-slider-component'
     },
 })
 export default class InSituFiltersComponent extends Vue {
+    @Prop({type: Boolean, required: true}) public onlyAdvanced!: boolean;
+
     public DataSources = DataSources
     public sourceOptions: Source[] = []
     public viewOptions: View[] = []
@@ -207,6 +213,10 @@ export default class InSituFiltersComponent extends Vue {
         this.$store.dispatch(InSituFiltersActions.setIrrigationTypes, value)
     }
 
+    public getResults() {
+        this.$store.dispatch(SearchActions.getResults);
+    }
+
     private updateFilterOptions(storeAction: string, filter: string) {
         const options = []
 
@@ -267,6 +277,21 @@ export default class InSituFiltersComponent extends Vue {
             )
         }
     }
+
+    @Watch('cropTypes')
+    private async onCropTypesChange() {
+        this.getResults();
+    }
+
+    @Watch('landCoverTypes')
+    private async onLandCoversChange() {
+        this.getResults();
+    }
+
+    @Watch('irrigationTypes')
+    private async onIrrigationChange() {
+        this.getResults();
+    }
 }
 </script>
 
@@ -274,6 +299,10 @@ export default class InSituFiltersComponent extends Vue {
 .insitu-filters {
     background: $blue-transparent;
     position: relative;
+
+    &.only-advanced {
+        background: $blue;
+    }
 
     .slider-section-container {
         display: flex;

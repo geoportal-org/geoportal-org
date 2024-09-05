@@ -7,4 +7,5 @@ export const FileFormatsIcons = [
     'png',
     'txt',
     'xml',
+    'worldcereal-collection'
 ]

@@ -380,7 +380,8 @@
                                                                 "></i>
                                                         <p @click="
                                                             downloadLinkClicked(
-                                                                download.url
+                                                                download.url,
+                                                                download.type
                                                             )
                                                             " class="dab-result-details__direct-download-button"
                                                             :title="$tc(
@@ -486,6 +487,9 @@ import DashboardService from '@/services/dashboard.service'
 import NotificationService from '@/services/notification.service'
 import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue'
 import CollapseTransition from '@/plugins/CollapseTransition'
+import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
+import date from '@/filters/date'
 
 @Component({
     components: {
@@ -1400,6 +1404,12 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 }
             }
 
+            // WorldCereal MAPS4GPP collection
+            if (this.result.sourceId === 'worldcereal') {
+                downloads.push({name: this.result.title, url: `${SearchEngineService.getDabBaseUrl()}/worldcereal/query?searchFields=title,keywords,abstract&reqID=6hnblre3236&si=1&ct=12&rel=OVERLAPS&viewid=&sources=worldcereal&parents=${this.result.id}`, desc: '', type: 'worldcereal-collection'});
+            }
+
+
             if (!this.workflow) {
                 const resources = UtilsService.getArrayByString(
                     this.result,
@@ -2071,7 +2081,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
     }
 
-    public downloadLinkClicked(url) {
+    public downloadLinkClicked(url, format = null) {
         const id = this.result.id
         let orgName = ''
         let title = ''
@@ -2085,6 +2095,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
             orgName = this.result.contributor.orgName
             title = this.result.title
         }
+
+        if (format === 'worldcereal-collection') {
+            url = this.appendWorldCerealCollectionParameters(url);
+        }
+
         window.open(url)
 
         LogService.logElementClick(
@@ -2114,6 +2129,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public addToDownloadsList(url, format) {
         if (!this.isSignedIn) {
             return
+        }
+
+        if (format === 'worldcereal-collection') {
+            url = this.appendWorldCerealCollectionParameters(url);
         }
 
         const link: BulkDownloadLink = {
@@ -2201,6 +2220,45 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.result.contributor.orgName,
             this.result.title
         )
+    }
+
+    public appendWorldCerealCollectionParameters(url) {
+        const concatCoordinates = coordinates => {
+            const { W, S, E, N } = coordinates;
+            if(W && S && E && N) {
+                return `${W},${S},${E},${N}`;
+            }
+            return ',,,';
+        };
+
+        const dateFrom = this.$store.getters[GeneralFiltersGetters.state].dateFrom;
+        const dateTo = this.$store.getters[GeneralFiltersGetters.state].dateTo;
+        const selectedAreaCoordinates = this.$store.getters[GeneralFiltersGetters.state].selectedAreaCoordinates;
+        const params = {
+            cropTypes: this.$store.getters[InSituFiltersGetters.cropTypes],
+            landCoverTypes: this.$store.getters[InSituFiltersGetters.landCoverTypes],
+            irrigationTypes: this.$store.getters[InSituFiltersGetters.irrigationTypes],
+            cropConfidence: this.$store.getters[InSituFiltersGetters.cropConfidence],
+            landCoverConfidence: this.$store.getters[InSituFiltersGetters.landCoverConfidence],
+            irrigationConfidence: this.$store.getters[InSituFiltersGetters.irrigationConfidence],
+            ts: dateFrom ? date(dateFrom, 'YYYY-MM-DDThh:mm:ssZ') : null,
+            te: dateTo ? date(dateTo, 'YYYY-MM-DDThh:mm:ssZ') : null,
+            bbox: concatCoordinates(selectedAreaCoordinates) !== ',,,' ? concatCoordinates(selectedAreaCoordinates) : null,
+        };
+
+        for (const param in params) {
+            if (param) {
+                const appendix = params[param];
+                if (appendix && appendix.length) {
+                    if (typeof appendix === 'string') {
+                        url += `&${param}=${appendix}`;
+                    } else if (Array.isArray(appendix)) {
+                        url += `&${param}=${appendix.join()}`;
+                    }
+                }
+            }
+        }
+        return url;
     }
 
     public openDownloadLinksPopup(links) {

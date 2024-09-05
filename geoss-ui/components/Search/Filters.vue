@@ -20,6 +20,7 @@
                     v-show="activeSection === 'advanced' || !currentResults"
                 />
                 <InSituFiltersComponent
+                    :only-advanced="!currentResults"
                     v-show="
                         inSituFiltersAvailable && activeSection !== 'advanced'
                     "
@@ -128,6 +129,10 @@ export default class SearchFiltersComponent extends Vue {
         return this.$store.getters[SearchGetters.dataSource]
     }
 
+    get viewId() {
+        return this.$store.getters[GeneralFiltersGetters.getViewId].includes('worldcereal');
+    }
+
     @Watch('dataSource')
     public onDSChange() {
         if (this.dataSource === DataSources.DAB && this.$store.getters[GeneralFiltersGetters.getViewId].includes('worldcereal')) {
@@ -140,6 +145,15 @@ export default class SearchFiltersComponent extends Vue {
                 InSituFiltersActions.setInSituFiltersAvailable,
                 false
             )
+        }
+    }
+
+    @Watch('viewId')
+    public onViewIdChange(newVal: any) {
+        if (newVal) {
+            this.$store.dispatch(InSituFiltersActions.setInSituFiltersAvailable, true);
+        } else {
+            this.$store.dispatch(InSituFiltersActions.setInSituFiltersAvailable, false);
         }
     }
 
