@@ -16,6 +16,10 @@ if [ "${DEPLOY_ENV}" = "uat" ]; then
   mv /etc/nginx/conf.d/gpp-admin.conf /etc/nginx/conf.d/gpp-admin.conf.old
   awk -v r="${robots_conf}" '{gsub(/###ROBOTS_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-admin.conf.old > /etc/nginx/conf.d/gpp-admin.conf
   rm /etc/nginx/conf.d/gpp-admin.conf.old
+
+  mv /etc/nginx/conf.d/gpp-lp.conf /etc/nginx/conf.d/gpp-lp.conf.old
+  awk -v r="${robots_conf}" '{gsub(/###ROBOTS_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
+  rm /etc/nginx/conf.d/gpp-lp.conf.old
 else
   echo "Skipping robots.txt configuration"
 fi

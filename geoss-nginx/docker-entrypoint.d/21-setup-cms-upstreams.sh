@@ -70,3 +70,25 @@ if [ -n "${ADMIN_UPSTREAM_HOST}" ]; then
 else
  echo "ADMIN_UPSTREAM_HOST env variable is not set"
 fi
+
+if [ -n "${LANDINGPAGE_UPSTREAM_HOST}" ]; then
+
+  i=0
+  upstream_conf=""
+
+  for upstream_host in $(echo ${LANDINGPAGE_UPSTREAM_HOST} | tr "," "\n")
+    do
+      i=$((i+1))
+      if [ $i -gt 1 ]; then
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:3002  backup max_fails=1 fail_timeout=30;"
+        else
+          upstream_conf="${upstream_conf}"'\n'"server   ${upstream_host}:3002  max_fails=2 fail_timeout=5;"
+      fi
+  done
+
+  mv /etc/nginx/conf.d/gpp-lp.conf /etc/nginx/conf.d/gpp-lp.conf.old
+  awk -v r="${upstream_conf}" '{gsub(/###LANDINGPAGE_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
+  rm /etc/nginx/conf.d/gpp-lp.conf.old
+else
+ echo "LANDINGPAGE_UPSTREAM_HOST env variable is not set"
+fi

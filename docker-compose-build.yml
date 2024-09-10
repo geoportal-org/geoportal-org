@@ -83,6 +83,12 @@ services:
       context: ./geoss-kibana
       dockerfile: Dockerfile
 
+  geoss-landingpage:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_landingpage:${DOCKER_IMAGE_TAG}
+    build:
+      context: ./geoss-landingpage
+      dockerfile: Dockerfile
+
   geoss-matomo:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
     build:
