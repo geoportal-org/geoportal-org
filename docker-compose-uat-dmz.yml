@@ -49,6 +49,7 @@ services:
       UI_DOMAIN_NAME: gpp.uat.esaportal.eu
       UI_SERVICES_PROVIDERS: "http://yp.geodab.eu/yp-publisher/services/yp/providers/"
       LANDINGPAGE_UPSTREAM_HOST: ${LANDINGPAGE_UPSTREAM_HOST}
+      LANDING_PAGE_DOMAIN_NAME: ${LANDING_PAGE_DOMAIN_NAME}
       KEYCLOAK_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}
       KEYCLOAK_DOMAIN_NAME: gpp-idp.uat.esaportal.eu
       ADMIN_UPSTREAM_HOST: ${NGINX_UPSTREAM_HOST}

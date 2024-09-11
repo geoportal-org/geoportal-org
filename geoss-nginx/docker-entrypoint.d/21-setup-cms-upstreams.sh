@@ -87,7 +87,7 @@ if [ -n "${LANDINGPAGE_UPSTREAM_HOST}" ]; then
   done
 
   mv /etc/nginx/conf.d/gpp-lp.conf /etc/nginx/conf.d/gpp-lp.conf.old
-  awk -v r="${upstream_conf}" '{gsub(/###LANDINGPAGE_UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
+  awk -v r="${upstream_conf}" '{gsub(/###UPSTREAM_CONFIG###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
   rm /etc/nginx/conf.d/gpp-lp.conf.old
 else
  echo "LANDINGPAGE_UPSTREAM_HOST env variable is not set"
