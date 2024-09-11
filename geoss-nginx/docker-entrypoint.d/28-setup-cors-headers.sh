@@ -44,5 +44,5 @@ EOL
 
   mv /etc/nginx/conf.d/utils/proxy_response_headers_keycloak.conf /etc/nginx/conf.d/utils/proxy_response_headers_keycloak.conf.old
   awk -v r="${allowed_domains_config}" '{gsub(/###ALLOWED_DOMAINS_CONFIG###/,r)}1' /etc/nginx/conf.d/utils/proxy_response_headers_keycloak.conf.old > /etc/nginx/conf.d/utils/proxy_response_headers_keycloak.conf
-  rm /etc/nginx/conf.d/utils/proxy_response_headers.conf_keycloak.old
+  rm /etc/nginx/conf.d/utils/proxy_response_headers_keycloak.conf.old
 fi
