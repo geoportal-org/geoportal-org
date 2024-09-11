@@ -1,11 +1,11 @@
 const config = {
-    apiUrl: '/settings/rest', // 'http://10.254.7.59:8080/rest', //
+    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8080/rest' : '/settings/rest',
     apiSettingsUrl: '/api-settings',
     webSettingsUrl: '/web-settings',
     catalogsUrl: '/catalogs',
     viewsUrl: '/views',
     layersUrl: '/layers',
-    tutorialTatsUrl: 'tutorial-tags',
+    tutorialTatsUrl: '/tags',
 }
 
 export default {
@@ -15,5 +15,5 @@ export default {
     catalogs: config.apiUrl + config.catalogsUrl,
     views: config.apiUrl + config.viewsUrl,
     layers: config.apiUrl + config.layersUrl,
-    tutorialTags: config.apiUrl + config.tutorialTatsUrl,
+    tutorialTags: config.apiUrl + config.tutorialTatsUrl + '?page=0&size=9999',
 }

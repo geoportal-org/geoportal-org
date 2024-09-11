@@ -51,10 +51,10 @@ export default class TutorialTagsComponent extends Vue {
     public activeTagId = '';
     public defaultTag = {
         show: true,
-        description: [{ zh_CN: '' }, { es_ES: '' }, { pl_PL: '' }, { ru_RU: '' }, { fr_FR: '' }, { en_US: 'Turn on/off tutorial mode' }],
+        description: {zh: '', es: '', pl: '', ru: '', fr: '', en: 'Turn on/off tutorial mode'},
         id: 'tutorial-mode-switch',
         placement: 'left-top',
-        title: [{ zh_CN: '' }, { es_ES: '' }, { pl_PL: '' }, { ru_RU: '' }, { fr_FR: '' }, { en_US: 'Tutorial mode switch' }],
+        title: {zh: '', es: '', pl: '', ru: '', fr: '', en: 'Tutorial mode switch'},
         type: 'new',
     };
 
@@ -70,6 +70,7 @@ export default class TutorialTagsComponent extends Vue {
         this.showTutorial = !this.showTutorial;
         if (this.showTutorial && (!this.tags.length || this.tags.length === 1)) {
             [, this.tags] = await to(GeneralApiService.getTutorialTags());
+            this.tags.push(this.defaultTag)
             this.tags.sort((a, b) => a.type === b.type ? 0 : +(a.type < b.type) || -1);
             for (const tag of this.tags) {
                 tag.startPosition = {
@@ -125,7 +126,7 @@ export default class TutorialTagsComponent extends Vue {
         }
         const expires = new Date();
         expires.setFullYear(expires.getFullYear() + 10);
-        this.$cookies.set('TUTORIAL_TAGS_BLACKLIST', JSON.stringify(this.tagsBlacklist.join()), expires);
+        this.$cookies.set('TUTORIAL_TAGS_BLACKLIST', this.tagsBlacklist.join(), expires);
     }
 
     public tagClick(tagId) {
@@ -157,17 +158,12 @@ export default class TutorialTagsComponent extends Vue {
     }
 
     public getFromLangLocale(tag, type) {
-        for (const locale of tag[type]) {
-            if (locale[this.langLocale]) {
-                return locale[this.langLocale];
-            }
-        }
-        return '';
+        return tag[type][this.langLocale] || tag[type]['en'] || ''
     }
 
     public async mounted() {
         this.tags = [this.defaultTag];
-        this.tagsBlacklist = this.$cookies.get('TUTORIAL_TAGS_BLACKLIST') ? JSON.parse(this.$cookies.get('TUTORIAL_TAGS_BLACKLIST')).split(',') : [];
+        this.tagsBlacklist = this.$cookies.get('TUTORIAL_TAGS_BLACKLIST') ? decodeURIComponent(this.$cookies.get('TUTORIAL_TAGS_BLACKLIST')).split(',') : [];
 
         TutorialTagsService.eventBus.$on('getPositions', event => {
             this.getPositions(event);
@@ -232,7 +228,7 @@ export default class TutorialTagsComponent extends Vue {
         bottom: 2%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 2;
+        z-index: 11;
         font-size: 1em;
         padding: 10px 20px;
     }

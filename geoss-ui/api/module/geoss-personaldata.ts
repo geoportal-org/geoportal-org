@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: '/personaldata/rest', //'http://10.254.7.59:8083/rest', // ,
+    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8083/rest' : '/personaldata/rest',
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',
     surveys: '/surveys'

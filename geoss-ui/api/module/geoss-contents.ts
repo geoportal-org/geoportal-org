@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: '/contents/rest', // 'http://10.254.7.59:8082/rest', //
+    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8082/rest' : '/contents/rest',
     menuUrl: '/menu/search/findByLevelIdAndSiteId',
     pageUrl: '/page/search/findByPublishedAndSiteId',
     contentUrl: '/content',

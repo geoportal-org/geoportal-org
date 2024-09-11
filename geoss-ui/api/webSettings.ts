@@ -116,6 +116,15 @@ interface SearchSettings {
     }
 }
 
+interface TutorialTag {
+    description: any
+    id: string
+    placement: string
+    show: boolean
+    title: any
+    type: string
+}
+
 export interface IWebSettingData {
     set: string
     key: string
@@ -165,6 +174,21 @@ const parseCatalogsResponse = (data: string): any => {
         })
     }
     return catalogs
+}
+
+const parseTutorialTags = (data: any[]): TutorialTag[] => {
+    const parsedTags: TutorialTag[] = [];
+    for (const tag of data) {
+        parsedTags.push({
+            description: tag.description,
+            id: tag.name,
+            placement: tag.placement,
+            show: tag.show,
+            title: tag.title,
+            type: tag.type
+        })
+    }
+    return parsedTags
 }
 
 export default {
@@ -277,5 +301,18 @@ export default {
                 }
             }
         )
+    },
+    getTutorialTags: async () => {
+        const tutorialTagsRaw: any = await apiClient.$get(
+            `${geossSettings.tutorialTags}`,
+            {
+                headers: {
+                    Authorization: '',
+                    'Accept-Language': '*'
+                }
+            }
+        )
+        const tags = parseTutorialTags(tutorialTagsRaw._embedded.tags)
+        return tags
     }
 }

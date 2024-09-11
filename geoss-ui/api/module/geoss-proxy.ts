@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: '/proxy/rest', //'http://10.254.7.59:8084/rest', //
+    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8084/rest' : '/proxy/rest',
     popularUrl: '/popular',
     logSearchUrl: '/log/logSearchResult',
     logElementClickUrl: '/log/logElementClick',

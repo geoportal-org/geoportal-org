@@ -147,7 +147,6 @@ export default class HeaderComponent extends Vue {
     }
 
     public runMobileLogosAnimation() {
-        console.log(111)
         const mobileLogos: any = document.querySelector('.header__left__slider')?.querySelectorAll('a');
         if (this.mobileLogosAnimation) {
             clearInterval(this.mobileLogosAnimation);

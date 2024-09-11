@@ -198,19 +198,21 @@ export const GeneralApiService = {
     },
 
     getTutorialTags() {
-        const authParam =
-            !UtilsService.isWidget() &&
-            typeof Liferay !== 'undefined' &&
-            Liferay.ThemeDisplay.isSignedIn()
-                ? `?p_auth=${Liferay.authToken}`
-                : ''
-        const url = `${BaseUrl()}/api/jsonws/geoss-service-portlet.tutorialconfig/get-tutorial-configuration${authParam}`
-        return makeRequest('get', url, null, true)
-            .then((data: any) => {
-                return data
-            })
-            .catch(() => {
-                return Promise.resolve([])
-            })
+        return webSettingsAPI.getTutorialTags()
+
+        // const authParam =
+        //     !UtilsService.isWidget() &&
+        //     typeof Liferay !== 'undefined' &&
+        //     Liferay.ThemeDisplay.isSignedIn()
+        //         ? `?p_auth=${Liferay.authToken}`
+        //         : ''
+        // const url = `${BaseUrl()}/api/jsonws/geoss-service-portlet.tutorialconfig/get-tutorial-configuration${authParam}`
+        // return makeRequest('get', url, null, true)
+        //     .then((data: any) => {
+        //         return data
+        //     })
+        //     .catch(() => {
+        //         return Promise.resolve([])
+        //     })
     }
 }

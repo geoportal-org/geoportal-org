@@ -718,7 +718,7 @@ export default {
                             )
                         }
                         if (siteData.siteId !== '') {
-                            const siteId = siteData.siteId * 1
+                            const siteId = siteData.siteId ? siteData.siteId * 1 : 0
                             this.$store.dispatch(
                                 SearchEngineActions.setSiteId,
                                 siteId
@@ -820,6 +820,7 @@ export default {
                                     MapActions.setGooglesApiKey,
                                     searchSettings['googleMapsApiKey']
                                 )
+
                                 if (searchSettings.linkSharing) {
                                     const searchSettingsLayers =
                                         searchSettings.linkSharing

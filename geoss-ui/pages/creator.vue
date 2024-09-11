@@ -281,7 +281,7 @@ export default {
                 } else {
                     this.getCurrentDefaultView();
                 }
-                this.settings = await WebSettingsAPI.getSiteSettingsRaw(defaultSiteId)
+                this.settings = await WebSettingsAPI.getSiteSettingsRaw(this.defaultSiteId)
                 this.siteData = await ContentAPI.getSiteByUrl(this.$route.params.siteurl)
             }
         },
