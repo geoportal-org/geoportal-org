@@ -6,6 +6,9 @@ upstream keycloak_upstream {
 ## Initial common setup of variables
 include conf.d/common/map_initial_setup.conf;
 
+## Map used for response headers
+include conf.d/utils/proxy_response_headers_map.conf;
+
 server {
   listen *:80;
   server_name ${KEYCLOAK_DOMAIN_NAME};
