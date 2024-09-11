@@ -118,8 +118,8 @@ const sendLiferayRequest = (url: string, data: any, noSpinner?: boolean) => {
 }
 
 const GeossSearchApiService = {
-    getSourcesOptions(catalogsUrl: string): Promise<Source[]> {
-        return webSettingsAPI.getCatalogs(catalogsUrl)
+    getSourcesOptions(): Promise<Source[]> {
+        return webSettingsAPI.getCatalogs()
 
         // if (cache.sources) {
         //     return Promise.resolve(cache.sources)

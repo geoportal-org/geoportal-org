@@ -581,8 +581,8 @@ export default class SearchGeneralFiltersComponent extends Vue {
 
     private async created() {
         const [, sourceOptions] = await to(
-            GeossSearchApiService.getSourcesOptions('')
-        ) // TODO: add url
+            GeossSearchApiService.getSourcesOptions()
+        )
         if (sourceOptions) {
             this.sourceOptions = sourceOptions
         }

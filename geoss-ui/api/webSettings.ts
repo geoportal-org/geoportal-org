@@ -159,9 +159,8 @@ const parseSiteSettings = (data: WebSettingsData): SiteSettings => {
     }
 }
 
-const parseCatalogsResponse = (data: string): any => {
-    const catalogsObject = JSON.parse(parseXMLToJSON(data))
-    const catalogsArray = catalogsObject.feed.entry
+const parseCatalogsResponse = (data: any): any => {
+    const catalogsArray = data._embedded.catalogs
     const catalogs = []
 
     for (const cat of catalogsArray) {
@@ -173,7 +172,7 @@ const parseCatalogsResponse = (data: string): any => {
             value: cat.id
         })
     }
-    return catalogs
+    return catalogs.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
 }
 
 const parseTutorialTags = (data: any[]): TutorialTag[] => {
@@ -227,9 +226,9 @@ export default {
         const apiSettingsData: any = parseApiSettings(apiSettings)
         return apiSettingsData
     },
-    getCatalogs: async (catalogsUrl: string) => {
+    getCatalogs: async () => {
         if (process.browser) {
-            const catalogsResponse: any = await apiClient.$get(catalogsUrl, {
+            const catalogsResponse: any = await apiClient.$get(`${geossSettings.catalogs}`, {
                 headers: {
                     Authorization: ''
                 }

@@ -12,7 +12,7 @@ export default {
     url: config.apiUrl,
     apiSettings: config.apiUrl,
     webSettings: config.apiUrl,
-    catalogs: config.apiUrl + config.catalogsUrl,
+    catalogs: config.apiUrl + config.catalogsUrl + '?page=0&size=9999',
     views: config.apiUrl + config.viewsUrl,
     layers: config.apiUrl + config.layersUrl,
     tutorialTags: config.apiUrl + config.tutorialTatsUrl + '?page=0&size=9999',
