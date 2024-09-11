@@ -25,7 +25,7 @@ const ImageTile = ({ text, href, bg, className }: Props) => {
         target="_blank"
         className={`${
           className ? className : ""
-        }hover:no-underline block relative flex flex-col p-4 min-h-[460px]`}
+        }hover:no-underline block relative flex flex-col p-4 min-h-[360px]`}
       >
         <p className="z-10 mt-auto text-xl">{text}</p>
       </Link>

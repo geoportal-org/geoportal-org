@@ -12,7 +12,7 @@ const CustomCarousel = dynamic(() => import("../Carousel/CustomCarousel"), {
 const Carousels = () => {
   return (
     <section
-      className={`relative w-full min-h-[30vh] bg-[#061D30] py-32 px-6 flex items-center justify-center md:block`}
+      className={`relative w-full text-white min-h-[30vh] bg-[#061D30] py-32 px-6 lg:px-48 flex items-center justify-center md:block`}
     >
       <div className="flex flex-col w-full gap-24">
         <div>

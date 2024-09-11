@@ -5,7 +5,7 @@ import gradientBg from "@/public/gradient-bg.webp";
 
 const Access = () => {
   return (
-    <section className="relative w-full flex flex-col items-center justify-center max-lg:px-6 py-28 gap-4">
+    <section className="relative w-full text-white flex flex-col items-center justify-center max-lg:px-6 py-28 gap-4">
       <Image
         priority
         fill

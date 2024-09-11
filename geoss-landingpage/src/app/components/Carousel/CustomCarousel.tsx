@@ -46,13 +46,23 @@ const CustomCarousel = ({ itemsArray, className, isFeature }: Props) => {
       items: 6,
       partialVisibilityGutter: 60,
     },
+    desktop :{
+      breakpoint: { max: 2100, min: 1700 },
+      items: 5,
+      partialVisibilityGutter: 60,
+    },
     smallDesktop: {
-      breakpoint: { max: 2100, min: 1324 },
+      breakpoint: { max: 1700, min: 1324 },
       items: 4,
       partialVisibilityGutter: 50,
     },
+    bigTablet: {
+      breakpoint: { max: 1324, min: 900 },
+      items: 3,
+      partialVisibilityGutter: 30,
+    },
     tablet: {
-      breakpoint: { max: 1324, min: 464 },
+      breakpoint: { max: 900, min: 464 },
       items: 2,
       partialVisibilityGutter: 30,
     },
@@ -74,7 +84,7 @@ const CustomCarousel = ({ itemsArray, className, isFeature }: Props) => {
         autoPlaySpeed={3000}
         centerMode={false}
         className="w-full"
-        containerClass={`${isFeature ? "h-[400px]" : "h-[550px] "}`}
+        containerClass={`${isFeature ? "h-[400px]" : "h-[450px] "}`}
         dotListClass=""
         draggable={false}
         focusOnSelect={false}

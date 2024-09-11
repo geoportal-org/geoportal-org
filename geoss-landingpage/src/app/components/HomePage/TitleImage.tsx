@@ -11,7 +11,7 @@ const TitleImage = () => {
 
   return (
     <section
-      className={`relative w-full h-[80vh] flex items-center justify-center md:block`}
+      className={`relative w-full h-[80vh] flex items-center justify-center md:block text-white`}
     >
       <Image
         fill
