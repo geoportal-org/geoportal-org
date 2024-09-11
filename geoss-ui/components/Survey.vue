@@ -419,11 +419,11 @@ export default class SurveyComponent extends Vue {
 
             &-prev,
             &-next {
-                top: 60px !important;
+                top: 140px !important;
                 transform: none !important;
 
                 @media(max-width: $breakpoint-lg) {
-                    top: 3px;
+                    top: 3px !important;
                 }
             }
 
@@ -487,6 +487,10 @@ export default class SurveyComponent extends Vue {
             &:after {
                 background-color: $green;
             }
+        }
+
+        &-slide {
+            min-width: 100%;
         }
     }
 

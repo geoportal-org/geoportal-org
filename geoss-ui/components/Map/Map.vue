@@ -27,7 +27,7 @@ import { AppVueObj } from '~/data/global'
 export default class MapComponent extends Vue {
 
     get map() {
-        return window['geossMap']; // this.$store.getters[MapGetters.map];
+        return window['geossMap'] // this.$store.getters[MapGetters.map];
     }
 
     get tooltipMessage() {

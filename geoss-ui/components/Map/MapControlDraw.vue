@@ -30,7 +30,7 @@ export default class MapControlDrawComponent extends Vue {
     }
 
     get map() {
-        return this.$store.getters[MapGetters.map]
+        return window['geossMap'] // this.$store.getters[MapGetters.map]
     }
 
     get selectedAreaCoordinates() {
@@ -55,21 +55,16 @@ export default class MapControlDrawComponent extends Vue {
      */
     public addDrawInteraction() {
         this.drawActive = true
-        this.$store.dispatch(
-            GeneralFiltersActions.setLocationType,
-            'coordinates'
-        )
+        this.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates')
         this.$store.dispatch(MapActions.setShowFull, true)
 
         if (this.workflow && this.workflowCoordinates) {
             this.$store.dispatch(
-                GeneralFiltersActions.setSelectedAreaCoordinates,
-                this.workflowCoordinates
+                GeneralFiltersActions.setSelectedAreaCoordinates, this.workflowCoordinates
             )
         } else {
             this.$store.dispatch(
-                GeneralFiltersActions.setSelectedAreaCoordinates,
-                null
+                GeneralFiltersActions.setSelectedAreaCoordinates, null
             )
         }
 

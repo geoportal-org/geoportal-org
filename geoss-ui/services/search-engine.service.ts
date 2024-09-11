@@ -163,7 +163,8 @@ const SearchEngineService = {
     },
 
     getMetaDataUrl(targetId: string) {
-        return SearchEngineService.getResourceUrl('META_DATA', { targetId })
+        return `${SearchEngineService.getDabBaseUrl()}/cswisogeo?service=CSW&request=GetRecordById&id=${targetId}&outputschema=http://www.isotc211.org/2005/gmi&elementSetName=full`
+        // return SearchEngineService.getResourceUrl('META_DATA', { targetId })
     },
 
     getCheckLayerFileUrl(urlToCheck: string, type: string) {

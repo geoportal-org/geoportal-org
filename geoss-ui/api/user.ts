@@ -70,7 +70,11 @@ const UserAPI = {
 
     addSurvey: (surveyData: any) => {
         const url = `${geossPersonaldata.surveys}`
-        return apiClient.$post(url, surveyData)
+        return apiClient.$post(url, surveyData, {
+            headers: {
+                Authorization: '',
+            },
+        })
     },
 }
 

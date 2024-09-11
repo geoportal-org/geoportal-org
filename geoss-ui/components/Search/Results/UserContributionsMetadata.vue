@@ -1,5 +1,5 @@
 <template>
-    <div class="user-contributions" v-if="userExtensions.length && showSection()">
+    <div class="user-contributions" v-if="userExtensions && userExtensions.length && showSection()">
         <div class="user-contributions__label">
             {{
                 $tc(
@@ -90,10 +90,14 @@ export default class UserContributionsMetadata extends Vue {
     @Prop(String) public model!: string
     @Prop(Object) public data!: any
     public showDeleteIcon = true
-    public userExtensions =
-        this.model && this.model === 'comment'
-            ? this.userContributionsComments
-            : this.userContributionsExtensions
+
+    get userExtensions() {
+        if (this.model && this.model === 'comment') {
+            return this.userContributionsComments
+        } else {
+            return this.userContributionsExtensions
+        }
+    }
 
     get userId() {
         return !UtilsService.isWidget() && typeof Liferay !== 'undefined'
@@ -150,11 +154,8 @@ export default class UserContributionsMetadata extends Vue {
 
     public showItem(extension) {
         return (
-            (typeof extension[this.model] === 'string' &&
-                extension[this.model] !== '') ||
-            (typeof extension[this.model] === 'object' &&
-                Array.isArray(extension[this.model]) &&
-                extension[this.model].length)
+            (typeof extension[this.model] === 'string' && extension[this.model] !== '') ||
+            (typeof extension[this.model] === 'object' && Array.isArray(extension[this.model]) && extension[this.model].length)
         )
     }
 
@@ -164,7 +165,7 @@ export default class UserContributionsMetadata extends Vue {
         availableLinks
     ) {
         let linkBlocked = true
-        if (!availableLinks.length) {
+        if (!availableLinks || !availableLinks.length) {
             return linkBlocked
         } else {
             for (const link of availableLinks) {
