@@ -46,6 +46,7 @@ dependencies {
     implementation 'jakarta.servlet:jakarta.servlet-api'
     compileOnly 'org.springframework:spring-jdbc'
     compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.springframework.security:spring-security-data'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen:${hibernateJpamodelgenVersion}"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
