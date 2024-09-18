@@ -13,7 +13,8 @@
                 {{ $tc('popupContent.authors') }}: {{ authors }}
             </div>
             <div v-if="useLimitation" class="metadata__license">
-                {{ $tc('popupContent.license') }}: {{ useLimitation }}
+                {{ $tc('popupContent.license') }}: {{ useLimitation }} <span v-if="accessConstraints"> - {{ accessConstraints }}</span>
+
             </div>
             <div v-if="otherConstraints" class="metadata__citation">
                 {{ $tc('popupContent.citation') }}: {{ otherConstraints }}
@@ -523,6 +524,11 @@ export default class DabResultMetadataComponent extends Vue {
     get useLimitation() {
         return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:useLimitation.gco:CharacterString');
     }
+
+    get accessConstraints() {
+		const accessConstraints = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:accessConstraints.gmd:MD_RestrictionCode');
+		return typeof accessConstraints === 'string' ? accessConstraints : null;
+	}
 
     get otherConstraints() {
         return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:otherConstraints.gco:CharacterString');

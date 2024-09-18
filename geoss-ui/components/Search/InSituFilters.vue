@@ -90,7 +90,8 @@ import { DataSources } from '@/interfaces/DataSources'
 import { InSituFiltersActions } from '@/store/inSituFilters/inSitu-filters.actions'
 import { InSituFiltersGetters } from '@/store/inSituFilters/inSitu-filters.getters'
 import VueSlider from 'vue-slider-component'
-import { SearchActions } from '@/store/search/search-actions';
+import { SearchActions } from '@/store/search/search-actions'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
 
 @Component({
     components: {
@@ -192,6 +193,10 @@ export default class InSituFiltersComponent extends Vue {
         return this.$store.getters[SearchGetters.currentResults]
     }
 
+    get generalFiltersInChange() {
+		return this.$store.getters[GeneralFiltersGetters.inChangeProcess];
+	}
+
     public prepareLabels(array: any[]) {
         return array.map((element: { id: string; text: string }) => {
             return {
@@ -214,7 +219,9 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     public getResults() {
-        this.$store.dispatch(SearchActions.getResults);
+        if (!this.generalFiltersInChange) {
+			this.$store.dispatch(SearchActions.getResults);
+		}
     }
 
     private updateFilterOptions(storeAction: string, filter: string) {
@@ -301,6 +308,7 @@ export default class InSituFiltersComponent extends Vue {
     position: relative;
 
     &.only-advanced {
+        display: none;
         background: $blue;
     }
 

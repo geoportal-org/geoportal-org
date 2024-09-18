@@ -2474,7 +2474,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
             label = this.$tc('dabResult.other')
         } else if (label === 'html') {
             label = this.$tc('dabResult.view')
-        }
+        } else if (label === 'worldcereal-collection') {
+			label = 'Download selected data';
+		}
         return label.toUpperCase()
     }
 

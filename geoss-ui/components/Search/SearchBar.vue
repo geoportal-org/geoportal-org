@@ -178,6 +178,7 @@ export default class SearchBarComponent extends Vue {
 
     public async resetGeneralFiltersAndResults() {
         await this.$store.dispatch(GeneralFiltersActions.reset)
+        await this.$store.dispatch(InSituFiltersActions.reset)
         await this.$store.dispatch(FacetedFiltersActions.reset)
         await this.$store.dispatch(GranulaFiltersActions.reset)
         await this.$store.dispatch(IrisFiltersActions.reset)
