@@ -236,6 +236,22 @@ services:
     depends_on:
       - geoss-elasticsearch-1
 
+  geoss-landingpage:
+    image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_landingpage:${DOCKER_IMAGE_TAG}
+    hostname: geoss-landingpage
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - "node.labels.shared_tag==geoss-apps"
+    environment:
+      << : *proxy-variables
+    ports:
+      - "3002:3000"
+    networks:
+      - geosslan
+
   geoss-matomo:
     image: nexus-docker.eversis.com:7443/geoss-mst-images/geoss_matomo:${DOCKER_IMAGE_TAG}
     hostname: geoss-matomo
