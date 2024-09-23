@@ -9,7 +9,7 @@ const LearnMore = () => {
         <span className="flex flex-col gap-4 text-xl py-8 border-t border-[#DBDEE0]">
           <p>Explore GEOSS Platform with Tutorial Mode</p>
           <Link
-            href={"https://www.youtube.com/channel/UCZwhJZI76s7K9eAcBXAPyrw"}
+            href={"https://www.geoportal.org/community/guest/tutorials  "}
             className="text-[#01685B] underline"
           >
             Access Tutorial Mode

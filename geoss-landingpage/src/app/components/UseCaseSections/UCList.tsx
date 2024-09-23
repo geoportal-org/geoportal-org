@@ -30,17 +30,17 @@ const UCList = ({
     >
       <h2 className="text-2xl font-esabold">{title}</h2>
       <div className="w-full flex flex-col xl:flex-row gap-16 xl:gap-24">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 xl:w-[33%]">
           <UCListIcon width="50px" height="50px" />
           <h3 className="text-2xl">{title1}</h3>
           <p>{text1}</p>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 xl:w-[33%]">
           <UCListIcon width="50px" height="50px" />
           <h3 className="text-2xl">{title2}</h3>
           <p>{text2}</p>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 xl:w-[33%]">
           <UCListIcon width="50px" height="50px" />
           <h3 className="text-2xl">{title3}</h3>
           <p>{text3}</p>
