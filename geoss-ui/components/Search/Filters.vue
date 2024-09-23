@@ -186,16 +186,10 @@ export default class SearchFiltersComponent extends Vue {
 
         const heightLess700 = window.matchMedia('(max-height: 700px)')
         if (
-            (this.$store.getters[
-                FacetedFiltersGetters.facetedFiltersAvailable
-            ] ||
-                this.$store.getters[
-                    GranulaFiltersGetters.granulaFiltersAvailable
-                ] ||
-                this.$store.getters[IrisFiltersGetters.irisFiltersAvailable] ||
-                this.$store.getters[
-                    InSituFiltersGetters.inSituFiltersAvailable
-                ]) &&
+            (this.$store.getters[FacetedFiltersGetters.facetedFiltersAvailable] ||
+             this.$store.getters[GranulaFiltersGetters.granulaFiltersAvailable] ||
+             this.$store.getters[IrisFiltersGetters.irisFiltersAvailable] ||
+             this.$store.getters[InSituFiltersGetters.inSituFiltersAvailable]) &&
             !heightLess700.matches &&
             this.currentResults
         ) {

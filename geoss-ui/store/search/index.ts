@@ -786,26 +786,26 @@ const actions = {
                         } else {
                             errorInfo = null
                             // If possible run other datasource from the same tab
-                            const currentTab =
-                                DataSourceGroup[state.dataSource as DataSource]
-                            const otherSourcesFromCurrentTab =
-                                otherAvailableSourceResults.filter(
-                                    (item) =>
-                                        DataSourceGroup[item] === currentTab
-                                )
-                            if (otherSourcesFromCurrentTab.length) {
-                                dispatch(
-                                    SearchActions.setDataSource,
-                                    { value: otherSourcesFromCurrentTab[0] },
-                                    { root: true }
-                                )
-                            } else {
-                                dispatch(
-                                    SearchActions.setDataSource,
-                                    { value: otherAvailableSourceResults[0] },
-                                    { root: true }
-                                )
-                            }
+                            // const currentTab =
+                            //     DataSourceGroup[state.dataSource as DataSource]
+                            // const otherSourcesFromCurrentTab =
+                            //     otherAvailableSourceResults.filter(
+                            //         (item) =>
+                            //             DataSourceGroup[item] === currentTab
+                            //     )
+                            // if (otherSourcesFromCurrentTab.length) {
+                            //     dispatch(
+                            //         SearchActions.setDataSource,
+                            //         { value: otherSourcesFromCurrentTab[0] },
+                            //         { root: true }
+                            //     )
+                            // } else {
+                            //     dispatch(
+                            //         SearchActions.setDataSource,
+                            //         { value: otherAvailableSourceResults[0] },
+                            //         { root: true }
+                            //     )
+                            // }
                         }
                         break
                     }
@@ -847,12 +847,12 @@ const actions = {
             for (const prop of Object.keys(results)) {
                 const result = results[prop]
                 if (
-                    (!data.theSameTab && result && !result.error) ||
+                    (!data.theSameTab && result) ||
                     (data.theSameTab && result === currentResults)
                 ) {
                     commit('setStateProp', { prop, value: result })
                 } else if (!data.theSameTab) {
-                    commit('setStateProp', { prop, value: null })
+                    commit('setStateProp', { prop, value: result })
                 }
             }
 
@@ -868,12 +868,12 @@ const actions = {
             for (const prop of Object.keys(results)) {
                 const result = results[prop]
                 if (
-                    (!data.theSameTab && result && !result.error) ||
+                    (!data.theSameTab && result) ||
                     (data.theSameTab && result === currentResults)
                 ) {
                     commit('setStateProp', { prop, value: result })
                 } else if (!data.theSameTab) {
-                    commit('setStateProp', { prop, value: null })
+                    commit('setStateProp', { prop, value: result })
                 }
             }
 

@@ -38,9 +38,8 @@ export default class SeeOtherSourcesComponent extends Vue {
                 const dataNameResults = `${sourceName}Results`;
 
                 if (this.$store.getters[SearchGetters[dataNameResults as keyof typeof SearchGetters]]) {
-
                     const resultsObjest = this.$store.getters[SearchGetters[dataNameResults as keyof typeof SearchGetters]];
-                    const totalResults = resultsObjest.totalResults || resultsObjest['opensearch:totalResults'] || resultsObjest['os:totalResults'];
+                    const totalResults = resultsObjest.totalResults || resultsObjest['opensearch:totalResults'] || resultsObjest['os:totalResults'] || 0;
                     alternateSources.push({ text: `${AlternateSourcesMap[sourceName]} ${this.totalResultsString(totalResults)}`, id: sourceName });
                 }
             }

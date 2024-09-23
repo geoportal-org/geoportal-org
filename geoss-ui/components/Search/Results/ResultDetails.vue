@@ -932,6 +932,17 @@ export default class SearchResultDabDetailsComponent extends Vue {
                             score: linkScore
                         })
                     } else if (
+                        (extension === 'geoparquet' || protocol.indexOf('geoparquet') > -1) &&
+                        !complex) {
+						    downloads.push({
+                                name: linkTitle,
+                                url: linkText,
+                                desc: linkDescription,
+                                type: 'geoparquet',
+                                title: titleBox,
+                                score: linkScore
+                            })
+                    } else if (
                         (extension === 'txt' || protocol.indexOf('TXT') > -1) &&
                         !complex
                     ) {

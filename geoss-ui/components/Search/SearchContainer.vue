@@ -28,9 +28,10 @@
                             <SearchResultDabDetails :class="{'disable-container': generalFiltersInChange}" :separated="true" v-if="parentRef" :result="parentRef.entry" :index="0" :image="getImage(parentRef.entry.logo)" />
                             <Workflow v-if="workflow && !workflowMapDraw" :workflow="workflow"/>
                             <CrRelations v-if="crRelationSrc"/>
-                            <div v-if="!workflowMapDraw" :class="{'disable-container': generalFiltersInChange}" v-show="searchResultsActive" class="search-container__results">
+                            <div v-if="!workflowMapDraw && currentResults && currentResults.error != 'no_results'" :class="{'disable-container': generalFiltersInChange}" v-show="searchResultsActive" class="search-container__results">
                                 <component :is="currentResultsContainer"></component>
                             </div>
+                            <SearchNoResults v-if="!workflowMapDraw && currentResults && currentResults.error === 'no_results' " />
                         </div>
                     </div>
                 </div>
@@ -85,6 +86,7 @@ import { LayerData } from '@/interfaces/LayerData';
 import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions';
 import { GeneralGetters } from '@/store/general/general-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
+import SearchNoResults from '@/components/Search/Results/NoResults.vue'
 
 @Component({
     components: {
@@ -105,7 +107,8 @@ import TutorialTagsService from '@/services/tutorial-tags.service';
         Workflow,
         CrRelations,
         SeeOtherSources,
-        PoweredBy
+        PoweredBy,
+        SearchNoResults
     }
 })
 export default class SearchContainerComponent extends Vue {
