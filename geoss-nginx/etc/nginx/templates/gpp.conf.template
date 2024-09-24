@@ -170,8 +170,6 @@ server {
     #response headers
     include conf.d/utils/proxy_response_headers.conf;
 
-    limit_except POST { deny  all; }
-
     add_header X-Cache-Status $upstream_cache_status;
   }
 
