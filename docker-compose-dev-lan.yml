@@ -441,7 +441,6 @@ services:
       SPRING_PROFILES_ACTIVE: keycloak
       SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET}
-      CONFIG_DAB_GEODAB_BASE_URL: "https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha"
       CONFIG_DAB_VLAB_BASE_URL: "https://vlabdev.geodab.org/vlab"
       CONFIG_DAB_VLAB_API_TOKEN: ${VLAB_API_TOKEN}
       CONFIG_DAB_VLAB_WORKFLOWS_INCLUDE_UNDER_TEST: "true"

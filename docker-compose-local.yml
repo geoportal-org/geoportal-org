@@ -420,9 +420,9 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
-      - CONFIG_DAB_GEODAB_BASE_URL=https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha
       - CONFIG_DAB_VLAB_BASE_URL=https://vlabdev.geodab.org/vlab
       - CONFIG_DAB_VLAB_API_TOKEN=7qm9uezuj27SjqE7FTAEj3iNeKbmpRaHasg7zVs3
+      - CONFIG_DAB_VLAB_WORKFLOWS_INCLUDE_UNDER_TEST=true
     hostname: geoss-worker-geodab-worker
     ports:
       - "8087:8080"

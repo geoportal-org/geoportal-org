@@ -59,31 +59,6 @@ class WorkflowStepsConfiguration {
     }
 
     /**
-     * Geo dab workflow entries load step step.
-     *
-     * @param itemReader the item reader
-     * @param itemWriter the item writer
-     * @param chunkListener the chunk listener
-     * @param stepListener the step listener
-     * @return the step
-     */
-    @Bean("geoDabWorkflowEntriesLoadStep")
-    Step geoDabWorkflowEntriesLoadStep(
-            @Qualifier("geoDabWorkflowItemReader") ItemReader<Entry> itemReader,
-            @Qualifier("workflowItemWriter") ItemWriter<Entry> itemWriter,
-            @Qualifier("workflowChunkListener") ChunkListener chunkListener,
-            @Qualifier("workflowStepListener") StepExecutionListener stepListener) {
-        return new StepBuilder("geoDabWorkflowEntriesLoadStep", jobRepository)
-                .allowStartIfComplete(true)
-                .listener(stepListener)
-                .<Entry, Entry>chunk(batchSize, transactionManager)
-                .reader(itemReader)
-                .writer(itemWriter)
-                .listener(chunkListener)
-                .build();
-    }
-
-    /**
      * Vlab dab workflow entries load step step.
      *
      * @param itemReader the item reader

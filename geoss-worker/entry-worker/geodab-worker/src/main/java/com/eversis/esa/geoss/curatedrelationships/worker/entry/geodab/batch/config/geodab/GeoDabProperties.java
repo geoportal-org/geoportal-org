@@ -14,13 +14,5 @@ import org.springframework.stereotype.Component;
 @Setter
 public class GeoDabProperties {
 
-    private String baseUrl;
     private String organisation;
-    private String ecosystemsEndpoint;
-    private String protectedAreasEndpoint;
-    private String storylinesEndpoint;
-    private String workflowsEndpoint;
-
-    private String protectedAreasTransferOptionTitle;
-    private String storylinesTransferOptionTitle;
 }
