@@ -18,7 +18,6 @@ services:
     environment:
       NEXT_PUBLIC_API: "https://gpp-admin.uat.esaportal.eu"
       NEXT_PUBLIC_APP_URL: "https://gpp.uat.esaportal.eu"
-      NEXT_PUBLIC_URL: "https://gpp-admin.uat.esaportal.eu"
       NEXTAUTH_URL: "https://gpp-admin.uat.esaportal.eu"
       NEXTAUTH_SECRET: ${GEOSS_ADMIN_NEXTAUTH_SECRET}
       KEYCLOAK_CLIENT_ID: "geoss-admin"
@@ -261,21 +260,29 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-matomo"
     environment:
+      MATOMO_DATA_TO_PERSIST: "matomo.js piwik.js config/config.ini.php misc/user js"
       MATOMO_DATABASE_HOST: "geoss-mariadb"
       MATOMO_DATABASE_PORT_NUMBER: 3306
-      MATOMO_DATABASE_ADAPTER: mysql
+      MATOMO_DATABASE_NAME: matomodb
       MATOMO_DATABASE_USER: matomo
       MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_NAME: matomodb
+      MATOMO_DATABASE_TABLE_PREFIX: "matomo_"
+      MATOMO_SMTP_HOST: geoss-maildev
+      MATOMO_SMTP_PORT_NUMBER: 1025
+      MATOMO_SMTP_USER: maildev
+      MATOMO_SMTP_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
       MATOMO_USERNAME: admin
       MATOMO_PASSWORD: ${MATOMO_ADMIN_PASSWORD}
+      MATOMO_WEBSITE_NAME: "Geoss-UI Website"
+      MATOMO_WEBSITE_HOST: "https://gpp.uat.esaportal.eu"
       MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
-      MATOMO_DATABASE_TABLE_PREFIX: "matomo_"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${MATOMO_OA2_KCSECRET}
       << : *proxy-variables
     volumes:
+      - /opt/matomo:/bitnami
       - /var/log/matomo:/var/log
+    ports:
+      - "8008:8080"
     networks:
       - geosslan
     depends_on:
@@ -400,20 +407,14 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-apps"
     environment:
-      API_URL: "https://gpp.uat.esaportal.eu"
-      BASE_URL: "https://gpp.uat.esaportal.eu"
       ADMIN_URL: "https://gpp-admin.uat.esaportal.eu"
-      KEYCLOAK_CLIENT_ID: geoss-ui
+      BASE_URL: "https://gpp.uat.esaportal.eu"
+      CURATED_URL: 'https://gpp-admin.uat.esaportal.eu/curated/rest/'
       KEYCLOAK_BASE_URL: "https://gpp-idp.uat.esaportal.eu/realms/geoss"
+      KEYCLOAK_CLIENT_ID: geoss-ui
       MATOMO_TOKEN: ${GEOSS_MATOMO_TOKEN}
       MATOMO_URL: 'https://gpp.uat.esaportal.eu/matomo/?'
       PROXY_URL: 'https://gpp.uat.esaportal.eu/proxy/rest/'
-      CURATED_URL: 'https://gpp-admin.devel.esaportal.eu/curated/rest/'
-      ELS_CLIENT_ID: 'geoss-proxy'
-      ELS_CLIENT_SECRET: 'uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs'
-      ELS_USERNAME: 'geoss'
-      ELS_PASSWORD: 'geoss'
-      ELS_TOKEN_URL: 'https://gpp-idp.uat.esaportal.eu/realms/geoss/protocol/openid-connect/token'
       NODE_OPTIONS: "--max-old-space-size=4096"
       << : *proxy-variables
     ports:
@@ -438,11 +439,11 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET}
-      CONFIG_DAB_GEODAB_BASE_URL: "https://pqqsdba4n9.execute-api.us-east-1.amazonaws.com/alpha"
       CONFIG_DAB_VLAB_BASE_URL: "https://vlabdev.geodab.org/vlab"
       CONFIG_DAB_VLAB_API_TOKEN: ${VLAB_API_TOKEN}
+      CONFIG_DAB_VLAB_WORKFLOWS_INCLUDE_UNDER_TEST: "true"
       SERVER_MAX_HTTP_REQUEST_HEADER_SIZE: "32KB"
       << : *proxy-variables
     ports:
@@ -468,7 +469,7 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET}
       CONFIG_SDG_DEFAULT_LOGO: "https://unstats.un.org/home/assets/img/logos/logo_StatisticsDivision.png"
       CONFIG_SDG_UN_BASE_URL: "https://unstats.un.org/SDGAPI/v1/sdg"
@@ -497,7 +498,7 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: ${DB_USER_PASS}
       SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET}
       WIKIDATA_API_URL: "https://en.wikipedia.org/w/api.php"
       WIKIDATA_CATEGORIES_SPARQL_URL: "https://live.dbpedia.org/sparql"
@@ -527,7 +528,7 @@ services:
       SPRING_ELASTICSEARCH_USERNAME: elastic
       SPRING_ELASTICSEARCH_PASSWORD: ${ENV_ELASTIC_PASSWORD}
       SPRING_PROFILES_ACTIVE: keycloak
-      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.devel.esaportal.eu"
+      SPRING_SECURITY_OAUTH2_BASE_URI: "https://gpp-idp.uat.esaportal.eu"
       SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET}
       THESAURUS_ESA_BASE_URI: "https://thesauri.eo.esa.int/rest/v1/thesaurus/data"
       THESAURUS_ESA_TOP_CONCEPTS_URIS: "https://earth.esa.int/concept/5c476560-e0a3-554a-9187-187a90da1309,https://earth.esa.int/concept/c98c8eae-7561-55de-bf01-2fb866693c14,https://earth.esa.int/concept/738c519f-48db-5344-bebc-030c16781c22"
