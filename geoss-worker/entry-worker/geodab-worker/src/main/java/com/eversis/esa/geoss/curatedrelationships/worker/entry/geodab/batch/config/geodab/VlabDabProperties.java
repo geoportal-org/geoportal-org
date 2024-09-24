@@ -22,6 +22,8 @@ public class VlabDabProperties {
 
     private RunConfiguration runs;
 
+    private WorkflowConfiguration workflows;
+
     /**
      * The type Run configuration.
      */
@@ -33,4 +35,13 @@ public class VlabDabProperties {
 
     }
 
+    /**
+     * The type Workflow configuration.
+     */
+    @Getter
+    @Setter
+    public static class WorkflowConfiguration {
+
+        private boolean includeUnderTest;
+    }
 }

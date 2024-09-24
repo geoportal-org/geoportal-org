@@ -31,9 +31,9 @@ class VlabDabWorkflowQueryFactory {
      */
     public String createWorkflowsUriQuery(int start, int count) {
         return UriComponentsBuilder.fromHttpUrl(configuration.getBaseUrl() + configuration.getWorkflowsEndpoint())
+                .queryParam("includeUnderTest", configuration.getWorkflows().isIncludeUnderTest())
                 .queryParam("start", start)
                 .queryParam("count", count)
                 .build(false).toUriString();
     }
-
 }
