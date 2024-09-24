@@ -279,7 +279,7 @@ services:
       MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
       << : *proxy-variables
     volumes:
-      - /opt/matomo:/bitnami
+      - /opt/matomo:/bitnami/matomo
       - /var/log/matomo:/var/log
     ports:
       - "8008:8080"
