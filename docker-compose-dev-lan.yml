@@ -276,6 +276,7 @@ services:
       MATOMO_WEBSITE_HOST: "https://gpp.devel.esaportal.eu"
       << : *proxy-variables
     volumes:
+      - /opt/matomo:/bitnami
       - /var/log/matomo:/var/log
     networks:
       - geosslan

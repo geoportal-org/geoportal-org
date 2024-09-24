@@ -1,0 +1,20 @@
+{
+    "GoogleAnalyticsImporter": {
+        "AdminMenuTitle": "Import Google Analytics",
+        "ConfigureTheImporter": "Configurați importatorul",
+        "ReAuthorize": "Autorizați din nou",
+        "Authorize": "Autorizați",
+        "ConfigurationFile": "Fișier de configurare",
+        "ConfigurationText": "Text de configurare",
+        "IsMobileApp": "Aplicație mobilă",
+        "Optional": "Opţional",
+        "Timezone": "Fus orar",
+        "None": "Nu sunt",
+        "NotSetInGA": "Nu este setat în Google Analytics",
+        "RequiredExecutablesCheck": "Executabile necesare",
+        "RequiredFunctionsCheck": "Funcții PHP necesare",
+        "Status": "Stare",
+        "Actions": "Acţiuni",
+        "InvalidDateFormat": "Data trebuie să fie în următorul format: %1$s"
+    }
+}

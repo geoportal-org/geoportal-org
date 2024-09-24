@@ -1,4 +1,4 @@
-FROM bitnami/matomo:4.15.1
+FROM bitnami/matomo:5.1.1
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -10,5 +10,4 @@ ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 COPY --chown=1001 plugins/ /opt/bitnami/matomo/plugins/
-COPY --chown=1001 conf/global.ini.php /opt/bitnami/matomo/config/global.ini.php
-COPY --chown=1001 conf/httpd.conf /opt/bitnami/apache/conf/httpd.conf
+COPY --chown=1001 conf/httpd-default.conf /opt/bitnami/apache/conf/extra/httpd-default.conf
