@@ -282,7 +282,7 @@ services:
       - /opt/matomo:/bitnami
       - /var/log/matomo:/var/log
     ports:
-      - "8080:8080"
+      - "8008:8080"
     networks:
       - geosslan
     depends_on:
