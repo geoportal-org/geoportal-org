@@ -262,18 +262,20 @@ services:
     environment:
       MATOMO_DATABASE_HOST: "geoss-mariadb"
       MATOMO_DATABASE_PORT_NUMBER: 3306
-      MATOMO_DATABASE_ADAPTER: mysql
+      MATOMO_DATABASE_NAME: matomodb
       MATOMO_DATABASE_USER: matomo
       MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_USER_PASS}
-      MATOMO_DATABASE_NAME: matomodb
+      MATOMO_DATABASE_TABLE_PREFIX: "matomo_"
+      MATOMO_SMTP_HOST: geoss-maildev
+      MATOMO_SMTP_PORT_NUMBER: 1025
+      MATOMO_SMTP_USER: maildev
+      MATOMO_SMTP_PASSWORD: ${MAILDEV_SMTP_PASSWORD}
       MATOMO_USERNAME: admin
       MATOMO_PASSWORD: ${MATOMO_ADMIN_PASSWORD}
-      MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
-      MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
-      MATOMO_DATABASE_TABLE_PREFIX: "matomo_"
-      SPRING_SECURITY_OAUTH2_CLIENT_SECRET: ${MATOMO_OA2_KCSECRET}
       MATOMO_WEBSITE_NAME: "Geoss-UI Website"
       MATOMO_WEBSITE_HOST: "https://gpp.devel.esaportal.eu"
+      MATOMO_ENABLE_PROXY_URI_HEADER: "yes"
+      MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL: "yes"
       << : *proxy-variables
     volumes:
       - /opt/matomo:/bitnami
