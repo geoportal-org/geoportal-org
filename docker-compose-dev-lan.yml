@@ -260,6 +260,7 @@ services:
         constraints:
           - "node.labels.shared_tag==geoss-matomo"
     environment:
+      MATOMO_DATA_TO_PERSIST: matomo.js piwik.js config/config.ini.php misc/user js
       MATOMO_DATABASE_HOST: "geoss-mariadb"
       MATOMO_DATABASE_PORT_NUMBER: 3306
       MATOMO_DATABASE_NAME: matomodb

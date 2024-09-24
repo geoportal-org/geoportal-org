@@ -231,6 +231,7 @@ services:
           cpus: "1.00"
           memory: "128M"
     environment:
+      - MATOMO_DATA_TO_PERSIST=matomo.js piwik.js config/config.ini.php misc/user js
       - MATOMO_DATABASE_HOST=geoss-db
       - MATOMO_DATABASE_PORT_NUMBER=3306
       - MATOMO_DATABASE_NAME=geoss_matomo_db
@@ -238,7 +239,7 @@ services:
       - MATOMO_DATABASE_PASSWORD=qaz123
       - MATOMO_DATABASE_TABLE_PREFIX=matomo_
       - MATOMO_SMTP_HOST=geoss-maildev
-      - MATOMO_SMTP_PORT=1025
+      - MATOMO_SMTP_PORT_NUMBER=1025
       - MATOMO_SMTP_USER=maildev
       - MATOMO_SMTP_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
       - MATOMO_USERNAME=admin
