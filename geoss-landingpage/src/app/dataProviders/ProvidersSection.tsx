@@ -4,9 +4,9 @@ import ProvidersList from "./ProvidersList";
 
 const getServerSideProps = async () => {
     try {
-        const res = await fetch("https://gpp.devel.esaportal.eu/rest/services-providers");
+        const url = process.env.NEXT_PUBLIC_DATA_PROVIDERS_URL || '';
+        const res = await fetch(url);
         if (Number(res.status) >= 300 || Number(res.status) < 200) {
-            console.log(res);
             return {
                 status: res.status,
                 statusText: res.statusText,
