@@ -129,14 +129,10 @@ public class SiteController {
                     "URL already exists: " + url);
         }
 
-        if (!isLowercaseAlphabeticOrHyphen(url)) {
+        if (!url.matches("^[a-zA-Z0-9-]+$")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "URL can only contain lowercase letters (a-z) and hyphen (-): " + url);
+                    "URL can only contain alphanumeric characters and hyphen (-): " + url);
         }
-    }
-
-    private boolean isLowercaseAlphabeticOrHyphen(String url) {
-        return url.matches("^[a-z-]+$");
     }
 
     private void validateFileName(MultipartFile file) {
@@ -147,10 +143,10 @@ public class SiteController {
                     "File name exceeds maximum length of 255 characters: " + fileName);
         }
 
-        if (!fileName.matches("^[a-zA-Z0-9-_.]+$")) {
+        if (!fileName.matches("^[a-zA-Z0-9-_. ]+$")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "File name can only contain alphanumeric characters, hyphens (-), underscores (_), and dots (.): "
-                            + fileName);
+                    "File name can only contain alphanumeric characters, hyphens (-), underscores (_), dots (.)"
+                    + " and space: " + fileName);
         }
 
         if (!StandardCharsets.UTF_8.newEncoder().canEncode(fileName)) {
