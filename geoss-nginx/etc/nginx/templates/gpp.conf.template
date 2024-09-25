@@ -45,6 +45,7 @@ server {
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;
@@ -82,7 +83,8 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_settings.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /settings;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;
@@ -98,7 +100,8 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_personaldata.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /personaldata;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;
@@ -114,7 +117,8 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_contents.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /contents;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;
@@ -130,7 +134,8 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_proxy.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /proxy;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;
@@ -146,7 +151,8 @@ server {
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
-    include conf.d/utils/proxy_request_headers_x_geoss_search.conf;
+    include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /search;
 
     proxy_pass    http://ui_upstream;
     proxy_no_cache 1;

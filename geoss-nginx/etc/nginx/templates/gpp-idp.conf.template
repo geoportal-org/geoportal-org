@@ -43,6 +43,7 @@ server {
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
+    proxy_set_header X-Forwarded-Prefix /;
 
     proxy_pass    http://keycloak_upstream;
     proxy_no_cache 1;
