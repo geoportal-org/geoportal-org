@@ -489,7 +489,8 @@ export const en = {
             siteDeletedMsg: 'Site has been deleted.',
             siteCreationFail: 'There was an error while creating site: ',
             siteDeleteFail: 'There was an error while deleting site: ',
-            siteUpdateFail: 'There was an error while updating site: '
+            siteUpdateFail: 'There was an error while updating site: ',
+            imageError: 'Error submitting image. Make sure the file you are uploading is an image file and it is not a GIF.'
         }
     },
     nav: {

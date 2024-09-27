@@ -118,7 +118,7 @@ const SitesManager = () => {
             );
             setDocumentsList(() => selectDocumentsList.options);
         } catch (e: any) {
-            const msg = generateGenericErrorMessage(e)
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -154,7 +154,7 @@ const SitesManager = () => {
             }
         } catch (e: any) {
             console.error(e);
-            const msg = generateGenericErrorMessage(e)
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -177,7 +177,7 @@ const SitesManager = () => {
                 description: translate("pages.sites.siteDeletedMsg") + " ID: " + currentSiteId,
             });
         } catch (e: any) {
-            const msg = generateGenericErrorMessage(e)
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -224,11 +224,17 @@ const SitesManager = () => {
 
     const handleImageChange = (event: any) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file && (file.type.includes('image') && file.type !== 'image/gif')) {
             setImageFile(file);
             // Create a URL for the image preview
             const url = URL.createObjectURL(file);
             setImageURL(url);
+        } else {
+            showToast({
+                title: translate("general.error"),
+                description: translate("pages.sites.imageError"),
+                status: ToastStatus.ERROR,
+            });
         }
     };
 

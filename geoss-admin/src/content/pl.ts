@@ -305,6 +305,8 @@ export const pl = {
             siteCreationFail: "Wystąpił błąd podczas tworzenia witryny: ",
             siteDeleteFail: "Wystąpił błąd podczas usuwania witryny: ",
             siteUpdateFail: "Wystąpił błąd podczas aktualizowania witryny: ",
+            imageError:
+                "Bład dodawania obrazka. Upewnij się, że plik który dodajesz jest obrazkiem i nie jest plikiem GIF.",
         },
     },
     nav: {
