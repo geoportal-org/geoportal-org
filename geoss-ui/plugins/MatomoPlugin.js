@@ -4,7 +4,7 @@ import Vue from 'vue'
 export default ({ app, $config }) => {
     Vue.use(VueMatomo, {
         router: app.router,
-        host: `${$config.adminUrl}/matomo`,
+        host: `${$config.matomoUrl}`,
         siteId: '0',
         enableLinkTracking: true,
         requireConsent: false,
