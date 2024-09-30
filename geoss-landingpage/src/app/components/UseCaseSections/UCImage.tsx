@@ -1,12 +1,13 @@
 import React from "react";
 import GeneralButton from "../GeneralButton";
 import Image from "next/image";
+import parse from 'html-react-parser';
 
 type Props = {
     isDarkBg?: boolean;
     side: "left" | "right";
     title: string;
-    text: string;
+    text: any;
     imageSRC: string;
     buttonText: string;
     buttonHref: string;
@@ -18,7 +19,7 @@ const UCImage = ({ isDarkBg = false, side, title, text, imageSRC, buttonText, bu
             <div className={`w-full flex flex-col xl:flex-row justify-between gap-12 xl:gap-32`}>
                 <div id="text" className={`w-full flex flex-col justify-center gap-8 ${side === "left" && "order-2"}`}>
                     <h2 className="text-5xl">{title}</h2>
-                    <p className="text-[#5C6369] whitespace-pre-wrap">{text}</p>
+                    <div className="text-[#5C6369] whitespace-pre-wrap [&_a]:text-[#3483eb]">{parse(text)}</div>
                     {buttonText !== "" && (
                         <GeneralButton className="xl:max-w-[70%] 2xl:max-w-[50%] 3xl:max-w-[40%]" href={buttonHref}>
                             {buttonText}
@@ -29,7 +30,7 @@ const UCImage = ({ isDarkBg = false, side, title, text, imageSRC, buttonText, bu
                     <Image
                         priority
                         loading="eager"
-                        className="w-full object-cover object-left min-h-[300px] lg:max-h-[50vh]"
+                        className="w-full object-contain object-center min-h-[300px] lg:max-h-[50vh]"
                         alt="questionsImage"
                         width={400}
                         height={200}

@@ -5,6 +5,7 @@ import DropdownArrow from "../icons/DropdownArrow";
 import { motion, AnimatePresence } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import parse from "html-react-parser";
 
 type Option = {
   text: string;
@@ -57,7 +58,7 @@ const Accordion = ({
           >
             {textAccordion && content ? (
               <p className="p-4 whitespace-pre-wrap text-[#5C6369]">
-                {content}
+                {parse(content)}
               </p>
             ) : (
               <ul className="text-sm text-black w-full divide-y">

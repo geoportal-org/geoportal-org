@@ -17,7 +17,7 @@ const Features = () => {
     <section
       className={`relative w-full bg-white min-h-[50vh] flex flex-col items-center justify-center px-6 lg:px-48 py-20 text-black gap-20`}
     >
-      <h1 className="text-5xl">Explore additional GEOSS Portal feautres</h1>
+      <h1 className="text-5xl">Explore GEOSS main features and use cases</h1>
       {isMobile ? (
         <CustomCarousel itemsArray={featuresOptions} isFeature={true} />
       ) : (

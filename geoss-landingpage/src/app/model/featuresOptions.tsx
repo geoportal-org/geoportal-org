@@ -46,6 +46,11 @@ export const featuresOptions = [
     href: "/usecases/polution",
   },
   {
+    icon: <DropletIcon width="32px" height="32px" />,
+    text: "NewLif4DryLands Local Scale Indices Use Case",
+    href: "/usecases/dryLands",
+  },
+  {
     icon: <ForestIcon width="32px" height="32px" />,
     text: "Above Ground Biomass (AGB) Use Case",
     href: "/usecases/biomass",
