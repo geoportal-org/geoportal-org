@@ -18,7 +18,7 @@ export const useCases = [
                     side="right"
                     title="What is a Community Portal?"
                     text={`The Community Portal of the GEOSS Portal is a specialized feature designed to serve the needs of specific Earth Observation communities. It allows these groups to customize the portals tailoring it to their interests, such as a specific region, theme, or application area.\n\nThe Community Portal is designed to enhance the usability and relevance of the GEOSS Portal for specific user groups by allowing them to access and interact with the data in a way that is most meaningful to them. It supports a more focused and effective use of Earth observation data, tailored to the specific goals and requirements of different user communities.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/community-data-access.webp"
                     buttonText="Browse our Community Portals"
                     buttonHref={"/"}
                 />
@@ -36,7 +36,7 @@ export const useCases = [
                     side="left"
                     title="How to create a dedicated Community Portal?"
                     text={`The User interested in creating a Community Portal, once logged in into the GEOSS Portal, can access a download page where the tool/package link is present and download a ready-to-be-installed web page template.  The user is enabled to install the downloaded tool and customize the graphic user interface (GUI) according to the user’s preference, specified in the user requirements\nFinally, representatives of a specific community are enabled, previa acceptance by the opportune governance body, to make available a community specific portal providing capabilities for discovering and accessing data of interest for their community.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/geoss-community-portal.webp"
                     buttonText="If you're interested, contact us"
                     buttonHref="mailto:geoss_platform_support@esa.int"
                 />
@@ -74,7 +74,7 @@ export const useCases = [
                     side="left"
                     title="How to become our data provider?"
                     text={`In order to register as GEOSS Data Provider, a link is provided to a website where registration can be done.  The Data Provider provides the information needed for the registration in the form presented on the website and submits the registration request.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/data-provider-geoss.webp"
                     buttonText="Register"
                     buttonHref="/dataProviders"
                 />
@@ -94,7 +94,7 @@ export const useCases = [
                     side="right"
                     title="What is Semantically Enabled Free-Text Search?"
                     text="Within the EIFFEL H2020 project, a Large Language Model-based Cognitive search module has been developed and fine-tuned for the Climate Change domain. The module allows the user to pose free text queries for data discovery in GEOSS core datasets available in the GEOSS Portal. In this case study, the cognitive search functionality was integrated and fused with the filtering capabilities of the GEOSS portal. This enhances the overall user experience, as well as the speed and quality of data discovery."
-                    imageSRC="/1.webp"
+                    imageSRC="/semantic-search-geoss-datasets.webp"
                     buttonText=""
                     buttonHref={""}
                 />
@@ -130,7 +130,7 @@ export const useCases = [
                     side="right"
                     title="What is AI-Powered Data Discovery and Access?"
                     text="The increasing volume and complexity of Earth Observation data make it challenging for users to find relevant datasets efficiently. Users face difficulties in browsing, downloading, and understanding data, along with the need for personalized data recommendations. An AI-powered search feature addresses these issues by leveraging natural language processing (NLP) and machine learning to improve user experience and data accessibility, thus supporting environmental and policy goals."
-                    imageSRC="/1.webp"
+                    imageSRC="/ai-powered-geoss-data-discovery.webp"
                     buttonText=""
                     buttonHref={""}
                 />
@@ -164,7 +164,7 @@ export const useCases = [
                     side="right"
                     title="Land Degradation Use Case description"
                     text={`The Land Degradation Use Case has been defined to respond to the immediate need to enhance national capacities to undertake quantitative assessments and corresponding mapping of their degraded lands. Avoiding, reducing and reversing land degradation and restoring degraded land is an urgent priority to protect the biodiversity and ecosystem services that are vital to life on Earth. This matches with one of the Sustainable Development Goals (SDGs), the SDG 15 “Life on land”.\n\nThe <strong>Sustainable Development Goals (SDGs)</strong> are a set of 17 global goals established by the United Nations in 2015, as part of the 2030 Agenda for Sustainable Development. Through the GEOSS Platform the user can calculate the related SDG indicator 15.3.1 at the national scale, to monitor and combat land degradation.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/land-degradation.webp"
                     buttonText="See the service (beta version)"
                     buttonHref={
                         "https://geoss.uat.esaportal.eu/?m:activeLayerTileId=osm&targetId=geo_essential_sdg_15.3.1_service&f:phrase=land%20degradation&f:dataSource=services"
@@ -175,7 +175,7 @@ export const useCases = [
                     side="left"
                     title="Explore the Land Degradation Use Case"
                     text={`When a user searches for “Land degradation”, a number of resources that matches this search criteria are provided. The user can discover different data, services and knowledge and their relationship associated to the SDG 15.3.1 indicator. A dedicated model to compute the SDG indicator is available. The user can inspect the process workflow and search and select data as input to the service. Outputs can be visualized in a dedicated dashboard, with the possibility to share it to the community.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/land-degradation-geoss.webp"
                     buttonText="Explore an example of the service output"
                     buttonHref="https://geoss.uat.esaportal.eu/?f:phrase=dashboard&m:activeLayerTileId=osm&f:dataSource=information"
                 />
@@ -229,7 +229,7 @@ export const useCases = [
                     side="left"
                     title="Find out how the user can quantify nutrient pollution in the GEOSS Portal?"
                     text={`The GEOSS Platform allows users to run this model on a selected area of interest defining the settings for the GREEN model execution, including different policy scenarios. GREEN model runs through the Virtual Earth Laboratory (VLab), which utilises the European cloud computing platforms, including the Copernicus DIAS platforms and the European Open Science Cloud, for the execution of scientific models. At the end of the execution, the user is able to visualize different simulation results: the computed yearly average load of nitrogen/phosphorus in the entire selected area, according to the selected policy scenario; the comparison between the calculated total yearly average load, both to the river outlet and in the entire region, for different simulated policy scenarios and a map displaying the difference of nitrogen/phosphorus loads over the entire area of interest, according to two selected policy scenarios.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/nutrient-pollution.webp"
                     buttonText="GREEN Web App"
                     buttonHref="https://green.geodab.org/"
                 />
@@ -270,7 +270,7 @@ export const useCases = [
                     side="right"
                     title="Above Ground Biomass (AGB) Use Case Description"
                     text={`The quantification of forest above-ground biomass (AGB) over large areas is used as a proxy for the quantification of carbon stocks, particularly referring to Reduced Emissions from Deforestation and forest Degradation (REDD+) projects, for the quantification of forest resources and ecosystem services, the creation of fuel maps to be used as input to wildfires spread models, and for biodiversity and climate change models. According to the definition of the Intergovernmental Panel on Climate Change (IPCC 2006), Above-Ground Biomass is defined as “All living biomass above the soil including stem, stump, branches, bark, seeds and foliage”.\n\nThrough the GEOSS platform, the user can produce maps of biomass based on vegetation indices (VIs) from remote sensing imagery and compare results obtained by different Machine Learning (ML) models. Such models, developed in collaboration with JRC, are still in an experimental phase.`}
-                    imageSRC="/1.webp"
+                    imageSRC="/above-ground-biomass.webp"
                     buttonText=""
                     buttonHref={""}
                 />

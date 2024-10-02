@@ -9,7 +9,6 @@ type ButtonProps = {
 };
 
 const GeneralButton = ({ children, onClick, className, href }: ButtonProps) => {
-  console.log(href)
     return (
         <>
             {href ? (
