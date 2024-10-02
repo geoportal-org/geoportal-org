@@ -101,7 +101,7 @@ const MatomoDataService = {
         )
 
         const data = await this.fetchMatomoData(
-            window.$nuxt.$config.matomoUrl + this.parseParams(params)
+            window.$nuxt.$config.matomoUrl+ '/?' + this.parseParams(params)
         )
 
         if (data) {

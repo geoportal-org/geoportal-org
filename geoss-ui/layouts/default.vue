@@ -192,7 +192,8 @@ export default {
                                     `${this.$tc('popupTitles.entryRelations')}`,
                                     `${this.$tc(
                                         'popupContent.entryRelationsSrcSet1'
-                                    )}: <br /><b>"${result.title
+                                    )}: <br /><b>"${
+                                        result.title
                                     }"</b><br />${this.$tc(
                                         'popupContent.entryRelationsSrcSet2'
                                     )}`,
@@ -253,11 +254,11 @@ export default {
                                                             targetIdsObject as any
                                                         )[source]
                                                     ) {
-                                                        ; (
+                                                        ;(
                                                             targetIdsObject as any
                                                         )[source] = []
                                                     }
-                                                    ; (targetIdsObject as any)[
+                                                    ;(targetIdsObject as any)[
                                                         source
                                                     ].push(entry.id)
                                                 }
@@ -471,7 +472,7 @@ export default {
                                 )
                                 const supportedLegendTypes =
                                     this.$store.getters[
-                                    MapGetters.supportedLegendTypes
+                                        MapGetters.supportedLegendTypes
                                     ]
                                 const recentLayerIndex = mapLayers.length - 1
                                 if (
@@ -501,7 +502,7 @@ export default {
 
                             if (
                                 (GeneralFiltersActions as any)[
-                                'set' + storeParamName
+                                    'set' + storeParamName
                                 ]
                             ) {
                                 if (cuttedParamName === 'sources') {
@@ -544,7 +545,7 @@ export default {
                                     promises.push(
                                         this.$store.dispatch(
                                             (GeneralFiltersActions as any)[
-                                            'set' + storeParamName
+                                                'set' + storeParamName
                                             ],
                                             param.value
                                         )
@@ -552,52 +553,52 @@ export default {
                                 }
                             } else if (
                                 (FacetedFiltersActions as any)[
-                                'set' + storeParamName
+                                    'set' + storeParamName
                                 ]
                             ) {
                                 promises.push(
                                     this.$store.dispatch(
                                         (FacetedFiltersActions as any)[
-                                        'set' + storeParamName
+                                            'set' + storeParamName
                                         ],
                                         param.value
                                     )
                                 )
                             } else if (
                                 (GranulaFiltersActions as any)[
-                                'set' + storeParamName
+                                    'set' + storeParamName
                                 ]
                             ) {
                                 promises.push(
                                     this.$store.dispatch(
                                         (GranulaFiltersActions as any)[
-                                        'set' + storeParamName
+                                            'set' + storeParamName
                                         ],
                                         param.value
                                     )
                                 )
                             } else if (
                                 (IrisFiltersActions as any)[
-                                'set' + storeParamName
+                                    'set' + storeParamName
                                 ]
                             ) {
                                 promises.push(
                                     this.$store.dispatch(
                                         (IrisFiltersActions as any)[
-                                        'set' + storeParamName
+                                            'set' + storeParamName
                                         ],
                                         param.value
                                     )
                                 )
                             } else if (
                                 (InSituFiltersActions as any)[
-                                'set' + storeParamName
+                                    'set' + storeParamName
                                 ]
                             ) {
                                 promises.push(
                                     this.$store.dispatch(
                                         (InSituFiltersActions as any)[
-                                        'set' + storeParamName
+                                            'set' + storeParamName
                                         ],
                                         param.value
                                     )
@@ -625,7 +626,7 @@ export default {
                                                 value: param.value,
                                                 dataSource:
                                                     this.$store.getters[
-                                                    SearchGetters.dataSource
+                                                        SearchGetters.dataSource
                                                     ]
                                             }
                                         )
@@ -634,7 +635,7 @@ export default {
                                     promises.push(
                                         this.$store.dispatch(
                                             (SearchActions as any)[
-                                            'set' + storeParamName
+                                                'set' + storeParamName
                                             ],
                                             { value: param.value }
                                         )
@@ -643,7 +644,7 @@ export default {
                                     promises.push(
                                         this.$store.dispatch(
                                             (SearchActions as any)[
-                                            'set' + storeParamName
+                                                'set' + storeParamName
                                             ],
                                             param.value
                                         )
@@ -660,7 +661,7 @@ export default {
                                 promises.push(
                                     this.$store.dispatch(
                                         (MapActions as any)[
-                                        'set' + storeParamName
+                                            'set' + storeParamName
                                         ],
                                         param.value
                                     )
@@ -718,7 +719,9 @@ export default {
                             )
                         }
                         if (siteData.siteId !== '') {
-                            const siteId = siteData.siteId ? siteData.siteId * 1 : 0
+                            const siteId = siteData.siteId
+                                ? siteData.siteId * 1
+                                : 0
                             this.$store.dispatch(
                                 SearchEngineActions.setSiteId,
                                 siteId
@@ -734,7 +737,7 @@ export default {
                                 ) {
                                     if (
                                         !this.$store.getters[
-                                        SearchGetters.dataSource
+                                            SearchGetters.dataSource
                                         ]
                                     ) {
                                         this.$store.dispatch(
@@ -770,6 +773,16 @@ export default {
                                         siteSettings.latitude
                                     ])
                                 }
+                                Vue.use(VueMatomo, {
+                                    router: this.$router,
+                                    host: `${this.$nuxt.$config.matomoUrl}`,
+                                    siteId: siteSettings.matomoSiteId,
+                                    enableLinkTracking: true,
+                                    requireConsent: false,
+                                    trackInitialView: true,
+                                    disableCookies: true,
+                                    requireCookieConsent: false
+                                })
                                 if (
                                     siteSettings.matomoSiteId &&
                                     window._paq &&
@@ -917,7 +930,7 @@ export default {
                                 userSettings.geossVersion
                                     .showNewVersionTooltips &&
                                 savedGeossVersion !==
-                                userSettings.geossVersion.geossVersion
+                                    userSettings.geossVersion.geossVersion
                             ) {
                                 this.$store.dispatch(PopupActions.openPopup, {
                                     contentId: 'welcome',

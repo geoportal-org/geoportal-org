@@ -36,7 +36,7 @@ export default {
         '~/plugins/AppVueObj.ts',
         '~/plugins/CollapseTransition.ts',
         '~/plugins/AxiosPort.ts',
-        { src: '~/plugins/MatomoPlugin.js', ssr: false },
+        // { src: '~/plugins/MatomoPlugin.js', ssr: false },
         { src: './plugins/VueCarusel.js', mode: 'client' },
         { src: './plugins/Vue2TinymceEditor.js', mode: 'client' },
         // { src: './plugins/Xlsx.js', mode: 'client' },
