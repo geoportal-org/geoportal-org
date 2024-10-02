@@ -5,12 +5,23 @@ import { buildSavedSearchUrl } from '@/utils/urlBuilder'
 const UserAPI = {
     addSavedSearch: (searchData: any) => {
         const url = `${geossPersonaldata.savedSearches}`
+        const name = searchData.name
         const phrase = searchData.name
         const savedSearchUrl = buildSavedSearchUrl(searchData)
 
         return apiClient.$post(url, {
-            name: phrase,
-            phrase: phrase,
+            name,
+            phrase,
+            url: savedSearchUrl,
+        })
+    },
+
+    updateSavedSearch: (savedSearchId: number, savedSearchUrl: string, name: string, phrase: string) => {
+        const url = `${geossPersonaldata.savedSearches}/${savedSearchId}`
+
+        return apiClient.$patch(url, {
+            name,
+            phrase,
             url: savedSearchUrl,
         })
     },

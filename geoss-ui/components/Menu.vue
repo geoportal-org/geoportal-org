@@ -68,6 +68,15 @@
                                 {{ subroute.title }}
                             </NuxtLink>
                         </template>
+                        <template  v-if="isCommunityPortals(route)">
+                            <hr style="border-color: #fff; margin: 10px -15px;" />
+                            <a class="menu__sublink" href="#" @click="showCreatorDownloadPopup()">
+                                Create new portal
+                            </a>
+                            <a class="menu__sublink" href="#" @click="showCreatorRegisterPopup()">
+                                Register new portal
+                            </a>
+                        </template>
                     </div>
                 </CollapseTransition>
             </div>
@@ -89,10 +98,12 @@ import { GeneralActions } from '@/store/general/general-actions';
 import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters';
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
+import { PopupActions } from '@/store/popup/popup-actions';
 
 import MenuAPI from '@/api/menu'
 import apiClient from '@/api/apiClient'
-import LogService from '~/services/log.service';
+import CreatorDownloadPopup from './CreatorDownloadPopup.vue';
+import CreatorRegisterPopup from './CreatorRegisterPopup.vue';
 
 @Component({
     components: {
@@ -158,6 +169,14 @@ export default class MenuComponent extends Vue {
         } else {
             return false;
         }
+    }
+
+    public showCreatorDownloadPopup() {
+        this.$store.dispatch(PopupActions.openPopup, { contentId: 'creator', component: CreatorDownloadPopup });
+    }
+
+    public showCreatorRegisterPopup() {
+        this.$store.dispatch(PopupActions.openPopup, { contentId: 'creator', component: CreatorRegisterPopup });
     }
 
     public async signOff() {

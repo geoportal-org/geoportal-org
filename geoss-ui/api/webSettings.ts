@@ -239,7 +239,7 @@ export default {
     },
     getViews: async (siteId: number) => {
         const views: any = await apiClient.$get(
-            `${geossSettings.apiSettings}/sites/${siteId}/views`,
+            `${geossSettings.apiSettings}/sites/${siteId}/views?page=0&size=9999`,
             {
                 headers: {
                     Authorization: ''

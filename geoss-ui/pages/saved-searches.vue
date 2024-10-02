@@ -92,7 +92,15 @@ export default {
                     this.notification(this.prepareErrorMessage(error), 'error')
                 });
         },
-
+        updateSavedSearch(id) {
+            UserAPI.updateSavedSearch(id)
+                .then(() => {
+                    this.savedSearches = UserAPI.getSavedSearchesByUser();
+                })
+                .catch(() => {
+                    console.log(error)
+                });
+        },
         highlightSavedSearch(id, name) {
             UserAPI.highlightSavedSearch(id, name)
                 .then(() => {
