@@ -336,6 +336,8 @@ export default class InSituFiltersComponent extends Vue {
 
     /* Slider styling */
     .vue-slider {
+        margin-left: 0;
+        width: 100% !important;
     }
 
     /* Handle (dot) styling */
