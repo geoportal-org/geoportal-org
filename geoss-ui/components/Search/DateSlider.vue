@@ -10,9 +10,8 @@
         <div class="date-slider">
             <div class="date-slider__min">{{ minYear }}</div>
             <div class="date-slider__max">{{ maxYear }}</div>
-            <vue-slider :tooltip-placement="['bottom', 'bottom']" :min="minYear" :max="maxYear"
-                :tooltip-formatter="dateFormatter" @change="sliderChange($event)" @drag-start="dragStart()"
-                @drag-end="dragStop($event)" :value="dateYears" :tooltip="'always'" />
+            <vue-slider ref="slider" :tooltip-placement="['bottom', 'bottom']" :min="minYear" :max="maxYear"
+                :tooltip-formatter="dateFormatter" @change="sliderChange()" :value="dateYears" :tooltip="'always'" :enable-cross="false" />
         </div>
     </div>
 </template>
@@ -39,11 +38,10 @@ export default class DateSliderComponent extends Vue {
     @Prop({ required: false, type: String }) public datePeriod!: string
 
     private currentDay = new Date().getDate()
-    private currentMonth = new Date().getMonth()
+    private currentMonth = new Date().getMonth()+1
     private calendars: any[] = []
-    private sliderDateFrom: any = ''
-    private sliderDateTo: any = ''
-    private dragAction = false
+    private sliderYearFrom: any = ''
+    private sliderYearTo: any = ''
 
     get dateYears() {
         const startYear = this.minYear
@@ -56,21 +54,11 @@ export default class DateSliderComponent extends Vue {
         this.calendars[1].value = this.getCaledarDateTo(dates[1])
     }
 
-    public dragStart() {
-        this.dragAction = true
-    }
-
-    public dragStop(event: any) {
-        this.dragAction = false
+    public sliderChange() {
+        const event = (this.$refs.slider as any).getValue()
         this.dateYears = event
-    }
-
-    public sliderChange(event: any) {
-        if (!this.dragAction) {
-            this.dateYears = event
-        }
-        this.sliderDateFrom = event[0].toString()
-        this.sliderDateTo = event[1].toString()
+        this.sliderYearFrom = event[0].toString()
+        this.sliderYearTo = event[1].toString()
     }
 
     public setDates(value: {
@@ -88,7 +76,7 @@ export default class DateSliderComponent extends Vue {
             this.currentDay
         )
         const endDate = new Date(
-            this.sliderDateTo,
+            this.sliderYearTo,
             this.currentMonth,
             this.currentDay
         )
@@ -102,7 +90,7 @@ export default class DateSliderComponent extends Vue {
 
     public getCaledarDateTo(endYear: number) {
         const startDate = new Date(
-            this.sliderDateFrom,
+            this.sliderYearFrom,
             this.currentMonth,
             this.currentDay
         )
@@ -115,34 +103,18 @@ export default class DateSliderComponent extends Vue {
         return date(endDate.toISOString(), 'YYYY-MM-DD')
     }
 
-    public dateFormatter(year: number, index: number) {
-        const startDate = new Date(
-            this.minYear,
-            this.currentMonth,
-            this.currentDay
-        )
-        const endDate = new Date(
-            this.maxYear,
-            this.currentMonth,
-            this.currentDay
-        )
-
-        if (this.sliderDateFrom) {
-            startDate.setFullYear(this.sliderDateFrom)
+    public dateFormatter(e: any) {
+        if (this.dateFrom && this.dateTo) {
+            const from = new Date(this.dateFrom)
+            const to = new Date(this.dateTo)
+            if (from && from.getFullYear() === e) {
+                return `${from.getDate()}.${from.getMonth()+1}.${e}`
+            }
+            if (to && to.getFullYear() === e) {
+                return `${to.getDate()}.${to.getMonth()+1}.${e}`
+            }
         }
-        if (this.sliderDateTo) {
-            endDate.setFullYear(this.sliderDateTo)
-        }
-
-        let dateToShow = null
-
-        if (index === 0) {
-            dateToShow = startDate
-        } else {
-            dateToShow = endDate
-        }
-
-        return date(dateToShow.toISOString(), 'DD.MM.YYYY')
+        return `${this.currentDay}.${this.currentMonth}.${e}`
     }
 
     @Emit()
@@ -161,8 +133,8 @@ export default class DateSliderComponent extends Vue {
     }
 
     private mounted() {
-        this.sliderDateFrom = this.dateFrom
-        this.sliderDateTo = this.dateTo
+        this.sliderYearFrom = this.dateFrom
+        this.sliderYearTo = this.dateTo
 
         const calendarTriggers = Array.from(
             (this.$el as HTMLElement).querySelectorAll(
@@ -226,8 +198,9 @@ export default class DateSliderComponent extends Vue {
             this.calendars.push(calendarInstance)
             trigger.appendChild(calendarInstance.$el)
             trigger.addEventListener('mousedown', (event: Event) => {
-                event.stopPropagation()
-                    ; (calendarInstance as any).fp.toggle()
+                // TODO Datepicker support
+                // event.stopPropagation()
+                // (calendarInstance as any).fp.toggle()
             })
             trigger.addEventListener('click', (event: Event) => {
                 event.stopPropagation()
