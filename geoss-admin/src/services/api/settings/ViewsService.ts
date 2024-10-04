@@ -5,7 +5,7 @@ import { fetcher } from "@/utils/fetcher";
 export const ViewsService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/settings/rest/views`,
 
-    getViewsList: async (query?: QueryParams): Promise<IViewList> => fetcher({ url: ViewsService.baseUrl, query }),
+    getViewsList: async (siteId: number, query?: QueryParams): Promise<IViewList> => fetcher({ url: `${process.env.NEXT_PUBLIC_API}/settings/rest/sites/${siteId}/views`, query }),
 
     getView: async (id: number): Promise<IView> => fetcher({ url: `${ViewsService.baseUrl}/${id}` }),
 

@@ -59,7 +59,7 @@ export const ViewsSettings = () => {
     useEffect(() => {
         handlePaginationParamsChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageIndex, pageSize, sorting]);
+    }, [pageIndex, pageSize, sorting, currentSiteId]);
 
     const handlePaginationParamsChange = async () => {
         try {
@@ -67,7 +67,7 @@ export const ViewsSettings = () => {
             const {
                 _embedded: { views },
                 page: { totalElements, totalPages },
-            } = await ViewsService.getViewsList({
+            } = await ViewsService.getViewsList(currentSiteId, {
                 page: table.getState().pagination.pageIndex,
                 size: table.getState().pagination.pageSize,
                 ...(sorting[0] && setTableSorting(sorting)),
@@ -183,7 +183,7 @@ export const ViewsSettings = () => {
     const updateDefaultOption = async (defaultOptionId: number) => {
         const {
             _embedded: { views: extendedViewsList },
-        } = await ViewsService.getViewsList(extendedViewsPagination);
+        } = await ViewsService.getViewsList(currentSiteId, extendedViewsPagination);
         const defaultView = extendedViewsList.find((view) => view.defaultOption && view.id !== defaultOptionId);
         defaultView && (await ViewsService.patchView(defaultView.id, { defaultOption: false }));
     };
