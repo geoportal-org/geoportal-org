@@ -51,6 +51,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
 import { GeneralGetters } from '@/store/general/general-getters'
@@ -85,7 +86,7 @@ export default class DabResultRatingComponent extends Vue {
     }
 
     get isSignedIn() {
-        return !this.isWidget ? Liferay.ThemeDisplay.isSignedIn : false
+        return this.$auth.loggedIn;
     }
 
     public setScore(score: number) {

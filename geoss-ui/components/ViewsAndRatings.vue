@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import { DataSources, DataOrigin } from '@/interfaces/DataSources';
 import { PopupActions } from '@/store/popup/popup-actions';
@@ -89,7 +90,7 @@ export default class ViewsAndRatingsComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn];
+        return this.$auth.loggedIn;
     }
 
     get isEntryExtensionEnabled() {

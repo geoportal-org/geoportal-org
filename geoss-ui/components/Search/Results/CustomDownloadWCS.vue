@@ -97,7 +97,7 @@ export default class CustomDownloadWCSComponent extends Vue {
     public outputCRS: string | null = null;
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn];
+        return this.$auth.loggedIn;
     }
 
     get isBulkDownloadEnabled() {

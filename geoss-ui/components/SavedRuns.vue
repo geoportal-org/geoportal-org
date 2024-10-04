@@ -125,6 +125,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { runsTest } from '@/data/saved-runs-test'
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
@@ -160,7 +161,7 @@ export default class SavedRunsComponent extends Vue {
     public loading = false
 
     get isSignedIn() {
-        return this.$store.getters[UserGetters.isSignedIn]
+        return this.$auth.loggedIn;
     }
 
     public async addRun() {

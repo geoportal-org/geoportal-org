@@ -684,7 +684,7 @@ export default {
                 GeneralApiService.getSiteData(this.$route.params.siteurl)
             ]
 
-            if (this.$store.getters[UserGetters.isSignedIn]) {
+            if (this.$auth.loggedIn) {
                 promises.push(GeossSearchApiService.getBookmarks())
             }
 
@@ -995,7 +995,7 @@ export default {
                     sessionStorage.getItem('bulkDownload') as string
                 )
                 if (
-                    this.$store.getters[UserGetters.isSignedIn] &&
+                    this.$auth.loggedIn &&
                     bulkDownloadItems &&
                     bulkDownloadItems.length
                 ) {
@@ -1009,7 +1009,7 @@ export default {
                 sessionStorage.getItem('fileDownload') as string
             )
             if (
-                this.$store.getters[UserGetters.isSignedIn] &&
+                this.$auth.loggedIn &&
                 fileDownloadItems &&
                 fileDownloadItems.length
             ) {

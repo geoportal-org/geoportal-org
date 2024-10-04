@@ -65,6 +65,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 import PopupCloseService from '@/services/popup-close.service';
 import to from '@/utils/to';
@@ -127,7 +128,7 @@ export default class EntryExtensionComponent extends Vue {
     }
 
     get isSignedIn() {
-        return Liferay.ThemeDisplay.isSignedIn;
+        return this.$auth.loggedIn;
     }
 
     get getTags() {
