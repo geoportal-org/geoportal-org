@@ -11,15 +11,15 @@
                 <h1 class="creator__header">What is Community Portal?</h1>
                 <p>
                     The Communit Portal is a section of the GEOSS Portal that enables communities to share specific and
-                    predefined data, articles and studies as a thematic area part of the GEOSS Portal, customized se
+                    predefined data, articles and studies as a thematic area part of the GEOSS Portal, customized
                     relevant information is directly discoverable and accessible to the specific community.
                 </p>
                 <p>
-                    After download the setup tool, follow the steps given in the instructions file included with the
-                    installation files to greate the site.
+                    After downloading the setup tool, follow the steps given in the instructions file included with the
+                    installation files to create the site.
                 </p>
                 <p>
-                    Later you will have the possibility to decide to publis you site in the GEOSS Community Portal section.
+                    Later, you will have the possibility to decide to publish you site in the GEOSS Community Portal section.
                 </p>
                 <button class="green-btn-default" @click="">Download</button>
                 <p>Any additional questions can be asked on our <a href="/tutorials" target="_blank">Contact Page</a></p>

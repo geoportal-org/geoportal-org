@@ -68,7 +68,7 @@
                                 {{ subroute.title }}
                             </NuxtLink>
                         </template>
-                        <template  v-if="isCommunityPortals(route)">
+                        <template  v-if="isCommunityPortals(route) && !siteId && isSignedIn">
                             <hr style="border-color: #fff; margin: 10px -15px;" />
                             <a class="menu__sublink" href="#" @click="showCreatorDownloadPopup()">
                                 Create new portal
