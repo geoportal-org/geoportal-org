@@ -20,7 +20,7 @@
                         installation files.
                     </p>
                     <button class="green-btn-default" @click="next()">Start Configuration</button>
-                    <p>To get more information: <a href="/tutorials" target="_blank">View the manual</a></p>
+                    <p>To get more information: <a :href="pdfManualUrl" target="_blank">View the manual</a></p>
                 </template>
 
                 <template v-if="step === 1">
@@ -36,7 +36,7 @@
                         <input v-model="password" placeholder="Type here..." type="password" ref="password" />
                     </div>
                     <button class="green-btn-default" @click="signIn()">Log in</button>
-                    <p>To get more information: <a href="/tutorials" target="_blank">View the manual</a></p>
+                    <p>To get more information: <a :href="pdfManualUrl" target="_blank">View the manual</a></p>
                 </template>
 
                 <template v-if="step === 2">
@@ -71,7 +71,7 @@
                         </div>
                         <div class="creator__field radio" v-for="view of views" :key="view.value">
                             <input type="radio" :id="view.value" name="default-view" ref="view" :value="view.value"
-                                :checked="view.defaultOption" :data-id="view.id" :data-name="view.title"
+                                 :data-id="view.id" :data-name="view.title"
                                 :data-value="view.value">
                             <label :for="view.value">{{ view.title }}</label>
                         </div>
@@ -114,6 +114,7 @@ import ContentAPI from '@/api/content'
 import defaultViews from '@/data/views'
 import NotificationService from '@/services/notification.service';
 import apiClient from '@/api/apiClient'
+import { toStringHDMS } from 'ol/coordinate';
 
 export default {
     layout() {
@@ -130,7 +131,10 @@ export default {
             defaultView: null,
             baseUrl: this.$config.baseUrl,
             adminUrl: this.$config.adminUrl,
-            defaultSiteId: 0
+            defaultSiteId: 0,
+            newSiteUrl: '',
+            newSiteId: '',
+            pdfManualUrl: this.$config.pdfManualUrl,
         }
     },
     methods: {
@@ -158,22 +162,36 @@ export default {
                 );
                 return false
             } else {
-
-                const logo = await ContentAPI.addContent(this.$refs.site_logo.files[0], this.$auth.getToken('keycloak'))
-                if (logo.errors && logo.errors.length || logo.error) {
+                try {
+                    const formData = new FormData();
+                    formData.append("model", JSON.stringify({
+                        name: this.$refs.site_name.value,
+                        url: this.newSiteUrl,
+                        logoDocumentId: 0
+                    }))
+                    const file = this.$refs.site_logo.files[0];
+                    formData.append("files", file, file.name);
+                    const response = await apiClient.$post(`${this.adminUrl}/contents/rest/site`, formData, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.$auth.getToken('keycloak') ? this.$auth.getToken('keycloak') : ''
+                        }
+                    }).catch(error => {
+                        console.error('error ', error);
+                        throw new Error(error.response.data.detail)
+                    })
+                    this.newSiteId = response.id;
+                    this.next();
+                } catch(error) {
                     NotificationService.show(
                         'Community Portal Configuration',
-                        logo.message || logo.error,
+                        error,
                         10000,
                         null,
                         9999,
                         'error'
                     );
-                    return
                 }
-
-                await ContentAPI.updateSite(this.siteData, this.$auth.getToken('keycloak'))
-                this.next();
             }
         },
         async saveDefaultView() {
@@ -286,6 +304,11 @@ export default {
             }
         },
     },
+    mounted() {
+        if (this.$route.query && this.$route.query.siteUrl && this.$route.query.siteUrl !== '') {
+            this.newSiteUrl = this.$route.query.siteUrl
+        }
+    }
 }
 </script>
 

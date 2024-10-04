@@ -982,7 +982,7 @@ export default {
                         !siteData.logoUrl ||
                         siteData.logoUrl === ''
                     ) {
-                        this.$router.push('/creator')
+                        this.$router.push('/creator?siteUrl='+this.$route.params.siteurl)
                     }
                 }
             )

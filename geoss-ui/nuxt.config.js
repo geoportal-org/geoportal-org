@@ -196,6 +196,7 @@ export default {
         matomoToken: process.env.MATOMO_TOKEN,
         matomoUrl: process.env.MATOMO_URL,
         proxyUrl: process.env.PROXY_URL,
+        pdfManualUrl: '/GEOSS-InstallationGuide-041024-0821.pdf',
         auth: {
             defaultStrategy: 'keycloak',
             strategies: {
