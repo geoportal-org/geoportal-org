@@ -69,7 +69,7 @@ const NavMobile = () => {
                 <Accordion options={portalOptions} text="Community portals" />
               </li>
               <li className="w-full py-4">
-                <Link href="/dataProviders">Data providers</Link>
+                <Link href="/data-providers">Data providers</Link>
               </li>
               <li className="w-full py-4">
                 <Link href="/news">News</Link>

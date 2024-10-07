@@ -490,7 +490,8 @@ export const en = {
             siteCreationFail: 'There was an error while creating site: ',
             siteDeleteFail: 'There was an error while deleting site: ',
             siteUpdateFail: 'There was an error while updating site: ',
-            imageError: 'Error submitting image. Make sure the file you are uploading is an image file and it is not a GIF.'
+            imageError: 'Error submitting image. Make sure the file you are uploading is an image file and it is not a GIF.',
+            urlError: 'URL must consists of letters, digits or hyphen(-).'
         }
     },
     nav: {

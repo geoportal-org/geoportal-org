@@ -13,32 +13,32 @@ export const featuresOptions = [
   {
     icon: <GrindIcon width="32px" height="32px" color="transparent" />,
     text: "Community Portal Self-Creation Tool",
-    href: "/usecases/creationTool",
+    href: "/usecases/community-portals",
   },
   {
     icon: <FolderIcon width="32px" height="32px" color="transparent" />,
     text: "GEOSS Yellow Pages Management",
-    href: "/usecases/yellowPagesManagement",
+    href: "/usecases/yellow-pages-management",
   },
   {
     icon: <SearchIcon width="32px" height="32px" color="transparent" />,
     text: "Semantically Enabled Free-Text Search",
-    href: "/usecases/freeTextSpeach",
+    href: "/usecases/free-text-speach",
   },
   {
     icon: <AIIcon width="32px" height="32px" color="transparent" />,
     text: "AI-Powered Data Discovery and Access",
-    href: "/usecases/dataDiscoveryAndAccess",
+    href: "/usecases/data-discovery-and-access",
   },
   {
     icon: <WindIcon width="32px" height="32px" />,
     text: "Land Degradation (SDG15.3.1) Use Case",
-    href: "/usecases/landDegradation",
+    href: "/usecases/land-degradation",
   },
   {
     icon: <TreeIcon width="32px" height="32px" />,
     text: "Accessibility to Urban Green Spaces (SDG11.7) Use Case",
-    href: "/usecases/greenSpaces",
+    href: "/usecases/green-spaces",
   },
   {
     icon: <DropletIcon width="32px" height="32px" />,
@@ -48,7 +48,7 @@ export const featuresOptions = [
   {
     icon: <DropletIcon width="32px" height="32px" />,
     text: "NewLif4DryLands Local Scale Indices Use Case",
-    href: "/usecases/dryLands",
+    href: "/usecases/dry-lands",
   },
   {
     icon: <ForestIcon width="32px" height="32px" />,

@@ -6,7 +6,7 @@ import UCFrame from "../components/UseCaseSections/UCFrame";
 
 export const useCases = [
     {
-        id: "creationTool",
+        id: "community-portals",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -44,7 +44,7 @@ export const useCases = [
         ),
     },
     {
-        id: "yellowPagesManagement",
+        id: "yellow-pages-management",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -76,13 +76,13 @@ export const useCases = [
                     text={`In order to register as GEOSS Data Provider, a link is provided to a website where registration can be done.  The Data Provider provides the information needed for the registration in the form presented on the website and submits the registration request.`}
                     imageSRC="/data-provider-geoss.webp"
                     buttonText="Register"
-                    buttonHref="/dataProviders"
+                    buttonHref="/data-providers"
                 />
             </div>
         ),
     },
     {
-        id: "freeTextSpeach",
+        id: "free-text-speach",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -118,7 +118,7 @@ export const useCases = [
         ),
     },
     {
-        id: "dataDiscoveryAndAccess",
+        id: "data-discovery-and-access",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -152,7 +152,7 @@ export const useCases = [
         ),
     },
     {
-        id: "landDegradation",
+        id: "land-degradation",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -183,7 +183,7 @@ export const useCases = [
         ),
     },
     {
-        id: "greenSpaces",
+        id: "green-spaces",
         component: (
             <div className="text-black w-full">
                 <UCTitle
@@ -237,7 +237,7 @@ export const useCases = [
         ),
     },
     {
-        id: "dryLands",
+        id: "dry-lands",
         component: (
             <div className="text-black w-full">
                 <UCTitle

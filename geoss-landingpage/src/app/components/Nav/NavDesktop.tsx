@@ -24,7 +24,7 @@ const NavDesktop = () => {
             <Dropdown options={portalOptions} text="Community portals" />
           </li>
           <li>
-            <Link href="/dataProviders">Data providers</Link>
+            <Link href="/data-providers">Data providers</Link>
           </li>
           <li>
             <Link href="/news">News</Link>

@@ -199,7 +199,7 @@ const SitesManager = () => {
     };
 
     const validateUrl = (value: string) => {
-        const regex = /^[a-z-]+$/;
+        const regex = /^[a-zA-Z0-9-]+$/;
         return !regex.test(value);
     };
 
@@ -224,7 +224,7 @@ const SitesManager = () => {
 
     const handleImageChange = (event: any) => {
         const file = event.target.files[0];
-        if (file && (file.type.includes('image') && file.type !== 'image/gif')) {
+        if (file && file.type.includes("image") && file.type !== "image/gif") {
             setImageFile(file);
             // Create a URL for the image preview
             const url = URL.createObjectURL(file);
@@ -395,7 +395,7 @@ const SitesManager = () => {
                                 {urlDuplicateError && <FormErrorMessage>Duplicate URL.</FormErrorMessage>}
                                 {urlValidError && (
                                     <FormErrorMessage>
-                                        URL must consists of lowercase letters and optionally hyphens.
+                                        {translate("pages.sites.urlError")}
                                     </FormErrorMessage>
                                 )}
                             </FormControl>

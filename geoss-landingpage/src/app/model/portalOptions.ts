@@ -1,7 +1,7 @@
 export const portalOptions = [
   {
     text: "About Community Portals",
-    href: "/",
+    href: "/usecases/community-portals",
   },
   {
     text: "List of Community Portals",
