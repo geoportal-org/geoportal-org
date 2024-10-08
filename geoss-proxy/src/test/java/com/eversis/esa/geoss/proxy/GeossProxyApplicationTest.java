@@ -22,7 +22,7 @@ class GeossProxyApplicationTest {
     @Container
     @ServiceConnection
     static ElasticsearchContainer ELASTICSEARCH_CONTAINER = new ElasticsearchContainer(
-            "docker.elastic.co/elasticsearch/elasticsearch:8.9.0")
+            "docker.elastic.co/elasticsearch/elasticsearch:8.13.4")
             .withEnv("xpack.security.enabled", "false");
 
     /**

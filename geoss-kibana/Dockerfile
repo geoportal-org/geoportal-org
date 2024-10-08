@@ -1,4 +1,4 @@
-FROM bitnami/kibana:8.9.0
+FROM bitnami/kibana:8.13.4
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"

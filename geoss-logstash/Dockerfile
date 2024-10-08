@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:8.9.0
+FROM docker.elastic.co/logstash/logstash:8.13.4
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"

@@ -72,7 +72,7 @@ networkPolicy:
                 port: 9200
 
 eck-elasticsearch:
-    version: 8.9.0
+    version: 8.13.4
     nameOverride: eck-elasticsearch
     annotations:
         eck.k8s.elastic.co/license: basic
