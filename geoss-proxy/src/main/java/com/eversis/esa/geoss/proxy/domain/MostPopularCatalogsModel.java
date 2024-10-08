@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * The type Most popular catalogs model.
@@ -24,6 +25,7 @@ public class MostPopularCatalogsModel {
      * The Results.
      */
     @NotNull
-    int results;
+    @Positive
+    Integer results;
 
 }

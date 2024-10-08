@@ -1,5 +1,6 @@
 package com.eversis.esa.geoss.proxy.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,12 +30,13 @@ public class NumberOfSearchesModel {
      * The Interval.
      */
     @NotNull
+    @Schema(example = "10d")
     String interval;
 
     /**
      * The Results.
      */
     @NotNull
-    int results;
+    Integer results;
 
 }

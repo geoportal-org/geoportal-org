@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * The type Most popular keywords model.
@@ -29,6 +30,7 @@ public class MostPopularKeywordsModel {
      * The Results.
      */
     @NotNull
-    int results;
+    @Positive
+    Integer results;
 
 }

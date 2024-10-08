@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * The type Most popular resources model.
@@ -24,12 +25,13 @@ public class MostPopularResourcesModel {
      * The Size.
      */
     @NotNull
-    int size;
+    Integer size;
 
     /**
      * The Results.
      */
     @NotNull
-    int results;
+    @Positive
+    Integer results;
 
 }
