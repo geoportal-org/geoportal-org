@@ -1,4 +1,4 @@
-FROM mariadb:10.10
+FROM mariadb:11.4
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -17,11 +17,10 @@ RUN apt-get update && \
 
 RUN apt-get update && \
     apt-get install -y apt-utils && \
-    apt-get install -y netcat && \
     apt-get install -y unzip wget && \
     apt-get install -y python3 && \
     apt-get install -y python3-pip python3-dev build-essential && \
-    pip install awscli && \
+    pip install --break-system-packages awscli && \
     rm -rf /var/lib/apt
 
 COPY config/my.cnf /etc/my.cnf
