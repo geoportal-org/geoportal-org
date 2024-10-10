@@ -1,4 +1,4 @@
-FROM bitnami/matomo:5.1.1
+FROM bitnami/matomo:5.1.2
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
