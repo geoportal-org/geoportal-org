@@ -13,6 +13,11 @@ helm -n $K8S_NAMESPACE upgrade --install \
 printf "\n\n ${Green}Wait until elasticsearch snapshot will be ready ...\n\n${NC}"
 kubectl -n $K8S_NAMESPACE wait --timeout=600s --for=condition=complete job/$RESOURCE_NAME_PREFIX-create-elasticsearch-on-demand-snapshot-$DOCKER_IMAGE_TAG
 
+printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
+envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install --force --wait --timeout 10m0s \
+    --debug $RESOURCE_NAME_PREFIX-db geoss-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-admin ...\n\n${NC}"
 envsubst < geoss-admin/values.yaml.template > geoss-admin/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
@@ -27,11 +32,6 @@ printf "\n\n ${Green}Deploy GEOSS-curated ...\n\n${NC}"
 envsubst < geoss-curated/values.yaml.template > geoss-curated/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-curated geoss-curated | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
-
-printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
-envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
-helm -n $K8S_NAMESPACE upgrade --install \
-    --debug $RESOURCE_NAME_PREFIX-db geoss-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 printf "\n\n ${Green}Deploy GEOSS-els ...\n\n${NC}"
 envsubst < geoss-els/values.yaml.template > geoss-els/values.yaml
