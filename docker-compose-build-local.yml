@@ -91,8 +91,8 @@ services:
   geoss-ui:
     image: eversisdawis.azurecr.io/geoss/geoss_ui:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-ui/Dockerfile-local
+      context: ./geoss-ui/
+      dockerfile: Dockerfile
 
   geoss-worker-geodab-worker:
     image: eversisdawis.azurecr.io/geoss/geoss_worker_geodab_worker:${DOCKER_IMAGE_TAG}

@@ -1,0 +1,194 @@
+replicaCount: $UI_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-ui
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_ui
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1500
+  runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $UI_MEMORY_LIMIT
+  requests:
+    cpu: $UI_CPU_REQUEST
+    memory: $UI_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: ADMIN_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: adminUrl
+  - name: BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: baseUrl
+  - name: CURATED_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: curatedUrl
+  - name: KEYCLOAK_BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: keycloakBaseUrl
+  - name: KEYCLOAK_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: keycloakClientId
+  - name: MATOMO_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: matomoToken
+  - name: MATOMO_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: matomoUrl
+  - name: PROXY_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: proxyUrl
+  - name: NODE_OPTIONS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-ui-env
+        key: nodeOptions
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-ui-env
+    type: Opaque
+    data:
+      adminUrl: "https://${ADMIN_DOMAIN_NAME}"
+      baseUrl: "https://${UI_DOMAIN_NAME}"
+      curatedUrl: "https://${ADMIN_DOMAIN_NAME}/curated/rest/"
+      keycloakBaseUrl: "https://${IDP_DOMAIN_NAME}/realms/geoss"
+      keycloakClientId: "geoss-ui"
+      matomoToken: "${MATOMO_TOKEN}"
+      matomoUrl: "https://${UI_DOMAIN_NAME}/matomo/?"
+      proxyUrl: "https://${UI_DOMAIN_NAME}/proxy/rest/"
+      nodeOptions: "--max-old-space-size=4096"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
+          ports:
+              - protocol: TCP
+                port: 8082
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
+          ports:
+              - protocol: TCP
+                port: 8080
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 3000

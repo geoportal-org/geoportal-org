@@ -168,6 +168,8 @@ env:
     value: "$UI_DOMAIN_NAME"
   - name: UI_SERVICES_PROVIDERS
     value: "$SERVICES_PROVIDERS"
+  - name: BASIC_AUTH_WHITELIST
+    value: "$BASIC_AUTH_WHITELIST"
 
 networkPolicy:
     egress:
@@ -206,10 +208,31 @@ networkPolicy:
         - to:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443  
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-kibana
+          ports:
+              - protocol: TCP
+                port: 5601  
+        - to:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
           ports:
               - protocol: TCP
                 port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
+          ports:
+              - protocol: TCP
+                port: 3000   
     ingress:
         # Allow to connect from DMZ
         - from:

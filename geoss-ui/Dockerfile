@@ -73,6 +73,10 @@ COPY --from=builder /opt/app/utils ./utils
 COPY --from=builder /opt/app/package.json ./package.json
 COPY --from=builder /opt/app/nuxt.config.js ./nuxt.config.js
 
+RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
+RUN chown -R docker_noroot:docker_noroot /opt/app
+USER docker_noroot 
+
 EXPOSE 3000
 
 ENTRYPOINT ["yarn", "run", "start"]
