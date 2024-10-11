@@ -15,6 +15,11 @@ envsubst < geoss-contents/values.yaml.template > geoss-contents/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-contents geoss-contents | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
+printf "\n\n ${Green}Deploy GEOSS-curated ...\n\n${NC}"
+envsubst < geoss-curated/values.yaml.template > geoss-curated/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-curated geoss-curated | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
 envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \

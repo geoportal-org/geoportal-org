@@ -104,8 +104,8 @@ services:
   geoss-proxy:
     image: eversisdawis.azurecr.io/geoss/geoss_proxy:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-proxy/Dockerfile-local
+      context: ./geoss-proxy
+      dockerfile: Dockerfile
 
   geoss-search:
     image: eversisdawis.azurecr.io/geoss/geoss_search:${DOCKER_IMAGE_TAG}

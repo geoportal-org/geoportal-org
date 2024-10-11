@@ -28,8 +28,8 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 8080
-  targetPort: 8080
+  port: 8082
+  targetPort: 8082
   protocol: TCP
   name: http
 
@@ -137,4 +137,4 @@ networkPolicy:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
           ports:
               - protocol: TCP
-                port: 8080
+                port: 8082
