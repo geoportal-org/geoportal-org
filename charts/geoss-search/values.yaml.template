@@ -3,7 +3,7 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-search
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_search
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_search
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 
@@ -116,8 +116,8 @@ secrets:
       springElasticsearchUsername: "elastic"
       springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
       datasourceElasticsearchCompatibilityMode: "true"
-      datasourceAmerigeossCkanBaseUrl: "https://data.amerigeoss.org/api/3/action"
-      datasourceZenodoBaseUrl: "https://zenodo.org"
+      datasourceAmerigeossCkanBaseUrl: "${DATASOURCE_AMERIGEOSS_CKAN_BASE_URL}"
+      datasourceZenodoBaseUrl: "${DATASOURCE_ZENODO_BASE_URL}"
       springProfilesActive: "keycloak"
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
       springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_SEARCH}"

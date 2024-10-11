@@ -3,7 +3,7 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_worker_thesaurus_worker
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_worker_thesaurus_worker
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 

@@ -3,7 +3,7 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-contents
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_contents
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_contents
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 

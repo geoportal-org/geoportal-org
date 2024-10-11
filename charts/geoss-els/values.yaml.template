@@ -2,7 +2,7 @@ secrets:
   - name: geoss-${DEPLOY_ENV}-els-env
     type: Opaque
     data:
-      esJavaOpts: "-Xms4g -Xmx4g"
+      esJavaOpts: "$ELS_JAVA_OPTS"
       elasticPassword: "$ELS_ELASTIC_PASSWORD"
       kibanaPassword: "$ELS_KIBANA_PASSWORD"
       geossPassword: "$ELS_GEOSS_PASSWORD"
@@ -16,7 +16,7 @@ secrets:
     type: kubernetes.io/basic-auth
     data:
       username: "kibana_system"
-      password: "$KIBANA_PASSWORD"
+      password: "$ELS_KIBANA_PASSWORD"
       roles: "kibana_system"
 
 networkPolicy:
@@ -97,13 +97,13 @@ eck-elasticsearch:
                                 - "-c"
                                 - sysctl -w vm.max_map_count=262144
                             name: sysctl
-                            image: eversisdawis.azurecr.io/geoss/geoss_els:$DOCKER_IMAGE_TAG
+                            image: $DOCKER_REPOSITORY_ADDRESS/geoss_els:$DOCKER_IMAGE_TAG
                             securityContext:
                                 privileged: true
                                 runAsUser: 0
                     containers:
                         -   name: elasticsearch
-                            image: eversisdawis.azurecr.io/geoss/geoss_els:$DOCKER_IMAGE_TAG
+                            image: $DOCKER_REPOSITORY_ADDRESS/geoss_els:$DOCKER_IMAGE_TAG
                             resources:
                                 limits:
                                     memory: $ELS_MEMORY_LIMIT

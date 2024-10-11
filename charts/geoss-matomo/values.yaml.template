@@ -3,7 +3,7 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-matomo
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_matomo
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_matomo
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 

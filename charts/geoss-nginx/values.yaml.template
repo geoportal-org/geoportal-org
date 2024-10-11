@@ -3,7 +3,7 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-nginx
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_nginx
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_nginx
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 
@@ -44,6 +44,7 @@ ingressUI:
       appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
       appgw.ingress.kubernetes.io/waf-policy-for-path: "$UI_WAF_POLICY"
       appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
   hosts:
     - host: $UI_DOMAIN_NAME
       paths:
@@ -64,6 +65,7 @@ ingressAdmin:
       appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
       appgw.ingress.kubernetes.io/waf-policy-for-path: "$ADMIN_WAF_POLICY"
       appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
   hosts:
     - host: $ADMIN_DOMAIN_NAME
       paths:
@@ -84,6 +86,7 @@ ingressIDP:
       appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
       appgw.ingress.kubernetes.io/waf-policy-for-path: "$IDP_WAF_POLICY"
       appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
   hosts:
     - host: $IDP_DOMAIN_NAME
       paths:
@@ -104,6 +107,7 @@ ingressLP:
       appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
       appgw.ingress.kubernetes.io/waf-policy-for-path: "$LANDING_PAGE_WAF_POLICY"
       appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
   hosts:
     - host: $LANDING_PAGE_DOMAIN_NAME
       paths:
@@ -153,7 +157,7 @@ env:
   - name: BASIC_AUTH_ENABLED
     value: "$BASIC_AUTH_ENABLED"
   - name: CSP_DOMAINS
-    value: "${ADMIN_DOMAIN_NAME},${KEYCLOAK_DOMAIN_NAME},${LANDING_PAGE_DOMAIN_NAME},${UI_DOMAIN_NAME}"
+    value: "${CSP_DOMAINS}"
   - name: DEPLOY_ENV
     value: $DEPLOY_ENV
   - name: KEYCLOAK_DOMAIN_NAME
