@@ -1,0 +1,30 @@
+{{- if .Values.networkPolicy }}     
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "geoss-matomo.fullname" . }}
+spec:
+  podSelector: 
+    matchLabels:
+      app.kubernetes.io/name: {{ include "geoss-matomo.fullname" . }}
+  policyTypes:
+    {{- if .Values.networkPolicy.egress }}  
+    - Egress
+    {{- end }}
+    {{- if .Values.networkPolicy.ingress }}
+    - Ingress
+    {{- end }}
+  {{- if .Values.networkPolicy.egress }}  
+  egress:
+    {{- with .Values.networkPolicy.egress }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}     
+  {{- if .Values.networkPolicy.ingress }}         
+  ingress:
+    {{- with .Values.networkPolicy.ingress }}     
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+{{- end }}    
+

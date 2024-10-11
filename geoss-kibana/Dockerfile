@@ -18,6 +18,12 @@ RUN chmod +x /entrypoint.sh
 COPY --chown=1001 create_index_patterns.sh /create_index_patterns.sh
 RUN chmod +x /create_index_patterns.sh
 
+USER root
+RUN chown 1001 -R /opt/bitnami/kibana/tmp/
+RUN chown 1001 -R /opt/bitnami/kibana/config/
+RUN chown 1001 -R /opt/bitnami/kibana/data/
+USER 1001
+
 HEALTHCHECK \
 	--interval=30s \
 	--start-period=30s \
