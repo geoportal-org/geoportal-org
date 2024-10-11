@@ -15,6 +15,7 @@ RUN bin/elasticsearch-plugin install -b analysis-icu
 RUN bin/elasticsearch-plugin install -b analysis-kuromoji
 RUN bin/elasticsearch-plugin install -b analysis-smartcn
 RUN bin/elasticsearch-plugin install -b analysis-stempel
+RUN bin/elasticsearch-plugin install -b repository-azure
 
 COPY indices/ /indices/
 COPY --chown=elasticsearch  entrypoint.sh /entrypoint.sh

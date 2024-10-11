@@ -18,6 +18,11 @@ secrets:
       username: "kibana_system"
       password: "$ELS_KIBANA_PASSWORD"
       roles: "kibana_system"
+  - name: $RESOURCE_NAME_PREFIX-elasticsearch-snapshot-repository
+    type: Opaque
+    data:
+        azure.client.default.account: "$AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_NAME"
+        azure.client.default.key: "$AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_SECRET"
 
 networkPolicy:
     egress:
@@ -83,6 +88,8 @@ eck-elasticsearch:
         - secretName: geoss-${DEPLOY_ENV}-els-user
         - secretName: geoss-${DEPLOY_ENV}-els-kibana-user
     volumeClaimDeletePolicy: DeleteOnScaledownOnly
+    secureSettings:
+        -   secretName: $RESOURCE_NAME_PREFIX-elasticsearch-snapshot-repository
     nodeSets:
         -   name: default
             count: $ELS_INSTANCES

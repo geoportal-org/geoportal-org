@@ -1,0 +1,53 @@
+{{- range .Values.jobs }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: {{ .name }}
+    labels:
+        app.kubernetes.io/name: {{ .name }}
+spec:
+    ttlSecondsAfterFinished: {{ .ttlSecondsAfterFinished }}
+    backoffLimit: {{ .backoffLimit }}
+    template:
+        spec:
+            {{ with $.Values.tolerations }}
+            tolerations:
+            {{- toYaml . | nindent 12 }}
+            {{ end }}
+            initContainers:
+            {{- range .initContainers }}
+            - name: {{ .name }}
+              image: {{ .image }}
+              {{ with .command }}
+              command:
+              {{- toYaml . | nindent 16 }}
+              {{- end }}
+              args:
+              {{- range .args }}
+                  - {{ . | quote }}
+              {{- end }}
+              {{ with $.Values.env }}
+              env:
+              {{- toYaml . | nindent 16 }}
+              {{ end }}
+            {{- end }}
+            containers:
+            {{- range .containers }}
+              - name: {{ .name }}
+                image: {{ .image }}
+                {{ with .args }}
+                args:
+                {{- toYaml . | nindent 16 }}
+                {{ end }}
+                {{ with .command }}
+                command:
+                {{- toYaml . | nindent 16 }}
+                {{- end }}
+                {{ with $.Values.env }}
+                env:
+                {{- toYaml . | nindent 16 }}
+                {{ end }}
+            {{- end }}
+            restartPolicy: Never
+{{- end }}

@@ -1,0 +1,42 @@
+jobs:
+    - name: $RESOURCE_NAME_PREFIX-create-elasticsearch-on-demand-snapshot-$DOCKER_IMAGE_TAG
+        # 30 min TTL
+      ttlSecondsAfterFinished: 1800
+      backoffLimit: 3
+      initContainers:
+        - name: configure-snapshot-repository
+          image: curlimages/curl:7.72.0
+          args:
+              - /bin/sh
+              - -ec
+              - "curl -k  -X PUT -u ${DOLLAR}ELASTICSEARCH_USER:${DOLLAR}ELASTICSEARCH_PASSWORD ${DOLLAR}ELASTICSEARCH_HOST_ADDRESS/_snapshot/on-demand-snapshot-repository -H 'Content-Type: application/json' -d '{ \"type\": \"azure\", \"settings\": { \"container\": \"$AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_CONTAINER_NAME\",  \"base_path\": \"on-demand-snapshots\",  \"chunk_size\": \"32MB\",  \"compress\": true } }'"
+        -   name: wait-for-repository-to-be-created
+            image: curlimages/curl:7.72.0
+            args:
+                - /bin/sh
+                - -ec
+                - sleep 60
+        - name: create-snapshot
+          image: curlimages/curl:7.72.0
+          args:
+              - /bin/sh
+              - -ec
+              - "curl -k -X PUT -u ${DOLLAR}ELASTICSEARCH_USER:${DOLLAR}ELASTICSEARCH_PASSWORD ${DOLLAR}ELASTICSEARCH_HOST_ADDRESS/_snapshot/on-demand-snapshot-repository/%3Csnapshot_%7Bnow%7Byyyy-MM-dd_HH-mm-ss%7D%7D%3E?wait_for_completion=true"
+      containers:
+          - name: $RESOURCE_NAME_PREFIX-job-done
+            image: busybox
+            command: ['sh', '-c', 'echo "jobs completed"']
+
+env:
+    -   name: ELASTICSEARCH_HOST_ADDRESS
+        value: "https://$RESOURCE_NAME_PREFIX-cms-eck-elasticsearch-es-http:9200"
+    -   name: ELASTICSEARCH_USER
+        value: "elastic"
+    -   name: ELASTICSEARCH_PASSWORD
+        value: "$ELS_ELASTIC_PASSWORD"
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "earthonline"
+        effect: "NoExecute"

@@ -4,6 +4,14 @@ Yellow='\033[0;33m'       # Yellow
 NC='\033[0m' # No Color
 
 source .env
+export DOLLAR="$"
+printf "\n\n ${Green}Execute pre deploy jobs ...\n\n${NC}"
+envsubst < geoss-pre-deploy-jobs/values.yaml.template > geoss-pre-deploy-jobs/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-pre-deploy-jobs geoss-pre-deploy-jobs --wait --timeout 15m | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
+printf "\n\n ${Green}Wait until elasticsearch snapshot will be ready ...\n\n${NC}"
+kubectl -n $K8S_NAMESPACE wait --timeout=600s --for=condition=complete job/$RESOURCE_NAME_PREFIX-create-elasticsearch-on-demand-snapshot-$DOCKER_IMAGE_TAG
 
 printf "\n\n ${Green}Deploy GEOSS-admin ...\n\n${NC}"
 envsubst < geoss-admin/values.yaml.template > geoss-admin/values.yaml
@@ -109,3 +117,8 @@ printf "\n\n ${Green}Deploy GEOSS-worker-wikipedia-worker ...\n\n${NC}"
 envsubst < geoss-worker-wikipedia-worker/values.yaml.template > geoss-worker-wikipedia-worker/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-worker-wikipedia-worker geoss-worker-wikipedia-worker | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
+printf "\n\n ${Green}Execute post deploy jobs ...\n\n${NC}"
+envsubst < geoss-post-deploy-jobs/values.yaml.template > geoss-post-deploy-jobs/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-post-deploy-jobs geoss-post-deploy-jobs --wait --timeout 15m | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
