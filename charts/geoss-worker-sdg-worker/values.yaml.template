@@ -114,7 +114,7 @@ secrets:
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
       springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_SDG}"
       configSdgDefaultLogo: "${WORKER_SDG_DEFAULT_LOGO}"
-      configSdgUnBaseUrl: "${$WORKER_SDG_UN_BASE_URL}"
+      configSdgUnBaseUrl: "${WORKER_SDG_UN_BASE_URL}"
       serverMaxHttpRequestHeaderSize: "32KB"
 
 networkPolicy:
