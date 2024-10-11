@@ -269,7 +269,7 @@ export default class InSituFiltersComponent extends Vue {
 
     @Watch('currentResults')
     private async onCurrentResultsChanged() {
-        if (this.currentResults && this.currentResults['entry'].length) {
+        if (this.currentResults && this.currentResults['entry']?.length) {
             this.updateFilterOptions(
                 InSituFiltersActions.setCropTypesOptions,
                 'cropTypes'
