@@ -1,9 +1,9 @@
-replicaCount: $WORKER_WIKIPEDIA_WORKER_INSTANCES
+replicaCount: $WORKER_THESAURUS_WORKER_INSTANCES
 maxSurge: 1
 maxUnavailable: 0
-nameOverride: $RESOURCE_NAME_PREFIX-worker-wikipedia-worker
+nameOverride: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
 image:
-  repository: eversisdawis.azurecr.io/geoss/geoss_worker_wikipedia_worker
+  repository: eversisdawis.azurecr.io/geoss/geoss_worker_thesaurus_worker
   pullPolicy: Always
   tag: "$DOCKER_IMAGE_TAG"
 
@@ -35,10 +35,10 @@ service:
 
 resources:
   limits:
-    memory: $WORKER_WIKIPEDIA_WORKER_LIMIT
+    memory: $WORKER_THESAURUS_WORKER_LIMIT
   requests:
-    cpu: $WORKER_WIKIPEDIA_WORKER_REQUEST
-    memory: $WORKER_WIKIPEDIA_WORKER_REQUEST
+    cpu: $WORKER_THESAURUS_WORKER_REQUEST
+    memory: $WORKER_THESAURUS_WORKER_REQUEST
 
 autoscaling:
   enabled: false
@@ -57,70 +57,76 @@ tolerations:
         effect: "NoExecute"
 
 env:
-  - name: SPRING_DATASOURCE_URL
+  - name: SPRING_ELASTICSEARCH_URIS
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: springDatasourceUrl
-  - name: SPRING_DATASOURCE_USERNAME
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchUris
+  - name: SPRING_ELASTICSEARCH_USERNAME
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: springDatasourceUsername
-  - name: SPRING_DATASOURCE_PASSWORD
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchUsername
+  - name: SPRING_ELASTICSEARCH_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: springDatasourcePassword
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchPassword
   - name: SPRING_PROFILES_ACTIVE
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
         key: springProfilesActive
   - name: SPRING_SECURITY_OAUTH2_BASE_URI
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
         key: springSecurityOauth2BaseUri
   - name: SPRING_SECURITY_OAUTH2_CLIENT_SECRET
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
         key: springSecurityOauth2ClientSecret
-  - name: WIKIDATA_API_URL
+  - name: THESAURUS_ESA_BASE_URI
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: wikidataApiUrl
-  - name: WIKIDATA_CATEGORIES_SPARQL_URL
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEsaBaseUri
+  - name: THESAURUS_ESA_TOP_CONCEPTS_URIS
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: wikidataCategoriesSparqlUrl
-  - name: WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEsaTopConceptUris
+  - name: THESAURUS_EOSTERM_BASE_URI
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
-        key: wikidataCategoriesSparqlDefaultGraphUri
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEostermBaseUri
+  - name: THESAURUS_EARTH_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEarthBaseUri
   - name: SERVER_MAX_HTTP_REQUEST_HEADER_SIZE
     valueFrom:
       secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
         key: serverMaxHttpRequestHeaderSize
 
 secrets:
-  - name: geoss-${DEPLOY_ENV}-worker-wikipedia-worker-env
+  - name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
     type: Opaque
     data:
-      springDatasourceUrl: "jdbc:mariadb://geoss-${DEPLOY_ENV}-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
-      springDatasourceUsername: "${DATABASE_USERNAME_APP}"
-      springDatasourcePassword: "${DATABASE_PASSWORD_APP}"
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els:9200"
+      springElasticsearchUsername: "elastic"
+      springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
       springProfilesActive: "keycloak"
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
-      springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_WIKIPEDIA}"
-      wikidataApiUrl: "${WORKER_WIKIDATA_API_URL}"
-      wikidataCategoriesSparqlUrl: "${WORKER_WIKIDATA_CATEGORIES_SPARQL_URL}"
-      wikidataCategoriesSparqlDefaultGraphUri: "${WORKER_WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI}"
+      springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_THESAURUS}"
+      thesaurusEsaBaseUri: "${WORKER_THESAURUS_ESA_BASE_URI}"
+      thesaurusEsaTopConceptUris: "${WORKER_THESAURUS_ESA_TOP_CONCEPTS_URIS}"
+      thesaurusEostermBaseUri: "${WORKER_THESAURUS_EOSTERM_BASE_URI}"
+      thesaurusEarthBaseUri: "${WORKER_THESAURUS_EARTH_BASE_URI}"
       serverMaxHttpRequestHeaderSize: "32KB"
 
 networkPolicy:
@@ -149,17 +155,10 @@ networkPolicy:
         - to:
               - podSelector:
                     matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-els
           ports:
               - protocol: TCP
-                port: 3306
-        - to:
-              - podSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-db
-          ports:
-              - protocol: TCP
-                port: 3306
+                port: 9200
         - to:
               - podSelector:
                     matchLabels:

@@ -5,8 +5,8 @@ services:
   geoss-nginx:
     image: eversisdawis.azurecr.io/geoss/geoss_nginx:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-nginx/Dockerfile-local
+      context: ./geoss-nginx/
+      dockerfile: Dockerfile
 
   geoss-admin:
     image: eversisdawis.azurecr.io/geoss/geoss_admin:${DOCKER_IMAGE_TAG}
@@ -112,7 +112,7 @@ services:
       context: .
       dockerfile: ./geoss-worker/entry-worker/wikipedia-worker/Dockerfile-local
 
-  geoss-worker_thesaurus_worker:
+  geoss-worker-thesaurus-worker:
     image: eversisdawis.azurecr.io/geoss/geoss_worker_thesaurus_worker:${DOCKER_IMAGE_TAG}
     build:
       context: .
