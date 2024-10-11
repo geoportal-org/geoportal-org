@@ -3,6 +3,12 @@ jobs:
       ttlSecondsAfterFinished: 60
       backoffLimit: 3
       initContainers:
+        - name: wait-for-elasticsearch-to-be-ready
+          image: curlimages/curl:7.72.0
+          args:
+              - /bin/sh
+              - -ec
+              - "while [[ $(curl -o /dev/null -s -u ${DOLLAR}ELASTICSEARCH_USER:${DOLLAR}ELASTICSEARCH_PASSWORD -L -w %{http_code} ${DOLLAR}ELASTICSEARCH_HOST_ADDRESS/_cluster/health?wait_for_status=yellow&timeout=1s) != 200 ]];  do echo 'Waiting ...'; done && echo 'Elasticsearch ready :)'"
         - name: configure-snapshot-repository
           image: curlimages/curl:7.72.0
           args:
