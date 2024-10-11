@@ -41,8 +41,8 @@ services:
   geoss-keycloak:
     image: eversisdawis.azurecr.io/geoss/geoss_keycloak:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-keycloak/Dockerfile-local
+      context: ./geoss-keycloak/
+      dockerfile: Dockerfile
       args:
         KC_DB: mariadb
 

@@ -4,6 +4,7 @@ helm delete $RESOURCE_NAME_PREFIX-admin
 helm delete $RESOURCE_NAME_PREFIX-contents
 helm delete $RESOURCE_NAME_PREFIX-curated
 helm delete $RESOURCE_NAME_PREFIX-db
+helm delete $RESOURCE_NAME_PREFIX-keycloak
 helm delete $RESOURCE_NAME_PREFIX-kibana
 helm delete $RESOURCE_NAME_PREFIX-matomo
 helm delete $RESOURCE_NAME_PREFIX-nginx
