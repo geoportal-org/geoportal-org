@@ -10,7 +10,8 @@ curl --user elastic:$ELASTIC_PASSWORD -XPUT 'http://localhost:9200/geoss-recomme
 echo "ENTRYPOINT: Indexes created."
 
 echo "ENTRYPOINT: Setting password for kibana_system user ..."
-curl --user elastic:$ELASTIC_PASSWORD -XPUT -H 'Content-Type: application/json' 'http://localhost:9200/_security/user/kibana_system/_password' -d '{ "password":"'"$KIBANA_PASSWORD"'" }'
+elasticsearch-users useradd kibana_system -p $KIBANA_PASSWORD -r kibana_system || true
+#curl --user elastic:$ELASTIC_PASSWORD -XPUT -H 'Content-Type: application/json' 'http://localhost:9200/_security/user/kibana_system/_password' -d '{ "password":"'"$KIBANA_PASSWORD"'" }'
 echo "ENTRYPOINT: Password for kibana_system has been set."
 
 echo "ENTRYPOINT: Creating kibana GEOSS ADMIN user ..."
