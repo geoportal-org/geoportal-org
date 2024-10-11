@@ -113,7 +113,7 @@ secrets:
       keycloakBaseUrl: "https://${IDP_DOMAIN_NAME}/realms/geoss"
       keycloakClientId: "geoss-ui"
       matomoToken: "${MATOMO_TOKEN}"
-      matomoUrl: "https://${UI_DOMAIN_NAME}/matomo/?"
+      matomoUrl: "https://${UI_DOMAIN_NAME}/matomo"
       proxyUrl: "https://${UI_DOMAIN_NAME}/proxy/rest/"
       nodeOptions: "--max-old-space-size=4096"
 
