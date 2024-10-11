@@ -8,9 +8,6 @@ server {
   listen *:8080;
   server_name ${LANDING_PAGE_DOMAIN_NAME};
 
-  modsecurity on;
-  modsecurity_rules_file /etc/nginx/modsecurity.d/modsec.conf;
-
   #ssl_certificate /etc/nginx/certs/server.crt;
   #ssl_certificate_key /etc/nginx/certs/server.key;
   #ssl_session_cache builtin:1000 shared:SSL:10m;
