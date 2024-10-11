@@ -126,11 +126,18 @@ networkPolicy:
               - protocol: UDP
                 port: 53
     ingress:
-        # Allow to connect from DMZ
+        # Allow to connect from other containers
         - from:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 3306
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
           ports:
               - protocol: TCP
                 port: 3306

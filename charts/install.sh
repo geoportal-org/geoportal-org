@@ -31,3 +31,8 @@ printf "\n\n ${Green}Deploy GEOSS-nginx ...\n\n${NC}"
 envsubst < geoss-nginx/values.yaml.template > geoss-nginx/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-nginx geoss-nginx | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
+printf "\n\n ${Green}Deploy GEOSS-settings ...\n\n${NC}"
+envsubst < geoss-settings/values.yaml.template > geoss-settings/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-settings geoss-settings | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
