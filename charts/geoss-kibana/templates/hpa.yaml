@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "geoss-nginx.fullname" . }}
+  name: {{ include "geoss-kibana.fullname" . }}
   labels:
-    {{- include "geoss-nginx.labels" . | nindent 4 }}
+    {{- include "geoss-kibana.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "geoss-nginx.fullname" . }}
+    name: {{ include "geoss-kibana.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
