@@ -42,8 +42,8 @@ services:
   geoss-contents:
     image: eversisdawis.azurecr.io/geoss/geoss_contents:${DOCKER_IMAGE_TAG}
     build:
-      context: ./geoss-contents
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./geoss-contents/Dockerfile-local
 
   geoss-curated:
     image: eversisdawis.azurecr.io/geoss/geoss_curated:${DOCKER_IMAGE_TAG}
