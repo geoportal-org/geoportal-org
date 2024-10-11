@@ -38,5 +38,5 @@ env:
 tolerations:
     -   key: "project"
         operator: "Equal"
-        value: "earthonline"
+        value: "geoss"
         effect: "NoExecute"
