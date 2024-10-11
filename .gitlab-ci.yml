@@ -499,18 +499,27 @@ uat_deploy:
     - azure-jumphost-devuat
   cache: { }
   variables:
-    AZURE_APPLICATION_GATEWAY_IP: $AZURE_PROD_APPLICATION_GATEWAY_IP
-    AZURE_DB_SUBNET: $AZURE_PROD_DB_SUBNET
-    AZURE_DMZ_NETWORK: $AZURE_PROD_DMZ_NETWORK
-    BASIC_AUTH_ENABLED: $AZURE_PROD_BASIC_AUTH_ENABLED
-    DEPLOY_ENV: "prod"
-    DOCKER_IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-    K8S_NAMESPACE: $AZURE_PROD_K8S_NAMESPACE
-    NGINX_CPU_REQUEST: $AZURE_PROD_NGINX_CPU_REQUEST
-    NGINX_INSTANCES: 1
-    NGINX_MEMORY_LIMIT: $AZURE_PROD_NGINX_MEMORY_LIMIT
-    NGINX_MEMORY_REQUEST: $AZURE_PROD_NGINX_MEMORY_REQUEST
-    RESOURCE_NAME_PREFIX: "matomo-prod"
+    ADMIN_DOMAIN_NAME: "$AZURE_UAT_ADMIN_DOMAIN_NAME"
+    ADMIN_WAF_POLICY: "$AZURE_UAT_ADMIN_WAF_POLICY"
+    BASIC_AUTH_ENABLED: "true"
+    DEPLOY_ENV: "uat"
+    DOCKER_IMAGE_TAG: "latest"
+    IDP_DOMAIN_NAME: "$AZURE_UAT_IDP_DOMAIN_NAME"
+    IDP_WAF_POLICY: "$AZURE_UAT_IDP_WAF_POLICY"
+    INGRESS_ALLOWED_CIDR: $AZURE_DEVUAT_DMZ_NETWORK
+    K8S_NAMESPACE: "uat-geoss"
+    LANDING_PAGE_DOMAIN_NAME: "$AZURE_UAT_LANDING_PAGE_DOMAIN_NAME"
+    LANDING_PAGE_WAF_POLICY: "$AZURE_UAT_LANDING_PAGE_WAF_POLICY"
+    MAINTENANCE_ON: "$AZURE_UAT_MAINTENANCE_ON"
+    MAINTENANCE_WHITELIST: "$AZURE_UAT_MAINTENANCE_WHITELIST"
+    NGINX_CPU_REQUEST: "$AZURE_UAT_NGINX_CPU_REQUEST"
+    NGINX_INSTANCES: "$AZURE_UAT_NGINX_INSTANCES"
+    NGINX_MEMORY_LIMIT: "$AZURE_UAT_NGINX_MEMORY_LIMIT" 
+    NGINX_MEMORY_REQUEST: "$AZURE_UAT_NGINX_MEMORY_REQUEST"
+    RESOURCE_NAME_PREFIX: "geoss-uat"
+    SERVICES_PROVIDERS: "$AZURE_UAT_SERVICES_PROVIDERS"
+    UI_DOMAIN_NAME: "$AZURE_UAT_UI_DOMAIN_NAME"
+    UI_WAF_POLICY: "$AZURE_UAT_UI_WAF_POLICY"
   dependencies: []
   before_script:
     - apt update && apt install -y curl git gettext-base
@@ -520,12 +529,12 @@ uat_deploy:
     # Install Helm
     - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     - chmod +x ./charts/install.sh
-    - echo "${AZURE_PROD_CLUSTER_CERTIFICATE}" | base64 -d > "${AZURE_PROD_CLUSTER_NAME}.crt"
-    - kubectl config set-cluster "${AZURE_PROD_CLUSTER_NAME}" --server="${AZURE_PROD_CLUSTER_URL}" --certificate-authority="${AZURE_PROD_CLUSTER_NAME}.crt" --embed-certs
-    - rm "${AZURE_PROD_CLUSTER_NAME}.crt"
-    - kubectl config set-context "${AZURE_PROD_CLUSTER_USERNAME}" --cluster="${AZURE_PROD_CLUSTER_NAME}" --user="${AZURE_PROD_CLUSTER_USERNAME}"
-    - kubectl config set-credentials "${AZURE_PROD_CLUSTER_USERNAME}" --token="${AZURE_PROD_CLUSTER_TOKEN}"
-    - kubectl config use-context "${AZURE_PROD_CLUSTER_USERNAME}"
+    - echo "${AZURE_DEVUAT_CLUSTER_CERTIFICATE}" | base64 -d > "${AZURE_DEVUAT_CLUSTER_NAME}.crt"
+    - kubectl config set-cluster "${AZURE_DEVUAT_CLUSTER_NAME}" --server="${AZURE_DEVUAT_CLUSTER_URL}" --certificate-authority="${AZURE_DEVUAT_CLUSTER_NAME}.crt" --embed-certs
+    - rm "${AZURE_DEVUAT_CLUSTER_NAME}.crt"
+    - kubectl config set-context "${AZURE_DEVUAT_CLUSTER_USERNAME}" --cluster="${AZURE_DEVUAT_CLUSTER_NAME}" --user="${AZURE_DEVUAT_CLUSTER_USERNAME}"
+    - kubectl config set-credentials "${AZURE_DEVUAT_CLUSTER_USERNAME}" --token="${AZURE_DEVUAT_CLUSTER_TOKEN}"
+    - kubectl config use-context "${AZURE_DEVUAT_CLUSTER_USERNAME}"
   script:
     - echo "$AZURE_UAT_UI_CERT" > charts/ui.crt
     - echo "$AZURE_UAT_UI_CERT_KEY" > charts/ui.key
