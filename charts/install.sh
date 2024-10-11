@@ -35,6 +35,11 @@ envsubst < geoss-kibana/values.yaml.template > geoss-kibana/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-kibana geoss-kibana | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
+printf "\n\n ${Green}Deploy GEOSS-landingpage ...\n\n${NC}"
+envsubst < geoss-landingpage/values.yaml.template > geoss-landingpage/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-landingpage geoss-landingpage | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-matomo ...\n\n${NC}"
 envsubst < geoss-matomo/values.yaml.template > geoss-matomo/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \

@@ -50,6 +50,10 @@ COPY --from=builder /opt/app/postcss.config.mjs .
 COPY --from=builder /opt/app/tailwind.config.ts .
 COPY --from=builder /opt/app/tsconfig.json .
 
+RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
+RUN chown -R docker_noroot:docker_noroot /opt/app
+USER docker_noroot 
+
 EXPOSE 3000
 
 ENTRYPOINT ["yarn", "run", "start"]

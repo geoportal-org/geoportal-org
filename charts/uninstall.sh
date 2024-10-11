@@ -6,6 +6,7 @@ helm delete $RESOURCE_NAME_PREFIX-curated
 helm delete $RESOURCE_NAME_PREFIX-db
 helm delete $RESOURCE_NAME_PREFIX-keycloak
 helm delete $RESOURCE_NAME_PREFIX-kibana
+helm delete $RESOURCE_NAME_PREFIX-landingpage
 helm delete $RESOURCE_NAME_PREFIX-matomo
 helm delete $RESOURCE_NAME_PREFIX-nginx
 helm delete $RESOURCE_NAME_PREFIX-personaldata
