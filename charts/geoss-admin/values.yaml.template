@@ -1,0 +1,153 @@
+replicaCount: $ADMIN_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-admin
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_admin
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $ADMIN_MEMORY_LIMIT
+  requests:
+    cpu: $ADMIN_CPU_REQUEST
+    memory: $ADMIN_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: NEXT_PUBLIC_API
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextPublicApi
+  - name: NEXT_PUBLIC_APP_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextPublicAppUrl
+  - name: NEXTAUTH_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextPublicAppUrl
+  - name: NEXTAUTH_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextAuthSecret
+  - name: KEYCLOAK_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakClientId
+  - name: KEYCLOAK_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakClientSecret
+  - name: KEYCLOAK_BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakBaseUrl
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-admin-env
+    type: Opaque
+    data:
+      nextPublicApi: "https://${ADMIN_DOMAIN_NAME}"
+      nextPublicAppUrl: "https://${UI_DOMAIN_NAME}"
+      nextAuthSecret: "${NEXT_AUTH_SECRET}"
+      keycloakClientId: "geoss-admin"
+      keycloakClientSecret: "${KEYCLOAK_CLIENT_SECRET_ADMIN}"
+      keycloakBaseUrl: "https://${IDP_DOMAIN_NAME}/realms/geoss"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
+          ports:
+              - protocol: TCP
+                port: 8080
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 3000

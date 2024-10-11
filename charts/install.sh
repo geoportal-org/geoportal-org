@@ -5,6 +5,11 @@ NC='\033[0m' # No Color
 
 source .env
 
+printf "\n\n ${Green}Deploy GEOSS-admin ...\n\n${NC}"
+envsubst < geoss-admin/values.yaml.template > geoss-admin/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-admin geoss-admin | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
 envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \

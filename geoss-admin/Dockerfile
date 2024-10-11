@@ -11,8 +11,11 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 ENV NODE_ENV=production
 
-COPY . .
-COPY entrypoint.sh /entrypoint.sh
+USER 1000
+WORKDIR /home/node
+
+COPY --chown=1000 . .
+COPY --chown=1000 entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 RUN npm install --production
