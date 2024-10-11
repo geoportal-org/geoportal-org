@@ -137,7 +137,7 @@ secrets:
   - name: geoss-${DEPLOY_ENV}-matomo-env
     type: Opaque
     data:
-      dbhost: "geoss-${DEPLOY_ENV}-mariadb"
+      dbhost: "geoss-${DEPLOY_ENV}-db"
       dbport: "3306"
       dbadapter: "mysql"
       dbuser: "$DATABASE_USERNAME_MATOMO"
@@ -182,7 +182,7 @@ networkPolicy:
         - to:
               - podSelector:
                     matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-mariadb
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-db
           ports:
               - protocol: TCP
                 port: 3306

@@ -1,0 +1,136 @@
+replicaCount: $DB_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-db
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_db
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 999
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 999
+  runAsGroup: 999
+
+service:
+  type: ClusterIP
+  port: 3306
+  targetPort: 3306
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $DB_MEMORY_LIMIT
+  requests:
+    cpu: $DB_CPU_REQUEST
+    memory: $DB_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+  - name: $RESOURCE_NAME_PREFIX-db-data
+    capacity: 10Gi
+    accessMode: ReadWriteOnce
+    volumeHandle: $DB_VOLUME_RESOURCE_ID
+
+volumes:
+  - name: $RESOURCE_NAME_PREFIX-db-data-volume
+    persistentVolumeClaim:
+      claimName: $RESOURCE_NAME_PREFIX-db-data-pvc
+
+volumeMounts:
+  - name: $RESOURCE_NAME_PREFIX-db-data-volume
+    mountPath: "/var/lib/mysql"
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: MARIADB_ROOT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbrootpass
+  - name: MARIADB_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbuser
+  - name: MARIADB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbpass
+  - name: MARIADB_DATABASE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbname
+  - name: MATOMO_DATABASE_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbmatomouser
+  - name: MATOMO_DATABASE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbmatomopass
+  - name: MATOMO_DATABASE_DBNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-db-env
+        key: dbmatomodbname
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-db-env
+    type: Opaque
+    data:
+      dbrootpass: "$MARIADB_ROOT_PASSWORD"
+      dbuser: "$DATABASE_USERNAME_APP"
+      dbpass: "$DATABASE_PASSWORD_APP"
+      dbname: "geoss-db"
+      dbmatomouser: "$DATABASE_USERNAME_MATOMO"
+      dbmatomopass: "$DATABASE_PASSWORD_MATOMO"
+      dbmatomodbname: "$MATOMO_DATABASE_NAME"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 3306

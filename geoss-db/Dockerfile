@@ -47,4 +47,6 @@ RUN chmod +x /docker-entrypoint-initdb.d/5_create_matomo_db.sh
 COPY enableMatomoAnonymization.sh /opt/enableMatomoAnonymization.sh
 RUN chmod +x /opt/enableMatomoAnonymization.sh
 
+USER mysql
+
 EXPOSE 3306
