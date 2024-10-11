@@ -39,7 +39,7 @@ jobs:
             command: ['sh', '-c', 'echo "jobs completed"']
 env:
     -   name: ELASTICSEARCH_HOST_ADDRESS
-        value: "https://$RESOURCE_NAME_PREFIX-cms-eck-elasticsearch-es-http:9200"
+        value: "http://geoss-${DEPLOY_ENV}-elasticsearch:9200"
     -   name: ELASTICSEARCH_USER
         value: "elastic"
     -   name: ELASTICSEARCH_PASSWORD
