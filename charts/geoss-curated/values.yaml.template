@@ -226,3 +226,10 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 8080
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-sdg-worker
+          ports:
+              - protocol: TCP
+                port: 8080
