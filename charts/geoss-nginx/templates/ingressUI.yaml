@@ -1,5 +1,5 @@
 {{- if .Values.ingressUI.enabled -}}
-{{- $fullName := include "cms-nginx.fullname" . -}}
+{{- $fullName := include "geoss-nginx.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingressUI.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingressUI.annotations "kubernetes.io/ingress.class") }}
@@ -15,9 +15,9 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: "{{ $fullName }}-ui"
   labels:
-    {{- include "cms-nginx.labels" . | nindent 4 }}
+    {{- include "geoss-nginx.labels" . | nindent 4 }}
   {{- with .Values.ingressUI.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

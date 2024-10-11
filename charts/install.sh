@@ -5,6 +5,8 @@ NC='\033[0m' # No Color
 
 source .env
 
+cp *.crt geoss-nginx/.
+cp *.key geoss-nginx/.
 printf "\n\n ${Green}Deploy GEOSS-nginx ...\n\n${NC}"
 envsubst < geoss-nginx/values.yaml.template > geoss-nginx/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
