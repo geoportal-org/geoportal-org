@@ -1,11 +1,11 @@
-FROM debian:10.12 as builder
+FROM debian:12.7 as builder
 
-ENV NGINX_VERSION="1.23.3"
+ENV NGINX_VERSION="1.27.1"
 
 RUN apt-get update
 
 RUN apt-get install -y lua5.3
-RUN apt-get install -y build-essential bison ca-certificates curl dh-autoreconf doxygen flex gawk git iputils-ping libcurl4-gnutls-dev libexpat1-dev libgeoip-dev liblmdb-dev libpcre3-dev libpcre++-dev libssl-dev libtool libxml2 libxml2-dev libyajl-dev locales pkg-config wget zlib1g-dev libgd-dev
+RUN apt-get install -y build-essential bison ca-certificates curl dh-autoreconf doxygen flex gawk git iputils-ping libcurl4-gnutls-dev libexpat1-dev libgeoip-dev liblmdb-dev libpcre3-dev libssl-dev libtool libxml2 libxml2-dev libyajl-dev locales pkg-config wget zlib1g-dev libgd-dev
 RUN rm -rf /var/lib/apt
 
 # Compile modsecurity libraries
@@ -36,7 +36,7 @@ RUN ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx --add-dy
 RUN make modules
 
 
-FROM nginx:1.23.3 as runner
+FROM nginx:1.27.1 as runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -44,13 +44,12 @@ LABEL project="GEOSS"
 LABEL version="1.0"
 LABEL image="geoss-nginx"
 
-ENV no_proxy="127.0.0.1,localhost"
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
-RUN apt-get update && apt-get install -y netcat logrotate
+RUN apt-get update && apt-get install -y netcat-traditional logrotate
 # Install modsecurity-helper libraries
-RUN apt-get install -y libxml2 libxml2-dev libexpat1-dev libpcre3-dev libpcre++-dev libcurl4-gnutls-dev libyajl-dev liblmdb-dev libgeoip-dev dh-autoreconf
+RUN apt-get install -y libxml2 libxml2-dev libexpat1-dev libpcre3-dev libcurl4-gnutls-dev libyajl-dev liblmdb-dev libgeoip-dev dh-autoreconf
 # Cleanup
 RUN rm -rf /var/lib/apt
 
@@ -83,4 +82,19 @@ COPY --from=builder /opt/nginx-$NGINX_VERSION/objs/ngx_http_modsecurity_module.s
 COPY --from=builder /opt/nginx-$NGINX_VERSION/objs/ngx_http_brotli_filter_module.so  /usr/lib/nginx/modules/
 COPY --from=builder /opt/nginx-$NGINX_VERSION/objs/ngx_http_brotli_static_module.so  /usr/lib/nginx/modules/
 
+# Setup noroot user 
+RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
+RUN chown -R docker_noroot:docker_noroot /var/cache/nginx \
+ && chown -R docker_noroot:docker_noroot /var/nginx \
+ && chown -R docker_noroot:docker_noroot /var/log/nginx \
+ && chown -R docker_noroot:docker_noroot /etc/nginx 
+
+RUN mkdir -p /var/run/ && touch /var/run/nginx.pid && \
+    chown -R docker_noroot:docker_noroot /var/run/nginx.pid
+
+#Allow run crond as non-root user
+RUN chmod gu+rw /var/run
+RUN chmod gu+s /usr/sbin/cron
+
+USER docker_noroot
 CMD ["nginx", "-g", "daemon off;"]

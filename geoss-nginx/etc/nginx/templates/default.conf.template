@@ -1,0 +1,14 @@
+# Default server configuration
+# If host is not matched nginx will fallback here
+#
+server {
+    listen 8080 default_server;
+    listen [::]:8080 default_server;
+
+    location /health {
+       return 200 "OK";
+    }
+    location / {
+       return 403;
+    }
+}

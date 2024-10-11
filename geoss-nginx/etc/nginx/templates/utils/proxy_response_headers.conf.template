@@ -20,3 +20,4 @@ add_header X-Request-ID $request_id always;
 set $allowed_origin "";
 
 ###ALLOWED_DOMAINS_CONFIG###
+

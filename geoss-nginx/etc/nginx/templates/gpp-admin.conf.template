@@ -1,10 +1,5 @@
 #proxy_cache_path /var/nginx/cache/static/admin_geoss levels=1:2 keys_zone=ADMIN_GEOSS_STATIC:100m inactive=600h max_size=4g;
 
-#gpp-admin (admin, settings, contents, bookmarks, personaldata, proxy, search)
-upstream admin_upstream {
-  ###ADMIN_UPSTREAM_CONFIG###
-}
-
 ## Initial common setup of variables
 include conf.d/common/map_initial_setup.conf;
 
@@ -12,18 +7,18 @@ include conf.d/common/map_initial_setup.conf;
 include conf.d/utils/proxy_response_headers_map.conf;
 
 server {
-  listen *:80;
+  listen *:8080;
   server_name ${ADMIN_DOMAIN_NAME};
 
   modsecurity on;
   modsecurity_rules_file /etc/nginx/modsecurity.d/modsec.conf;
 
-  ssl_certificate /etc/nginx/certs/server.crt;
-  ssl_certificate_key /etc/nginx/certs/server.key;
-  ssl_session_cache builtin:1000 shared:SSL:10m;
-  ssl_protocols TLSv1.2 TLSv1.3;
-  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-  ssl_prefer_server_ciphers off;
+  #ssl_certificate /etc/nginx/certs/server.crt;
+  #ssl_certificate_key /etc/nginx/certs/server.key;
+  #ssl_session_cache builtin:1000 shared:SSL:10m;
+  #ssl_protocols TLSv1.2 TLSv1.3;
+  #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  #ssl_prefer_server_ciphers off;
 
   error_log /var/log/nginx/gpp-admin.error.log;
   access_log /var/log/nginx/gpp-admin.access.log timed_combined;
@@ -50,7 +45,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-admin:3000;
     proxy_no_cache 1;
 
     #response headers
@@ -67,7 +62,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /settings;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -84,7 +79,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /personaldata;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -101,7 +96,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /contents;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -118,7 +113,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /proxy;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8082;
     proxy_no_cache 1;
 
     #response headers
@@ -135,7 +130,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /curated;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-curated:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -152,7 +147,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /search;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -169,7 +164,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/geodab;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-geodab-worker:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -186,7 +181,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/sdg;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-sdg-worker:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -203,7 +198,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/wikipedia;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker:8080;
     proxy_no_cache 1;
 
     #response headers
@@ -220,7 +215,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/thesaurus;
 
-    proxy_pass    http://admin_upstream;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-thesaurus-worker:8080;
     proxy_no_cache 1;
 
     #response headers

@@ -1,0 +1,224 @@
+replicaCount: $NGINX_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-nginx
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_nginx
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+   capabilities:
+     drop:
+     - ALL
+     add:
+     - SETGID
+     - SETUID
+     - DAC_OVERRIDE
+   readOnlyRootFilesystem: false
+   runAsNonRoot: true
+   runAsUser: 1500
+   runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+ingresses:
+  - enabled: true
+    name: $RESOURCE_NAME_PREFIX-ui
+    className: "azure-application-gateway"
+    annotations:
+        appgw.ingress.kubernetes.io/hostname: $UI_DOMAIN_NAME
+        appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+        appgw.ingress.kubernetes.io/ssl-redirect: "true"
+        appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+        appgw.ingress.kubernetes.io/waf-policy-for-path: "$UI_WAF_POLICY"
+        appgw.ingress.kubernetes.io/request-timeout: "300"
+    hosts:
+      - host: $UI_DOMAIN_NAME
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-ui"
+        hosts:
+          - $UI_DOMAIN_NAME
+  - enabled: true
+    name: $RESOURCE_NAME_PREFIX-admin
+    className: "azure-application-gateway"
+    annotations:
+        appgw.ingress.kubernetes.io/hostname: $ADMIN_DOMAIN_NAME
+        appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+        appgw.ingress.kubernetes.io/ssl-redirect: "true"
+        appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+        appgw.ingress.kubernetes.io/waf-policy-for-path: "$ADMIN_WAF_POLICY"
+        appgw.ingress.kubernetes.io/request-timeout: "300"
+    hosts:
+      - host: $ADMIN_DOMAIN_NAME
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-admin"
+        hosts:
+          - $ADMIN_DOMAIN_NAME
+  - enabled: true
+    name: $RESOURCE_NAME_PREFIX-idp
+    className: "azure-application-gateway"
+    annotations:
+        appgw.ingress.kubernetes.io/hostname: $IDP_DOMAIN_NAME
+        appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+        appgw.ingress.kubernetes.io/ssl-redirect: "true"
+        appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+        appgw.ingress.kubernetes.io/waf-policy-for-path: "$IDP_WAF_POLICY"
+        appgw.ingress.kubernetes.io/request-timeout: "300"
+    hosts:
+      - host: $IDP_DOMAIN_NAME
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-idp"
+        hosts:
+          - $IDP_DOMAIN_NAME
+  - enabled: true
+    name: $RESOURCE_NAME_PREFIX-lp
+    className: "azure-application-gateway"
+    annotations:
+        appgw.ingress.kubernetes.io/hostname: $LANDING_PAGE_DOMAIN_NAME
+        appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+        appgw.ingress.kubernetes.io/ssl-redirect: "true"
+        appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+        appgw.ingress.kubernetes.io/waf-policy-for-path: "$LANDING_PAGE_WAF_POLICY"
+        appgw.ingress.kubernetes.io/request-timeout: "300"
+    hosts:
+      - host: $LANDING_PAGE_DOMAIN_NAME
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-lp"
+        hosts:
+          - $LANDING_PAGE_DOMAIN_NAME
+
+resources:
+  limits:
+    memory: $NGINX_MEMORY_LIMIT
+  requests:
+    cpu: $NGINX_CPU_REQUEST
+    memory: $NGINX_MEMORY_REQUEST
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: ADMIN_DOMAIN_NAME
+    value: "$ADMIN_DOMAIN_NAME"
+  - name: BASIC_AUTH_ENABLED
+    value: "$BASIC_AUTH_ENABLED"
+  - name: CSP_DOMAINS
+    value: "${ADMIN_DOMAIN_NAME},${KEYCLOAK_DOMAIN_NAME},${LANDING_PAGE_DOMAIN_NAME},${UI_DOMAIN_NAME}"
+  - name: DEPLOY_ENV
+    value: $DEPLOY_ENV
+  - name: KEYCLOAK_DOMAIN_NAME
+    value: "$IDP_DOMAIN_NAME"
+  - name: LANDING_PAGE_DOMAIN_NAME
+    value: "$LANDING_PAGE_DOMAIN_NAME"
+  - name: MAINTENANCE_ON
+    value: "$MAINTENANCE_ON"
+  - name: MAINTENANCE_WHITELIST
+    value: "$MAINTENANCE_WHITELIST"
+  - name: UI_DOMAIN_NAME
+    value: "$UI_DOMAIN_NAME"
+  - name: UI_SERVICES_PROVIDERS
+    value: "$SERVICES_PROVIDERS"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    # Allow external HTTP/HTTPS connections
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 8080   
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - ipBlock:
+                    cidr: "$INGRESS_ALLOWED_CIDR"
+          ports:
+              - protocol: TCP
+                port: 8080
+
+certificates:
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-ui"
+    certFile: "ui.crt"
+    certKey:  "ui.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-admin"
+    certFile: "admin.crt"
+    certKey:  "admin.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-idp"
+    certFile: "idp.crt"
+    certKey:  "idp.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-lp"
+    certFile: "lp.crt"
+    certKey:  "lp.key"

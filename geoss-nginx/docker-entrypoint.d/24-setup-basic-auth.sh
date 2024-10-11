@@ -16,7 +16,7 @@
 #    rm /etc/nginx/conf.d/gpp-admin.conf.old
 # fi
 
-if [ "${DEPLOY_ENV}" = "prod" ]; then
+if [ "${BASIC_AUTH_ENABLED}" = "true" ]; then
   include_conf='include conf.d/common/block_unauthorized_users_ext.conf;'
 
   mv /etc/nginx/conf.d/gpp.conf /etc/nginx/conf.d/gpp.conf.old
@@ -35,4 +35,3 @@ if [ "${DEPLOY_ENV}" = "prod" ]; then
   awk -v r="${include_conf}" '{gsub(/###BASIC_AUTH###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
   rm /etc/nginx/conf.d/gpp-lp.conf.old
 fi
-
