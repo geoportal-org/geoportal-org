@@ -48,7 +48,7 @@ variables:
     - ls -l .gradle
   cache: { }
   only:
-    - develop
+    - develop-azure
     - uat
     - /^release-.*/
     - /^GPP-.*/
@@ -60,7 +60,7 @@ stages: # List of stages for jobs, and their order of execution
   - code_analysis
   - build
   - build_docker_images
-  - docker_stack_deploy
+  - deploy
 
 ###########################
 #          STEPS          #
@@ -393,7 +393,7 @@ build_images:
     - build_geoss-settings
     - build_geoss-worker
   only:
-    - develop
+    - develop-azure
     - uat
     - /^release-.*/
     - /^GPP-.*/
@@ -401,121 +401,9 @@ build_images:
 ########################################################################################################################
 #                                                      DEV DEPLOY                                                      #
 ########################################################################################################################
-dev_deploy_to_dmz:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $DEV_DMZ_DOCKER_MANAGER_SERVER
-    VAR_SSH_PORT: 22
-    VAR_DOCKER_COMPOSE_FILE: docker-compose-dev-dmz.yml
-    VAR_LANDINGPAGE_UPSTREAM_HOST: ${DEV_LAN_DOCKER_MANAGER_SERVER},${DEV_LAN_DOCKER_MANAGER_BACKUP_SERVER}
-    VAR_LANDING_PAGE_DOMAIN_NAME: $DEV_LAN_LANDING_PAGE_DOMAIN_NAME
-    VAR_NGINX_UPSTREAM_HOST: ${DEV_LAN_DOCKER_MANAGER_SERVER},${DEV_LAN_DOCKER_MANAGER_BACKUP_SERVER}
-    VAR_NGINX_CMS_UPSTREAM_PORT: 8087
-    VAR_NGINX_MAINTENANCE_WHITELIST: $NGINX_MAINTENANCE_WHITELIST
-    # VAR_AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-    # VAR_AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-    # VAR_AWS_DEFAULT_REGION: $DEV_AWS_DEFAULT_REGION
-    VAR_SQUID_PROXY_PASSWORD: $SQUID_PROXY_PASSWORD
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - chmod +x setup_tag.sh
-  script:
-    - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "Deploying dev environment $DOCKER_IMAGE_TAG";
-    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "export DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG && export LANDINGPAGE_UPSTREAM_HOST=$VAR_LANDINGPAGE_UPSTREAM_HOST && export LANDING_PAGE_DOMAIN_NAME=$VAR_LANDING_PAGE_DOMAIN_NAME && export NGINX_MAINTENANCE_WHITELIST=$VAR_NGINX_MAINTENANCE_WHITELIST && export NGINX_CMS_UPSTREAM_PORT=$VAR_NGINX_CMS_UPSTREAM_PORT && export NGINX_UPSTREAM_HOST=$VAR_NGINX_UPSTREAM_HOST && export SMTP_MAIL_DOMAIN=$VAR_SMTP_MAIL_DOMAIN && export SMTP_USER=$VAR_SMTP_USER && export SMTP_PASS=$VAR_SMTP_PASS && export POSTFIX_PERMIT_NETWORKS=$VAR_POSTFIX_PERMIT_NETWORKS && export SQUID_PROXY_PASSWORD=$VAR_SQUID_PROXY_PASSWORD && cd /tmp && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE geoss"
-    - echo "Cleanup";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
-    - echo "Cleanup - COMPLETED";
-  when: manual
-  only:
-    - develop
-    - /^release-.*/
 
-dev_deploy_to_lan:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_DMZ_DOCKER_MANAGER_SERVER: ${DEV_DMZ_DOCKER_MANAGER_SERVER}
-    VAR_SSH_PORT: 22
-    VAR_DOCKER_COMPOSE_FILE: docker-compose-dev-lan.yml
-    #squid
-    VAR_SQUID_PROXY_USER: $SQUID_PROXY_USER
-    VAR_SQUID_PROXY_PASSWORD: $SQUID_PROXY_PASSWORD
-    VAR_SQUID_PROXY_URL: http://${SQUID_PROXY_USER}:${SQUID_PROXY_PASSWORD}@${DEV_DMZ_DOCKER_MANAGER_SERVER}:${SQUID_PROXY_PORT}
-    #database
-    VAR_DB_ROOT_PASS: $DEV_DB_ROOT_PASS
-    VAR_DB_USER_PASS: $DEV_DB_USER_PASS
-    VAR_MATOMO_DB_USER_PASS: $DEV_MATOMO_DB_USER_PASS
-    #elasticsearch
-    VAR_ENV_ELASTIC_PASSWORD: $DEV_ENV_ELASTIC_PASSWORD
-    VAR_ENV_KIBANA_PASSWORD: $DEV_ENV_KIBANA_PASSWORD
-    VAR_ENV_GEOSS_PASSWORD: $DEV_ENV_GEOSS_PASSWORD
-    #keycloak
-    VAR_KC_ADMIN_PASSWORD: $DEV_KC_ADMIN_PASSWORD
-    #matomo
-    VAR_MATOMO_ADMIN_PASSWORD: $DEV_MATOMO_ADMIN_PASSWORD
-    #geoss admin
-    VAR_GEOSS_ADMIN_NEXTAUTH_SECRET: $DEV_GEOSS_ADMIN_NEXTAUTH_SECRET
-    #geoss ui
-    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
-    #geoss worker geodab
-    VAR_VLAB_API_TOKEN: $DEV_VLAB_API_TOKEN
-    #maildev
-    VAR_MAILDEV_SMTP_PASSWORD: $DEV_MAILDEV_SMTP_PASSWORD
-    VAR_MAILDEV_WEB_PASSWORD: $DEV_MAILDEV_WEB_PASSWORD
-    ##KEYCLOAK CLIENT SECRETS
-    VAR_GEOSS_ADMIN_OA2_KCSECRET: $DEV_GEOSS_ADMIN_OA2_KCSECRET
-    VAR_GEOSS_SETTINGS_OA2_KCSECRET: $DEV_GEOSS_SETTINGS_OA2_KCSECRET
-    VAR_GEOSS_PERSONALDATA_OA2_KCSECRET: $DEV_GEOSS_PERSONALDATA_OA2_KCSECRET
-    VAR_GEOSS_CONTENTS_OA2_KCSECRET: $DEV_GEOSS_CONTENTS_OA2_KCSECRET
-    VAR_GEOSS_PROXY_OA2_KCSECRET: $DEV_GEOSS_PROXY_OA2_KCSECRET
-    VAR_GEOSS_CURATED_OA2_KCSECRET: $DEV_GEOSS_CURATED_OA2_KCSECRET
-    VAR_GEOSS_SEARCH_OA2_KCSECRET: $DEV_GEOSS_SEARCH_OA2_KCSECRET
-    VAR_KIBANA_OA2_KCSECRET: $DEV_KIBANA_OA2_KCSECRET
-    VAR_MATOMO_OA2_KCSECRET: $DEV_MATOMO_OA2_KCSECRET
-    VAR_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET: $DEV_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET: $DEV_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET: $DEV_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET: $DEV_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET
-    ##END OF KEYCLOAK CLIENT SECRETS
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - chmod +x setup_tag.sh
-  script:
-    - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "Deploying dev environment $DOCKER_IMAGE_TAG";
-    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && export DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG && export DMZ_RELAYHOST=$VAR_DMZ_RELAYHOST && export DMZ_DOCKER_MANAGER_SERVER=$VAR_DMZ_DOCKER_MANAGER_SERVER && export SQUID_PROXY_USER=$VAR_SQUID_PROXY_USER && export SQUID_PROXY_PASSWORD=$VAR_SQUID_PROXY_PASSWORD && export SQUID_PROXY_URL=$VAR_SQUID_PROXY_URL && export DB_ROOT_PASS=$VAR_DB_ROOT_PASS && export DB_USER_PASS=$VAR_DB_USER_PASS && export MATOMO_DB_USER_PASS=$VAR_MATOMO_DB_USER_PASS && export ENV_ELASTIC_PASSWORD=$VAR_ENV_ELASTIC_PASSWORD && export ENV_KIBANA_PASSWORD=$VAR_ENV_KIBANA_PASSWORD && export ENV_GEOSS_PASSWORD=$VAR_ENV_GEOSS_PASSWORD && export KC_ADMIN_PASSWORD=$VAR_KC_ADMIN_PASSWORD && export MATOMO_ADMIN_PASSWORD=$VAR_MATOMO_ADMIN_PASSWORD && export GEOSS_ADMIN_NEXTAUTH_SECRET=$VAR_GEOSS_ADMIN_NEXTAUTH_SECRET && export GEOSS_MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN && export VLAB_API_TOKEN=$VAR_VLAB_API_TOKEN && export MAILDEV_SMTP_PASSWORD=$VAR_MAILDEV_SMTP_PASSWORD && export MAILDEV_WEB_PASSWORD=$VAR_MAILDEV_WEB_PASSWORD && export GEOSS_ADMIN_OA2_KCSECRET=$VAR_GEOSS_ADMIN_OA2_KCSECRET && export GEOSS_SETTINGS_OA2_KCSECRET=$VAR_GEOSS_SETTINGS_OA2_KCSECRET && export GEOSS_PERSONALDATA_OA2_KCSECRET=$VAR_GEOSS_PERSONALDATA_OA2_KCSECRET && export GEOSS_CONTENTS_OA2_KCSECRET=$VAR_GEOSS_CONTENTS_OA2_KCSECRET && export GEOSS_PROXY_OA2_KCSECRET=$VAR_GEOSS_PROXY_OA2_KCSECRET && export GEOSS_CURATED_OA2_KCSECRET=$VAR_GEOSS_CURATED_OA2_KCSECRET && export GEOSS_SEARCH_OA2_KCSECRET=$VAR_GEOSS_SEARCH_OA2_KCSECRET && export KIBANA_OA2_KCSECRET=$VAR_KIBANA_OA2_KCSECRET && export MATOMO_OA2_KCSECRET=$VAR_MATOMO_OA2_KCSECRET && export GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET && export GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET && export GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET && export GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET && cd /tmp && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE geoss"
-    - echo "Cleanup";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
-    - echo "Cleanup - COMPLETED";
-  when: manual
-  only:
-    - develop
-    - /^release-.*/
+
+
 
 ########################################################################################################################
 #                                                DEV RELOAD MATOMO TOKEN                                               #
@@ -523,201 +411,127 @@ dev_deploy_to_lan:
 #                         Load matomo token from GITLAB-CI and update geoss-ui service                                 #
 #                         BE AWARE that it will cause downtime on geoss-ui application                                 #
 ########################################################################################################################
-dev_reload_matomo_token:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_SSH_PORT: 22
-    #geoss ui
-    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - echo "Reloading matomo token value of geoss-ui service...";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN geoss_geoss-ui"
-    - echo "Matomo token has been reloaded."
-  when: manual
-  only:
-    - develop
-    - /^release-.*/
+#dev_reload_matomo_token:
+#  stage: docker_stack_deploy
+#  image: debian:11.4
+#  tags:
+#    - geoss-runner-1
+#  cache: { }
+#  variables:
+#    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_MANAGER_SERVER: $DEV_LAN_DOCKER_MANAGER_SERVER
+#    VAR_SSH_PORT: 22
+#    #geoss ui
+#    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - mkdir -p ~/.ssh
+#    - chmod 700 ~/.ssh
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#  script:
+#    - echo "Reloading matomo token value of geoss-ui service...";
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN geoss_geoss-ui"
+#    - echo "Matomo token has been reloaded."
+#  when: manual
+#  only:
+#    - develop
+#    - /^release-.*/
 
 ########################################################################################################################
 #                                                      DEV REMOVAL                                                     #
 ########################################################################################################################
 #                                Remove docker stack and all the data on persistent volumes                            #
 ########################################################################################################################
-dev_remove_all:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION_DMZ: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
-    VAR_MANAGER_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_DATABASE_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_DATABASE_SERVER_LAN
-    VAR_ELASTIC_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_ELASTIC_SERVER_LAN
-    VAR_DOCKER_MANAGER_SERVER_DMZ: $DEV_DMZ_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER_LAN: $DEV_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_DATABASE_SERVER_LAN: $DEV_DOCKER_DATABASE_SERVER_LAN
-    VAR_DOCKER_ELASTIC_SERVER_LAN: $DEV_DOCKER_ELASTIC_SERVER_LAN
-    VAR_SSH_PORT: 22
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - echo "Removing dev environment";
-    - echo "Removing dmz services and data"
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm geoss && docker system prune -f"
-    - echo "Removing lan services and nfs data"
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm geoss && sudo rm -rf /nfs/data/* && docker system prune -f"
-    - echo "Removing lan db persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/ && sudo mkdir /var/lib/mysql && sudo chown systemd-coredump:input /var/lib/mysql && sudo chmod 777 /var/lib/mysql"
-    - echo "Removing lan elastic persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
-    - echo "Removing dev environment - COMPLETED"
-  when: manual
-  only:
-    - develop
-    - /^release-.*/
+#dev_remove_all:
+#  stage: docker_stack_deploy
+#  image: debian:11.4
+#  tags:
+#    - geoss-runner-1
+#  cache: { }
+#  variables:
+#    VAR_MANAGER_SSH_CONNECTION_DMZ: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
+#    VAR_MANAGER_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DATABASE_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_DATABASE_SERVER_LAN
+#    VAR_ELASTIC_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_ELASTIC_SERVER_LAN
+#    VAR_DOCKER_MANAGER_SERVER_DMZ: $DEV_DMZ_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_MANAGER_SERVER_LAN: $DEV_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_DATABASE_SERVER_LAN: $DEV_DOCKER_DATABASE_SERVER_LAN
+#    VAR_DOCKER_ELASTIC_SERVER_LAN: $DEV_DOCKER_ELASTIC_SERVER_LAN
+#    VAR_SSH_PORT: 22
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - mkdir -p ~/.ssh
+#    - chmod 700 ~/.ssh
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#  script:
+#    - echo "Removing dev environment";
+#    - echo "Removing dmz services and data"
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm geoss && docker system prune -f"
+#    - echo "Removing lan services and nfs data"
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm geoss && sudo rm -rf /nfs/data/* && docker system prune -f"
+#    - echo "Removing lan db persistent data"
+#    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/ && sudo mkdir /var/lib/mysql && sudo chown systemd-coredump:input /var/lib/mysql && sudo chmod 777 /var/lib/mysql"
+#    - echo "Removing lan elastic persistent data"
+#    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
+#    - echo "Removing dev environment - COMPLETED"
+#  when: manual
+#  only:
+#    - develop
+#    - /^release-.*/
 
 ########################################################################################################################
 #                                                      UAT DEPLOY                                                      #
 ########################################################################################################################
-uat_deploy_to_dmz:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_DMZ_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $UAT_DMZ_DOCKER_MANAGER_SERVER
-    VAR_SSH_PORT: 22
-    VAR_DOCKER_COMPOSE_FILE: docker-compose-uat-dmz.yml
-    VAR_LANDINGPAGE_UPSTREAM_HOST: ${UAT_LAN_DOCKER_MANAGER_SERVER},${UAT_LAN_DOCKER_MANAGER_BACKUP_SERVER}
-    VAR_LANDING_PAGE_DOMAIN_NAME: $UAT_LAN_LANDING_PAGE_DOMAIN_NAME
-    VAR_NGINX_UPSTREAM_HOST: ${UAT_LAN_DOCKER_MANAGER_SERVER},${UAT_LAN_DOCKER_MANAGER_BACKUP_SERVER}
-    VAR_NGINX_CMS_UPSTREAM_PORT: 8087
-    VAR_NGINX_MAINTENANCE_WHITELIST: $NGINX_MAINTENANCE_WHITELIST
-    # VAR_AWS_ACCESS_KEY_ID: $UAT_AWS_ACCESS_KEY_ID
-    # VAR_AWS_SECRET_ACCESS_KEY: $UAT_AWS_SECRET_ACCESS_KEY
-    # VAR_AWS_DEFAULT_REGION: $UAT_AWS_DEFAULT_REGION
-    VAR_SQUID_PROXY_PASSWORD: $SQUID_PROXY_PASSWORD
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - chmod +x setup_tag.sh
-  script:
-    - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "Deploying uat environment $DOCKER_IMAGE_TAG";
-    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "export DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG && export LANDINGPAGE_UPSTREAM_HOST=$VAR_LANDINGPAGE_UPSTREAM_HOST && export LANDING_PAGE_DOMAIN_NAME=$VAR_LANDING_PAGE_DOMAIN_NAME && export NGINX_MAINTENANCE_WHITELIST=$VAR_NGINX_MAINTENANCE_WHITELIST && export NGINX_CMS_UPSTREAM_PORT=$VAR_NGINX_CMS_UPSTREAM_PORT && export NGINX_UPSTREAM_HOST=$VAR_NGINX_UPSTREAM_HOST && export SMTP_MAIL_DOMAIN=$VAR_SMTP_MAIL_DOMAIN && export SMTP_USER=$VAR_SMTP_USER && export SMTP_PASS=$VAR_SMTP_PASS && export POSTFIX_PERMIT_NETWORKS=$VAR_POSTFIX_PERMIT_NETWORKS && export SQUID_PROXY_PASSWORD=$VAR_SQUID_PROXY_PASSWORD && cd /tmp && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE uat"
-    - echo "Cleanup";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
-    - echo "Cleanup - COMPLETED";
-  when: manual
-  only:
-    - uat
-    - /^release-.*/
 
-uat_deploy_to_lan:
-  stage: docker_stack_deploy
-  image: debian:11.4
+uat_deploy:
+  stage: uat_deploy
+  image: debian:12
   tags:
-    - geoss-runner-1
+    - azure-jumphost-devuat
   cache: { }
   variables:
-    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_DMZ_DOCKER_MANAGER_SERVER: ${UAT_DMZ_DOCKER_MANAGER_SERVER}
-    VAR_SSH_PORT: 22
-    VAR_DOCKER_COMPOSE_FILE: docker-compose-uat-lan.yml
-    #squid
-    VAR_SQUID_PROXY_USER: $SQUID_PROXY_USER
-    VAR_SQUID_PROXY_PASSWORD: $SQUID_PROXY_PASSWORD
-    VAR_SQUID_PROXY_URL: http://${SQUID_PROXY_USER}:${SQUID_PROXY_PASSWORD}@${UAT_DMZ_DOCKER_MANAGER_SERVER}:${SQUID_PROXY_PORT}
-    #database
-    VAR_DB_ROOT_PASS: $UAT_DB_ROOT_PASS
-    VAR_DB_USER_PASS: $UAT_DB_USER_PASS
-    VAR_MATOMO_DB_USER_PASS: $UAT_MATOMO_DB_USER_PASS
-    #elasticsearch
-    VAR_ENV_ELASTIC_PASSWORD: $UAT_ENV_ELASTIC_PASSWORD
-    VAR_ENV_KIBANA_PASSWORD: $UAT_ENV_KIBANA_PASSWORD
-    VAR_ENV_GEOSS_PASSWORD: $UAT_ENV_GEOSS_PASSWORD
-    #keycloak
-    VAR_KC_ADMIN_PASSWORD: $UAT_KC_ADMIN_PASSWORD
-    #matomo
-    VAR_MATOMO_ADMIN_PASSWORD: $UAT_MATOMO_ADMIN_PASSWORD
-    #geoss admin
-    VAR_GEOSS_ADMIN_NEXTAUTH_SECRET: $UAT_GEOSS_ADMIN_NEXTAUTH_SECRET
-    #geoss ui
-    #geoss ui
-    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
-    #geoss worker geodab
-    VAR_VLAB_API_TOKEN: $UAT_VLAB_API_TOKEN
-    #maildev
-    VAR_MAILDEV_SMTP_PASSWORD: $UAT_MAILDEV_SMTP_PASSWORD
-    VAR_MAILDEV_WEB_PASSWORD: $UAT_MAILDEV_WEB_PASSWORD
-    ##KEYCLOAK CLIENT SECRETS
-    VAR_GEOSS_ADMIN_OA2_KCSECRET: $UAT_GEOSS_ADMIN_OA2_KCSECRET
-    VAR_GEOSS_SETTINGS_OA2_KCSECRET: $UAT_GEOSS_SETTINGS_OA2_KCSECRET
-    VAR_GEOSS_PERSONALDATA_OA2_KCSECRET: $UAT_GEOSS_PERSONALDATA_OA2_KCSECRET
-    VAR_GEOSS_CONTENTS_OA2_KCSECRET: $UAT_GEOSS_CONTENTS_OA2_KCSECRET
-    VAR_GEOSS_PROXY_OA2_KCSECRET: $UAT_GEOSS_PROXY_OA2_KCSECRET
-    VAR_GEOSS_CURATED_OA2_KCSECRET: $UAT_GEOSS_CURATED_OA2_KCSECRET
-    VAR_GEOSS_SEARCH_OA2_KCSECRET: $UAT_GEOSS_SEARCH_OA2_KCSECRET
-    VAR_KIBANA_OA2_KCSECRET: $UAT_KIBANA_OA2_KCSECRET
-    VAR_MATOMO_OA2_KCSECRET: $UAT_MATOMO_OA2_KCSECRET
-    VAR_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET: $UAT_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET: $UAT_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET: $UAT_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET
-    VAR_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET: $UAT_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET
-    ##END OF KEYCLOAK CLIENT SECRETS
+    AZURE_APPLICATION_GATEWAY_IP: $AZURE_PROD_APPLICATION_GATEWAY_IP
+    AZURE_DB_SUBNET: $AZURE_PROD_DB_SUBNET
+    AZURE_DMZ_NETWORK: $AZURE_PROD_DMZ_NETWORK
+    BASIC_AUTH_ENABLED: $AZURE_PROD_BASIC_AUTH_ENABLED
+    DEPLOY_ENV: "prod"
+    DOCKER_IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+    K8S_NAMESPACE: $AZURE_PROD_K8S_NAMESPACE
+    NGINX_CPU_REQUEST: $AZURE_PROD_NGINX_CPU_REQUEST
+    NGINX_INSTANCES: 1
+    NGINX_MEMORY_LIMIT: $AZURE_PROD_NGINX_MEMORY_LIMIT
+    NGINX_MEMORY_REQUEST: $AZURE_PROD_NGINX_MEMORY_REQUEST
+    RESOURCE_NAME_PREFIX: "matomo-prod"
+  dependencies: []
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - chmod +x setup_tag.sh
+    - apt update && apt install -y curl git gettext-base
+    # Install kubectl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    # Install Helm
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    - chmod +x ./charts/install.sh
+    - echo "${AZURE_PROD_CLUSTER_CERTIFICATE}" | base64 -d > "${AZURE_PROD_CLUSTER_NAME}.crt"
+    - kubectl config set-cluster "${AZURE_PROD_CLUSTER_NAME}" --server="${AZURE_PROD_CLUSTER_URL}" --certificate-authority="${AZURE_PROD_CLUSTER_NAME}.crt" --embed-certs
+    - rm "${AZURE_PROD_CLUSTER_NAME}.crt"
+    - kubectl config set-context "${AZURE_PROD_CLUSTER_USERNAME}" --cluster="${AZURE_PROD_CLUSTER_NAME}" --user="${AZURE_PROD_CLUSTER_USERNAME}"
+    - kubectl config set-credentials "${AZURE_PROD_CLUSTER_USERNAME}" --token="${AZURE_PROD_CLUSTER_TOKEN}"
+    - kubectl config use-context "${AZURE_PROD_CLUSTER_USERNAME}"
   script:
-    - echo "Docker image tag setup" && source setup_tag.sh
-    - echo "Deploying uat environment $DOCKER_IMAGE_TAG";
-    - scp -P $VAR_SSH_PORT ./$VAR_DOCKER_COMPOSE_FILE $VAR_MANAGER_SSH_CONNECTION:/tmp/$VAR_DOCKER_COMPOSE_FILE
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && export DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG && export DMZ_RELAYHOST=$VAR_DMZ_RELAYHOST && export DMZ_DOCKER_MANAGER_SERVER=$VAR_DMZ_DOCKER_MANAGER_SERVER && export SQUID_PROXY_USER=$VAR_SQUID_PROXY_USER && export SQUID_PROXY_PASSWORD=$VAR_SQUID_PROXY_PASSWORD && export SQUID_PROXY_URL=$VAR_SQUID_PROXY_URL && export DB_ROOT_PASS=$VAR_DB_ROOT_PASS && export DB_USER_PASS=$VAR_DB_USER_PASS && export MATOMO_DB_USER_PASS=$VAR_MATOMO_DB_USER_PASS && export ENV_ELASTIC_PASSWORD=$VAR_ENV_ELASTIC_PASSWORD && export ENV_KIBANA_PASSWORD=$VAR_ENV_KIBANA_PASSWORD && export ENV_GEOSS_PASSWORD=$VAR_ENV_GEOSS_PASSWORD && export KC_ADMIN_PASSWORD=$VAR_KC_ADMIN_PASSWORD && export MATOMO_ADMIN_PASSWORD=$VAR_MATOMO_ADMIN_PASSWORD && export GEOSS_ADMIN_NEXTAUTH_SECRET=$VAR_GEOSS_ADMIN_NEXTAUTH_SECRET && export GEOSS_MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN && export VLAB_API_TOKEN=$VAR_VLAB_API_TOKEN && export MAILDEV_SMTP_PASSWORD=$VAR_MAILDEV_SMTP_PASSWORD && export MAILDEV_WEB_PASSWORD=$VAR_MAILDEV_WEB_PASSWORD && export GEOSS_ADMIN_OA2_KCSECRET=$VAR_GEOSS_ADMIN_OA2_KCSECRET && export GEOSS_SETTINGS_OA2_KCSECRET=$VAR_GEOSS_SETTINGS_OA2_KCSECRET && export GEOSS_PERSONALDATA_OA2_KCSECRET=$VAR_GEOSS_PERSONALDATA_OA2_KCSECRET && export GEOSS_CONTENTS_OA2_KCSECRET=$VAR_GEOSS_CONTENTS_OA2_KCSECRET && export GEOSS_PROXY_OA2_KCSECRET=$VAR_GEOSS_PROXY_OA2_KCSECRET && export GEOSS_CURATED_OA2_KCSECRET=$VAR_GEOSS_CURATED_OA2_KCSECRET && export GEOSS_SEARCH_OA2_KCSECRET=$VAR_GEOSS_SEARCH_OA2_KCSECRET && export KIBANA_OA2_KCSECRET=$VAR_KIBANA_OA2_KCSECRET && export MATOMO_OA2_KCSECRET=$VAR_MATOMO_OA2_KCSECRET && export GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_GEODAB_WORKER_OA2_KCSECRET && export GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_SDG_WORKER_OA2_KCSECRET && export GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_WIKIPEDIA_WORKER_OA2_KCSECRET && export GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET=$VAR_GEOSS_WORKER_THESAURUS_WORKER_OA2_KCSECRET && cd /tmp && docker stack deploy -c $VAR_DOCKER_COMPOSE_FILE uat"
-    - echo "Cleanup";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "rm /tmp/$VAR_DOCKER_COMPOSE_FILE"
-    - echo "Cleanup - COMPLETED";
+    - cd charts
+    - ./install.sh
   when: manual
   only:
-    - uat
+    - develop-azure
     - /^release-.*/
 
 ########################################################################################################################
@@ -726,79 +540,79 @@ uat_deploy_to_lan:
 #                         Load matomo token from GITLAB-CI and update geoss-ui service                                 #
 #                         BE AWARE that it will cause downtime on geoss-ui application                                 #
 ########################################################################################################################
-uat_reload_matomo_token:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER: $UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_SSH_PORT: 22
-    #geoss ui
-    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - echo "Reloading matomo token value of geoss-ui service...";
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN uat_geoss-ui"
-    - echo "Matomo token has been reloaded."
-  when: manual
-  only:
-    - uat
-    - /^release-.*/
+#uat_reload_matomo_token:
+#  stage: docker_stack_deploy
+#  image: debian:11.4
+#  tags:
+#    - geoss-runner-1
+#  cache: { }
+#  variables:
+#    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_MANAGER_SERVER: $UAT_LAN_DOCKER_MANAGER_SERVER
+#    VAR_SSH_PORT: 22
+#    #geoss ui
+#    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - mkdir -p ~/.ssh
+#    - chmod 700 ~/.ssh
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#  script:
+#    - echo "Reloading matomo token value of geoss-ui service...";
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN uat_geoss-ui"
+#    - echo "Matomo token has been reloaded."
+#  when: manual
+#  only:
+#    - uat
+#    - /^release-.*/
 
 ########################################################################################################################
 #                                                      UAT REMOVAL                                                     #
 ########################################################################################################################
 #                                Remove docker stack and all the data on persistent volumes                            #
 ########################################################################################################################
-uat_remove_all:
-  stage: docker_stack_deploy
-  image: debian:11.4
-  tags:
-    - geoss-runner-1
-  cache: { }
-  variables:
-    VAR_MANAGER_SSH_CONNECTION_DMZ: $UAT_SERVER_USER@$UAT_DMZ_DOCKER_MANAGER_SERVER
-    VAR_MANAGER_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_DATABASE_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_DATABASE_SERVER_LAN
-    VAR_ELASTIC_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_ELASTIC_SERVER_LAN
-    VAR_DOCKER_MANAGER_SERVER_DMZ: $UAT_DMZ_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_MANAGER_SERVER_LAN: $UAT_LAN_DOCKER_MANAGER_SERVER
-    VAR_DOCKER_DATABASE_SERVER_LAN: $UAT_DOCKER_DATABASE_SERVER_LAN
-    VAR_DOCKER_ELASTIC_SERVER_LAN: $UAT_DOCKER_ELASTIC_SERVER_LAN
-    VAR_SSH_PORT: 22
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-    - eval $(ssh-agent -s)
-    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
-    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - echo "Removing uat environment";
-    - echo "Removing dmz services and data"
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm uat && docker system prune -f"
-    - echo "Removing lan services and nfs data"
-    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm uat && sudo rm -rf /nfs/data/* && docker system prune -f"
-    - echo "Removing lan db persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
-    - echo "Removing lan elastic persistent data"
-    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
-    - echo "Removing uat environment - COMPLETED"
-  when: manual
-  only:
-    - uat
-    - /^release-.*/
+#uat_remove_all:
+#  stage: docker_stack_deploy
+#  image: debian:11.4
+#  tags:
+#    - geoss-runner-1
+#  cache: { }
+#  variables:
+#    VAR_MANAGER_SSH_CONNECTION_DMZ: $UAT_SERVER_USER@$UAT_DMZ_DOCKER_MANAGER_SERVER
+#    VAR_MANAGER_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DATABASE_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_DATABASE_SERVER_LAN
+#    VAR_ELASTIC_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_ELASTIC_SERVER_LAN
+#    VAR_DOCKER_MANAGER_SERVER_DMZ: $UAT_DMZ_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_MANAGER_SERVER_LAN: $UAT_LAN_DOCKER_MANAGER_SERVER
+#    VAR_DOCKER_DATABASE_SERVER_LAN: $UAT_DOCKER_DATABASE_SERVER_LAN
+#    VAR_DOCKER_ELASTIC_SERVER_LAN: $UAT_DOCKER_ELASTIC_SERVER_LAN
+#    VAR_SSH_PORT: 22
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - mkdir -p ~/.ssh
+#    - chmod 700 ~/.ssh
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
+#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#  script:
+#    - echo "Removing uat environment";
+#    - echo "Removing dmz services and data"
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm uat && docker system prune -f"
+#    - echo "Removing lan services and nfs data"
+#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm uat && sudo rm -rf /nfs/data/* && docker system prune -f"
+#    - echo "Removing lan db persistent data"
+#    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
+#    - echo "Removing lan elastic persistent data"
+#    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
+#    - echo "Removing uat environment - COMPLETED"
+#  when: manual
+#  only:
+#    - uat
+#    - /^release-.*/
