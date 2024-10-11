@@ -19,12 +19,16 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 ENV JDK_JAVA_OPTIONS=$JAVA_OPTS
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=temp"
 
+RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
+RUN mkdir -p /opt/app/tomcat/temp
+RUN chown -R docker_noroot:docker_noroot /opt/app
+
 WORKDIR /opt/app
 
 ARG JAR_FILE=./build/libs/wikipedia-worker-*-boot.jar
 COPY ${JAR_FILE} ./application-boot.jar
 
-RUN mkdir -p "temp"
+USER docker_noroot
 
 EXPOSE 8080
 

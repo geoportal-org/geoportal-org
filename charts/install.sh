@@ -71,3 +71,8 @@ printf "\n\n ${Green}Deploy GEOSS-worker-sdg-worker ...\n\n${NC}"
 envsubst < geoss-worker-sdg-worker/values.yaml.template > geoss-worker-sdg-worker/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-worker-sdg-worker geoss-worker-sdg-worker | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
+printf "\n\n ${Green}Deploy GEOSS-worker-wikipedia-worker ...\n\n${NC}"
+envsubst < geoss-worker-wikipedia-worker/values.yaml.template > geoss-worker-wikipedia-worker/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-worker-wikipedia-worker geoss-worker-wikipedia-worker | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
