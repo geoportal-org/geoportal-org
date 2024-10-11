@@ -46,7 +46,7 @@ autoscaling:
   enabled: false
 
 pvc:
-  - name: geoss-${DEPLOY_ENV}-repository-storage
+  - name: geoss-${DEPLOY_ENV}-contents-repository-storage
     server: "$CONTENTS_REPOSITORY_SHARE_SERVER"
     resourceGroup: "$CONTENTS_REPOSITORY_SHARE_RESOURCE_GROUP"
     accessMode: ReadWriteMany
@@ -58,12 +58,12 @@ pvc:
     chmod: "0777"
     capacity: 10Gi
 volumes:
-  - name: geoss-${DEPLOY_ENV}-repository-storage
+  - name: geoss-${DEPLOY_ENV}-contents-repository-storage
     persistentVolumeClaim:
-      claimName: geoss-${DEPLOY_ENV}-repository-storage
+      claimName: geoss-${DEPLOY_ENV}-contents-repository-storage
 
 volumeMounts:
-  - name: geoss-${DEPLOY_ENV}-repository-storage
+  - name: geoss-${DEPLOY_ENV}-contents-repository-storage
     mountPath: "/repository"
 
 nodeSelector:

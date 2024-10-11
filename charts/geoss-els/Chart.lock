@@ -1,0 +1,6 @@
+dependencies:
+- name: eck-elasticsearch
+  repository: https://helm.elastic.co
+  version: 0.9.1
+digest: sha256:b397e36d1b7f359a117e1df1bd46fa38a3b704d7af4634be8767b97a7f86d09a
+generated: "2024-09-26T13:23:27.029903447+02:00"

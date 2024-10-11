@@ -97,7 +97,7 @@ secrets:
   - name: geoss-${DEPLOY_ENV}-proxy-env
     type: Opaque
     data:
-      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-elasticsearch:9200"
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http:9200"
       springElasticsearchUsername: "elastic"
       springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
       springProfilesActive: "keycloak"
@@ -114,11 +114,24 @@ networkPolicy:
                 port: 53
               - protocol: UDP
                 port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: ${INGRESS_EXTERNAL_IP}/32
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443                
         # Allow connect to other containers
         - to:
-              - podSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-els
+            - podSelector:
+                matchLabels:
+                    elasticsearch.k8s.elastic.co/cluster-name: $RESOURCE_NAME_PREFIX-els-eck-elasticsearch
           ports:
               - protocol: TCP
                 port: 9200

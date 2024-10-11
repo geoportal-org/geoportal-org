@@ -114,6 +114,19 @@ networkPolicy:
                 port: 53
               - protocol: UDP
                 port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: ${INGRESS_EXTERNAL_IP}/32
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
         # Allow connect to other containers
         - to:
               - podSelector:

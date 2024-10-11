@@ -54,8 +54,25 @@ autoscaling:
   enabled: false
 
 pvc:
+  - name: geoss-${DEPLOY_ENV}-kibana-storage
+    server: "$KIBANA_FILES_SHARE_SERVER"
+    resourceGroup: "$KIBANA_FILES_SHARE_RESOURCE_GROUP"
+    accessMode: ReadWriteMany
+    storageSecretName: geoss-${DEPLOY_ENV}-kibana-storage-secret
+    shareName: "$KIBANA_FILES_SHARE_NAME"
+    folderName: kibana
+    uid: 1000
+    guid: 1000
+    chmod: "0777"
+    capacity: 10Gi
 volumes:
+  - name: geoss-${DEPLOY_ENV}-kibana-storage
+    persistentVolumeClaim:
+      claimName: geoss-${DEPLOY_ENV}-kibana-storage
+
 volumeMounts:
+  - name: geoss-${DEPLOY_ENV}-kibana-storage
+    mountPath: "/bitnami/kibana"
 
 nodeSelector:
   node-pool: geoss
@@ -74,6 +91,13 @@ env:
   - name: GEOSS_PASSWORD
     value: "${ELS_GEOSS_PASSWORD}"
 
+secrets:
+  - name: geoss-${DEPLOY_ENV}-kibana-storage-secret
+    type: Opaque
+    data:
+      azurestorageaccountname: "$KIBANA_FILES_SHARE_ACCOUNT_NAME"
+      azurestorageaccountkey: "$KIBANA_FILES_SHARE_ACCOUNT_KEY"
+
 networkPolicy:
     egress:
         # Allow connect to DNS
@@ -85,12 +109,12 @@ networkPolicy:
                 port: 53
         # Allow connect to other containers
         - to:
-              - podSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-els
+            - podSelector:
+                matchLabels:
+                    elasticsearch.k8s.elastic.co/cluster-name: $RESOURCE_NAME_PREFIX-els-eck-elasticsearch
           ports:
               - protocol: TCP
-                port: 9200 
+                port: 9200
     ingress:
         # Allow to connect from DMZ
         - from:

@@ -1,0 +1,50 @@
+{{- range .Values.pvc }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: file.csi.azure.com
+  name: {{ .name }}-pv
+spec:
+  capacity:
+    storage: {{ .capacity }} 
+  accessModes:
+    - {{ .accessMode }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: azurefile-csi
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: "{resource-group-name}#{account-name}#{file-share-name}{{ .folderName }}"  # make sure this volumeid is unique for every identical share in the cluster
+    volumeAttributes:
+      resourceGroup: {{ .resourceGroup }}
+      shareName: {{ .shareName }}
+      folderName: {{ .folderName }}
+      protocol: smb
+      server: {{ .server }}
+    nodeStageSecretRef:
+      name: {{ .storageSecretName }}
+      namespace: {{ $.Release.Namespace }}
+  mountOptions:
+    - dir_mode={{ .chmod }}
+    - file_mode={{ .chmod }}
+    - uid={{ .uid }}
+    - gid={{ .guid }}
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl  # disable sending byte range lock requests to the server and for applications which have challenges with posix locks
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: {{ .name }}
+spec:
+    accessModes:
+        - {{ .accessMode }}
+    storageClassName: azurefile-csi
+    volumeName: {{ .name }}-pv
+    resources:
+        requests:
+            storage: {{ .capacity }} 
+{{- end }}

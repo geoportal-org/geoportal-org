@@ -153,9 +153,9 @@ networkPolicy:
                 port: 443
         # Allow connect to other containers
         - to:
-              - podSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-els
+            - podSelector:
+                matchLabels:
+                    elasticsearch.k8s.elastic.co/cluster-name: $RESOURCE_NAME_PREFIX-els-eck-elasticsearch
           ports:
               - protocol: TCP
                 port: 9200

@@ -40,16 +40,6 @@ resources:
     cpu: $MATOMO_CPU_REQUEST
     memory: $MATOMO_MEMORY_REQUEST
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: 8080
-
-readinessProbe:
-  httpGet:
-    path: /
-    port: 8080
-
 autoscaling:
   enabled: false
 
