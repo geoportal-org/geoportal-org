@@ -8,12 +8,10 @@ source .env
 printf "\n\n ${Green}Deploy GEOSS-nginx ...\n\n${NC}"
 envsubst < geoss-nginx/values.yaml.template > geoss-nginx/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
-    --debug $RESOURCE_NAME_PREFIX-nginx geoss-nginx \
-    --wait --timeout 15m  | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+    --debug $RESOURCE_NAME_PREFIX-nginx geoss-nginx | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 #printf "\n\n ${Green}Deploy Nginx ...\n\n${NC}"
 #envsubst < nginx/values.yaml.template > nginx/values.yaml
 #helm -n $K8S_NAMESPACE upgrade --install \
-#    --debug $RESOURCE_NAME_PREFIX-nginx nginx \
-#    --wait --timeout 15m  | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+#    --debug $RESOURCE_NAME_PREFIX-nginx nginx | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 

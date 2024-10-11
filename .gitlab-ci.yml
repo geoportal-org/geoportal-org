@@ -60,7 +60,9 @@ stages: # List of stages for jobs, and their order of execution
   - code_analysis
   - build
   - build_docker_images
-  - deploy
+  - dev_deploy
+  - uat_deploy
+  - prod_deploy
 
 ###########################
 #          STEPS          #
@@ -381,9 +383,9 @@ build_images:
   script:
     - echo "Docker image tag setup" && source setup_tag.sh
     - echo "Building images" && docker-compose -f docker-compose-build.yml build --parallel
-    - echo "Docker login" && docker login --username $NEXUS_USER --password $NEXUS_USER_PASSWORD $NEXUS_REPOSITORY_URL
-    - echo "Pushing images to $NEXUS_REPOSITORY_URL" && docker-compose -f docker-compose-build.yml push;
-    - echo "Docker logout" && docker logout $NEXUS_REPOSITORY_URL
+    - echo "Docker login" && docker login --username $AZURE_CONTAINER_REGISTRY_USER --password $AZURE_CONTAINER_REGISTRY_TOKEN $AZURE_CONTAINER_REGISTRY_URL
+    - echo "Pushing images to $AZURE_CONTAINER_REGISTRY_URL" && docker-compose -f docker-compose-build.yml push;
+    - echo "Docker logout" && docker logout $AZURE_CONTAINER_REGISTRY_URL
   dependencies:
     - build_geoss-contents
     - build_geoss-curated
@@ -394,9 +396,7 @@ build_images:
     - build_geoss-worker
   only:
     - develop-azure
-    - uat
     - /^release-.*/
-    - /^GPP-.*/
 
 ########################################################################################################################
 #                                                      DEV DEPLOY                                                      #
@@ -527,6 +527,14 @@ uat_deploy:
     - kubectl config set-credentials "${AZURE_PROD_CLUSTER_USERNAME}" --token="${AZURE_PROD_CLUSTER_TOKEN}"
     - kubectl config use-context "${AZURE_PROD_CLUSTER_USERNAME}"
   script:
+    - echo "$AZURE_UAT_UI_CERT" > charts/ui.crt
+    - echo "$AZURE_UAT_UI_CERT_KEY" > charts/ui.key
+    - echo "$AZURE_UAT_ADMIN_CERT" > charts/admin.crt
+    - echo "$AZURE_UAT_ADMIN_CERT_KEY" > charts/admin.key
+    - echo "$AZURE_UAT_IDP_CERT" > charts/idp.crt
+    - echo "$AZURE_UAT_IDP_CERT_KEY" > charts/idp.key
+    - echo "$AZURE_UAT_LP_CERT" > charts/lp.crt
+    - echo "$AZURE_UAT_LP_CERT_KEY" > charts/lp.key
     - cd charts
     - ./install.sh
   when: manual

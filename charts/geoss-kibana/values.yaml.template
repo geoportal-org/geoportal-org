@@ -1,0 +1,102 @@
+replicaCount: $KIBANA_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-kibana
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_kibana
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1001
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+
+service:
+  type: ClusterIP
+  port: 5601
+  targetPort: 5601
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $KIBANA_MEMORY_LIMIT
+  requests:
+    cpu: $KIBANA_CPU_REQUEST
+    memory: $KIBANA_MEMORY_REQUEST
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 5601
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 5601
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: KIBANA_ELASTICSEARCH_URL
+    value: "geoss-${DEPLOY_ENV}-elasticsearch"
+  - name: KIBANA_PASSWORD
+    value: "${ELS_KIBANA_PASSWORD}"
+  - name: GEOSS_PASSWORD
+    value: "${ELS_GEOSS_PASSWORD}"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-els
+          ports:
+              - protocol: TCP
+                port: 9200 
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 5601

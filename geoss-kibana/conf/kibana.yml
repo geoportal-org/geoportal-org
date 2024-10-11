@@ -174,7 +174,7 @@ server:
   basePath: /kibana
   rewriteBasePath: false
 elasticsearch:
-  hosts: http://geoss-elasticsearch-1:9200
+  hosts: http://###KIBANA_ELASTICSEARCH_URL###:9200
 
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "###KIBANA_PASSWORD###"
