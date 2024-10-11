@@ -170,6 +170,8 @@ env:
     value: "$SERVICES_PROVIDERS"
   - name: BASIC_AUTH_WHITELIST
     value: "$BASIC_AUTH_WHITELIST"
+  - name: MAILDEV_ENABLED
+    value: "$MAILDEV_ENABLED"
 
 networkPolicy:
     egress:
@@ -208,6 +210,20 @@ networkPolicy:
         - to:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
           ports:
               - protocol: TCP
@@ -222,7 +238,49 @@ networkPolicy:
         - to:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-landingpage
+          ports:
+              - protocol: TCP
+                port: 3000  
+        - to:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
+          ports:
+              - protocol: TCP
+                port: 8082
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
+          ports:
+              - protocol: TCP
+                port: 8080   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
           ports:
               - protocol: TCP
                 port: 8080   
@@ -233,6 +291,34 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 3000   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-geodab-worker
+          ports:
+              - protocol: TCP
+                port: 8080                   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-sdg-worker
+          ports:
+              - protocol: TCP
+                port: 8080                   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-wikipedia-worker
+          ports:
+              - protocol: TCP
+                port: 8080                   
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
+          ports:
+              - protocol: TCP
+                port: 8080                   
     ingress:
         # Allow to connect from DMZ
         - from:

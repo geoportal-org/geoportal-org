@@ -42,7 +42,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-ui:3000;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-ui:3000/;
     proxy_no_cache 1;
 
     #response headers
@@ -80,7 +80,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /settings;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -97,7 +97,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /personaldata;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -114,7 +114,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /contents;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -131,7 +131,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /proxy;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8082;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8082/;
     proxy_no_cache 1;
 
     #response headers
@@ -148,7 +148,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /search;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -158,13 +158,19 @@ server {
   }
 
   location /matomo {
+    return 404;
+  }
+
+  location /matomo/ {
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x_matomo_proxy.conf;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080;
+    #proxy_set_header X-Forwarded-Prefix /matomo;
+
+    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080/;
     proxy_no_cache 1;
 
     #response headers

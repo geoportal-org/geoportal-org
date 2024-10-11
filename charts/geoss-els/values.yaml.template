@@ -12,6 +12,12 @@ secrets:
       username: "elastic"
       password: "$ELS_ELASTIC_PASSWORD"
       roles: "superuser"
+  - name: geoss-${DEPLOY_ENV}-els-kibana-user
+    type: kubernetes.io/basic-auth
+    data:
+      username: "kibana_system"
+      password: "$KIBANA_PASSWORD"
+      roles: "kibana_system"
 
 networkPolicy:
     egress:
@@ -75,6 +81,7 @@ eck-elasticsearch:
     auth:
       fileRealm:
         - secretName: geoss-${DEPLOY_ENV}-els-user
+        - secretName: geoss-${DEPLOY_ENV}-els-kibana-user
     volumeClaimDeletePolicy: DeleteOnScaledownOnly
     nodeSets:
         -   name: default

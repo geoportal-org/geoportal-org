@@ -57,6 +57,8 @@ tolerations:
         effect: "NoExecute"
 
 env:
+  - name: NEXT_PUBLIC_DATA_PROVIDERS_URL
+    value: "https://${UI_DOMAIN_NAME}/rest/services-providers/"
 
 secrets:
 

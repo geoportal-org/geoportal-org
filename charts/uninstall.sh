@@ -8,6 +8,7 @@ helm delete $RESOURCE_NAME_PREFIX-els
 helm delete $RESOURCE_NAME_PREFIX-keycloak
 helm delete $RESOURCE_NAME_PREFIX-kibana
 helm delete $RESOURCE_NAME_PREFIX-landingpage
+helm delete $RESOURCE_NAME_PREFIX-maildev
 helm delete $RESOURCE_NAME_PREFIX-matomo
 helm delete $RESOURCE_NAME_PREFIX-nginx
 helm delete $RESOURCE_NAME_PREFIX-personaldata

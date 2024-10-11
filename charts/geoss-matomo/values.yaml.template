@@ -44,8 +44,25 @@ autoscaling:
   enabled: false
 
 pvc:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    server: "$MATOMO_FILES_SHARE_SERVER"
+    resourceGroup: "$MATOMO_FILES_SHARE_RESOURCE_GROUP"
+    accessMode: ReadWriteMany
+    storageSecretName: geoss-${DEPLOY_ENV}-matomo-storage-secret
+    shareName: "$MATOMO_FILES_SHARE_NAME"
+    folderName: matomo
+    uid: 1001
+    guid: 1001
+    chmod: "0777"
+    capacity: 10Gi
 volumes:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    persistentVolumeClaim:
+      claimName: geoss-${DEPLOY_ENV}-matomo-storage
+
 volumeMounts:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    mountPath: "/bitnami/matomo"
 
 nodeSelector:
   node-pool: geoss
@@ -57,6 +74,8 @@ tolerations:
         effect: "NoExecute"
 
 env:
+  - name: MATOMO_DATA_TO_PERSIST
+    value: "matomo.js piwik.js config/config.ini.php misc/user js"
   - name: MATOMO_DATABASE_HOST
     valueFrom:
       secretKeyRef:
@@ -67,11 +86,11 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
         key: dbport
-  - name: MATOMO_DATABASE_ADAPTER
+  - name: MATOMO_DATABASE_NAME
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
-        key: dbadapter
+        key: dbname
   - name: MATOMO_DATABASE_USER
     valueFrom:
       secretKeyRef:
@@ -82,11 +101,31 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
         key: dbpassword
-  - name: MATOMO_DATABASE_NAME
+  - name: MATOMO_DATABASE_TABLE_PREFIX
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
-        key: dbname
+        key: dbtableprefix
+  - name: MATOMO_SMTP_HOST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpHost
+  - name: MATOMO_SMTP_PORT_NUMBER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpPort
+  - name: MATOMO_SMTP_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpUser
+  - name: MATOMO_SMTP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpPassword
   - name: MATOMO_USERNAME
     valueFrom:
       secretKeyRef:
@@ -97,21 +136,6 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
         key: matomopass
-  - name: MATOMO_ENABLE_PROXY_URI_HEADER
-    valueFrom:
-      secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-matomo-env
-        key: enableproxyuriheader
-  - name: MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL
-    valueFrom:
-      secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-matomo-env
-        key: assumesecureprotocol
-  - name: MATOMO_DATABASE_TABLE_PREFIX
-    valueFrom:
-      secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-matomo-env
-        key: dbtableprefix
   - name: MATOMO_WEBSITE_NAME
     valueFrom:
       secretKeyRef:
@@ -122,6 +146,16 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
         key: websitehost
+  - name: MATOMO_ENABLE_PROXY_URI_HEADER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: enableproxyuriheader
+  - name: MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: assumesecureprotocol
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-matomo-env
@@ -129,18 +163,25 @@ secrets:
     data:
       dbhost: "geoss-${DEPLOY_ENV}-db"
       dbport: "3306"
-      dbadapter: "mysql"
+      dbname: "$MATOMO_DATABASE_NAME"
       dbuser: "$DATABASE_USERNAME_MATOMO"
       dbpassword: "$DATABASE_PASSWORD_MATOMO"
-      dbname: "$MATOMO_DATABASE_NAME"
+      dbtableprefix: "matomo_"
+      matomoSmtpHost: "${SMTP_HOST}"
+      matomoSmtpPort: "${SMTP_PORT}"
+      matomoSmtpUser: "${SMTP_USER}"
+      matomoSmtpPassword: "${SMTP_PASSWORD}"
       matomouser: "$MATOMO_USERNAME"
       matomopass: "$MATOMO_PASSWORD"
-      enableproxyuriheader: "yes"
-      assumesecureprotocol: "yes"
-      dbtableprefix: "matomo_"
       websitename: "Geoss-UI Website"
       websitehost: "https://$UI_DOMAIN_NAME"
-
+      enableproxyuriheader: "yes"
+      assumesecureprotocol: "yes"
+  - name: geoss-${DEPLOY_ENV}-matomo-storage-secret
+    type: Opaque
+    data:
+      azurestorageaccountname: "$MATOMO_FILES_SHARE_ACCOUNT_NAME"
+      azurestorageaccountkey: "$MATOMO_FILES_SHARE_ACCOUNT_KEY"
 
 networkPolicy:
     egress:
@@ -176,6 +217,13 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 3306
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1025                   
     ingress:
         # Allow to connect from DMZ
         - from:

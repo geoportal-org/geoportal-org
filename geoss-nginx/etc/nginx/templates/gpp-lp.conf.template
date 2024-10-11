@@ -37,7 +37,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-landingpage:3000;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-landingpage:3000/;
     proxy_no_cache 1;
 
     #response headers

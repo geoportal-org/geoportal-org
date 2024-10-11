@@ -165,6 +165,13 @@ networkPolicy:
         - from:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080
+        - from:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
           ports:
               - protocol: TCP

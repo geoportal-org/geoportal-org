@@ -40,16 +40,6 @@ resources:
     cpu: $KIBANA_CPU_REQUEST
     memory: $KIBANA_MEMORY_REQUEST
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: 5601
-
-readinessProbe:
-  httpGet:
-    path: /
-    port: 5601
-
 autoscaling:
   enabled: false
 
@@ -85,7 +75,7 @@ tolerations:
 
 env:
   - name: KIBANA_ELASTICSEARCH_URL
-    value: "geoss-${DEPLOY_ENV}-elasticsearch"
+    value: "geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http"
   - name: KIBANA_PASSWORD
     value: "${ELS_KIBANA_PASSWORD}"
   - name: GEOSS_PASSWORD

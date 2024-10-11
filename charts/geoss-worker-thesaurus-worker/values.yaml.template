@@ -167,3 +167,10 @@ networkPolicy:
               - protocol: TCP
                 port: 8443
     ingress:
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080

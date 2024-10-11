@@ -40,7 +40,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    https://geoss-${DEPLOY_ENV}-keycloak:8443;
+    proxy_pass    https://geoss-${DEPLOY_ENV}-keycloak:8443/;
     proxy_no_cache 1;
 
     #response headers

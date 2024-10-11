@@ -45,7 +45,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-admin:3000;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-admin:3000/;
     proxy_no_cache 1;
 
     #response headers
@@ -62,7 +62,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /settings;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -79,7 +79,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /personaldata;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -96,7 +96,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /contents;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -111,9 +111,9 @@ server {
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
-    proxy_set_header X-Forwarded-Prefix /proxy;
+    #proxy_set_header X-Forwarded-Prefix /proxy;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8082;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8082/;
     proxy_no_cache 1;
 
     #response headers
@@ -128,9 +128,9 @@ server {
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
-    proxy_set_header X-Forwarded-Prefix /curated;
+    #proxy_set_header X-Forwarded-Prefix /curated;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-curated:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-curated:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -147,7 +147,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /search;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -155,6 +155,23 @@ server {
 
     add_header X-Cache-Status $upstream_cache_status;
   }
+
+#MAILDEV#  location /maildev {
+#MAILDEV#    include conf.d/common/maintenance_conditions.conf;
+#MAILDEV#
+#MAILDEV#    #request headers
+#MAILDEV#    include conf.d/utils/proxy_request_headers.conf;
+#MAILDEV#    include conf.d/utils/proxy_request_headers_x.conf;
+#MAILDEV#    proxy_set_header X-Forwarded-Prefix /maildev;
+#MAILDEV#
+#MAILDEV#    proxy_pass    http://geoss-${DEPLOY_ENV}-maildev:1080/maildev;
+#MAILDEV#    proxy_no_cache 1;
+#MAILDEV#
+#MAILDEV#    #response headers
+#MAILDEV#    include conf.d/utils/proxy_response_headers.conf;
+#MAILDEV#
+#MAILDEV#    add_header X-Cache-Status $upstream_cache_status;
+#MAILDEV#  }
 
   location /workers/geodab {
     include conf.d/common/maintenance_conditions.conf;
@@ -164,7 +181,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/geodab;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-geodab-worker:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-geodab-worker:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -181,7 +198,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/sdg;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-sdg-worker:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-sdg-worker:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -198,7 +215,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/wikipedia;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker:8080/;
     proxy_no_cache 1;
 
     #response headers
@@ -215,7 +232,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/thesaurus;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker:8080;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker:8080/;
     proxy_no_cache 1;
 
     #response headers

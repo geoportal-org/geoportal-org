@@ -1,8 +1,8 @@
 location = /kibana {
-  return 307 /kibana/;
+  return 307 https://${ADMIN_DOMAIN_NAME}/kibana/;
 }
 
-location ~ /kibana {
+location /kibana/ {
   include conf.d/common/maintenance_conditions.conf;
 
 #      auth_basic "Restricted Access";
@@ -12,7 +12,7 @@ location ~ /kibana {
   include conf.d/utils/proxy_request_headers.conf;
   include conf.d/utils/proxy_request_headers_x.conf;
 
-  proxy_pass    http://geoss-${DEPLOY_ENV}-kibana:5601;
+  proxy_pass    http://geoss-${DEPLOY_ENV}-kibana:5601/;
   proxy_no_cache 1;
 
   #response headers
@@ -22,11 +22,11 @@ location ~ /kibana {
 }
 
 location ~ /matomo/?$ {
-  return 307 /matomo/index.php?module=CoreHome;
+  return 307 https://${ADMIN_DOMAIN_NAME}/matomo/index.php?module=CoreHome;
 }
 
-location ~ /matomo {
-  proxy_pass http://geoss-${DEPLOY_ENV}-matomo:8080;
+location /matomo {
+  proxy_pass http://geoss-${DEPLOY_ENV}-matomo:8080/;
 
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;

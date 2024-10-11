@@ -29,14 +29,14 @@ services:
   geoss-db:
     image: eversisdawis.azurecr.io/geoss/geoss_db:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-db/Dockerfile-local
+      context: ./geoss-db/
+      dockerfile: Dockerfile
 
   geoss-els:
     image: eversisdawis.azurecr.io/geoss/geoss_els:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-els/Dockerfile-local
+      context: ./geoss-els/
+      dockerfile: Dockerfile
 
   geoss-keycloak:
     image: eversisdawis.azurecr.io/geoss/geoss_keycloak:${DOCKER_IMAGE_TAG}
@@ -49,8 +49,8 @@ services:
   geoss-kibana:
     image: eversisdawis.azurecr.io/geoss/geoss_kibana:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-kibana/Dockerfile-local
+      context: ./geoss-kibana/
+      dockerfile: Dockerfile
 
   geoss-landingpage:
     image: eversisdawis.azurecr.io/geoss/geoss_landingpage:${DOCKER_IMAGE_TAG}
@@ -61,8 +61,8 @@ services:
   geoss-matomo:
     image: eversisdawis.azurecr.io/geoss/geoss_matomo:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-matomo/Dockerfile-local
+      context: ./geoss-matomo/
+      dockerfile: Dockerfile
 
   geoss-personaldata:
     image: eversisdawis.azurecr.io/geoss/geoss_personaldata:${DOCKER_IMAGE_TAG}

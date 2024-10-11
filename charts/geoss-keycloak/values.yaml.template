@@ -161,6 +161,13 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 3306
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1025                
     ingress:
         # Allow to connect from other containers
         - from:

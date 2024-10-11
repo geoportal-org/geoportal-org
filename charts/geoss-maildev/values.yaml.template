@@ -1,0 +1,133 @@
+replicaCount: $MAILDEV_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-maildev
+image:
+  repository: eversisdawis.azurecr.io/geoss/maildev
+  pullPolicy: Always
+  tag: 1.3.0
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  ports:
+    - port: 1025
+      targetPort: 1025
+      protocol: TCP
+      name: smtp
+    - port: 1080
+      targetPort: 1080
+      protocol: TCP
+      name: http
+
+resources:
+  limits:
+    memory: $MAILDEV_MEMORY_LIMIT
+  requests:
+    cpu: $MAILDEV_CPU_REQUEST
+    memory: $MAILDEV_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: MAILDEV_INCOMING_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: maildevIncomingUser
+  - name: MAILDEV_INCOMING_PASS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: maildevIncomingPass
+  - name: MAILDEV_WEB_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: maildevWebServer
+  - name: MAILDEV_WEB_PASS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: maildevWebPass
+  - name: MAILDEV_BASE_PATHNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: maildevBasePathname
+  
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-maildev-env
+    type: Opaque
+    data:
+      maildevIncomingUser: "maildev"
+      maildevIncomingPass: "${MAILDEV_SMTP_PASSWORD}"
+      maildevWebServer: "${MAILDEV_WEB_USERNAME}"
+      maildevWebPass: "${MAILDEV_WEB_PASSWORD}"
+      maildevBasePathname: "/maildev"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 1025
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 1025
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 1080                

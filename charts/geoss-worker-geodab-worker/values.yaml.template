@@ -87,11 +87,6 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
         key: springSecurityOauth2ClientSecret
-  - name: CONFIG_DAB_GEODAB_BASE_URL
-    valueFrom:
-      secretKeyRef:
-        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
-        key: configDabGeodabBaseUrl
   - name: CONFIG_DAB_VLAB_BASE_URL
     valueFrom:
       secretKeyRef:
@@ -102,6 +97,11 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
         key: configDabVlabApiToken
+  - name: CONFIG_DAB_VLAB_WORKFLOWS_INCLUDE_UNDER_TEST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: configDabVlabWorkflowsIncludeUnderTest
   - name: SERVER_MAX_HTTP_REQUEST_HEADER_SIZE
     valueFrom:
       secretKeyRef:
@@ -118,9 +118,9 @@ secrets:
       springProfilesActive: "keycloak"
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
       springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_GEODAB}"
-      configDabGeodabBaseUrl: "${CONFIG_DAB_GEODAB_BASE_URL}"
       configDabVlabBaseUrl: "${CONFIG_DAB_VLAB_BASE_URL}"
       configDabVlabApiToken: "${CONFIG_DAB_VLAB_API_TOKEN}"
+      configDabVlabWorkflowsIncludeUnderTest: "true"
       serverMaxHttpRequestHeaderSize: "32KB"
 
 networkPolicy:
@@ -168,3 +168,10 @@ networkPolicy:
               - protocol: TCP
                 port: 8443
     ingress:
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080    
