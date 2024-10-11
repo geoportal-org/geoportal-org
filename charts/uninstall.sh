@@ -7,4 +7,5 @@ helm delete $RESOURCE_NAME_PREFIX-kibana
 helm delete $RESOURCE_NAME_PREFIX-matomo
 helm delete $RESOURCE_NAME_PREFIX-nginx
 helm delete $RESOURCE_NAME_PREFIX-personaldata
+helm delete $RESOURCE_NAME_PREFIX-proxy
 helm delete $RESOURCE_NAME_PREFIX-settings

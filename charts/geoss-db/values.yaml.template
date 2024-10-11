@@ -130,6 +130,13 @@ networkPolicy:
         - from:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 3306
+        - from:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
           ports:
               - protocol: TCP

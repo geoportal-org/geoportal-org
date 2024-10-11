@@ -42,6 +42,11 @@ envsubst < geoss-personaldata/values.yaml.template > geoss-personaldata/values.y
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-personaldata geoss-personaldata | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
+printf "\n\n ${Green}Deploy GEOSS-proxy ...\n\n${NC}"
+envsubst < geoss-proxy/values.yaml.template > geoss-proxy/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-proxy geoss-proxy | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-settings ...\n\n${NC}"
 envsubst < geoss-settings/values.yaml.template > geoss-settings/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
