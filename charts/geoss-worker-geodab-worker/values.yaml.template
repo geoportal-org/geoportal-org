@@ -118,8 +118,8 @@ secrets:
       springProfilesActive: "keycloak"
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
       springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_GEODAB}"
-      configDabVlabBaseUrl: "${CONFIG_DAB_VLAB_BASE_URL}"
-      configDabVlabApiToken: "${CONFIG_DAB_VLAB_API_TOKEN}"
+      configDabVlabBaseUrl: "${WORKER_DAB_VLAB_BASE_URL}"
+      configDabVlabApiToken: "${WORKER_DAB_VLAB_API_TOKEN}"
       configDabVlabWorkflowsIncludeUnderTest: "true"
       serverMaxHttpRequestHeaderSize: "32KB"
 
