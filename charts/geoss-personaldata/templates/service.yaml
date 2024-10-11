@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "geoss-settings.fullname" . }}
+  name: {{ include "geoss-personaldata.fullname" . }}
   labels:
-    {{- include "geoss-settings.labels" . | nindent 4 }}
+    {{- include "geoss-personaldata.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -11,4 +11,4 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
       protocol: {{ .Values.service.protocol }}
   selector:
-    {{- include "geoss-settings.selectorLabels" . | nindent 4 }}
+    {{- include "geoss-personaldata.selectorLabels" . | nindent 4 }}

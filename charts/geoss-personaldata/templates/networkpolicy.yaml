@@ -2,11 +2,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "geoss-settings.fullname" . }}
+  name: {{ include "geoss-personaldata.fullname" . }}
 spec:
   podSelector: 
     matchLabels:
-      app.kubernetes.io/name: {{ include "geoss-settings.fullname" . }}
+      app.kubernetes.io/name: {{ include "geoss-personaldata.fullname" . }}
   policyTypes:
     {{- if .Values.networkPolicy.egress }}  
     - Egress

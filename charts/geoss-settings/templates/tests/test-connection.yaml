@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "geoss-admin.fullname" . }}-test-connection"
+  name: "{{ include "geoss-settings.fullname" . }}-test-connection"
   labels:
-    {{- include "geoss-admin.labels" . | nindent 4 }}
+    {{- include "geoss-settings.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "geoss-admin.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "geoss-settings.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
