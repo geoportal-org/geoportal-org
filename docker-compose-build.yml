@@ -2,9 +2,6 @@ version: '3.8'
 
 services:
 
-########################
-###    DMZ IMAGES    ###
-########################
   geoss-nginx:
     image: eversisdawis.azurecr.io/geoss/geoss_nginx:${DOCKER_IMAGE_TAG}
     container_name: geoss-nginx
@@ -12,32 +9,11 @@ services:
       context: ./geoss-nginx
       dockerfile: Dockerfile
 
-  geoss-haproxy:
-    image: eversisdawis.azurecr.io/geoss/geoss_haproxy:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-haproxy
-      dockerfile: Dockerfile
-
-  geoss-squid:
-    image: eversisdawis.azurecr.io/geoss/geoss_squid:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-squid
-      dockerfile: Dockerfile
-
-########################
-###    LAN IMAGES    ###
-########################
   geoss-admin:
     image: eversisdawis.azurecr.io/geoss/geoss_admin:${DOCKER_IMAGE_TAG}
     build:
       context: ./geoss-admin
       dockerfile: Dockerfile
-
-  # geoss-bookmarks:
-  #   image: eversisdawis.azurecr.io/geoss/geoss_bookmarks:${DOCKER_IMAGE_TAG}
-  #   build:
-  #     context: ./geoss-bookmarks
-  #     dockerfile: Dockerfile
 
   geoss-contents:
     image: eversisdawis.azurecr.io/geoss/geoss_contents:${DOCKER_IMAGE_TAG}
@@ -61,12 +37,6 @@ services:
     image: eversisdawis.azurecr.io/geoss/geoss_els:${DOCKER_IMAGE_TAG}
     build:
       context: ./geoss-els
-      dockerfile: Dockerfile
-
-  geoss-haproxy-lan:
-    image: eversisdawis.azurecr.io/geoss/geoss_haproxy_lan:${DOCKER_IMAGE_TAG}
-    build:
-      context: ./geoss-haproxy-lan
       dockerfile: Dockerfile
 
   geoss-keycloak:
