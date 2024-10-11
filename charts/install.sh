@@ -25,6 +25,11 @@ envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-db geoss-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
+printf "\n\n ${Green}Deploy GEOSS-els ...\n\n${NC}"
+envsubst < geoss-els/values.yaml.template > geoss-els/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-els geoss-els | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
 printf "\n\n ${Green}Deploy GEOSS-keycloak ...\n\n${NC}"
 envsubst < geoss-keycloak/values.yaml.template > geoss-keycloak/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \

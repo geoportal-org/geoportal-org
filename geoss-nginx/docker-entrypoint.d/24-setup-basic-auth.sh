@@ -18,7 +18,7 @@ if [ "${BASIC_AUTH_ENABLED}" = "true" ]; then
   rm /etc/nginx/conf.d/gpp-lp.conf.old
 fi
 
-if [ "${BASIC_AUTH_WHITELIST}" = "true" ]; then
+if [ -n "${BASIC_AUTH_WHITELIST}" ]; then
   whitelist_map=''
 
   for whitelist_it in $(echo ${BASIC_AUTH_WHITELIST} | tr "," "\n")

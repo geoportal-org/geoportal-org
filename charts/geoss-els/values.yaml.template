@@ -1,0 +1,176 @@
+replicaCount: $ELS_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-els
+image:
+  repository: eversisdawis.azurecr.io/geoss/geoss_els
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 9200
+  targetPort: 9200
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $ELS_MEMORY_LIMIT
+  requests:
+    cpu: $ELS_CPU_REQUEST
+    memory: $ELS_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+  - name: $RESOURCE_NAME_PREFIX-els-data
+    capacity: 10Gi
+    accessMode: ReadWriteOnce
+    volumeHandle: $ELS_VOLUME_RESOURCE_ID
+
+volumes:
+  - name: $RESOURCE_NAME_PREFIX-els-data-volume
+    persistentVolumeClaim:
+      claimName: $RESOURCE_NAME_PREFIX-els-data-pvc
+
+volumeMounts:
+  - name: $RESOURCE_NAME_PREFIX-els-data-volume
+    mountPath: "/usr/share/elasticsearch/data"
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: node.name
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: nodeName
+  - name: cluster.name
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: clusterName
+  - name: bootstrap.memory_lock
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: bootstrapMemoryLock
+  - name: network.publish_host
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: networkPublishHost
+  - name: discovery.type
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: discoveryType
+  - name: ES_JAVA_OPTS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: esJavaOpts
+  - name: ELASTIC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: elasticPassword
+  - name: KIBANA_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: kibanaPassword
+  - name: GEOSS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-els-env
+        key: geossPassword
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-els-env
+    type: Opaque
+    data:
+      nodeName: "geoss-elasticsearch"
+      clusterName: "geoss-elasticsearch"
+      bootstrapMemoryLock: "true"
+      networkPublishHost: "geoss-elasticsearch"
+      discoveryType: "single-node"
+      esJavaOpts: "-Xms4g -Xmx4g"
+      elasticPassword: "$ELS_ELASTIC_PASSWORD"
+      kibanaPassword: "$ELS_KIBANA_PASSWORD"
+      geossPassword: "$ELS_GEOSS_PASSWORD"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-kibana
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
+          ports:
+              - protocol: TCP
+                port: 9200
