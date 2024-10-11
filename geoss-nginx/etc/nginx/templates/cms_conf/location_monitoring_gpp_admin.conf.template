@@ -1,5 +1,5 @@
 location = /kibana {
-  return 307 https://${ADMIN_DOMAIN_NAME}/kibana/;
+  return 301 https://${ADMIN_DOMAIN_NAME}/kibana/;
 }
 
 location /kibana/ {

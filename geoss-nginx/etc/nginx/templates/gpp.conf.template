@@ -155,6 +155,10 @@ server {
   }
 
   #Configuration for matomo API
+  location = /matomo {
+    return 301 https://${UI_DOMAIN_NAME}/matomo/;
+  } 
+
   location /matomo/ {
     include conf.d/common/maintenance_conditions.conf;
 
@@ -186,7 +190,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Uri /matomo;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080/;
+    rewrite ^/matomo/(.*)$ /$1 break;
+    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080;
     proxy_no_cache 1;
 
     #response headers
