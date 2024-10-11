@@ -61,3 +61,8 @@ printf "\n\n ${Green}Deploy GEOSS-settings ...\n\n${NC}"
 envsubst < geoss-settings/values.yaml.template > geoss-settings/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-settings geoss-settings | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
+
+printf "\n\n ${Green}Deploy GEOSS-worker-geodab-worker ...\n\n${NC}"
+envsubst < geoss-worker-geodab-worker/values.yaml.template > geoss-worker-geodab-worker/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-worker-geodab-worker geoss-worker-geodab-worker | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true

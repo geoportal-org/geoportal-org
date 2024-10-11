@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+
+  geoss-nginx:
+    image: eversisdawis.azurecr.io/geoss/geoss_nginx:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-nginx/Dockerfile-local
+
+  geoss-admin:
+    image: eversisdawis.azurecr.io/geoss/geoss_admin:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-admin/Dockerfile-local
+
+  geoss-contents:
+    image: eversisdawis.azurecr.io/geoss/geoss_contents:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-contents/Dockerfile-local
+
+  geoss-curated:
+    image: eversisdawis.azurecr.io/geoss/geoss_curated:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-curated/Dockerfile-local
+
+  geoss-db:
+    image: eversisdawis.azurecr.io/geoss/geoss_db:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-db/Dockerfile-local
+
+  geoss-els:
+    image: eversisdawis.azurecr.io/geoss/geoss_els:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-els/Dockerfile-local
+
+  geoss-keycloak:
+    image: eversisdawis.azurecr.io/geoss/geoss_keycloak:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-keycloak/Dockerfile-local
+      args:
+        KC_DB: mariadb
+
+  geoss-kibana:
+    image: eversisdawis.azurecr.io/geoss/geoss_kibana:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-kibana/Dockerfile-local
+
+  geoss-landingpage:
+    image: eversisdawis.azurecr.io/geoss/geoss_landingpage:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-landingpage/Dockerfile-local
+
+  geoss-matomo:
+    image: eversisdawis.azurecr.io/geoss/geoss_matomo:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-matomo/Dockerfile-local
+
+  geoss-personaldata:
+    image: eversisdawis.azurecr.io/geoss/geoss_personaldata:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-personaldata/Dockerfile-local
+
+  geoss-proxy:
+    image: eversisdawis.azurecr.io/geoss/geoss_proxy:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-proxy/Dockerfile-local
+
+  geoss-search:
+    image: eversisdawis.azurecr.io/geoss/geoss_search:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-search/Dockerfile-local
+
+  geoss-settings:
+    image: eversisdawis.azurecr.io/geoss/geoss_settings:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-settings/Dockerfile-local
+
+  geoss-ui:
+    image: eversisdawis.azurecr.io/geoss/geoss_ui:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-ui/Dockerfile-local
+
+  geoss-worker-geodab-worker:
+    image: eversisdawis.azurecr.io/geoss/geoss_worker_geodab_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-worker/entry-worker/geodab-worker/Dockerfile-local
+
+  geoss-worker-sdg-worker:
+    image: eversisdawis.azurecr.io/geoss/geoss_worker_sdg_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-worker/entry-worker/sdg-worker/Dockerfile-local
+
+  geoss-worker-wikipedia-worker:
+    image: eversisdawis.azurecr.io/geoss/geoss_worker_wikipedia_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-worker/entry-worker/wikipedia-worker/Dockerfile-local
+
+  geoss-worker_thesaurus_worker:
+    image: eversisdawis.azurecr.io/geoss/geoss_worker_thesaurus_worker:${DOCKER_IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./geoss-worker/thesaurus-worker/Dockerfile-local

@@ -11,3 +11,4 @@ helm delete $RESOURCE_NAME_PREFIX-personaldata
 helm delete $RESOURCE_NAME_PREFIX-proxy
 helm delete $RESOURCE_NAME_PREFIX-search
 helm delete $RESOURCE_NAME_PREFIX-settings
+helm delete $RESOURCE_NAME_PREFIX-worker-geodab-worker
