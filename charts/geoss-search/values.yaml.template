@@ -112,7 +112,7 @@ secrets:
   - name: geoss-${DEPLOY_ENV}-search-env
     type: Opaque
     data:
-      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els:9200"
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http:9200"
       springElasticsearchUsername: "elastic"
       springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
       datasourceElasticsearchCompatibilityMode: "true"
