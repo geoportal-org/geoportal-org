@@ -405,88 +405,7 @@ build_images:
 
 
 
-########################################################################################################################
-#                                                DEV RELOAD MATOMO TOKEN                                               #
-########################################################################################################################
-#                         Load matomo token from GITLAB-CI and update geoss-ui service                                 #
-#                         BE AWARE that it will cause downtime on geoss-ui application                                 #
-########################################################################################################################
-#dev_reload_matomo_token:
-#  stage: docker_stack_deploy
-#  image: debian:11.4
-#  tags:
-#    - geoss-runner-1
-#  cache: { }
-#  variables:
-#    VAR_MANAGER_SSH_CONNECTION: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_MANAGER_SERVER: $DEV_LAN_DOCKER_MANAGER_SERVER
-#    VAR_SSH_PORT: 22
-#    #geoss ui
-#    VAR_GEOSS_MATOMO_TOKEN: $DEV_GEOSS_MATOMO_TOKEN
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-#    - eval $(ssh-agent -s)
-#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#    - mkdir -p ~/.ssh
-#    - chmod 700 ~/.ssh
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-#    - chmod 644 ~/.ssh/known_hosts
-#  script:
-#    - echo "Reloading matomo token value of geoss-ui service...";
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN geoss_geoss-ui"
-#    - echo "Matomo token has been reloaded."
-#  when: manual
-#  only:
-#    - develop
-#    - /^release-.*/
 
-########################################################################################################################
-#                                                      DEV REMOVAL                                                     #
-########################################################################################################################
-#                                Remove docker stack and all the data on persistent volumes                            #
-########################################################################################################################
-#dev_remove_all:
-#  stage: docker_stack_deploy
-#  image: debian:11.4
-#  tags:
-#    - geoss-runner-1
-#  cache: { }
-#  variables:
-#    VAR_MANAGER_SSH_CONNECTION_DMZ: $DEV_SERVER_USER@$DEV_DMZ_DOCKER_MANAGER_SERVER
-#    VAR_MANAGER_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DATABASE_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_DATABASE_SERVER_LAN
-#    VAR_ELASTIC_SSH_CONNECTION_LAN: $DEV_SERVER_USER@$DEV_DOCKER_ELASTIC_SERVER_LAN
-#    VAR_DOCKER_MANAGER_SERVER_DMZ: $DEV_DMZ_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_MANAGER_SERVER_LAN: $DEV_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_DATABASE_SERVER_LAN: $DEV_DOCKER_DATABASE_SERVER_LAN
-#    VAR_DOCKER_ELASTIC_SERVER_LAN: $DEV_DOCKER_ELASTIC_SERVER_LAN
-#    VAR_SSH_PORT: 22
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-#    - eval $(ssh-agent -s)
-#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#    - mkdir -p ~/.ssh
-#    - chmod 700 ~/.ssh
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
-#    - chmod 644 ~/.ssh/known_hosts
-#  script:
-#    - echo "Removing dev environment";
-#    - echo "Removing dmz services and data"
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm geoss && docker system prune -f"
-#    - echo "Removing lan services and nfs data"
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm geoss && sudo rm -rf /nfs/data/* && docker system prune -f"
-#    - echo "Removing lan db persistent data"
-#    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/ && sudo mkdir /var/lib/mysql && sudo chown systemd-coredump:input /var/lib/mysql && sudo chmod 777 /var/lib/mysql"
-#    - echo "Removing lan elastic persistent data"
-#    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
-#    - echo "Removing dev environment - COMPLETED"
-#  when: manual
-#  only:
-#    - develop
-#    - /^release-.*/
 
 ########################################################################################################################
 #                                                      UAT DEPLOY                                                      #
@@ -501,6 +420,7 @@ uat_deploy:
   variables:
     ADMIN_DOMAIN_NAME: "$AZURE_UAT_ADMIN_DOMAIN_NAME"
     ADMIN_WAF_POLICY: "$AZURE_UAT_ADMIN_WAF_POLICY"
+    BACKUP_ELASTIC_DATA: "$AZURE_UAT_BACKUP_ELASTIC_DATA"
     BASIC_AUTH_ENABLED: "true"
     BASIC_AUTH_WHITELIST: "$AZURE_UAT_BASIC_AUTH_WHITELIST"
     CONTENTS_REPOSITORY_SHARE_ACCOUNT_KEY: "$AZURE_UAT_CONTENTS_REPOSITORY_SHARE_ACCOUNT_KEY"
@@ -695,84 +615,209 @@ uat_deploy:
     - /^release-.*/
 
 ########################################################################################################################
-#                                                UAT RELOAD MATOMO TOKEN                                               #
+#                                                     PROD DEPLOY                                                      #
 ########################################################################################################################
-#                         Load matomo token from GITLAB-CI and update geoss-ui service                                 #
-#                         BE AWARE that it will cause downtime on geoss-ui application                                 #
-########################################################################################################################
-#uat_reload_matomo_token:
-#  stage: docker_stack_deploy
-#  image: debian:11.4
-#  tags:
-#    - geoss-runner-1
-#  cache: { }
-#  variables:
-#    VAR_MANAGER_SSH_CONNECTION: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_MANAGER_SERVER: $UAT_LAN_DOCKER_MANAGER_SERVER
-#    VAR_SSH_PORT: 22
-#    #geoss ui
-#    VAR_GEOSS_MATOMO_TOKEN: $UAT_GEOSS_MATOMO_TOKEN
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-#    - eval $(ssh-agent -s)
-#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#    - mkdir -p ~/.ssh
-#    - chmod 700 ~/.ssh
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER >> ~/.ssh/known_hosts
-#    - chmod 644 ~/.ssh/known_hosts
-#  script:
-#    - echo "Reloading matomo token value of geoss-ui service...";
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION "set +H && docker service update --env-add MATOMO_TOKEN=$VAR_GEOSS_MATOMO_TOKEN uat_geoss-ui"
-#    - echo "Matomo token has been reloaded."
-#  when: manual
-#  only:
-#    - uat
-#    - /^release-.*/
 
-########################################################################################################################
-#                                                      UAT REMOVAL                                                     #
-########################################################################################################################
-#                                Remove docker stack and all the data on persistent volumes                            #
-########################################################################################################################
-#uat_remove_all:
-#  stage: docker_stack_deploy
-#  image: debian:11.4
-#  tags:
-#    - geoss-runner-1
-#  cache: { }
-#  variables:
-#    VAR_MANAGER_SSH_CONNECTION_DMZ: $UAT_SERVER_USER@$UAT_DMZ_DOCKER_MANAGER_SERVER
-#    VAR_MANAGER_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DATABASE_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_DATABASE_SERVER_LAN
-#    VAR_ELASTIC_SSH_CONNECTION_LAN: $UAT_SERVER_USER@$UAT_DOCKER_ELASTIC_SERVER_LAN
-#    VAR_DOCKER_MANAGER_SERVER_DMZ: $UAT_DMZ_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_MANAGER_SERVER_LAN: $UAT_LAN_DOCKER_MANAGER_SERVER
-#    VAR_DOCKER_DATABASE_SERVER_LAN: $UAT_DOCKER_DATABASE_SERVER_LAN
-#    VAR_DOCKER_ELASTIC_SERVER_LAN: $UAT_DOCKER_ELASTIC_SERVER_LAN
-#    VAR_SSH_PORT: 22
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git curl wget -y )'
-#    - eval $(ssh-agent -s)
-#    - echo "$GITLAB_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#    - mkdir -p ~/.ssh
-#    - chmod 700 ~/.ssh
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_DMZ >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_MANAGER_SERVER_LAN >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_DATABASE_SERVER_LAN >> ~/.ssh/known_hosts
-#    - ssh-keyscan -p $VAR_SSH_PORT $VAR_DOCKER_ELASTIC_SERVER_LAN >> ~/.ssh/known_hosts
-#    - chmod 644 ~/.ssh/known_hosts
-#  script:
-#    - echo "Removing uat environment";
-#    - echo "Removing dmz services and data"
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_DMZ "set +H && cd /tmp && docker stack rm uat && docker system prune -f"
-#    - echo "Removing lan services and nfs data"
-#    - ssh -p $VAR_SSH_PORT $VAR_MANAGER_SSH_CONNECTION_LAN "set +H && cd /tmp && docker stack rm uat && sudo rm -rf /nfs/data/* && docker system prune -f"
-#    - echo "Removing lan db persistent data"
-#    - ssh -p $VAR_SSH_PORT $VAR_DATABASE_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/mysql/*"
-#    - echo "Removing lan elastic persistent data"
-#    - ssh -p $VAR_SSH_PORT $VAR_ELASTIC_SSH_CONNECTION_LAN "set +H && sudo rm -rf /var/lib/elasticsearch/data/* /opt/kibana/*"
-#    - echo "Removing uat environment - COMPLETED"
-#  when: manual
-#  only:
-#    - uat
-#    - /^release-.*/
+prod_deploy:
+  stage: prod_deploy
+  image: debian:12
+  tags:
+    - azure-jumphost-prod
+  cache: { }
+  variables:
+    ADMIN_DOMAIN_NAME: "$AZURE_PROD_ADMIN_DOMAIN_NAME"
+    ADMIN_WAF_POLICY: "$AZURE_PROD_ADMIN_WAF_POLICY"
+    BACKUP_ELASTIC_DATA: "$AZURE_PROD_BACKUP_ELASTIC_DATA"
+    BASIC_AUTH_ENABLED: "$AZURE_PROD_BASIC_AUTH_ENABLED"
+    BASIC_AUTH_WHITELIST: "$AZURE_PROD_BASIC_AUTH_WHITELIST"
+    CONTENTS_REPOSITORY_SHARE_ACCOUNT_KEY: "$AZURE_PROD_CONTENTS_REPOSITORY_SHARE_ACCOUNT_KEY"
+    CONTENTS_REPOSITORY_SHARE_ACCOUNT_NAME: "$AZURE_PROD_CONTENTS_REPOSITORY_SHARE_ACCOUNT_NAME"
+    CONTENTS_REPOSITORY_SHARE_NAME: "$AZURE_PROD_CONTENTS_REPOSITORY_SHARE_NAME"
+    CONTENTS_REPOSITORY_SHARE_RESOURCE_GROUP: "$AZURE_PROD_CONTENTS_REPOSITORY_SHARE_RESOURCE_GROUP"
+    CONTENTS_REPOSITORY_SHARE_SERVER: "$AZURE_PROD_CONTENTS_REPOSITORY_SHARE_SERVER"
+    DATABASE_PASSWORD_APP: "$AZURE_PROD_DATABASE_PASSWORD_APP"
+    DATABASE_PASSWORD_MATOMO: "$AZURE_PROD_DATABASE_PASSWORD_MATOMO"
+    DATABASE_USERNAME_APP: "$AZURE_PROD_DATABASE_USERNAME_APP"
+    DATABASE_USERNAME_MATOMO: "$AZURE_PROD_DATABASE_USERNAME_MATOMO"
+    DATASOURCE_AMERIGEOSS_CKAN_BASE_URL: "$AZURE_PROD_DATASOURCE_AMERIGEOSS_CKAN_BASE_URL"
+    DATASOURCE_ZENODO_BASE_URL: "$AZURE_PROD_DATASOURCE_ZENODO_BASE_URL"
+    DB_VOLUME_RESOURCE_ID: "$AZURE_PROD_DB_VOLUME_RESOURCE_ID"
+    DEPLOY_ENV: "prod"
+    DOCKER_REPOSITORY_ADDRESS: "eversisdawis.azurecr.io/geoss"
+    ELS_ELASTIC_PASSWORD: "$AZURE_PROD_ELS_ELASTIC_PASSWORD"
+    ELS_GEOSS_PASSWORD: "$AZURE_PROD_ELS_GEOSS_PASSWORD"
+    ELS_KIBANA_PASSWORD: "$AZURE_PROD_ELS_KIBANA_PASSWORD"
+    AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_NAME: "$AZURE_PROD_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_NAME"
+    AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_SECRET: "$AZURE_PROD_STORAGE_FOR_ELASTICSEARCH_BACKUP_ACCOUNT_SECRET"
+    AZURE_STORAGE_FOR_ELASTICSEARCH_BACKUP_CONTAINER_NAME: "$AZURE_PROD_STORAGE_FOR_ELASTICSEARCH_BACKUP_CONTAINER_NAME"
+    IDP_DOMAIN_NAME: "$AZURE_PROD_IDP_DOMAIN_NAME"
+    IDP_WAF_POLICY: "$AZURE_PROD_IDP_WAF_POLICY"
+    INGRESS_ALLOWED_CIDR: "$AZURE_PROD_DMZ_NETWORK"
+    INGRESS_EXTERNAL_IP: "$AZURE_PROD_INGRESS_EXTERNAL_IP"
+    K8S_NAMESPACE: "geoss"
+    KEYCLOAK_ADMIN_PASSWORD: "$AZURE_PROD_KEYCLOAK_ADMIN_PASSWORD"
+    KEYCLOAK_ADMIN_USERNAME: "$AZURE_PROD_KEYCLOAK_ADMIN_USERNAME"
+    KEYCLOAK_CLIENT_SECRET_ADMIN: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_ADMIN"
+    KEYCLOAK_CLIENT_SECRET_CONTENTS: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_CONTENTS"
+    KEYCLOAK_CLIENT_SECRET_CURATED: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_CURATED"
+    KEYCLOAK_CLIENT_SECRET_PERSONALDATA: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_PERSONALDATA"
+    KEYCLOAK_CLIENT_SECRET_PROXY: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_PROXY"
+    KEYCLOAK_CLIENT_SECRET_SEARCH: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_SEARCH"
+    KEYCLOAK_CLIENT_SECRET_SETTINGS: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_SETTINGS"
+    KEYCLOAK_CLIENT_SECRET_WORKER_GEODAB: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_WORKER_GEODAB"
+    KEYCLOAK_CLIENT_SECRET_WORKER_SDG: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_WORKER_SDG"
+    KEYCLOAK_CLIENT_SECRET_WORKER_WIKIPEDIA: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_WORKER_WIKIPEDIA"
+    KEYCLOAK_CLIENT_SECRET_WORKER_THESAURUS: "$AZURE_PROD_KEYCLOAK_CLIENT_SECRET_WORKER_THESAURUS"
+    KIBANA_FILES_SHARE_ACCOUNT_KEY: "$AZURE_PROD_KIBANA_FILES_SHARE_ACCOUNT_KEY"
+    KIBANA_FILES_SHARE_ACCOUNT_NAME: "$AZURE_PROD_KIBANA_FILES_SHARE_ACCOUNT_NAME"
+    KIBANA_FILES_SHARE_NAME: "$AZURE_PROD_KIBANA_FILES_SHARE_NAME"
+    KIBANA_FILES_SHARE_RESOURCE_GROUP: "$AZURE_PROD_KIBANA_FILES_SHARE_RESOURCE_GROUP"
+    KIBANA_FILES_SHARE_SERVER: "$AZURE_PROD_KIBANA_FILES_SHARE_SERVER"
+    LANDING_PAGE_DOMAIN_NAME: "$AZURE_PROD_LANDING_PAGE_DOMAIN_NAME"
+    LANDING_PAGE_WAF_POLICY: "$AZURE_PROD_LANDING_PAGE_WAF_POLICY"
+    MAILDEV_ENABLED: "$AZURE_PROD_MAILDEV_ENABLED"
+    MAILDEV_SMTP_PASSWORD: "$AZURE_PROD_MAILDEV_SMTP_PASSWORD"
+    MAILDEV_WEB_PASSWORD: "$AZURE_PROD_MAILDEV_WEB_PASSWORD"
+    MAILDEV_WEB_USERNAME: "$AZURE_PROD_MAILDEV_WEB_USERNAME"
+    MAINTENANCE_ON: "$AZURE_PROD_MAINTENANCE_ON"
+    MAINTENANCE_WHITELIST: "$AZURE_PROD_MAINTENANCE_WHITELIST"
+    MARIADB_ROOT_PASSWORD: "$AZURE_PROD_MARIADB_ROOT_PASSWORD"
+    MATOMO_DATABASE_NAME: "$AZURE_PROD_MATOMO_DATABASE_NAME"
+    MATOMO_FILES_SHARE_ACCOUNT_KEY: "$AZURE_PROD_MATOMO_FILES_SHARE_ACCOUNT_KEY"
+    MATOMO_FILES_SHARE_ACCOUNT_NAME: "$AZURE_PROD_MATOMO_FILES_SHARE_ACCOUNT_NAME"
+    MATOMO_FILES_SHARE_NAME: "$AZURE_PROD_MATOMO_FILES_SHARE_NAME"
+    MATOMO_FILES_SHARE_RESOURCE_GROUP: "$AZURE_PROD_MATOMO_FILES_SHARE_RESOURCE_GROUP"
+    MATOMO_FILES_SHARE_SERVER: "$AZURE_PROD_MATOMO_FILES_SHARE_SERVER"
+    MATOMO_PASSWORD: "$AZURE_PROD_MATOMO_PASSWORD"
+    MATOMO_TOKEN: "$AZURE_PROD_MATOMO_TOKEN"
+    MATOMO_USERNAME: "$AZURE_PROD_MATOMO_USERNAME"
+    NEXT_AUTH_SECRET: "$AZURE_PROD_NEXT_AUTH_SECRET"
+    RESOURCE_NAME_PREFIX: "geoss-prod"
+    SERVICES_PROVIDERS: "$AZURE_PROD_SERVICES_PROVIDERS"
+    UI_DOMAIN_NAME: "$AZURE_PROD_UI_DOMAIN_NAME"
+    UI_WAF_POLICY: "$AZURE_PROD_UI_WAF_POLICY"
+    WORKER_DAB_VLAB_API_TOKEN: "$AZURE_PROD_WORKER_DAB_VLAB_API_TOKEN"
+    WORKER_DAB_VLAB_BASE_URL: "$AZURE_PROD_WORKER_DAB_VLAB_BASE_URL"
+    WORKER_SDG_DEFAULT_LOGO: "$AZURE_PROD_WORKER_SDG_DEFAULT_LOGO"
+    WORKER_SDG_UN_BASE_URL: "$AZURE_PROD_WORKER_SDG_UN_BASE_URL"
+    WORKER_THESAURUS_EARTH_BASE_URI: "$AZURE_PROD_WORKER_THESAURUS_EARTH_BASE_URI"
+    WORKER_THESAURUS_EOSTERM_BASE_URI: "$AZURE_PROD_WORKER_THESAURUS_EOSTERM_BASE_URI"
+    WORKER_THESAURUS_ESA_BASE_URI: "$AZURE_PROD_WORKER_THESAURUS_ESA_BASE_URI"
+    WORKER_THESAURUS_ESA_TOP_CONCEPTS_URIS: "$AZURE_PROD_WORKER_THESAURUS_ESA_TOP_CONCEPTS_URIS"
+    WORKER_WIKIDATA_API_URL: "$AZURE_PROD_WORKER_WIKIDATA_API_URL"
+    WORKER_WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI: "$AZURE_PROD_WORKER_WIKIDATA_CATEGORIES_SPARQL_DEFAULT_GRAPH_URI"
+    WORKER_WIKIDATA_CATEGORIES_SPARQL_URL: "$AZURE_PROD_WORKER_WIKIDATA_CATEGORIES_SPARQL_URL"
+
+    ADMIN_INSTANCES: "1"
+    ADMIN_MEMORY_LIMIT: "4Gi"
+    ADMIN_CPU_REQUEST: "1"
+    ADMIN_MEMORY_REQUEST: "500Mi"
+    CONTENTS_INSTANCES: "1"
+    CONTENTS_MEMORY_LIMIT: "4Gi"
+    CONTENTS_CPU_REQUEST: "1"
+    CONTENTS_MEMORY_REQUEST: "500Mi"
+    CURATED_INSTANCES: "1"
+    CURATED_MEMORY_LIMIT: "4Gi"
+    CURATED_CPU_REQUEST: "1"
+    CURATED_MEMORY_REQUEST: "500Mi"
+    DB_INSTANCES: "1"
+    DB_MEMORY_LIMIT: "4Gi"
+    DB_CPU_REQUEST: "1"
+    DB_MEMORY_REQUEST: "500Mi"
+    ELS_INSTANCES: "1"
+    ELS_MEMORY_LIMIT: "5Gi"
+    ELS_CPU_REQUEST: "1"
+    ELS_MEMORY_REQUEST: "5Gi"
+    ELS_JAVA_OPTS: "-Xms4g -Xmx4g"
+    MAILDEV_INSTANCES: "1"
+    MAILDEV_MEMORY_LIMIT: "4Gi"
+    MAILDEV_CPU_REQUEST: "1"
+    MAILDEV_MEMORY_REQUEST: "500Mi"
+    MATOMO_INSTANCES: "1"
+    MATOMO_MEMORY_LIMIT: "4Gi"
+    MATOMO_CPU_REQUEST: "1"
+    MATOMO_MEMORY_REQUEST: "500Mi"
+    NGINX_INSTANCES: "1"
+    NGINX_MEMORY_LIMIT: "4Gi"
+    NGINX_CPU_REQUEST: "1"
+    NGINX_MEMORY_REQUEST: "500Mi"
+    KEYCLOAK_INSTANCES: "1"
+    KEYCLOAK_MEMORY_LIMIT: "4Gi"
+    KEYCLOAK_CPU_REQUEST: "1"
+    KEYCLOAK_MEMORY_REQUEST: "500Mi"
+    KIBANA_INSTANCES: "1"
+    KIBANA_MEMORY_LIMIT: "4Gi"
+    KIBANA_CPU_REQUEST: "1"
+    KIBANA_MEMORY_REQUEST: "500Mi"
+    LANDINGPAGE_INSTANCES: "1"
+    LANDINGPAGE_MEMORY_LIMIT: "4Gi"
+    LANDINGPAGE_CPU_REQUEST: "1"
+    LANDINGPAGE_MEMORY_REQUEST: "500Mi"
+    PERSONALDATA_INSTANCES: "1"
+    PERSONALDATA_MEMORY_LIMIT: "4Gi"
+    PERSONALDATA_CPU_REQUEST: "1"
+    PERSONALDATA_MEMORY_REQUEST: "500Mi"
+    PROXY_INSTANCES: "1"
+    PROXY_MEMORY_LIMIT: "4Gi"
+    PROXY_CPU_REQUEST: "1"
+    PROXY_MEMORY_REQUEST: "500Mi"
+    SEARCH_INSTANCES: "1"
+    SEARCH_MEMORY_LIMIT: "4Gi"
+    SEARCH_CPU_REQUEST: "1"
+    SEARCH_MEMORY_REQUEST: "500Mi"
+    SETTINGS_INSTANCES: "1"
+    SETTINGS_MEMORY_LIMIT: "4Gi"
+    SETTINGS_CPU_REQUEST: "1"
+    SETTINGS_MEMORY_REQUEST: "500Mi"
+    UI_INSTANCES: "1"
+    UI_MEMORY_LIMIT: "4Gi"
+    UI_CPU_REQUEST: "1"
+    UI_MEMORY_REQUEST: "500Mi"
+    WORKER_GEODAB_WORKER_INSTANCES: "1"
+    WORKER_GEODAB_WORKER_MEMORY_LIMIT: "4Gi"
+    WORKER_GEODAB_WORKER_CPU_REQUEST: "1"
+    WORKER_GEODAB_WORKER_MEMORY_REQUEST: "500Mi"
+    WORKER_SDG_WORKER_INSTANCES: "1"
+    WORKER_SDG_WORKER_MEMORY_LIMIT: "4Gi"
+    WORKER_SDG_WORKER_CPU_REQUEST: "1"
+    WORKER_SDG_WORKER_MEMORY_REQUEST: "500Mi"
+    WORKER_WIKIPEDIA_WORKER_INSTANCES: "1"
+    WORKER_WIKIPEDIA_WORKER_MEMORY_LIMIT: "4Gi"
+    WORKER_WIKIPEDIA_WORKER_CPU_REQUEST: "1"
+    WORKER_WIKIPEDIA_WORKER_MEMORY_REQUEST: "500Mi"
+    WORKER_THESAURUS_WORKER_INSTANCES: "1"
+    WORKER_THESAURUS_WORKER_MEMORY_LIMIT: "4Gi"
+    WORKER_THESAURUS_WORKER_CPU_REQUEST: "1"
+    WORKER_THESAURUS_WORKER_MEMORY_REQUEST: "500Mi"
+  dependencies: []
+  before_script:
+    - apt update && apt install -y curl git gettext-base
+    # Install kubectl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    # Install Helm
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    - chmod +x ./charts/install.sh
+    - echo "${AZURE_PROD_CLUSTER_CERTIFICATE}" | base64 -d > "${AZURE_PROD_CLUSTER_NAME}.crt"
+    - kubectl config set-cluster "${AZURE_PROD_CLUSTER_NAME}" --server="${AZURE_PROD_CLUSTER_URL}" --certificate-authority="${AZURE_PROD_CLUSTER_NAME}.crt" --embed-certs
+    - rm "${AZURE_PROD_CLUSTER_NAME}.crt"
+    - kubectl config set-context "${AZURE_PROD_CLUSTER_USERNAME}" --cluster="${AZURE_PROD_CLUSTER_NAME}" --user="${AZURE_PROD_CLUSTER_USERNAME}"
+    - kubectl config set-credentials "${AZURE_PROD_CLUSTER_USERNAME}" --token="${AZURE_PROD_CLUSTER_TOKEN}"
+    - kubectl config use-context "${AZURE_PROD_CLUSTER_USERNAME}"
+  script:
+    - echo "Docker image tag setup" && source setup_tag.sh
+    - echo "$AZURE_PROD_UI_CERT" > charts/ui.crt
+    - echo "$AZURE_PROD_UI_CERT_KEY" > charts/ui.key
+    - echo "$AZURE_PROD_ADMIN_CERT" > charts/admin.crt
+    - echo "$AZURE_PROD_ADMIN_CERT_KEY" > charts/admin.key
+    - echo "$AZURE_PROD_IDP_CERT" > charts/idp.crt
+    - echo "$AZURE_PROD_IDP_CERT_KEY" > charts/idp.key
+    - echo "$AZURE_PROD_LP_CERT" > charts/lp.crt
+    - echo "$AZURE_PROD_LP_CERT_KEY" > charts/lp.key
+    - cd charts
+    - ./install.sh
+  when: manual
+  only:
+    - develop-azure
+    - /^release-.*/
+
