@@ -11,16 +11,16 @@ type Props = {
 };
 
 const Pagination = ({ pagination }: Props) => {
-  const { currentPage, totalPages } = pagination;
+  const { number, totalPages } = pagination;
 
   const createPageLinks = () => {
-    let startPage = Math.max(1, currentPage - 1);
-    let endPage = Math.min(totalPages, currentPage + 1);
+    let startPage = Math.max(1, number - 1);
+    let endPage = Math.min(totalPages, number + 1);
 
     // Ensure we always show 3 pages if possible
-    if (currentPage === 1) {
+    if (number === 1) {
       endPage = Math.min(totalPages, 3);
-    } else if (currentPage === totalPages) {
+    } else if (number === totalPages) {
       startPage = Math.max(1, totalPages - 2);
     }
 
@@ -31,7 +31,7 @@ const Pagination = ({ pagination }: Props) => {
           scroll={false}
           prefetch
           className={`px-4 py-2 text-[#23272A] ${
-            i === currentPage
+            i === number
               ? "bg-[#F2F5F7] border border-[#A4ABB2]"
               : "text-black hover:bg-[#F2F5F7]"
           }`}
@@ -42,7 +42,7 @@ const Pagination = ({ pagination }: Props) => {
         </Link>
       );
     }
-    if (currentPage > 2) {
+    if (number > 2) {
       links.unshift(
         <p className="text-xl" key={uuidv4()}>
           ...
@@ -53,7 +53,7 @@ const Pagination = ({ pagination }: Props) => {
           scroll={false}
           prefetch
           className={`px-4 py-2 text-[#23272A] ${
-            currentPage === 1
+            number === 1
               ? "bg-[#F2F5F7] border border-[#A4ABB2]"
               : "text-black hover:bg-[#F2F5F7]"
           }`}
@@ -75,7 +75,7 @@ const Pagination = ({ pagination }: Props) => {
           scroll={false}
           prefetch
           className={`px-4 py-2 text-[#23272A] ${
-            totalPages === currentPage
+            totalPages === number
               ? "bg-[#F2F5F7] border border-[#A4ABB2]"
               : "text-black hover:bg-[#F2F5F7]"
           }`}
@@ -93,25 +93,25 @@ const Pagination = ({ pagination }: Props) => {
     <div className="w-full flex flex-row items-center justify-center py-8 gap-2 text-lg">
       <Link
         aria-label="previous-page"
-        className={`${currentPage === 1 && "pointer-events-none"}`}
+        className={`${number + 1 === 1 && "pointer-events-none"}`}
         scroll={false}
         prefetch
-        href={`${currentPage === 1 ? `` : `?page=${currentPage - 1}`}`}
+        href={`${number + 1 === 1 ? `` : `?page=${number - 1}`}`}
       >
         <TriangleArrowLeftIcon
-          color={currentPage === 1 ? "#A4ABB2" : "#23272A"}
+          color={number + 1 === 1 ? "#A4ABB2" : "#23272A"}
         />{" "}
       </Link>
       {createPageLinks()}
       <Link
         aria-label="next-page"
-        className={`${currentPage === totalPages && "pointer-events-none"}`}
+        className={`${number + 1 === totalPages && "pointer-events-none"}`}
         scroll={false}
         prefetch
-        href={`${currentPage === totalPages ? `` : `?page=${currentPage + 1}`}`}
+        href={`${number + 1 === totalPages ? `` : `?page=${number + 1}`}`}
       >
         <TriangleArrowRightIcon
-          color={currentPage === totalPages ? "#A4ABB2" : "#23272A"}
+          color={number + 1 === totalPages ? "#A4ABB2" : "#23272A"}
         />
       </Link>{" "}
     </div>

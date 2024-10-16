@@ -3,102 +3,111 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "ESA";
-  font-weight: normal;
-  font-style: normal;
-  src: url("fonts/notesesareg-webfont.ttf") format("truetype"),
-    url("fonts/notesesareg-webfont.woff") format("woff"),
-    url("fonts/notesesareg-webfont.woff2") format("woff2"),
-    url("fonts/notesesareg-webfont.svg") format("svg"),
-    url("fonts/notesesareg-webfont.eot") format("embedded-opentype"),
-    url("fonts/notesesareg-webfont.otf") format("opentype");
+    font-family: "ESA";
+    font-weight: normal;
+    font-style: normal;
+    src: url("fonts/notesesareg-webfont.ttf") format("truetype"), url("fonts/notesesareg-webfont.woff") format("woff"),
+        url("fonts/notesesareg-webfont.woff2") format("woff2"), url("fonts/notesesareg-webfont.svg") format("svg"),
+        url("fonts/notesesareg-webfont.eot") format("embedded-opentype"),
+        url("fonts/notesesareg-webfont.otf") format("opentype");
 }
 
 @font-face {
-  font-family: "ESA-ITALIC";
-  font-weight: normal;
-  font-style: italic;
-  src: url("fonts/notesesaregita-webfont.otf") format("opentype");
+    font-family: "ESA-ITALIC";
+    font-weight: normal;
+    font-style: italic;
+    src: url("fonts/notesesaregita-webfont.otf") format("opentype");
 }
 
 @font-face {
-  font-family: "ESA-BOLD";
-  font-weight: bold;
-  font-style: normal;
-  src: url("fonts/notesesabold-webfont.ttf") format("truetype"),
-    url("fonts/notesesabold-webfont.woff") format("woff"),
-    url("fonts/notesesabold-webfont.woff2") format("woff2"),
-    url("fonts/notesesabold-webfont.svg") format("svg"),
-    url("fonts/notesesabold-webfont.eot") format("embedded-opentype"),
-    url("fonts/notesesabold-webfont.otf") format("opentype");
+    font-family: "ESA-BOLD";
+    font-weight: bold;
+    font-style: normal;
+    src: url("fonts/notesesabold-webfont.ttf") format("truetype"), url("fonts/notesesabold-webfont.woff") format("woff"),
+        url("fonts/notesesabold-webfont.woff2") format("woff2"), url("fonts/notesesabold-webfont.svg") format("svg"),
+        url("fonts/notesesabold-webfont.eot") format("embedded-opentype"),
+        url("fonts/notesesabold-webfont.otf") format("opentype");
 }
 
 @font-face {
-  font-family: "ESA-BOLD-ITALIC";
-  font-weight: bold;
-  font-style: italic;
-  src: url("fonts/notesesabolita-webfont.otf") format("opentype");
+    font-family: "ESA-BOLD-ITALIC";
+    font-weight: bold;
+    font-style: italic;
+    src: url("fonts/notesesabolita-webfont.otf") format("opentype");
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-  scroll-behavior: smooth;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+    scroll-behavior: smooth;
 }
 
 .article-content {
-  section {
-    margin-top: 15px;
-  }
+    section {
+        margin-top: 15px;
+    }
 
-  h1 {
-    font-size: 28px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
+    h1 {
+        margin: 20px 0 10px;
+        font-size: 42px;
+        line-height: 1.2;
+    }
+    h2 {
+        margin: 20px 0 10px;
+        font-size: 36px;
+        line-height: 1.2;
+    }
+    h3 {
+        margin: 20px 0 10px;
+        font-size: 26px;
+        line-height: 1.2;
+    }
+    h4 {
+        margin: 20px 0 10px;
+        font-size: 22px;
+        line-height: 1.2;
+    }
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background: #969696;
-  cursor: pointer;
-  border-radius: 2vh;
-  margin-right: 5px;
+    background: #969696;
+    cursor: pointer;
+    border-radius: 2vh;
+    margin-right: 5px;
 }
 
 .scrollbar::-webkit-scrollbar-corner {
-  border-radius: 2vh;
+    border-radius: 2vh;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
 .inputIcon {
-  padding-left: 50px;
-  background: url("/Loop.svg");
-  background-position: 15px 12px;
-  background-repeat: no-repeat;
-  background-size: 25px;
-  background-color: #F9FAFB;
+    padding-left: 50px;
+    background: url("/Loop.svg");
+    background-position: 15px 12px;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-color: #f9fafb;
 }
 
 [aria-hidden="true"] {
-  opacity: 0.3;
-  pointer-events: none;
-  /* Add any other styles you need */
+    opacity: 0.3;
+    pointer-events: none;
+    /* Add any other styles you need */
 }
 
 a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }

@@ -21,8 +21,8 @@ const NewsTile = ({ img, date, text, id }: NewsTileData) => {
         />
       </div>
 
-      <p>{date}</p>
-      <p className="min-h-[56px] text-xl">{text}</p>
+      <p>{date.substring(0, 10)}</p>
+      <p className="min-h-[56px] text-xl line-clamp-3">{text}</p>
     </Link>
   );
 };
