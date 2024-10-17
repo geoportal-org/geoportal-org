@@ -11,6 +11,7 @@ export type Feature = {
 
 export type NewsTileData = {
     img: string;
+    title?: string;
     date: string;
     text: string;
     id: string;

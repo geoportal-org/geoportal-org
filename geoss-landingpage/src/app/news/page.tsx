@@ -5,6 +5,13 @@ import NewsGrid from "./NewsGrid";
 import { NewsTileData } from "../model/types";
 import { findMoreLinksNewsPage } from "../model/findMoreLinks";
 import { getNewsPages } from "../api/newsApi";
+import SchemaHeader from "../components/SchemaHeader/SchemaHeader";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'GEOSS News',
+    description: 'GEOSS News page',
+  }
 
 async function getServerSideProps(searchParams: { [key: string]: string | string[] | undefined }) {
     const currentPage = Number(searchParams.page) - 1 || 0;
@@ -14,6 +21,7 @@ async function getServerSideProps(searchParams: { [key: string]: string | string
     news.forEach((n: any) => {
         newsList.push({
             img: "/newsPlaceholder1.webp",
+            title: n.title.en,
             date: n.modifiedOn,
             text: n.description.en,
             id: n.slug,
@@ -30,6 +38,7 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
         }
         return (
             <div className="w-full text-black">
+                <SchemaHeader type="articles-list" data={newsData.newsList}/>
                 <Title />
                 <Suspense fallback={<>Loading...</>}>
                     <NewsGrid newsList={newsData.newsList} paginationData={newsData.paginationData} />
