@@ -210,119 +210,119 @@ networkPolicy:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-admin
           ports:
               - protocol: TCP
-                port: 3000   
+                port: 3000
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
           ports:
               - protocol: TCP
-                port: 8443  
+                port: 8443
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-kibana
           ports:
               - protocol: TCP
-                port: 5601  
+                port: 5601
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-landingpage
           ports:
               - protocol: TCP
-                port: 3000  
+                port: 3000
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
           ports:
               - protocol: TCP
-                port: 1080   
+                port: 1080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
           ports:
               - protocol: TCP
-                port: 8082
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
           ports:
               - protocol: TCP
-                port: 8080   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
           ports:
               - protocol: TCP
-                port: 3000   
+                port: 3000
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-geodab-worker
           ports:
               - protocol: TCP
-                port: 8080                   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-sdg-worker
           ports:
               - protocol: TCP
-                port: 8080                   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-wikipedia-worker
           ports:
               - protocol: TCP
-                port: 8080                   
+                port: 8080
         - to:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
           ports:
               - protocol: TCP
-                port: 8080                   
+                port: 8080
     ingress:
         # Allow to connect from DMZ
         - from:

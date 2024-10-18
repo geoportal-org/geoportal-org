@@ -335,7 +335,7 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
     hostname: geoss-proxy
     ports:
-      - "8084:8082"
+      - "8084:8080"
     networks:
       - geoss_net
     depends_on:

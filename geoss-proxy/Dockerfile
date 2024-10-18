@@ -30,7 +30,7 @@ COPY ${JAR_FILE} ./application-boot.jar
 
 USER docker_noroot
 
-EXPOSE 8082
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "application-boot.jar"]
 CMD [""]

@@ -24,7 +24,7 @@ docker build -f Dockerfile-local -t geoss/geoss-proxy .
 ## Run the container from image
 ```shell
 cd geoss-proxy
-docker run -p8082:8082 geoss/geoss-proxy:latest
+docker run -p8080:8080 geoss/geoss-proxy:latest
 ```
 
 Available tools in application

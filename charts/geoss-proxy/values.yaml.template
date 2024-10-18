@@ -28,8 +28,8 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 8082
-  targetPort: 8082
+  port: 8080
+  targetPort: 8080
   protocol: TCP
   name: http
 
@@ -126,7 +126,7 @@ networkPolicy:
               - protocol: TCP
                 port: 443
               - protocol: UDP
-                port: 443                
+                port: 443
         # Allow connect to other containers
         - to:
             - podSelector:
@@ -150,11 +150,11 @@ networkPolicy:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
           ports:
               - protocol: TCP
-                port: 8082
+                port: 8080
         - from:
               - podSelector:
                     matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
           ports:
               - protocol: TCP
-                port: 8082
+                port: 8080
