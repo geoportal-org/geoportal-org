@@ -71,6 +71,19 @@ networkPolicy:
                 port: 53
               - protocol: UDP
                 port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: ${INGRESS_EXTERNAL_IP}/32
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443                
     ingress:
         # Allow to connect from other containers
         - from:
@@ -80,3 +93,10 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 3000
+
+hostAliases:
+  - ip: "INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}"                

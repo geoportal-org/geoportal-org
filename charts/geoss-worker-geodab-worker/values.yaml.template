@@ -175,3 +175,10 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 8080    
+
+hostAliases:
+  - ip: "INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}" 
