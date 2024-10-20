@@ -14,10 +14,10 @@ create_database()
     database=$1
     command="CREATE DATABASE IF NOT EXISTS $database;"
     echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: $command"
-    mysql -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
+    mariadb -h localhost -u root -p"$MARIADB_ROOT_PASSWORD" -e "$command"
     command="GRANT ALL ON $database.* TO '$MARIADB_USER'@'%';"
     echo "$(date --rfc-3339=seconds) [Note] [Entrypoint]: $command"
-    mysql -h localhost -u root -p"${MARIADB_ROOT_PASSWORD}" -e "$command"
+    mariadb -h localhost -u root -p"${MARIADB_ROOT_PASSWORD}" -e "$command"
 }
 
 create_database geoss_bookmarks_db
