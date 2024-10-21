@@ -21,6 +21,8 @@ services:
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
     hostname: geoss-contents
+    volumes:
+      - "./repository:/repository"
     ports:
       - "8081:8080"
     networks:
