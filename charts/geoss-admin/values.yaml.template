@@ -167,7 +167,7 @@ networkPolicy:
                 port: 3000
 
 hostAliases:
-  - ip: "INGRESS_EXTERNAL_IP"
+  - ip: "$INGRESS_EXTERNAL_IP"
     hostnames:
       - "${ADMIN_DOMAIN_NAME}"
       - "${UI_DOMAIN_NAME}"
