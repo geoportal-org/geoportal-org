@@ -35,8 +35,8 @@ class WorkflowTransferOptionFactory {
      */
     TransferOption createTransferOption(@NonNull Workflow workflow) {
         TransferOption transferOption = new TransferOption();
-        transferOption.setName(changeUrlToHttps(workflow.getId())); // Do not change without consulting
-        transferOption.setTitle(changeUrlToHttps(workflow.getId()));
+        transferOption.setName(workflow.getId()); // Do not change without consulting
+        transferOption.setTitle(workflow.getId());
         transferOption.setProtocol(Protocol.WORKFLOW);
         transferOption.setEndpoint(createWorkflowEndpoint());
         return transferOption;
@@ -46,9 +46,4 @@ class WorkflowTransferOptionFactory {
         return new Endpoint(vlabDabProperties.getBaseUrl() + vlabDabProperties.getWorkflowsEndpoint(),
                 UrlType.HTTP.getValue());
     }
-
-    private String changeUrlToHttps(@NonNull String url) {
-        return url.replaceFirst("http", "https");
-    }
-
 }
