@@ -63,7 +63,7 @@ public class DabServiceImpl implements DabService {
     public Page<Catalog> getCatalogs(Pageable pageable) {
         log.debug("pageable:{},offset:{}", pageable, pageable.getOffset());
         String url = getDabCatalogUrl(pageable);
-        log.debug("url:{}", url);
+        log.info("url:{}", url);
         try {
             InputStream inputStream = httpCall(url);
             Page<Catalog> catalogs = readFeed(inputStream, pageable);
