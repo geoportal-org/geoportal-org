@@ -7,8 +7,9 @@ import time
 import requests
 from keycloak import KeycloakOpenID
 
-CONTENTS_FAILED_RECORDS_FILE = 'contents_common_failed_records.json'
-CONTENTS_DIR = 'common'
+CUSTOM_CONTENTS_FILE = 'custom_contents.json'
+CUSTOM_CONTENTS_FAILED_RECORDS_FILE = 'contents_custom_failed_records.json'
+CUSTOM_CONTENTS_DIR = 'contents'
 
 
 def main():
@@ -26,11 +27,11 @@ def main():
     failed_data_dir = config.get('FS', 'failed_data_dir', fallback=script_dir).strip('"').strip("'")
     if not os.path.exists(failed_data_dir):
         os.makedirs(failed_data_dir)
-    failed_data_file = os.path.join(failed_data_dir, CONTENTS_FAILED_RECORDS_FILE)
+    failed_data_file = os.path.join(failed_data_dir, CUSTOM_CONTENTS_FAILED_RECORDS_FILE)
     if os.path.exists(failed_data_file):
         os.remove(failed_data_file)
     # Contents
-    contents_dir = os.path.join(data_dir, CONTENTS_DIR)
+    contents_dir = os.path.join(data_dir, CUSTOM_CONTENTS_DIR)
     if not os.path.exists(contents_dir):
         os.makedirs(contents_dir)
 
@@ -41,13 +42,13 @@ def main():
 
     site_api_url = config.get('contents', 'site_api_url').strip('\'\"')
     content_api_url = config.get('contents', 'content_api_url').strip('\'\"')
-    sites = get_sites(admin_access_token, site_api_url)
-    failed_records = process_sites(sites, admin_access_token, content_api_url, contents_dir)
+    data = load_data(data_dir, CUSTOM_CONTENTS_FILE)
+    failed_records = process_records(data, admin_access_token, site_api_url, content_api_url, contents_dir)
 
     log_end_time(start_time)
 
     if failed_records:
-        save_failed_records(failed_records, failed_data_dir, CONTENTS_FAILED_RECORDS_FILE)
+        save_failed_records(failed_records, failed_data_dir, CUSTOM_CONTENTS_FAILED_RECORDS_FILE)
 
 
 def get_keycloak_openid(kc_base_url):
@@ -80,84 +81,38 @@ def log_end_time(start_time):
     print(f"Total execution time: {end_time - start_time:.2f} seconds")
 
 
-def get_sites(access_token, site_api_url):
-    url = site_api_url
-    headers = create_headers(access_token)
-    response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        raise Exception("Sites not found")
-    result = response.json()
-    embedded = result.get('_embedded', '')
-    sites = embedded.get('site', '')
-    if not sites:
-        raise Exception("Site not found in response")
-    return sites
-
-
-def process_sites(data, admin_access_token, content_api_url, contents_dir):
-    failed_records = []
-    for record in data:
-        if not process_site(record, admin_access_token, content_api_url, contents_dir):
-            failed_records.append(record)
-    return failed_records
-
-
-def process_site(record, admin_access_token, content_api_url, contents_dir):
-    site_id = record.get('id', '')
-    name = record.get('name', '')
-    print("Site:", name, site_id)
-    contents = get_contents(admin_access_token, content_api_url, site_id)
-    print("Contents:", len(contents))
-    process_contents(contents, admin_access_token, content_api_url, contents_dir)
-    return True
-
-
-def get_contents(access_token, content_api_url, site_id):
-    url = content_api_url + '/search/findBySiteId?siteId=' + str(site_id)
-    headers = create_headers(access_token)
-    response = requests.get(url, headers=headers)
-    if response.status_code != 200:
-        raise Exception("Contents not found")
-    result = response.json()
-    embedded = result.get('_embedded', '')
-    contents = embedded.get('content', '')
-    if not contents:
-        raise Exception("Contents not found in response")
-    return contents
-
-
-def process_contents(data, admin_access_token, content_api_url, contents_dir):
-    failed_records = []
-    for record in data:
-        if not process_content(record, admin_access_token, content_api_url, contents_dir):
-            failed_records.append(record)
-    return failed_records
-
-
-def process_content(record, admin_access_token, content_api_url, contents_dir):
-    content_id = record.get('id', '')
-    title = record.get('title', '')
-    title_en = title.get('en', '')
-    print("Content ", content_id, title_en)
-    contents_file_name = title_en + ".html"
-    contents_file_path = os.path.join(contents_dir, contents_file_name)
-    print(contents_file_path)
-    if os.path.isfile(contents_file_path):
-        with open(contents_file_path, 'r', encoding='utf-8') as contents_file:
-            contents_data = contents_file.read()
-            data = record.get('data', '')
-            for lang in data:
-                data[lang] = contents_data
-        dest_api_url = content_api_url + '/' + str(content_id)
-        send_data(record, admin_access_token, dest_api_url)
-    else:
-        print("Skip for missing file ", contents_file_path)
-
-
-def send_data(record, admin_access_token, dest_api_url):
+def load_data(data_dir, file_name):
+    file_path = os.path.join(data_dir, file_name)
     try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading data from {file_path}: {e}")
+        return []
+
+
+def process_records(data, admin_access_token, site_api_url, content_api_url, data_dir):
+    failed_records = []
+    for record in data:
+        if not send_data(record, admin_access_token, site_api_url, content_api_url, data_dir):
+            failed_records.append(record)
+    return failed_records
+
+
+def send_data(record, admin_access_token, site_api_url, content_api_url, file_dir):
+    try:
+        site_url = record.get('site', '')
+        print("siteUrl:", site_url)
+        site_id = get_site_id_by_friendly_url(admin_access_token, site_api_url, site_url)
+        print("siteId:", site_id)
+        name = record.get('name', '')
+        content = get_content(admin_access_token, content_api_url, site_id, name)
+        file_name = record.get('file', '')
+        content_file = get_content_file(file_dir, file_name)
         headers = create_headers(admin_access_token)
-        payload = create_payload(record)
+        payload = create_payload(content, content_file)
+        content_id = content.get('id', '')
+        dest_api_url = content_api_url + '/' + str(content_id)
         response = requests.put(dest_api_url, headers=headers, json=payload)
         if response.status_code == 200:
             print_response_status(response)
@@ -173,16 +128,52 @@ def send_data(record, admin_access_token, dest_api_url):
         return False
 
 
+def get_site_id_by_friendly_url(access_token, site_api_url, friendly_url):
+    url = site_api_url + '/search/findByUrl?url=' + friendly_url
+    headers = create_headers(access_token)
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        raise Exception("Site not found for liferay friendly url " + str(friendly_url))
+    site = response.json()
+    site_id = str(site.get('id', ''))
+    if not site_id:
+        raise Exception("Site not found for liferay friendly url " + str(friendly_url))
+    return site_id
+
+
+def get_content(access_token, content_api_url, site_id, title):
+    url = content_api_url + '/search/findByTitleAndSiteId?title=' + title + '&siteId=' + site_id
+    headers = create_headers(access_token)
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        raise Exception("Content " + str(title) + " not found in site " + str(site_id))
+    content = response.json()
+    if not content:
+        raise Exception("Content " + str(title) + " not found in site " + str(site_id))
+    return content
+
+
+def get_content_file(file_dir, file_name):
+    file_path = os.path.join(file_dir, file_name)
+    print(file_path)
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = file.read()
+        return data
+
+
 def create_headers(access_token):
     return {
         'Authorization': 'Bearer ' + access_token
     }
 
 
-def create_payload(record):
+def create_payload(record, contents_data):
+    data = record.get('data', '')
+    for lang in data:
+        data[lang] = contents_data
     return {
         "title": record.get('title', ''),
-        "data": record.get('data', ''),
+        "data": data,
         "published": record.get('published', ''),
         "siteId": record.get('siteId', '')
     }
