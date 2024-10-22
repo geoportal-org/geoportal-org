@@ -97,7 +97,7 @@ def main():
 
     config_file = sys.argv[1] if sys.argv[1:] else 'environment_config.ini'
     print("Read configuration from file:", config_file)
-    config = configparser.ConfigParser()
+    config = configparser.RawConfigParser()
     config.read(config_file)
     print("Read configuration sections:", config.sections())
 
