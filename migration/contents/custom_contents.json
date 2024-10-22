@@ -1,0 +1,17 @@
+[
+    {
+        "site": "amerigeoss",
+        "name": "General information",
+        "file": "general-informations-amerigeo.html"
+    },
+    {
+        "site": "dbar",
+        "name": "General information",
+        "file": "general-informations-dbar.html"
+    },
+    {
+        "site": "envidat-community",
+        "name": "General information",
+        "file": "general-informations-envidat.html"
+    }
+]
