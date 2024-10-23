@@ -127,6 +127,13 @@ networkPolicy:
         - from:
               - podSelector:
                     matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 1025                
+        - from:
+              - podSelector:
+                    matchLabels:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
           ports:
               - protocol: TCP
