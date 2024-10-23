@@ -4,27 +4,52 @@
             <span>{{ workflow.name }}</span>
         </div>
         <div class="service-workflow__switcher">
-            <button :class="{ active: showDetails }" @click="toggleShowDetails(true)"
-                :title="$tc('popupContent.seeThisWorkflow')">
-                <img :src="`/svg/see-doc.svg`" :alt="$tc('popupContent.seeThisWorkflow')" />
+            <button
+                :class="{ active: showDetails }"
+                @click="toggleShowDetails(true)"
+                :title="$tc('popupContent.seeThisWorkflow')"
+            >
+                <img
+                    :src="`/svg/see-doc.svg`"
+                    :alt="$tc('popupContent.seeThisWorkflow')"
+                />
                 <span>{{ $tc('popupContent.seeThisWorkflow') }}</span>
             </button>
-            <button :class="{ active: !showDetails }" @click="toggleShowDetails(false)" :title="$tc('popupContent.runs')">
-                <img :src="`/svg/run-doc.svg`" :alt="$tc('popupContent.runs')" />
+            <button
+                :class="{ active: !showDetails }"
+                @click="toggleShowDetails(false)"
+                :title="$tc('popupContent.runs')"
+            >
+                <img
+                    :src="`/svg/run-doc.svg`"
+                    :alt="$tc('popupContent.runs')"
+                />
                 <span>{{ $tc('popupContent.runs') }}</span>
             </button>
         </div>
 
         <div class="service-workflow__details" v-show="showDetails">
             <div class="margin-bottom-30">
-                <div class="d-flex flex--justify-center flex--align-end flex--wrap">
+                <div
+                    class="d-flex flex--justify-center flex--align-end flex--wrap"
+                >
                     <div ref="bpmn-canvas"></div>
                 </div>
-                <div class="bpmn-legend d-flex flex--justify-center flex--align-center flex--wrap">
-                    <span class="required">{{ $tc('popupContent.requiredFields') }}</span>
-                    <span class="optional">{{ $tc('popupContent.optionalFields') }}</span>
-                    <span class="expert">{{ $tc('popupContent.expertOptions') }}</span>
-                    <span class="output">{{ $tc('popupContent.outputs') }}</span>
+                <div
+                    class="bpmn-legend d-flex flex--justify-center flex--align-center flex--wrap"
+                >
+                    <span class="required">{{
+                        $tc('popupContent.requiredFields')
+                    }}</span>
+                    <span class="optional">{{
+                        $tc('popupContent.optionalFields')
+                    }}</span>
+                    <span class="expert">{{
+                        $tc('popupContent.expertOptions')
+                    }}</span>
+                    <span class="output">{{
+                        $tc('popupContent.outputs')
+                    }}</span>
                 </div>
             </div>
 
@@ -34,26 +59,57 @@
                 </div>
             </div>
 
-            <div class="service-workflow__resource" v-if="workflowInputs.length">
+            <div
+                class="service-workflow__resource"
+                v-if="workflowInputs.length"
+            >
                 <div class="service-workflow__resource-header">
                     <div>{{ $tc('popupContent.inputName') }}</div>
                     <div>{{ $tc('popupContent.chosenResources') }}</div>
                     <div>{{ $tc('popupContent.actions') }}</div>
                 </div>
-                <div class="service-workflow__resource-data" v-for="input of workflowInputs" :key="input.id"
-                    v-show="!isExpert(input.id) || (isExpert(input.id) && showExpertOptions)">
-                    <div class="d-flex flex--align-center">{{ input.name }} <span v-if="isRequired(input.id)">*</span>
+                <div
+                    class="service-workflow__resource-data"
+                    v-for="input of workflowInputs"
+                    :key="input.id"
+                    v-show="
+                        !isExpert(input.id) ||
+                        (isExpert(input.id) && showExpertOptions)
+                    "
+                >
+                    <div class="d-flex flex--align-center">
+                        {{ input.name }}
+                        <span v-if="isRequired(input.id)">*</span>
                     </div>
                     <div>
                         <div
-                            v-if="workflowResource && workflowResource[input.id] && workflowResource[input.id].length && !workflowResource[input.id][0].dataInput">
-                            <div class="d-flex flex--align-center" v-for="resource of workflowResource[input.id]"
-                                :key="resource.id">
-                                <button @click="removeWorkflowResource(resource, input.id)"
-                                    :title="$tc('popupContent.removeResource')">
+                            v-if="
+                                workflowResource &&
+                                workflowResource[input.id] &&
+                                workflowResource[input.id].length &&
+                                !workflowResource[input.id][0].dataInput
+                            "
+                        >
+                            <div
+                                class="d-flex flex--align-center"
+                                v-for="resource of workflowResource[input.id]"
+                                :key="resource.id"
+                            >
+                                <button
+                                    @click="
+                                        removeWorkflowResource(
+                                            resource,
+                                            input.id
+                                        )
+                                    "
+                                    :title="$tc('popupContent.removeResource')"
+                                >
                                     <i class="cross"></i>
                                 </button>
-                                <span>{{ resource.title }}</span>
+                                <span>{{
+                                    resource.title ||
+                                    getPropNameByString(resource)
+                                }}</span>
                             </div>
                         </div>
                         <div v-else-if="isRequired(input.id)">
@@ -63,68 +119,189 @@
                         </div>
                         <div v-else>
                             <div v-if="getDefaultValue(input.id)">
-                                <div v-if="activeEdit(input.id)" class="d-flex flex--align-center">
-                                    <input v-if="getValueSchema(input.id) === 'bbox'"
-                                        :placeholder="$tc('popupContent.coordinatesWSEN')" :id="input.id"
-                                        @change="updateResourceValue(input.id, $event)" />
-                                    <input v-else :placeholder="getDefaultValue(input.id, true)" :id="input.id"
-                                        @change="updateResourceValue(input.id, $event)" />
-                                    <i class="restore-default-value" @click="delEditResource(input.id)">&#10006;</i>
+                                <div
+                                    v-if="activeEdit(input.id)"
+                                    class="d-flex flex--align-center"
+                                >
+                                    <input
+                                        v-if="
+                                            getValueSchema(input.id) === 'bbox'
+                                        "
+                                        :placeholder="
+                                            $tc('popupContent.coordinatesWSEN')
+                                        "
+                                        :id="input.id"
+                                        @change="
+                                            updateResourceValue(
+                                                input.id,
+                                                $event
+                                            )
+                                        "
+                                    />
+                                    <input
+                                        v-else
+                                        :placeholder="
+                                            getDefaultValue(input.id, true)
+                                        "
+                                        :id="input.id"
+                                        @change="
+                                            updateResourceValue(
+                                                input.id,
+                                                $event
+                                            )
+                                        "
+                                    />
+                                    <i
+                                        class="restore-default-value"
+                                        @click="delEditResource(input.id)"
+                                        >&#10006;</i
+                                    >
                                 </div>
-                                <div v-else-if="getValueSchema(input.id) === 'bbox'" class="d-flex flex--align-center">
-                                    <span v-html="getDefaultValue(input.id)"></span>
+                                <div
+                                    v-else-if="
+                                        getValueSchema(input.id) === 'bbox'
+                                    "
+                                    class="d-flex flex--align-center"
+                                >
+                                    <span
+                                        v-html="getDefaultValue(input.id)"
+                                    ></span>
                                 </div>
-                                <div v-else @click="addEditResource(input.id)"
-                                    class="default-value d-flex flex--align-center">
+                                <div
+                                    v-else
+                                    @click="addEditResource(input.id)"
+                                    class="default-value d-flex flex--align-center"
+                                >
                                     <i class="pencil">&#9998;</i>
-                                    <span v-html="getDefaultValue(input.id)"></span>
+                                    <span
+                                        v-html="getDefaultValue(input.id)"
+                                    ></span>
                                 </div>
                             </div>
                             <input v-else />
                         </div>
                     </div>
-                    <div class="service-workflow__resource-actions flex--justify-center">
-                        <button v-if="getValueSchema(input.id) === 'bbox'" class="service-workflow__select-resources"
-                            @click="setBoundingBox(input.id)">{{ $tc('popupContent.setBoundingBox') }}</button>
-                        <span v-else-if="isExpert(input.id)" class="expert-option-info">{{
-                            $tc('popupContent.additionalExpertOption') }}</span>
-                        <button v-else class="service-workflow__select-resources"
-                            @click="selectResources(input.id)"><span>{{ $tc('popupContent.selectResources') }}</span> <span
-                                class="arrow"></span></button>
+                    <div
+                        class="service-workflow__resource-actions flex--justify-center"
+                    >
+                        <div
+                            v-if="input.id === 'location'"
+                            class="autocomplete"
+                        >
+                            <input
+                                class="autocomplete-input"
+                                type="text"
+                                v-model="query"
+                                @input="getSuggestions"
+                                @focus="showSuggestions"
+                            />
+                            <ul
+                                v-if="suggestionsVisible"
+                                id="autocomplete-list"
+                                class="autocomplete-list"
+                            >
+                                <li
+                                    class="autocomplete-item"
+                                    v-for="(country, index) of countryOptions"
+                                    :key="index"
+                                >
+                                    <button
+                                        class="autocomplete-button"
+                                        @click="
+                                            setSelectedCountry(
+                                                input.id,
+                                                country.city,
+                                                $event
+                                            )
+                                        "
+                                    >
+                                        {{ country.city }}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <button
+                            v-else-if="getValueSchema(input.id) === 'bbox'"
+                            class="service-workflow__select-resources"
+                            @click="setBoundingBox(input.id)"
+                        >
+                            {{ $tc('popupContent.setBoundingBox') }}
+                        </button>
+                        <span
+                            v-else-if="isExpert(input.id)"
+                            class="expert-option-info"
+                            >{{
+                                $tc('popupContent.additionalExpertOption')
+                            }}</span
+                        >
+                        <button
+                            v-else
+                            class="service-workflow__select-resources"
+                            @click="selectResources(input.id)"
+                        >
+                            <span>{{
+                                $tc('popupContent.selectResources')
+                            }}</span>
+                            <span class="arrow"></span>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div v-if="hasRequiredFields"
-                class="service-workflow__required-fields d-flex flex--align-center flex--wrap flex--justify-between">
+            <div
+                v-if="hasRequiredFields"
+                class="service-workflow__required-fields d-flex flex--align-center flex--wrap flex--justify-between"
+            >
+                <div>* {{ $tc('popupContent.requiredFields') }}</div>
                 <div>
-                    * {{ $tc('popupContent.requiredFields') }}
-                </div>
-                <div>
-                    <button v-if="!showExpertOptions && hasExpertOptions" class="service-workflow__expert-options show"
-                        @click="toggleExpertOptions()">
+                    <button
+                        v-if="!showExpertOptions && hasExpertOptions"
+                        class="service-workflow__expert-options show"
+                        @click="toggleExpertOptions()"
+                    >
                         {{ $tc('popupContent.showExpertOptions') }}
                     </button>
-                    <button v-if="showExpertOptions && hasExpertOptions" class="service-workflow__expert-options hide"
-                        @click="toggleExpertOptions()">
+                    <button
+                        v-if="showExpertOptions && hasExpertOptions"
+                        class="service-workflow__expert-options hide"
+                        @click="toggleExpertOptions()"
+                    >
                         {{ $tc('popupContent.hideExpertOptions') }}
                     </button>
                 </div>
             </div>
             <div class="service-workflow__platforms">
                 <div class="service-workflow__title">
-                    <span>{{ $tc('popupContent.cloudPlatformSelection') }}</span>
-                    <small v-if="platformDataLoading !== 0" class="platform-loading">{{
-                        $tc('popupContent.fetchingPlatformsData') }}<span>.</span><span>.</span><span>.</span></small>
+                    <span>{{
+                        $tc('popupContent.cloudPlatformSelection')
+                    }}</span>
+                    <small
+                        v-if="platformDataLoading !== 0"
+                        class="platform-loading"
+                        >{{ $tc('popupContent.fetchingPlatformsData')
+                        }}<span>.</span><span>.</span><span>.</span></small
+                    >
                 </div>
                 <div class="service-workflow__platforms-choice">
-                    <label v-for="platform of cloudPlatforms" :key="platform.id" :for="`platform_${platform.id}`"
-                        :class="{ active: platform.id === selectedPlatform.id, optimal: platform.id === optimalPlatform.id, disabled: !allRequiredFilled }">
-
+                    <label
+                        v-for="platform of cloudPlatforms"
+                        :key="platform.id"
+                        :for="`platform_${platform.id}`"
+                        :class="{
+                            active: platform.id === selectedPlatform.id,
+                            optimal: platform.id === optimalPlatform.id,
+                            disabled: !allRequiredFilled
+                        }"
+                    >
                         <small>{{ $tc('popupContent.optimal') }}</small>
 
-                        <input name="platform" v-model="selectedPlatform" :id="`platform_${platform.id}`" type="radio"
-                            :value="platform" />
+                        <input
+                            name="platform"
+                            v-model="selectedPlatform"
+                            :id="`platform_${platform.id}`"
+                            type="radio"
+                            :value="platform"
+                        />
 
                         <span>{{ platform.title }}</span>
                     </label>
@@ -135,42 +312,55 @@
                     <span>{{ $tc('popupContent.runName') }}</span>
                 </div>
                 <div class="service-workflow__run-title-input">
-                    <input type="text" id="run-title" :placeholder="$tc('popupContent.runName')"
-                        v-model="workflowRunName" />
+                    <input
+                        type="text"
+                        id="run-title"
+                        :placeholder="$tc('popupContent.runName')"
+                        v-model="workflowRunName"
+                    />
                 </div>
             </div>
             <div class="d-flex flex--justify-end flex--wrap">
-                <button class="service-workflow__run" :class="{ disabled: !allRequiredFilled }"
-                    :disabled="!allRequiredFilled" @click="run()">{{ $tc('popupContent.run') }}</button>
+                <button
+                    class="service-workflow__run"
+                    :class="{ disabled: !allRequiredFilled }"
+                    :disabled="!allRequiredFilled"
+                    @click="run()"
+                >
+                    {{ $tc('popupContent.run') }}
+                </button>
             </div>
         </div>
         <div v-if="!showDetails">
-            <SavedRuns :workflowRunName="workflowRunName" :workflow="workflow" />
+            <SavedRuns
+                :workflowRunName="workflowRunName"
+                :workflow="workflow"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 // import BpmnViewer from 'bpmn-js';
-import GeossSearchApiService from '@/services/geoss-search.api.service';
-import PopupCloseService from '@/services/popup-close.service';
-import { SearchGetters } from '@/store/search/search-getters';
-import { SearchActions } from '@/store/search/search-actions';
-import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions';
-import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions';
-import { GranulaFiltersActions } from '@/store/granulaFilters/granula-filters-actions';
-import { IrisFiltersActions } from '@/store/irisFilters/iris-filters-actions';
-import { DataSources } from '@/interfaces/DataSources';
-import UtilsService from '@/services/utils.service';
-import { PopupActions } from '@/store/popup/popup-actions';
-import NotificationService from '@/services/notification.service';
-import LogService from '@/services/log.service';
-import to from '@/utils/to';
-import { UserGetters } from '@/store/user/user-getters';
-import ErrorPopup from '@/components/ErrorPopup.vue';
-import SavedRuns from '@/components/SavedRuns.vue';
+import GeossSearchApiService from '@/services/geoss-search.api.service'
+import PopupCloseService from '@/services/popup-close.service'
+import { SearchGetters } from '@/store/search/search-getters'
+import { SearchActions } from '@/store/search/search-actions'
+import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions'
+import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions'
+import { GranulaFiltersActions } from '@/store/granulaFilters/granula-filters-actions'
+import { IrisFiltersActions } from '@/store/irisFilters/iris-filters-actions'
+import { DataSources } from '@/interfaces/DataSources'
+import UtilsService from '@/services/utils.service'
+import { PopupActions } from '@/store/popup/popup-actions'
+import NotificationService from '@/services/notification.service'
+import LogService from '@/services/log.service'
+import to from '@/utils/to'
+import { UserGetters } from '@/store/user/user-getters'
+import ErrorPopup from '@/components/ErrorPopup.vue'
+import SavedRuns from '@/components/SavedRuns.vue'
 
 @Component({
     components: {
@@ -178,347 +368,514 @@ import SavedRuns from '@/components/SavedRuns.vue';
     }
 })
 export default class ServiceWorkflowComponent extends Vue {
-    @Prop({ required: true, type: Object }) public workflow!: any;
-    @Prop({ required: true, type: String }) public workflowUrl!: string;
-    @Prop({ required: false, type: String }) public urlToResource!: string;
+    @Prop({ required: true, type: Object }) public workflow!: any
+    @Prop({ required: true, type: String }) public workflowUrl!: string
+    @Prop({ required: false, type: String }) public urlToResource!: string
 
-    public showDetails = true;
-    public selectedInputName = '';
+    public showDetails = true
+    public selectedInputName = ''
 
-    public showExpertOptions = false;
-    public currentlyBeingEdited = [];
-    public allRequiredFilled = false;
+    public showExpertOptions = false
+    public currentlyBeingEdited = []
+    public allRequiredFilled = false
 
-    public uniquePlatformSettings = this.$store.getters[SearchGetters.workflowPredefined].uniquePlatformSettings;
-    public defaultInputValues = this.$store.getters[SearchGetters.workflowPredefined].defaultInputValues;
-    public workflowViews = this.$store.getters[SearchGetters.workflowPredefined].workflowViews;
+    public uniquePlatformSettings =
+        this.$store.getters[SearchGetters.workflowPredefined]
+            .uniquePlatformSettings
+    public defaultInputValues =
+        this.$store.getters[SearchGetters.workflowPredefined].defaultInputValues
+    public workflowViews =
+        this.$store.getters[SearchGetters.workflowPredefined].workflowViews
 
-    public workflowSavedData = {};
+    public workflowSavedData = {}
 
-    public timeStart = 0;
-    public timeEnd = 0;
+    public timeStart = 0
+    public timeEnd = 0
+
+    public query = ''
+    public countryOptions = []
+    public selectedCountry = ''
+    public suggestionsVisible = false
 
     get workflowRunName() {
-        return this.$store.getters[SearchGetters.workflowRunName];
+        return this.$store.getters[SearchGetters.workflowRunName]
     }
 
     get cloudPlatforms() {
-        return this.$store.getters[SearchGetters.workflowCloudPlatforms];
+        return this.$store.getters[SearchGetters.workflowCloudPlatforms]
     }
 
     get selectedPlatform() {
-        return this.$store.getters[SearchGetters.workflowSelectedPlatform];
+        return this.$store.getters[SearchGetters.workflowSelectedPlatform]
     }
 
     get optimalPlatform() {
-        return this.$store.getters[SearchGetters.workflowOptimalPlatform];
+        return this.$store.getters[SearchGetters.workflowOptimalPlatform]
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.$state.loggedIn
     }
 
     get hasRequiredFields() {
-        return this.workflowRequiredInputs.length;
+        return this.workflowRequiredInputs.length
     }
 
     get hasExpertOptions() {
-        return this.workflowExpertInputs.length;
+        return this.workflowExpertInputs.length
     }
 
     get inputId() {
-        return this.$store.getters[SearchGetters.workflowInputId];
+        return this.$store.getters[SearchGetters.workflowInputId]
     }
 
     get platformData() {
-        return this.$store.getters[SearchGetters.workflowPlatformData];
+        return this.$store.getters[SearchGetters.workflowPlatformData]
     }
 
     get platformDataLoading() {
-        return this.$store.getters[SearchGetters.workflowPlatformDataLoading];
+        return this.$store.getters[SearchGetters.workflowPlatformDataLoading]
     }
 
     get workflowCoordinates() {
-        return this.$store.getters[SearchGetters.workflowCoordinates];
+        return this.$store.getters[SearchGetters.workflowCoordinates]
     }
 
     get workflowInputs() {
-        return this.workflow.inputs;
+        return this.workflow.inputs
     }
 
     get workflowRegularInputs() {
-        return this.workflow.inputs.filter(input => input.obligation);
+        return this.workflow.inputs.filter((input) => input.obligation)
     }
 
     get workflowRequiredInputs() {
-        return this.workflow.inputs.filter(input => input.obligation && !input.defaultValue);
+        return this.workflow.inputs.filter(
+            (input) => input.obligation && !input.defaultValue
+        )
     }
 
     get workflowExpertInputs() {
-        return this.workflow.inputs.filter(input => !input.obligation);
+        return this.workflow.inputs.filter((input) => !input.obligation)
     }
 
     get filledInputs() {
-        return this.workflow.inputs.filter(input => this.workflowResource[input.id] && this.workflowResource[input.id].length);
+        return this.workflow.inputs.filter(
+            (input) =>
+                this.workflowResource[input.id] &&
+                this.workflowResource[input.id].length
+        )
     }
 
     get parentRef() {
-        return this.$store.getters[SearchGetters.parentRef];
+        return this.$store.getters[SearchGetters.parentRef]
     }
 
     set workflowRunName(value: string) {
-        this.saveWorkflowData('workflowRunName', value);
-        this.$store.dispatch(SearchActions.setWorkflowRunName, value);
+        this.saveWorkflowData('workflowRunName', value)
+        this.$store.dispatch(SearchActions.setWorkflowRunName, value)
     }
 
     set inputId(value: string) {
-        this.$store.dispatch(SearchActions.setWorkflowInputId, value);
+        this.$store.dispatch(SearchActions.setWorkflowInputId, value)
     }
 
     set cloudPlatforms(value: any) {
-        this.saveWorkflowData('workflowCloudPlatforms', value);
-        this.$store.dispatch(SearchActions.setWorkflowCloudPlatforms, value);
+        this.saveWorkflowData('workflowCloudPlatforms', value)
+        this.$store.dispatch(SearchActions.setWorkflowCloudPlatforms, value)
     }
 
     set selectedPlatform(value: any) {
-        this.saveWorkflowData('workflowSelectedPlatform', value);
-        this.$store.dispatch(SearchActions.setWorkflowSelectedPlatform, value);
+        this.saveWorkflowData('workflowSelectedPlatform', value)
+        this.$store.dispatch(SearchActions.setWorkflowSelectedPlatform, value)
     }
 
     set optimalPlatform(value: string) {
-        this.$store.dispatch(SearchActions.setWorkflowOptimalPlatform, value);
+        this.$store.dispatch(SearchActions.setWorkflowOptimalPlatform, value)
     }
 
     get workflowResource() {
-        return this.$store.getters[SearchGetters.workflowResource];
+        return this.$store.getters[SearchGetters.workflowResource]
     }
 
     get workflowDispatched() {
-        return this.$store.getters[SearchGetters.workflow];
+        return this.$store.getters[SearchGetters.workflow]
+    }
+
+    public showSuggestions() {
+        this.suggestionsVisible = true
+    }
+
+    public setSelectedCountry(inputId, city, event) {
+        event.stopPropagation()
+        this.selectedCountry = city
+        this.suggestionsVisible = false
+        this.query = city
+        this.$store.dispatch(SearchActions.setWorkflowLocation, city)
+        this.inputId = inputId
+        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource))
+        workflowResource = {
+            [this.inputId]: [
+                {
+                    'dataInput': false,
+                    'dm:workflowinput': {
+                        value: city
+                    }
+                }
+            ]
+        }
+        this.$store.dispatch(
+            SearchActions.setWorkflowResource,
+            workflowResource
+        )
+    }
+
+    public async getSuggestions() {
+        const searchTerm = this.query.toLowerCase()
+        const res = await fetch(
+            `https://vlabdev.geodab.org/vlab/cities?searchtext=${searchTerm}`
+        )
+        const options = await res.json()
+        this.countryOptions = options.suggestions
+        this.checkRequiredFilled()
+    }
+
+    public getPropNameByString(resource) {
+        return (
+            UtilsService.getPropByString(resource, 'dm:workflowinput.value') ||
+            ''
+        )
     }
 
     public checkRequiredFilled() {
-        let validation = true;
+        let validation = true
         for (const input of this.workflowRequiredInputs) {
             if (this.isRequired(input.id) && !this.isFilled(input.id)) {
-                validation = false;
-                break;
+                validation = false
+                break
             }
         }
-        this.allRequiredFilled = validation;
+        this.allRequiredFilled = validation
     }
 
     public getValueSchema(id) {
-        return this.workflowInputs.find(input => input.id === id).valueSchema;
+        return this.workflowInputs.find((input) => input.id === id).valueSchema
     }
 
     public getDefaultValue(id, placeholder?: boolean) {
         if (placeholder) {
-            return this.workflowInputs.find(input => input.id === id).defaultValue;
+            return this.workflowInputs.find((input) => input.id === id)
+                .defaultValue
         } else {
             if (this.getValueSchema(id) === 'bbox') {
-                if (this.workflowCoordinates && this.workflowCoordinates.W && this.workflowCoordinates.S && this.workflowCoordinates.E && this.workflowCoordinates.N) {
-                    return `W: ${this.workflowCoordinates.W}<br />S: ${this.workflowCoordinates.S}<br />E: ${this.workflowCoordinates.E}<br />N: ${this.workflowCoordinates.N}`;
+                if (
+                    this.workflowCoordinates &&
+                    this.workflowCoordinates.W &&
+                    this.workflowCoordinates.S &&
+                    this.workflowCoordinates.E &&
+                    this.workflowCoordinates.N
+                ) {
+                    return `W: ${this.workflowCoordinates.W}<br />S: ${this.workflowCoordinates.S}<br />E: ${this.workflowCoordinates.E}<br />N: ${this.workflowCoordinates.N}`
                 } else {
-                    return this.$tc('popupContent.worldwide');
+                    return this.$tc('popupContent.worldwide')
                 }
-            } else if (this.workflowResource && this.workflowResource[id] && this.workflowResource[id].length) {
-                return UtilsService.getPropByString(this.workflowResource[id][0], 'dm:workflowinput.value');
+            } else if (
+                this.workflowResource &&
+                this.workflowResource[id] &&
+                this.workflowResource[id].length
+            ) {
+                return UtilsService.getPropByString(
+                    this.workflowResource[id][0],
+                    'dm:workflowinput.value'
+                )
             } else {
-                return this.workflowInputs.find(input => input.id === id).defaultValue;
+                return this.workflowInputs.find((input) => input.id === id)
+                    .defaultValue
             }
         }
     }
 
     public isFilled(id) {
-        return this.workflowResource && this.workflowResource[id] && this.workflowResource[id].length ? true : false;
+        return this.workflowResource &&
+            this.workflowResource[id] &&
+            this.workflowResource[id].length
+            ? true
+            : false
     }
 
     public isRequired(id) {
-        return this.workflowRequiredInputs.map(input => input.id).includes(id) && this.getValueSchema(id) !== 'bbox';
+        return (
+            this.workflowRequiredInputs.map((input) => input.id).includes(id) &&
+            this.getValueSchema(id) !== 'bbox'
+        )
     }
 
     public isExpert(id) {
-        return this.workflowExpertInputs.map(input => input.id).includes(id);
+        return this.workflowExpertInputs.map((input) => input.id).includes(id)
     }
 
     public addEditResource(id) {
-        this.currentlyBeingEdited.push(id);
+        this.currentlyBeingEdited.push(id)
     }
 
     public delEditResource(id) {
-        this.currentlyBeingEdited = this.currentlyBeingEdited.filter(item => item !== id);
-        this.updateResourceValue(id, null);
+        this.currentlyBeingEdited = this.currentlyBeingEdited.filter(
+            (item) => item !== id
+        )
+        this.updateResourceValue(id, null)
     }
 
     public activeEdit(id) {
-        return this.currentlyBeingEdited.includes(id);
+        return this.currentlyBeingEdited.includes(id)
     }
 
     public setBoundingBox(id) {
-        this.inputId = id;
-        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource));
+        this.inputId = id
+        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource))
         if (!this.workflowResource) {
             workflowResource = {
                 [this.inputId]: []
-            };
+            }
         } else if (!this.workflowResource[this.inputId]) {
             workflowResource = {
                 ...this.workflowResource,
                 [this.inputId]: []
-            };
+            }
         }
 
-        this.$store.dispatch(SearchActions.setWorkflowResource, workflowResource);
+        this.$store.dispatch(
+            SearchActions.setWorkflowResource,
+            workflowResource
+        )
 
-        UtilsService.rememberState();
+        UtilsService.rememberState()
 
-        const input = this.workflow.inputs.find(input => input.id === this.inputId);
-        this.$store.dispatch(SearchActions.setWorkflowInputType, input.inputType);
-        this.$store.dispatch(SearchActions.setWorkflow, this.workflow);
+        const input = this.workflow.inputs.find(
+            (input) => input.id === this.inputId
+        )
+        this.$store.dispatch(
+            SearchActions.setWorkflowInputType,
+            input.inputType
+        )
+        this.$store.dispatch(SearchActions.setWorkflow, this.workflow)
 
-        this.$store.dispatch(GeneralFiltersActions.reset);
-        this.$store.dispatch(FacetedFiltersActions.reset);
-        this.$store.dispatch(GranulaFiltersActions.reset);
-        this.$store.dispatch(IrisFiltersActions.reset);
-        this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
-        this.$store.dispatch(SearchActions.setParentRefs, null);
+        this.$store.dispatch(GeneralFiltersActions.reset)
+        this.$store.dispatch(FacetedFiltersActions.reset)
+        this.$store.dispatch(GranulaFiltersActions.reset)
+        this.$store.dispatch(IrisFiltersActions.reset)
+        this.$store.dispatch(SearchActions.setDataSource, {
+            value: DataSources.DAB
+        })
+        this.$store.dispatch(SearchActions.setParentRefs, null)
 
-        this.close();
+        this.close()
 
-        this.$store.dispatch(SearchActions.setDabResults, null);
-        this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false);
-        this.$store.dispatch(GeneralFiltersActions.setWorkflowMapDraw, true);
+        this.$store.dispatch(SearchActions.setDabResults, null)
+        this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false)
+        this.$store.dispatch(GeneralFiltersActions.setWorkflowMapDraw, true)
     }
 
     public close() {
-        PopupCloseService.closePopup('workflow');
+        PopupCloseService.closePopup('workflow')
     }
 
     public toggleExpertOptions(run: any) {
-        this.showExpertOptions = !this.showExpertOptions;
+        this.showExpertOptions = !this.showExpertOptions
     }
 
     public async toggleShowDetails(value: boolean) {
         if (this.showDetails !== value) {
-            this.showDetails = value;
+            this.showDetails = value
         }
     }
 
     public selectResources(inputId) {
-        this.inputId = inputId;
-        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource));
-        const targetSource = DataSources.DAB;
+        this.inputId = inputId
+        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource))
+        const targetSource = DataSources.DAB
         if (!this.workflowResource) {
             workflowResource = {
                 [this.inputId]: []
-            };
+            }
         } else if (!this.workflowResource[this.inputId]) {
             workflowResource = {
                 ...this.workflowResource,
                 [this.inputId]: []
-            };
+            }
         }
-        this.$store.dispatch(SearchActions.setWorkflowResource, workflowResource);
+        this.$store.dispatch(
+            SearchActions.setWorkflowResource,
+            workflowResource
+        )
 
-        UtilsService.rememberState();
-        const input = this.workflow.inputs.find(input => input.id === this.inputId);
-        this.$store.dispatch(SearchActions.setWorkflowInputType, input.inputType);
-        this.$store.dispatch(SearchActions.setWorkflow, this.workflow);
+        UtilsService.rememberState()
+        const input = this.workflow.inputs.find(
+            (input) => input.id === this.inputId
+        )
+        this.$store.dispatch(
+            SearchActions.setWorkflowInputType,
+            input.inputType
+        )
+        this.$store.dispatch(SearchActions.setWorkflow, this.workflow)
 
-        if (this.uniquePlatformSettings.some(e => e.fieldModel === this.getValueSchema(this.inputId))) {
-            const uniqueSettings = this.uniquePlatformSettings.filter(predefined => {
-                return predefined.fieldModel === this.getValueSchema(this.inputId);
-            })[0].settings;
-            this.$store.dispatch(SearchActions.setWorkflowParents, uniqueSettings.parents);
-            this.$store.dispatch(SearchActions.setWorkflowProdType, uniqueSettings.prodType);
+        if (
+            this.uniquePlatformSettings.some(
+                (e) => e.fieldModel === this.getValueSchema(this.inputId)
+            )
+        ) {
+            const uniqueSettings = this.uniquePlatformSettings.filter(
+                (predefined) => {
+                    return (
+                        predefined.fieldModel ===
+                        this.getValueSchema(this.inputId)
+                    )
+                }
+            )[0].settings
+            this.$store.dispatch(
+                SearchActions.setWorkflowParents,
+                uniqueSettings.parents
+            )
+            this.$store.dispatch(
+                SearchActions.setWorkflowProdType,
+                uniqueSettings.prodType
+            )
         }
 
-        if (this.workflowViews.some(e => e.workflowId === this.workflow.id)) {
-            const workflowView = this.workflowViews.filter(predefined => {
-                return predefined.workflowId === this.workflow.id;
-            })[0].workflowView;
+        if (this.workflowViews.some((e) => e.workflowId === this.workflow.id)) {
+            const workflowView = this.workflowViews.filter((predefined) => {
+                return predefined.workflowId === this.workflow.id
+            })[0].workflowView
             if (workflowView.sources && workflowView.sources !== '') {
-                this.$store.dispatch(SearchActions.setWorkflowSources, workflowView.sources);
+                this.$store.dispatch(
+                    SearchActions.setWorkflowSources,
+                    workflowView.sources
+                )
             }
         }
 
-        this.$store.dispatch(GeneralFiltersActions.reset);
-        this.$store.dispatch(FacetedFiltersActions.reset);
-        this.$store.dispatch(GranulaFiltersActions.reset);
-        this.$store.dispatch(IrisFiltersActions.reset);
+        this.$store.dispatch(GeneralFiltersActions.reset)
+        this.$store.dispatch(FacetedFiltersActions.reset)
+        this.$store.dispatch(GranulaFiltersActions.reset)
+        this.$store.dispatch(IrisFiltersActions.reset)
 
         if (this.workflowCoordinates) {
-            this.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, this.workflowCoordinates);
-            this.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
+            this.$store.dispatch(
+                GeneralFiltersActions.setSelectedAreaCoordinates,
+                this.workflowCoordinates
+            )
+            this.$store.dispatch(
+                GeneralFiltersActions.setLocationType,
+                'coordinates'
+            )
         } else if (this.parentRef && this.parentRef.entry) {
-            const entry = this.parentRef.entry;
-            const bbox = entry['georss:box'] ? entry['georss:box'].split(' ') : null;
+            const entry = this.parentRef.entry
+            const bbox = entry['georss:box']
+                ? entry['georss:box'].split(' ')
+                : null
             if (bbox && bbox.length) {
-                const W = bbox[1] * 1;
-                const S = bbox[0] * 1;
-                const E = bbox[3] * 1;
-                const N = bbox[2] * 1;
-                this.$store.dispatch(SearchActions.setWorkflowCoordinates, { W, S, E, N });
-                this.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, { W, S, E, N });
-                this.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
+                const W = bbox[1] * 1
+                const S = bbox[0] * 1
+                const E = bbox[3] * 1
+                const N = bbox[2] * 1
+                this.$store.dispatch(SearchActions.setWorkflowCoordinates, {
+                    W,
+                    S,
+                    E,
+                    N
+                })
+                this.$store.dispatch(
+                    GeneralFiltersActions.setSelectedAreaCoordinates,
+                    { W, S, E, N }
+                )
+                this.$store.dispatch(
+                    GeneralFiltersActions.setLocationType,
+                    'coordinates'
+                )
             }
         }
 
-        this.$store.dispatch(SearchActions.setDataSource, { value: DataSources.DAB });
-        this.$store.dispatch(SearchActions.setParentRefs, null);
+        this.$store.dispatch(SearchActions.setDataSource, {
+            value: DataSources.DAB
+        })
+        this.$store.dispatch(SearchActions.setParentRefs, null)
 
-        this.close();
-        this.$store.dispatch(SearchActions.getResults, { noPushToHistory: true, targetSource, theSameSource: true }).finally(() => {
-            this.$store.dispatch(GeneralFiltersActions.setInChangeProcess, false);
-        });
+        this.close()
+        this.$store
+            .dispatch(SearchActions.getResults, {
+                noPushToHistory: true,
+                targetSource,
+                theSameSource: true
+            })
+            .finally(() => {
+                this.$store.dispatch(
+                    GeneralFiltersActions.setInChangeProcess,
+                    false
+                )
+            })
     }
 
     public updateResourceValue(inputId, event) {
-        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource));
+        let workflowResource = JSON.parse(JSON.stringify(this.workflowResource))
         if (!this.workflowResource) {
             workflowResource = {
                 [inputId]: []
-            };
+            }
         } else if (!this.workflowResource[inputId]) {
             workflowResource = {
                 ...this.workflowResource,
                 [inputId]: []
-            };
+            }
         }
         if (event) {
-            workflowResource[inputId] = [{
-                'dataInput': true,
-                'dm:workflowinput': {
-                    value: event.target.value
+            workflowResource[inputId] = [
+                {
+                    'dataInput': true,
+                    'dm:workflowinput': {
+                        value: event.target.value
+                    }
                 }
-            }];
+            ]
         } else {
-            delete workflowResource[inputId];
+            delete workflowResource[inputId]
         }
-        this.$store.dispatch(SearchActions.setWorkflowResource, workflowResource);
+        this.$store.dispatch(
+            SearchActions.setWorkflowResource,
+            workflowResource
+        )
     }
 
     public getSceneId(inputId) {
         // Temporary VLAB Sentinel2-only Support
-        const satProdIdArray = UtilsService.getPropByString(this.workflowResource[inputId][0], 'title').split('(');
-        return satProdIdArray[satProdIdArray.length - 1].slice(0, -1);
+        const satProdIdArray = UtilsService.getPropByString(
+            this.workflowResource[inputId][0],
+            'title'
+        ).split('(')
+        return satProdIdArray[satProdIdArray.length - 1].slice(0, -1)
     }
 
     public getRunName() {
-        return this.workflowRunName !== '' ? this.workflowRunName : `${new Date().toLocaleString('en-GB').replace(/,/g, '')} ${this.workflow.name}`;
+        return this.workflowRunName !== ''
+            ? this.workflowRunName
+            : `${new Date().toLocaleString('en-GB').replace(/,/g, '')} ${
+                  this.workflow.name
+              }`
     }
 
     public saveWorkflowData(key, value) {
-        let serviceWorkflowObject = {};
+        let serviceWorkflowObject = {}
         if (sessionStorage.getItem('SERVICE_WORKFLOW')) {
-            serviceWorkflowObject = JSON.parse(sessionStorage.getItem('SERVICE_WORKFLOW'));
+            serviceWorkflowObject = JSON.parse(
+                sessionStorage.getItem('SERVICE_WORKFLOW')
+            )
         }
         if (!serviceWorkflowObject[this.workflowUrl]) {
-            serviceWorkflowObject[this.workflowUrl] = {};
+            serviceWorkflowObject[this.workflowUrl] = {}
         }
-        serviceWorkflowObject[this.workflowUrl][key] = value;
-        sessionStorage.setItem('SERVICE_WORKFLOW', JSON.stringify(serviceWorkflowObject));
+        serviceWorkflowObject[this.workflowUrl][key] = value
+        sessionStorage.setItem(
+            'SERVICE_WORKFLOW',
+            JSON.stringify(serviceWorkflowObject)
+        )
     }
 
     public getWorkflowSavedData() {
@@ -528,95 +885,158 @@ export default class ServiceWorkflowComponent extends Vue {
             workflowCloudPlatforms: null,
             workflowSelectedPlatform: this.cloudPlatforms[0],
             workflowRunName: ''
-        };
-        const resultToHighlight = this.$store.getters[SearchGetters.highlightResult] || true;
+        }
+        const resultToHighlight =
+            this.$store.getters[SearchGetters.highlightResult] || true
         if (resultToHighlight) {
             if (sessionStorage.getItem('SERVICE_WORKFLOW')) {
-                const serviceWorkflowObject = JSON.parse(sessionStorage.getItem('SERVICE_WORKFLOW'));
+                const serviceWorkflowObject = JSON.parse(
+                    sessionStorage.getItem('SERVICE_WORKFLOW')
+                )
                 if (serviceWorkflowObject[this.workflowUrl]) {
-                    this.workflowSavedData = serviceWorkflowObject[this.workflowUrl];
+                    this.workflowSavedData =
+                        serviceWorkflowObject[this.workflowUrl]
                 }
             }
-            if (Object.keys(this.workflowSavedData).length && this.workflowSavedData.constructor === Object && resultToHighlight) {
+            if (
+                Object.keys(this.workflowSavedData).length &&
+                this.workflowSavedData.constructor === Object &&
+                resultToHighlight
+            ) {
                 for (const key in this.workflowSavedData) {
                     if (this.workflowSavedData[key]) {
-                        this.$store.dispatch(SearchActions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`], this.workflowSavedData[key]);
+                        this.$store.dispatch(
+                            SearchActions[
+                                `set${
+                                    key.charAt(0).toUpperCase() + key.slice(1)
+                                }`
+                            ],
+                            this.workflowSavedData[key]
+                        )
                     }
                 }
             } else {
-                this.$store.dispatch(SearchActions.setWorkflowResource, null);
+                this.$store.dispatch(SearchActions.setWorkflowResource, null)
             }
         } else {
-            this.$store.dispatch(SearchActions.setWorkflowResource, null);
+            this.$store.dispatch(SearchActions.setWorkflowResource, null)
         }
-        this.checkRequiredFilled();
+        this.checkRequiredFilled()
     }
 
     public prepareWorkflowInputs() {
-        const inputs = JSON.parse(JSON.stringify(this.workflow.inputs));
+        const inputs = JSON.parse(JSON.stringify(this.workflow.inputs))
         for (const input of inputs) {
-            if (input.inputType === 'individual' && this.workflowResource && this.workflowResource[input.id]) {
+            if (
+                input.inputType === 'individual' &&
+                this.workflowResource &&
+                this.workflowResource[input.id]
+            ) {
                 // unique for EODESM
                 if (this.getValueSchema(input.id) === 'sat_product') {
-                    input.value = this.getSceneId(input.id);
+                    input.value = this.getSceneId(input.id)
                 } else if (this.getValueSchema(input.id) === 'bbox') {
                     if (this.workflowCoordinates) {
-                        input.value = `${this.workflowCoordinates.W},${this.workflowCoordinates.S},${this.workflowCoordinates.E},${this.workflowCoordinates.N}`;
+                        input.value = `${this.workflowCoordinates.W},${this.workflowCoordinates.S},${this.workflowCoordinates.E},${this.workflowCoordinates.N}`
                     } else {
-                        input.value = '';
+                        input.value = ''
                     }
                     // unique for Trends.Earth
-                } else if (this.workflow.id === 'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process') {
-                    const selectedValue = UtilsService.getPropByString(this.workflowResource[input.id][0], 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
+                } else if (
+                    this.workflow.id ===
+                    'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process'
+                ) {
+                    const selectedValue = UtilsService.getPropByString(
+                        this.workflowResource[input.id][0],
+                        'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL'
+                    )
                     if (selectedValue) {
-                        input.value = selectedValue;
+                        input.value = selectedValue
                     } else {
-                        input.value = UtilsService.getPropByString(this.workflowResource[input.id][0], 'dm:workflowinput.value'); // defaults
+                        input.value = UtilsService.getPropByString(
+                            this.workflowResource[input.id][0],
+                            'dm:workflowinput.value'
+                        ) // defaults
                     }
                 } else {
-                    input.value = UtilsService.getPropByString(this.workflowResource[input.id][0], 'dm:workflowinput.value');
+                    input.value = UtilsService.getPropByString(
+                        this.workflowResource[input.id][0],
+                        'dm:workflowinput.value'
+                    )
                 }
-            } else if (input.inputType === 'array' && this.workflowResource && this.workflowResource[input.id] && this.workflowResource[input.id].length) {
+            } else if (
+                input.inputType === 'array' &&
+                this.workflowResource &&
+                this.workflowResource[input.id] &&
+                this.workflowResource[input.id].length
+            ) {
                 for (const resource of this.workflowResource[input.id]) {
                     if (!input.valueArray) {
-                        input.valueArray = [];
+                        input.valueArray = []
                     }
-                    let key = UtilsService.getPropByString(resource, 'dm:workflowinput.valuekey');
+                    let key = UtilsService.getPropByString(
+                        resource,
+                        'dm:workflowinput.valuekey'
+                    )
                     if (key && typeof key === 'string') {
-                        key += '=';
+                        key += '='
                     } else {
-                        key = '';
+                        key = ''
                     }
                     // unique for EODESM
                     if (this.getValueSchema(input.id) === 'sat_product') {
-                        input.valueArray.push(`${key}${this.getSceneId(input.id)}`);
+                        input.valueArray.push(
+                            `${key}${this.getSceneId(input.id)}`
+                        )
                     } else if (this.getValueSchema(input.id) === 'bbox') {
                         if (this.workflowCoordinates) {
-                            input.valueArray.push(`${this.workflowCoordinates.W},${this.workflowCoordinates.S},${this.workflowCoordinates.E},${this.workflowCoordinates.N}`);
+                            input.valueArray.push(
+                                `${this.workflowCoordinates.W},${this.workflowCoordinates.S},${this.workflowCoordinates.E},${this.workflowCoordinates.N}`
+                            )
                         } else {
-                            input.valueArray.push('');
+                            input.valueArray.push('')
                         }
                         // unique for Trends.Earth
-                    } else if (this.workflow.id === 'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process') {
-                        const selectedValue = UtilsService.getPropByString(this.workflowResource[input.id][0], 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
+                    } else if (
+                        this.workflow.id ===
+                        'http://eu.essi_lab.vlab.core/workflow/autogenerated-1664543852740-process'
+                    ) {
+                        const selectedValue = UtilsService.getPropByString(
+                            this.workflowResource[input.id][0],
+                            'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL'
+                        )
                         if (selectedValue) {
-                            input.valueArray.push(`${key}${selectedValue}`);
+                            input.valueArray.push(`${key}${selectedValue}`)
                         } else {
-                            input.valueArray.push(`${key}${UtilsService.getPropByString(resource, 'dm:workflowinput.value')}`); // defaults
+                            input.valueArray.push(
+                                `${key}${UtilsService.getPropByString(
+                                    resource,
+                                    'dm:workflowinput.value'
+                                )}`
+                            ) // defaults
                         }
                     } else {
-                        input.valueArray.push(`${key}${UtilsService.getPropByString(resource, 'dm:workflowinput.value')}`);
+                        input.valueArray.push(
+                            `${key}${UtilsService.getPropByString(
+                                resource,
+                                'dm:workflowinput.value'
+                            )}`
+                        )
                     }
                 }
             }
         }
-        return inputs;
+        return inputs
     }
 
     public async run() {
         if (!this.isSignedIn) {
-            const fullLoginUrl = `/c/portal/login?redirect=${this.urlToResource}`;
-            const message = `${this.$tc('popupContent.mustBeLoggedIn1')}<a href="${fullLoginUrl}">${this.$tc('popupContent.mustBeLoggedIn2')}</a> ${this.$tc('popupContent.mustBeLoggedIn3')}`;
+            const fullLoginUrl = `/c/portal/login?redirect=${this.urlToResource}`
+            const message = `${this.$tc(
+                'popupContent.mustBeLoggedIn1'
+            )}<a href="${fullLoginUrl}">${this.$tc(
+                'popupContent.mustBeLoggedIn2'
+            )}</a> ${this.$tc('popupContent.mustBeLoggedIn3')}`
 
             return NotificationService.show(
                 `${this.$tc('general.info')}`,
@@ -625,23 +1045,34 @@ export default class ServiceWorkflowComponent extends Vue {
                 'must-be-logged-in',
                 9999,
                 'info'
-            );
+            )
         }
 
-        this.timeEnd = performance.now();
-        const workflowDuration = ((this.timeEnd - this.timeStart) / 1000).toFixed();
-        this.timeStart = performance.now();
-        const inputs = this.prepareWorkflowInputs();
-        const workflowFinalUrl = this.workflowUrl;
+        this.timeEnd = performance.now()
+        const workflowDuration = (
+            (this.timeEnd - this.timeStart) /
+            1000
+        ).toFixed()
+        this.timeStart = performance.now()
+        const inputs = this.prepareWorkflowInputs()
+        const workflowFinalUrl = this.workflowUrl
 
-        const [err, data] = await to(GeossSearchApiService.runWorkflow(`${workflowFinalUrl}/run`, {
-            inputs,
-            name: this.getRunName(),
-            infra: this.selectedPlatform.id
-        }));
+        const [err, data] = await to(
+            GeossSearchApiService.runWorkflow(`${workflowFinalUrl}/run`, {
+                inputs,
+                name: this.getRunName(),
+                infra: this.selectedPlatform.id
+            })
+        )
 
         if (!err) {
-            const [, result] = await to(GeossSearchApiService.addSavedRun(this.getRunName(), this.workflow, data.runid));
+            const [, result] = await to(
+                GeossSearchApiService.addSavedRun(
+                    this.getRunName(),
+                    this.workflow,
+                    data.runid
+                )
+            )
             if (result) {
                 NotificationService.show(
                     `${this.$tc('popupTitles.savedRuns')}`,
@@ -650,8 +1081,17 @@ export default class ServiceWorkflowComponent extends Vue {
                     null,
                     9999,
                     'success'
-                );
-                LogService.logElementClick(null, null, null, null, 'RunId saved in My Workspace', null, null, this.getRunName());
+                )
+                LogService.logElementClick(
+                    null,
+                    null,
+                    null,
+                    null,
+                    'RunId saved in My Workspace',
+                    null,
+                    null,
+                    this.getRunName()
+                )
             } else {
                 NotificationService.show(
                     `${this.$tc('popupTitles.savedRuns')}`,
@@ -660,33 +1100,62 @@ export default class ServiceWorkflowComponent extends Vue {
                     null,
                     9999,
                     'error'
-                );
-                LogService.logElementClick(null, null, null, null, 'RunId removed from My Workspace', null, null, this.getRunName());
+                )
+                LogService.logElementClick(
+                    null,
+                    null,
+                    null,
+                    null,
+                    'RunId removed from My Workspace',
+                    null,
+                    null,
+                    this.getRunName()
+                )
             }
         } else {
-            const message = UtilsService.getPropByString(err, 'response.data.message') || this.$tc('popupContent.serverResponseTimeout');
+            const message =
+                UtilsService.getPropByString(err, 'response.data.message') ||
+                this.$tc('popupContent.serverResponseTimeout')
             const props = {
                 title: this.$tc('general.error'),
                 subtitle: message ? message : err
-            };
-            return this.$store.dispatch(PopupActions.openPopup, { contentId: 'error', component: ErrorPopup, props });
+            }
+            return this.$store.dispatch(PopupActions.openPopup, {
+                contentId: 'error',
+                component: ErrorPopup,
+                props
+            })
         }
-        LogService.logElementClick(null, null, null, null, 'Run workflow', null, null, workflowFinalUrl);
+        LogService.logElementClick(
+            null,
+            null,
+            null,
+            null,
+            'Run workflow',
+            null,
+            null,
+            workflowFinalUrl
+        )
     }
 
     public removeWorkflowResource(resource, inputId) {
-        const workflowResource = this.workflowResource;
-        workflowResource[inputId] = workflowResource[inputId].filter(worflowResource => worflowResource !== resource);
-        this.$store.dispatch(SearchActions.setWorkflowResource, workflowResource);
+        const workflowResource = this.workflowResource
+        workflowResource[inputId] = workflowResource[inputId].filter(
+            (worflowResource) => worflowResource !== resource
+        )
+        this.$store.dispatch(
+            SearchActions.setWorkflowResource,
+            workflowResource
+        )
     }
 
     public bpmnStyling() {
-        let inputStyles = '';
+        let inputStyles = ''
         for (const input of this.workflowRequiredInputs) {
             if (this.isRequired(input.id)) {
-                inputStyles += `.bjs-container [data-element-id="${input.id}-ref"].djs-shape path {stroke: #E31E24 !important;}`;
+                inputStyles += `.bjs-container [data-element-id="${input.id}-ref"].djs-shape path {stroke: #E31E24 !important;}`
             } else if (this.getValueSchema(input.id) === 'bbox') {
-                inputStyles += `.bjs-container [data-element-id="${input.id}-ref"].djs-shape path {stroke: #e8b012 !important;}`;
+                inputStyles += `.bjs-container [data-element-id="${input.id}-ref"].djs-shape path {stroke: #e8b012 !important;}`
             }
         }
         const styles = `
@@ -694,42 +1163,57 @@ export default class ServiceWorkflowComponent extends Vue {
             .bjs-container [data-element-id^="autogenerated"].djs-shape path {stroke: black !important;}
             .bjs-container [data-element-id^="DataObject"].djs-shape path {stroke: black !important;}
             ${inputStyles}
-        `;
-        const css = document.createElement('style');
-        css.innerHTML = styles;
-        document.querySelector('head').appendChild(css);
+        `
+        const css = document.createElement('style')
+        css.innerHTML = styles
+        document.querySelector('head').appendChild(css)
     }
 
     public setDefaultInputValues() {
-        if (this.defaultInputValues.some(e => e.workflowId === this.workflow.id)) {
-            const defaultValues = this.defaultInputValues.filter(predefined => {
-                return predefined.workflowId === this.workflow.id;
-            })[0].defaultValues;
-            let workflowResource = JSON.parse(JSON.stringify(this.workflowResource));
+        if (
+            this.defaultInputValues.some(
+                (e) => e.workflowId === this.workflow.id
+            )
+        ) {
+            const defaultValues = this.defaultInputValues.filter(
+                (predefined) => {
+                    return predefined.workflowId === this.workflow.id
+                }
+            )[0].defaultValues
+            let workflowResource = JSON.parse(
+                JSON.stringify(this.workflowResource)
+            )
             if (!workflowResource) {
-                workflowResource = {};
+                workflowResource = {}
             }
             for (const input in defaultValues) {
                 if (!workflowResource[input]) {
-                    workflowResource[input] = [{
-                        'id': defaultValues[input],
-                        'title': this.$tc('popupContent.default'),
-                        'dm:workflowinput': {
-                            value: defaultValues[input]
+                    workflowResource[input] = [
+                        {
+                            'id': defaultValues[input],
+                            'title': this.$tc('popupContent.default'),
+                            'dm:workflowinput': {
+                                value: defaultValues[input]
+                            }
                         }
-                    }];
+                    ]
                 }
             }
-            this.$store.dispatch(SearchActions.setWorkflowResource, workflowResource);
+            this.$store.dispatch(
+                SearchActions.setWorkflowResource,
+                workflowResource
+            )
         }
     }
 
     private async mounted() {
-        await this.$nextTick();
-        this.timeStart = performance.now();
+        await this.$nextTick()
+        this.timeStart = performance.now()
         // const viewer = new BpmnViewer({ container: this.$refs['bpmn-canvas'], width: this.$el.offsetWidth, height: 330 });
-        const addTimestamp = true;
-        const [, xml] = await to(GeossSearchApiService.getBpmn(this.workflow.bpmn_url, addTimestamp));
+        const addTimestamp = true
+        const [, xml] = await to(
+            GeossSearchApiService.getBpmn(this.workflow.bpmn_url, addTimestamp)
+        )
         // if (xml) {
         //     viewer.importXML(xml, err => {
         //         if (!err) {
@@ -740,25 +1224,61 @@ export default class ServiceWorkflowComponent extends Vue {
         // }
 
         if (this.inputId) {
-            this.selectedInputName = this.workflow.inputs.find(input => input.id === this.inputId).name;
+            this.selectedInputName = this.workflow.inputs.find(
+                (input) => input.id === this.inputId
+            ).name
         }
 
-        Object.freeze(this.selectedInputName);
-        this.setDefaultInputValues();
-        this.getWorkflowSavedData();
-        this.selectedPlatform = this.cloudPlatforms[0];
+        Object.freeze(this.selectedInputName)
+        this.setDefaultInputValues()
+        this.getWorkflowSavedData()
+        this.selectedPlatform = this.cloudPlatforms[0]
     }
-
 
     @Watch('workflowResource', { deep: true })
     private onWorkflowResource() {
-        this.saveWorkflowData('workflowResource', this.workflowResource);
-        this.checkRequiredFilled();
+        this.saveWorkflowData('workflowResource', this.workflowResource)
+        this.checkRequiredFilled()
     }
 }
 </script>
 
 <style lang="scss">
+.autocomplete {
+    position: relative;
+    width: 100%;
+}
+
+.autocomplete-input {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    height: 40px;
+    padding: 10px;
+}
+
+.autocomplete-list {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+    background-color: white;
+    z-index: 100;
+}
+.autocomplete-item {
+    padding: 5px;
+    cursor: pointer;
+}
+.autocomplete-item:hover {
+    background-color: #d1cdcd;
+}
+
+.autocomplete-button {
+    width: 100%;
+    text-align: left;
+}
+
 .popup__wrapper.workflow-popup .popup__content {
     max-height: 560px;
     min-height: 560px;
@@ -803,7 +1323,7 @@ export default class ServiceWorkflowComponent extends Vue {
         }
     }
 
-    &__title:nth-child(n+2) {
+    &__title:nth-child(n + 2) {
         span {
             font-size: 18px;
         }
@@ -835,8 +1355,8 @@ export default class ServiceWorkflowComponent extends Vue {
             border-bottom: 3px solid $blue;
             font-size: 16px;
             font-weight: bold;
-            transition: font-weight cubic-bezier(0.215, 0.610, 0.355, 1) .3s;
-            transition: border-bottom cubic-bezier(0.215, 0.610, 0.355, 1) .3s;
+            transition: font-weight cubic-bezier(0.215, 0.61, 0.355, 1) 0.3s;
+            transition: border-bottom cubic-bezier(0.215, 0.61, 0.355, 1) 0.3s;
 
             &:not(.active) {
                 font-weight: normal;
@@ -864,7 +1384,7 @@ export default class ServiceWorkflowComponent extends Vue {
         &-data {
             display: flex;
 
-            >div {
+            > div {
                 width: 33.333%;
                 padding: 10px 15px;
                 border: 1px solid $grey-lighter;
@@ -880,7 +1400,7 @@ export default class ServiceWorkflowComponent extends Vue {
                 }
 
                 div {
-                    +div {
+                    + div {
                         margin-top: 10px;
                     }
 
@@ -924,7 +1444,6 @@ export default class ServiceWorkflowComponent extends Vue {
                 font-size: 14px;
 
                 .cross {
-
                     &:before,
                     &:after {
                         background: black;
@@ -1037,7 +1556,6 @@ export default class ServiceWorkflowComponent extends Vue {
                 }
             }
         }
-
     }
 
     &__select-resources,
@@ -1056,7 +1574,6 @@ export default class ServiceWorkflowComponent extends Vue {
                 border-left-color: white;
             }
         }
-
     }
 
     &__select-resources,
@@ -1142,8 +1659,6 @@ export default class ServiceWorkflowComponent extends Vue {
         }
     }
 
-
-
     .bjs-powered-by {
         display: none;
     }
@@ -1154,7 +1669,7 @@ export default class ServiceWorkflowComponent extends Vue {
         border-top: 1px solid $grey-lighter;
         font-size: 0.85em;
 
-        >span {
+        > span {
             margin: 0 5px;
 
             &.required {
@@ -1175,10 +1690,9 @@ export default class ServiceWorkflowComponent extends Vue {
         }
     }
 
-
     @keyframes loadingDots {
         0% {
-            opacity: .1;
+            opacity: 0.1;
         }
 
         20% {
@@ -1186,7 +1700,7 @@ export default class ServiceWorkflowComponent extends Vue {
         }
 
         100% {
-            opacity: .1;
+            opacity: 0.1;
         }
     }
 
@@ -1203,11 +1717,11 @@ export default class ServiceWorkflowComponent extends Vue {
             animation-fill-mode: both;
 
             &:nth-child(2) {
-                animation-delay: .2s;
+                animation-delay: 0.2s;
             }
 
             &:nth-child(3) {
-                animation-delay: .4s;
+                animation-delay: 0.4s;
             }
         }
     }
@@ -1230,7 +1744,7 @@ export default class ServiceWorkflowComponent extends Vue {
         left: 190px;
     }
 
-    svg[data-element-id="autogenerated-1527757840088-process"] {
+    svg[data-element-id='autogenerated-1527757840088-process'] {
         // COINS
         left: 240px;
     }

@@ -60,6 +60,7 @@ const state = () => ({
     searchJustSaved: false,
     workflow: null,
     workflowRunName: '',
+    workflowLocation: '',
     workflowInputId: null,
     workflowInputType: null,
     workflowParents: null,
@@ -420,6 +421,9 @@ const getters: { [key: string]: any } = {
     },
     workflowRunName(state: any) {
         return state.workflowRunName
+    },
+    workflowLocation(state: any) {
+        return state.workflowLocation
     },
     workflowInputId(state: any) {
         return state.workflowInputId
@@ -1160,6 +1164,9 @@ const actions = {
     },
     setWorkflowRunName({ commit }: any, value: string) {
         commit('setStateProp', { prop: 'workflowRunName', value })
+    },
+    setWorkflowLocation({ commit }: any, value: string) {
+        commit('setStateProp', { prop: 'setWorkflowLocation', value })
     },
     setWorkflowInputId({ commit }: any, value: string) {
         commit('setStateProp', { prop: 'workflowInputId', value })

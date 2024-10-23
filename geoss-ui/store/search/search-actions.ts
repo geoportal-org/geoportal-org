@@ -25,6 +25,7 @@ export enum SearchActions {
     setDataSource = 'search/setDataSource',
     setWorkflow = 'search/setWorkflow',
     setWorkflowRunName = 'search/setWorkflowRunName',
+    setWorkflowLocation = 'search/setWorkflowLocation',
     setWorkflowInputId = 'search/setWorkflowInputId',
     setWorkflowResource = 'search/setWorkflowResource',
     setWorkflowInputType = 'search/setWorkflowInputType',

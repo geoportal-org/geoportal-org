@@ -27,6 +27,7 @@ export enum SearchGetters {
     dataSource = 'search/dataSource',
     workflow = 'search/workflow',
     workflowRunName = 'search/workflowRunName',
+    workflowLocation = 'search/workflowLocation',
     workflowInputId = 'search/workflowInputId',
     workflowResource = 'search/workflowResource',
     workflowInputType = 'search/workflowInputType',
