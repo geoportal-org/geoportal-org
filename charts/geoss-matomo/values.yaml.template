@@ -76,6 +76,8 @@ tolerations:
 env:
   - name: MATOMO_DATA_TO_PERSIST
     value: "matomo.js piwik.js config/config.ini.php misc/user js"
+  - name: MATOMO_SMTP_AUTH
+    value: Login  
   - name: MATOMO_DATABASE_HOST
     valueFrom:
       secretKeyRef:
