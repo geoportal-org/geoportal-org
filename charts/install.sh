@@ -47,7 +47,7 @@ helm -n $K8S_NAMESPACE upgrade --install \
 
 printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
 envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
-helm -n $K8S_NAMESPACE delete --wait --timeout 10m0s --ignore-not-found $RESOURCE_NAME_PREFIX-db
+helm -n $K8S_NAMESPACE upgrade --set replicaCount=0 --install --wait --timeout 10m0s --ignore-not-found $RESOURCE_NAME_PREFIX-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 sleep 30
 helm -n $K8S_NAMESPACE upgrade --install --wait --timeout 10m0s \
     --debug $RESOURCE_NAME_PREFIX-db geoss-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
