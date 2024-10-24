@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $CURATED_CPU_LIMIT
     memory: $CURATED_MEMORY_LIMIT
   requests:
     cpu: $CURATED_CPU_REQUEST

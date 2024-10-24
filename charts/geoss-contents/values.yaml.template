@@ -37,6 +37,7 @@ service:
 
 resources:
   limits:
+    cpu: $CONTENTS_CPU_LIMIT
     memory: $CONTENTS_MEMORY_LIMIT
   requests:
     cpu: $CONTENTS_CPU_REQUEST

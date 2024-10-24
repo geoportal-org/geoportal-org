@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $LANDINGPAGE_CPU_LIMIT
     memory: $LANDINGPAGE_MEMORY_LIMIT
   requests:
     cpu: $LANDINGPAGE_CPU_REQUEST

@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $KEYCLOAK_CPU_LIMIT
     memory: $KEYCLOAK_MEMORY_LIMIT
   requests:
     cpu: $KEYCLOAK_CPU_REQUEST

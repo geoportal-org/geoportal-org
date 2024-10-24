@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $SEARCH_CPU_LIMIT
     memory: $SEARCH_MEMORY_LIMIT
   requests:
     cpu: $SEARCH_CPU_REQUEST

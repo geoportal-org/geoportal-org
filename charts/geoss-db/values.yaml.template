@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $DB_CPU_LIMIT
     memory: $DB_MEMORY_LIMIT
   requests:
     cpu: $DB_CPU_REQUEST

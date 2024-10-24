@@ -114,6 +114,7 @@ eck-elasticsearch:
                             resources:
                                 limits:
                                     memory: $ELS_MEMORY_LIMIT
+                                    cpu: $ELS_CPU_LIMIT
                                 requests:
                                     memory: $ELS_MEMORY_REQUEST
                                     cpu: $ELS_CPU_REQUEST

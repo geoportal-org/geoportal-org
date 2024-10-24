@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $PROXY_CPU_LIMIT
     memory: $PROXY_MEMORY_LIMIT
   requests:
     cpu: $PROXY_CPU_REQUEST

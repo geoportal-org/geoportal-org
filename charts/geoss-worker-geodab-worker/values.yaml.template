@@ -35,10 +35,10 @@ service:
 
 resources:
   limits:
-    memory: $WORKER_GEODAB_WORKER_LIMIT
+    memory: $WORKER_GEODAB_WORKER_MEMORY_LIMIT
   requests:
-    cpu: $WORKER_GEODAB_WORKER_REQUEST
-    memory: $WORKER_GEODAB_WORKER_REQUEST
+    cpu: $WORKER_GEODAB_WORKER_CPU_REQUEST
+    memory: $WORKER_GEODAB_WORKER_MEMORY_REQUEST
 
 autoscaling:
   enabled: false

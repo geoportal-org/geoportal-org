@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $PERSONALDATA_CPU_LIMIT
     memory: $PERSONALDATA_MEMORY_LIMIT
   requests:
     cpu: $PERSONALDATA_CPU_REQUEST

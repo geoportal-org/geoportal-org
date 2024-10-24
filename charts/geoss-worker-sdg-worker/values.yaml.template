@@ -35,10 +35,11 @@ service:
 
 resources:
   limits:
-    memory: $WORKER_SDG_WORKER_LIMIT
+    cpu: $WORKER_SDG_WORKER_CPU_LIMIT
+    memory: $WORKER_SDG_WORKER_MEMORY_LIMIT
   requests:
-    cpu: $WORKER_SDG_WORKER_REQUEST
-    memory: $WORKER_SDG_WORKER_REQUEST
+    cpu: $WORKER_SDG_WORKER_CPU_REQUEST
+    memory: $WORKER_SDG_WORKER_MEMORY_REQUEST
 
 autoscaling:
   enabled: false

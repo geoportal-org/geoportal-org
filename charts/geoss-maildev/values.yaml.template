@@ -40,6 +40,7 @@ service:
 
 resources:
   limits:
+    cpu: $MAILDEV_CPU_LIMIT
     memory: $MAILDEV_MEMORY_LIMIT
   requests:
     cpu: $MAILDEV_CPU_REQUEST

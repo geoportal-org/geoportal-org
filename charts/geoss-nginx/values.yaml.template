@@ -120,6 +120,7 @@ ingressLP:
 
 resources:
   limits:
+    cpu: $NGINX_CPU_LIMIT
     memory: $NGINX_MEMORY_LIMIT
   requests:
     cpu: $NGINX_CPU_REQUEST

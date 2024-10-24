@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $MATOMO_CPU_LIMIT
     memory: $MATOMO_MEMORY_LIMIT
   requests:
     cpu: $MATOMO_CPU_REQUEST

@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $KIBANA_CPU_LIMIT
     memory: $KIBANA_MEMORY_LIMIT
   requests:
     cpu: $KIBANA_CPU_REQUEST

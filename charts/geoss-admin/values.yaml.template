@@ -35,6 +35,7 @@ service:
 
 resources:
   limits:
+    cpu: $ADMIN_CPU_LIMIT
     memory: $ADMIN_MEMORY_LIMIT
   requests:
     cpu: $ADMIN_CPU_REQUEST
