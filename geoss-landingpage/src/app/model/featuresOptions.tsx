@@ -47,7 +47,7 @@ export const featuresOptions = [
   },
   {
     icon: <DropletIcon width="32px" height="32px" />,
-    text: "NewLif4DryLands Local Scale Indices Use Case",
+    text: "NewLife4DryLands Local Scale Indices Use Case",
     href: "/usecases/dry-lands",
   },
   {

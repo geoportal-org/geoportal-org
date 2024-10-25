@@ -242,15 +242,15 @@ export const useCases = [
             <div className="text-black w-full">
                 <UCTitle
                     isDarkBg
-                    title="NewLif4DryLands Local Scale Indices Use Case"
+                    title="NewLife4DryLands Local Scale Indices Use Case"
                     subtitle="Calculate and Visualize Local Scale Remote Sensing-based indices for Protected Areas."
                 />
                 <UCImage
                     side="right"
-                    title="NewLif4DryLands Local Scale Indices - Use Case Description"
-                    text={`The NewLif4DryLands Local Scale Indices use cases builds on the outcomes of the <a target='_blank' href="https://www.newlife4drylands.eu/en/">NewLif4DryLands project</a> NewLif4DryLands project (funded from the LIFE financial instrument “LIFE Preparatory project – Programme for the Environment and Climate Action” of the European Commission) which extracted a set of remote sensing-based indices and indicators used as proxies to assess quantification and mapping of Land Degradation at local scale, trying to answer to the requests, by local institutional decision-makers, of increasingly more details difficult to reach by global/pan-European Union (EU) services (i.e., Copernicus). The modeling for the calculation of such indices were shared in VLab and a dedicated Web GUI was developed for the calculation, visualization and comparison of the local-scale indices.`}
+                    title="NewLife4DryLands Local Scale Indices - Use Case Description"
+                    text={`The NewLife4DryLands Local Scale Indices use cases builds on the outcomes of the <a target='_blank' href="https://www.newlife4drylands.eu/en/">NewLife4DryLands project</a> NewLife4DryLands project (funded from the LIFE financial instrument “LIFE Preparatory project – Programme for the Environment and Climate Action” of the European Commission) which extracted a set of remote sensing-based indices and indicators used as proxies to assess quantification and mapping of Land Degradation at local scale, trying to answer to the requests, by local institutional decision-makers, of increasingly more details difficult to reach by global/pan-European Union (EU) services (i.e., Copernicus). The modeling for the calculation of such indices were shared in VLab and a dedicated Web GUI was developed for the calculation, visualization and comparison of the local-scale indices.`}
                     imageSRC="/newlife4drylands.webp"
-                    buttonText="NewLif4DryLands Web App"
+                    buttonText="NewLife4DryLands Web App"
                     buttonHref={"https://nl4dl.geodab.org/"}
                 />
                 <UCFrame title={"Check the application below!"} href={"https://nl4dl.geodab.org/"} />
@@ -270,7 +270,7 @@ export const useCases = [
                     side="right"
                     title="Above Ground Biomass (AGB) Use Case Description"
                     text={`The quantification of forest above-ground biomass (AGB) over large areas is used as a proxy for the quantification of carbon stocks, particularly referring to Reduced Emissions from Deforestation and forest Degradation (REDD+) projects, for the quantification of forest resources and ecosystem services, the creation of fuel maps to be used as input to wildfires spread models, and for biodiversity and climate change models. According to the definition of the Intergovernmental Panel on Climate Change (IPCC 2006), Above-Ground Biomass is defined as “All living biomass above the soil including stem, stump, branches, bark, seeds and foliage”.\n\nThrough the GEOSS platform, the user can produce maps of biomass based on vegetation indices (VIs) from remote sensing imagery and compare results obtained by different Machine Learning (ML) models. Such models, developed in collaboration with JRC, are still in an experimental phase.`}
-                    imageSRC="/above-ground-biomass.webp"
+                    imageSRC="/agb.webp"
                     buttonText=""
                     buttonHref={""}
                 />
