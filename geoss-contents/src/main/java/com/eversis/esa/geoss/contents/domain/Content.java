@@ -74,4 +74,8 @@ public class Content extends AuditableEntity {
     @Column(nullable = false)
     private Long siteId;
 
+    @Size(max = 255, message = "{validation.imageUrl}")
+    @Column(nullable = true)
+    private String imageUrl;
+
 }
