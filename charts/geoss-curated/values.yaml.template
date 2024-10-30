@@ -151,7 +151,7 @@ secrets:
       springDatasourceUrl: "jdbc:mariadb://geoss-${DEPLOY_ENV}-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
       springDatasourceUsername: "$DATABASE_USERNAME_APP"
       springDatasourcePassword: "$DATABASE_PASSWORD_APP"
-      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-elasticsearch:9200"
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http:9200"
       springElasticsearchUsername: "elastic"
       springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
       springProfilesActive: "keycloak"
