@@ -14,6 +14,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
             const parsedArticleBody = data.data.toString().replace(/"/g, '\\"');
             return (
                 <Script
+                    id="schema"
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -41,6 +42,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "articles-list":
             return (
                 <Script
+                    id="schema"
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -77,6 +79,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "items-list":
             return (
                 <Script
+                    id="schema"
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -104,6 +107,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "providers-list":
             return (
                 <Script
+                    id="schema"
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -112,18 +116,12 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
                                     "@type": "ItemList",
                                     "itemListElement": [
                                         ${data.map((el: any, index: number) => {
-                                            const url = el.extras.find(
-                                                (element: any) => element.key === "Institution Web Site URL"
-                                            )?.value;
-                                            const date = el.extras.find(
-                                                (element: any) => element.key === "Registration Date"
-                                            )?.value;
+                                            const url = el.data.websiteInstitutionURL;
                                             return `                                
                                                 {
                                                 "@type": "ListItem",
                                                 "position": ${index + 1},
                                                 "name": "${el.name}",
-                                                "date": "${date}"
                                                 "url": "${url}"
                                                 }
                                             `;
@@ -137,6 +135,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "faq":
             return (
                 <Script
+                    id="schema"
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `

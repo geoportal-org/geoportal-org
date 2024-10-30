@@ -11,7 +11,7 @@ const page = async () => {
           <div className="w-full px-6 lg:px-48 py-20 lg:py-24 text-center justify-center min-h-[40vh] italic">Loading...</div>
         }
       >
-        <ProvidersSection />
+        <ProvidersSection/>
       </Suspense>
     </div>
   );

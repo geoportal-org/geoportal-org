@@ -142,6 +142,7 @@ export const en = {
             add: "Add page",
             author: "Author",
             content: "Content",
+            imageUrl: 'Image',
             description: "Description (abstract)",
             slug: "Friendly URL",
             "selected-deleted": "Selected page(s) has been deleted",
@@ -223,6 +224,8 @@ export const en = {
         api: {
             "dab-base": "Base URL",
             "dab-data-providers": "Data Providers URL",
+            providers_login: 'Data Providers endpoint login',
+            providers_pass: 'Data Providers endpoint password',
             "dab-view-api": "View API key",
             "dab-view-base": "View base URL",
             "geoss-opensearch": "Opensearch URL",

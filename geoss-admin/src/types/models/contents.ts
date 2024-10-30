@@ -25,6 +25,7 @@ export interface IContentData {
     title: TranslatedData;
     data: TranslatedData;
     published: boolean;
+    imageUrl: string;
     siteId: number | null;
 }
 

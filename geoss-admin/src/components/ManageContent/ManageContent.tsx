@@ -4,16 +4,18 @@ import { Formik, FormikValues, FormikHelpers, FormikTouched, FormikErrors, Formi
 import { Box, useDisclosure, Flex } from "@chakra-ui/react";
 import { FormField, Loader, MainContent, Modal, PrimaryButton, TextContent } from "@/components";
 import { ValidationService } from "@/services";
-import { ContentService } from "@/services/api";
+import { ContentService, FileRepositoryService } from "@/services/api";
 import { addContentForm } from "@/data/forms";
-import { defaultUsedLang, pagesRoutes } from "@/data";
-import { IContentData } from "@/types/models";
-import { ManageContentProps, ButtonType, ButtonVariant, ToastStatus, LocaleNames } from "@/types";
+import { acceptedLogoExtensions, defaultUsedLang, initRepositoryPagination, pagesRoutes } from "@/data";
+import { IContentData, IDocument } from "@/types/models";
+import { ManageContentProps, ButtonType, ButtonVariant, ToastStatus, LocaleNames, SelectSettings } from "@/types";
 import useCustomToast from "@/utils/useCustomToast";
 import useFormatMsg from "@/utils/useFormatMsg";
 import {
     areObjectsEqual,
+    createSelectItemsList,
     createTouchedForm,
+    generateGenericErrorMessage,
     isTranslatedValueAdded,
     setExistingFormValues,
     setFormInitialValues,
@@ -28,6 +30,7 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
     const [isDraft, setIsDraft] = useState<boolean>(false);
     const [initValues, setInitValues] = useState<FormikValues>(() => setFormInitialValues(addContentForm));
     const [contentId, setContentId] = useState<string>("");
+    const [documentsList, setDocumentsList] = useState<SelectSettings>();
     const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
     const router = useRouter();
     const { translate } = useFormatMsg();
@@ -39,10 +42,40 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
 
     useEffect(() => {
         if (router.isReady) {
-            isEditMode ? getEditedContent() : setIsLoading(false);
+            if (isEditMode) {
+                getEditedContent();
+                getDocumentsList();
+            } else {
+                setIsLoading(false);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady]);
+
+    const getDocumentsList = async () => {
+        try {
+            const {
+                _embedded: { document },
+            } = await FileRepositoryService.getDocumentsListBySiteId({
+                ...initRepositoryPagination,
+                siteId: currentSiteId,
+            });
+            const selectDocumentsList = createSelectItemsList(
+                document.filter(({ extension }) => acceptedLogoExtensions.includes(extension)),
+                false,
+                false,
+                locale as LocaleNames
+            );
+            setDocumentsList(selectDocumentsList);
+        } catch (e: any) {
+            const msg = generateGenericErrorMessage(e);
+            showToast({
+                title: translate("general.error"),
+                description: translate("pages.sites.siteCreationFail") + " " + msg,
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
 
     const getEditedContent = async () => {
         const id = router.query.id as string;
@@ -126,12 +159,14 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
             }
             values[genericName][translation] = values[genericName][defaultTranslation];
         });
-        const { title, data } = values;
+        const { title, data, imageUrl } = values;
+        const imgVal = imageUrl && imageUrl !== "" ? imageUrl : ''
         return {
             title,
             data,
             published: isPublished,
             siteId: currentSiteId,
+            imageUrl: imgVal
         };
     };
 
@@ -154,6 +189,9 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
                 ? field.translationInfo.translation !== currentTranslation
                 : false;
             const isRequired = field.isRequired && !isInvisible;
+            if (field.name === "imageUrl") {
+                field.selectSettings = documentsList;
+            }
             return (
                 <FormField
                     key={field.name}

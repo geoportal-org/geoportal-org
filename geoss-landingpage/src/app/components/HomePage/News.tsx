@@ -3,23 +3,25 @@ import Link from "next/link";
 import React from "react";
 import NewsTile from "../NewsTile";
 import { v4 as uuidv4 } from "uuid";
-import { getNewsPages } from "../../api/newsApi";
+import { getNewsPagesWithImages } from "../../api/newsApi";
 import SchemaHeader from "../SchemaHeader/SchemaHeader";
 
 async function getServerSideProps() {
     //Placeholder for fetching featured news from contents
     const newsList: NewsTileData[] = [];
 
-    const { news } = (await getNewsPages(0, 3)) || [];
-    news.forEach((n: any) => {
-        newsList.push({
-            img: "/newsPlaceholder1.webp",
-            title: n.title.en,
-            date: n.modifiedOn,
-            text: n.description.en,
-            id: n.slug,
+    const { newsWithImages } = (await getNewsPagesWithImages(0, 3));
+    if (newsWithImages) {
+        newsWithImages.forEach((n: any) => {
+            newsList.push({
+                img: n.imageUrl,
+                title: n.title.en,
+                date: n.modifiedOn,
+                text: n.description.en,
+                id: n.slug,
+            });
         });
-    });
+    }
     return newsList;
 }
 

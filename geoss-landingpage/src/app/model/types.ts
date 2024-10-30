@@ -24,15 +24,51 @@ export type PaginationData = {
     number: number;
 };
 
-export type ProviderData = {
+export type ProviderElementType = {
+    formId: number;
+    id: number;
     name: string;
-    id: string;
+    data: ProviderData;
+    version: number;
+    createDate: string;
+    _links: any;
+};
+
+export type ProviderData = {
+    providerName: string;
+    acronym: string;
+    shortDescription: string;
+    websiteInstitutionURL: string;
+    organizationGeographicalCoverage: string;
+    countriesOrRegionsNames: string;
+    geoCoverageOther: string;
+    geoAffiliation: string;
+    officialFocalPointName: string;
+    officialFocalPointEmail: string;
+    technicalFocalPointName: string;
+    technicalFocalPointEmail: string;
+    onlineResourceType: string;
+    knowledgeBodyType: string;
+    dataAccessibility: string;
+    dataPolicy: string;
+    dataCore: string;
+    dataCoreOther: string;
+    dataManagementPrinciplesLabel: string;
+    relevantSBA: string;
+    relevantSDG: string;
+    otherInitiative: string;
+    serviceEndpoint: string;
+    organizationLogoURL: string;
+    terms: string;
+};
+
+export type ProviderElementProps = {
+    name: string;
+    date: string;
+    url: string;
     description: string;
-    title: string;
-    approval_status: string;
-    state: string;
     image_url: string;
-    extras: any[];
+    principlesStr: string;
 };
 
 export type NewsPage = {

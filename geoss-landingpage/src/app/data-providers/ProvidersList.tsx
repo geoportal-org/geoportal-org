@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ProviderData } from "../model/types";
+import { ProviderElementType } from "../model/types";
 import ProviderElement from "./ProviderElement";
 import GeneralButton from "../components/GeneralButton";
 import Dropdown from "../components/Dropdown";
@@ -26,7 +26,7 @@ const sortingOptions = [
 ];
 
 type Props = {
-    list: ProviderData[];
+    list: ProviderElementType[];
 };
 
 const ProvidersList = ({ list }: Props) => {
@@ -41,9 +41,9 @@ const ProvidersList = ({ list }: Props) => {
     useEffect(() => {
         setProvidersList(() =>
             list.filter(
-                (provider: ProviderData) =>
+                (provider: ProviderElementType) =>
                     provider.name.toLowerCase().includes(query.toLowerCase()) ||
-                    provider.description.toLowerCase().includes(query.toLowerCase())
+                    provider.data.shortDescription.toLowerCase().includes(query.toLowerCase())
             )
         );
     }, [query, list]);
@@ -58,18 +58,10 @@ const ProvidersList = ({ list }: Props) => {
                 tempArr.sort((a, b) => b.name.localeCompare(a.name));
                 break;
             case "date-asc":
-                tempArr.sort((a, b) =>
-                    a.extras
-                        .find((element) => element.key === "Registration Date")
-                        ?.value.localeCompare(b.extras.find((element) => element.key === "Registration Date")?.value)
-                );
+                tempArr.sort((a, b) => a.createDate.localeCompare(b.createDate));
                 break;
             case "date-desc":
-                tempArr.sort((a, b) =>
-                    b.extras
-                        .find((element) => element.key === "Registration Date")
-                        ?.value.localeCompare(a.extras.find((element) => element.key === "Registration Date")?.value)
-                );
+                tempArr.sort((a, b) => b.createDate.localeCompare(a.createDate));
                 break;
         }
         setProvidersList(tempArr);
@@ -78,7 +70,7 @@ const ProvidersList = ({ list }: Props) => {
 
     return (
         <div className="flex flex-col gap-8">
-            <SchemaHeader type="items-list" data={providersList} />
+            <SchemaHeader type="providers-list" data={providersList} />
 
             <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 lg:gap-8">
                 <input
@@ -94,22 +86,20 @@ const ProvidersList = ({ list }: Props) => {
                     onChange={setSorting}
                 />
             </div>
-
+            
             {providersList.length > 0 && (
                 <ul className="gap-4">
-                    {providersList.map((provider: ProviderData, index: number) => {
+                    {providersList.map((provider: ProviderElementType, index: number) => {
                         if (index < elementCount) {
                             return (
                                 <ProviderElement
                                     key={provider.id}
                                     name={provider.name}
-                                    id={provider.id}
-                                    description={provider.description}
-                                    title={provider.title}
-                                    approval_status={provider.approval_status}
-                                    state={provider.state}
-                                    image_url={provider.image_url}
-                                    extras={provider.extras}
+                                    date={provider.createDate}
+                                    url={provider.data.websiteInstitutionURL}
+                                    description={provider.data.shortDescription}
+                                    image_url={provider.data.organizationLogoURL}
+                                    principlesStr={provider.data.dataManagementPrinciplesLabel}
                                 />
                             );
                         }

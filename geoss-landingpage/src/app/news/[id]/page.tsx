@@ -7,11 +7,11 @@ import { getNewsPageContent } from "../../api/newsApi";
 import SchemaHeader from "../../components/SchemaHeader/SchemaHeader";
 
 const getServerSideProps = async (slug: string) => {
-    const { title, data, date } = await getNewsPageContent(slug);
+    const { title, data, date, imageUrl } = await getNewsPageContent(slug);
     return {
         title: title,
         date: date,
-        img: "/1.webp",
+        img: imageUrl,
         data: data,
     };
 };

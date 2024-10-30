@@ -1,5 +1,6 @@
 import { Input } from "@chakra-ui/react";
 import { FormField } from "@/types";
+import { Select } from "chakra-react-select";
 
 export const addContentForm: FormField[] = [
     {
@@ -132,6 +133,21 @@ export const addContentForm: FormField[] = [
         translationInfo: {
             translation: "zh",
             genericName: "data",
+        },
+    },
+    {
+        fieldType: Select,
+        isRequired: false,
+        labelId: "pages.page.imageUrl",
+        defaultValue: "",
+        name: "imageUrl",
+        placeholderId: "form.placeholders.select-one",
+        type: "select",
+        selectSettings: {
+            isMultiselect: false,
+            isGroupedOptions: false,
+            isTranslated: false,
+            options: [],
         },
     },
 ];

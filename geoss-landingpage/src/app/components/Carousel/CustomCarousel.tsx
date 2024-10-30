@@ -5,7 +5,6 @@ import "react-multi-carousel/lib/styles.css";
 import CustomDot from "./CustomDot";
 import FeatureTile from "../HomePage/FeatureTile";
 import ImageTile from "../HomePage/ImageTile";
-import { useMediaQuery } from "@/src/app/hooks/useMediaQuery";
 
 type Props = {
   itemsArray: any[];
@@ -15,8 +14,6 @@ type Props = {
 
 const CustomCarousel = ({ itemsArray, className, isFeature }: Props) => {
   const carouselRef = useRef(null);
-  const isMobile = useMediaQuery("(max-width: 464px)");
-
   const responsiveFeatures = {
     smallDesktop: {
       breakpoint: { max: 2100, min: 1324 },

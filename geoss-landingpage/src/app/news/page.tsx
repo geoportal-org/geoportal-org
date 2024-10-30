@@ -4,29 +4,32 @@ import FindMore from "../components/FindMore";
 import NewsGrid from "./NewsGrid";
 import { NewsTileData } from "../model/types";
 import { findMoreLinksNewsPage } from "../model/findMoreLinks";
-import { getNewsPages } from "../api/newsApi";
+import { getNewsPagesWithImages } from "../api/newsApi";
 import SchemaHeader from "../components/SchemaHeader/SchemaHeader";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'GEOSS News',
-    description: 'GEOSS News page',
-  }
+    title: "GEOSS News",
+    description: "GEOSS News page",
+};
 
 async function getServerSideProps(searchParams: { [key: string]: string | string[] | undefined }) {
     const currentPage = Number(searchParams.page) - 1 || 0;
     const newsList: NewsTileData[] = [];
 
-    const { news, paginationData } = (await getNewsPages(currentPage)) || [];
-    news.forEach((n: any) => {
-        newsList.push({
-            img: "/newsPlaceholder1.webp",
-            title: n.title.en,
-            date: n.modifiedOn,
-            text: n.description.en,
-            id: n.slug,
+    const { newsWithImages, paginationData } = await getNewsPagesWithImages(currentPage);
+    if (newsWithImages) {
+        newsWithImages.forEach((n: any) => {
+            newsList.push({
+                img: n.imageUrl,
+                title: n.title.en,
+                date: n.modifiedOn,
+                text: n.description.en,
+                id: n.slug,
+            });
         });
-    });
+    }
+
     return { paginationData, newsList };
 }
 
@@ -38,7 +41,7 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
         }
         return (
             <div className="w-full text-black">
-                <SchemaHeader type="articles-list" data={newsData.newsList}/>
+                <SchemaHeader type="articles-list" data={newsData.newsList} />
                 <Title />
                 <Suspense fallback={<>Loading...</>}>
                     <NewsGrid newsList={newsData.newsList} paginationData={newsData.paginationData} />
