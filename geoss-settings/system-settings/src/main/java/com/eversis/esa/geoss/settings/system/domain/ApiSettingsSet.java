@@ -94,6 +94,16 @@ public enum ApiSettingsSet {
         DAB_DATA_PROVIDERS_URL("dabDataProvidersUrl"),
 
         /**
+         * Dab data providers user dab.
+         */
+        DAB_DATA_PROVIDERS_USER("dabDataProvidersUsername"),
+
+        /**
+         * Dab data providers pass dab.
+         */
+        DAB_DATA_PROVIDERS_PASS("dabDataProvidersPassword"),
+
+        /**
          * View api key dab.
          */
         DAB_VIEW_API_KEY("dabViewApiKey"),
