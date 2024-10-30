@@ -48,27 +48,6 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
-  #Configuration of external services providers
-  #SP#location = /rest/services-providers {
-  #SP#  return 302 https://$host/rest/services-providers/;
-  #SP#  access_log /dev/stdout;
-  #SP#  error_log /dev/stderr;
-  #SP#}
-
-  #SP#location /rest/services-providers/ {
-  #SP#  resolver 8.8.8.8;
-  #SP#  proxy_set_header Host yp.geodab.eu;
-  #SP#  access_log /dev/stdout;
-  #SP#  error_log /dev/stderr;
-  #SP#  proxy_pass ###SERVICES_PROVIDERS_SOURCE###;
-  #SP#
-  #SP#  proxy_cache service_providers_zone;
-  #SP#  proxy_cache_valid 200 1w;
-  #SP#  add_header X-Proxy-Cache $upstream_cache_status;
-  #SP#  proxy_set_header Referer "https://${UI_DOMAIN_NAME}";
-  #SP#  proxy_set_header Origin "https://${UI_DOMAIN_NAME}";
-  #SP#}
-
   location /settings {
     include conf.d/common/maintenance_conditions.conf;
 
