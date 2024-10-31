@@ -10,3 +10,4 @@ pluginManagement {
 }
 rootProject.name = 'geoss-keycloak'
 include 'liferay-hash-provider'
+include 'liferay-pbkdf2-hash-provider'
