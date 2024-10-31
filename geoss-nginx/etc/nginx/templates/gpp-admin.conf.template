@@ -108,7 +108,7 @@ server {
     #request headers
     include conf.d/utils/proxy_request_headers.conf;
     include conf.d/utils/proxy_request_headers_x.conf;
-    #proxy_set_header X-Forwarded-Prefix /proxy;
+    proxy_set_header X-Forwarded-Prefix /proxy;
 
     proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8080/;
     proxy_no_cache 1;
