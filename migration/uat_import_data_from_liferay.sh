@@ -31,7 +31,7 @@ python "$BASEDIR/resources/rating/entry/import_entry_rating.py" "$BASEDIR/uat_en
 echo 'Import resource rating entries from liferay ended'
 
 echo 'Import user accounts from liferay started'
-python "$BASEDIR/accounts/import_users_from_liferay.py" "$BASEDIR/uat_environment_config.ini"
+python "$BASEDIR/accounts/import_users_from_liferay_6_2.py" "$BASEDIR/uat_environment_config.ini"
 echo 'Import user accounts from liferay ended'
 
 echo 'Import user settings from liferay started'
