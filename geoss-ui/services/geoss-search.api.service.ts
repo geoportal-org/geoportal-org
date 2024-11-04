@@ -1242,7 +1242,7 @@ const GeossSearchApiService = {
     getUserContributions(entryIds: string, dataOrigin: string) {
         return makeRequest(
             'get',
-            `${SearchEngineService.getInternalOpenSearchUrlRaw()}/api/extensions/details?ds=${dataOrigin}&ids=${entryIds}${UtilsService.getAccessKeyString()}`,
+            `${SearchEngineService.getInternalOpenSearchUrlRaw()}/rest/extensions/details?ds=${dataOrigin}&ids=${entryIds}${UtilsService.getAccessKeyString()}`,
             null,
             true
         )
