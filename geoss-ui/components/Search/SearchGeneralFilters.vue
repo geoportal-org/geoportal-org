@@ -782,7 +782,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
         &--geoss-data-core,
         &--geoss-insitu-data {
             width: auto;
-            margin-top: 18px 0 0;
+            margin: 18px 0 0;
 
             @media (max-width: $breakpoint-sm) {
                 margin-bottom: 0 !important;

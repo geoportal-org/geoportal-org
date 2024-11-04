@@ -169,7 +169,7 @@ const parseCatalogsResponse = (data: any): any => {
             subOptions: [],
             label: cat.title,
             title: cat.title,
-            value: cat.id
+            value: cat.dabId
         })
     }
     return catalogs.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))

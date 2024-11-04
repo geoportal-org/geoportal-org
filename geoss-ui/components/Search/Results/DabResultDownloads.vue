@@ -78,7 +78,7 @@ export default class DabResultDownloadsComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$auth && this.$auth.loggedIn;
     }
 
     get isBulkDownloadEnabled() {

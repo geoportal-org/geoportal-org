@@ -231,7 +231,7 @@ export default class DabResultCustomDownloadComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$auth && this.$auth.loggedIn;
     }
 
     private prepareDownloadLink() {
