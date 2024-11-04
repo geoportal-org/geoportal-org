@@ -21,7 +21,7 @@ class ApplicationTests {
      */
     @Container
     @ServiceConnection
-    static MariaDBContainer<?> MARIA_DB_CONTAINER = new MariaDBContainer<>("mariadb:10.10");
+    static MariaDBContainer<?> MARIA_DB_CONTAINER = new MariaDBContainer<>("mariadb:11.4");
 
     /**
      * Context loads.
