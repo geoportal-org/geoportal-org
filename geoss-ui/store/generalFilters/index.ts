@@ -29,6 +29,7 @@ const state = () => ({
     dateTo: '',
     datePeriod: '',
     geossDataCore: false,
+    geossInSituData: false,
     containerVisible: false,
     requestId: null,
     inChangeProcess: false,
@@ -109,6 +110,10 @@ const getters = {
             params.gdc = true
         }
 
+        if (state.geossInSituData) {
+            params.inSitu = true
+        }
+
         return params
     },
     containerVisible: (state: any) => {
@@ -182,6 +187,7 @@ const getters = {
             dateTo: state.dateTo,
             datePeriod: state.datePeriod,
             geossDataCore: state.geossDataCore,
+            geossInSituData: state.geossInSituData,
             googlePlacesInput: state.googlePlacesInput
         }
     },
@@ -296,6 +302,9 @@ const actions = {
     },
     setGeossDataCore(context: any, value: boolean) {
         context.commit('setStateProp', { prop: 'geossDataCore', value })
+    },
+    setGeossInSituData(context: any, value: boolean) {
+        context.commit('setStateProp', { prop: 'geossInSituData', value })
     },
     reset(context: any) {
         context.commit('resetState')

@@ -17,6 +17,7 @@ export enum GeneralFiltersActions {
     setDatePeriod = 'generalFilters/setDatePeriod',
     setContainerVisible = 'generalFilters/setContainerVisible',
     setGeossDataCore = 'generalFilters/setGeossDataCore',
+    setGeossInSituData = 'generalFilters/setGeossInSituData',
     reset = 'generalFilters/reset',
     setLastTriggerredState = 'generalFilters/setLastTriggerredState',
     setInChangeProcess = 'generalFilters/setInChangeProcess',

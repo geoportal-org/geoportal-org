@@ -524,6 +524,7 @@ export default {
 
     inSituFilters: {
         cropTypes: 'Crop types',
+        quantityTypes: 'Quantity types',
         landCoverTypes: 'Land cover type',
         irrigationTypes: 'Irrigation type',
         cropConfidence: 'Crop confidence',

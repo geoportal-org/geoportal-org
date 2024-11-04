@@ -77,6 +77,9 @@
                     generalFiltersGeossDataCore =
                     $event.target.value != 'true'
                     " :buttonDisabled="dataSource !== DataSources.DAB" data-tutorial-tag="filters-general-data-core" />
+                <GeossInSituDataCheckbox class="general-filters__filter general-filters__filter--geoss-insitu-data"
+                    @input="generalFiltersGeossInSituData = $event.target.value != 'true'"
+                    :buttonDisabled="dataSource !== DataSources.DAB" data-tutorial-tag="filters-general-insitu-data" />
             </div>
         </div>
         <div class="general-filters__wrapper">
@@ -98,6 +101,7 @@
 import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator'
 
 import GeossDataCoreCheckbox from '@/components/Search/GeneralFilters/GeossDataCoreCheckbox.vue'
+import GeossInSituDataCheckbox from '@/components/Search/GeneralFilters/GeossInSituDataCheckbox.vue'
 import GooglePlacesSelect from '@/components/Search/GeneralFilters/GooglePlacesSelect.vue'
 import BoundingBoxRelationRadio from '@/components/Search/GeneralFilters/BoundingBoxRelationRadio.vue'
 import SearchFiltersTrigger from '@/components/Search/SearchFiltersTrigger.vue'
@@ -124,6 +128,7 @@ declare const google: any
 @Component({
     components: {
         GeossDataCoreCheckbox,
+        GeossInSituDataCheckbox,
         GooglePlacesSelect,
         BoundingBoxRelationRadio,
         SearchFiltersTrigger,
@@ -136,6 +141,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
 
     public DataSources = DataSources
     public sourceOptions: Source[] = []
+    public allSourceOptions: Source[] = []
     public viewOptions: View[] = []
     public countriesAndContinents = CountriesAndContinents
     public lastState: any = null
@@ -183,6 +189,15 @@ export default class SearchGeneralFiltersComponent extends Vue {
     set generalFiltersGeossDataCore(value: boolean) {
         this.rememberState()
         this.$store.dispatch(GeneralFiltersActions.setGeossDataCore, value)
+    }
+
+    get generalFiltersGeossInSituData() {
+        return this.$store.getters[GeneralFiltersGetters.state].geossInSituData
+    }
+
+    set generalFiltersGeossInSituData(value: boolean) {
+        this.rememberState()
+        this.$store.dispatch(GeneralFiltersActions.setGeossInSituData, value)
     }
 
     get generalFilters() {
@@ -577,14 +592,18 @@ export default class SearchGeneralFiltersComponent extends Vue {
         if (newVal === '' && this.onlyDefaultViewAvailable()) {
             this.setDefaultViewIdIfAny()
         }
+        if (this.viewId === 'worldcereal') {
+            this.$store.dispatch(GeneralFiltersActions.setSources, [])
+            this.sourceOptions = this.allSourceOptions.filter(option => option.value === 'worldcereal' || option.value === 'agrostac')
+        } else {
+            this.sourceOptions = this.allSourceOptions
+        }
     }
 
     private async created() {
-        const [, sourceOptions] = await to(
-            GeossSearchApiService.getSourcesOptions()
-        )
-        if (sourceOptions) {
-            this.sourceOptions = sourceOptions
+        [, this.allSourceOptions] = await to(GeossSearchApiService.getSourcesOptions())
+        if (this.allSourceOptions) {
+            this.sourceOptions = this.allSourceOptions
         }
 
         const [, viewOptions] = await to(
@@ -760,9 +779,10 @@ export default class SearchGeneralFiltersComponent extends Vue {
             }
         }
 
-        &--geoss-data-core {
+        &--geoss-data-core,
+        &--geoss-insitu-data {
             width: auto;
-            margin-top: 12px;
+            margin-top: 18px 0 0;
 
             @media (max-width: $breakpoint-sm) {
                 margin-bottom: 0 !important;

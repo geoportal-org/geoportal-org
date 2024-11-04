@@ -8,7 +8,7 @@
             <i :class="`icomoon-data-source--${parentDataSourceGroup}`"></i>
             <span class="title" @click="showDabResultParentRefDetails()">{{
                 title
-                }}</span>
+            }}</span>
         </div>
         <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''
             " :class="{
@@ -92,12 +92,12 @@
                                 </div>
                                 <div class="dab-result-details__more__wrapper">
                                     <button @click="showDetails()" class="dab-result-details__more" :data-tutorial-tag="resultIdDetails === result.id
-                                            ? 'result-see-more'
-                                            : ''
+                                        ? 'result-see-more'
+                                        : ''
                                         ">
                                         <span>{{
                                             $tc('dabResult.seeMore')
-                                            }}</span>
+                                        }}</span>
                                         <!-- <span class="arrow"></span> -->
                                     </button>
                                 </div>
@@ -114,49 +114,49 @@
                                         " class="extended-view-switcher" :class="{
                                             return: isExtendedViewActive
                                         }" :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-extended-view'
-                                                : ''
+                                            ? 'result-extended-view'
+                                            : ''
                                             ">
                                         <i v-if="!isExtendedViewActive" class="icomoon-expand-view"></i>
                                         <i v-else class="icomoon-collapse-view"></i>
                                     </button>
                                     <button :title="$tc('dabResult.showOnMap')" :disabled="!layerData"
                                         @click="showOnMap()" :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-show-on-map'
-                                                : ''
+                                            ? 'result-show-on-map'
+                                            : ''
                                             ">
                                         <i class="icomoon-show-on-map"></i>
                                     </button>
                                     <button :title="$tc('dabResult.addAsBookmark')" v-if="!isWidget"
                                         v-show="isSignedIn && !resultBookmarked" :disabled="!isSignedIn"
                                         @click="addBookmark()" :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-bookmark'
-                                                : ''
+                                            ? 'result-bookmark'
+                                            : ''
                                             ">
                                         <i class="icomoon-plus"></i>
                                     </button>
                                     <button :title="$tc('dabResult.removeFromBookmarks')
                                         " v-if="!isWidget" v-show="isSignedIn && resultBookmarked"
                                         :disabled="!isSignedIn" @click="removeBookmark()" :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-bookmark'
-                                                : ''
+                                            ? 'result-bookmark'
+                                            : ''
                                             ">
                                         <i class="icomoon-minus"></i>
                                     </button>
                                 </div>
                                 <div class="dab-result-details__actions--side">
                                     <Share :data-tutorial-tag="resultIdDetails === result.id
-                                            ? 'result-share'
-                                            : ''
+                                        ? 'result-share'
+                                        : ''
                                         " :url="shareUrl" />
                                     <button :title="$tc('dabResult.layers')" @click="layerButtonAction()" :class="{
                                         'single-layer-active':
                                             layers.length === 1 &&
                                             isLayerDisplayed(layers[0].url)
                                     }" :disabled="!layers.length && !statisticsId
-                                            " :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-layers'
-                                                : ''
+                                        " :data-tutorial-tag="resultIdDetails === result.id
+                                            ? 'result-layers'
+                                            : ''
                                             ">
                                         <i class="icomoon-layers"></i>
                                     </button>
@@ -170,22 +170,22 @@
                                             " :class="{ open: showDownloads }" :data-tutorial-tag="resultIdDetails === result.id
                                                 ? 'result-downloads'
                                                 : ''
-                                            ">
+                                                ">
                                         <i class="icomoon-arrow down"></i>
                                     </button>
                                     <button v-else :title="$tc('dabResult.downloads')" @click="toggleShowDownloads()"
                                         :class="{ open: showDownloads }" :disabled="!downloads.length"
                                         :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-downloads'
-                                                : ''
+                                            ? 'result-downloads'
+                                            : ''
                                             ">
                                         <i class="icomoon-arrow down"></i>
                                     </button>
 
                                     <button class="dab-result-details__actions-workflow" :title="buttonWorkflowTitle"
                                         @click="openWorkflow(true)" v-show="workflow" :data-tutorial-tag="resultIdDetails === result.id
-                                                ? 'result-workflow'
-                                                : ''
+                                            ? 'result-workflow'
+                                            : ''
                                             "></button>
                                     <template v-for="hub of [
                                         'data',
@@ -198,13 +198,13 @@
                                             " :title="$tc(`dabResult.${hub}`)" @click="
                                                 switchToDataSource(hub, result)
                                                 " :disabled="!isDrillAvailable(
-                                                result,
-                                                `${hub}_hub`
-                                            )
-                                                " :data-tutorial-tag="resultIdDetails === result.id
-                                                    ? `result-switch-to-${hub}`
-                                                    : ''
-                                                ">
+                                                    result,
+                                                    `${hub}_hub`
+                                                )
+                                                    " :data-tutorial-tag="resultIdDetails === result.id
+                                                        ? `result-switch-to-${hub}`
+                                                        : ''
+                                                        ">
                                             <i :class="`icomoon-data-source--${hub}`"></i>
                                         </button>
                                         <button :key="`${hub}_2`" v-if="isEntryExtensionEnabled" v-show="!hiddenDataSources.includes(
@@ -218,14 +218,14 @@
                                                 `dabResult.userContributed${hub}`
                                             )
                                                 " @click="
-                                                switchToUserContributedDataSource(
-                                                    hub,
-                                                    result
-                                                )
-                                                " :data-tutorial-tag="resultIdDetails === result.id
-                                                    ? `result-switch-to-contributed-${hub}`
-                                                    : ''
-                                                ">
+                                                    switchToUserContributedDataSource(
+                                                        hub,
+                                                        result
+                                                    )
+                                                    " :data-tutorial-tag="resultIdDetails === result.id
+                                                        ? `result-switch-to-contributed-${hub}`
+                                                        : ''
+                                                        ">
                                             <i :class="`icomoon-data-source--${hub}`"></i>
                                             <i class="icon-small icomoon-editor--user"></i>
                                         </button>
@@ -260,10 +260,10 @@
                                                             '/dhus/odata/'
                                                         ) !== -1
                                                     " @click="
-                                                            openSentinelLoginPopup(
-                                                                download.url
-                                                            )
-                                                            " :title="getDownloadButtonLabel(
+                                                        openSentinelLoginPopup(
+                                                            download.url
+                                                        )
+                                                        " :title="getDownloadButtonLabel(
                                                             download.type
                                                         )
                                                             ">
@@ -281,10 +281,10 @@
                                                             '/sdg/Series/DataCSV'
                                                         ) !== -1
                                                     " @click="
-                                                            getUnepFile(
-                                                                download.postData
-                                                            )
-                                                            " :title="getDownloadButtonLabel(
+                                                        getUnepFile(
+                                                            download.postData
+                                                        )
+                                                        " :title="getDownloadButtonLabel(
                                                             download.type
                                                         )
                                                             ">
@@ -301,10 +301,10 @@
                                                         download.type ===
                                                         'custom-download'
                                                     " @click="
-                                                            initCustomDownloadPopup(
-                                                                download.url
-                                                            )
-                                                            " :title="$tc(
+                                                        initCustomDownloadPopup(
+                                                            download.url
+                                                        )
+                                                        " :title="$tc(
                                                             'general.customDownload'
                                                         )
                                                             ">
@@ -315,10 +315,10 @@
                                                         download.type ===
                                                         'html'
                                                     " @click="
-                                                            downloadLinkClicked(
-                                                                download.url
-                                                            )
-                                                            " target="_blank" :title="getDownloadButtonLabel(
+                                                        downloadLinkClicked(
+                                                            download.url
+                                                        )
+                                                        " target="_blank" :title="getDownloadButtonLabel(
                                                             download.type
                                                         )
                                                             ">
@@ -334,10 +334,10 @@
                                                     <a v-else-if="
                                                         !isBulkDownloadEnabled
                                                     " @click="
-                                                            downloadLinkClicked(
-                                                                download.url
-                                                            )
-                                                            " target="_blank" :title="getDownloadButtonLabel(
+                                                        downloadLinkClicked(
+                                                            download.url
+                                                        )
+                                                        " target="_blank" :title="getDownloadButtonLabel(
                                                             download.type
                                                         )
                                                             ">
@@ -353,9 +353,9 @@
                                                     <a v-else-if="
                                                         isBulkDownloadEnabled
                                                     " target="_blank" :title="getDownloadButtonLabel(
-                                                            download.type
-                                                        )
-                                                            " class="expandable expandable-on-click" :class="{
+                                                        download.type
+                                                    )
+                                                        " class="expandable expandable-on-click" :class="{
                                                             expanded:
                                                                 index ===
                                                                 expandedDownloadIndex ||
@@ -365,8 +365,7 @@
                                                             FileFormatsIcons.indexOf(
                                                                 download.type
                                                             ) !== -1
-                                                        "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        " :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
                                                             @click="
                                                                 setExpandedDownloadIndex(
                                                                     index
@@ -392,12 +391,12 @@
                                                             Download now
                                                         </p>
                                                         <p class="dab-result-details__bulk-download-button" :title="isSignedIn
-                                                                ? $tc(
-                                                                    'dabResult.downloadLater'
-                                                                )
-                                                                : $tc(
-                                                                    'dabResult.thisOptionAvailableForSignedIn'
-                                                                )
+                                                            ? $tc(
+                                                                'dabResult.downloadLater'
+                                                            )
+                                                            : $tc(
+                                                                'dabResult.thisOptionAvailableForSignedIn'
+                                                            )
                                                             " :class="{
                                                                 disabled:
                                                                     !isSignedIn
@@ -422,8 +421,8 @@
                             </div>
                         </div>
                         <button :data-tutorial-tag="resultIdDetails === result.id
-                                ? 'result-drill-down'
-                                : ''
+                            ? 'result-drill-down'
+                            : ''
                             " :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
                             v-if="addParentRefAvailable(result) && !isParentRef"
                             @click="showInsideFolder(result)"></button>
@@ -934,14 +933,14 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     } else if (
                         (extension === 'geoparquet' || protocol.indexOf('geoparquet') > -1) &&
                         !complex) {
-						    downloads.push({
-                                name: linkTitle,
-                                url: linkText,
-                                desc: linkDescription,
-                                type: 'geoparquet',
-                                title: titleBox,
-                                score: linkScore
-                            })
+                        downloads.push({
+                            name: linkTitle,
+                            url: linkText,
+                            desc: linkDescription,
+                            type: 'geoparquet',
+                            title: titleBox,
+                            score: linkScore
+                        })
                     } else if (
                         (extension === 'txt' || protocol.indexOf('TXT') > -1) &&
                         !complex
@@ -1417,7 +1416,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
             // WorldCereal MAPS4GPP collection
             if (this.result.sourceId === 'worldcereal') {
-                downloads.push({name: this.result.title, url: `${SearchEngineService.getDabBaseUrl()}/worldcereal/query?searchFields=title,keywords,abstract&reqID=6hnblre3236&si=1&ct=12&rel=OVERLAPS&viewid=&sources=worldcereal&parents=${this.result.id}`, desc: '', type: 'worldcereal-collection'});
+                downloads.push({ name: this.result.title, url: `${SearchEngineService.getDabBaseUrl()}/worldcereal/query?searchFields=title,keywords,abstract&reqID=6hnblre3236&si=1&ct=12&rel=OVERLAPS&viewid=&sources=worldcereal&parents=${this.result.id}`, desc: '', type: 'worldcereal-collection' });
             }
 
 
@@ -2236,7 +2235,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public appendWorldCerealCollectionParameters(url) {
         const concatCoordinates = coordinates => {
             const { W, S, E, N } = coordinates;
-            if(W && S && E && N) {
+            if (W && S && E && N) {
                 return `${W},${S},${E},${N}`;
             }
             return ',,,';
@@ -2247,6 +2246,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         const selectedAreaCoordinates = this.$store.getters[GeneralFiltersGetters.state].selectedAreaCoordinates;
         const params = {
             cropTypes: this.$store.getters[InSituFiltersGetters.cropTypes],
+            quantityTypes: this.$store.getters[InSituFiltersGetters.quantityTypes],
             landCoverTypes: this.$store.getters[InSituFiltersGetters.landCoverTypes],
             irrigationTypes: this.$store.getters[InSituFiltersGetters.irrigationTypes],
             cropConfidence: this.$store.getters[InSituFiltersGetters.cropConfidence],
@@ -2486,8 +2486,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
         } else if (label === 'html') {
             label = this.$tc('dabResult.view')
         } else if (label === 'worldcereal-collection') {
-			label = 'Download selected data';
-		}
+            label = 'Download filtered data'
+        } else if (label === 'geoparquet') {
+            label = 'Download complete dataset'
+        }
         return label.toUpperCase()
     }
 

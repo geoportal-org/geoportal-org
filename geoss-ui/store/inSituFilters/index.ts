@@ -2,19 +2,22 @@ const state = () => ({
     inSituFiltersAvailable: false,
     cropTypes: [],
     cropTypesOptions: [],
+    quantityTypes: [],
+    quantityTypesOptions: [],
     landCoverTypes: [],
     landCoverTypesOptions: [],
     irrigationTypes: [],
     irrigationTypesOptions: [],
     cropConfidence: [0, 100],
     landCoverConfidence: [0, 100],
-    irrigationConfidence: [0, 100],
+    irrigationConfidence: [0, 100]
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
 
 const paramsMap: { [key: string]: any } = {
     cropTypes: 'cropTypes',
+    quantityTypes: 'quantityTypes',
     landCoverTypes: 'landCoverTypes',
     irrigationTypes: 'irrigationTypes',
     cropConfidence: 'cropConfidence',
@@ -53,15 +56,16 @@ const getters: { [key: string]: any } = {
         const params: { [key: string]: string } = {}
         for (const param of [
             'cropTypes',
+            'quantityTypes',
             'landCoverTypes',
-            'irrigationTypes',
+            'irrigationTypes'
         ]) {
             if (state[param]) {
                 params[param] = state[param]
             }
         }
         return params
-    },
+    }
 }
 
 for (const key of Object.keys(initialState)) {
@@ -78,7 +82,7 @@ const mutations = {
         for (const prop of Object.keys(initialState)) {
             state[prop] = JSON.parse(JSON.stringify(initialState[prop]))
         }
-    },
+    }
 }
 
 let actions: { [key: string]: any } = {}
@@ -96,12 +100,12 @@ actions = {
     setInSituFiltersAvailable(context: any, value: boolean) {
         context.commit('setStateProp', {
             prop: 'inSituFiltersAvailable',
-            value,
+            value
         })
     },
     reset(context: any) {
         context.commit('resetState')
-    },
+    }
 }
 
 export default {
@@ -109,5 +113,5 @@ export default {
     state,
     getters,
     actions,
-    mutations,
+    mutations
 }

@@ -344,6 +344,15 @@ const getters: { [key: string]: any } = {
                     InSituFiltersGetters.stateMapped
                 ]
             }
+            if (params.cropConfidence === '0,100') {
+                delete params.cropConfidence
+            }
+            if (params.landCoverConfidence === '0,100') {
+                delete params.landCoverConfidence
+            }
+            if (params.irrigationConfidence === '0,100') {
+                delete params.irrigationConfidence
+            }
         }
 
         return params
@@ -1286,10 +1295,14 @@ const actions = {
         dispatch(SearchActions.setWikipediaResults, null, { root: true })
         dispatch(SearchActions.setServicesResults, null, { root: true })
         dispatch(SearchActions.setParentRefs, null, { root: true })
-        const defaultDS = AppVueObj.app.$store.getters[SearchEngineGetters.defaultSourceName]
+        const defaultDS =
+            AppVueObj.app.$store.getters[SearchEngineGetters.defaultSourceName]
         dispatch(
             SearchActions.setDataSource,
-            { value: defaultDS ? defaultDS : DataSources.DAB, checkDefault: true },
+            {
+                value: defaultDS ? defaultDS : DataSources.DAB,
+                checkDefault: true
+            },
             { root: true }
         )
         dispatch(SearchActions.setPreviousQueryParams, null, { root: true })

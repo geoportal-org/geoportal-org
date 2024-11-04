@@ -1,72 +1,41 @@
 <template>
-        <div class="filters insitu-filters" :class="{'only-advanced': onlyAdvanced}">
+    <div class="filters insitu-filters" :class="{ 'only-advanced': onlyAdvanced }">
         <div class="insitu-filters__wrapper">
-            <CustomSelect
-                class="insitu-filters__filter cropType"
-                @input="oncropTypesChange($event)"
-                :value="cropTypes"
-                :options="cropTypesOptions"
-                :multiple="true"
-                :filterable="true"
-                textProp="text"
-                idProp="id"
-                :placeholder="$tc('inSituFilters.cropTypes')"
-                :appendToBody="appendToBody"
-            />
-            <CustomSelect
-                class="insitu-filters__filter landCoverType"
-                @input="onLandCoverChange($event)"
-                :value="landCoverTypes"
-                :options="landCoverTypesOptions"
-                :multiple="true"
-                :filterable="true"
-                textProp="text"
-                idProp="id"
-                :placeholder="$tc('inSituFilters.landCoverTypes')"
-                :appendToBody="appendToBody"
-            />
-            <CustomSelect
-                class="insitu-filters__filter irrigationType"
-                @input="onirrigationTypesChange($event)"
-                :value="irrigationTypes"
-                :options="irrigationTypesOptions"
-                :multiple="true"
-                :filterable="true"
-                textProp="text"
-                idProp="id"
-                :placeholder="$tc('inSituFilters.irrigationTypes')"
-                :appendToBody="appendToBody"
-            />
+            <CustomSelect class="insitu-filters__filter cropType" @input="oncropTypesChange($event)" :value="cropTypes"
+                :options="cropTypesOptions" :multiple="true" :filterable="true" textProp="text" idProp="id"
+                :placeholder="$tc('inSituFilters.cropTypes')" :appendToBody="appendToBody" />
+            <CustomSelect class="insitu-filters__filter landCoverType" @input="onLandCoverChange($event)"
+                :value="landCoverTypes" :options="landCoverTypesOptions" :multiple="true" :filterable="true"
+                textProp="text" idProp="id" :placeholder="$tc('inSituFilters.landCoverTypes')"
+                :appendToBody="appendToBody" />
+            <CustomSelect class="insitu-filters__filter irrigationType" @input="onirrigationTypesChange($event)"
+                :value="irrigationTypes" :options="irrigationTypesOptions" :multiple="true" :filterable="true"
+                textProp="text" idProp="id" :placeholder="$tc('inSituFilters.irrigationTypes')"
+                :appendToBody="appendToBody" />
+            <CustomSelect class="insitu-filters__filter quantityType" @input="onquantityTypesChange($event)"
+                :value="quantityTypes" :options="quantityTypesOptions" :multiple="true" :filterable="true"
+                textProp="text" idProp="id" :placeholder="$t('inSituFilters.quantityTypes')"
+                :appendToBody="appendToBody" />
             <div class="slider-section-container">
                 <div class="slider-container cropConfidence">
                     <div class="insitu-filters__title">
                         {{ $tc('inSituFilters.cropConfidence') }}:
                     </div>
-                    <vue-slider
-                        v-model="cropConfidence"
-                        :enable-cross="false"
-                        @drag-end="getResults()"
-                    ></vue-slider>
+                    <vue-slider v-model="cropConfidence" :enable-cross="false" @drag-end="getResults()"></vue-slider>
                 </div>
                 <div class="slider-container landCoverConfidence">
                     <div class="insitu-filters__title">
                         {{ $tc('inSituFilters.landCoverConfidence') }}:
                     </div>
-                    <vue-slider
-                        v-model="landCoverConfidence"
-                        :enable-cross="false"
-                        @drag-end="getResults()"
-                    ></vue-slider>
+                    <vue-slider v-model="landCoverConfidence" :enable-cross="false"
+                        @drag-end="getResults()"></vue-slider>
                 </div>
                 <div class="slider-container irrigationConfidence">
                     <div class="insitu-filters__title">
                         {{ $tc('inSituFilters.irrigationConfidence') }}:
                     </div>
-                    <vue-slider
-                        v-model="irrigationConfidence"
-                        :enable-cross="false"
-                        @drag-end="getResults()"
-                    ></vue-slider>
+                    <vue-slider v-model="irrigationConfidence" :enable-cross="false"
+                        @drag-end="getResults()"></vue-slider>
                 </div>
             </div>
         </div>
@@ -105,7 +74,7 @@ import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-ge
     },
 })
 export default class InSituFiltersComponent extends Vue {
-    @Prop({type: Boolean, required: true}) public onlyAdvanced!: boolean;
+    @Prop({ type: Boolean, required: true }) public onlyAdvanced!: boolean;
 
     public DataSources = DataSources
     public sourceOptions: Source[] = []
@@ -161,6 +130,18 @@ export default class InSituFiltersComponent extends Vue {
         return this.prepareLabels(this.$store.getters[InSituFiltersGetters.cropTypesOptions])
     }
 
+    get quantityTypes() {
+        return this.$store.getters[InSituFiltersGetters.quantityTypes];
+    }
+
+    set quantityTypes(value: string) {
+        this.$store.dispatch(InSituFiltersActions.setQuantityTypes, value);
+    }
+
+    get quantityTypesOptions() {
+        return this.prepareLabels(this.$store.getters[InSituFiltersGetters.quantityTypesOptions]);
+    }
+
     get landCoverTypes() {
         return this.$store.getters[InSituFiltersGetters.landCoverTypes]
     }
@@ -194,8 +175,8 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     get generalFiltersInChange() {
-		return this.$store.getters[GeneralFiltersGetters.inChangeProcess];
-	}
+        return this.$store.getters[GeneralFiltersGetters.inChangeProcess];
+    }
 
     public prepareLabels(array: any[]) {
         return array.map((element: { id: string; text: string }) => {
@@ -210,6 +191,10 @@ export default class InSituFiltersComponent extends Vue {
         this.$store.dispatch(InSituFiltersActions.setCropTypes, value)
     }
 
+    public onquantityTypesChange(value: string[]) {
+        this.$store.dispatch(InSituFiltersActions.setQuantityTypes, value);
+    }
+
     public onLandCoverChange(value: string[]) {
         this.$store.dispatch(InSituFiltersActions.setLandCoverTypes, value)
     }
@@ -220,8 +205,8 @@ export default class InSituFiltersComponent extends Vue {
 
     public getResults() {
         if (!this.generalFiltersInChange) {
-			this.$store.dispatch(SearchActions.getResults);
-		}
+            this.$store.dispatch(SearchActions.getResults);
+        }
     }
 
     private updateFilterOptions(storeAction: string, filter: string) {
@@ -275,6 +260,10 @@ export default class InSituFiltersComponent extends Vue {
                 'cropTypes'
             )
             this.updateFilterOptions(
+                InSituFiltersActions.setQuantityTypesOptions,
+                'quantityTypes'
+            )
+            this.updateFilterOptions(
                 InSituFiltersActions.setLandCoverTypesOptions,
                 'landCoverTypes'
             )
@@ -287,6 +276,11 @@ export default class InSituFiltersComponent extends Vue {
 
     @Watch('cropTypes')
     private async onCropTypesChange() {
+        this.getResults();
+    }
+
+    @Watch('quantityTypes')
+    private async onQuantityTypesChange() {
         this.getResults();
     }
 
@@ -378,7 +372,7 @@ export default class InSituFiltersComponent extends Vue {
     }
 
     &__filter {
-        width: calc(33% - 13px);
+        width: calc(50% - 3px);
         margin-bottom: 5px;
 
         @media (max-width: $breakpoint-sm) {

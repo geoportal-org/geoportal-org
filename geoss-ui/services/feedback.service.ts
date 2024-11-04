@@ -69,7 +69,7 @@ export const generateCaptcha = (
 }
 
 export const reloadCaptcha = (captchaIMGTagID: string) => {
-    const captchaReloadEndpoint = `https://geoss.devel.esaportal.eu/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=RELOAD_CAPTCHA&_geossresources_WAR_geossportlet_previousCaptchaId=${captchaID}`
+    const captchaReloadEndpoint = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=RELOAD_CAPTCHA&_geossresources_WAR_geossportlet_previousCaptchaId=${captchaID}`
 
     return makeRequest('get', captchaReloadEndpoint)
         .then((res: any) => {

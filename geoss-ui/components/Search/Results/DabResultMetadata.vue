@@ -9,12 +9,14 @@
                 </div>
             </div>
             <div class="metadata__title">{{ title }}</div>
+            <div v-if="organisationName" class="metadata__authors">
+                {{ $t('popupContent.organizationName') }}: {{ organisationName }}
+            </div>
             <div v-if="authors" class="metadata__authors">
                 {{ $tc('popupContent.authors') }}: {{ authors }}
             </div>
             <div v-if="useLimitation" class="metadata__license">
                 {{ $tc('popupContent.license') }}: {{ useLimitation }} <span v-if="accessConstraints"> - {{ accessConstraints }}</span>
-
             </div>
             <div v-if="otherConstraints" class="metadata__citation">
                 {{ $tc('popupContent.citation') }}: {{ otherConstraints }}
@@ -343,6 +345,18 @@ export default class DabResultMetadataComponent extends Vue {
         return authors.join('; ')
     }
 
+    get pointOfContactOrganization() {
+        let organization = '';
+        const pointsOfContact = UtilsService.getArrayByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:pointOfContact');
+        for (const pointOfContact of pointsOfContact) {
+            const role = UtilsService.getPropByString(pointOfContact, 'gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode');
+            if (role === 'originator') {
+                organization = UtilsService.getPropByString(pointOfContact, 'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString');
+            }
+        }
+        return organization;
+    }
+
     get type() {
         return UtilsService.getPropByString(this.data, 'type')
     }
@@ -526,9 +540,9 @@ export default class DabResultMetadataComponent extends Vue {
     }
 
     get accessConstraints() {
-		const accessConstraints = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:accessConstraints.gmd:MD_RestrictionCode');
-		return typeof accessConstraints === 'string' ? accessConstraints : null;
-	}
+        const accessConstraints = UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:accessConstraints.gmd:MD_RestrictionCode');
+        return typeof accessConstraints === 'string' ? accessConstraints : null;
+    }
 
     get otherConstraints() {
         return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:otherConstraints.gco:CharacterString');
@@ -639,6 +653,8 @@ export default class DabResultMetadataComponent extends Vue {
             this.dataSource === 'nextgeoss'
         ) {
             data.push(UtilsService.getPropByString(this.data, 'dc:publisher'))
+        } else if (this.pointOfContactOrganization) {
+            data.push(this.pointOfContactOrganization);
         }
         return data ? data.join(', ') : '-'
     }

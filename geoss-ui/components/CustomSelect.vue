@@ -233,6 +233,7 @@ export default class CustomSelectComponent extends Vue {
         display: flex;
         align-items: center;
         width: 100%;
+        text-align: left;
 
         &:disabled {
             opacity: 0.65;
