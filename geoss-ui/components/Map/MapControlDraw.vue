@@ -50,6 +50,44 @@ export default class MapControlDrawComponent extends Vue {
         return this.$store.getters[GeneralFiltersGetters.state].workflowMapDraw
     }
 
+    get openEoMapDraw() {
+        return this.$store.getters[GeneralFiltersGetters.openEoMapDraw]
+    }
+
+    public addOpenEoDrawInteraction() {
+        this.drawActive = true
+        this.draw = new AppVueObj.ol.interaction.Draw({
+            source: AppVueObj.ol.MapSource,
+            type: 'Circle',
+            geometryFunction: AppVueObj.ol.interaction.Draw.createBox(),
+            maxPoints: 2
+        })
+        this.draw.on('drawend', () => {
+            this.removeDrawInteraction()
+            AppVueObj.ol.MapSource.once('addfeature', (evt: any) => {
+                const feature = evt.feature
+                const coords = feature.getGeometry().getCoordinates()
+
+                const coordsWSEN = MapCoordinatesUtils.parseCoordinates(coords)
+                let W = coordsWSEN[0]
+                const S = coordsWSEN[1]
+                let E = coordsWSEN[2]
+                const N = coordsWSEN[3]
+
+                const normalizedLongitude =
+                    MapCoordinatesUtils.normalizeLongitude(W, E)
+                W = normalizedLongitude[0]
+                E = normalizedLongitude[1]
+                this.$store.dispatch(GeneralFiltersActions.setOpenEoCoordinates, { W, S, E, N })
+                AppVueObj.ol.MapSource.clear()
+                this.$store.dispatch(GeneralFiltersActions.setOpenEoPopupVisible, true)
+                this.$store.dispatch(GeneralFiltersActions.setOpenEoMapDraw, false)
+
+            })
+        })
+        this.map.addInteraction(this.draw)
+    }
+
     /**
      * Handler for selecting the area of interest.
      */
@@ -166,6 +204,15 @@ export default class MapControlDrawComponent extends Vue {
         if (this.validateCoordinates(val)) {
             this.drawLayer(val)
             this.$store.dispatch(MapActions.centerMap, val)
+        }
+    }
+
+    @Watch('openEoMapDraw')
+    private onOpenEoMapDraw(val: boolean) {
+        if (val) {
+            this.addOpenEoDrawInteraction()
+        } else {
+            this.removeDrawInteraction()
         }
     }
 

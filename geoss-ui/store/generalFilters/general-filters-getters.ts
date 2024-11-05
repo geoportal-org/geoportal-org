@@ -11,5 +11,8 @@ export enum GeneralFiltersGetters {
     additionalSearchFields = 'generalFilters/additionalSearchFields',
     googlePlacesApiError = 'generalFilters/googlePlacesApiError',
     locationTypeOptions = 'generalFilters/locationTypeOptions',
-    getViewId = 'generalFilters/getViewId'
+    getViewId = 'generalFilters/getViewId',
+    openEoMapDraw = 'generalFilters/openEoMapDraw',
+    openEoPopupVisible = 'generalFilters/openEoPopupVisible',
+    openEoCoordinates = 'generalFilters/openEoCoordinates'
 }

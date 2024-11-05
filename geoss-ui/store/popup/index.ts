@@ -74,6 +74,7 @@ const actions = {
             generalInfo?: any
             data?: any
             noCloseOutside?: boolean
+            component?: any
         }
     ) {
         // this timeout is necessary because popup has on click outside

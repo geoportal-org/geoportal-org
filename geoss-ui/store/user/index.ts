@@ -4,7 +4,9 @@ const state = () => ({
     authToken: null,
     groupId: null,
     bookmarks: [] as string[],
-    savedRuns: []
+    savedRuns: [],
+    openEOToken: '',
+    openEOTokenExpireDate: ''
 })
 
 const getters = {
@@ -25,6 +27,12 @@ const getters = {
     },
     savedRuns: (state: any) => {
         return state.savedRuns
+    },
+    openEOToken: (state: any) => {
+        return state.openEOToken
+    },
+    openEOTokenExpireDate: (state: any) => {
+        return state.openEOTokenExpireDate
     }
 }
 
@@ -63,6 +71,12 @@ const actions = {
     },
     removeBookmark({ commit }: any, targetId: string) {
         commit('removeBookmark', targetId)
+    },
+    setOpenEOToken({ commit }: any, value: string) {
+        commit('setStateProp', { prop: 'openEOToken', value })
+    },
+    setOpenEOTokenExpireDate({ commit }: any, value: string) {
+        commit('setStateProp', { prop: 'openEOTokenExpireDate', value })
     }
 }
 

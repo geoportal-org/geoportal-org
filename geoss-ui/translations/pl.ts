@@ -482,7 +482,14 @@ export default {
         userContributedCancel: 'Anuluj',
         userContributedDelete: 'Usuń',
         userContributedRemoveEntryExtensionSuccess: 'Rozszerzenie wpisu zostało usunięte',
-        userContributedRemoveUnavailable: 'Usunięcie rozszerzenia tymczasowo niedostępne - wpis jest aktualnie przetwarzany.<br/>Spróbuj ponownie później.'
+        userContributedRemoveUnavailable: 'Usunięcie rozszerzenia tymczasowo niedostępne - wpis jest aktualnie przetwarzany.<br/>Spróbuj ponownie później.',
+
+        //openeo
+        dateRange: 'Zakres dat',
+        bbox: 'Współrzędne obszaru',
+        areaTooBig: 'Wybrany obszar przekracza 2500 kilometrów kwadratowych. Proszę wybrać mniejszy obszar.',
+        draw: 'Rysuj',
+        clear: 'Wyczyść'
     },
 
     irisFilters: {

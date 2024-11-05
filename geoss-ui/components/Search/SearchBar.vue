@@ -116,6 +116,7 @@ import SpinnerService from '@/services/spinner.service'
 import { Timers } from '@/data/timers'
 import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
 import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
+import { OidcProvider } from '@openeo/js-client'
 
 @Component
 export default class SearchBarComponent extends Vue {
@@ -469,6 +470,17 @@ export default class SearchBarComponent extends Vue {
     public onKeywordChange() {
         this.phrase = this.keyword
         this.search()
+    }
+
+    private async mounted() {
+        if (this.$route.query.code) {
+            try {
+                // Check whether the page contains the authentication information and make them available to the openEO client
+                await OidcProvider.signinCallback()
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 }
 </script>

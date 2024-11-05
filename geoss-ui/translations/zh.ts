@@ -480,7 +480,14 @@ export default {
         userContributedCancel: '取消',
         userContributedDelete: '删除',
         userContributedRemoveEntryExtensionSuccess: '您已成功删除条目扩展',
-        userContributedRemoveUnavailable: '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。'
+        userContributedRemoveUnavailable: '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。',
+
+        //openeo
+        dateRange: '日期范围',
+        bbox: '边界框坐标',
+        areaTooBig: '选择的区域超过2500平方公里。请选择一个较小的区域。',
+        draw: '绘制',
+        clear: '清除'
     },
 
     irisFilters: {

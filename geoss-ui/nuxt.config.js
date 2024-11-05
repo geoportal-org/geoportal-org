@@ -1,25 +1,27 @@
+const path = require('path')
+
 export default {
     server: {
         port: 3000, // default : 3000
-        host: '0.0.0.0', // do not put localhost (only accessible from the host machine)
+        host: '0.0.0.0' // do not put localhost (only accessible from the host machine)
     },
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         title: 'GEOSS Portal',
         htmlAttrs: {
-            lang: 'en',
+            lang: 'en'
         },
         meta: [
             { charset: 'utf-8' },
             {
                 name: 'viewport',
-                content: 'width=device-width, initial-scale=1',
+                content: 'width=device-width, initial-scale=1'
             },
             { hid: 'description', name: 'description', content: '' },
-            { name: 'format-detection', content: 'telephone=no' },
+            { name: 'format-detection', content: 'telephone=no' }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
@@ -27,7 +29,7 @@ export default {
         '@/assets/scss/reset',
         '@/assets/scss/icons',
         '@/assets/scss/general',
-        '@/assets/scss/animations',
+        '@/assets/scss/animations'
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -38,7 +40,7 @@ export default {
         '~/plugins/AxiosPort.ts',
         // { src: '~/plugins/MatomoPlugin.js', ssr: false },
         { src: './plugins/VueCarusel.js', mode: 'client' },
-        { src: './plugins/Vue2TinymceEditor.js', mode: 'client' },
+        { src: './plugins/Vue2TinymceEditor.js', mode: 'client' }
         // { src: './plugins/Xlsx.js', mode: 'client' },
         // { src: './plugins/Uuid.js', mode: 'client' },
     ],
@@ -56,14 +58,14 @@ export default {
         '@/components/Search/Results',
         '@/components/Slider',
         '@/components/YellowPages',
-        '@/icons',
+        '@/icons'
     ],
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
     buildModules: [
         // https://go.nuxtjs.dev/typescript
         '@nuxt/typescript-build',
-        '@nuxtjs/style-resources',
+        '@nuxtjs/style-resources'
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
@@ -72,119 +74,134 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/auth',
         '@nuxtjs/i18n',
-        'cookie-universal-nuxt',
+        'cookie-universal-nuxt'
     ],
 
     axios: {
-        proxy: true,
+        proxy: true
     },
 
     auth: {
         strategies: {
             local: false,
             keycloak: {
-                _scheme: '~/scheme/runtimeOauth2',
+                _scheme: '~/scheme/runtimeOauth2'
             },
             oauth2: {
-                _scheme: 'oauth2',
-            },
-        },
+                _scheme: 'oauth2'
+            }
+        }
     },
 
     i18n: {
         locales: [
             {
                 code: 'en',
-                file: 'en.ts',
+                file: 'en.ts'
             },
             {
                 code: 'es',
-                file: 'es.ts',
+                file: 'es.ts'
             },
             {
                 code: 'fr',
-                file: 'fr.ts',
+                file: 'fr.ts'
             },
             {
                 code: 'pl',
-                file: 'pl.ts',
+                file: 'pl.ts'
             },
             {
                 code: 'ru',
-                file: 'ru.ts',
+                file: 'ru.ts'
             },
             {
                 code: 'zh',
-                file: 'zh.ts',
-            },
+                file: 'zh.ts'
+            }
         ],
         lazy: false,
         langDir: 'translations/',
         defaultLocale: 'en',
         strategy: 'no_prefix',
         vueI18n: {
-            fallbackLocale: 'en',
-        },
+            fallbackLocale: 'en'
+        }
     },
 
     router: {
-        extendRoutes (routes, resolve) {
+        extendRoutes(routes, resolve) {
             // Register Community Portal siteUrl
             const routesToAdd = [
                 {
                     name: 'community-siteurl',
                     path: '/community/:siteurl',
                     component: resolve(__dirname, 'pages/index.vue'),
-                    chunkName: 'pages/index',
+                    chunkName: 'pages/index'
                 }
-            ];
+            ]
 
             // Register system routes
             const systemRoutesToAdd = []
-            routes.filter(route => route.path.indexOf('/community/')).map(route => systemRoutesToAdd.push(
-                {
-                    name: 'community-siteurl-' + route.name,
-                    path: '/community/:siteurl' + route.path,
-                    component: route.component,
-                    chunkName: route.chunkName
-                }
-            ))
+            routes
+                .filter((route) => route.path.indexOf('/community/'))
+                .map((route) =>
+                    systemRoutesToAdd.push({
+                        name: 'community-siteurl-' + route.name,
+                        path: '/community/:siteurl' + route.path,
+                        component: route.component,
+                        chunkName: route.chunkName
+                    })
+                )
 
             const routesToAddMerged = routesToAdd.concat(systemRoutesToAdd)
 
-            const existingRoutesToRemove = routesToAddMerged.map(route => route.name)
+            const existingRoutesToRemove = routesToAddMerged.map(
+                (route) => route.name
+            )
 
             const generateRoutes = routes.filter((route) => {
-                return !existingRoutesToRemove.includes(route.name);
-            });
+                return !existingRoutesToRemove.includes(route.name)
+            })
 
-            routesToAddMerged.forEach(({ name, path, component, chunkName }) => {
-                generateRoutes.push({
-                    name,
-                    path,
-                    component,
-                    chunkName
-                });
-            });
+            routesToAddMerged.forEach(
+                ({ name, path, component, chunkName }) => {
+                    generateRoutes.push({
+                        name,
+                        path,
+                        component,
+                        chunkName
+                    })
+                }
+            )
 
-            routes.splice(0, routes.length, ...generateRoutes);
+            routes.splice(0, routes.length, ...generateRoutes)
         }
     },
 
     styleResources: {
-        scss: ['@/assets/scss/variables.scss'],
+        scss: ['@/assets/scss/variables.scss']
     },
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
         // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-        baseURL: '/',
+        baseURL: '/'
     },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         vendor: ['ol'],
         transpile: [/google-chart/, /zrender/],
+        extend(config, { isDev, isClient }) {
+            config.node = {
+                fs: 'empty'
+            }
+            config.resolve.alias['axios'] = path.resolve(
+                __dirname,
+                'node_modules/axios'
+            )
+        }
     },
 
     publicRuntimeConfig: {
@@ -195,6 +212,7 @@ export default {
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,
         matomoToken: process.env.MATOMO_TOKEN,
         matomoUrl: process.env.MATOMO_URL,
+        openEORedirect: process.env.OPEN_EO_REDIRECT_URL,
         proxyUrl: process.env.PROXY_URL,
         pdfManualUrl: '/GEOSS-InstallationGuide-041024-0821.pdf',
         auth: {
@@ -217,11 +235,11 @@ export default {
                     scope: ['openid', 'profile', 'email', 'roles'],
                     grant_type: 'authorization_code',
                     response_type: 'code',
-                    client_id: process.env.KEYCLOAK_CLIENT_ID,
-                },
-            },
-        },
+                    client_id: process.env.KEYCLOAK_CLIENT_ID
+                }
+            }
+        }
     },
 
-    ssr: false,
+    ssr: false
 }

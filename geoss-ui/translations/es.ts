@@ -480,7 +480,14 @@ export default {
         userContributedCancel: 'Cancelar',
         userContributedDelete: 'Eliminar',
         userContributedRemoveEntryExtensionSuccess: 'Ha eliminado con éxito la extensión de entrada',
-        userContributedRemoveUnavailable: 'La eliminación de la extensión no está disponible temporalmente; la entrada se procesa actualmente en el flujo de trabajo.<br/>Vuelva a intentarlo más tarde.'
+        userContributedRemoveUnavailable: 'La eliminación de la extensión no está disponible temporalmente; la entrada se procesa actualmente en el flujo de trabajo.<br/>Vuelva a intentarlo más tarde.',
+
+        //openeo
+        dateRange: 'Rango de fechas',
+        bbox: 'Coordenadas del cuadro delimitador',
+        areaTooBig: 'El área seleccionada supera los 2500 kilómetros cuadrados. Por favor, seleccione un área más pequeña.',
+        draw: 'Dibujar',
+        clear: 'Limpiar'
     },
 
     irisFilters: {

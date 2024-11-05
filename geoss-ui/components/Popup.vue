@@ -22,14 +22,15 @@ import { PopupActions } from '@/store/popup/popup-actions';
 import { Timers } from '@/data/timers';
 import PopupCloseService from '@/services/popup-close.service';
 import TutorialTagsService from '@/services/tutorial-tags.service';
+import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters';
 
 @Component
 export default class PopupComponent extends Vue {
     public visible = false;
-    public currentQueueItem: {contentId: string, title: string, errorInfo?: any, props?: any} | null = null;
+    public currentQueueItem: {contentId: string, title: string, errorInfo?: any, props?: any, noCloseOutside?: boolean} | null = null;
 
     public closePopupOnClickOutside() {
-        if (this.currentQueueItem && !this.currentQueueItem.errorInfo) {
+        if (this.currentQueueItem && !this.currentQueueItem.errorInfo && !this.currentQueueItem.noCloseOutside) {
             this.closePopup();
         }
     }
@@ -59,11 +60,20 @@ export default class PopupComponent extends Vue {
         return this.$store.getters[PopupGetters.queue];
     }
 
+    private get openEoVisible() {
+        return this.$store.getters[GeneralFiltersGetters.openEoPopupVisible]
+    }
+
     private escEventListener(event: KeyboardEvent) {
         const key = event.which || event.keyCode;
         if (key === 27) {
             this.closePopup();
         }
+    }
+
+    @Watch('openEoVisible')
+    private onOpenEoVisibleChange(val: boolean) {
+        this.visible = val
     }
 
     @Watch('queue')

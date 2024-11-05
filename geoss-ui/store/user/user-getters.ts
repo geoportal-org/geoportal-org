@@ -4,5 +4,7 @@ export enum UserGetters {
     authToken = 'user/authToken',
     groupId = 'user/groupId',
     bookmarks = 'user/bookmarks',
-    savedRuns = 'user/savedRuns'
+    savedRuns = 'user/savedRuns',
+    openEOToken = 'user/openEOToken',
+    openEOTokenExpireDate = 'user/openEOTokenExpireDate'
 }

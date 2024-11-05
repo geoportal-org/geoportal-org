@@ -34,7 +34,15 @@ const state = () => ({
     requestId: null,
     inChangeProcess: false,
     workflowMapDraw: false,
-    googlePlacesApiError: null
+    googlePlacesApiError: null,
+    openEoMapDraw: false,
+    openEoPopupVisible: true,
+    openEoCoordinates: {
+        W: null,
+        S: null,
+        E: null,
+        N: null
+    },
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -208,7 +216,16 @@ const getters = {
     },
     locationTypeOptions(state: any) {
         return state.locationTypeOptions
-    }
+    },
+    openEoMapDraw(state: any) {
+        return state.openEoMapDraw
+    },
+    openEoPopupVisible(state: any){
+        return state.openEoPopupVisible
+    },
+    openEoCoordinates(state: any) {
+        return state.openEoCoordinates
+    },
 }
 
 const mutations = {
@@ -359,7 +376,36 @@ const actions = {
                 })
             }
         }
-    }
+    },
+    setOpenEoMapDraw(context: any, value: boolean) {
+        context.commit('setStateProp', { prop: 'openEoMapDraw', value })
+    },
+    setOpenEoPopupVisible(context: any, value: boolean){
+        context.commit('setStateProp', { prop: 'openEoPopupVisible', value })
+    },
+    setOpenEoCoordinates(
+        context: any,
+        value: { W: number; S: number; E: number; N: number } | null
+    ) {
+        const { W, S, E, N } = context.getters.openEoCoordinates
+        if (
+            value === null &&
+            (W !== null || S !== null || E !== null || N !== null)
+        ) {
+            context.commit('setStateProp', {
+                prop: 'openEoCoordinates',
+                value: { W: null, S: null, E: null, N: null }
+            })
+        } else if (
+            value &&
+            (W !== value.W || S !== value.S || E !== value.E || N !== value.N)
+        ) {
+            context.commit('setStateProp', {
+                prop: 'openEoCoordinates',
+                value
+            })
+        }
+    },
 }
 
 export default {

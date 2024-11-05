@@ -3,6 +3,8 @@ import SearchEngineService from './search-engine.service'
 import { GeneralGetters } from '@/store/general/general-getters'
 import { UserGetters } from '@/store/user/user-getters'
 import { GeneralFiltersActions } from '~/store/generalFilters/general-filters-actions'
+import { OidcProvider, OpenEO } from '@openeo/js-client'
+import { UserActions } from '~/store/user/user-actions'
 
 const UtilsService = {
     getPropByString(
@@ -172,7 +174,7 @@ const UtilsService = {
                     return 0.5 * Math.pow(pos, 5)
                 }
                 return 0.5 * (Math.pow(pos - 2, 5) + 2)
-            },
+            }
         }
 
         return new Promise((resolve) => {
@@ -276,6 +278,7 @@ const UtilsService = {
         state = state
             ? JSON.parse(state)
             : JSON.parse(AppVueObj.storeStateBackup)
+
         state.map = AppVueObj.app.$store.state.map
         AppVueObj.app.$store.replaceState(state)
         AppVueObj.app.$store.dispatch(
@@ -320,7 +323,7 @@ const UtilsService = {
         }
         const urlParams = []
         for (const param of params) {
-            const paramName = decodeURIComponent(param.split('=')[0]);
+            const paramName = decodeURIComponent(param.split('=')[0])
             const paramValue: any = UtilsService.nativeType(
                 decodeURIComponent(param.split('=')[1])
             )
@@ -394,9 +397,7 @@ const UtilsService = {
         if (`${process.env.NUXT_ENV_TYPE}` === 'widgets') {
             return {
                 accesskey:
-                    AppVueObj.app.$store.getters[
-                        GeneralGetters.widgetAccessKey
-                    ],
+                    AppVueObj.app.$store.getters[GeneralGetters.widgetAccessKey]
             }
         }
         return {}
@@ -413,6 +414,40 @@ const UtilsService = {
         }
         return ''
     },
+
+    async authenticateOpenEO() {
+        OidcProvider.uiMethod = 'popup'
+        try {
+            //@ts-ignore
+            const con = await OpenEO.connect(
+                'https://openeo.dataspace.copernicus.eu/openeo/1.2'
+            )
+            let res = await fetch(
+                'https://openeo.dataspace.copernicus.eu/openeo/1.2/credentials/oidc',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
+            const credentials = await res.json()
+            //@ts-ignore
+            const provider = new OidcProvider(con, credentials.providers[0])
+            //@ts-ignore
+            provider.setClientId('sh-7ca5cca7-045f-4adb-a24e-c20bc3dde8f7')
+            OidcProvider.redirectUrl = window.$nuxt.$config.openEORedirect || ''
+            //@ts-ignore
+            await provider.login({}, true)
+            //@ts-ignore
+            let token = provider.getToken()
+            //@ts-ignore
+            AppVueObj.app.$store.dispatch(UserActions.setOpenEOTokenExpireDate, provider.user.expires_at)
+            AppVueObj.app.$store.dispatch(UserActions.setOpenEOToken, token)
+        } catch (e: any) {
+            console.log(e)
+        }
+    }
 }
 
 // window.onpopstate = async (event: any) => {

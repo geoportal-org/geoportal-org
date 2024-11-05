@@ -183,9 +183,9 @@
                                     </button>
 
                                     <button class="dab-result-details__actions-workflow" :title="buttonWorkflowTitle"
-                                        @click="openWorkflow(true)" v-show="workflow" :data-tutorial-tag="resultIdDetails === result.id
-                                            ? 'result-workflow'
-                                            : ''
+                                        @click="openWorkflow(true)" v-show="workflow || isEoWorkflow" :data-tutorial-tag="resultIdDetails === result.id
+                                                ? 'result-workflow'
+                                                : ''
                                             "></button>
                                     <template v-for="hub of [
                                         'data',
@@ -489,6 +489,10 @@ import CollapseTransition from '@/plugins/CollapseTransition'
 import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
 import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
 import date from '@/filters/date'
+import { UserGetters } from '@/store/user/user-getters'
+import { UserActions } from '@/store/user/user-actions'
+import { OidcProvider, OpenEO } from '@openeo/js-client'
+import OpenEOWorkflowComponent from './OpenEOWorkflow.vue'
 
 @Component({
     components: {
@@ -519,6 +523,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public FileFormatsIcons = FileFormatsIcons
     public DataSources = DataSources
     public logo = typeof this.result.logo === 'string' ? this.result.logo : ''
+    public isEoWorkflow = this.result.id === 'maps4gpp_usecase4_314b294e-1af6-4a9d-b934-5ce9e848a0d0_1729591533559'
 
     get dashboardContent() {
         return UtilsService.getPropByString(this.result, 'dashboard.content')
@@ -695,6 +700,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     get workflowDispatched() {
         return this.$store.getters[SearchGetters.workflow]
+    }
+
+    public async handleOpenEOAuth() {
+        await UtilsService.authenticateOpenEO()
     }
 
     public async toggleExtendedView() {
@@ -2334,6 +2343,30 @@ export default class SearchResultDabDetailsComponent extends Vue {
             }
             this.$store.dispatch(SearchActions.setWorkflowInputId, null)
             this.$store.dispatch(SearchActions.setWorkflowInputType, null)
+        } 
+        
+        if(this.isEoWorkflow) {
+            if(!this.$store.getters[UserGetters.openEOToken] || this.$store.getters[UserGetters.openEOToken] === ''){
+                await this.handleOpenEOAuth()
+            }
+            console.log('authenticated - open popup')
+            const data = UtilsService.getArrayByString(
+                this.result,
+                'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine'
+            );
+            const url = UtilsService.getPropByString(data[0], 'gmd:CI_OnlineResource.gmd:linkage.gmd:URL');
+            const props = {
+                workflowUrl: url,
+                title: this.result.title
+            }
+
+            this.$store.dispatch(PopupActions.openPopup, {
+                contentId: "openEOWorkflow",
+                title: this.$tc('popupTitles.workflowandruns'),
+                noCloseOutside: true,
+                component: OpenEOWorkflowComponent,
+                props
+            })
         }
 
         if (this.workflow) {
@@ -2531,7 +2564,16 @@ export default class SearchResultDabDetailsComponent extends Vue {
         this.$set(this.result, 'userContributions', updatedUserContributions)
     }
 
-    private mounted() {
+    private async mounted() {
+        if (this.$route.query.code) {
+            try {
+                // Check whether the page contains the authentication information and make them available to the openEO client
+                await OidcProvider.signinCallback()
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         this.initResultLayersAndDownloads()
         const resultToHighlight =
             this.$store.getters[SearchGetters.highlightResult]

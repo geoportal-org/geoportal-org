@@ -6,5 +6,7 @@ export enum UserActions {
     setBookmarks = 'user/setBookmarks',
     setSavedRuns = 'user/setSavedRuns',
     removeBookmark = 'user/removeBookmark',
-    addBookmark = 'user/addBookmark'
+    addBookmark = 'user/addBookmark',
+    setOpenEOToken = 'user/setOpenEOToken',
+    setOpenEOTokenExpireDate = 'user/setOpenEOTokenExpireDate'
 }

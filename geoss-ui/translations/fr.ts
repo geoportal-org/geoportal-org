@@ -26,7 +26,7 @@ export default {
             popularKeywords: 'Mots clés les plus populaires',
             popularCatalogs: 'Catalogues les plus populaires',
             popularOrganizations: 'Organisations les plus populaires',
-            popularAreas: 'Zones les plus populaires',
+            popularAreas: 'Zones les plus populaires'
         },
         siteTypeOptions: {
             numberOfUsers: "Nombre d'utilisateurs",
@@ -34,13 +34,13 @@ export default {
             bounceRate: 'Taux de rebond',
             returnUsers: 'Utilisateurs connus',
             usersCountries: 'Pays des utilisateurs',
-            popularBrowsers: 'Navigateurs les plus populaires',
+            popularBrowsers: 'Navigateurs les plus populaires'
         },
         timeUnits: {
             day: 'Jour',
             week: 'Semaine',
             month: 'Mois',
-            year: 'Année',
+            year: 'Année'
         },
         bounceRateLabel: 'Pourcentage de visites quittant le site Web',
         dateLabel: 'Date',
@@ -53,7 +53,7 @@ export default {
         numberOfVisits: 'Nombre de visites',
         numberOfSearches: 'Nombre de recherches',
         unspecifiedLabel: 'Non spécifié',
-        noDataToDisplay: 'Aucune donnée à afficher',
+        noDataToDisplay: 'Aucune donnée à afficher'
     },
     placeholders: {
         searchBar: 'Entrer des mots de recherche',
@@ -67,23 +67,31 @@ export default {
     },
     notifications: {
         newVersionTitle: 'NOUVELLE VERSION DISPONIBLE',
-        newVersionPart1: 'Le portail GEOSS a été mis à jour pour une expérience utilisateur plus intuitive et fluide.',
-        newVersionPart2: 'Une vidéo de présentation rapide des principales fonctionnalités est disponible',
+        newVersionPart1:
+            'Le portail GEOSS a été mis à jour pour une expérience utilisateur plus intuitive et fluide.',
+        newVersionPart2:
+            'Une vidéo de présentation rapide des principales fonctionnalités est disponible',
         newVersionPart3: 'ici',
         newVersionPart4: 'Visiter le',
         newVersionPart5: 'Notes de version',
         newVersionPart6: 'regarder les changements détaillés.',
-        basemapUnavailable: 'Le fond de carte par défaut est temporairement indisponible. Le portail change de carte en un autre.',
+        basemapUnavailable:
+            'Le fond de carte par défaut est temporairement indisponible. Le portail change de carte en un autre.',
         basemapUnavailableTitle: 'BASEMAP NON DISPONIBLE',
-        dashboardSavedSuccessfully: 'Tableau de bord enregistré avec succès ! Vous pouvez le trouver dans MON ESPACE DE TRAVAIL -> Tableaux de bord.',
-        errorDuringDashboardSaving: 'Erreur lors de l`enregistrement du tableau de bord. Veuillez réessayer.',
+        dashboardSavedSuccessfully:
+            'Tableau de bord enregistré avec succès ! Vous pouvez le trouver dans MON ESPACE DE TRAVAIL -> Tableaux de bord.',
+        errorDuringDashboardSaving:
+            'Erreur lors de l`enregistrement du tableau de bord. Veuillez réessayer.',
         dashboardLoadedSuccessfully: 'Tableau de bord chargé avec succès !',
-        errorDuringDashboardLoading: 'Erreur lors du chargement du tableau de bord.',
+        errorDuringDashboardLoading:
+            'Erreur lors du chargement du tableau de bord.'
     },
     welcomePopup: {
         newVersionTitle: 'LE PORTAIL GEOSS 3.7 EST DISPONIBLE',
-        newVersionPart1: 'Le portail GEOSS a été mis à jour pour une expérience utilisateur plus intuitive et fluide.',
-        newVersionPart2: 'Un clip vidéo Quick Tour des principales fonctionnalités est disponible',
+        newVersionPart1:
+            'Le portail GEOSS a été mis à jour pour une expérience utilisateur plus intuitive et fluide.',
+        newVersionPart2:
+            'Un clip vidéo Quick Tour des principales fonctionnalités est disponible',
         newVersionPart3: 'ici',
         newVersionPart4: 'Visiter le',
         newVersionPart5: 'Notes de version',
@@ -93,7 +101,7 @@ export default {
         toggle: 'Basculer le menu',
         languageToggle: 'Basculer le sélecteur de langue',
         signIn: 'S`identifier',
-        signOff: 'Approuver',
+        signOff: 'Approuver'
     },
     general: {
         error: 'Erreur',
@@ -105,9 +113,11 @@ export default {
         backendError: 'Erreur de backend',
         errorOccurred: 'Une erreur est survenue',
         unableToFindAnyResources: 'Nous n`avons trouvé aucune ressource.',
-        loadingResourcesIsTakingTooLong: 'Le chargement des ressources prend plus de temps que d`habitude.',
+        loadingResourcesIsTakingTooLong:
+            'Le chargement des ressources prend plus de temps que d`habitude.',
         noResourcesFound: 'Aucune ressource trouvée',
-        noResourcesFoundChooseAnotherSource: 'Aucune ressource n`a été trouvée pour ce type de données. Veuillez choisir d`afficher les ressources d`un autre type ou de revenir aux résultats précédents.',
+        noResourcesFoundChooseAnotherSource:
+            'Aucune ressource n`a été trouvée pour ce type de données. Veuillez choisir d`afficher les ressources d`un autre type ou de revenir aux résultats précédents.',
         showDetails: 'Afficher les détails',
         hideDetails: 'Cacher les détails',
         hi: 'Salut',
@@ -133,9 +143,11 @@ export default {
         results: 'résultats'
     },
     errors: {
-        noMetadata: 'L`obtention des métadonnées de la ressource posait un problème',
+        noMetadata:
+            'L`obtention des métadonnées de la ressource posait un problème',
         google: {
-            OVER_QUERY_LIMIT: 'Désolé, nous ne sommes pas en mesure de traduire en termes géographiques votre demande pour le moment. Essayez demain.'
+            OVER_QUERY_LIMIT:
+                'Désolé, nous ne sommes pas en mesure de traduire en termes géographiques votre demande pour le moment. Essayez demain.'
         }
     },
     map: {
@@ -145,7 +157,8 @@ export default {
         centerMapOnLayer: 'Centrer la carte sur la couche',
         layerSettings: 'Paramètres de calque',
         removeLayer: 'Supprimer la couche',
-        compareLayers: 'Comparez les calques (au moins 2 calques doivent être ajoutés et visibles)'
+        compareLayers:
+            'Comparez les calques (au moins 2 calques doivent être ajoutés et visibles)'
     },
     searchBar: {
         filters: 'Les filtres',
@@ -196,10 +209,14 @@ export default {
         addToDownloads: 'Ajouter à la liste des téléchargements',
         outputDownloadFormat: 'Format de téléchargement de sortie',
         imageResolutionInPixels: 'Résolution d`image en pixels (250, 500)',
-        coordinateReferenceSystemOfSubset: 'Système de référence de coordonnées d`un sous-ensemble',
-        subsetLowerCoordinateInSpecifiedCRSFormat: 'Sous-ensemble des coordonnées inférieures gauche au format CRS spécifié',
-        subsetUpperCoordinateInSpecifiedCRSFormat: 'Sous-ensemble de coordonnées supérieur droit au format CRS spécifié',
-        latLongRule: 'Valeurs de latitude autorisées: entre -90 et 90 et pour la longitude: entre -180 et 180',
+        coordinateReferenceSystemOfSubset:
+            'Système de référence de coordonnées d`un sous-ensemble',
+        subsetLowerCoordinateInSpecifiedCRSFormat:
+            'Sous-ensemble des coordonnées inférieures gauche au format CRS spécifié',
+        subsetUpperCoordinateInSpecifiedCRSFormat:
+            'Sous-ensemble de coordonnées supérieur droit au format CRS spécifié',
+        latLongRule:
+            'Valeurs de latitude autorisées: entre -90 et 90 et pour la longitude: entre -180 et 180',
         xYRule: 'Valeurs X autorisées: entre -20037508.3427892 et 20037508.3427892 et pour Y: entre -20037508.3427892 et 20037508.3427892',
         scaleFactor: 'Facteur d`échelle',
         rangeSubset: 'Sous-ensemble de plage',
@@ -207,7 +224,7 @@ export default {
         default: 'défaut',
         crs: 'CRS',
         coordinatesLowerCorner: 'Coordonnées (coin inférieur)',
-        coordinatesUpperCorner: 'Coordonnées (coin supérieur)',
+        coordinatesUpperCorner: 'Coordonnées (coin supérieur)'
     },
     unitedNationsStatisticsPopup: {
         title: 'Choisissez les options préférées',
@@ -227,7 +244,8 @@ export default {
         organisation: 'Organisation',
         creators: 'Créateurs',
         exploreExtendedView: 'Explorer la vue étendue',
-        thereAreNoRelatedResources: 'Il n`existe aucune ressource associée à cet élément',
+        thereAreNoRelatedResources:
+            'Il n`existe aucune ressource associée à cet élément',
         recentView: 'vue récente',
         recentViews: 'vues récentes',
         seeMore: 'Voir plus',
@@ -246,15 +264,19 @@ export default {
         data: 'Passer aux données',
         information: 'Passer à la information',
         services: 'Passer aux services',
-        userContributeddata: 'Basculer vers les données fournies par l`utilisateur',
-        userContributedinformation: 'Passer aux information fournies par l`utilisateur',
-        userContributedservices: 'Basculer vers les services fournis par l`utilisateur',
+        userContributeddata:
+            'Basculer vers les données fournies par l`utilisateur',
+        userContributedinformation:
+            'Passer aux information fournies par l`utilisateur',
+        userContributedservices:
+            'Basculer vers les services fournis par l`utilisateur',
         file: 'fichier',
         other: 'autre',
         view: 'voir',
         downloadNow: 'Télécharger maintenant',
         downloadLater: 'Télécharger plus tard',
-        thisOptionAvailableForSignedIn: 'Cette option est disponible uniquement pour les utilisateurs connectés.'
+        thisOptionAvailableForSignedIn:
+            'Cette option est disponible uniquement pour les utilisateurs connectés.'
     },
     popupTitles: {
         quickSurvey: 'Enquête rapide',
@@ -282,13 +304,17 @@ export default {
         boundingBox: 'Boîte englobante'
     },
     popupContent: {
-        addedToDownloadList: 'La ressource a été ajoutée à votre liste de téléchargement. <a href="" class="openBulkDownloadPopup"><b>Afficher la liste</b></a>',
-        addedCustomToDownloadList: 'La demande de téléchargement a été ajoutée à votre liste de téléchargement. <a href="" class="openBulkDownloadPopup"><b>Afficher la liste</b></a>',
-        bookmarkSavedSuccess: 'Le résultat a été enregistré dans Mon espace de travail -> Résultats référencés.',
+        addedToDownloadList:
+            'La ressource a été ajoutée à votre liste de téléchargement. <a href="" class="openBulkDownloadPopup"><b>Afficher la liste</b></a>',
+        addedCustomToDownloadList:
+            'La demande de téléchargement a été ajoutée à votre liste de téléchargement. <a href="" class="openBulkDownloadPopup"><b>Afficher la liste</b></a>',
+        bookmarkSavedSuccess:
+            'Le résultat a été enregistré dans Mon espace de travail -> Résultats référencés.',
         bookmarkSavedFail: 'Échec du signet du résultat.',
         bookmarkRemovedSuccess: 'Le résultat a été supprimé des signets.',
         bookmarkRemovedFail: 'Échec de la suppression du résultat des signets.',
-        saveSearchSuccess: 'Votre recherche a été enregistrée dans Mon espace de travail -> Vos recherches enregistrées.',
+        saveSearchSuccess:
+            'Votre recherche a été enregistrée dans Mon espace de travail -> Vos recherches enregistrées.',
         saveSearchFail: 'Échec de l`enregistrement de la recherche.',
         loadOnMap: 'Charger sur la carte',
         loadingLayer: 'Couche de chargement',
@@ -306,11 +332,15 @@ export default {
         cloudPlatformSelection: 'Sélection de la plateforme cloud',
         optimal: 'optimal',
         fetchingPlatformsData: 'Récupération des données des plateformes',
-        entryRelationsStart: 'Vous êtes maintenant en mode de réglage ENTRY RELATIONS. <br /> Dans un premier temps, sélectionnez l’entrée souhaitée en tant que <b> source de relation </ b>.',
+        entryRelationsStart:
+            'Vous êtes maintenant en mode de réglage ENTRY RELATIONS. <br /> Dans un premier temps, sélectionnez l’entrée souhaitée en tant que <b> source de relation </ b>.',
         entryRelationsSrcSet1: 'La source de relation a été définie sur',
-        entryRelationsSrcSet2: 'Choisissez <b> ressources de destination </ b>.',
-        entryRelationsNoDest: 'Il n`y a pas de ressources de destination sélectionnées. Choisissez au moins une ressource associée à l`entrée source.',
-        entryRelationsRedirecting: 'Les données de relations d`entrée ont été envoyées avec succès. Redirigeant ...',
+        entryRelationsSrcSet2:
+            'Choisissez <b> ressources de destination </ b>.',
+        entryRelationsNoDest:
+            'Il n`y a pas de ressources de destination sélectionnées. Choisissez au moins une ressource associée à l`entrée source.',
+        entryRelationsRedirecting:
+            'Les données de relations d`entrée ont été envoyées avec succès. Redirigeant ...',
 
         // SDG dashboards
         createDashboard: 'Créer un tableau de bord',
@@ -330,17 +360,21 @@ export default {
         remove: 'Retirer',
         removePage: 'Supprimer la page',
         clearArea: 'Zone dégagée',
-        dragAndDropDescription: 'Faites glisser et déposez des éléments de la barre d`outils<br/>pour commencer à créer un tableau de bord',
-        dashboardInPreview: 'Vous explorez le tableau de bord en mode aperçu. Pour modifier ou enregistrer des données, veuillez',
+        dragAndDropDescription:
+            'Faites glisser et déposez des éléments de la barre d`outils<br/>pour commencer à créer un tableau de bord',
+        dashboardInPreview:
+            'Vous explorez le tableau de bord en mode aperçu. Pour modifier ou enregistrer des données, veuillez',
         closePreview: 'fermer l`aperçu',
         goBackToCreator: 'et retourner au créateur',
         showAs: 'Montrer comme',
         values: 'Valeurs',
         percentage: 'Pourcentage',
-        creatorCloseConfirmation: 'Voulez-vous vraiment fermer le créateur ? Tout progrès sera perdu !',
+        creatorCloseConfirmation:
+            'Voulez-vous vraiment fermer le créateur ? Tout progrès sera perdu !',
         pageOrder: 'Ordre des pages',
         changePageOrder: 'Changer l`ordre des pages',
-        dragAndDropPageIcons: 'Faites glisser et déposez les icônes de la page pour modifier son ordre',
+        dragAndDropPageIcons:
+            'Faites glisser et déposez les icônes de la page pour modifier son ordre',
         page: 'Page',
         of: 'de',
         save: 'Sauvegarder',
@@ -399,7 +433,7 @@ export default {
         mapDetails: 'Détails de la carte',
         authors: 'Auteurs',
         license: 'License',
-		citation: 'Citation',
+        citation: 'Citation',
         confidence: 'Confiance',
         crop: 'Culture',
         irrigation: 'Irrigation',
@@ -411,19 +445,23 @@ export default {
         send: 'Envoyer',
 
         // confirm search
-        lookingForResultInLocation: 'Cherchez-vous un résultat dans l`emplacement',
+        lookingForResultInLocation:
+            'Cherchez-vous un résultat dans l`emplacement',
         lookingFor: 'Cherchez-vous',
         inLocation: 'dans l`emplacement',
 
         // dab request too long
-        resourceTakesMoreTime: 'Le chargement des ressources prend plus de temps que d`habitude.',
+        resourceTakesMoreTime:
+            'Le chargement des ressources prend plus de temps que d`habitude.',
         wouldYouLikeToContinue: 'Voulez-vous continuer?',
 
         // layer not available
-        mapLayerUnavailable: 'Le service de carte n`est pas disponible pour le moment. L’équipe de maintenance du portail a été informée. \ NVoulez-vous désactiver la présentation de cette couche?',
+        mapLayerUnavailable:
+            'Le service de carte n`est pas disponible pour le moment. L’équipe de maintenance du portail a été informée.  NVoulez-vous désactiver la présentation de cette couche?',
 
         // workflow
-        saveRunSuccess: 'Le résultat a été enregistré dans Mon espace de travail -> Courses enregistrées.',
+        saveRunSuccess:
+            'Le résultat a été enregistré dans Mon espace de travail -> Courses enregistrées.',
         saveFail: 'Échec de l`enregistrement de l`identifiant d`exécution.',
         seeThisWorkflow: 'Voir ce workflow',
         run: 'Courir',
@@ -440,7 +478,8 @@ export default {
         cancel: 'Annuler',
         accept: 'Acceptez',
         removeResource: 'Supprimer la ressource',
-        mustBeLoggedIn: 'Veuillez vous <a href="/c/portal/login">connecter</a> pour exécuter le service',
+        mustBeLoggedIn:
+            'Veuillez vous <a href="/c/portal/login">connecter</a> pour exécuter le service',
         mustBeLoggedIn1: 'Veuillez vous ',
         mustBeLoggedIn2: 'connecter',
         mustBeLoggedIn3: 'pour exécuter le service',
@@ -449,7 +488,8 @@ export default {
         workflowInput: 'Entrée de flux de travail',
         runName: 'Nom de la course',
         worldwide: 'À l`échelle mondiale',
-        serverResponseTimeout: 'La réponse du serveur prend plus de temps que prévu - veuillez réessayer.',
+        serverResponseTimeout:
+            'La réponse du serveur prend plus de temps que prévu - veuillez réessayer.',
 
         // resource editor
         advancedView: 'Vue avancée',
@@ -464,23 +504,37 @@ export default {
         passToModerator: 'Passer au modérateur',
         addLinkOption: 'Ajouter une option de lien',
         removeLinkOption: 'Supprimer l`option de lien',
-        improveDefinitionSuccess: 'L`amélioration de la définition a été envoyée avec succès au modérateur.',
-        improveDefinitionFail: 'Échec d`envoi de l`amélioration de la définition',
+        improveDefinitionSuccess:
+            'L`amélioration de la définition a été envoyée avec succès au modérateur.',
+        improveDefinitionFail:
+            'Échec d`envoi de l`amélioration de la définition',
         improveTheResourceDefinition: 'Améliorer la définition de la ressource',
-        youNeedToBeSignedInToImprove: 'Vous devez être connecté pour améliorer la définition de la ressource.',
+        youNeedToBeSignedInToImprove:
+            'Vous devez être connecté pour améliorer la définition de la ressource.',
 
         // user contributed metadata
         userContributedTitleSummary: 'Informations fournies par l`utilisateur',
         userContributedTitleKeywords: 'Mots clés fournis par l`utilisateur',
-        userContributedTitleTransferOptions: 'Ressources en ligne fournies par l`utilisateur',
+        userContributedTitleTransferOptions:
+            'Ressources en ligne fournies par l`utilisateur',
         userContributedTitleComment: 'Commentaires',
         userContributedRemoveEntryExtension: 'Supprimer l`extension d`entrée',
-        userContributedAreYouSure: 'Êtes-vous sûr de vouloir supprimer l`extension d`entrée suivante?',
+        userContributedAreYouSure:
+            'Êtes-vous sûr de vouloir supprimer l`extension d`entrée suivante?',
         userContributedCommentOnYourDecision: 'Commentez votre décision',
         userContributedCancel: 'Annuler',
         userContributedDelete: 'Supprimer',
-        userContributedRemoveEntryExtensionSuccess: 'Vous avez réussi à supprimer l`extension d`entrée',
-        userContributedRemoveUnavailable: 'La suppression de l`extension est temporairement indisponible - l`entrée est actuellement traitée dans le flux de travail.<br/>Veuillez réessayer plus tard.'
+        userContributedRemoveEntryExtensionSuccess:
+            'Vous avez réussi à supprimer l`extension d`entrée',
+        userContributedRemoveUnavailable:
+            'La suppression de l`extension est temporairement indisponible - l`entrée est actuellement traitée dans le flux de travail.<br/>Veuillez réessayer plus tard.',
+
+        //openeo
+        dateRange: 'Plage de dates',
+        bbox: 'Coordonnées de la boîte englobante',
+        areaTooBig: 'La zone sélectionnée dépasse 2500 kilomètres carrés. Veuillez sélectionner une zone plus petite.',
+        draw: 'Dessiner',
+        clear: 'Effacer'
     },
 
     irisFilters: {
@@ -522,7 +576,8 @@ export default {
     sentinelLogin: {
         username: 'Nom d`utilisateur',
         password: 'Mot de passe',
-        sentinelDataAccessRegistration: 'Enregistrement de l`accès aux données Sentinel',
+        sentinelDataAccessRegistration:
+            'Enregistrement de l`accès aux données Sentinel',
         download: 'Télécharger'
     },
 
@@ -544,14 +599,18 @@ export default {
         packagesList: 'Liste des packages',
         listIsEmpty: 'La liste est vide',
         files: 'Des dossier(s)',
-        areCurrentlyUnavailableYouCan: 'sont actuellement indisponibles, vous pouvez',
-        downloadPackageWithoutThisFiles: 'télécharger le package sans ce fichier(s)',
+        areCurrentlyUnavailableYouCan:
+            'sont actuellement indisponibles, vous pouvez',
+        downloadPackageWithoutThisFiles:
+            'télécharger le package sans ce fichier(s)',
         abort: 'avorter',
         or: 'ou',
         retry: 'réessayez',
         packagePreparation: 'préparation de l`emballage.',
-        requestTakesLongerThanExpected: 'La demande prend plus de temps que prévu...',
-        bulkDownloadPackageCreation: 'Création d`un package de téléchargement en masse'
+        requestTakesLongerThanExpected:
+            'La demande prend plus de temps que prévu...',
+        bulkDownloadPackageCreation:
+            'Création d`un package de téléchargement en masse'
     },
 
     survey: {
@@ -614,22 +673,26 @@ export default {
         },
         organized: {
             title: 'Dans quelle mesure êtes-vous d`accord avec l`énoncé suivant?',
-            question: 'Je trouve le contenu du site portail organisé de manière logique',
-            stronglyAgree: 'Fortement \ nagree',
-            stronglyDisagree: 'Fortement \ ndésagré'
+            question:
+                'Je trouve le contenu du site portail organisé de manière logique',
+            stronglyAgree: 'Fortement  nagree',
+            stronglyDisagree: 'Fortement  ndésagré'
         },
         adequately: {
             title: 'Dans quelle mesure êtes-vous d`accord avec l`énoncé suivant?',
-            question: 'Je pense que les informations proposées sur le site sont correctement décrites',
-            stronglyAgree: 'Fortement \ nagree',
-            stronglyDisagree: 'Fortement \ ndésagré'
+            question:
+                'Je pense que les informations proposées sur le site sont correctement décrites',
+            stronglyAgree: 'Fortement  nagree',
+            stronglyDisagree: 'Fortement  ndésagré'
         },
         search_criteria: {
-            question: 'Existe-t-il d`autres critères de recherche qui pourraient vous être utiles?',
+            question:
+                'Existe-t-il d`autres critères de recherche qui pourraient vous être utiles?',
             placeholder: 'S`il vous plaît écrivez-les ici'
         },
         visualization: {
-            question: 'Existe-t-il des visualisations de données qui pourraient vous aider à mieux comprendre ce qui peut être dérivé du portail?',
+            question:
+                'Existe-t-il des visualisations de données qui pourraient vous aider à mieux comprendre ce qui peut être dérivé du portail?',
             placeholder: 'Veuillez les décrire ici'
         },
         thankYouForCompleting: 'Merci d`avoir complété ce sondage!',
@@ -669,21 +732,29 @@ export default {
         gender_equality: 'Égalité des sexes',
         clean_water_and_sanitation: 'Eau propre et assainissement',
         affordable_and_clean_energy: 'Énergie propre et abordable',
-        decent_work_and_economic_growth: 'Travail décent et croissance économique',
-        industry_innovation_and_infrastructure: 'Industrie, innovation et infrastructure',
+        decent_work_and_economic_growth:
+            'Travail décent et croissance économique',
+        industry_innovation_and_infrastructure:
+            'Industrie, innovation et infrastructure',
         reduced_inequalities: 'Inégalités réduites',
         sustainable_cities_and_communities: 'Villes et communautés durables',
-        responsible_consumption_and_production: 'Consommation et production responsables',
+        responsible_consumption_and_production:
+            'Consommation et production responsables',
         climate_action: 'Action pour le climat',
         life_below_water: 'La vie sous l`eau',
         life_on_land: 'La vie sur terre',
-        peace_justice_and_strong_institutions: 'Paix, justice et institutions fortes',
+        peace_justice_and_strong_institutions:
+            'Paix, justice et institutions fortes',
         partnerships_for_the_goals: 'Partenariats pour les objectifs',
-        biodiversity_and_ecosystem_sustainability: 'Biodiversité et durabilité des écosystèmes',
+        biodiversity_and_ecosystem_sustainability:
+            'Biodiversité et durabilité des écosystèmes',
         disaster_resilience: 'Résilience aux catastrophes',
-        energy_and_mineral_resource_management: 'Gestion des ressources énergétiques et minérales',
-        food_security_and_sustainable_agriculture: 'Sécurité alimentaire et agriculture durable',
-        infrastructure_and_transportation_management: 'Gestion des infrastructures et des transports',
+        energy_and_mineral_resource_management:
+            'Gestion des ressources énergétiques et minérales',
+        food_security_and_sustainable_agriculture:
+            'Sécurité alimentaire et agriculture durable',
+        infrastructure_and_transportation_management:
+            'Gestion des infrastructures et des transports',
         public_health_surveillance: 'Surveillance de la santé publique',
         water_resources_management: 'Gestion des ressources en eau',
         sustainable_urban_development: 'Développement urbain durable'
@@ -694,7 +765,8 @@ export default {
         showOnMap: 'Montrer sur la carte',
         delete: 'Effacer',
         incompatibleDataSources: 'Sources de données incompatibles',
-        desiredSource: 'Vous pouvez afficher sur la carte uniquement les éléments d’une source de données. Choisissez votre source de données souhaitée:',
+        desiredSource:
+            'Vous pouvez afficher sur la carte uniquement les éléments d’une source de données. Choisissez votre source de données souhaitée:',
         noItemsSelected: 'Aucun élément sélectionné',
         selectItems: 'Veuillez sélectionner au moins un élément de la liste.',
         accept: 'D`accord',
@@ -704,12 +776,14 @@ export default {
         checked: 'vérifié'
     },
     geoLikes: {
-        title: 'Mon espace de travail / GEO Likes',
+        title: 'Mon espace de travail / GEO Likes'
     },
     privacyPolicy: {
-        statement: 'Nous utilisons des cookies pour suivre les visites sur notre site Web uniquement, aucune information personnelle n`est collectée. Si vous souhaitez restreindre ou bloquer notre utilisation des cookies, veuillez suivre les instructions énoncées dans notre Politique relative aux cookies.',
+        statement:
+            'Nous utilisons des cookies pour suivre les visites sur notre site Web uniquement, aucune information personnelle n`est collectée. Si vous souhaitez restreindre ou bloquer notre utilisation des cookies, veuillez suivre les instructions énoncées dans notre Politique relative aux cookies.',
         cookieLink: 'Avis sur les cookies',
-        cookieText: 'pour plus d`informations ou pour modifier vos préférences.',
+        cookieText:
+            'pour plus d`informations ou pour modifier vos préférences.',
         accept: 'Accepter',
         decline: 'Déclin'
     },
@@ -732,4 +806,4 @@ export default {
         sources: 'Sources'
     },
     poweredBy: 'Alimenté par'
-};
+}

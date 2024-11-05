@@ -483,7 +483,15 @@ export default {
         userContributedCancel: 'Cancel',
         userContributedDelete: 'Delete',
         userContributedRemoveEntryExtensionSuccess: 'You have successfuly removed entry extension',
-        userContributedRemoveUnavailable: 'Extension removal is temporary unavailable - entry is currently processed in worklow.<br/>Please try again later.'
+        userContributedRemoveUnavailable: 'Extension removal is temporary unavailable - entry is currently processed in worklow.<br/>Please try again later.',
+        
+        //openeo
+        dateRange: 'Date range',
+        bbox: 'Bounding box coordinates',
+        areaTooBig: 'Selected area is over 2500 square kilometers. Please select a smaller area.',
+        draw: 'Draw',
+        clear: 'Clear'
+
     },
 
     irisFilters: {
