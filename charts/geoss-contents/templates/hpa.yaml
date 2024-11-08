@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "geoss-personaldata.fullname" . }}
+  name: {{ include "geoss-contents.fullname" . }}
   labels:
-    {{- include "geoss-personaldata.labels" . | nindent 4 }}
+    {{- include "geoss-contents.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "geoss-personaldata.fullname" . }}
+    name: {{ include "geoss-contents.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
