@@ -1,4 +1,4 @@
-FROM nginx:1.27.1 as runner
+FROM nginx:1.27.2 as runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
@@ -9,7 +9,7 @@ LABEL image="geoss-nginx"
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
-RUN apt-get update && apt-get install -y logrotate
+RUN apt-get update && apt-get upgrade -y && apt-get install -y logrotate
 # Cleanup
 RUN rm -rf /var/lib/apt
 
