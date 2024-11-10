@@ -1,5 +1,6 @@
 const config = {
     apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8083/rest' : '/personaldata/rest',
+    savedRunsUrl: '/saved-runs',
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',
     surveys: '/surveys'
@@ -7,6 +8,7 @@ const config = {
 
 export default {
     url: config.apiUrl,
+    savedRuns: config.apiUrl + config.savedRunsUrl,
     savedSearches: config.apiUrl + config.savedSearchesUrl,
     savedSearchesByUser:
         config.apiUrl + config.savedSearchesUrl + '/search/byUser',

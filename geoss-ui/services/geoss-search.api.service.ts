@@ -32,6 +32,8 @@ import webSettingsAPI from '@/api/webSettings'
 import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
 import UserAPI from '@/api/user'
 import { $tc } from '~/plugins/i18n'
+import geossPersonaldata from '~/api/module/geoss-personaldata'
+import apiClient from '~/api/apiClient'
 
 interface Window {
     URL?: any
@@ -1641,91 +1643,152 @@ const GeossSearchApiService = {
     },
 
     addSavedRun(runName: string, workflow: any, runId: string) {
-        return sendLiferayRequest(
-            '/geoss-service-portlet.savedrun/add-saved-run',
-            {
-                name:
-                    runName !== ''
-                        ? runName
-                        : `${new Date()
-                              .toLocaleString('en-GB')
-                              .replace(/,/g, '')} ${workflow.name}`,
-                runId,
-                userId: Liferay.ThemeDisplay.getUserId(),
-                groupId: Liferay.ThemeDisplay.getScopeGroupId(),
-                path: '',
-                workflowId: workflow.id
-            }
-        )
+        console.log(workflow)
+        const url = `${geossPersonaldata.savedRuns}`
+        return apiClient.$post(url, {
+            name: runName,
+            runId: runId,
+            workflowId: workflow.id,
+            path: ''
+        })
+        // return sendLiferayRequest(
+        //     '/geoss-service-portlet.savedrun/add-saved-run',
+        //     {
+        //         name:
+        //             runName !== ''
+        //                 ? runName
+        //                 : `${new Date()
+        //                       .toLocaleString('en-GB')
+        //                       .replace(/,/g, '')} ${workflow.name}`,
+        //         runId,
+        //         userId: Liferay.ThemeDisplay.getUserId(),
+        //         groupId: Liferay.ThemeDisplay.getScopeGroupId(),
+        //         path: '',
+        //         workflowId: workflow.id
+        //     }
+        // )
     },
 
-    getSavedRuns(
-        isSignedIn: boolean,
-        startIndex: number,
-        resultsPerPage: number
+    async getSavedRuns(
+        resultsPerPage: number,
+        pageNumber: number
     ) {
-        let url = '/geoss-service-portlet.savedrun/get-all-saved-runs'
-        if (isSignedIn) {
-            url = '/geoss-service-portlet.savedrun/get-user-saved-runs'
-        }
-        return sendLiferayRequest(url, {
-            groupId: Liferay.ThemeDisplay.getScopeGroupId(),
-            start: startIndex,
-            end: startIndex + resultsPerPage
-        }).then(
-            ({ totalCount, items }: { totalCount: number; items: any[] }) => {
-                return Promise.all(
-                    items.map(
-                        (item: {
-                            status: string
-                            runId: string
-                            messageList: any
-                            result: any
-                            showLogs: boolean
-                            outputs: any
-                            showOutputs: boolean
-                        }) => {
-                            item.status = 'UNKNOWN'
-                            return GeossSearchApiService.getRunStatus(
-                                item.runId
-                            ).then(
-                                ({
-                                    status,
-                                    messageList,
-                                    result
-                                }: {
-                                    status: string
-                                    messageList: any
-                                    result: any
-                                }) => {
-                                    item.status = status
-                                    item.messageList = messageList
-                                    item.result = result
-                                    item.showLogs = false
-                                    if (
-                                        status === 'COMPLETED' ||
-                                        status === 'SUCCESS'
-                                    ) {
-                                        return GeossSearchApiService.getRunOutputs(
-                                            item.runId
-                                        ).then(({ outputs }: any) => {
-                                            item.outputs = outputs
-                                            item.showOutputs = false
-                                        })
-                                    }
-                                }
-                            )
-                        }
+        let longRequestInfo: string | number | NodeJS.Timeout | undefined
+        SpinnerService.showSpinner(null, false)
+        longRequestInfo = setTimeout(() => {
+            SpinnerService.setLongRequestInfo(true)
+        }, 10000)
+
+        const url = `${geossPersonaldata.savedRuns}?page=${pageNumber}&size=${resultsPerPage}`
+        const res = await apiClient.$get(url)
+        const pageInfo = res.page
+        const savedRuns = res._embedded.savedRuns
+        const savedRunsData =
+            (await Promise.all(
+                savedRuns.map(async (run: any) => {
+                    const res = await fetch(
+                        `${SearchEngineService.getKpBaseUrl()}/runs/${
+                            run.runId
+                        }/status`,
+                        vlabAuthorizationHeaders
                     )
-                )
-                    .catch(() => {
-                        return { totalCount, items }
-                    })
-                    .then(() => {
-                        return { totalCount, items }
-                    })
-            }
-        )
+                    const resJson = await res.json()
+                    if (
+                        resJson.status === 'COMPLETED' ||
+                        resJson.status === 'SUCCESS'
+                    ) {
+                        const outputs = await fetch(
+                            `${SearchEngineService.getKpBaseUrl()}/runs/${
+                                run.runId
+                            }/outputs`,
+                            vlabAuthorizationHeaders
+                        )
+                        const outputsJson = await outputs.json();
+                        return {
+                            ...run,
+                            status: resJson.status,
+                            messageList: resJson.messageList,
+                            result: resJson.result,
+                            showLogs: false,
+                            outputs: outputsJson.outputs,
+                            showOutputs: true
+                        }
+                    } else {
+                        return {
+                            ...run,
+                            status: resJson.status,
+                            messageList: resJson.messageList,
+                            result: resJson.result,
+                            showLogs: false
+                        }
+                    }
+                })
+            )) || []
+        //spinner
+        SpinnerService.hideSpinner()
+        clearTimeout(longRequestInfo)
+        SpinnerService.setLongRequestInfo(false)
+
+        return {data: savedRunsData, pageInfo: pageInfo}
+
+        // return sendLiferayRequest(url, {
+        //     groupId: Liferay.ThemeDisplay.getScopeGroupId(),
+        //     start: startIndex,
+        //     end: startIndex + resultsPerPage
+        // }).then(
+        //     ({ totalCount, items }: { totalCount: number; items: any[] }) => {
+        //         return Promise.all(
+        //             items.map(
+        //                 (item: {
+        //                     status: string
+        //                     runId: string
+        //                     messageList: any
+        //                     result: any
+        //                     showLogs: boolean
+        //                     outputs: any
+        //                     showOutputs: boolean
+        //                 }) => {
+        //                     item.status = 'UNKNOWN'
+        //                     return GeossSearchApiService.getRunStatus(
+        //                         item.runId
+        //                     ).then(
+        //                         ({
+        //                             status,
+        //                             messageList,
+        //                             result
+        //                         }: {
+        //                             status: string
+        //                             messageList: any
+        //                             result: any
+        //                         }) => {
+        //                             item.status = status
+        //                             item.messageList = messageList
+        //                             item.result = result
+        //                             item.showLogs = false
+        //                             if (
+        //                                 status === 'COMPLETED' ||
+        //                                 status === 'SUCCESS'
+        //                             ) {
+        //                                 return GeossSearchApiService.getRunOutputs(
+        //                                     item.runId
+        //                                 ).then(({ outputs }: any) => {
+        //                                     item.outputs = outputs
+        //                                     item.showOutputs = false
+        //                                 })
+        //                             }
+        //                         }
+        //                     )
+        //                 }
+        //             )
+        //         )
+        //             .catch(() => {
+        //                 return { totalCount, items }
+        //             })
+        //             .then(() => {
+        //                 return { totalCount, items }
+        //             })
+        //     }
+        // )
     },
 
     getRunStatus(runId: string) {

@@ -3,83 +3,114 @@
         <div class="service-workflow__title">
             <span>{{ title }}</span>
         </div>
-        <div class="service-workflow__run-title">
-            <div class="service-workflow__title">
-                <span>{{ $tc('popupContent.runName') }}</span>
-            </div>
-            <div class="service-workflow__run-title-input">
-                <input
-                    type="text"
-                    id="run-title"
-                    :placeholder="$tc('popupContent.runName')"
-                    v-model="workflowRunName"
+        <div class="service-workflow__switcher">
+            <button
+                :class="{ active: showDetails }"
+                @click="toggleShowDetails(true)"
+                :title="$tc('popupContent.seeThisWorkflow')"
+            >
+                <img
+                    :src="`/svg/see-doc.svg`"
+                    :alt="$tc('popupContent.seeThisWorkflow')"
                 />
-            </div>
-            <div class="service-workflow__title">
-                <span>{{ $tc('popupContent.dateRange') }}</span>
-            </div>
-            <div class="wrapper">
-                <DatePicker
-                    :config="datePickerConfig"
-                    :placeholder="$tc('placeholders.from')"
-                    value="dateFrom"
-                    v-model="dateFrom"
-                    :clearable="true"
-                ></DatePicker>
-                <DatePicker
-                    :disabled="true"
-                    :placeholder="$tc('placeholders.to')"
-                    value="dateTo"
-                    v-model="dateTo"
-                    :clearable="false"
-                ></DatePicker>
-            </div>
-            <div class="service-workflow__title">
-                <span>{{ $tc('popupContent.bbox') }}</span>
-            </div>
-            <div v-if="isAreaTooBig" class="area_error">
-                {{ $tc('popupContent.areaTooBig') }}
-            </div>
-            <div v-if="areCoordsValid" class="wrapper">
-                <div class="coord_wrapper">
-                    E:
-                    <p class="coord">{{ coords.E }}</p>
+                <span>{{ $tc('popupContent.seeThisWorkflow') }}</span>
+            </button>
+            <button
+                :class="{ active: !showDetails, disabled: !isSignedIn }"
+                @click="toggleShowDetails(false)"
+                :title="$tc('popupContent.runs')"
+                :disabled="!isSignedIn"
+            >
+                <img
+                    :src="`/svg/run-doc.svg`"
+                    :alt="$tc('popupContent.runs')"
+                />
+                <span>{{ $tc('popupContent.runs') }}</span>
+            </button>
+        </div>
+        <div class="service-workflow__details" v-show="showDetails">
+            <div class="service-workflow__run-title">
+                <div class="service-workflow__title">
+                    <span>{{ $tc('popupContent.runName') }}</span>
                 </div>
-                <div class="coord_wrapper">
-                    W:
-                    <p class="coord">{{ coords.W }}</p>
+                <div class="service-workflow__run-title-input">
+                    <input
+                        type="text"
+                        id="run-title"
+                        :placeholder="$tc('popupContent.runName')"
+                        v-model="workflowRunName"
+                    />
                 </div>
-                <div class="coord_wrapper">
-                    N:
-                    <p class="coord">{{ coords.N }}</p>
+                <div class="service-workflow__title">
+                    <span>{{ $tc('popupContent.dateRange') }}</span>
                 </div>
-                <div class="coord_wrapper">
-                    S:
-                    <p class="coord">{{ coords.S }}</p>
+                <div class="wrapper">
+                    <DatePicker
+                        :config="datePickerConfig"
+                        :placeholder="$tc('placeholders.from')"
+                        value="dateFrom"
+                        v-model="dateFrom"
+                        :clearable="true"
+                    ></DatePicker>
+                    <DatePicker
+                        :disabled="true"
+                        :placeholder="$tc('placeholders.to')"
+                        value="dateTo"
+                        v-model="dateTo"
+                        :clearable="false"
+                    ></DatePicker>
+                </div>
+                <div class="service-workflow__title">
+                    <span>{{ $tc('popupContent.bbox') }}</span>
+                </div>
+                <div v-if="isAreaTooBig" class="area_error">
+                    {{ $tc('popupContent.areaTooBig') }}
+                </div>
+                <div v-if="areCoordsValid" class="wrapper">
+                    <div class="coord_wrapper">
+                        E:
+                        <p class="coord">{{ coords.E }}</p>
+                    </div>
+                    <div class="coord_wrapper">
+                        W:
+                        <p class="coord">{{ coords.W }}</p>
+                    </div>
+                    <div class="coord_wrapper">
+                        N:
+                        <p class="coord">{{ coords.N }}</p>
+                    </div>
+                    <div class="coord_wrapper">
+                        S:
+                        <p class="coord">{{ coords.S }}</p>
+                    </div>
+                </div>
+                <div class="buttons_wrapper">
+                    <button class="draw_button" @click="setBoundingBox">
+                        {{ $tc('popupContent.draw') }}
+                    </button>
+                    <button
+                        v-if="areCoordsValid"
+                        class="clear_button"
+                        @click="clearCoords"
+                    >
+                        {{ $tc('popupContent.clear') }}
+                    </button>
                 </div>
             </div>
-            <div class="buttons_wrapper">
-                <button class="draw_button" @click="setBoundingBox">
-                    {{ $tc('popupContent.draw') }}
-                </button>
+            <div class="d-flex flex--justify-end flex--wrap">
                 <button
-                    v-if="areCoordsValid"
-                    class="clear_button"
-                    @click="clearCoords"
+                    class="service-workflow__run"
+                    :class="{ disabled: !allRequiredFilled }"
+                    :disabled="!allRequiredFilled"
+                    @click="run()"
                 >
-                    {{ $tc('popupContent.clear') }}
+                    {{ $tc('popupContent.run') }}
                 </button>
             </div>
         </div>
-        <div class="d-flex flex--justify-end flex--wrap">
-            <button
-                class="service-workflow__run"
-                :class="{ disabled: !allRequiredFilled }"
-                :disabled="!allRequiredFilled"
-                @click="run()"
-            >
-                {{ $tc('popupContent.run') }}
-            </button>
+
+        <div v-if="!showDetails">
+            <SavedRuns :isPopup="true" />
         </div>
     </div>
 </template>
@@ -92,8 +123,9 @@ import { MapActions } from '@/store/map/map-actions'
 import { GeneralFiltersActions } from '@/store/generalFilters/general-filters-actions'
 import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters'
 import { UserGetters } from '~/store/user/user-getters'
-import UtilsService from '@/services/utils.service'
+import OpenEOService from '@/services/openeo.service'
 import PopupCloseService from '@/services/popup-close.service'
+import NotificationService from '@/services/notification.service'
 
 @Component({
     components: {
@@ -105,6 +137,7 @@ export default class OpenEOWorkflowComponent extends Vue {
     @Prop({ required: true, type: String }) public workflowUrl!: string
     @Prop({ required: false, type: String }) public urlToResource!: string
 
+    public showDetails = true
     public workflowRunNameValue = ''
     public dateFromValue = ''
     public dateToValue = ''
@@ -127,6 +160,10 @@ export default class OpenEOWorkflowComponent extends Vue {
         ],
         minDate: '2018-01-01', // Set the minimum date to January 1, 2018
         maxDate: '2023-12-31' // Set the maximum date to December 31, 2023
+    }
+
+    get isSignedIn() {
+        return this.$nuxt.$auth.$state.loggedIn
     }
 
     get workflowRunName() {
@@ -231,11 +268,28 @@ export default class OpenEOWorkflowComponent extends Vue {
     }
 
     public async run() {
+        if (!this.isSignedIn) {
+            const fullLoginUrl = `/c/portal/login?redirect=${this.urlToResource}`
+            const message = `${this.$tc(
+                'popupContent.mustBeLoggedIn1'
+            )}<a href="${fullLoginUrl}">${this.$tc(
+                'popupContent.mustBeLoggedIn2'
+            )}</a> ${this.$tc('popupContent.mustBeLoggedIn3')}`
+
+            return NotificationService.show(
+                `${this.$tc('general.info')}`,
+                message,
+                100000,
+                'must-be-logged-in',
+                9999,
+                'info'
+            )
+        }
         const token = this.$store.getters[UserGetters.openEOToken]
         const tokenExp = this.$store.getters[UserGetters.openEOTokenExpireDate]
         const currDateTime = Math.floor(Date.now() / 1000)
         if (tokenExp <= currDateTime) {
-            await UtilsService.authenticateOpenEO()
+            await OpenEOService.authenticateOpenEO()
         }
         const body = {
             'title': this.workflowRunName,
@@ -268,27 +322,16 @@ export default class OpenEOWorkflowComponent extends Vue {
                 'https://artifactory.vgt.vito.be/artifactory/auxdata-public/openeo/onnx_dependencies_1.16.3.zip#onnx_deps'
             ]
         }
-        await fetch('https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(body)
-        })
 
-        // const resGet = await fetch(
-        //     'https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs',
-        //     {
-        //         method: 'GET',
-        //         headers: {
-        //             Authorization: `Bearer ${token}`
-        //         }
-        //     }
-        // )
-        // const jsonGet = await resGet.json()
-        // console.log(jsonGet)
+        const response = await OpenEOService.createOpenEOJob(this.workflowUrl, token, body)
+        await OpenEOService.runOpenEOJob(response.job_id, token)
         this.close()
+    }
+
+    public async toggleShowDetails(value: boolean) {
+        if (this.showDetails !== value) {
+            this.showDetails = value
+        }
     }
 
     public close() {
@@ -381,7 +424,7 @@ export default class OpenEOWorkflowComponent extends Vue {
 
         .service-workflow {
             &__saved-run {
-                padding: 20px 30px;
+                padding: 20px 5px;
             }
         }
     }

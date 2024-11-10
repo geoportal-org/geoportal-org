@@ -826,6 +826,10 @@ export default {
                                     searchSettings['tourUrl']
                                 )
                                 this.$store.dispatch(
+                                    SearchEngineActions.setKpBaseUrl,
+                                    searchSettings['kpBaseUrl']
+                                )
+                                this.$store.dispatch(
                                     MapActions.setBoxAccessToken,
                                     searchSettings['mapBoxAccessToken']
                                 )

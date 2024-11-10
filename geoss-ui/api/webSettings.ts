@@ -216,7 +216,7 @@ export default {
     },
     getSearchSettings: async (siteId: number) => {
         const apiSettings: WebSettings = await apiClient.$get(
-            `${geossSettings.apiSettings}/sites/${siteId}/api-settings`,
+            `${geossSettings.apiSettings}/sites/${siteId}/api-settings?page=0&size=9999`,
             {
                 headers: {
                     Authorization: ''

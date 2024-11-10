@@ -47,7 +47,7 @@
 					<div class="dashboard-creator__tool tool-label">{{ $tc('popupContent.layout') }}</div>
 					<div class="dashboard-creator__tool sidebar">
 						<div>
-							<label v-for="layoutId of [1, 2, 3, 4, 5, 6]" :class="{active: currentPageLayout(layoutId)}" :title="$tc('popupContent.layout') + ' ' + layoutId">
+							<label v-for="(layoutId, index) of [1, 2, 3, 4, 5, 6]" :key="index" :class="{active: currentPageLayout(layoutId)}" :title="$tc('popupContent.layout') + ' ' + layoutId">
 								<component :is="`LayoutIcon`+layoutId"></component>
 								<input type="radio" name="layout" @change="changeLayout(layoutId)" :checked="currentPageLayout(layoutId)" :value="layoutId" />
 							</label>
@@ -73,11 +73,11 @@
 					<div class="dashboard-creator__tool sidebar">
 						<div>
 							<select v-model="selectedChart">
-								<option v-for="chart of chartData" :value="chart.title">
+								<option v-for="(chart, index) of chartData" :value="chart.title" :key="index">
 									{{ chart.title }}
 								</option>
 							</select>
-							<div v-show="selectedChart === chart.title" v-for="chart of chartData" draggable @dragstart="startDrag($event, 'chart', chart)" :title="chart.title"><ChartIcon /></div>
+							<div v-show="selectedChart === chart.title" v-for="(chart, index) of chartData" :key="index" draggable @dragstart="startDrag($event, 'chart', chart)" :title="chart.title"><ChartIcon /></div>
 						</div>
 					</div>
 				</div>
@@ -89,11 +89,11 @@
 					<div class="dashboard-creator__tool sidebar">
 						<div>
 							<select v-model="selectedMap">
-								<option v-for="map of mapData" :value="map.outputName">
+								<option v-for="(map, index) of mapData" :value="map.outputName" :key="index">
 									{{ map.outputName }}
 								</option>
 							</select>
-							<div v-show="selectedMap === map.outputName" v-for="map of mapData" draggable @dragstart="startDrag($event, 'map', map)" :title="map.outputName"><MapIcon /></div>
+							<div v-show="selectedMap === map.outputName" v-for="(map, index) of mapData" :key="index" draggable @dragstart="startDrag($event, 'map', map)" :title="map.outputName"><MapIcon /></div>
 						</div>
 					</div>
 				</div>
@@ -127,7 +127,7 @@
 								</div>
 								<DashboardRichText v-if="field.type === 'richtext'" :textData="field.value" mode="creator" @change="updateRichText($event, field)"/>
 								<DashboardMap v-if="field.type === 'map'" :mapData="field.value"/>
-								<DashboardChart v-if="field.type === 'chart'" :chartData="field.value" mode="creator" @change="updateChartMode($event, field)" :layoutChange="layoutChangeTrigger"/>
+								<DashboardChart v-if="field.type === 'chart'" :chartData="field.value" mode="creator" @change="updateChartMode($event, field)" @changeLabels="updateLabels($event, field)" @changeDatasets="updateDatasets($event, field)" :layoutChange="layoutChangeTrigger"/>
 							</section>
 						</template>
 					</div>
@@ -147,8 +147,9 @@
 			<div class="content">
 				<p>{{ $tc('popupContent.dragAndDropPageIcons') }}</p>
 				<div class="pages" :class="{dragging: pageOrderDrag}">
-					<template v-for="page of pagesNewOrder">
-						<div class="drop-slot" @drop="onDropOrder($event, pagesNewOrder.indexOf(page))" @dragover="onDragoverOrder($event)" @dragleave="onDragleaveOrder($event)" @dragover.prevent @dragenter.prevent></div>
+					<template v-for="(page, index) of pagesNewOrder">
+						<div :key="index">
+							<div class="drop-slot" @drop="onDropOrder($event, pagesNewOrder.indexOf(page))" @dragover="onDragoverOrder($event)" @dragleave="onDragleaveOrder($event)" @dragover.prevent @dragenter.prevent></div>
 						<div :key="pages.indexOf(page)" class="page" draggable @dragstart="startDragOrder($event, pagesNewOrder.indexOf(page))" @dragend="endDragOrder()">
 							<div class="page__icon">
 								<component :is="`LayoutIcon`+page.layoutClass"></component>
@@ -157,6 +158,8 @@
 								{{ $tc('popupContent.page') }} {{ pages.indexOf(page) + 1 }}
 							</div>
 						</div>
+						</div>
+
 					</template>
 					<div class="drop-slot" @drop="onDropOrder($event, pagesNewOrder.length)" @dragover="onDragoverOrder($event)" @dragleave="onDragleaveOrder($event)" @dragover.prevent @dragenter.prevent></div>
 				</div>
@@ -193,7 +196,7 @@ import * as XLSX from 'xlsx';
 	}
 })
 export default class DashboardCreatorComponent extends Vue {
-	@Prop({type: Object}) public savedRun!: any = null;
+	@Prop({type: Object}) public savedRun!: any;
 	@Prop({type: Object}) public dashboardData!: any = null;
 
 	public previewMode = false;
@@ -373,6 +376,14 @@ export default class DashboardCreatorComponent extends Vue {
 		field.value.mode = event;
 	}
 
+	public updateLabels(event, field) {
+		field.value.labels = event.join(',');
+	}
+
+	public updateDatasets(event, field) {
+		field.value.values = event;
+	}
+
 	public prepareMapData() {
 		const outputWithAoi = this.savedRun.outputs.filter(e => e.aoi)[0];
 		let bbox = null;
@@ -434,7 +445,7 @@ export default class DashboardCreatorComponent extends Vue {
 							label,
 							title,
 							labels: labels.join(','),
-							values: values.join(','),
+							values: [values.join(',')],
 							mode: '%',
 						});
 					});
@@ -445,6 +456,54 @@ export default class DashboardCreatorComponent extends Vue {
 				};
 
 				reader.readAsBinaryString(file);
+			} else if (output.valueSchema === 'url' && output.value.indexOf('.csv') > -1){
+				const url = output.value;
+				const title = output.name
+				const response = await fetch(url);
+				const csvData = await response.text();
+
+				const labels = [];
+				const datasets = [];
+				
+				// Split the CSV data by lines
+				const rows = csvData.split("\n");
+				const headers = rows[0].split(",");
+				const label = headers[0]
+				headers.slice(2).forEach((header, index) => {
+					datasets.push({
+						label: header.replace(/['"\/\\]/g, ''),
+						data: [],
+						backgroundColor:  '#' +
+                (((1 << 24) * Math.random()) | 0)
+                    .toString(16)
+                    .padStart(6, '0'),
+						hidden: index < 4 ? false : true
+					});
+				});
+				for (let i = 1; i < rows.length; i++) {
+					const row = rows[i].split(",");					
+					// Ensure the row is not empty
+					if (row.length > 1) {
+						labels.push(row[1]); // First column is the label (e.g., time)
+						
+						// Fill data for each dataset
+						for (let j = 2; j < row.length; j++) {
+							datasets[j - 2].data.push(parseFloat(row[j]));
+						}
+					}
+				}
+				if (this.selectedChart === '') {
+					this.selectedChart = title;
+				}
+				this.chartData.push({
+					label,
+					title,
+					labels: labels.join(','),
+					values: datasets,
+					mode: '%',
+				});
+				
+
 			}
 		}
 	}

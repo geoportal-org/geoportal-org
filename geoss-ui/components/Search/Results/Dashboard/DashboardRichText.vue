@@ -7,8 +7,14 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from 'nuxt-property-decorator';
+//@ts-ignore
+import { Vue2TinymceEditor } from "vue2-tinymce-editor";
 
-@Component
+@Component({
+	components: {
+		Vue2TinymceEditor
+	}
+})
 export default class DashboardRichTextComponent extends Vue {
 	@Prop({default: '', type: String}) public textData!: string;
 	@Prop({default: '', type: String}) public mode!: string;

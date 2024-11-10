@@ -16,9 +16,10 @@
                 <span>{{ $tc('popupContent.seeThisWorkflow') }}</span>
             </button>
             <button
-                :class="{ active: !showDetails }"
+                :class="{ active: !showDetails, disabled: !isSignedIn }"
                 @click="toggleShowDetails(false)"
                 :title="$tc('popupContent.runs')"
+                :disabled="!isSignedIn"
             >
                 <img
                     :src="`/svg/run-doc.svg`"
@@ -335,6 +336,7 @@
             <SavedRuns
                 :workflowRunName="workflowRunName"
                 :workflow="workflow"
+                :isPopup="true"
             />
         </div>
     </div>

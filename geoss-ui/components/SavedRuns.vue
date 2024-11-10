@@ -1,115 +1,197 @@
 <template>
     <div class="saved-runs">
-        <div v-if="workflow && workflowRunName"
-            class="d-flex flex--justify-between flex--align-center service-workflow__add-run">
-            <input placeholder="Name" class="service-workflow__add-run-name" type="text" v-model="addRunName" />
-            <input placeholder="Run ID" class="service-workflow__add-run-id" type="text" v-model="addRunId" />
-            <button class="service-workflow__add-run-btn" :disabled="!addRunId || !addRunName" @click="addRun()">
+        <div class="my-workspace-header">
+            <h1>{{ $tc('savedRuns.savedRuns') }}</h1>
+            <button class="openeo_button" @click="toggleOpenEoJobs">
+                OpenEO Jobs
+            </button>
+        </div>
+        <div
+            v-if="workflow && workflowRunName"
+            class="d-flex flex--justify-between flex--align-center service-workflow__add-run"
+        >
+            <input
+                placeholder="Name"
+                class="service-workflow__add-run-name"
+                type="text"
+                v-model="addRunName"
+            />
+            <input
+                placeholder="Run ID"
+                class="service-workflow__add-run-id"
+                type="text"
+                v-model="addRunId"
+            />
+            <button
+                class="service-workflow__add-run-btn"
+                :disabled="!addRunId || !addRunName"
+                @click="addRun()"
+            >
                 {{ $tc('popupContent.add') }}
             </button>
         </div>
-        <div v-show="loading" :class="{ 'separate-popup': !workflow && !workflowRunName }">
+        <div
+            v-show="loading"
+            :class="{ 'separate-popup': !workflow && !workflowRunName }"
+        >
             {{ $tc('popupContent.loadingData') }}...
         </div>
-        <div v-show="!loading && (!savedRuns || !savedRuns.length)"
-            :class="{ 'separate-popup': !workflow && !workflowRunName }">
+        <div
+            v-show="!loading && (!displayRuns || !displayRuns.length)"
+            :class="{ 'separate-popup': !workflow && !workflowRunName }"
+        >
             {{ $tc('popupContent.noRunsAvailable') }}
         </div>
-        <div class="service-workflow__saved-runs" v-if="savedRuns">
+        <div class="service-workflow__saved-runs" v-if="displayRuns">
             <div :class="{ 'separate-popup': !workflow && !workflowRunName }">
-                <div class="service-workflow__saved-run" v-for="savedRun of savedRuns" :key="savedRun.id">
+                <div
+                    class="service-workflow__saved-run"
+                    v-for="displayRun of displayRuns"
+                    :key="displayRun.id"
+                >
                     <div class="d-flex">
                         <div class="service-workflow__saved-run-info">
                             <div class="service-workflow__saved-run-name">
-                                {{ savedRun.name }}
+                                {{ displayRun.name }}
                             </div>
                             <div class="service-workflow__saved-run-id">
-                                {{ $tc('popupContent.id') }}: {{ savedRun.id }}
+                                {{ $tc('popupContent.id') }}:
+                                {{ displayRun.id }}
                             </div>
-                            <div v-if="
-                                savedRun.outputs &&
-                                savedRun.status === 'COMPLETED' &&
-                                savedRun.result !== 'FAIL'
-                            " class="service-workflow__saved-outputs">
-                                <div class="service-workflow__saved-outputs__label">
+                            <div
+                                v-if="
+                                    displayRun.outputs &&
+                                    displayRun.status === 'COMPLETED' &&
+                                    displayRun.result !== 'FAIL'
+                                "
+                                class="service-workflow__saved-outputs"
+                            >
+                                <div
+                                    class="service-workflow__saved-outputs__label"
+                                >
                                     {{ $tc('popupContent.outputs') }}:
                                 </div>
-                                <div v-for="output of savedRun.outputs" :key="output.id"
-                                    class="service-workflow__saved-output">
-                                    <div v-if="
-                                        output.value &&
-                                        output.valueSchema === 'url'
-                                    " class="d-flex flex--align-center">
-                                        <button @click="
-                                            downloadOutput(output.value)
-                                            " :title="$tc('dabResult.downloadNow')
-                                                ">
+                                <div
+                                    v-for="output of displayRun.outputs"
+                                    :key="output.id"
+                                    class="service-workflow__saved-output"
+                                >
+                                    <div
+                                        v-if="
+                                            output.value &&
+                                            output.valueSchema === 'url'
+                                        "
+                                        class="d-flex flex--align-center"
+                                    >
+                                        <button
+                                            @click="
+                                                downloadOutput(output.value)
+                                            "
+                                            :title="
+                                                $tc('dabResult.downloadNow')
+                                            "
+                                        >
                                             <i class="icomoon-download"></i>
                                         </button>
                                         <span>{{ output.name }}</span>
-                                        <div v-if="output.description"
-                                            class="service-workflow__saved-output-link-description">
+                                        <div
+                                            v-if="output.description"
+                                            class="service-workflow__saved-output-link-description"
+                                        >
                                             {{ output.description }}
                                         </div>
                                     </div>
-                                    <div v-else-if="
-                                        output.value && output.value.url
-                                    " class="d-flex flex--align-center">
-                                        <button @click="
-                                            showOnMap(
-                                                savedRun.runId,
-                                                output
-                                            )
-                                            " :title="$tc('dabResult.showOnMap')">
+                                    <div
+                                        v-else-if="
+                                            output.value && output.value.url
+                                        "
+                                        class="d-flex flex--align-center"
+                                    >
+                                        <button
+                                            @click="
+                                                showOnMap(
+                                                    displayRun.runId,
+                                                    output
+                                                )
+                                            "
+                                            :title="$tc('dabResult.showOnMap')"
+                                        >
                                             <i class="icomoon-show-on-map"></i>
                                         </button>
                                         <span>{{ output.name }}</span>
                                     </div>
-                                    <div v-else class="d-flex flex--align-center">
-                                        <button disabled="true" :title="$tc('dabResult.showOnMap')">
+                                    <div
+                                        v-else
+                                        class="d-flex flex--align-center"
+                                    >
+                                        <button
+                                            disabled="true"
+                                            :title="$tc('dabResult.showOnMap')"
+                                        >
                                             <i class="icomoon-show-on-map"></i>
                                         </button>
                                         <span>{{ output.name }}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="service-workflow__saved-run-button-holder d-flex">
-                                <button class="service-workflow__saved-run-btn" :class="{ active: savedRun.showLogs }"
-                                    @click="toggleLogs(savedRun)" v-if="
-                                        savedRun.messageList &&
-                                        savedRun.messageList.length
-                                    ">
+                            <div
+                                class="service-workflow__saved-run-button-holder d-flex"
+                            >
+                                <button
+                                    class="service-workflow__saved-run-btn"
+                                    :class="{ active: displayRun.showLogs }"
+                                    @click="toggleLogs(displayRun)"
+                                    v-if="
+                                        displayRun.messageList &&
+                                        displayRun.messageList.length
+                                    "
+                                >
                                     {{ $tc('popupContent.messageLog') }}
                                 </button>
-                                <button class="service-workflow__saved-run-btn link" @click="createDashboard(savedRun)"
+                                <button
+                                    class="service-workflow__saved-run-btn link"
+                                    @click="createDashboard(displayRun)"
                                     v-if="
-                                        savedRun.outputs &&
-                                        savedRun.outputs.length &&
-                                        savedRun.result !== 'FAIL'
-                                    ">
+                                        displayRun.outputs &&
+                                        displayRun.outputs.length &&
+                                        displayRun.result !== 'FAIL'
+                                    "
+                                >
                                     {{ $tc('popupContent.createDashboard') }}
                                 </button>
                             </div>
                         </div>
                         <div class="service-workflow__saved-run-status">
-                            <span class="service-workflow__saved-run-status__badge" :class="{
-                                success:
-                                    savedRun.status === 'COMPLETED' &&
-                                    savedRun.result === 'SUCCESS'
-                            }">
-                                {{ savedRun.status
-                                }}<span v-if="savedRun.result">
-                                    - {{ savedRun.result }}</span>
+                            <span
+                                class="service-workflow__saved-run-status__badge"
+                                :class="{
+                                    success:
+                                        displayRun.status === 'COMPLETED' &&
+                                        displayRun.result === 'SUCCESS'
+                                }"
+                            >
+                                {{ displayRun.status
+                                }}<span v-if="displayRun.result">
+                                    - {{ displayRun.result }}</span
+                                >
                             </span>
                         </div>
                     </div>
                     <div>
-                        <CollapseTransition v-if="
-                            savedRun.messageList &&
-                            savedRun.messageList.length
-                        ">
-                            <div v-show="savedRun.showLogs" class="service-workflow__saved-logs">
-                                <div v-for="log of savedRun.messageList" :key="log">
+                        <CollapseTransition
+                            v-if="
+                                displayRun.messageList &&
+                                displayRun.messageList.length
+                            "
+                        >
+                            <div
+                                v-show="displayRun.showLogs"
+                                class="service-workflow__saved-logs"
+                            >
+                                <div
+                                    v-for="log of displayRun.messageList"
+                                    :key="log"
+                                >
                                     {{ log }}
                                 </div>
                             </div>
@@ -117,9 +199,13 @@
                     </div>
                 </div>
             </div>
-            <Pagination v-if="savedRuns && savedRuns.length" :start-index="runsStartIndex"
-                :results-per-page="runsResultsPerPage" :total="runsTotal"
-                @on-start-index-change="onRunsStartIndexChange($event)" />
+            <Pagination
+                v-if="displayRuns && displayRuns.length && !showOpenEOJobs"
+                :start-index="runsStartIndex"
+                :results-per-page="runsResultsPerPage"
+                :total="runsTotal"
+                @on-start-index-change="onRunsStartIndexChange($event)"
+            />
         </div>
     </div>
 </template>
@@ -127,7 +213,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { runsTest } from '@/data/saved-runs-test'
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
 import to from '@/utils/to'
 import NotificationService from '@/services/notification.service'
@@ -141,6 +227,7 @@ import Pagination from '@/components/Pagination.vue'
 import DashboardCreator from '@/components/Search/Results/Dashboard/DashboardCreator.vue'
 import { PopupActions } from '@/store/popup/popup-actions'
 import CollapseTransition from '@/plugins/CollapseTransition'
+import OpenEOService from '@/services/openeo.service'
 
 @Component({
     components: {
@@ -151,9 +238,14 @@ import CollapseTransition from '@/plugins/CollapseTransition'
 export default class SavedRunsComponent extends Vue {
     @Prop({ required: false, type: String }) public workflowRunName!: string
     @Prop({ required: false, type: Object }) public workflow!: any
+    @Prop({ required: false, type: Boolean, default: false })
+    public isPopup!: any
 
+    public displayRuns: any = null
     public savedRuns: any = null
-    public runsResultsPerPage = 5
+    public openEOJobs: any = null
+    public showOpenEOJobs: boolean = false
+    public runsResultsPerPage = 10
     public runsStartIndex = 0
     public runsTotal = 0
     public addRunId = ''
@@ -161,7 +253,7 @@ export default class SavedRunsComponent extends Vue {
     public loading = false
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn
     }
 
     public async addRun() {
@@ -221,8 +313,11 @@ export default class SavedRunsComponent extends Vue {
                 GeossSearchApiService.getRunCoordinates(runId)
             )
         }
-
-        this.close()
+        if (this.isPopup) {
+            this.close()
+        } else {
+            this.$router.push('/')
+        }
 
         let version = '1.1.1'
         if (protocol) {
@@ -281,28 +376,55 @@ export default class SavedRunsComponent extends Vue {
     }
 
     public async getSavedRuns() {
-        const [, data] = await to(
-            GeossSearchApiService.getSavedRuns(
-                this.isSignedIn,
-                this.runsStartIndex,
-                this.runsResultsPerPage
-            )
+        const pageNum = this.runsStartIndex / this.runsResultsPerPage
+        const { data, pageInfo } = await GeossSearchApiService.getSavedRuns(
+            this.runsResultsPerPage,
+            pageNum
         )
-
-        // test data
-        // data = runsTest;
-
         if (data) {
-            this.savedRuns = data.items
+            this.savedRuns = data
+            this.displayRuns = data
         }
-        return data
+        return { data, pageInfo }
+    }
+
+    public async toggleOpenEoJobs() {
+        if (this.openEOJobs === null) {
+            const jobs = await this.getOpenEOJobs()
+            if (jobs) {
+                this.displayRuns = jobs
+                this.openEOJobs = jobs
+                this.showOpenEOJobs = true;
+
+            }
+        } else {
+            if (this.showOpenEOJobs) {
+                this.displayRuns = this.savedRuns
+            } else {
+                const jobs = await this.getOpenEOJobs()
+                this.openEOJobs = jobs
+                this.displayRuns = jobs
+            }
+            this.showOpenEOJobs = !this.showOpenEOJobs
+        }
+    }
+
+    public async getOpenEOJobs() {
+        let token = this.$store.getters[UserGetters.openEOToken]
+        const tokenExp = this.$store.getters[UserGetters.openEOTokenExpireDate]
+        const currDateTime = Math.floor(Date.now() / 1000)
+        if (!token || tokenExp <= currDateTime) {
+            token = await OpenEOService.authenticateOpenEO()
+        }
+        const jobs = await OpenEOService.getOpenEOJobs(token)
+        return jobs
     }
 
     public close() {
         if (this.workflow) {
             PopupCloseService.closePopup('workflow')
         } else {
-            PopupCloseService.closePopup('saved-runs')
+            PopupCloseService.closePopup('openEOWorkflow')
         }
     }
 
@@ -313,9 +435,9 @@ export default class SavedRunsComponent extends Vue {
     }
 
     public async createDashboard(savedRun: any) {
-        PopupCloseService.closePopup('saved-runs')
+        // PopupCloseService.closePopup('saved-runs')
         const props = {
-            savedRun,
+            savedRun: savedRun,
             protected: {
                 message: this.$tc('popupContent.creatorCloseConfirmation')
             }
@@ -323,6 +445,7 @@ export default class SavedRunsComponent extends Vue {
         this.$store.dispatch(PopupActions.openPopup, {
             contentId: 'dashboard-creator',
             title: this.$tc('popupTitles.dashboards'),
+            noCloseOutside: true,
             component: DashboardCreator,
             props
         })
@@ -331,11 +454,12 @@ export default class SavedRunsComponent extends Vue {
     private async mounted() {
         await this.$nextTick()
 
-        if (!this.savedRuns) {
+        if (!this.displayRuns) {
             this.loading = true
-            const data = await this.getSavedRuns()
+            const { data, pageInfo } = await this.getSavedRuns()
             if (data) {
-                this.runsTotal = data.totalCount
+                this.displayRuns = data
+                this.runsTotal = pageInfo.totalElements
             }
             this.loading = false
         }
@@ -345,6 +469,11 @@ export default class SavedRunsComponent extends Vue {
 
 <style lang="scss">
 .saved-runs {
+    .openeo_button {
+        color: white;
+        border: 1px solid;
+        padding: 7px 20px 7px 20px;
+    }
     .separate-popup {
         padding: 20px 30px;
     }
@@ -355,7 +484,7 @@ export default class SavedRunsComponent extends Vue {
             padding: 20px 0px;
 
             @media (max-width: $breakpoint-lg) {
-                >.d-flex {
+                > .d-flex {
                     flex-direction: column-reverse;
                 }
             }

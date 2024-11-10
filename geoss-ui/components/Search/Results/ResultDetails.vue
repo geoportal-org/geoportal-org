@@ -462,7 +462,6 @@ import MouseLeaveService from '@/services/mouse-leave.service'
 import { LayerData } from '@/interfaces/LayerData'
 import SearchEngineService from '@/services/search-engine.service'
 import { GeneralGetters } from '@/store/general/general-getters'
-import { GeneralApiService } from '@/services/general.api.service'
 import { UserActions } from '@/store/user/user-actions'
 import { FacetedFiltersActions } from '@/store/facetedFilters/faceted-filters-actions'
 import {
@@ -493,6 +492,7 @@ import { UserGetters } from '@/store/user/user-getters'
 import { UserActions } from '@/store/user/user-actions'
 import { OidcProvider, OpenEO } from '@openeo/js-client'
 import OpenEOWorkflowComponent from './OpenEOWorkflow.vue'
+import OpenEOService from '@/services/openeo.service'
 
 @Component({
     components: {
@@ -703,7 +703,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     public async handleOpenEOAuth() {
-        await UtilsService.authenticateOpenEO()
+        await OpenEOService.authenticateOpenEO()
     }
 
     public async toggleExtendedView() {

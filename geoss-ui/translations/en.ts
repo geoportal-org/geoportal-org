@@ -55,6 +55,9 @@ export default {
         unspecifiedLabel: 'Unspecified',
         noDataToDisplay: 'No results to display',
     },
+    savedRuns: {
+        savedRuns: 'Saved Runs'
+    },
     placeholders: {
         searchBar: 'Enter search words',
         googlePlaces: 'Enter location',
@@ -347,6 +350,9 @@ export default {
         page: 'Page',
         of: 'of',
         save: 'Save',
+        labels: 'Labels',
+        datasetNames: 'Dataset names',
+        colors: 'Dataset colors',
 
         // metadata
         generalInfo: 'General info',

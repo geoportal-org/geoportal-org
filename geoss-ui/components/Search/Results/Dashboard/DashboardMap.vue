@@ -13,7 +13,7 @@ import LayerTilesService from '@/services/map/layer-tiles.service';
 import LayersUtils from '@/services/map/layer-utils';
 import MapCoordinatesUtils from '@/services/map/coordinates-utils';
 import { AppVueObj } from '~/data/global'
-// import { v4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 interface MapData {
 	id: string;
@@ -31,7 +31,7 @@ export default class DashboardChartComponent extends Vue {
 	@Prop({default: null, type: Object}) public mapData!: MapData;
 
 	get uuid() {
-		return uuid.v4()
+		return uuidv4();
 	}
 
 	private map: any;
