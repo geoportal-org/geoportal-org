@@ -380,6 +380,7 @@ export default class ServiceWorkflowComponent extends Vue {
     public showExpertOptions = false
     public currentlyBeingEdited = []
     public allRequiredFilled = false
+    public availableCities = []
 
     public uniquePlatformSettings =
         this.$store.getters[SearchGetters.workflowPredefined]
@@ -538,7 +539,8 @@ export default class ServiceWorkflowComponent extends Vue {
             `https://vlabdev.geodab.org/vlab/cities?searchtext=${searchTerm}`
         )
         const options = await res.json()
-        this.countryOptions = options.suggestions
+        const availableOptions = options.suggestions.filter((option) => this.availableCities.includes(option.city))
+        this.countryOptions = availableOptions
         this.checkRequiredFilled()
     }
 
@@ -1216,6 +1218,9 @@ export default class ServiceWorkflowComponent extends Vue {
         const [, xml] = await to(
             GeossSearchApiService.getBpmn(this.workflow.bpmn_url, addTimestamp)
         )
+        const availableCities = await fetch(`https://accessmod.mapx.org/get_list_locations`)
+        const citiesJson = await availableCities.json();
+        this.availableCities = citiesJson
         // if (xml) {
         //     viewer.importXML(xml, err => {
         //         if (!err) {

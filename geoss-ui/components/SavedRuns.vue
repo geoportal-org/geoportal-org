@@ -228,6 +228,7 @@ import DashboardCreator from '@/components/Search/Results/Dashboard/DashboardCre
 import { PopupActions } from '@/store/popup/popup-actions'
 import CollapseTransition from '@/plugins/CollapseTransition'
 import OpenEOService from '@/services/openeo.service'
+import SpinnerService from '@/services/spinner.service'
 
 @Component({
     components: {
@@ -410,6 +411,11 @@ export default class SavedRunsComponent extends Vue {
     }
 
     public async getOpenEOJobs() {
+        let longRequestInfo: string | number | NodeJS.Timeout | undefined
+        SpinnerService.showSpinner(null, false)
+        longRequestInfo = setTimeout(() => {
+            SpinnerService.setLongRequestInfo(true)
+        }, 10000)
         let token = this.$store.getters[UserGetters.openEOToken]
         const tokenExp = this.$store.getters[UserGetters.openEOTokenExpireDate]
         const currDateTime = Math.floor(Date.now() / 1000)
@@ -417,6 +423,10 @@ export default class SavedRunsComponent extends Vue {
             token = await OpenEOService.authenticateOpenEO()
         }
         const jobs = await OpenEOService.getOpenEOJobs(token)
+        //spinner
+        SpinnerService.hideSpinner()
+        clearTimeout(longRequestInfo)
+        SpinnerService.setLongRequestInfo(false)
         return jobs
     }
 

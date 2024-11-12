@@ -63,10 +63,8 @@ const OpenEOService = {
             },
             body: JSON.stringify(body)
         })
-        const resJson = await res.json()
-        console.log(resJson)
 
-        return resJson
+        return res
     },
 
     async runOpenEOJob(id: string, token: string){

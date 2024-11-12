@@ -126,6 +126,7 @@ import { UserGetters } from '~/store/user/user-getters'
 import OpenEOService from '@/services/openeo.service'
 import PopupCloseService from '@/services/popup-close.service'
 import NotificationService from '@/services/notification.service'
+import SpinnerService from '@/services/spinner.service'
 
 @Component({
     components: {
@@ -285,6 +286,11 @@ export default class OpenEOWorkflowComponent extends Vue {
                 'info'
             )
         }
+        let longRequestInfo: string | number | NodeJS.Timeout | undefined
+        SpinnerService.showSpinner(null, false)
+        longRequestInfo = setTimeout(() => {
+            SpinnerService.setLongRequestInfo(true)
+        }, 10000)
         const token = this.$store.getters[UserGetters.openEOToken]
         const tokenExp = this.$store.getters[UserGetters.openEOTokenExpireDate]
         const currDateTime = Math.floor(Date.now() / 1000)
@@ -324,7 +330,12 @@ export default class OpenEOWorkflowComponent extends Vue {
         }
 
         const response = await OpenEOService.createOpenEOJob(this.workflowUrl, token, body)
-        await OpenEOService.runOpenEOJob(response.job_id, token)
+        const id = response.headers.get('openeo-identifier')
+        await OpenEOService.runOpenEOJob(id, token)
+        //spinner
+        SpinnerService.hideSpinner()
+        clearTimeout(longRequestInfo)
+        SpinnerService.setLongRequestInfo(false)
         this.close()
     }
 
