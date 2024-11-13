@@ -11,6 +11,8 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 ENV NODE_ENV=production
 
+RUN apk upgrade --no-cache
+
 USER 1000
 WORKDIR /home/node
 

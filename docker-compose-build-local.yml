@@ -11,8 +11,8 @@ services:
   geoss-admin:
     image: eversisdawis.azurecr.io/geoss/geoss_admin:${DOCKER_IMAGE_TAG}
     build:
-      context: .
-      dockerfile: ./geoss-admin/Dockerfile-local
+      context: ./geoss-admin/
+      dockerfile: Dockerfile
 
   geoss-contents:
     image: eversisdawis.azurecr.io/geoss/geoss_contents:${DOCKER_IMAGE_TAG}

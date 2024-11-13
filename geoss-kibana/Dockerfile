@@ -22,6 +22,7 @@ USER root
 RUN chown 1001 -R /opt/bitnami/kibana/tmp/
 RUN chown 1001 -R /opt/bitnami/kibana/config/
 RUN chown 1001 -R /opt/bitnami/kibana/data/
+RUN apt-get update && apt-get upgrade -y && apt clean
 USER 1001
 
 HEALTHCHECK \

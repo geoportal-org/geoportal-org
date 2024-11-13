@@ -10,6 +10,8 @@ ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 ENV LC_ALL=en_GB.UTF-8
 
+RUN apt-get update && apt-get upgrade -y
+
 RUN apt-get update && \
     apt-get install -y locales && \
     locale-gen en_GB.UTF-8 && \
@@ -21,6 +23,7 @@ RUN apt-get update && \
     apt-get install -y python3 && \
     apt-get install -y python3-pip python3-dev build-essential && \
     pip install --break-system-packages awscli && \
+    apt-get clean && \
     rm -rf /var/lib/apt
 
 COPY config/my.cnf /etc/my.cnf

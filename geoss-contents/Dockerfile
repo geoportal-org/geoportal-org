@@ -19,7 +19,7 @@ ENV JAVA_OPTS="${JAVA_OPTS} \
 ENV JDK_JAVA_OPTIONS=$JAVA_OPTS
 ENV JAVA_TOOL_OPTIONS="-Djava.io.tmpdir=tomcat/temp"
 
-RUN apt update
+RUN apt update && apt upgrade -y && apt clean
 RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
 RUN mkdir -p /opt/app/tomcat/temp
 RUN chown -R docker_noroot:docker_noroot /opt/app
