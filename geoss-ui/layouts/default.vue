@@ -9,6 +9,8 @@
         <Notification />
         <Spinner />
         <Popup />
+        <IrisLegend />
+		<LayerLegend />
         <ImagePreview />
         <PrivacyPolicy />
         <SendFeedback />
