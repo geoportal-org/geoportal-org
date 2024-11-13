@@ -1,27 +1,106 @@
-function AIIcon({
-  color = "white",
-  width = "1em",
-  height = "1em",
-  className = "",
-}) {
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      className={className}
-      fill={color}
-      height={height}
-      width={width}
-    >
-      <path
-        d="M28 14.6667V12H25.3333V9.33333C25.3312 8.62674 25.0496 7.94969 24.55 7.45005C24.0503 6.95041 23.3733 6.66878 22.6667 6.66667H20V4H17.3333V6.66667H14.6667V4H12V6.66667H9.33333C8.62674 6.66878 7.94969 6.95041 7.45005 7.45005C6.95041 7.94969 6.66878 8.62674 6.66667 9.33333V12H4V14.6667H6.66667V17.3333H4V20H6.66667V22.6667C6.66878 23.3733 6.95041 24.0503 7.45005 24.55C7.94969 25.0496 8.62674 25.3312 9.33333 25.3333H12V28H14.6667V25.3333H17.3333V28H20V25.3333H22.6667C23.3733 25.3312 24.0503 25.0496 24.55 24.55C25.0496 24.0503 25.3312 23.3733 25.3333 22.6667V20H28V17.3333H25.3333V14.6667H28ZM22.6667 22.6667H9.33333V9.33333H22.6667V22.6667Z"
-        fill="#5C6369"
-      />
-      <path
-        d="M15.1481 10.6666H13.3548L10.6748 21.3333H12.0441L12.6628 18.8333H15.7508L16.3535 21.3333H17.7695L15.1481 10.6666ZM12.8428 17.7653L14.2001 11.9333H14.2615L15.5721 17.7653H12.8428ZM18.9921 10.6666H20.3255V21.3333H18.9921V10.6666Z"
-        fill="#5C6369"
-      />
-    </svg>
-  );
+function AIIcon({ color = "white", width = "1em", height = "1em", className = "" }) {
+    return (
+        <svg viewBox="0 0 32 32" className={className} fill={color} height={height} width={width}>
+            <path
+                d="M12.7997 26.6666H19.1997C24.533 26.6666 26.6663 24.5333 26.6663 19.1999V12.7999C26.6663 7.46659 24.533 5.33325 19.1997 5.33325H12.7997C7.46634 5.33325 5.33301 7.46659 5.33301 12.7999V19.1999C5.33301 24.5333 7.46634 26.6666 12.7997 26.6666Z"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M13.9997 22.6666H17.9997C21.333 22.6666 22.6663 21.3333 22.6663 17.9999V13.9999C22.6663 10.6666 21.333 9.33325 17.9997 9.33325H13.9997C10.6663 9.33325 9.33301 10.6666 9.33301 13.9999V17.9999C9.33301 21.3333 10.6663 22.6666 13.9997 22.6666Z"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10.6797 5.33341V2.66675"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M16 5.33341V2.66675"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M21.333 5.33341V2.66675"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M26.667 10.6667H29.3337"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M26.667 16H29.3337"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M26.667 21.3334H29.3337"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M21.333 26.6666V29.3333"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M16.0137 26.6666V29.3333"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10.6797 26.6666V29.3333"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M2.66699 10.6667H5.33366"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M2.66699 16H5.33366"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M2.66699 21.3334H5.33366"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
 }
 
 export default AIIcon;

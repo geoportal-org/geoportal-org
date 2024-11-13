@@ -1,9 +1,10 @@
 import { NewsPage, PaginationData } from "../model/types";
+import { fetchSettings } from "./settingsApi";
 
-const siteId = process.env.NEXT_PUBLIC_CMS_SITEID;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getNewsPages = async (currentPage = 0, size = 9) => {
+    const { siteId } = await fetchSettings();
     if (siteId === undefined) {
         return { news: null, paginationData: { size: 0, totalElements: 0, totalPages: 0, number: 0 } };
     }
@@ -17,6 +18,7 @@ export const getNewsPages = async (currentPage = 0, size = 9) => {
 };
 
 export const getNewsPagesWithImages = async (currentPage = 0, size = 9) => {
+    const { siteId } = await fetchSettings();
     if (siteId === undefined) {
         return { news: null, paginationData: { size: 0, totalElements: 0, totalPages: 0, number: 0 } };
     }

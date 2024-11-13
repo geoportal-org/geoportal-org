@@ -112,6 +112,7 @@ const CustomCarousel = ({ itemsArray, className, isFeature }: Props) => {
                 text={option.text}
                 icon={option.icon}
                 href={option.href}
+                image={option.image}
               />
             );
           } else {

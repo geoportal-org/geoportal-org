@@ -21,7 +21,7 @@ const UCImage = ({ isDarkBg = false, side, title, text, imageSRC, buttonText, bu
                     <h2 className="text-5xl">{title}</h2>
                     <div className="text-[#5C6369] whitespace-pre-wrap [&_a]:text-[#3483eb]">{parse(text)}</div>
                     {buttonText !== "" && (
-                        <GeneralButton className="xl:max-w-[70%] 2xl:max-w-[50%] 3xl:max-w-[40%]" href={buttonHref}>
+                        <GeneralButton className="xl:max-w-[70%] 2xl:max-w-[50%] 3xl:max-w-[40%] text-white" href={buttonHref}>
                             {buttonText}
                         </GeneralButton>
                     )}

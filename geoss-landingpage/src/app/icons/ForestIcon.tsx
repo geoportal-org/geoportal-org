@@ -1,23 +1,38 @@
-function ForestIcon({
-  color = "white",
-  width = "1em",
-  height = "1em",
-  className = "",
-}) {
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      className={className}
-      fill={color}
-      height={height}
-      width={width}
-    >
-      <path
-        d="M10.667 28.0001V22.6667H2.51367L7.80034 14.6667H5.23101L12.0003 4.97339L16.0003 10.7067L20.0003 4.97339L26.7697 14.6667H24.2003L29.4883 22.6667H21.3337V28.0001H18.667V22.6667H13.3337V28.0001H10.667ZM20.6083 21.3334H27.031L21.7363 13.3334H24.2003L20.0003 7.33339L16.839 11.8534L18.7697 14.6667H16.2003L20.6083 21.3334ZM4.96967 21.3334H19.031L13.7363 13.3334H16.2003L12.0003 7.33339L7.80034 13.3334H10.2643L4.96967 21.3334ZM4.96967 21.3334H10.2643H7.80034H16.2003H13.7363H19.031H4.96967ZM20.6083 21.3334H16.2003H18.7697H16.839H24.2003H21.7363H27.031H20.6083Z"
-        fill="#5C6369"
-      />
-    </svg>
-  );
+function ForestIcon({ color = "transparent", width = "1em", height = "1em", className = "" }) {
+    return (
+        <svg viewBox="0 0 32 32" className={className} fill={color} height={height} width={width}>
+            <path
+                d="M12.0004 13.4133H6.44041C4.86708 13.4133 4.32042 12.3599 5.24042 11.0799L10.8004 3.29326C11.4538 2.35993 12.5471 2.35993 13.1871 3.29326L15.9671 7.18659"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M15.7208 13.4132H8.2941L2.97412 20.8932C1.73412 22.5999 2.45412 23.9999 4.56079 23.9999H12.0074"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path d="M12 29.3333V24" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+                d="M25.5604 13.4133H14.4404C12.8671 13.4133 12.3204 12.3599 13.2404 11.0799L18.8004 3.29326C19.4538 2.35993 20.5471 2.35993 21.1871 3.29326L26.7471 11.0799C27.6804 12.3599 27.1338 13.4133 25.5604 13.4133Z"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M27.4541 23.9999H12.5608C10.4541 23.9999 9.73412 22.5999 10.9741 20.8932L16.2941 13.4132H23.7208L29.0408 20.8932C30.2808 22.5999 29.5608 23.9999 27.4541 23.9999Z"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path d="M20 29.3333V24" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
 }
 
 export default ForestIcon;

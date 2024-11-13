@@ -110,7 +110,7 @@ const ProvidersList = ({ list }: Props) => {
                 <p className="text-[#5C6369] self-center">No results matching the query</p>
             ) : elementCount < providersList.length ? (
                 <GeneralButton
-                    className="w-full lg:max-w-[20%] self-center"
+                    className="w-full lg:max-w-[20%] self-center text-white"
                     onClick={() => setElementsCount((prev) => prev + 20)}
                 >
                     SHOW MORE

@@ -23,9 +23,9 @@ const Features = () => {
             {isMobile ? (
                 <CustomCarousel itemsArray={featuresOptions} isFeature={true} />
             ) : (
-                <div className="grid max-xl:grid-cols-4 xl:grid-cols-6 3xl:grid-cols-8 grid-flow-row auto-cols-fr w-full gap-6 ">
+                <div className="grid max-xl:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-8 grid-flow-row auto-cols-fr w-full gap-6 ">
                     {featuresOptions.map((option) => {
-                        return <FeatureTile key={uuidv4()} text={option.text} icon={option.icon} href={option.href} />;
+                        return <FeatureTile key={uuidv4()} text={option.text} icon={option.icon} href={option.href} image={option.image || ''}/>;
                     })}
                 </div>
             )}

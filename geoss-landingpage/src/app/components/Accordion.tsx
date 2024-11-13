@@ -71,7 +71,7 @@ const Accordion = ({
                           options={option.subOptions}
                         />
                       ) : (
-                        <Link target="_blank" href={option.href || "/"} className="block">
+                        <Link target={(option.href?.includes('https') || option.href?.includes('http')) ? '_blank' :``} href={option.href || "/"} className="block">
                           {option.text}
                         </Link>
                       )}

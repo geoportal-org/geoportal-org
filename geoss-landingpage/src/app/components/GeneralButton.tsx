@@ -15,14 +15,14 @@ const GeneralButton = ({ children, onClick, className, href }: ButtonProps) => {
                 href.includes("mailto:") ? (
                     <a
                         href={href}
-                        className={`bg-[#0661A9] px-8 py-3 text-white text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
+                        className={`bg-[#0661A9] px-8 py-3 text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
                     >
                         {children}
                     </a>
                 ) : (
                     <Link
                         href={href}
-                        className={`bg-[#0661A9] px-8 py-3 text-white text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
+                        className={`bg-[#0661A9] px-8 py-3 text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
                     >
                         {children}
                     </Link>
@@ -30,7 +30,7 @@ const GeneralButton = ({ children, onClick, className, href }: ButtonProps) => {
             ) : (
                 <button
                     onClick={onClick}
-                    className={`bg-[#0661A9] px-8 py-3 text-white text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
+                    className={`bg-[#0661A9] px-8 py-3 text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
                 >
                     {children}
                 </button>

@@ -13,7 +13,7 @@ const UCTitle = ({ isDarkBg = false, title, subtitle }: Props) => {
         isDarkBg && "bg-[#F2F5F7]"
       } gap-6`}
     >
-      <h2 className="text-7xl">{title}</h2>
+      <h2 className="text-6xl">{title}</h2>
       <p className="max-w-full xl:max-w-[30%] text-2xl text-[#5C6369]">
         {subtitle}
       </p>

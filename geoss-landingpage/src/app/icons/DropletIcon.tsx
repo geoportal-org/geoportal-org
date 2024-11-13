@@ -1,23 +1,24 @@
-function DropletIcon({
-  color = "white",
-  width = "1em",
-  height = "1em",
-  className = "",
-}) {
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      className={className}
-      fill={color}
-      height={height}
-      width={width}
-    >
-      <path
-        d="M13.333 4.33337C13.333 4.33337 5.33301 13.3334 5.33301 18.6667C5.33301 23.08 8.91967 26.6667 13.333 26.6667C17.7463 26.6667 21.333 23.08 21.333 18.6667C21.333 13.3334 13.333 4.33337 13.333 4.33337ZM13.333 24C10.3863 24 7.99967 21.6134 7.99967 18.6667C7.99967 16.3067 10.6663 11.9467 13.333 8.52004C15.9997 11.9334 18.6663 16.3067 18.6663 18.6667C18.6663 21.6134 16.2797 24 13.333 24ZM26.6663 9.33337V17.3334H23.9997V9.33337H26.6663ZM23.9997 22.6667H26.6663V20H23.9997V22.6667Z"
-        fill="#5C6369"
-      />
-    </svg>
-  );
+function DropletIcon({ color = "transparent", width = "1em", height = "1em", className = "" }) {
+    return (
+        <svg viewBox="0 0 32 32" className={className} fill={color} height={height} width={width}>
+            <path
+                d="M5.2002 18.5333C5.2002 24.48 10.0402 29.3333 16.0002 29.3333C21.9602 29.3333 26.8002 24.4933 26.8002 18.5467C26.8402 11.3067 19.3335 4.89332 16.8135 2.94666"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M16.8133 2.94663C16.3333 2.57329 15.6666 2.57329 15.1866 2.94663C13.3466 4.34663 8.89328 8.05329 6.61328 12.8"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
 }
 
 export default DropletIcon;

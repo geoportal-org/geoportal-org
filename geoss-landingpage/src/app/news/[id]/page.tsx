@@ -44,7 +44,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <h2 className="text-5xl ">{articleData.title}</h2>
                 <p className="text-[#23272A] text-2xl">{articleData.date.substring(0, 10)}</p>
                 <div className="article-content">{parse(articleData.data)}</div>
-                <GeneralButton className="self-center" href="/news">
+                <GeneralButton className="self-center text-white" href="/news">
                     Read more articles
                 </GeneralButton>
             </div>

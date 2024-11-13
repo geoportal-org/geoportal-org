@@ -1,4 +1,4 @@
-import { portalOptions } from "@/src/app/model/portalOptions";
+import { portalOptions, providersOptions } from "@/src/app/model/navOptions";
 import Link from "next/link";
 import React from "react";
 import Dropdown from "../Dropdown";
@@ -24,7 +24,7 @@ const NavDesktop = () => {
             <Dropdown options={portalOptions} text="Community portals" />
           </li>
           <li>
-            <Link href="/data-providers">Data providers</Link>
+            <Dropdown options={providersOptions} text="Data providers" />
           </li>
           <li>
             <Link href="/news">News</Link>
