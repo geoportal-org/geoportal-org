@@ -72,8 +72,6 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
         key: mailpitSmtpAuth
-  - name: MP_SMTP_AUTH_ALLOW_INSECURE
-    value: "true"
   - name: MP_SMTP_DISABLE_RDNS
     value: "true"
   - name: MP_UI_AUTH

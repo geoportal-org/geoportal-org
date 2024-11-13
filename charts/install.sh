@@ -78,13 +78,10 @@ envsubst < geoss-landingpage/values.yaml.template > geoss-landingpage/values.yam
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-landingpage geoss-landingpage | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
-if [[ "$MAILDEV_ENABLED" == "true" ]]
-then
-    printf "\n\n ${Green}Deploy GEOSS-maildev ...\n\n${NC}"
-    envsubst < geoss-maildev/values.yaml.template > geoss-maildev/values.yaml
-    helm -n $K8S_NAMESPACE upgrade --install \
-        --debug $RESOURCE_NAME_PREFIX-maildev geoss-maildev | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
-fi
+printf "\n\n ${Green}Deploy GEOSS-maildev ...\n\n${NC}"
+envsubst < geoss-maildev/values.yaml.template > geoss-maildev/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install \
+    --debug $RESOURCE_NAME_PREFIX-maildev geoss-maildev | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 printf "\n\n ${Green}Deploy GEOSS-matomo ...\n\n${NC}"
 envsubst < geoss-matomo/values.yaml.template > geoss-matomo/values.yaml
