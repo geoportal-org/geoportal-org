@@ -11,7 +11,7 @@
                     <div class="ev-wikipedia__text">
                         <div class="ev-wikipedia__title">{{ result.title }}</div>
                     </div>
-                    <ViewsAndRatings :result="result" :extendedViewMode="true" />
+                    <ViewsAndRatings :result="result" :extendedViewMode="true"  :currentId="result.id"/>
                 </div>
                 <div v-if="result.summary && typeof result.summary === 'string'" class="ev-wikipedia__summary">
                     <div v-html-to-text="result.summary"></div>

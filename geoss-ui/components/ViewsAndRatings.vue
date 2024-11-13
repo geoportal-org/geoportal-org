@@ -83,16 +83,15 @@ import { PopupGetters } from '~/store/popup/popup-getters'
 export default class ViewsAndRatingsComponent extends Vue {
     @Prop({ default: null, type: Object }) public result!: any
     @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
+    @Prop({ default: null, type: String }) public currentId!: any
 
-    public score = 0
-    public DataSources = DataSources
     public score = 0
     public DataSources = DataSources
     public views = 0
     public avScore = 0
 
-    @Watch('result')
-    async onResultChange() {
+    @Watch('currentId')
+    async onCurrentIdChange() {
         this.views = await this.getCounter()
         this.avScore = await this.getRating()
     }

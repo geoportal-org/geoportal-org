@@ -95,7 +95,7 @@
                                             >: {{ contributors }})
                                         </div>
                                     </div>
-                                    <ViewsAndRatings :result="result" />
+                                    <ViewsAndRatings :result="result" :currentId="resultIdDetails"/>
                                 </div>
                                 <div
                                     v-if="confidence && confidence.length"
