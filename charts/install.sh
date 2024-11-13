@@ -13,13 +13,10 @@ export SMTP_PORT="${MAIL_PORT}"
 export SMTP_USER="${MAIL_USERNAME}"
 export SMTP_PASSWORD="${MAIL_PASSWORD}"
 
-if [[ "$MAILDEV_ENABLED" == "true" ]]
-then
-    export SMTP_HOST="${RESOURCE_NAME_PREFIX}-maildev"
-    export SMTP_PORT="1025"
-    export SMTP_USER="maildev"
-    export SMTP_PASSWORD="${MAILDEV_SMTP_PASSWORD}"
-fi
+export SMTP_HOST="${RESOURCE_NAME_PREFIX}-maildev"
+export SMTP_PORT="1025"
+export SMTP_USER="maildev"
+export SMTP_PASSWORD="${MAILDEV_SMTP_PASSWORD}"
 
 export DOLLAR="$"
 

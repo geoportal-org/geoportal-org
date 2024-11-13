@@ -3,9 +3,9 @@ maxSurge: 1
 maxUnavailable: 0
 nameOverride: $RESOURCE_NAME_PREFIX-maildev
 image:
-  repository: $DOCKER_REPOSITORY_ADDRESS/maildev
+  repository: axllent/mailpit
   pullPolicy: Always
-  tag: 1.3.0
+  tag: latest
 
 podAnnotations: {}
 podLabels: {}
@@ -63,42 +63,66 @@ tolerations:
         effect: "NoExecute"
 
 env:
-  - name: MAILDEV_INCOMING_USER
+  - name: MP_UI_BIND_ADDR
+    value: "0.0.0.0:1080"
+  - name: MP_SMTP_AUTH_ALLOW_INSECURE
+    value: "true"
+  - name: MP_SMTP_AUTH
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
-        key: maildevIncomingUser
-  - name: MAILDEV_INCOMING_PASS
+        key: mailpitSmtpAuth
+  - name: MP_SMTP_AUTH_ALLOW_INSECURE
+    value: "true"
+  - name: MP_SMTP_DISABLE_RDNS
+    value: "true"
+  - name: MP_UI_AUTH
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
-        key: maildevIncomingPass
-  - name: MAILDEV_WEB_USER
+        key: mailpitUiAuth
+  - name: MP_SMTP_RELAY_HOST
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
-        key: maildevWebServer
-  - name: MAILDEV_WEB_PASS
+        key: mailpitRelayHost
+  - name: MP_SMTP_RELAY_PORT
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
-        key: maildevWebPass
-  - name: MAILDEV_BASE_PATHNAME
+        key: mailpitRelayPort
+  - name: MP_SMTP_RELAY_AUTH
     valueFrom:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
-        key: maildevBasePathname
+        key: mailpitRelayAuth
+  - name: MP_SMTP_RELAY_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: mailpitRelayUsername
+  - name: MP_SMTP_RELAY_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: mailpitRelayPassword
+  - name: MP_SMTP_RELAY_ALL
+    value: "${MAILDEV_RELAY_ALL}"
+  - name: MP_WEBROOT
+    value: "/maildev"
   
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-maildev-env
     type: Opaque
     data:
-      maildevIncomingUser: "maildev"
-      maildevIncomingPass: "${MAILDEV_SMTP_PASSWORD}"
-      maildevWebServer: "${MAILDEV_WEB_USERNAME}"
-      maildevWebPass: "${MAILDEV_WEB_PASSWORD}"
-      maildevBasePathname: "/maildev"
+      mailpitSmtpAuth: "maildev:${MAILDEV_SMTP_PASSWORD}"
+      mailpitUiAuth: "${MAILDEV_WEB_USERNAME}:${MAILDEV_WEB_PASSWORD}"
+      mailpitRelayHost: "${MAILDEV_RELAY_HOST}"
+      mailpitRelayPort: "${MAILDEV_RELAY_PORT}"
+      mailpitRelayAuth: "${MAILDEV_RELAY_AUTH}"
+      mailpitRelayUsername: "${MAILDEV_RELAY_USERNAME}"
+      mailpitRelayPassword: "${MAILDEV_RELAY_PASSWORD}"
 
 networkPolicy:
     egress:
