@@ -4,8 +4,13 @@
             <div v-if="platform === 'ZENODO'" class="margin-bottom-15 top-data">
                 <span>{{ publicationDate }}</span>
                 <div>
-                    <span v-for="(item, index) in zenodoBadges" :key="index" class="badge" :class="item.color">{{
-                        item.label }}</span>
+                    <span
+                        v-for="(item, index) in zenodoBadges"
+                        :key="index"
+                        class="badge"
+                        :class="item.color"
+                        >{{ item.label }}</span
+                    >
                 </div>
             </div>
             <div class="metadata__title">{{ title }}</div>
@@ -51,30 +56,56 @@
                 </div>
             </div>
             <div class="overflow-hidden">
-                <a class="metadata__preview" target="_blank" v-if="getImage(preview) === preview" :href="preview">
-                    <img :src="getImage(preview)" @error="imageLoadError(preview)" alt="Resource preview not available"
-                        class="big-image" />
+                <a
+                    class="metadata__preview"
+                    target="_blank"
+                    v-if="getImage(preview) === preview"
+                    :href="preview"
+                >
+                    <img
+                        :src="getImage(preview)"
+                        @error="imageLoadError(preview)"
+                        alt="Resource preview not available"
+                        class="big-image"
+                    />
                 </a>
-                <div v-if="!isSatellite" class="metadata__description" v-html="description"></div>
-                <UserContributionsMetadata :model="'summary'" :data="{
-                    data,
-                    isSatellite,
-                    resultTitle,
-                    resultImage,
-                    popupTitle
-                }" />
+                <div
+                    v-if="!isSatellite"
+                    class="metadata__description"
+                    v-html="description"
+                ></div>
+                <UserContributionsMetadata
+                    :model="'summary'"
+                    :data="{
+                        data,
+                        isSatellite,
+                        resultTitle,
+                        resultImage,
+                        popupTitle
+                    }"
+                />
             </div>
         </div>
 
-        <div class="youtube-video margin-bottom-25" v-for="(video, index) in youtubeVideos" :key="index">
-            <iframe :src="video" frameborder="0"
+        <div
+            class="youtube-video margin-bottom-25"
+            v-for="(video, index) in youtubeVideos"
+            :key="index"
+        >
+            <iframe
+                :src="video"
+                frameborder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+                allowfullscreen
+            ></iframe>
         </div>
 
-        <div class="metadata__info-table" v-if="
-            platform !== 'ZENODO' && platform !== 'WIKIPEDIA' && isSatellite
-        ">
+        <div
+            class="metadata__info-table"
+            v-if="
+                platform !== 'ZENODO' && platform !== 'WIKIPEDIA' && isSatellite
+            "
+        >
             <div v-if="isSatellite">
                 <div>
                     <b>{{ $tc('popupContent.generalInfo') }}</b>
@@ -86,19 +117,23 @@
                     <b>{{ $tc('popupContent.platformId') }}:</b>{{ platformId }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.productType') }}:</b>{{ productType }}
+                    <b>{{ $tc('popupContent.productType') }}:</b
+                    >{{ productType }}
                 </div>
                 <div>
                     <b>{{ $tc('popupContent.instrument') }}:</b>{{ instrument }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.cloudCoverage') }}:</b>{{ cloudCoverage }}
+                    <b>{{ $tc('popupContent.cloudCoverage') }}:</b
+                    >{{ cloudCoverage }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.daytimeStart') }}:</b>{{ daytimeStart }}
+                    <b>{{ $tc('popupContent.daytimeStart') }}:</b
+                    >{{ daytimeStart }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.daytimeStop') }}:</b>{{ daytimeStop }}
+                    <b>{{ $tc('popupContent.daytimeStop') }}:</b
+                    >{{ daytimeStop }}
                 </div>
             </div>
             <div v-if="isSatellite">
@@ -109,40 +144,52 @@
                     <b>{{ $tc('popupContent.size') }}:</b>{{ size }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.relativeOrbit') }}:</b>{{ relativeOrbit }}
+                    <b>{{ $tc('popupContent.relativeOrbit') }}:</b
+                    >{{ relativeOrbit }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.instrument') }}:</b>{{ instrumentShort }}
+                    <b>{{ $tc('popupContent.instrument') }}:</b
+                    >{{ instrumentShort }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.sensorPolarisation') }}:</b>{{ sensorPolarisation }}
+                    <b>{{ $tc('popupContent.sensorPolarisation') }}:</b
+                    >{{ sensorPolarisation }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.aquisitionType') }}: </b>{{ aquisitionType }}
+                    <b>{{ $tc('popupContent.aquisitionType') }}: </b
+                    >{{ aquisitionType }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.missionDataTaken') }}:</b>{{ missionDataTaken }}
+                    <b>{{ $tc('popupContent.missionDataTaken') }}:</b
+                    >{{ missionDataTaken }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.startOrbitNumber') }}:</b>{{ startOrbitNumber }}
+                    <b>{{ $tc('popupContent.startOrbitNumber') }}:</b
+                    >{{ startOrbitNumber }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.stopOrbitNumber') }}:</b>{{ stopOrbitNumber }}
+                    <b>{{ $tc('popupContent.stopOrbitNumber') }}:</b
+                    >{{ stopOrbitNumber }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.orbitDirection') }}:</b>{{ orbitDirection }}
+                    <b>{{ $tc('popupContent.orbitDirection') }}:</b
+                    >{{ orbitDirection }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.productClass') }}:</b>{{ productClass }}
+                    <b>{{ $tc('popupContent.productClass') }}:</b
+                    >{{ productClass }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.productConsolidation') }}:</b>{{ productConsolidation }}
+                    <b>{{ $tc('popupContent.productConsolidation') }}:</b
+                    >{{ productConsolidation }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.stopRelativeOrbitNumber') }}:</b>{{ stopRelativeOrbitNumber }}
+                    <b>{{ $tc('popupContent.stopRelativeOrbitNumber') }}:</b
+                    >{{ stopRelativeOrbitNumber }}
                 </div>
                 <div>
-                    <b>{{ $tc('popupContent.sliceNumber') }}:</b>{{ sliceNumber }}
+                    <b>{{ $tc('popupContent.sliceNumber') }}:</b
+                    >{{ sliceNumber }}
                 </div>
                 <div>
                     <b>{{ $tc('popupContent.status') }}:</b>{{ status }}
@@ -154,27 +201,38 @@
                 {{ $tc('popupContent.descriptiveKeywords') }}
             </div>
             <div class="metadata__keywords-wrap">
-                <a class="metadata__keyword" v-for="(keyword, index) of descriptiveKeywords" :key="index"
-                    @click="keywordSearch(keyword)">{{ keyword }}</a>
+                <a
+                    class="metadata__keyword"
+                    v-for="(keyword, index) of descriptiveKeywords"
+                    :key="index"
+                    @click="keywordSearch(keyword)"
+                    >{{ keyword }}</a
+                >
                 <div v-if="!descriptiveKeywords.length">&#8212;</div>
             </div>
-            <UserContributionsMetadata :model="'keywords'" :data="{
-                data,
-                isSatellite,
-                resultTitle,
-                resultImage,
-                popupTitle
-            }" @keyword-search="keywordSearch($event)" />
+            <UserContributionsMetadata
+                :model="'keywords'"
+                :data="{
+                    data,
+                    isSatellite,
+                    resultTitle,
+                    resultImage,
+                    popupTitle
+                }"
+                @keyword-search="keywordSearch($event)"
+            />
         </div>
         <div class="metadata__additional-info" v-if="platform == 'ZENODO'">
             <div class="metadata__additional-info-title">
                 {{ $tc('popupContent.additionalInfo') }}
             </div>
             <div class="metadata__additional-info-item">
-                <b>{{ $tc('popupContent.publicationDate') }}: </b>{{ publicationDate }}
+                <b>{{ $tc('popupContent.publicationDate') }}: </b
+                >{{ publicationDate }}
             </div>
             <div class="metadata__additional-info-item">
-                <b>{{ $tc('popupContent.doi') }}: </b><span v-html="zenodoDOI"></span>
+                <b>{{ $tc('popupContent.doi') }}: </b
+                ><span v-html="zenodoDOI"></span>
             </div>
             <div class="metadata__additional-info-item">
                 <b>{{ $tc('popupContent.licenseForFiles') }}: </b>{{ license }}
@@ -196,13 +254,24 @@
                 {{ temporalExtent }}
             </div>
         </div>
-        <div id="infoMap" style="max-height: 250px; height: 250px" class="margin-bottom-30"></div>
-        <div class="metadata__references" v-if="platform == 'ZENODO' && references.length">
+        <div
+            id="infoMap"
+            style="max-height: 250px; height: 250px"
+            class="margin-bottom-30"
+        ></div>
+        <div
+            class="metadata__references"
+            v-if="platform == 'ZENODO' && references.length"
+        >
             <div class="metadata__references-title">
                 {{ $tc('popupContent.references') }}
             </div>
             <ul class="metadata__references-list">
-                <li class="metadata__reference" v-for="(reference, index) of references" :key="index">
+                <li
+                    class="metadata__reference"
+                    v-for="(reference, index) of references"
+                    :key="index"
+                >
                     {{ reference }}
                 </li>
             </ul>
@@ -212,41 +281,75 @@
                 {{ $tc('popupContent.rawOnlineResources') }}
             </div>
             <div v-if="linksEmpty">N.A.</div>
-            <div class="metadata__links-section" v-for="(value, key) in links" :key="key">
-                <div class="metadata__links-section-title" v-if="value.items.length">
-                    <img v-if="value.items.length" :src="`/img/m-link.png`"
-                        :alt="$tc('popupContent.onlineResources')" />
+            <div
+                class="metadata__links-section"
+                v-for="(value, key) in links"
+                :key="key"
+            >
+                <div
+                    class="metadata__links-section-title"
+                    v-if="value.items.length"
+                >
+                    <img
+                        v-if="value.items.length"
+                        :src="`/img/m-link.png`"
+                        :alt="$tc('popupContent.onlineResources')"
+                    />
                     <span>{{ value.title }}</span>
                 </div>
                 <div v-for="(link, index) in value.items" :key="index">
                     <div>
-                        <div class="metadata__link" :class="link.available" :title="link.scoreText">
-                            <a target="_blank" :href="link.linkText" class="link">{{ link.linkTitle }}</a>
-                            <div v-if="link.protocol && link.protocol !== ''" class="protocol">
+                        <div
+                            class="metadata__link"
+                            :class="link.available"
+                            :title="link.scoreText"
+                        >
+                            <a
+                                target="_blank"
+                                :href="link.linkText"
+                                class="link"
+                                >{{ link.linkTitle }}</a
+                            >
+                            <div
+                                v-if="link.protocol && link.protocol !== ''"
+                                class="protocol"
+                            >
                                 {{ link.protocol }}
                             </div>
-                            <img v-if="link.linkTextParsed" class="layer" alt="Preview not available"
-                                :src="link.linkTextParsed" />
-                            <div v-else-if="
-                                link.linkDescription &&
-                                link.linkDescription !== ''
-                            ">
+                            <img
+                                v-if="link.linkTextParsed"
+                                class="layer"
+                                alt="Preview not available"
+                                :src="link.linkTextParsed"
+                            />
+                            <div
+                                v-else-if="
+                                    link.linkDescription &&
+                                    link.linkDescription !== ''
+                                "
+                            >
                                 {{ link.linkDescription }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <UserContributionsMetadata :model="'transferOptions'" :data="{
-                data,
-                isSatellite,
-                resultTitle,
-                resultImage,
-                popupTitle
-            }" />
+            <UserContributionsMetadata
+                :model="'transferOptions'"
+                :data="{
+                    data,
+                    isSatellite,
+                    resultTitle,
+                    resultImage,
+                    popupTitle
+                }"
+            />
         </div>
-        <UserContributionsMetadata v-if="showComments" :model="'comment'"
-            :data="{ data, isSatellite, resultTitle, resultImage, popupTitle }" />
+        <UserContributionsMetadata
+            v-if="showComments"
+            :model="'comment'"
+            :data="{ data, isSatellite, resultTitle, resultImage, popupTitle, comments }"
+        />
     </div>
 </template>
 
@@ -269,8 +372,8 @@ import { AppVueObj } from '~/data/global'
 
 @Component({
     components: {
-        UserContributionsMetadata
-    }
+        UserContributionsMetadata,
+    },
 })
 export default class DabResultMetadataComponent extends Vue {
     [x: string]: any
@@ -279,11 +382,11 @@ export default class DabResultMetadataComponent extends Vue {
     @Prop({ default: '', type: String }) private resultTitle!: string
     @Prop({ default: '', type: String }) private resultImage!: string
     @Prop({ default: '', type: String }) private popupTitle!: string
-
+    @Prop({ default: [], type: Array }) public comments!: any[]
     public map: any = null
     private zenodoBadges = {}
     private youtubeVideos = []
-    private showComments = false
+    public showComments = this.comments.length > 0 ? true : false
 
     get dataSource() {
         return this.$store.getters[SearchGetters.dataSource]
@@ -338,8 +441,8 @@ export default class DabResultMetadataComponent extends Vue {
                 const organisation = UtilsService.getPropByString(
                     pointOfContact,
                     'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString'
-                );
-                authors.push(organisation || author);
+                )
+                authors.push(organisation || author)
             }
         }
         return authors.join('; ')
@@ -536,7 +639,10 @@ export default class DabResultMetadataComponent extends Vue {
     }
 
     get useLimitation() {
-        return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:useLimitation.gco:CharacterString');
+        return UtilsService.getPropByString(
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:useLimitation.gco:CharacterString'
+        )
     }
 
     get accessConstraints() {
@@ -545,36 +651,54 @@ export default class DabResultMetadataComponent extends Vue {
     }
 
     get otherConstraints() {
-        return UtilsService.getPropByString(this.data, 'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:otherConstraints.gco:CharacterString');
+        return UtilsService.getPropByString(
+            this.data,
+            'gmd:identificationInfo.gmd:MD_DataIdentification.gmd:resourceConstraints.gmd:MD_LegalConstraints.gmd:otherConstraints.gco:CharacterString'
+        )
     }
 
     get confidence() {
-        const reports = UtilsService.getArrayByString(this.data, 'gmd:dataQualityInfo.gmd:DQ_DataQuality.gmd:report');
+        const reports = UtilsService.getArrayByString(
+            this.data,
+            'gmd:dataQualityInfo.gmd:DQ_DataQuality.gmd:report'
+        )
 
         if (!reports || !reports.length) {
-            return null;
+            return null
         }
 
-        let crop, irrigation, landCover;
+        let crop, irrigation, landCover
 
         for (const report of reports) {
-            const nameOfMeasure = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:nameOfMeasure.gco:CharacterString');
+            const nameOfMeasure = UtilsService.getPropByString(
+                report,
+                'gmd:DQ_AccuracyOfATimeMeasurement.gmd:nameOfMeasure.gco:CharacterString'
+            )
             if (nameOfMeasure === 'cropConfidence') {
-                crop = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+                crop = UtilsService.getPropByString(
+                    report,
+                    'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString'
+                )
             }
             if (nameOfMeasure === 'irrigationConfidence') {
-                irrigation = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+                irrigation = UtilsService.getPropByString(
+                    report,
+                    'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString'
+                )
             }
             if (nameOfMeasure === 'landCoverConfidence') {
-                landCover = UtilsService.getPropByString(report, 'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString');
+                landCover = UtilsService.getPropByString(
+                    report,
+                    'gmd:DQ_AccuracyOfATimeMeasurement.gmd:measureDescription.gco:CharacterString'
+                )
             }
         }
 
         if (crop === '' || irrigation === '' || landCover === '') {
-            return null;
+            return null
         }
 
-        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)];
+        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)]
     }
 
     get publishedIn() {
@@ -1265,7 +1389,7 @@ export default class DabResultMetadataComponent extends Vue {
                 center: AppVueObj.ol.proj.fromLonLat([10, 20]),
                 zoom: 1,
                 minZoom: 1,
-                maxZoom: 10
+                maxZoom: 10,
             }),
             controls: [],
             interactions: []
@@ -1385,7 +1509,7 @@ export default class DabResultMetadataComponent extends Vue {
         @media (max-width: $breakpoint-sm) {
             flex-wrap: wrap;
 
-            &>div {
+            & > div {
                 width: 100%;
                 flex: unset !important;
 
@@ -1411,11 +1535,11 @@ export default class DabResultMetadataComponent extends Vue {
             }
         }
 
-        &>div {
+        & > div {
             flex: 1;
             padding: 0 25px;
 
-            &>div {
+            & > div {
                 margin-bottom: 5px;
 
                 &:first-child {
@@ -1499,18 +1623,18 @@ export default class DabResultMetadataComponent extends Vue {
             margin-bottom: 15px;
         }
 
-        &>div:nth-child(n + 2) {
+        & > div:nth-child(n + 2) {
             flex: 1;
             display: flex;
             flex-direction: column;
             position: relative;
 
-            &>b {
+            & > b {
                 color: $grey-medium;
             }
         }
 
-        &>div:nth-child(2)::before {
+        & > div:nth-child(2)::before {
             content: '';
             width: 1px;
             height: 100%;
@@ -1520,7 +1644,7 @@ export default class DabResultMetadataComponent extends Vue {
             top: 0;
         }
 
-        &>div:nth-child(3) {
+        & > div:nth-child(3) {
             padding-left: 20px;
         }
     }
@@ -1578,7 +1702,6 @@ export default class DabResultMetadataComponent extends Vue {
         }
     }
 }
-
 
 .confidence {
     display: flex;

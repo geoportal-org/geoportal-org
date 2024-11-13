@@ -2,7 +2,11 @@
     <div class="dab-result-rating">
         <div class="dab-result-rating__comment">
             <label>{{ $tc('popupContent.comment') }}:</label>
-            <textarea maxlength="500" v-model="comment" :disabled="!isSignedIn"></textarea>
+            <textarea
+                maxlength="500"
+                v-model="comment"
+                :disabled="!isSignedIn"
+            ></textarea>
         </div>
         <div class="d-flex flex--justify-between flex--align-end">
             <div class="dab-result-rating__rating">
@@ -28,6 +32,12 @@
                     {{ $tc('popupContent.send') }}
                 </button>
             </div>
+        </div>
+        <div
+            v-if="comments && comments.length > 0"
+            class="comments-section-title"
+        >
+            {{ $tc('popupContent.userContributedTitleComment') }}
         </div>
         <div
             class="dab-result-rating__user-comment"
@@ -63,7 +73,7 @@ import LogService from '@/services/log.service'
 import { Liferay } from '@/data/global'
 import { DataOrigin } from '@/interfaces/DataSources'
 import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions'
-import RatingService from '@/services/ratings.service'
+import RatingService from '~/services/ratings.service'
 
 @Component
 export default class DabResultRatingComponent extends Vue {
@@ -80,6 +90,7 @@ export default class DabResultRatingComponent extends Vue {
     @Prop({ default: null, type: String }) private userComment!: string
     @Prop({ default: 'dab', type: String }) private dataSource!: string
     @Prop({ default: null, type: String }) private referer!: string
+    @Prop({ default: () => null, type: Function }) public setAvScore!: any
 
     get isWidget() {
         return this.$store.getters[GeneralGetters.isWidget]
@@ -91,16 +102,6 @@ export default class DabResultRatingComponent extends Vue {
 
     public setScore(score: number) {
         this.score = score
-        // LogService.logElementClick(
-        //     null,
-        //     null,
-        //     this.id,
-        //     null,
-        //     'Edit rating',
-        //     null,
-        //     null,
-        //     null
-        // )
     }
 
     public async rate() {
@@ -109,18 +110,9 @@ export default class DabResultRatingComponent extends Vue {
         } else {
             await this.rateWithoutComment()
         }
-        // LogService.logElementClick(
-        //     null,
-        //     null,
-        //     this.id,
-        //     null,
-        //     'Send rating',
-        //     null,
-        //     null,
-        //     null
-        // )
         PopupCloseService.closePopup('rating')
     }
+
 
     public async rateWithComment() {
         try {
@@ -133,9 +125,9 @@ export default class DabResultRatingComponent extends Vue {
                 this.score,
                 this.comment
             )
-            // if (res) {
-            //     this.setAvScore(res.averageScore)
-            // }
+            if (res) {
+                this.setAvScore(res.averageScore)
+            }
         } catch (e) {
             console.log(e)
         }
@@ -149,8 +141,8 @@ export default class DabResultRatingComponent extends Vue {
             null,
             this.title
         )
-        PopupCloseService.closePopup('rating')
     }
+
 
     public async rateWithoutComment() {
         try {
@@ -159,33 +151,26 @@ export default class DabResultRatingComponent extends Vue {
                 this.title,
                 this.score
             )
-            // if (res) {
-            //     this.setAvScore(res.averageScore)
-            // }
+            if (res) {
+                this.setAvScore(res.averageScore)
+            }
         } catch (e) {
             console.log(e)
         }
     }
 
-    // mounted() {
-    //     this.score = this.userScore
-    //     LogService.logElementClick(
-    //         null,
-    //         null,
-    //         this.id,
-    //         null,
-    //         'Show comments',
-    //         null,
-    //         null,
-    //         null
-    //     )
-    // }
 }
 </script>
 
 <style lang="scss">
 .dab-result-rating {
-    padding: 30px 25px;
+    padding: 30px 25px 50px 25px;
+
+    max-height: 50vh;
+
+    .dab-result-rating__comment {
+        word-break: break-word;
+    }
 
     &__comment,
     &__rating {
@@ -263,13 +248,25 @@ export default class DabResultRatingComponent extends Vue {
     }
 
     &__user-comment {
-        margin-top: 40px;
+        &:hover {
+            pointer-events: none;
+        }
 
+        &:not(:hover) {
+            pointer-events: none;
+        }
+        margin-top: 20px;
+        margin-bottom: 20px;
         .dab-result-rating__stars {
             i {
                 font-size: 17px;
             }
         }
     }
+}
+
+.comments-section-title {
+    margin-top: 20px;
+    font-size: 21px;
 }
 </style>

@@ -1,15 +1,23 @@
 <template>
-    <div class="user-contributions" v-if="userExtensions && userExtensions.length && showSection()">
+    <div
+        class="user-contributions"
+        v-if="userExtensions && userExtensions.length && showSection()"
+    >
         <div class="user-contributions__label">
             {{
                 $tc(
-                    `popupContent.userContributedTitle${model.charAt(0).toUpperCase() + model.slice(1)
+                    `popupContent.userContributedTitle${
+                        model.charAt(0).toUpperCase() + model.slice(1)
                     }`
                 )
             }}
         </div>
-        <div class="user-contributions__item" v-for="(extension, index) in userExtensions" :key="index"
-            v-show="showItem(extension)">
+        <div
+            class="user-contributions__item"
+            v-for="(extension, index) in userExtensions"
+            :key="index"
+            v-show="showItem(extension)"
+        >
             <div class="user-contributions__item-metadata">
                 <div>
                     <i class="icomoon-editor--user"></i>
@@ -22,48 +30,76 @@
                         )
                     }}</span>
                 </div>
-                <div v-if="
-                    userExtensions.userId &&
-                    extension.userId.toString() === userId &&
-                    showDeleteIcon &&
-                    model !== 'transferOptions'
-                " :title="$tc('popupContent.userContributedRemoveEntryExtension')
-                    " class="delete-extension" @click="removeExtension(extension)">
+                <div
+                    v-if="
+                        userExtensions.userId &&
+                        extension.userId.toString() === userId &&
+                        showDeleteIcon &&
+                        model !== 'transferOptions'
+                    "
+                    :title="
+                        $tc('popupContent.userContributedRemoveEntryExtension')
+                    "
+                    class="delete-extension"
+                    @click="removeExtension(extension)"
+                >
                     <i class="icomoon-editor--trash"></i>
                 </div>
             </div>
-            <div v-if="model === 'summary'" class="user-contributions__item-content">
+            <div
+                v-if="model === 'summary'"
+                class="user-contributions__item-content"
+            >
                 {{ extension[model] }}
             </div>
-            <div v-if="model === 'keywords'" class="user-contributions__item-content">
+            <div
+                v-if="model === 'keywords'"
+                class="user-contributions__item-content"
+            >
                 <div v-for="(keyword, index) of extension[model]" :key="index">
-                    <a class="metadata__keyword" @click="keywordSearch(keyword)">{{ keyword }}</a>
+                    <a
+                        class="metadata__keyword"
+                        @click="keywordSearch(keyword)"
+                        >{{ keyword }}</a
+                    >
                 </div>
             </div>
-            <div v-if="model === 'transferOptions'" class="user-contributions__item-content">
+            <div
+                v-if="model === 'transferOptions'"
+                class="user-contributions__item-content"
+            >
                 <div v-for="(link, index) in extension[model]" :key="index">
                     <div class="metadata__link" :title="link.displayTitle">
                         <div>
                             <a target="_blank" :href="link.url" class="link">{{
                                 link.name ? link.name : link.url
                             }}</a>
-                            <div v-if="
-                                link.description && link.description !== ''
-                            ">
+                            <div
+                                v-if="
+                                    link.description && link.description !== ''
+                                "
+                            >
                                 {{ link.description }}
                             </div>
                         </div>
-                        <div v-if="
-                            extension.userId.toString() === userId &&
-                            showDeleteIcon &&
-                            model === 'transferOptions'
-                        " class="delete-extension" @click="removeExtension(extension, index)">
+                        <div
+                            v-if="
+                                extension.userId.toString() === userId &&
+                                showDeleteIcon &&
+                                model === 'transferOptions'
+                            "
+                            class="delete-extension"
+                            @click="removeExtension(extension, index)"
+                        >
                             <i class="icomoon-editor--trash"></i>
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-if="model === 'comment'" class="user-contributions__item-content">
+            <div
+                v-if="model === 'comment'"
+                class="user-contributions__item-content"
+            >
                 {{ extension[model] }}
             </div>
         </div>
@@ -154,8 +190,11 @@ export default class UserContributionsMetadata extends Vue {
 
     public showItem(extension) {
         return (
-            (typeof extension[this.model] === 'string' && extension[this.model] !== '') ||
-            (typeof extension[this.model] === 'object' && Array.isArray(extension[this.model]) && extension[this.model].length)
+            (typeof extension[this.model] === 'string' &&
+                extension[this.model] !== '') ||
+            (typeof extension[this.model] === 'object' &&
+                Array.isArray(extension[this.model]) &&
+                extension[this.model].length)
         )
     }
 
@@ -289,7 +328,7 @@ export default class UserContributionsMetadata extends Vue {
             display: flex;
             align-items: center;
 
-            >div {
+            > div {
                 flex-grow: 1;
                 margin-bottom: 3px;
 
@@ -330,7 +369,7 @@ export default class UserContributionsMetadata extends Vue {
                     display: flex;
                     align-items: center;
 
-                    >div {
+                    > div {
                         flex-grow: 1;
 
                         &.delete-extension {

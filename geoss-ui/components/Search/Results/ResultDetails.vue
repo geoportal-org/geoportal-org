@@ -1,60 +1,106 @@
 <template>
-    <div class="dab-result-details__outer-wrapper" :class="{
-        'is-parent-ref': isParentRef && separated,
-        'extended-view-mode': extendedViewMode
-    }">
-        <div class="dab-result-details__is-parent-ref-trigger" v-if="isParentRef && separated">
-            <button @click="popParentRefResult()" data-tutorial-tag="result-back"></button>
+    <div
+        class="dab-result-details__outer-wrapper"
+        :class="{
+            'is-parent-ref': isParentRef && separated,
+            'extended-view-mode': extendedViewMode
+        }"
+    >
+        <div
+            class="dab-result-details__is-parent-ref-trigger"
+            v-if="isParentRef && separated"
+        >
+            <button
+                @click="popParentRefResult()"
+                data-tutorial-tag="result-back"
+            ></button>
             <i :class="`icomoon-data-source--${parentDataSourceGroup}`"></i>
             <span class="title" @click="showDabResultParentRefDetails()">{{
                 title
             }}</span>
         </div>
-        <div class="dab-result-details" :data-tutorial-tag="resultIdDetails === result.id ? 'result-details' : ''
-            " :class="{
+        <div
+            class="dab-result-details"
+            :data-tutorial-tag="
+                resultIdDetails === result.id ? 'result-details' : ''
+            "
+            :class="{
                 'is-parent-ref': isParentRef && separated,
                 'odd': index % 2 && typeof index !== 'undefined'
-            }" :data-id="result.id" v-show="resultIdDetails === result.id || extendedViewMode">
+            }"
+            :data-id="result.id"
+            v-show="resultIdDetails === result.id || extendedViewMode"
+        >
             <div class="dab-result-details__wrapper">
                 <div>
-                    <div v-if="isParentRef && separated" class="dab-result-details__image" :class="{
-                        'dab-result-details__image--default':
-                            getImage(result.logo) !== result.logo
-                    }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="title"
-                            v-image-preview />
+                    <div
+                        v-if="isParentRef && separated"
+                        class="dab-result-details__image"
+                        :class="{
+                            'dab-result-details__image--default':
+                                getImage(result.logo) !== result.logo
+                        }"
+                    >
+                        <img
+                            :src="getImage(result.logo)"
+                            @error="imageLoadError(result.logo)"
+                            :alt="title"
+                            v-image-preview
+                        />
                     </div>
-                    <div class="dab-result-details__text-actions" :class="{
-                        'set-parent-ref-available':
-                            addParentRefAvailable(result)
-                    }">
+                    <div
+                        class="dab-result-details__text-actions"
+                        :class="{
+                            'set-parent-ref-available':
+                                addParentRefAvailable(result)
+                        }"
+                    >
                         <div class="d-flex flex--column flex--1">
                             <div class="d-flex flex--column flex--1">
-                                <div class="d-flex flex--wrap flex--justify-between flex--align-start flex--no-shrink">
+                                <div
+                                    class="d-flex flex--wrap flex--justify-between flex--align-start flex--no-shrink"
+                                >
                                     <div class="dab-result-details__text">
-                                        <div v-if="title" class="dab-result-details__title">
+                                        <div
+                                            v-if="title"
+                                            class="dab-result-details__title"
+                                        >
                                             {{ title }}
                                         </div>
-                                        <div v-if="
-                                            result.contributor &&
-                                            result.contributor.orgName
-                                        " class="dab-result__contributor" v-line-clamp:20="1">
+                                        <div
+                                            v-if="
+                                                result.contributor &&
+                                                result.contributor.orgName
+                                            "
+                                            class="dab-result__contributor"
+                                            v-line-clamp:20="1"
+                                        >
                                             {{ $tc('dabResult.organisation') }}:
                                             {{ result.contributor.orgName }}
                                         </div>
-                                        <div v-if="contributors" class="dab-result-details__contributor">
-                                            (<span v-if="dataSource !== 'zenodo'">{{
-                                                $tc(
-                                                    'dabResult.organisation'
-                                                )
-                                            }}</span><span v-else>{{
-                                                    $tc('dabResult.creators')
-                                                }}</span>: {{ contributors }})
+                                        <div
+                                            v-if="contributors"
+                                            class="dab-result-details__contributor"
+                                        >
+                                            (<span
+                                                v-if="dataSource !== 'zenodo'"
+                                                >{{
+                                                    $tc(
+                                                        'dabResult.organisation'
+                                                    )
+                                                }}</span
+                                            ><span v-else>{{
+                                                $tc('dabResult.creators')
+                                            }}</span
+                                            >: {{ contributors }})
                                         </div>
                                     </div>
                                     <ViewsAndRatings :result="result" />
                                 </div>
-                                <div v-if="confidence && confidence.length" class="confidence">
+                                <div
+                                    v-if="confidence && confidence.length"
+                                    class="confidence"
+                                >
                                     <div class="confidence__label">
                                         {{ $tc('popupContent.confidence') }}:
                                     </div>
@@ -83,11 +129,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="
-                                    summary && typeof summary === 'string'
-                                " class="dab-result-details__summary">
-                                    <div v-if="isParentRef && separated" v-line-clamp:20="2" v-html-to-text="summary">
-                                    </div>
+                                <div
+                                    v-if="
+                                        summary && typeof summary === 'string'
+                                    "
+                                    class="dab-result-details__summary"
+                                >
+                                    <div
+                                        v-if="isParentRef && separated"
+                                        v-line-clamp:20="2"
+                                        v-html-to-text="summary"
+                                    ></div>
                                     <div v-else v-html-to-text="summary"></div>
                                 </div>
                                 <div class="dab-result-details__more__wrapper">
@@ -104,14 +156,20 @@
                             </div>
                             <div class="dab-result-details__actions">
                                 <div class="dab-result-details__actions--main">
-                                    <button :title="$tc('dabResult.exploreExtendedView')
-                                        " @click="toggleExtendedView()" v-if="
+                                    <button
+                                        :title="
+                                            $tc('dabResult.exploreExtendedView')
+                                        "
+                                        @click="toggleExtendedView()"
+                                        v-if="
                                             isExtendedViewEnabled &&
                                             !isWidget &&
                                             dataSource !==
-                                            DataSources.WIKIPEDIA &&
+                                                DataSources.WIKIPEDIA &&
                                             !workflowDispatched
-                                        " class="extended-view-switcher" :class="{
+                                        "
+                                        class="extended-view-switcher"
+                                        :class="{
                                             return: isExtendedViewActive
                                         }" :data-tutorial-tag="resultIdDetails === result.id
                                             ? 'result-extended-view'
@@ -160,14 +218,21 @@
                                             ">
                                         <i class="icomoon-layers"></i>
                                     </button>
-                                    <button v-if="downloads.length === 1" :title="$tc('sentinelLogin.download') +
-                                        ' - ' +
-                                        getDownloadButtonLabel(
-                                            downloads[0].type
-                                        )
-                                        " @click="
+                                    <button
+                                        v-if="downloads.length === 1"
+                                        :title="
+                                            $tc('sentinelLogin.download') +
+                                            ' - ' +
+                                            getDownloadButtonLabel(
+                                                downloads[0].type
+                                            )
+                                        "
+                                        @click="
                                             instantSingleDownload(downloads[0])
-                                            " :class="{ open: showDownloads }" :data-tutorial-tag="resultIdDetails === result.id
+                                        "
+                                        :class="{ open: showDownloads }"
+                                        :data-tutorial-tag="
+                                            resultIdDetails === result.id
                                                 ? 'result-downloads'
                                                 : ''
                                                 ">
@@ -186,16 +251,24 @@
                                         @click="openWorkflow(true)" v-show="workflow || isEoWorkflow" :data-tutorial-tag="resultIdDetails === result.id
                                                 ? 'result-workflow'
                                                 : ''
-                                            "></button>
-                                    <template v-for="hub of [
-                                        'data',
-                                        'information',
-                                        'services'
-                                    ]">
-                                        <button :key="`${hub}_1`" v-show="!hiddenDataSources.includes(
-                                            hub
-                                        ) && dataSourceGroup !== hub
-                                            " :title="$tc(`dabResult.${hub}`)" @click="
+                                        "
+                                    ></button>
+                                    <template
+                                        v-for="hub of [
+                                            'data',
+                                            'information',
+                                            'services'
+                                        ]"
+                                    >
+                                        <button
+                                            :key="`${hub}_1`"
+                                            v-show="
+                                                !hiddenDataSources.includes(
+                                                    hub
+                                                ) && dataSourceGroup !== hub
+                                            "
+                                            :title="$tc(`dabResult.${hub}`)"
+                                            @click="
                                                 switchToDataSource(hub, result)
                                                 " :disabled="!isDrillAvailable(
                                                     result,
@@ -231,29 +304,47 @@
                                         </button>
                                     </template>
                                 </div>
-                                <div class="dab-result-details__downloads" v-if="downloads.length">
+                                <div
+                                    class="dab-result-details__downloads"
+                                    v-if="downloads.length"
+                                >
                                     <CollapseTransition>
-                                        <div v-show="showDownloads" class="dab-result-details__downloads-wrapper">
+                                        <div
+                                            v-show="showDownloads"
+                                            class="dab-result-details__downloads-wrapper"
+                                        >
                                             <div>
-                                                <span v-for="(
+                                                <span
+                                                    v-for="(
                                                         download, index
-                                                    ) of downloads" :key="index">
-                                                    <button v-if="download.links" @click="
-                                                        openDownloadLinksPopup(
-                                                            download.links
-                                                        )
-                                                        " :title="getDownloadButtonLabel(
-                                                            download.type
-                                                        )
-                                                            ">
-                                                        <i v-if="
-                                                            FileFormatsIcons.indexOf(
-                                                                download.type
-                                                            ) !== -1
+                                                    ) of downloads"
+                                                    :key="index"
+                                                >
+                                                    <button
+                                                        v-if="download.links"
+                                                        @click="
+                                                            openDownloadLinksPopup(
+                                                                download.links
+                                                            )
                                                         "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                        <i v-else
-                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                        :title="
+                                                            getDownloadButtonLabel(
+                                                                download.type
+                                                            )
+                                                        "
+                                                    >
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
+                                                        ></i>
                                                     </button>
                                                     <button v-else-if="
                                                         download.url.indexOf(
@@ -270,11 +361,21 @@
                                                         <i v-if="
                                                             FileFormatsIcons.indexOf(
                                                                 download.type
-                                                            ) !== -1
+                                                            )
                                                         "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                        <i v-else
-                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    ></i>
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
+                                                        ></i>
                                                     </button>
                                                     <button v-else-if="
                                                         download.url.indexOf(
@@ -291,11 +392,21 @@
                                                         <i v-if="
                                                             FileFormatsIcons.indexOf(
                                                                 download.type
-                                                            ) !== -1
+                                                            )
                                                         "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                        <i v-else
-                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    ></i>
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
+                                                        ></i>
                                                     </button>
                                                     <button v-else-if="
                                                         download.type ===
@@ -309,7 +420,8 @@
                                                         )
                                                             ">
                                                         <i
-                                                            class="dab-result-details__file-icon icomoon-custom-download"></i>
+                                                            class="dab-result-details__file-icon icomoon-custom-download"
+                                                        ></i>
                                                     </button>
                                                     <a v-else-if="
                                                         download.type ===
@@ -325,11 +437,21 @@
                                                         <i v-if="
                                                             FileFormatsIcons.indexOf(
                                                                 download.type
-                                                            ) !== -1
+                                                            )
                                                         "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                        <i v-else
-                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    ></i>
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
+                                                        ></i>
                                                     </a>
                                                     <a v-else-if="
                                                         !isBulkDownloadEnabled
@@ -344,11 +466,21 @@
                                                         <i v-if="
                                                             FileFormatsIcons.indexOf(
                                                                 download.type
-                                                            ) !== -1
+                                                            )
                                                         "
-                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"></i>
-                                                        <i v-else
-                                                            class="dab-result-details__file-icon icomoon-doc-file"></i>
+                                                    ></i>
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`dab-result-details__file-icon icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
+                                                        ></i>
                                                     </a>
                                                     <a v-else-if="
                                                         isBulkDownloadEnabled
@@ -358,7 +490,7 @@
                                                         " class="expandable expandable-on-click" :class="{
                                                             expanded:
                                                                 index ===
-                                                                expandedDownloadIndex ||
+                                                                    expandedDownloadIndex ||
                                                                 !showExpandableDownload()
                                                         }">
                                                         <i v-if="
@@ -370,8 +502,11 @@
                                                                 setExpandedDownloadIndex(
                                                                     index
                                                                 )
-                                                                "></i>
-                                                        <i v-else class="dab-result-details__file-icon icomoon-doc-file"
+                                                            "
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="dab-result-details__file-icon icomoon-doc-file"
                                                             @click="
                                                                 setExpandedDownloadIndex(
                                                                     index
@@ -400,13 +535,18 @@
                                                             " :class="{
                                                                 disabled:
                                                                     !isSignedIn
-                                                            }" @click="
+                                                            }"
+                                                            @click="
                                                                 addToDownloadsList(
                                                                     download.url,
                                                                     download.type
                                                                 )
-                                                                ">
-                                                            <i class="bulk-download__icon"></i>{{
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="bulk-download__icon"
+                                                            ></i
+                                                            >{{
                                                                 $tc(
                                                                     'customDownloadOptionsPopup.addToDownloads'
                                                                 )
@@ -425,7 +565,8 @@
                             : ''
                             " :title="$tc('dabResult.showInsideFolder')" class="dab-result-details__drill down"
                             v-if="addParentRefAvailable(result) && !isParentRef"
-                            @click="showInsideFolder(result)"></button>
+                            @click="showInsideFolder(result)"
+                        ></button>
                     </div>
                 </div>
             </div>
@@ -493,19 +634,23 @@ import { UserActions } from '@/store/user/user-actions'
 import { OidcProvider, OpenEO } from '@openeo/js-client'
 import OpenEOWorkflowComponent from './OpenEOWorkflow.vue'
 import OpenEOService from '@/services/openeo.service'
+import CollapseTransition from '@/plugins/CollapseTransition'
+import RatingService from '~/services/ratings.service'
 
 @Component({
     components: {
         ViewsAndRatings,
-        CollapseTransition
-    }
+        CollapseTransition,
+    },
 })
 export default class SearchResultDabDetailsComponent extends Vue {
+    [x: string]: any
     @Prop({ default: null, type: Object }) public result!: any
     @Prop({ default: false, type: Boolean }) public separated!: boolean
     @Prop({ default: false, type: Boolean }) public extendedViewMode!: boolean
     @Prop(Number) public index!: number
     @Prop(String) public image!: string
+    @Prop(String) public currentOpenId!: string
 
     public layers = []
     public downloads = []
@@ -516,6 +661,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public shareUrl = ''
     public showDownloads = false
     public customDownloadOptions = null
+    public showShare = false
     public expandedDownloadIndex = null
 
     public score = 0
@@ -588,15 +734,21 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     get confidence() {
-        const crop = UtilsService.getPropByString(this.result, 'cropConfidence');
-        const irrigation = UtilsService.getPropByString(this.result, 'irrigationConfidence');
-        const landCover = UtilsService.getPropByString(this.result, 'landCoverConfidence');
+        const crop = UtilsService.getPropByString(this.result, 'cropConfidence')
+        const irrigation = UtilsService.getPropByString(
+            this.result,
+            'irrigationConfidence'
+        )
+        const landCover = UtilsService.getPropByString(
+            this.result,
+            'landCoverConfidence'
+        )
 
         if (crop === '' || irrigation === '' || landCover === '') {
-            return null;
+            return null
         }
 
-        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)];
+        return [crop.toFixed(1), irrigation.toFixed(1), landCover.toFixed(1)]
     }
 
     get parentRef() {
@@ -1428,7 +1580,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 downloads.push({ name: this.result.title, url: `${SearchEngineService.getDabBaseUrl()}/worldcereal/query?searchFields=title,keywords,abstract&reqID=6hnblre3236&si=1&ct=12&rel=OVERLAPS&viewid=&sources=worldcereal&parents=${this.result.id}`, desc: '', type: 'worldcereal-collection' });
             }
 
-
             if (!this.workflow) {
                 const resources = UtilsService.getArrayByString(
                     this.result,
@@ -1595,11 +1746,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     this.metadata = {
                         title: `<div class="d-flex flex--justify-between flex--align-center padding-right-30">
                                     <span>${this.$tc(
-                            'popupTitles.resourceDetails'
-                        )}</span>
+                                        'popupTitles.resourceDetails'
+                                    )}</span>
                                     <a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(
-                            this.result.id
-                        )}">${this.$tc(
+                                        this.result.id
+                                    )}">${this.$tc(
                             'popupTitles.rawMetadata'
                         )}</a>
                                 </div>`,
@@ -1618,12 +1769,15 @@ export default class SearchResultDabDetailsComponent extends Vue {
         if (this.dashboardContent && this.dashboardContent !== '') {
             DashboardService.showDashboard(this.dashboardContent, null)
         } else if (this.metadata) {
+            const comments = await this.getComments()
+
             const props = {
                 data: this.metadata.data,
                 isSatellite,
                 resultTitle: this.result.title,
                 resultImage: this.logo,
-                popupTitle: this.metadata.title
+                popupTitle: this.metadata.title,
+                comments,
             }
             this.$store.dispatch(PopupActions.openPopup, {
                 contentId: 'metadata',
@@ -1633,6 +1787,16 @@ export default class SearchResultDabDetailsComponent extends Vue {
             })
         }
     }
+
+    public async getComments() {
+        const res = await RatingService.fetchComments(this.result.id)
+        if (res) {
+            return res
+        } else {
+            return 0
+        }
+    }
+
 
     public addParentRefAvailable(result) {
         const parentRefAvailable =
@@ -1843,8 +2007,9 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 )
                 for (const option of outputCRSRaw) {
                     const arrayCRS = option.split('/')
-                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${arrayCRS[arrayCRS.length - 1]
-                        }`
+                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${
+                        arrayCRS[arrayCRS.length - 1]
+                    }`
                     outputCRS.push({ id: option, text: nameCRS })
                 }
 
@@ -2116,7 +2281,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
 
         if (format === 'worldcereal-collection') {
-            url = this.appendWorldCerealCollectionParameters(url);
+            url = this.appendWorldCerealCollectionParameters(url)
         }
 
         window.open(url)
@@ -2151,7 +2316,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
 
         if (format === 'worldcereal-collection') {
-            url = this.appendWorldCerealCollectionParameters(url);
+            url = this.appendWorldCerealCollectionParameters(url)
         }
 
         const link: BulkDownloadLink = {
@@ -2247,12 +2412,15 @@ export default class SearchResultDabDetailsComponent extends Vue {
             if (W && S && E && N) {
                 return `${W},${S},${E},${N}`;
             }
-            return ',,,';
-        };
+            return ',,,'
+        }
 
-        const dateFrom = this.$store.getters[GeneralFiltersGetters.state].dateFrom;
-        const dateTo = this.$store.getters[GeneralFiltersGetters.state].dateTo;
-        const selectedAreaCoordinates = this.$store.getters[GeneralFiltersGetters.state].selectedAreaCoordinates;
+        const dateFrom =
+            this.$store.getters[GeneralFiltersGetters.state].dateFrom
+        const dateTo = this.$store.getters[GeneralFiltersGetters.state].dateTo
+        const selectedAreaCoordinates =
+            this.$store.getters[GeneralFiltersGetters.state]
+                .selectedAreaCoordinates
         const params = {
             cropTypes: this.$store.getters[InSituFiltersGetters.cropTypes],
             quantityTypes: this.$store.getters[InSituFiltersGetters.quantityTypes],
@@ -2263,22 +2431,25 @@ export default class SearchResultDabDetailsComponent extends Vue {
             irrigationConfidence: this.$store.getters[InSituFiltersGetters.irrigationConfidence],
             ts: dateFrom ? date(dateFrom, 'YYYY-MM-DDThh:mm:ssZ') : null,
             te: dateTo ? date(dateTo, 'YYYY-MM-DDThh:mm:ssZ') : null,
-            bbox: concatCoordinates(selectedAreaCoordinates) !== ',,,' ? concatCoordinates(selectedAreaCoordinates) : null,
-        };
+            bbox:
+                concatCoordinates(selectedAreaCoordinates) !== ',,,'
+                    ? concatCoordinates(selectedAreaCoordinates)
+                    : null
+        }
 
         for (const param in params) {
             if (param) {
-                const appendix = params[param];
+                const appendix = params[param]
                 if (appendix && appendix.length) {
                     if (typeof appendix === 'string') {
-                        url += `&${param}=${appendix}`;
+                        url += `&${param}=${appendix}`
                     } else if (Array.isArray(appendix)) {
-                        url += `&${param}=${appendix.join()}`;
+                        url += `&${param}=${appendix.join()}`
                     }
                 }
             }
         }
-        return url;
+        return url
     }
 
     public openDownloadLinksPopup(links) {
@@ -2741,7 +2912,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
     }
 
-    &__wrapper>div {
+    &__wrapper > div {
         display: flex;
         margin-top: -1px;
         background: rgba(255, 255, 255, 0.9);
@@ -2823,7 +2994,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             padding-right: 0px;
             position: relative;
 
-            &>div {
+            & > div {
                 padding-right: 25px;
                 margin-right: 50px;
 
@@ -2878,7 +3049,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             color: white;
         }
 
-        span+span {
+        span + span {
             &:before {
                 content: ', ';
             }
@@ -2912,9 +3083,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
             bottom: 0;
             left: 0;
             content: '';
-            background: linear-gradient(rgba(white, 0.001),
-                    rgba(white, 0.75) 50%,
-                    white 100%);
+            background: linear-gradient(
+                rgba(white, 0.001),
+                rgba(white, 0.75) 50%,
+                white 100%
+            );
             z-index: 0;
             height: 30px;
             width: 100%;
@@ -2988,7 +3161,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         flex: 0 0 auto;
         flex-wrap: wrap;
 
-        &>div {
+        & > div {
             display: flex;
         }
 
@@ -3114,7 +3287,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             transition: all 250ms ease-in-out;
             border: 1px solid transparent;
 
-            &+button {
+            & + button {
                 margin-left: 10px;
             }
         }
@@ -3194,12 +3367,12 @@ export default class SearchResultDabDetailsComponent extends Vue {
     &__share {
         width: 100%;
 
-        &>div {
+        & > div {
             width: 100%;
         }
 
         &-wrapper {
-            &>div {
+            & > div {
                 margin-top: 10px;
                 width: 100%;
                 display: flex;
@@ -3207,7 +3380,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 justify-content: flex-end;
                 padding: 10px 5px 0;
 
-                >span {
+                > span {
                     @media (max-width: $breakpoint-sm) {
                         width: 100%;
                     }
@@ -3217,7 +3390,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     &__downloads {
-
         a,
         button {
             background: $green;
@@ -3348,7 +3520,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
                             .bulk-download__icon {
                                 border: 2px solid $grey-dark;
-                                background: url('/svg/bulk-download-2-disabled.svg') center center no-repeat;
+                                background: url('/svg/bulk-download-2-disabled.svg')
+                                    center center no-repeat;
                             }
                         }
                     }
@@ -3455,7 +3628,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
         width: 100%;
 
         &__wrapper {
-            >div {
+            > div {
                 height: 330px;
                 padding-top: 0;
             }

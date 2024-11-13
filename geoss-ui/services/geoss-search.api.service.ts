@@ -1916,22 +1916,22 @@ const GeossSearchApiService = {
         } else {
             targetIdsStr = targetIds.join(',')
         }
-        //prevent 404 invoke requests
+
         return []
-        return GeossSearchApiService.getRatings(targetIdsStr, dataOrigin)
-            .then((data: { stats: any }) => {
-                return data.stats
-            })
-            .catch((err: { status: any; statusText: any }) => {
-                LogService.logResourceError(
-                    true,
-                    null,
-                    null,
-                    'Search query',
-                    'Search query is not available at the moment',
-                    `Ajax problem, Status: ${err.status}, Status text: ${err.statusText}`
-                )
-            })
+        // return GeossSearchApiService.getRatings(targetIdsStr, dataOrigin)
+        //     .then((data: { stats: any }) => {
+        //         return data.stats
+        //     })
+        //     .catch((err: { status: any; statusText: any }) => {
+        //         LogService.logResourceError(
+        //             true,
+        //             null,
+        //             null,
+        //             'Search query',
+        //             'Search query is not available at the moment',
+        //             `Ajax problem, Status: ${err.status}, Status text: ${err.statusText}`
+        //         )
+        //     })
     },
 
     getDabResultComments(targetId: string) {
