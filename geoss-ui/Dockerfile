@@ -43,7 +43,7 @@ COPY tsconfig.json .
 
 RUN yarn run build --non-interactive
 
-FROM node:16.19-slim AS runner
+FROM node:18.12-slim AS runner
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
