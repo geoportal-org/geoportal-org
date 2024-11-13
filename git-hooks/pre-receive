@@ -23,7 +23,7 @@ do
 
     echo "$old $old_msg"
     echo "$new $new_msg"
-	
+
 	#git log --pretty=format:"%H %B" $old..$new
 
     if [[ $new_msg =~ $msg_regex ]]; then
@@ -34,7 +34,7 @@ do
         echo >&2 "$new_msg"
         echo >&2 ""
         echo >&2 "Use this pattern:"
-        echo >&2 "GPP-<issue> message"
+        echo >&2 "<project_id>-<issue> message"
         exit 1
     fi
 done
