@@ -13,6 +13,8 @@
         "lintfix": "prettier --write --list-different . && yarn lint:js --fix"
     },
     "dependencies": {
+        "@babel/core": "^7.26.0",
+        "@babel/traverse": "^7.25.9",
         "@nuxtjs/auth": "^4.9.1",
         "@nuxtjs/axios": "^5.13.6",
         "@nuxtjs/i18n": "^7.3.1",
@@ -54,6 +56,7 @@
         "vue-template-compiler": "^2.7.10",
         "vue2-tinymce-editor": "0.0.1",
         "vuebar": "^0.0.20",
+        "webpack": "^5.96.1",
         "xlsx": "^0.18.5",
         "xml-js": "^1.6.11"
     },
@@ -74,6 +77,6 @@
     "engines": {
         "npm": "please-use-yarn",
         "yarn": ">= 1.19.1",
-        "node": ">=16.0.0 <17.0.0"
+        "node": ">=18.12.0 <20.9.0"
     }
 }
