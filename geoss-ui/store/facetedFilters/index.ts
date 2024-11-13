@@ -20,7 +20,7 @@ const initialState = JSON.parse(JSON.stringify(state()))
 const paramsMap: { [key: string]: string } = {
     keyword: 'kwd',
     format: 'frmt',
-    source: 'source', // Temporary fix to make General Filters 'sources' work
+    source: 'sources',
     protocol: 'prot',
     organisation: 'organisationName',
     score: 'sscScore'

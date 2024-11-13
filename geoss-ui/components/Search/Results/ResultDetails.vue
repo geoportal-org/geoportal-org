@@ -2343,8 +2343,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
             }
             this.$store.dispatch(SearchActions.setWorkflowInputId, null)
             this.$store.dispatch(SearchActions.setWorkflowInputType, null)
-        } 
-        
+        }
+
         if(this.isEoWorkflow) {
             if(!this.$store.getters[UserGetters.openEOToken] || this.$store.getters[UserGetters.openEOToken] === ''){
                 await this.handleOpenEOAuth()

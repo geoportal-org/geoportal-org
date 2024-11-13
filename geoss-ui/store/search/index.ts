@@ -269,10 +269,10 @@ const getters: { [key: string]: any } = {
                     : null
         }
     },
-    filtersParams: (getters: any, rootGetters: any) => {
+    filtersParams: (state: any, getters: any, rootState: any, rootGetters: any) => {
         let params = {
-            ...AppVueObj.app.$store.getters[GeneralFiltersGetters.stateMapped],
-            ...AppVueObj.app.$store.getters[FacetedFiltersGetters.stateMapped]
+            ...AppVueObj.app.$store.getters[FacetedFiltersGetters.stateMapped],
+            ...AppVueObj.app.$store.getters[GeneralFiltersGetters.stateMapped]
         }
 
         if (getters.workflow && getters.workflowInputId) {
