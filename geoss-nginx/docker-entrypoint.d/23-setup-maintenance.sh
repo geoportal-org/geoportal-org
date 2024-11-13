@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -n "${MAINTENANCE_ON}" ]; then
+if [ "${MAINTENANCE_ON}" = "true" ]; then
   touch /var/www/html/maintenance/maintenance.on
 else
   echo "MAINTENANCE_ON is not set skipping enable maintenance mode"
