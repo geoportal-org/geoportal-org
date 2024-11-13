@@ -14,7 +14,7 @@
                 :appendToBody="appendToBody" />
             <CustomSelect class="insitu-filters__filter quantityType" @input="onquantityTypesChange($event)"
                 :value="quantityTypes" :options="quantityTypesOptions" :multiple="true" :filterable="true"
-                textProp="text" idProp="id" :placeholder="$t('inSituFilters.quantityTypes')"
+                textProp="text" idProp="id" :placeholder="$tc('inSituFilters.quantityTypes')"
                 :appendToBody="appendToBody" />
             <div class="slider-section-container">
                 <div class="slider-container cropConfidence">

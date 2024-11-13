@@ -86,7 +86,7 @@ export default class DabResultRatingComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn;
     }
 
     public setScore(score: number) {

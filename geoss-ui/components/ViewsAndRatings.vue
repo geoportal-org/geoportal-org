@@ -90,7 +90,7 @@ export default class ViewsAndRatingsComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn;
     }
 
     get isEntryExtensionEnabled() {

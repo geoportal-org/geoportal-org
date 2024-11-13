@@ -372,7 +372,7 @@ export default {
                     this.form.unit,
                     this.form.type,
                     this.form.resultsNumber,
-                    this.$auth.getToken('keycloak')
+                    this.$nuxt.$auth.getToken('keycloak')
                 )
             } else {
                 result = await MatomoDataService.prepareChartData(

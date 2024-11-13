@@ -118,7 +118,7 @@ export default class MenuComponent extends Vue {
     public routes: any = []; // : Array<MenuLink | MenuLinksWrapper> = [];
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn;
     }
 
     get menuOpened() {
@@ -180,8 +180,8 @@ export default class MenuComponent extends Vue {
     }
 
     public async signOff() {
-        const logoutUrl = new URL(this.$auth.strategies.keycloak.options.logout_endpoint);
-        const refreshToken = this.$auth.getRefreshToken('keycloak').replace('Bearer ', '')
+        const logoutUrl = new URL(this.$nuxt.$auth.strategies.keycloak.options.logout_endpoint);
+        const refreshToken = $nuxt.$auth.getRefreshToken('keycloak').replace('Bearer ', '')
         const formData = new URLSearchParams();
         formData.append('refresh_token', refreshToken);
         formData.append('client_id', this.$config.keycloakClientId);
@@ -191,13 +191,13 @@ export default class MenuComponent extends Vue {
             },
             json: true,
         })
-        await this.$auth.logout();
+        await $nuxt.$auth.logout();
         this.$cookies.remove('auth._token.keycloak');
         localStorage.removeItem('auth._token.keycloak');
     }
 
     public signIn() {
-        this.$auth.loginWith('keycloak')
+        $nuxt.$auth.loginWith('keycloak')
         LogService.logSignIn()
     }
 

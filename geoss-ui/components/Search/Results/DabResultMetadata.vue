@@ -10,7 +10,7 @@
             </div>
             <div class="metadata__title">{{ title }}</div>
             <div v-if="organisationName" class="metadata__authors">
-                {{ $t('popupContent.organizationName') }}: {{ organisationName }}
+                {{ $tc('popupContent.organizationName') }}: {{ organisationName }}
             </div>
             <div v-if="authors" class="metadata__authors">
                 {{ $tc('popupContent.authors') }}: {{ authors }}

@@ -14,15 +14,15 @@ import { Component, Vue } from 'nuxt-property-decorator';
 @Component
 export default class UserWelcomeComponent extends Vue {
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn;
     }
 
     get userFirstName() {
-        return this.$auth.user.given_name;
+        return this.$nuxt.$auth.user.given_name;
     }
 
     mounted() {
-        this.$auth.fetchUser();
+        this.$nuxt.$auth.fetchUser();
     }
 }
 </script>

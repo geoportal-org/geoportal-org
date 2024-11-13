@@ -137,8 +137,8 @@ const DashboardService = {
                 const data = JSON.stringify(response)
                 if (data && data.length) {
                     NotificationService.show(
-                        `${AppVueObj.app.$t('popupTitles.dashboards')}`,
-                        `${AppVueObj.app.$t(
+                        `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
+                        `${AppVueObj.app.$tc(
                             'notifications.dashboardSavedSuccessfully'
                         )}`,
                         10000,
@@ -148,8 +148,8 @@ const DashboardService = {
                     )
                 } else {
                     NotificationService.show(
-                        `${AppVueObj.app.$t('popupTitles.dashboards')}`,
-                        `${AppVueObj.app.$t(
+                        `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
+                        `${AppVueObj.app.$tc(
                             'notifications.errorDuringDashboardSaving'
                         )}`,
                         10000,
@@ -162,8 +162,8 @@ const DashboardService = {
             .catch((error: any) => {
                 console.warn(error)
                 NotificationService.show(
-                    `${AppVueObj.app.$t('popupTitles.dashboards')}`,
-                    `${AppVueObj.app.$t(
+                    `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
+                    `${AppVueObj.app.$tc(
                         'notifications.errorDuringDashboardSaving'
                     )}`,
                     10000,
@@ -200,13 +200,13 @@ const DashboardService = {
                 }
                 AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                     contentId: 'dashboard-display',
-                    title: AppVueObj.app.$t('popupTitles.dashboards'),
+                    title: AppVueObj.app.$tc('popupTitles.dashboards'),
                     component: DashboardDisplay,
                     props
                 })
                 NotificationService.show(
-                    `${AppVueObj.app.$t('popupTitles.dashboards')}`,
-                    `${AppVueObj.app.$t(
+                    `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
+                    `${AppVueObj.app.$tc(
                         'notifications.dashboardLoadedSuccessfully'
                     )}`,
                     10000,
@@ -217,8 +217,8 @@ const DashboardService = {
             }
         } catch (error) {
             NotificationService.show(
-                `${AppVueObj.app.$t('popupTitles.dashboards')}`,
-                `${AppVueObj.app.$t(
+                `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
+                `${AppVueObj.app.$tc(
                     'notifications.errorDuringDashboardLoading'
                 )}`,
                 10000,

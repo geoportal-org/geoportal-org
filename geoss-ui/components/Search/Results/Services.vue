@@ -8,7 +8,7 @@
                         <div v-if="result.title" v-line-clamp:20="2" class="services-result__title">{{ result.title }}
                         </div>
                         <div v-if="result.contributor && result.contributor.orgName"
-                            class="services-result__contributor" v-line-clamp:20="1">{{ $t('dabResult.organisation') }}:
+                            class="services-result__contributor" v-line-clamp:20="1">{{ $tc('dabResult.organisation') }}:
                             {{ result.contributor.orgName }}</div>
                     </div>
                     <CrRelationsCheckbox :result="result" />

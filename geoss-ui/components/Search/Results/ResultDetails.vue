@@ -625,7 +625,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn;
+        return this.$nuxt.$auth.loggedIn;
     }
 
     get isEntryExtensionEnabled() {

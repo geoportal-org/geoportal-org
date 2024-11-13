@@ -10,7 +10,7 @@
             }">
             <i class="icomoon-layers"></i>
             <span class="button-caption">{{
-                $t('popupTitles.manageLayers')
+                $tc('popupTitles.manageLayers')
                 }}</span>
         </button>
         <div class="map-control-layers__wrapper" :class="{ active: showBox }" v-if="mapLayers.length">

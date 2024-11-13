@@ -136,7 +136,7 @@ export default class SearchBarComponent extends Vue {
     }
 
     get isSignedIn() {
-        return this.$auth.loggedIn
+        return this.$nuxt.$auth.loggedIn
     }
 
     get searchResultsActive() {

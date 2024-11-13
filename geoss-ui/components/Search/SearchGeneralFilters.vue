@@ -30,7 +30,7 @@
                     class="general-filters__filter location" @input="onContryOrContinentChanged($event)"
                     :value="selectedAreaCoordsConcat" :options="countriesAndContinents" textProp="title"
                     idProp="coordinates" :appendToBody="appendToBody" :filterable="true"
-                    :placeholder="$t('placeholders.selectContinentOrCountry')"
+                    :placeholder="$tc('placeholders.selectContinentOrCountry')"
                     data-tutorial-tag="filters-general-continent-country">
                     <i slot="icon" class="icomoon-all-directions-arrows"></i>
                 </CustomSelect>
@@ -60,13 +60,13 @@
                 </div>
                 <CustomSelect class="general-filters__filter sources" @input="onSourcesChanged($event)"
                     :value="generalFilters.sources" :options="sourceOptions" :multiple="true" :filterable="true"
-                    textProp="label" idProp="value" :placeholder="$t('generalFilters.earthObservationCatalogs')"
+                    textProp="label" idProp="value" :placeholder="$tc('generalFilters.earthObservationCatalogs')"
                     :appendToBody="appendToBody" :buttonDisabled="dataSource !== DataSources.DAB"
                     data-tutorial-tag="filters-general-sources" />
 
                 <ExtendedCustomSelect class="general-filters__filter views" @input="onViewChanged($event)"
                     :value="generalFilters.viewId" :options="viewOptions" nestedOptionsFieldName="subOptions"
-                    :filterable="true" textProp="label" idProp="value" :placeholder="$t('generalFilters.thematicAreas')"
+                    :filterable="true" textProp="label" idProp="value" :placeholder="$tc('generalFilters.thematicAreas')"
                     :appendToBody="appendToBody" :buttonDisabled="dataSource !== DataSources.DAB ||
                         onlyDefaultViewAvailable()
                         " :clearable="!onlyDefaultViewAvailable()" data-tutorial-tag="filters-general-views" />
@@ -469,7 +469,7 @@ export default class SearchGeneralFiltersComponent extends Vue {
     public getGooglePlacesApiError() {
         if (this.googlePlacesApiError) {
             const errorTextPath = 'errors.google.OVER_QUERY_LIMIT'
-            return this.$t(errorTextPath)
+            return this.$tc(errorTextPath)
         } else {
             return null
         }

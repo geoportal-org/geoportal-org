@@ -9,7 +9,7 @@
                             {{ result.metadata.title }}</div>
                         <div v-if="result.metadata && result.metadata.creators" class="zenodo-result__contributor"
                             v-line-clamp:20="1">
-                            ({{ $t('dabResult.creators') }}: <span v-for="(creator, index) of result.metadata.creators"
+                            ({{ $tc('dabResult.creators') }}: <span v-for="(creator, index) of result.metadata.creators"
                                 :key="index">{{ creator.name }}</span>)
                         </div>
                     </div>

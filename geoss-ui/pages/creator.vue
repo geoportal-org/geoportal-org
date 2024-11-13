@@ -140,13 +140,13 @@ export default {
     methods: {
         next() {
             ++this.step
-            if (this.step === 1 && this.$auth.loggedIn) {
+            if (this.step === 1 && this.$nuxt.$auth.loggedIn) {
                 this.step = 2;
             }
         },
         prev() {
             --this.step
-            if (this.step === 1 && this.$auth.loggedIn) {
+            if (this.step === 1 && this.$nuxt.$auth.loggedIn) {
                 this.step = 0;
             }
         },
@@ -174,7 +174,7 @@ export default {
                     const response = await apiClient.$post(`${this.adminUrl}/contents/rest/site`, formData, {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': this.$auth.getToken('keycloak') ? this.$auth.getToken('keycloak') : ''
+                            'Authorization': $nuxt.$auth.getToken('keycloak') ? $nuxt.$auth.getToken('keycloak') : ''
                         }
                     }).catch(error => {
                         console.error('error ', error);
@@ -208,7 +208,7 @@ export default {
                     title: this.defaultView.title,
                     defaultOption: false,
                 }
-                await WebSettingsAPI.updateView(this.defaultView.id, viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.updateView(this.defaultView.id, viewData, $nuxt.$auth.getToken('keycloak'));
             }
 
             const id = selectedView.attributes['data-id'].value
@@ -222,7 +222,7 @@ export default {
                     defaultOption: true,
                 }
 
-                await WebSettingsAPI.updateView(id, viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.updateView(id, viewData, $nuxt.$auth.getToken('keycloak'));
                 this.next()
             }
         },
@@ -234,7 +234,7 @@ export default {
                     title: view.title,
                     defaultOption: false,
                 }
-                await WebSettingsAPI.setView(viewData, this.$auth.getToken('keycloak'));
+                await WebSettingsAPI.setView(viewData, $nuxt.$auth.getToken('keycloak'));
             }
             this.views = await GeossSearchApiService.getViewsOptions()
         },
@@ -284,8 +284,8 @@ export default {
             })
 
             if (response && response.access_token && response.access_token !== '') {
-                this.$auth.setToken(this.$store.state.auth.strategy, `Bearer ${response.access_token}`)
-                this.$auth.strategy._setToken(`Bearer ${response.access_token}`)
+                $nuxt.$auth.setToken(this.$store.state.auth.strategy, `Bearer ${response.access_token}`)
+                $nuxt.$auth.strategy._setToken(`Bearer ${response.access_token}`)
                 this.next();
             }
         }

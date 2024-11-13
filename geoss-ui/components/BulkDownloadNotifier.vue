@@ -1,5 +1,5 @@
 <template>
-    <button v-if="isBulkDownloadEnabled" class="disabled-transparent" :class="{pulsate}" @click="openBulkDownloadPopup()" :disabled="disabled">
+    <button v-if="isBulkDownloadEnabled" class="disabled-transparent" :class="{pulsate}" @click="openBulkDownloadPopup()" :disabled="disabled || !isSignedIn">
         <i class="bulk-download__icon">
             <span v-if="links.length" class="counter">{{links.length}}</span>
         </i>
@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
 import BulkDownloadPopup from '@/components/BulkDownloadPopup.vue';
@@ -31,9 +32,13 @@ export default class BulkDownloadNotifierComponent extends Vue {
         this.pulsate = false;
         this.popupOpened = true;
 
-        const title = AppVueObj.app.$t('popupTitles.downloadsList');
+        const title = this.$tc('popupTitles.downloadsList');
         await this.$store.dispatch(PopupActions.openPopup, {contentId: 'bulk-download', title, component: BulkDownloadPopup});
         this.popupOpened = false;
+    }
+
+    get isSignedIn() {
+        return this.$nuxt.$auth.loggedIn;
     }
 
     get links() {
@@ -87,6 +92,10 @@ export default class BulkDownloadNotifierComponent extends Vue {
     position: relative;
     top: -3px;
     width: 32px;
+
+    &[disabled] {
+        opacity: 0.75
+    }
 
     @media (max-width: $breakpoint-lg) {
         height: 29px;

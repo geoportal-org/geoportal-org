@@ -84,7 +84,7 @@ export default {
             return (new Date(date)).toLocaleString();
         },
         async updateList() {
-            this.highlightedSearches = await UserAPI.getHighlightedSearches(this.$auth.loggedIn);
+            this.highlightedSearches = await UserAPI.getHighlightedSearches(this.$nuxt.$auth.loggedIn);
         },
         getUpdateData(highlightedSearch) {
             return {

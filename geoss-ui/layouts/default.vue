@@ -686,7 +686,7 @@ export default {
                 GeneralApiService.getSiteData(this.$route.params.siteurl)
             ]
 
-            if (this.$auth.loggedIn) {
+            if (this.$nuxt.$auth.loggedIn) {
                 promises.push(GeossSearchApiService.getBookmarks())
             }
 
@@ -1001,7 +1001,7 @@ export default {
                     sessionStorage.getItem('bulkDownload') as string
                 )
                 if (
-                    this.$auth.loggedIn &&
+                    this.$nuxt.$auth.loggedIn &&
                     bulkDownloadItems &&
                     bulkDownloadItems.length
                 ) {
@@ -1015,7 +1015,7 @@ export default {
                 sessionStorage.getItem('fileDownload') as string
             )
             if (
-                this.$auth.loggedIn &&
+                this.$nuxt.$auth.loggedIn &&
                 fileDownloadItems &&
                 fileDownloadItems.length
             ) {
