@@ -109,7 +109,7 @@ secrets:
     data:
       adminUrl: "https://${ADMIN_DOMAIN_NAME}"
       baseUrl: "https://${UI_DOMAIN_NAME}"
-      curatedUrl: "https://${ADMIN_DOMAIN_NAME}/curated/rest/"
+      curatedUrl: "https://${UI_DOMAIN_NAME}/curated/rest/"
       keycloakBaseUrl: "https://${IDP_DOMAIN_NAME}/realms/geoss"
       keycloakClientId: "geoss-ui"
       matomoToken: "${MATOMO_TOKEN}"
