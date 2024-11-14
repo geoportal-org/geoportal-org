@@ -270,12 +270,18 @@ export default class OpenEOWorkflowComponent extends Vue {
 
     public async run() {
         if (!this.isSignedIn) {
-            const fullLoginUrl = `/c/portal/login?redirect=${this.urlToResource}`
-            const message = `${this.$tc(
-                'popupContent.mustBeLoggedIn1'
-            )}<a href="${fullLoginUrl}">${this.$tc(
+            const handleLogin = () => {
+                $nuxt.$auth.loginWith('keycloak')
+                LogService.logSignIn()
+            }
+            const message = `${this.$tc('popupContent.mustBeLoggedIn1')} 
+            <button style="color: #aad3df; text-decoration: underline;" id='notification-login-button'>${this.$tc(
                 'popupContent.mustBeLoggedIn2'
-            )}</a> ${this.$tc('popupContent.mustBeLoggedIn3')}`
+            )}</button> ${this.$tc('popupContent.mustBeLoggedIn3')}`
+            setTimeout(() => {
+                const button = document.getElementById('notification-login-button');
+                button.onclick = handleLogin;            
+            }, 1);
 
             return NotificationService.show(
                 `${this.$tc('general.info')}`,

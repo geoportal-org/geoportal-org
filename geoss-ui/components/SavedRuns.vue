@@ -6,7 +6,7 @@
                 OpenEO Jobs
             </button>
         </div>
-        <div
+        <!-- <div
             v-if="workflow && workflowRunName"
             class="d-flex flex--justify-between flex--align-center service-workflow__add-run"
         >
@@ -29,7 +29,7 @@
             >
                 {{ $tc('popupContent.add') }}
             </button>
-        </div>
+        </div> -->
         <div
             v-show="loading"
             :class="{ 'separate-popup': !workflow && !workflowRunName }"
@@ -249,49 +249,49 @@ export default class SavedRunsComponent extends Vue {
     public runsResultsPerPage = 10
     public runsStartIndex = 0
     public runsTotal = 0
-    public addRunId = ''
-    public addRunName = ''
+    // public addRunId = ''
+    // public addRunName = ''
     public loading = false
 
     get isSignedIn() {
         return this.$nuxt.$auth.loggedIn
     }
 
-    public async addRun() {
-        const run: any = {}
-        const [err, { status, messageList, result }] = await to(
-            GeossSearchApiService.getRunStatus(this.addRunId)
-        )
-        if (!err) {
-            GeossSearchApiService.addSavedRun(
-                this.workflowRunName,
-                this.workflow,
-                this.addRunId
-            ).then(() => {
-                run.status = status
-                run.messageList = messageList
-                run.result = result
-                run.showLogs = false
-                if (status === 'COMPLETED' || status === 'SUCCESS') {
-                    return GeossSearchApiService.getRunStatus(
-                        this.addRunId
-                    ).then(({ outputs }: any) => {
-                        run.outputs = outputs
-                        run.showOutputs = false
-                    })
-                }
-            })
-        } else {
-            NotificationService.show(
-                `${this.$tc('popupTitles.savedRuns')}`,
-                `Analysis with run ID ${this.addRunId} does not exist.`,
-                10000,
-                undefined,
-                9999,
-                'error'
-            )
-        }
-    }
+    // public async addRun() {
+    //     const run: any = {}
+    //     const [err, { status, messageList, result }] = await to(
+    //         GeossSearchApiService.getRunStatus(this.addRunId)
+    //     )
+    //     if (!err) {
+    //         GeossSearchApiService.addSavedRun(
+    //             this.workflowRunName,
+    //             this.workflow,
+    //             this.addRunId
+    //         ).then(() => {
+    //             run.status = status
+    //             run.messageList = messageList
+    //             run.result = result
+    //             run.showLogs = false
+    //             if (status === 'COMPLETED' || status === 'SUCCESS') {
+    //                 return GeossSearchApiService.getRunStatus(
+    //                     this.addRunId
+    //                 ).then(({ outputs }: any) => {
+    //                     run.outputs = outputs
+    //                     run.showOutputs = false
+    //                 })
+    //             }
+    //         })
+    //     } else {
+    //         NotificationService.show(
+    //             `${this.$tc('popupTitles.savedRuns')}`,
+    //             `Analysis with run ID ${this.addRunId} does not exist.`,
+    //             10000,
+    //             undefined,
+    //             9999,
+    //             'error'
+    //         )
+    //     }
+    // }
 
     public async showOnMap(runId: string, output: any) {
         const { url, name, protocol, legend } = output.value

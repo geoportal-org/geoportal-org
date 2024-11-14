@@ -441,7 +441,7 @@ export default {
         accept: 'Aceptar',
         removeResource: 'Eliminar recurso',
         mustBeLoggedIn: 'Inicia <a href="/c/portal/login">sesión</a> para ejecutar el servicio.',
-        mustBeLoggedIn1: '',
+        mustBeLoggedIn1: 'Por favor',
         mustBeLoggedIn2: 'Inicia sesión',
         mustBeLoggedIn3: 'para ejecutar el servicio',
         noRunsAvailable: 'No hay carreras disponibles',

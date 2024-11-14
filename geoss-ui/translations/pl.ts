@@ -443,7 +443,7 @@ export default {
         accept: 'OK',
         removeResource: 'Usuń zasób',
         mustBeLoggedIn: '<a href="/c/portal/login">Zaloguj się</a>, aby uruchomić usługę',
-        mustBeLoggedIn1: '',
+        mustBeLoggedIn1: 'Proszę',
         mustBeLoggedIn2: 'Zaloguj się',
         mustBeLoggedIn3: 'by uruchomić usługę',
         noRunsAvailable: 'Brak dostępnych startów',

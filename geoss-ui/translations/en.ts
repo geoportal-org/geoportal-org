@@ -450,7 +450,7 @@ export default {
         accept: 'Accept',
         removeResource: 'Remove resource',
         mustBeLoggedIn: 'Please <a href="/c/portal/login">log in</a> to run the service',
-        mustBeLoggedIn1: 'Please ',
+        mustBeLoggedIn1: 'Please',
         mustBeLoggedIn2: 'log in',
         mustBeLoggedIn3: 'to run the service',
         noRunsAvailable: 'No runs available',
