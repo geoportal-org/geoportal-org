@@ -92,6 +92,8 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-ui-env
         key: matomoUrl
+  - name: OPEN_EO_REDIRECT_URL
+    value: "https://${UI_DOMAIN_NAME}/"
   - name: PROXY_URL
     valueFrom:
       secretKeyRef:
