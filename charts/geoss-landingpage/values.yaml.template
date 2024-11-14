@@ -58,8 +58,10 @@ tolerations:
         effect: "NoExecute"
 
 env:
-  - name: NEXT_PUBLIC_DATA_PROVIDERS_URL
-    value: "https://${UI_DOMAIN_NAME}/rest/services-providers/"
+  - name: NEXT_PUBLIC_API_URL
+    value: "https://${ADMIN_DOMAIN_NAME}/"
+  - name: NODE_TLS_REJECT_UNAUTHORIZED
+    value: "0"
 
 secrets:
 

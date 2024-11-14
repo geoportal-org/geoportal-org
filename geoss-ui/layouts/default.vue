@@ -805,6 +805,7 @@ export default {
                                 await GeneralApiService.getSearchSettings(
                                     siteId
                                 )
+
                             if (searchSettings) {
                                 this.$store.dispatch(
                                     SearchEngineActions.setDabBaseUrl,
@@ -813,6 +814,14 @@ export default {
                                 this.$store.dispatch(
                                     SearchEngineActions.setDabDataProvidersUrl,
                                     searchSettings['dabDataProvidersUrl']
+                                )
+                                this.$store.dispatch(
+                                    SearchEngineActions.setDabDataProvidersUsername,
+                                    searchSettings['dabDataProvidersUsername']
+                                )
+                                this.$store.dispatch(
+                                    SearchEngineActions.setDabDataProvidersPassword,
+                                    searchSettings['dabDataProvidersPassword']
                                 )
                                 this.$store.dispatch(
                                     SearchEngineActions.setInternalOpenSearchUrl,

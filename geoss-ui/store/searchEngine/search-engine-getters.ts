@@ -8,6 +8,8 @@ export enum SearchEngineGetters {
     siteId = 'searchEngine/siteId',
     tourUrl = 'searchEngine/tourUrl',
     dabDataProvidersUrl = 'searchEngine/dabDataProvidersUrl',
+    dabDataProvidersUsername = 'searchEngine/dabDataProvidersUsername',
+    dabDataProvidersPassword = 'searchEngine/dabDataProvidersPassword',
     w3wKey = 'searchEngine/w3wKey',
     userDabBaseUrl = 'searchEngine/userDabBaseUrl',
     internalOpenSearchUrl = 'searchEngine/internalOpenSearchUrl',

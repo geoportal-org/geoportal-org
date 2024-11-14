@@ -154,6 +154,14 @@ export default class YellowPagesHeader extends Vue {
                 border-top-color: $grey-darker;
             }
         }
+
+        .custom-select__option{
+            color: black;
+
+            .selected {
+                color: white;
+            }
+        }
     }
 
     .close-window {

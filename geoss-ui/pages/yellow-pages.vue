@@ -6,7 +6,7 @@
                     <div class="yellow-pages__sub" v-if="storeInitialized">
                         <YellowPagesHeader />
                         <YellowPagesProviders />
-                        <YellowPagesPagination />
+                        <!-- <YellowPagesPagination /> -->
                     </div>
                 </div>
             </div>

@@ -4,5 +4,6 @@ export enum YellowPagesFiltersGetters {
     perPage = 'yellowPagesFilters/perPage',
     pageOffset = 'yellowPagesFilters/pageOffset',
     results = 'yellowPagesFilters/results',
+    currentResults = 'yellowPagesFilters/currentResults',
     resultsTotal = 'yellowPagesFilters/resultsTotal'
 }

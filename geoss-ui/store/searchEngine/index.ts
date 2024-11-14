@@ -8,6 +8,8 @@ const state = () => ({
     siteId: 0,
     tourUrl: '/',
     dabDataProvidersUrl: null,
+    dabDataProvidersUsername: '',
+    dabDataProvidersPassword: '',
     w3wKey: null,
     userDabBaseUrl: '',
     internalOpenSearchUrl: '',
@@ -41,6 +43,12 @@ const getters = {
     },
     dabDataProvidersUrl: (state: any) => {
         return state.dabDataProvidersUrl
+    },
+    dabDataProvidersUsername: (state: any) => {
+        return state.dabDataProvidersUsername
+    },
+    dabDataProvidersPassword: (state: any) => {
+        return state.dabDataProvidersPassword
     },
     w3wKey: (state: any) => {
         return state.w3wKey
@@ -89,6 +97,12 @@ const actions = {
     },
     setDabDataProvidersUrl: (context: any, value: string) => {
         context.commit('setStateProp', { prop: 'dabDataProvidersUrl', value })
+    },
+    setDabDataProvidersUsername: (context: any, value: string) => {
+        context.commit('setStateProp', { prop: 'dabDataProvidersUsername', value })
+    },
+    setDabDataProvidersPassword: (context: any, value: string) => {
+        context.commit('setStateProp', { prop: 'dabDataProvidersPassword', value })
     },
     setW3wKey: (context: any, value: string) => {
         context.commit('setStateProp', { prop: 'w3wKey', value })

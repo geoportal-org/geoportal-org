@@ -1,93 +1,179 @@
 <template>
     <div class="yellow-pages-providers" ref="results-container" v-bar>
         <div>
-            <div v-for="provider of results" :key="provider.id" class="provider" :id="`provider-${provider.id}`"
-                :class="{ active: activeProviders.indexOf(provider.id) !== -1 }">
+            <div
+                v-for="provider of currentResults.slice(0, elementsCount)"
+                :key="provider.id"
+                class="active provider"
+                :id="`provider-${provider.id}`"
+            >
                 <div class="provider__main">
                     <div class="provider__left">
                         <div class="provider__image">
-                            <img v-image-preview :src="getImage(provider.image_url)"
-                                @error="imageLoadError(provider.image_url)" :alt="provider.title" />
+                            <img
+                                v-image-preview
+                                :src="
+                                    getImage(provider.data.organizationLogoURL)
+                                "
+                                @error="imageLoadError(provider.image_url)"
+                                :alt="provider.title"
+                            />
                         </div>
                         <div class="provider__side-info">
-                            <CollapseTransition>
-                                <div v-show="activeProviders.indexOf(provider.id) !== -1">
-                                    <div class="provider__additional-info">
-                                        <label>{{ $tc('yellowPages.geoAffiliation') }} </label>
-                                        <div>{{ getProviderExtra(provider, 'GEO Affiliation') }}</div>
-                                    </div>
-                                    <div class="provider__additional-info">
-                                        <label>{{ $tc('yellowPages.dataPolicy') }} </label>
-                                        <div>{{ getProviderExtra(provider, 'Data Policy') }}</div>
-                                    </div>
-                                    <div class="provider__additional-info">
-                                        <label>{{ $tc('yellowPages.geographicalCoverage') }} </label>
-                                        <div>{{ getProviderExtra(provider, 'Geographical Coverage') }}</div>
+                            <div>
+                                <div class="provider__additional-info">
+                                    <label
+                                        >{{ $tc('yellowPages.geoAffiliation') }}
+                                    </label>
+                                    <div>
+                                        {{ provider.data.geoAffiliation }}
                                     </div>
                                 </div>
-                            </CollapseTransition>
+                                <div class="provider__additional-info">
+                                    <label
+                                        >{{ $tc('yellowPages.dataPolicy') }}
+                                    </label>
+                                    <div>
+                                        {{
+                                            provider.data.dataPolicy.replace(
+                                                /[\[\]"]/g,
+                                                ''
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                                <div class="provider__additional-info">
+                                    <label
+                                        >{{
+                                            $tc(
+                                                'yellowPages.geographicalCoverage'
+                                            )
+                                        }}
+                                    </label>
+                                    <div>
+                                        {{
+                                            provider.data.organizationGeographicalCoverage.replace(
+                                                /[\[\]"]/g,
+                                                ''
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="provider__right">
                         <div class="provider__main-info">
-                            <div class="provider__title" @click="toggleProvider(provider.id)">{{ provider.title }}</div>
-                            <!-- <div class="provider__date" v-if="provider.date">
-                                <span class="provider__date__label">{{ $tc('yellowPages.registrationDate') }}:</span> <span>
-                                    {{ provider.date | date('DD-MM-YYYY') }}</span>
-                            </div> -->
+                            <div class="provider__title">{{ provider.name }}</div>
                             <div class="provider__website">
-                                <a :href="getProviderUrl(provider).url" target="_blank">{{ getProviderUrl(provider).urlLabel
-                                }}</a>
+                                <a
+                                    :href="provider.data.websiteInstitutionURL"
+                                    target="_blank"
+                                    >{{ provider.data.websiteInstitutionURL }}</a
+                                >
+                            </div>
+                            <div
+                                class="provider__date"
+                                v-if="provider.createDate"
+                            >
+                                <span class="provider__date__label"
+                                    >{{
+                                        $tc('yellowPages.registrationDate')
+                                    }}:</span
+                                >
+                                <span>
+                                    {{
+                                        provider.createDate.substring(0, 10) ||
+                                        'No data'
+                                    }}</span
+                                >
                             </div>
                             <div class="provider__description">
-                                <div :class="{ active: activeProviders.indexOf(provider.id) !== -1 }">{{
-                                    provider.description }}
+                                <div class="active">
+                                    {{ provider.data.shortDescription }}
                                 </div>
                             </div>
                             <div class="provider__principles">
-                                <img v-for="(principle, index) in availablePrinciples" :key="index" :alt="principle"
-                                    :class="{ disabled: provider.principles.indexOf(principle) === -1 }"
-                                    :src="`/svg/dmp${index + 1}.svg`" :title="$tc(`yellowPages.${principle}`)">
+                                <img
+                                    v-for="(
+                                        principle, index
+                                    ) in availablePrinciples"
+                                    :key="index"
+                                    :alt="principle"
+                                    :class="{
+                                        disabled:
+                                            provider.data.dataManagementPrinciplesLabel.indexOf(
+                                                principle
+                                            ) === -1
+                                    }"
+                                    :src="`/svg/dmp${index + 1}.svg`"
+                                    :title="$tc(`${principle}`)"
+                                />
                             </div>
                         </div>
-                        <CollapseTransition>
-                            <div v-show="activeProviders.indexOf(provider.id) !== -1">
-                                <div class="provider__goals-title">{{ $tc('yellowPages.sustainableDevelopmentGoals') }}:
-                                </div>
-                                <div>
-                                    <div class="provider__goals">
-                                        <img v-for="goal in availableGoalsSDG" :key="goal" :alt="goal"
-                                            :class="{ disabled: provider.goalsSDG.indexOf(goal) === -1 }"
-                                            :src="`/img/sdg/${goal}.png`" :title="$tc(`yellowPages.${goal}`)">
-                                    </div>
-                                </div>
-                                <div class="provider__goals-title">{{ $tc('yellowPages.societalBenefitAreas') }}:</div>
-                                <div>
-                                    <div class="provider__goals-benefits">
-                                        <img v-for="goal in availableGoalsSBA" :key="goal" :alt="goal"
-                                            :class="{ disabled: provider.goalsSBA.indexOf(goal) === -1 }"
-                                            :src="`/svg/sba/${goal}.svg`" :title="$tc(`yellowPages.${goal}`)">
-                                    </div>
+                        <!-- <div>
+                            <div class="provider__goals-title">
+                                {{
+                                    $tc(
+                                        'yellowPages.sustainableDevelopmentGoals'
+                                    )
+                                }}:
+                            </div>
+                            <div>
+                                <div class="provider__goals">
+                                    <img
+                                        v-for="goal in availableGoalsSDG"
+                                        :class="{
+                                            disabled:
+                                                provider.data.relevantSDG.indexOf(
+                                                    goal.label
+                                                ) === -1
+                                        }"
+                                        :key="goal.value"
+                                        :alt="goal.value"
+                                        :src="`/img/sdg/${goal.value}.png`"
+                                        :title="
+                                            $tc(`yellowPages.${goal.label}`)
+                                        "
+                                    />
                                 </div>
                             </div>
-                        </CollapseTransition>
-                        <Share class="provider__share-btn" :url="getProviderUrl(provider).url" :survey="true" />
-                        <!-- <button class="provider__share-btn" :class="{active: providerShareActive === provider.id}" @click="toggleProviderShare(provider.id)">
-							<i class="icomoon-share"></i>
-						</button>
-						<CollapseTransition>
-							<div class="provider__share__container" v-show="providerShareActive === provider.id">
-								<div>
-									<div class="provider__share">
-										<Share :url="getProviderUrl(provider).url" :survey="true" />
-									</div>
-								</div>
-							</div>
-						</CollapseTransition> -->
+                            <div class="provider__goals-title">
+                                {{ $tc('yellowPages.societalBenefitAreas') }}:
+                            </div>
+                            <div>
+                                <div class="provider__goals-benefits">
+                                    <img
+                                        v-for="goal in availableGoalsSBA"
+                                        :class="{
+                                            disabled:
+                                                provider.data.relevantSBA.indexOf(
+                                                    goal.label
+                                                ) === -1
+                                        }"
+                                        :key="goal.value"
+                                        :alt="goal.value"
+                                        :src="`/svg/sba/${goal.value}.svg`"F
+                                        :title="
+                                            $tc(`yellowPages.${goal.label}`)
+                                        "
+                                    />
+                                </div>
+                            </div>
+                        </div> -->
+                        <Share
+                            class="provider__share-btn"
+                            :url="provider.data.websiteInstitutionURL"
+                            :survey="true"
+                        />
                     </div>
                 </div>
-
+            </div>
+            <div class="button_container">
+                <button class="show_more_button" @click="showMoreResults">
+                    Show more
+                </button>
             </div>
         </div>
     </div>
@@ -95,105 +181,48 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
-import { YellowPagesFiltersGetters } from '@/store/yellowPagesFilters/yellow-pages-filters-getters';
-import { AvailablePrinciples } from '@/data/principles';
-import { SDGs } from '@/data/sdg';
-import { SBAs } from '@/data/sba';
-import { YellowPagesFiltersActions } from '@/store/yellowPagesFilters/yellow-pages-filters-actions';
-import Share from '@/components/Share.vue';
-import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
-import CollapseTransition from '@/plugins/CollapseTransition';
+import { YellowPagesFiltersGetters } from '@/store/yellowPagesFilters/yellow-pages-filters-getters'
+import { AvailablePrinciples } from '@/data/principles'
+import { SDGs } from '@/data/sdg'
+import { SBAs } from '@/data/sba'
+import { YellowPagesFiltersActions } from '@/store/yellowPagesFilters/yellow-pages-filters-actions'
+import Share from '@/components/Share.vue'
 
 @Component({
     components: {
-        Share,
-        CollapseTransition
+        Share
     }
 })
 export default class YellowPagesProvidersComponent extends Vue {
-    public availablePrinciples = AvailablePrinciples;
+    public availablePrinciples = AvailablePrinciples
+    public presentPrinciples = []
+    public elementsCount = 10
 
-    public availableGoalsSDG = SDGs;
+    public availableGoalsSDG = SDGs
+    public presentSDG = []
 
-    public availableGoalsSBA = SBAs;
+    public availableGoalsSBA = SBAs
+    public presentSBA = []
 
-    public activeProviders = [];
+    public activeProviders = []
 
-    public providerShareActive: string | null = null;
+    public providerShareActive: string | null = null
 
-    private providers = [];
-
-    get results(): any[] {
-        return this.$store.getters[YellowPagesFiltersGetters.results];
+    get currentResults() {
+        return this.$store.getters[YellowPagesFiltersGetters.currentResults]
     }
 
-    public getProviderUrl(provider: any) {
-        let url = '';
-        let urlLabel = '';
-        const urlExtra = provider.extras.find((extra: any) => extra.key === 'Institution Web Site URL');
-        if (urlExtra && urlExtra.value) {
-            url = urlExtra.value;
-            if (url.slice(0, 4) !== 'http') {
-                url = 'http://' + url;
-            }
-
-            urlLabel = url;
-            if (urlLabel.slice(0, 7) === 'http://') {
-                urlLabel = urlLabel.slice(7);
-            }
-            if (urlLabel.slice(0, 8) === 'https://') {
-                urlLabel = urlLabel.slice(8);
-            }
-        }
-        return { url, urlLabel };
+    public showMoreResults() {
+        this.elementsCount = this.elementsCount + 10
     }
 
-    public getProviderExtra(provider: any, extraKey: string) {
-        const extra = provider.extras.find((extra: any) => extra.key === extraKey);
-        if (extra && extra.value) {
-            return extra.value;
-        }
-        return null;
-    }
-
-    public toggleProvider(providerId: string) {
-        const index = this.activeProviders.indexOf(providerId);
-        if (index !== -1) {
-            this.activeProviders.splice(index, 1);
-        } else {
-            this.activeProviders.push(providerId);
-        }
-        this.$nextTick().then(() => {
-            const descriptionEl = this.$el.querySelector(`#provider-${providerId} .provider__description`) as HTMLElement;
-            if (index === -1) {
-                descriptionEl.style.maxHeight = `${descriptionEl.scrollHeight}px`;
-            } else {
-                descriptionEl.style.maxHeight = '60px';
-            }
-        });
-    }
-
-    public toggleProviderShare(providerId: string) {
-        if (this.providerShareActive === providerId) {
-            this.providerShareActive = null;
-        } else {
-            this.providerShareActive = providerId;
-        }
-    }
-
-    @Watch('results')
-    private onResultsChanged() {
-        this.$nextTick().then(() => {
-            const resultsContainer = this.$refs['results-container'] as HTMLElement;
-            const scrollableContainer = resultsContainer.querySelector('.vb-content') as HTMLElement;
-            scrollableContainer.scrollTop = 0;
-        });
-    }
-
-    private mounted() {
-        this.$store.dispatch(YellowPagesFiltersActions.getResults);
+    private async mounted() {
+        const res = await this.$store.dispatch(
+            YellowPagesFiltersActions.getResults
+        )
+        this.$store.dispatch(YellowPagesFiltersActions.setCurrentResults, res)
     }
 }
 </script>
@@ -202,7 +231,24 @@ export default class YellowPagesProvidersComponent extends Vue {
 .yellow-pages-providers {
     // background: $white-transparent;
     height: 100%;
-    margin-bottom: -5px;
+
+    .button_container {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .show_more_button {
+        background: #0661A9BF;
+        padding: 10px 20px 10px 20px;
+        color: white;
+        &:hover{
+            scale: 105%;
+        }
+    }
 
     .provider {
         display: flex;
@@ -237,7 +283,7 @@ export default class YellowPagesProvidersComponent extends Vue {
             max-width: 100%;
             flex-direction: row;
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 max-width: 100%;
                 flex-direction: column-reverse;
             }
@@ -246,7 +292,7 @@ export default class YellowPagesProvidersComponent extends Vue {
         &__left {
             width: 30%;
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 width: 100%;
             }
         }
@@ -254,8 +300,9 @@ export default class YellowPagesProvidersComponent extends Vue {
         &__right {
             width: 70%;
             padding: 15px 20px;
+            min-height: 300px;
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 padding-bottom: 0;
                 width: 100%;
             }
@@ -286,16 +333,16 @@ export default class YellowPagesProvidersComponent extends Vue {
                 transition: border-color ease-in-out 250ms 250ms;
             }
 
-            @media(max-width: $breakpoint-xl) {
+            @media (max-width: $breakpoint-xl) {
                 flex: 0 0 175px;
             }
 
-            @media(max-width: $breakpoint-md) {
+            @media (max-width: $breakpoint-md) {
                 flex: 0 0 100%;
                 padding: 20px 40px 20px 20px;
             }
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 display: none;
             }
 
@@ -308,10 +355,13 @@ export default class YellowPagesProvidersComponent extends Vue {
         }
 
         &__main-info {
-            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
             padding-right: 20px;
 
-            @media(max-width: $breakpoint-md) {
+            @media (max-width: $breakpoint-md) {
                 max-width: 100%;
             }
         }
@@ -360,7 +410,7 @@ export default class YellowPagesProvidersComponent extends Vue {
                 }
             }
 
-            @media(max-width: $breakpoint-md) {
+            @media (max-width: $breakpoint-md) {
                 margin-bottom: 15px;
             }
         }
@@ -374,10 +424,10 @@ export default class YellowPagesProvidersComponent extends Vue {
                 font-size: 14px;
                 font-weight: bold;
 
-                &+div:last-child>div {
+                & + div:last-child > div {
                     margin-bottom: 0;
 
-                    @media(max-width: $breakpoint-sm) {
+                    @media (max-width: $breakpoint-sm) {
                         margin-bottom: 20px;
                     }
                 }
@@ -409,7 +459,7 @@ export default class YellowPagesProvidersComponent extends Vue {
         &__side-info {
             padding-left: 20px;
 
-            @media(max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-sm) {
                 border-left: none;
                 padding-left: 20px;
                 max-width: none;
@@ -452,7 +502,6 @@ export default class YellowPagesProvidersComponent extends Vue {
                 margin-bottom: 5px;
                 margin-right: 10px;
             }
-
         }
 
         &__more {
@@ -505,11 +554,9 @@ export default class YellowPagesProvidersComponent extends Vue {
         }
 
         &__share__container {
-
             position: absolute;
             top: 40px;
             right: 25px;
-
         }
     }
 }
