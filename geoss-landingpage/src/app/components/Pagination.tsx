@@ -14,11 +14,11 @@ const Pagination = ({ pagination }: Props) => {
   const { number, totalPages } = pagination;
 
   const createPageLinks = () => {
-    let startPage = Math.max(1, number - 1);
+    let startPage = Math.max(1, number);
     let endPage = Math.min(totalPages, number + 1);
 
     // Ensure we always show 3 pages if possible
-    if (number === 1) {
+    if (number === 0) {
       endPage = Math.min(totalPages, 3);
     } else if (number === totalPages) {
       startPage = Math.max(1, totalPages - 2);
@@ -31,7 +31,7 @@ const Pagination = ({ pagination }: Props) => {
           scroll={false}
           prefetch
           className={`px-4 py-2 text-[#23272A] ${
-            i === number
+            i === number + 1
               ? "bg-[#F2F5F7] border border-[#A4ABB2]"
               : "text-black hover:bg-[#F2F5F7]"
           }`}
@@ -96,7 +96,7 @@ const Pagination = ({ pagination }: Props) => {
         className={`${number + 1 === 1 && "pointer-events-none"}`}
         scroll={false}
         prefetch
-        href={`${number + 1 === 1 ? `` : `?page=${number - 1}`}`}
+        href={`${number + 1 === 1 ? `` : `?page=${number}`}`}
       >
         <TriangleArrowLeftIcon
           color={number + 1 === 1 ? "#A4ABB2" : "#23272A"}
@@ -108,7 +108,7 @@ const Pagination = ({ pagination }: Props) => {
         className={`${number + 1 === totalPages && "pointer-events-none"}`}
         scroll={false}
         prefetch
-        href={`${number + 1 === totalPages ? `` : `?page=${number + 1}`}`}
+        href={`${number + 1 === totalPages ? `` : `?page=${number + 2}`}`}
       >
         <TriangleArrowRightIcon
           color={number + 1 === totalPages ? "#A4ABB2" : "#23272A"}

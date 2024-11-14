@@ -18,6 +18,7 @@ export const getNewsPages = async (currentPage = 0, size = 9) => {
 };
 
 export const getNewsPagesWithImages = async (currentPage = 0, size = 9) => {
+    console.log(currentPage)
     const { siteId } = await fetchSettings();
     if (siteId === undefined) {
         return { news: null, paginationData: { size: 0, totalElements: 0, totalPages: 0, number: 0 } };

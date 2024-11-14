@@ -14,9 +14,8 @@ export const metadata: Metadata = {
 };
 
 async function getServerSideProps(searchParams: { [key: string]: string | string[] | undefined }) {
-    const currentPage = Number(searchParams.page) - 1 || 0;
+    const currentPage = Number(searchParams.page) && Number(searchParams.page) > 0 ? Number(searchParams.page) - 1 : 0;
     const newsList: NewsTileData[] = [];
-
     const { newsWithImages, paginationData } = await getNewsPagesWithImages(currentPage);
     if (newsWithImages) {
         newsWithImages.forEach((n: any) => {
@@ -29,7 +28,6 @@ async function getServerSideProps(searchParams: { [key: string]: string | string
             });
         });
     }
-
     return { paginationData, newsList };
 }
 
