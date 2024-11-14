@@ -42,9 +42,9 @@ export const ManageContent = ({ isEditMode = false }: ManageContentProps) => {
 
     useEffect(() => {
         if (router.isReady) {
+            getDocumentsList();
             if (isEditMode) {
                 getEditedContent();
-                getDocumentsList();
             } else {
                 setIsLoading(false);
             }
