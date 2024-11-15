@@ -1,0 +1,13 @@
+server {
+  listen *:8080;
+  server_name ${UI_DOMAIN_NAME_REDIRECT};
+
+  error_log /dev/stderr;
+  access_log /dev/stdout timed_combined;
+
+  ###BASIC_AUTH###
+
+  return 301 https://${UI_DOMAIN_NAME}$request_uri;
+}
+
+  

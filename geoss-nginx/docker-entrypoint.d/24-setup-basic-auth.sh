@@ -22,6 +22,12 @@ if [ "${BASIC_AUTH_ENABLED}" = "true" ]; then
   mv /etc/nginx/conf.d/gpp-lp.conf /etc/nginx/conf.d/gpp-lp.conf.old
   awk -v r="${include_conf}" '{gsub(/###BASIC_AUTH###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
   rm /etc/nginx/conf.d/gpp-lp.conf.old
+
+  if [ "${UI_REDIRECT_ENABLED}" = "true" ]; then
+    mv /etc/nginx/conf.d/gpp-redirect.conf /etc/nginx/conf.d/gpp-redirect.conf.old
+    awk -v r="${include_conf}" '{gsub(/###BASIC_AUTH###/,r)}1' /etc/nginx/conf.d/gpp-redirect.conf.old > /etc/nginx/conf.d/gpp-redirect.conf
+    rm /etc/nginx/conf.d/gpp-redirect.conf.old
+  fi 
 fi
 
 if [ -n "${BASIC_AUTH_WHITELIST}" ]; then
