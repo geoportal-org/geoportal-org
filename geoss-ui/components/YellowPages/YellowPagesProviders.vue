@@ -170,7 +170,7 @@
                     </div>
                 </div>
             </div>
-            <div class="button_container">
+            <div v-if="currentResults.length" class="button_container">
                 <button class="show_more_button" @click="showMoreResults">
                     Show more
                 </button>

@@ -104,26 +104,31 @@ const OpenEOService = {
     },
 
     parseOpenEOJobs(data: any) {
-        return data.map((job: any) => {
-            return {
-                createdOn: job.created,
-                createdBy: '',
-                id: job.id,
-                messageList: [],
-                modifiedBy: '',
-                modifiedOn: job.created,
-                name: 'Name placeholder',
-                outputs: [],
-                path: '',
-                result: job.status.toUpperCase(),
-                runId: job.id,
-                showLogs: false,
-                showOutputs: false,
-                status: job.status.toUpperCase(),
-                user: '',
-                workflowId: job.id
-            }
-        })
+        if(data){
+            return data.map((job: any) => {
+                return {
+                    createdOn: job.created,
+                    createdBy: '',
+                    id: job.id,
+                    messageList: [],
+                    modifiedBy: '',
+                    modifiedOn: job.created,
+                    name: 'Name placeholder',
+                    outputs: [],
+                    path: '',
+                    result: job.status.toUpperCase(),
+                    runId: job.id,
+                    showLogs: false,
+                    showOutputs: false,
+                    status: job.status.toUpperCase(),
+                    user: '',
+                    workflowId: job.id
+                }
+            })
+        }else {
+            return []
+        }
+
     }
 }
 
