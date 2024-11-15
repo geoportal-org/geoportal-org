@@ -669,7 +669,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public FileFormatsIcons = FileFormatsIcons
     public DataSources = DataSources
     public logo = typeof this.result.logo === 'string' ? this.result.logo : ''
-    public isEoWorkflow = this.result.id === 'maps4gpp_usecase4_314b294e-1af6-4a9d-b934-5ce9e848a0d0_1729591533559'
+    public isEoWorkflow = this.result.id.toLowerCase().includes('maps4gpp')
 
     get dashboardContent() {
         return UtilsService.getPropByString(this.result, 'dashboard.content')
@@ -2815,6 +2815,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     @Watch('resultIdDetails')
     private onResultIdDetailsChange() {
+        console.log(this.result)
+
         if (
             this.resultIdDetails === this.result.id &&
             !this.result.userContributions
