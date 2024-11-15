@@ -1,3 +1,9 @@
+if [ "${BLOCK_ALL_FOR_SCAN}" = "true" ]; then
+  mv /etc/nginx/conf.d/common/block_unauthorized_users_ext.conf /etc/nginx/conf.d/common/block_unauthorized_users_ext.conf.old
+  awk -v r="#auth_basic" '{gsub(/auth_basic/,r)}1' /etc/nginx/conf.d/common/block_unauthorized_users_ext.conf.old > /etc/nginx/conf.d/common/block_unauthorized_users_ext.conf
+  rm /etc/nginx/conf.d/common/block_unauthorized_users_ext.conf.old
+fi
+
 if [ "${BASIC_AUTH_ENABLED}" = "true" ]; then
   include_conf='include conf.d/common/block_unauthorized_users_ext.conf;'
 

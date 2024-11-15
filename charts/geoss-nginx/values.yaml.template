@@ -157,6 +157,8 @@ env:
     value: "$ADMIN_DOMAIN_NAME"
   - name: BASIC_AUTH_ENABLED
     value: "$BASIC_AUTH_ENABLED"
+  - name: BLOCK_ALL_FOR_SCAN
+    value: "$BLOCK_ALL_FOR_SCAN"
   - name: CSP_DOMAINS
     value: "${CSP_DOMAINS}"
   - name: DEPLOY_ENV
