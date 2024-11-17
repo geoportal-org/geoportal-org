@@ -17,11 +17,9 @@ if [ "${BLOCK_ACCESS}" = "true" ]; then
   awk -v r="${include_conf}" '{gsub(/###BLOCK_ACCESS###/,r)}1' /etc/nginx/conf.d/gpp-lp.conf.old > /etc/nginx/conf.d/gpp-lp.conf
   rm /etc/nginx/conf.d/gpp-lp.conf.old
 
-  if [ "${UI_REDIRECT_ENABLED}" = "true" ]; then
-    mv /etc/nginx/conf.d/gpp-redirect.conf /etc/nginx/conf.d/gpp-redirect.conf.old
-    awk -v r="${include_conf}" '{gsub(/###BLOCK_ACCESS###/,r)}1' /etc/nginx/conf.d/gpp-redirect.conf.old > /etc/nginx/conf.d/gpp-redirect.conf
-    rm /etc/nginx/conf.d/gpp-redirect.conf.old
-  fi 
+  mv /etc/nginx/conf.d/gpp-redirect.conf /etc/nginx/conf.d/gpp-redirect.conf.old
+  awk -v r="${include_conf}" '{gsub(/###BLOCK_ACCESS###/,r)}1' /etc/nginx/conf.d/gpp-redirect.conf.old > /etc/nginx/conf.d/gpp-redirect.conf
+  rm /etc/nginx/conf.d/gpp-redirect.conf.old
 fi
 
 if [ -n "${BLOCK_ACCESS_WHITELIST}" ]; then

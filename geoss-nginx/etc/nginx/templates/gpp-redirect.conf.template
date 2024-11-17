@@ -1,13 +1,13 @@
 server {
   listen *:8080;
-  server_name ${UI_DOMAIN_NAME_REDIRECT};
+  server_name ${REDIRECT_FROM};
 
   error_log /dev/stderr;
   access_log /dev/stdout timed_combined;
 
   ###BLOCK_ACCESS###
 
-  return 301 https://${UI_DOMAIN_NAME}$request_uri;
+  return 301 https://${REDIRECT_TO}$request_uri;
 }
 
   

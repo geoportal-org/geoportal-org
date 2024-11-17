@@ -178,8 +178,8 @@ env:
     value: "$ADMIN_DOMAIN_NAME"
   - name: BLOCK_ACCESS
     value: "$BLOCK_ACCESS"
-  - name: BLOCK_ALL_FOR_SCAN
-    value: "$BLOCK_ALL_FOR_SCAN"
+  - name: BLOCK_ACCESS_WHITELIST
+    value: "$BLOCK_ACCESS_WHITELIST"
   - name: CSP_DOMAINS
     value: "${CSP_DOMAINS}"
   - name: DEPLOY_ENV
@@ -188,6 +188,8 @@ env:
     value: "$IDP_DOMAIN_NAME"
   - name: LANDING_PAGE_DOMAIN_NAME
     value: "$LANDING_PAGE_DOMAIN_NAME"
+  - name: MAILDEV_ENABLED
+    value: "$MAILDEV_ENABLED"
   - name: MAINTENANCE_ON
     value: "$MAINTENANCE_ON"
   - name: MAINTENANCE_WHITELIST
@@ -196,14 +198,14 @@ env:
     value: "$UI_DOMAIN_NAME"
   - name: UI_DOMAIN_NAME_REDIRECT
     value: "$UI_DOMAIN_NAME_REDIRECT"
-  - name: UI_REDIRECT_ENABLED
-    value: "$UI_REDIRECT_ENABLED"
   - name: UI_SERVICES_PROVIDERS
     value: "$SERVICES_PROVIDERS"
-  - name: BLOCK_ACCESS_WHITELIST
-    value: "$BLOCK_ACCESS_WHITELIST"
-  - name: MAILDEV_ENABLED
-    value: "$MAILDEV_ENABLED"
+  - name: REDIRECT_ENABLED
+    value: "$REDIRECT_ENABLED"
+  - name: REDIRECT_FROM
+    value: "$REDIRECT_FROM"
+  - name: REDIRECT_TO
+    value: "$REDIRECT_TO"
 
 networkPolicy:
     egress:
