@@ -73,6 +73,8 @@ COPY --from=builder /opt/app/utils ./utils
 COPY --from=builder /opt/app/package.json ./package.json
 COPY --from=builder /opt/app/nuxt.config.js ./nuxt.config.js
 
+RUN apt update && apt upgrade -y && apt clean
+
 RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
 RUN chown -R docker_noroot:docker_noroot /opt/app
 USER docker_noroot 
