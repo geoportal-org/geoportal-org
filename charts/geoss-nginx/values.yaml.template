@@ -176,8 +176,8 @@ tolerations:
 env:
   - name: ADMIN_DOMAIN_NAME
     value: "$ADMIN_DOMAIN_NAME"
-  - name: BASIC_AUTH_ENABLED
-    value: "$BASIC_AUTH_ENABLED"
+  - name: BLOCK_ACCESS
+    value: "$BLOCK_ACCESS"
   - name: BLOCK_ALL_FOR_SCAN
     value: "$BLOCK_ALL_FOR_SCAN"
   - name: CSP_DOMAINS
@@ -200,8 +200,8 @@ env:
     value: "$UI_REDIRECT_ENABLED"
   - name: UI_SERVICES_PROVIDERS
     value: "$SERVICES_PROVIDERS"
-  - name: BASIC_AUTH_WHITELIST
-    value: "$BASIC_AUTH_WHITELIST"
+  - name: BLOCK_ACCESS_WHITELIST
+    value: "$BLOCK_ACCESS_WHITELIST"
   - name: MAILDEV_ENABLED
     value: "$MAILDEV_ENABLED"
 

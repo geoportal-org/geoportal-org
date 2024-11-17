@@ -23,7 +23,7 @@ server {
   ## PROXY, CACHE, COMPRESSION, jsession cookie, X-Forwarded-For
   include conf.d/common/config.conf;
 
-  ###BASIC_AUTH###
+  ###BLOCK_ACCESS###
 
   ##  Handle ERROR pages
   include conf.d/common/location_maintenance.conf;

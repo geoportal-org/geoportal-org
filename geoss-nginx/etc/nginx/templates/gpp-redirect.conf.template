@@ -5,7 +5,7 @@ server {
   error_log /dev/stderr;
   access_log /dev/stdout timed_combined;
 
-  ###BASIC_AUTH###
+  ###BLOCK_ACCESS###
 
   return 301 https://${UI_DOMAIN_NAME}$request_uri;
 }
