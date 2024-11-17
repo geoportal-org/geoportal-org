@@ -631,6 +631,8 @@ uat_deploy:
     - echo "$AZURE_UAT_IDP_CERT_KEY" > charts/idp.key
     - echo "$AZURE_UAT_LP_CERT" > charts/lp.crt
     - echo "$AZURE_UAT_LP_CERT_KEY" > charts/lp.key
+    - echo "$AZURE_UAT_REDIRECT_CERT" > charts/redirect.crt
+    - echo "$AZURE_UAT_REDIRECT_CERT_KEY" > charts/redirect.key    
     - cd charts
     - ./install.sh
   when: manual
@@ -862,6 +864,8 @@ prod_deploy:
     - echo "$AZURE_PROD_IDP_CERT_KEY" > charts/idp.key
     - echo "$AZURE_PROD_LP_CERT" > charts/lp.crt
     - echo "$AZURE_PROD_LP_CERT_KEY" > charts/lp.key
+    - echo "$AZURE_PROD_REDIRECT_CERT" > charts/redirect.crt
+    - echo "$AZURE_PROD_REDIRECT_CERT_KEY" > charts/redirect.key
     - cd charts
     - ./install.sh
   when: manual

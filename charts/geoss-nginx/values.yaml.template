@@ -55,11 +55,11 @@ ingressUI:
       hosts:
         - $UI_DOMAIN_NAME
 ingressRedirect:
-  enabled: $UI_REDIRECT_ENABLED
-  name: $RESOURCE_NAME_PREFIX-ui-redirect
+  enabled: $REDIRECT_ENABLED
+  name: $RESOURCE_NAME_PREFIX-redirect
   className: "azure-application-gateway"
   annotations:
-      appgw.ingress.kubernetes.io/hostname: $UI_DOMAIN_NAME_REDIRECT
+      appgw.ingress.kubernetes.io/hostname: $REDIRECT_FROM
       appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
       appgw.ingress.kubernetes.io/ssl-redirect: "true"
       appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
@@ -67,14 +67,14 @@ ingressRedirect:
       appgw.ingress.kubernetes.io/request-timeout: "300"
       appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
   hosts:
-    - host: $UI_DOMAIN_NAME_REDIRECT
+    - host: $REDIRECT_FROM
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-ui"
+    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-redirect"
       hosts:
-        - $UI_DOMAIN_NAME_REDIRECT
+        - $REDIRECT_FROM
 ingressAdmin:
   enabled: true
   name: $RESOURCE_NAME_PREFIX-admin
@@ -375,3 +375,6 @@ certificates:
   - name: "$RESOURCE_NAME_PREFIX-tls-cert-lp"
     certFile: "lp.crt"
     certKey:  "lp.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-redirect"
+    certFile: "redirect.crt"
+    certKey:  "redirect.key"
