@@ -2815,8 +2815,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     @Watch('resultIdDetails')
     private onResultIdDetailsChange() {
-        console.log(this.result)
-
         if (
             this.resultIdDetails === this.result.id &&
             !this.result.userContributions

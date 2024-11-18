@@ -179,7 +179,6 @@ export default class ViewsAndRatingsComponent extends Vue {
     public async openRatingModal() {
         const res = await this.getComments()
         const comments: { score: any; comment: any }[] = []
-        console.log(this.result)
 
         if (res && res.length > 0) {
             res.forEach((element: any) => {
