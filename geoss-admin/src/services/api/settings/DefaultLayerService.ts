@@ -5,8 +5,8 @@ import { fetcher } from "@/utils/fetcher";
 export const DefaultLayerService = {
     baseUrl: `${process.env.NEXT_PUBLIC_API}/settings/rest/layers`,
 
-    getLayersList: async (query?: QueryParams): Promise<ILayerList> =>
-        fetcher({ url: DefaultLayerService.baseUrl, query }),
+    getLayersList: async (siteId: number, query?: QueryParams): Promise<ILayerList> =>
+        fetcher({ url: `${process.env.NEXT_PUBLIC_API}/settings/rest/sites/${siteId}/layers`, query }),
 
     getLayer: async (id: number): Promise<ILayer> => fetcher({ url: `${DefaultLayerService.baseUrl}/${id}` }),
 

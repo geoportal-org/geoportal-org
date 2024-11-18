@@ -163,6 +163,10 @@ export const GeneralApiService = {
         //     })
     },
 
+    getDefaultLayers(siteId = 0) {
+        return webSettingsAPI.getDefaultLayers(siteId)
+    },
+
     getSiteData(siteUrl = 'global') {
         return contentAPI.getSiteByUrl(siteUrl)
     },

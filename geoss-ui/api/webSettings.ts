@@ -313,5 +313,16 @@ export default {
         )
         const tags = parseTutorialTags(tutorialTagsRaw._embedded.tags)
         return tags
+    },
+    getDefaultLayers: async (siteId: number) => {
+        const layers: any = await apiClient.$get(
+            `${geossSettings.apiSettings}/sites/${siteId}/layers?page=0&size=9999`,
+            {
+                headers: {
+                    Authorization: ''
+                }
+            }
+        )
+        return layers._embedded.layers
     }
 }

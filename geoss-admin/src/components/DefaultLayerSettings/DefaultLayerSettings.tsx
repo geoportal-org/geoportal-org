@@ -48,7 +48,7 @@ export const DefaultLayerSettings = () => {
     useEffect(() => {
         handlePaginationParamsChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageIndex, pageSize, sorting]);
+    }, [pageIndex, pageSize, sorting, currentSiteId]);
 
     const handlePaginationParamsChange = async () => {
         try {
@@ -56,7 +56,7 @@ export const DefaultLayerSettings = () => {
             const {
                 _embedded: { layers },
                 page: { totalPages, totalElements },
-            } = await DefaultLayerService.getLayersList({
+            } = await DefaultLayerService.getLayersList(currentSiteId, {
                 page: table.getState().pagination.pageIndex,
                 size: table.getState().pagination.pageSize,
                 ...(sorting[0] && setTableSorting(sorting)),

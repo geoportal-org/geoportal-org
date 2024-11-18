@@ -849,62 +849,65 @@ export default {
                                     searchSettings['googleMapsApiKey']
                                 )
 
-                                if (searchSettings.linkSharing) {
-                                    const searchSettingsLayers =
-                                        searchSettings.linkSharing
-                                            .searchEngineLayers
-                                    if (
-                                        searchSettingsLayers &&
-                                        searchSettingsLayers.length
-                                    ) {
-                                        for (const layer of searchSettingsLayers) {
-                                            let mapLayer = null
-                                            if (layer.type === LayerTypes.WMS) {
-                                                mapLayer =
-                                                    LayersUtils.createWMS(
-                                                        layer.title,
-                                                        layer.url
-                                                    )
-                                            } else if (
-                                                layer.type === LayerTypes.TMS
-                                            ) {
-                                                mapLayer =
-                                                    LayersUtils.createTMS(
-                                                        layer.url
-                                                    )
-                                            } else if (
-                                                layer.type === LayerTypes.KML
-                                            ) {
-                                                mapLayer =
-                                                    LayersUtils.createKML(
-                                                        layer.url
-                                                    )
-                                            } else if (
-                                                layer.type === LayerTypes.KMZ
-                                            ) {
-                                                mapLayer =
-                                                    LayersUtils.createKMZ(
-                                                        layer.url
-                                                    )
-                                            } else {
-                                                continue
-                                            }
-                                            mapLayer.setZIndex(layer.zIndex)
+                                const defaultLayers = await GeneralApiService.getDefaultLayers(
+                                    siteId
+                                )
 
-                                            const layerData = {
-                                                layer: mapLayer,
-                                                id: layer.url,
-                                                type: layer.type,
-                                                title: layer.name,
-                                                visible: layer.visible
-                                            }
-                                            this.$store.dispatch(
-                                                MapActions.addLayer,
-                                                layerData
-                                            )
+                                if (
+                                    defaultLayers &&
+                                    defaultLayers.length
+                                ) {
+                                    for (const [index, layer] of defaultLayers.entries()) {
+                                        let mapLayer = null
+                                        layer.zIndex = index + 1
+                                        layer.type = layer.type || layer.url.split('.').pop().toLowerCase()
+                                        if (layer.type === LayerTypes.WMS) {
+                                            mapLayer =
+                                                LayersUtils.createWMS(
+                                                    layer.title,
+                                                    layer.url
+                                                )
+                                        } else if (
+                                            layer.type === LayerTypes.TMS
+                                        ) {
+                                            mapLayer =
+                                                LayersUtils.createTMS(
+                                                    layer.url
+                                                )
+                                        } else if (
+                                            layer.type === LayerTypes.KML
+                                        ) {
+                                            mapLayer =
+                                                LayersUtils.createKML(
+                                                    layer.url
+                                                )
+                                        } else if (
+                                            layer.type === LayerTypes.KMZ
+                                        ) {
+                                            mapLayer =
+                                                LayersUtils.createKMZ(
+                                                    layer.url
+                                                )
+                                        } else {
+                                            continue
                                         }
+
+                                        mapLayer.setZIndex(layer.zIndex)
+
+                                        const layerData = {
+                                            layer: mapLayer,
+                                            id: layer.url,
+                                            type: layer.type,
+                                            title: layer.name,
+                                            visible: layer.visible
+                                        }
+                                        this.$store.dispatch(
+                                            MapActions.addLayer,
+                                            layerData
+                                        )
                                     }
                                 }
+
                                 // if (searchSettings.popularSearch) {
                                 //     this.$store.dispatch(MyWorkspaceActions.setPopularSearchId, searchSettings.popularSearch.id);
                                 //     if (searchSettings.popularSearch.currMap) {

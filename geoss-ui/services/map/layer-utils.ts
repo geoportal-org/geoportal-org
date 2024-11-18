@@ -382,11 +382,9 @@ const LayersUtils = {
     },
 
     createKML(url: string) {
-        const proxyUrl = SearchEngineService.getLayerKmlUrl(url)
-
         const kml = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
-                url: proxyUrl,
+                url,
                 format: new AppVueObj.ol.format.KML()
             })
         })
@@ -398,11 +396,10 @@ const LayersUtils = {
     },
 
     createKMZ(url: string) {
-        const proxyUrl = SearchEngineService.getLayerKmzUrl(url)
 
         const kmz = new AppVueObj.ol.layer.Vector({
             source: new AppVueObj.ol.source.Vector({
-                url: proxyUrl,
+                url,
                 format: new AppVueObj.ol.format.KML()
             })
         })
