@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { default as NextImage } from "next/image";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 type Props = {
@@ -25,8 +24,7 @@ const ImageWithFallback = ({ src, alt, placeholder, width, height, className }: 
 
   return (
     <div className={`${className ? className : null}`}>
-      {" "}
-      <NextImage
+      <img
         style={{
           objectFit: "contain",
           objectPosition: "center",
