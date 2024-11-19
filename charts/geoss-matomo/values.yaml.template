@@ -159,6 +159,10 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-matomo-env
         key: assumesecureprotocol
+  - name: MATOMO_GENERAL_NOREPLY_EMAIL_ADDRESS
+    value: ${MAILDEV_RELAY_USERNAME}
+  - name: MATOMO_GENERAL_NOREPLY_EMAIL_NAME
+    value: "GEOSS Portal"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-matomo-env

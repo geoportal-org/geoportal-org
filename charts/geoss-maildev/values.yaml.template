@@ -104,6 +104,11 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-maildev-env
         key: mailpitRelayPassword
+  - name: MP_SMTP_RELAY_STARTTLS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-maildev-env
+        key: mailpitRelayStarttls
   - name: MP_SMTP_RELAY_ALL
     value: "${MAILDEV_RELAY_ALL}"
   - name: MP_WEBROOT
@@ -121,6 +126,7 @@ secrets:
       mailpitRelayAuth: "${MAILDEV_RELAY_AUTH}"
       mailpitRelayUsername: "${MAILDEV_RELAY_USERNAME}"
       mailpitRelayPassword: "${MAILDEV_RELAY_PASSWORD}"
+      mailpitRelayStarttls: true
 
 networkPolicy:
     egress:
@@ -134,9 +140,9 @@ networkPolicy:
         - to:
           ports:
               - protocol: TCP
-                port: 587
+                port: ${MAILDEV_RELAY_PORT}
               - protocol: UDP
-                port: 587
+                port: ${MAILDEV_RELAY_PORT}
     ingress:
         # Allow to connect from other containers
         - from:

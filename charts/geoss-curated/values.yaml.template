@@ -143,6 +143,10 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-curated-env
         key: springMailProtocol
+  - name: COMMON_EMAIL_SENDER_PERSONAL
+    value: "GEOSS Portal"
+  - name: MATOMO_GENERAL_NOREPLY_EMAIL_NAME
+    value: "${MAILDEV_RELAY_USERNAME}"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-curated-env

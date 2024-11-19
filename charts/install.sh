@@ -8,10 +8,18 @@ NC='\033[0m' # No Color
 source .env
 
 # Conditional logic
-export SMTP_HOST="${MAIL_HOST}"
-export SMTP_PORT="${MAIL_PORT}"
-export SMTP_USER="${MAIL_USERNAME}"
-export SMTP_PASSWORD="${MAIL_PASSWORD}"
+export MAILDEV_RELAY_HOST="${MAIL_HOST}"
+export MAILDEV_RELAY_PORT="${MAIL_PORT:=587}"
+export MAILDEV_RELAY_AUTH="login"
+export MAILDEV_RELAY_USERNAME="${MAIL_USERNAME:=geoss@example.com}"
+export MAILDEV_RELAY_PASSWORD="${MAIL_PASSWORD}"
+
+export MAILDEV_RELAY_ALL="false"
+
+if [ -n "$MAIL_HOST" ] && [ -n "$MAIL_PORT" ] && [ -n "$MAIL_USERNAME" ] && [ -n "$MAIL_PASSWORD" ]; then
+then
+    export MAILDEV_RELAY_ALL="true"
+fi
 
 export SMTP_HOST="${RESOURCE_NAME_PREFIX}-maildev"
 export SMTP_PORT="1025"
