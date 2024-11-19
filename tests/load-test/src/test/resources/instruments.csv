@@ -1,0 +1,230 @@
+instrumentName,instrumentUrl
+"Explore AATSR",/instruments/aatsr
+"Explore ACC (Swarm)",/instruments/acc-swarm
+"Explore ALADIN",/instruments/aladin
+"Explore ASAR",/instruments/asar
+"Explore ASM",/instruments/asm
+"Explore ATSR-1",/instruments/atsr-1
+"Explore ATSR-2",/instruments/atsr-2
+"Explore AVNIR-2",/instruments/avnir-2
+"Explore CHRIS",/instruments/chris
+"Explore DORIS",/instruments/doris
+"Explore EFI",/instruments/efi
+"Explore EGG",/instruments/egg
+"Explore Enhanced Thematic Mapper Plus (ETM+)",/instruments/etm-landsat-7-
+"Explore GOME",/instruments/gome
+"Explore GOMOS",/instruments/gomos
+"Explore GPSR and LRR (Swarm)",/instruments/gpsr-and-lrr-swarm
+"Explore HRC",/instruments/hrc
+"Explore LRR (Envisat)",/instruments/lrr-envisat
+"Explore LRR (ERS-1)",/instruments/lrr-ers-1-
+"Explore LRR (ERS-2)",/instruments/lrr-ers-2-
+"Explore MERIS",/instruments/meris
+"Explore MIPAS",/instruments/mipas
+"Explore MIRAS",/instruments/miras
+"Explore Multi Spectral Scanner (MSS)",/instruments/multi-spectral-scanner-mss-
+"Explore MWR (Envisat)",/instruments/mwr
+"Explore MWR (ERS-1)",/instruments/mwr-ers-1-
+"Explore MWR (ERS-2)",/instruments/mwr-ers-2-
+"Explore Operational Land Imager (OLI)",/instruments/oli-landsat-8-
+"Explore PALSAR",/instruments/palsar
+"Explore PRARE (ERS-1)",/instruments/prare-ers-1-
+"Explore PRARE (ERS-2)",/instruments/prare-ers-2-
+"Explore PRISM",/instruments/prism
+"Explore RA (ERS-1)",/instruments/ra-ers-1
+"Explore RA (ERS-2)",/instruments/ra-ers-2
+"Explore RA-2",/instruments/ra2
+"Explore Return-Beam Vidicon (RBV)",/instruments/return-beam-vidicon-rbv-
+"Explore SAR (ERS-1)",/instruments/ami-sar
+"Explore SAR (ERS-2)",/instruments/ami-scatterometer
+"Explore SAR (JERS-1)",/instruments/sar-jers-1-
+"Explore SCIAMACHY",/instruments/sciamachy
+"Explore SIRAL",/instruments/siral
+"Explore SSTI",/instruments/ssti
+"Explore STR (Swarm)",/instruments/str-swarm
+"Explore Thematic Mapper (TM)",/instruments/thematic-mapper-tm-
+"Explore Thermal Infra-Red Scanner (TIRS)",/instruments/tirs
+"Explore Vegetation (VGT)",/instruments/vegetation-proba-v
+"Explore VFM",/instruments/vfm
+"Explore WS (ERS-1)",/instruments/ws-ers-1-
+"Explore WS (ERS-2)",/instruments/ws-ers-2-
+"AATSR AUXILIARY DATA",/instruments/aatsr/auxiliary-data
+"AATSR CAL/VAL",/instruments/aatsr/cal-val
+"AATSR Overview",/instruments/aatsr/description
+"AATSR PROCESSOR RELEASES",/instruments/aatsr/processor-releases
+"AATSR Products Information",/instruments/aatsr/products-information
+"AATSR QUALITY CONTROL REPORTS",/instruments/aatsr/quality-control-reports
+"ACC (Swarm) Overview",/instruments/acc-swarm/description
+"ACC (Swarm) QUALITY CONTROL REPORTS",/instruments/acc-swarm/quality-control-reports
+"ALADIN CAL/VAL",/instruments/aladin/cal-val
+"ALADIN Overview",/instruments/aladin/description
+"ALADIN Overview and Timeline Of The RBS settings",/instruments/aladin/overview-of-the-main-wind-rbs-changes
+"ALADIN PROCESSOR RELEASES",/instruments/aladin/processor-releases
+"ALADIN QUALITY CONTROL REPORTS",/instruments/aladin/quality-control-reports
+"ASAR Applications",/instruments/asar/applications
+"ASAR AUXILIARY DATA",/instruments/asar/auxiliary-data
+"ASAR CAL/VAL",/instruments/asar/cal-val
+"ASAR Overview",/instruments/asar/description
+"ASAR PROCESSOR RELEASES",/instruments/asar/processor-releases
+"ASAR Products Information",/instruments/asar/products-information
+"ASAR QUALITY CONTROL REPORTS",/instruments/asar/quality-control-reports
+"ASM Overview",/instruments/asm/description
+"ASM QUALITY CONTROL REPORTS",/instruments/asm/quality-control-reports
+"ATSR-1 CAL/VAL",/instruments/atsr-1/cal-val
+"ATSR-1 Overview",/instruments/atsr-1/description
+"ATSR-1 PROCESSOR RELEASES",/instruments/atsr-1/processor-releases
+"ATSR-1 Products Information",/instruments/atsr-1/products-information
+"ATSR-1 QUALITY CONTROL REPORTS",/instruments/atsr-1/quality-control-reports
+"ATSR-2 AUXILIARY DATA",/instruments/atsr-2/auxiliary-data
+"ATSR-2 CAL/VAL",/instruments/atsr-2/cal-val
+"ATSR-2 Overview",/instruments/atsr-2/description
+"ATSR-2 PROCESSOR RELEASES",/instruments/atsr-2/processor-releases
+"ATSR-2 Products Information",/instruments/atsr-2/products-information
+"ATSR-2 QUALITY CONTROL REPORTS",/instruments/atsr-2/quality-control-reports
+"AVNIR-2 CAL/VAL",/instruments/avnir-2/cal-val
+"AVNIR-2 Overview",/instruments/avnir-2/description
+"AVNIR-2 Products Information",/instruments/avnir-2/products-information
+"CHRIS Overview",/instruments/chris/description
+"DORIS CAL/VAL",/instruments/doris/cal-val
+"DORIS Overview",/instruments/doris/description
+"DORIS Products Information",/instruments/doris/products-information
+"DORIS QUALITY CONTROL REPORTS",/instruments/doris/quality-control-reports
+"EFI Overview",/instruments/efi/description
+"EFI QUALITY CONTROL REPORTS",/instruments/efi/quality-control-reports
+"EGG CAL/VAL",/instruments/egg/cal-val
+"EGG Overview",/instruments/egg/description
+"EGG PROCESSOR RELEASES",/instruments/egg/processor-releases
+"EGG QUALITY CONTROL REPORTS",/instruments/egg/quality-control-reports
+"Enhanced Thematic Mapper Plus (ETM+) CAL/VAL",/instruments/etm-landsat-7-/cal-val
+"Enhanced Thematic Mapper Plus (ETM+) Overview",/instruments/etm-landsat-7-/description
+"Enhanced Thematic Mapper Plus (ETM+) PROCESSOR RELEASES",/instruments/etm-landsat-7-/processor-releases
+"Enhanced Thematic Mapper Plus (ETM+) Products Information",/instruments/etm-landsat-7-/products-information
+"Enhanced Thematic Mapper Plus (ETM+) QUALITY CONTROL REPORTS",/instruments/etm-landsat-7-/quality-control-reports
+"GOME CAL/VAL",/instruments/gome/cal-val
+"GOME Overview",/instruments/gome/description
+"GOME PROCESSOR RELEASES",/instruments/gome/processor-releases
+"GOME QUALITY CONTROL REPORTS",/instruments/gome/quality-control-reports
+"GOMOS AUXILIARY DATA",/instruments/gomos/auxiliary-data
+"GOMOS CAL/VAL",/instruments/gomos/cal-val
+"GOMOS Overview",/instruments/gomos/description
+"GOMOS PROCESSOR RELEASES",/instruments/gomos/processor-releases
+"GOMOS Products information",/instruments/gomos/products-information
+"GOMOS QUALITY CONTROL REPORTS",/instruments/gomos/quality-control-reports
+"GPSR and LRR (Swarm) Overview",/instruments/gpsr-and-lrr-swarm/description
+"GPSR and LRR (Swarm) QUALITY CONTROL REPORTS",/instruments/gpsr-and-lrr-swarm/quality-control-reports
+"HRC Overview",/instruments/hrc/description
+"LRR (Envisat) Overview",/instruments/lrr-envisat/description
+"LRR (ERS-1) Overview",/instruments/lrr-ers-1-/description
+"LRR (ERS-2) Overview",/instruments/lrr-ers-2-/description
+"MERIS Applications",/instruments/meris/applications
+"MERIS ATBD",/instruments/meris/atbd
+"MERIS AUXILIARY DATA",/instruments/meris/auxiliary-data
+"MERIS CAL/VAL",/instruments/meris/cal-val
+"MERIS Overview",/instruments/meris/description
+"MERIS PROCESSOR RELEASES",/instruments/meris/processor-releases
+"MERIS Products Information",/instruments/meris/products-information
+"MERIS QUALITY CONTROL REPORTS",/instruments/meris/quality-control-reports
+"MIPAS AUXILIARY DATA",/instruments/mipas/auxiliary-data
+"MIPAS CAL/VAL",/instruments/mipas/cal-val
+"MIPAS Overview",/instruments/mipas/description
+"MIPAS PROCESSOR RELEASES",/instruments/mipas/processor-releases
+"MIPAS Products Information",/instruments/mipas/products-information
+"MIPAS QUALITY CONTROL REPORTS",/instruments/mipas/quality-control-reports
+"MIRAS CAL/VAL",/instruments/miras/cal-val
+"MIRAS Overview",/instruments/miras/description
+"MIRAS QUALITY CONTROL REPORTS",/instruments/miras/quality-control-reports
+"Multi Spectral Scanner (MSS) CAL/VAL",/instruments/multi-spectral-scanner-mss-/cal-val
+"Multi Spectral Scanner (MSS) Overview",/instruments/multi-spectral-scanner-mss-/description
+"Multi Spectral Scanner (MSS) PROCESSOR RELEASES",/instruments/multi-spectral-scanner-mss-/processor-releases
+"Multi Spectral Scanner (MSS) Products Information",/instruments/multi-spectral-scanner-mss-/products-information
+"Multi Spectral Scanner (MSS) QUALITY CONTROL REPORTS",/instruments/multi-spectral-scanner-mss-/quality-control-reports
+"MWR (Envisat) AUXILIARY DATA",/instruments/mwr/auxiliary-data
+"MWR (Envisat) CAL/VAL",/instruments/mwr/cal-val
+"MWR (Envisat) Overview",/instruments/mwr/description
+"MWR (Envisat) PROCESSOR RELEASES",/instruments/mwr/processor-releases
+"MWR (Envisat) Products Information",/instruments/mwr/products-information
+"MWR (Envisat) QUALITY CONTROL REPORTS",/instruments/mwr/quality-control-reports
+"MWR (ERS-1) CAL/VAL",/instruments/mwr-ers-1-/cal-val
+"MWR (ERS-1) Overview",/instruments/mwr-ers-1-/description
+"MWR (ERS-2) CAL/VAL",/instruments/mwr-ers-2-/cal-val
+"MWR (ERS-2) Overview",/instruments/mwr-ers-2-/description
+"MWR (ERS-2) Product Information",/instruments/mwr-ers-2-/product-information
+"MWR (ERS-2) QUALITY CONTROL REPORTS",/instruments/mwr-ers-2-/quality-control-reports
+"Operational Land Imager (OLI) CAL/VAL",/instruments/oli-landsat-8-/cal-val
+"Operational Land Imager (OLI) Overview",/instruments/oli-landsat-8-/description
+"Operational Land Imager (OLI) Products Information",/instruments/oli-landsat-8-/products-information
+"Operational Land Imager (OLI) QUALITY CONTROL REPORTS",/instruments/oli-landsat-8-/quality-control-reports
+"PALSAR CAL/VAL",/instruments/palsar/cal-val
+"PALSAR Overview",/instruments/palsar/description
+"PALSAR Products Information",/instruments/palsar/products-information
+"PALSAR QUALITY CONTROL REPORTS",/instruments/palsar/quality-control-reports
+"PRARE (ERS-1) Overview",/instruments/prare-ers-1-/description
+"PRARE (ERS-2) Overview",/instruments/prare-ers-2-/description
+"PRISM CAL/VAL",/instruments/prism/cal-val
+"PRISM Overview",/instruments/prism/description
+"PRISM Products information",/instruments/prism/products-information
+"RA (ERS-1) CAL/VAL",/instruments/ra-ers-1/cal-val
+"RA (ERS-1) Overview",/instruments/ra-ers-1/description
+"RA (ERS-1) Products Information",/instruments/ra-ers-1/products-information
+"RA (ERS-2) CAL/VAL",/instruments/ra-ers-2/cal-val
+"RA (ERS-2) Overview",/instruments/ra-ers-2/description
+"RA (ERS-2) Products Information",/instruments/ra-ers-2/products-information
+"RA (ERS-2) QUALITY CONTROL REPORTS",/instruments/ra-ers-2/quality-control-reports
+"RA-2 CAL/VAL",/instruments/ra2/cal-val
+"RA-2 Overview",/instruments/ra2/description
+"RA-2 PROCESSOR RELEASES",/instruments/ra2/processor-releases
+"RA-2 Products Information",/instruments/ra2/products-information
+"RA-2 QUALITY CONTROL REPORTS",/instruments/ra2/quality-control-reports
+"Return-Beam Vidicon (RBV) Overview",/instruments/return-beam-vidicon-rbv-/description
+"SAR (ERS-1) AUXILIARY DATA",/instruments/ami-sar/auxiliary-data
+"SAR (ERS-1) CAL/VAL",/instruments/ami-sar/cal-val
+"SAR (ERS-1) Interferometry",/instruments/ami-sar/sar-ers-1-interferometry
+"SAR (ERS-1) Overview",/instruments/ami-sar/description
+"SAR (ERS-1) PROCESSOR RELEASES",/instruments/ami-sar/processor-releases
+"SAR (ERS-1) Products Information",/instruments/ami-sar/products-information
+"SAR (ERS-2) AUXILIARY DATA",/instruments/ami-scatterometer/auxiliary-data
+"SAR (ERS-2) CAL/VAL",/instruments/ami-scatterometer/cal-val
+"SAR (ERS-2) Interferometry",/instruments/ami-scatterometer/sar-interferometry-description
+"SAR (ERS-2) Overview",/instruments/ami-scatterometer/description
+"SAR (ERS-2) PROCESSOR RELEASES",/instruments/ami-scatterometer/processor-releases
+"SAR (ERS-2) Product Information",/instruments/ami-scatterometer/product-information
+"SAR (ERS-2) QUALITY CONTROL REPORTS",/instruments/ami-scatterometer/quality-control-reports
+"SAR (JERS-1) Overview",/instruments/sar-jers-1-/description
+"SCIAMACHY AUXILIARY DATA",/instruments/sciamachy/auxiliary-data
+"SCIAMACHY CAL/VAL",/instruments/sciamachy/cal-val
+"SCIAMACHY Overview",/instruments/sciamachy/description
+"SCIAMACHY PROCESSOR RELEASES",/instruments/sciamachy/processor-releases
+"SCIAMACHY Products Information",/instruments/sciamachy/products-information
+"SCIAMACHY QUALITY CONTROL REPORTS",/instruments/sciamachy/quality-control-reports
+"SIRAL CAL/VAL",/instruments/siral/cal-val
+"SIRAL Overview",/instruments/siral/description
+"SIRAL PROCESSOR RELEASES",/instruments/siral/processor-releases
+"SIRAL QUALITY CONTROL REPORTS",/instruments/siral/quality-control-reports
+"SSTI CAL/VAL",/instruments/ssti/cal-val
+"SSTI Overview",/instruments/ssti/description
+"SSTI PROCESSOR RELEASES",/instruments/ssti/processor-releases
+"SSTI QUALITY CONTROL REPORTS",/instruments/ssti/quality-control-reports
+"STR (Swarm) Overview",/instruments/str-swarm/description
+"STR (Swarm) QUALITY CONTROL REPORTS",/instruments/str-swarm/quality-control-reports
+"Thematic Mapper (TM) CAL/VAL",/instruments/thematic-mapper-tm-/cal-val
+"Thematic Mapper (TM) Overview",/instruments/thematic-mapper-tm-/description
+"Thematic Mapper (TM) PROCESSOR RELEASES",/instruments/thematic-mapper-tm-/processor-releases
+"Thematic Mapper (TM) Products Information",/instruments/thematic-mapper-tm-/products-information
+"Thematic Mapper (TM) QUALITY CONTROL REPORTS",/instruments/thematic-mapper-tm-/quality-control-reports
+"Thermal Infra-Red Scanner (TIRS) CAL/VAL",/instruments/tirs/cal-val
+"Thermal Infra-Red Scanner (TIRS) Overview",/instruments/tirs/description
+"Thermal Infra-Red Scanner (TIRS) Products Information",/instruments/tirs/products-information
+"Thermal Infra-Red Scanner (TIRS) QUALITY CONTROL REPORTS",/instruments/tirs/quality-control-reports
+"Vegetation (VGT) CAL/VAL",/instruments/vegetation-proba-v/cal-val
+"Vegetation (VGT) Overview",/instruments/vegetation-proba-v/description
+"Vegetation (VGT) QUALITY CONTROL REPORTS",/instruments/vegetation-proba-v/quality-control-reports
+"VFM Overview",/instruments/vfm/description
+"VFM QUALITY CONTROL REPORTS",/instruments/vfm/quality-control-reports
+"WS (ERS-1) CAL/VAL",/instruments/ws-ers-1-/cal-val
+"WS (ERS-1) Overview",/instruments/ws-ers-1-/description
+"WS (ERS-1) Products Information",/instruments/ws-ers-1-/products-information
+"WS (ERS-2) CAL/VAL",/instruments/ws-ers-2-/cal-val
+"WS (ERS-2) Overview",/instruments/ws-ers-2-/description
+"WS (ERS-2) PROCESSOR RELEASES",/instruments/ws-ers-2-/processor-releases
+"WS (ERS-2) Products Information",/instruments/ws-ers-2-/products-information
+"WS (ERS-2) QUALITY CONTROL REPORTS",/instruments/ws-ers-2-/quality-control-reports
