@@ -126,7 +126,7 @@ secrets:
       mailpitRelayAuth: "${MAILDEV_RELAY_AUTH}"
       mailpitRelayUsername: "${MAILDEV_RELAY_USERNAME}"
       mailpitRelayPassword: "${MAILDEV_RELAY_PASSWORD}"
-      mailpitRelayStarttls: true
+      mailpitRelayStarttls: "true"
 
 networkPolicy:
     egress:

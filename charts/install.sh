@@ -16,7 +16,7 @@ export MAILDEV_RELAY_PASSWORD="${MAIL_PASSWORD}"
 
 export MAILDEV_RELAY_ALL="false"
 
-if [ -n "$MAIL_HOST" ] && [ -n "$MAIL_PORT" ] && [ -n "$MAIL_USERNAME" ] && [ -n "$MAIL_PASSWORD" ]; then
+if [ -n "$MAIL_HOST" ] && [ -n "$MAIL_PORT" ] && [ -n "$MAIL_USERNAME" ] && [ -n "$MAIL_PASSWORD" ]
 then
     export MAILDEV_RELAY_ALL="true"
 fi
