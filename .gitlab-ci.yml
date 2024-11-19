@@ -396,6 +396,7 @@ build_images:
     - build_geoss-worker
   only:
     - develop-azure
+    - uat
     - /^release-.*/
 
 ########################################################################################################################
@@ -643,7 +644,7 @@ uat_deploy:
     - ./install.sh
   when: manual
   only:
-    - develop-azure
+    - uat
     - /^release-.*/
 
 ########################################################################################################################
@@ -882,6 +883,5 @@ prod_deploy:
     - ./install.sh
   when: manual
   only:
-    - develop-azure
     - /^release-.*/
 
