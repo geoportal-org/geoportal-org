@@ -1651,22 +1651,6 @@ const GeossSearchApiService = {
             workflowId: workflow.id,
             path: ''
         })
-        // return sendLiferayRequest(
-        //     '/geoss-service-portlet.savedrun/add-saved-run',
-        //     {
-        //         name:
-        //             runName !== ''
-        //                 ? runName
-        //                 : `${new Date()
-        //                       .toLocaleString('en-GB')
-        //                       .replace(/,/g, '')} ${workflow.name}`,
-        //         runId,
-        //         userId: Liferay.ThemeDisplay.getUserId(),
-        //         groupId: Liferay.ThemeDisplay.getScopeGroupId(),
-        //         path: '',
-        //         workflowId: workflow.id
-        //     }
-        // )
     },
 
     async getSavedRuns(

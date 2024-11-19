@@ -184,6 +184,7 @@ import DashboardChart from './DashboardChart.vue';
 import DashboardPagination from './DashboardPagination.vue';
 import DashboardDisplay from './DashboardDisplay.vue';
 import DashboardService from '@/services/dashboard.service';
+import NotificationService from '@/services/notification.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -530,9 +531,34 @@ export default class DashboardCreatorComponent extends Vue {
 		console.log('PDF');
 	}
 
-	public saveAsDraft() {
+	public async saveAsDraft() {
 		const dashboardData = this.prepareDashboardData();
-		DashboardService.createDashboard(dashboardData);
+		const userId = this.$nuxt.$auth.$state.user.sub
+
+		const res = await DashboardService.createDashboard(dashboardData, userId);
+		if(res === 'ok'){
+			NotificationService.show(
+                `${this.$tc('popupTitles.dashboards')}`,
+                `${this.$tc(
+                    'notifications.dashboardSavedSuccessfully'
+                )}`,
+                10000,
+                'dashboard-save-success',
+                9999,
+                'info'
+            )
+		}else {
+			NotificationService.show(
+                `${this.$tc('popupTitles.dashboards')}`,
+                `${this.$tc(
+                    'notifications.errorDuringDashboardSaving'
+                )}`,
+                10000,
+                'dashboard-save-error',
+                9999,
+                'error'
+            )
+		}
 	}
 
 	private mounted() {

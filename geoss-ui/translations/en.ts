@@ -78,7 +78,7 @@ export default {
         newVersionPart6: 'to look at the detailed changes.',
         basemapUnavailable: 'Default basemap is temporarily unavailable. The portal is changing map to another.',
         basemapUnavailableTitle: 'BASEMAP NOT AVAILABLE',
-        dashboardSavedSuccessfully: 'Dashboard saved successfully! You can find it in MY WORKSPACE -> Dashboards.',
+        dashboardSavedSuccessfully: 'Dashboard saved successfully! You can find it in MY WORKSPACE -> Your Dashboards.',
         errorDuringDashboardSaving: 'Error during dashboard saving. Please try again.',
         dashboardLoadedSuccessfully: 'Dashboard loaded successfully!',
         errorDuringDashboardLoading: 'Error during dashboard loading.'

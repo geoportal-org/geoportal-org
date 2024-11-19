@@ -75,7 +75,7 @@ export default {
         newVersionPart6: 'aby zobaczyć listę zmian.',
         basemapUnavailable: 'Domyślna mapa jest tymczasowo niedostępna. Następuje zmiana na inną.',
         basemapUnavailableTitle: 'DOMYŚLNA MAPA NIEDOSTĘPNA',
-        dashboardSavedSuccessfully: 'Panel zapisany pomyślnie! Znajdziesz go w MOJE MIEJSCE PRACY -> Panele.',
+        dashboardSavedSuccessfully: 'Panel zapisany pomyślnie! Znajdziesz go w MOJE MIEJSCE PRACY -> Twoje Panele.',
         errorDuringDashboardSaving: 'Błąd podczas zapisywania pulpitu nawigacyjnego. Proszę spróbuj ponownie.',
         dashboardLoadedSuccessfully: 'Pulpit załadowany pomyślnie!',
         errorDuringDashboardLoading: 'Błąd podczas ładowania pulpitu nawigacyjnego.',

@@ -5,26 +5,13 @@ import { PopupActions } from '@/store/popup/popup-actions'
 import { AppVueObj } from '@/data/global'
 import to from '@/utils/to'
 import NotificationService from '@/services/notification.service'
+import apiClient from '~/api/apiClient'
 
 const DashboardService = {
-    getAllDashboards() {
-        const userId = '' // Liferay.ThemeDisplay.getUserId() || '20433'
-        const companyId = '' // Liferay.ThemeDisplay.getCompanyId() || '20154'
-        const cur = 0
-        const delta = 1000
-        const url = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=GET_USER_DASHBOARDS&_geossresources_WAR_geossportlet_userId=${userId}&_geossresources_WAR_geossportlet_cur=${cur}&_geossresources_WAR_geossportlet_delta=${delta}&_geossresources_WAR_geossportlet_companyId=${companyId}`
-        return makeRequest('get', url, null, true)
-            .then((data: any) => {
-                if (!data || data.status === 500) {
-                    return null
-                }
-                return data.dashboardContents.filter(
-                    (e: any) => e.dashboardContent && e.dashboardContent !== ''
-                )
-            })
-            .catch((error: any) => {
-                console.warn(error)
-            })
+    async getAllDashboards() {
+        const url = `${window.$nuxt.$config.curatedUrl}userDashboards?page=0&size=9999`
+        const list = await apiClient.$get(url)
+        return list
     },
 
     getDashboard(workflowWrapperId = 122) {
@@ -41,158 +28,91 @@ const DashboardService = {
             })
     },
 
-    createDashboard(dashboardData = null) {
+    async createDashboard(dashboardData = null, userId = '') {
         if (!dashboardData) {
             return
         }
-        const userId = '' // Liferay.ThemeDisplay.getUserId() || '20433'
-        const groupId = '' // Liferay.ThemeDisplay.getScopeGroupId() || '20181'
-        const companyId = '' // Liferay.ThemeDisplay.getCompanyId() || '20154'
-        const config = { headers: { 'content-type': 'application/json' } }
         const { title, summary, outputs }: any = dashboardData
         const code =
             title.toLocaleLowerCase().replace(/ /g, '_') +
             '_' +
             new Date().toISOString()
 
-        const transferOptionsDtos = []
+        const transferOptions = []
         for (const output of outputs) {
             const transferOption = {
-                id: 0,
                 name: output.name,
                 description: output.description,
                 title: output.id,
-                entryId: 0,
-                endpointDto: {
-                    id: 0,
-                    isCustom: 1,
-                    url: output.value.url,
-                    urlType: output.valueSchema
-                },
-                protocolDto: {
-                    isCustom: 0,
-                    id: 1,
+                protocol: {
                     value: 'download'
+                },
+                endpoint: {
+                    url: output.value,
+                    urlType: output.valueSchema
                 }
             }
-            if (output.valueSchema === 'wms') {
-                transferOption.protocolDto = {
-                    isCustom: 1,
-                    value: output.value.protocol,
-                    id: 0
-                }
-            }
-            if (output.valueSchema === 'url') {
-                transferOption.endpointDto.url = output.value
-            }
-            transferOptionsDtos.push(transferOption)
+            transferOptions.push(transferOption)
         }
 
-        const entryDto = {
-            entryDto: {
-                id: 0,
-                title,
-                summary,
+        const body = {
+            userId: userId,
+            entryName: title,
+            taskType: 'create',
+            entry: {
+                title: title,
+                summary: summary,
                 logo: '',
                 coverage: '[-180,90],[180,-90]',
-                keywords: 'dashboard',
-                tags: 'dashboard',
-                code,
-                scoreWeight: 1.0,
-                workflowInstanceId: 0,
-                definitionTypeId: 0,
-                typeDto: {
-                    id: 3,
-                    name: 'Information',
-                    code: 'information_resource'
-                },
-                dataSourceDto: {
-                    id: 1,
-                    name: 'GEOSS Curated',
-                    code: 'geoss_cr'
-                },
-                dashboardContentsDto: {
-                    id: 0,
+                type: 'service_resource',
+                dashboardContents: {
                     content: JSON.stringify(dashboardData).replace(/\"/g, "'")
                 },
-                accessPolicyDto: {
-                    id: 1,
-                    isCustom: 0
+                accessPolicy: {
+                    name: '',
+                    code: ''
                 },
-                organisationDto: {
-                    id: 6,
-                    isCustom: 0
+                keywords: 'dashboard',
+                tags: 'dashboard',
+                code: code,
+                organisation: {
+                    title: '',
+                    email: '',
+                    contact: '',
+                    contactEmail: ''
                 },
-                sourceDto: {
-                    id: 1,
-                    isCustom: 0
+                source: {
+                    term: '',
+                    code: ''
                 },
-                transferOptionsDtos
+                dataSource: 'geoss_cr',
+                displayDataSource: 'geoss_cr',
+                definitionType: 1,
+                userId: userId,
+                transferOptions: transferOptions
             }
         }
+        const url = `${window.$nuxt.$config.curatedUrl}userDashboards`
 
-        const url = `/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_resource_id=CREATE_DASHBOARD&_geossresources_WAR_geossportlet_userId=${userId}&_geossresources_WAR_geossportlet_groupId=${groupId}&_geossresources_WAR_geossportlet_companyId=${companyId}`
-        return makeRequest('post', url, entryDto, false, config)
-            .then((response: any) => {
-                const data = JSON.stringify(response)
-                if (data && data.length) {
-                    NotificationService.show(
-                        `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
-                        `${AppVueObj.app.$tc(
-                            'notifications.dashboardSavedSuccessfully'
-                        )}`,
-                        10000,
-                        'dashboard-save-success',
-                        9999,
-                        'info'
-                    )
-                } else {
-                    NotificationService.show(
-                        `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
-                        `${AppVueObj.app.$tc(
-                            'notifications.errorDuringDashboardSaving'
-                        )}`,
-                        10000,
-                        'dashboard-save-error',
-                        9999,
-                        'error'
-                    )
+        try {
+            await apiClient.$post(url, body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': '*/*'
                 }
             })
-            .catch((error: any) => {
-                console.warn(error)
-                NotificationService.show(
-                    `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
-                    `${AppVueObj.app.$tc(
-                        'notifications.errorDuringDashboardSaving'
-                    )}`,
-                    10000,
-                    'dashboard-save-error',
-                    9999,
-                    'error'
-                )
-            })
+            return 'ok'
+        } catch (e: any) {
+            console.error(e)
+            return 'fail'
+        }
     },
 
-    async showDashboard(dashboardContent: any = null, workflowWrapperId = 0) {
+    async showDashboard(dashboardContent: any = null, title: string) {
         let data = null
         try {
             if (dashboardContent) {
                 data = JSON.parse(dashboardContent.replace(/\'/g, '"'))
-            }
-            if (workflowWrapperId) {
-                const [, dashboard] = await to(
-                    DashboardService.getDashboard(workflowWrapperId)
-                )
-                if (
-                    dashboard &&
-                    dashboard.dashboardContent &&
-                    dashboard.dashboardContent !== ''
-                ) {
-                    data = JSON.parse(
-                        dashboard.dashboardContent.replace(/\'/g, '"')
-                    )
-                }
             }
             if (data) {
                 const props = {
@@ -200,33 +120,13 @@ const DashboardService = {
                 }
                 AppVueObj.app.$store.dispatch(PopupActions.openPopup, {
                     contentId: 'dashboard-display',
-                    title: AppVueObj.app.$tc('popupTitles.dashboards'),
+                    title: title,
                     component: DashboardDisplay,
                     props
                 })
-                NotificationService.show(
-                    `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
-                    `${AppVueObj.app.$tc(
-                        'notifications.dashboardLoadedSuccessfully'
-                    )}`,
-                    10000,
-                    'dashboard-load-success',
-                    9999,
-                    'info'
-                )
             }
         } catch (error) {
-            NotificationService.show(
-                `${AppVueObj.app.$tc('popupTitles.dashboards')}`,
-                `${AppVueObj.app.$tc(
-                    'notifications.errorDuringDashboardLoading'
-                )}`,
-                10000,
-                'dashboard-load-error',
-                9999,
-                'error'
-            )
-            console.warn(error)
+            console.error(error)
         }
     }
 }
