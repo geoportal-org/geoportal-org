@@ -31,19 +31,29 @@ export default class SeeOtherSourcesComponent extends Vue {
         return this.$store.getters[SearchGetters.currentResults];
     }
 
+    get hidePocFeatures() {
+        return this.$config.hidePocFeatures
+    }
+
     get alternateSources() {
-        const alternateSources = [];
+        const alternateSources: any[] = [];
+
         for (const sourceName in DataSourceGroup) {
             if (DataSourceGroup[sourceName] === DataSourceGroup[this.dataSource]) {
                 const dataNameResults = `${sourceName}Results`;
 
                 if (this.$store.getters[SearchGetters[dataNameResults as keyof typeof SearchGetters]]) {
-                    const resultsObjest = this.$store.getters[SearchGetters[dataNameResults as keyof typeof SearchGetters]];
-                    const totalResults = resultsObjest.totalResults || resultsObjest['opensearch:totalResults'] || resultsObjest['os:totalResults'] || 0;
+                    const resultsObject = this.$store.getters[SearchGetters[dataNameResults as keyof typeof SearchGetters]];
+                    const totalResults = resultsObject.totalResults || resultsObject['opensearch:totalResults'] || resultsObject['os:totalResults'] || 0;
                     alternateSources.push({ text: `${AlternateSourcesMap[sourceName]} ${this.totalResultsString(totalResults)}`, id: sourceName });
                 }
             }
         }
+
+        if (this.hidePocFeatures) {
+            return [alternateSources[0]];
+        }
+
         return alternateSources;
     }
 

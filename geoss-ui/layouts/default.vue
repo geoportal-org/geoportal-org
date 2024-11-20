@@ -85,6 +85,9 @@ export default {
         },
         siteId() {
             return this.$store.getters[SearchEngineGetters.siteId]
+        },
+        hidePocFeatures() {
+            return this.$config.hidePocFeatures
         }
     },
 
@@ -1063,6 +1066,10 @@ export default {
 
         if (!this.storeInitialized) {
             this.getSettings()
+
+            if (this.hidePocFeatures) {
+                this.$store.dispatch(SearchActions.setHiddenDataSources, ['data', 'amerigeoss', 'nextgeoss', 'information', 'zenodo', 'wikipedia', 'services'])
+            }
         }
     }
 }

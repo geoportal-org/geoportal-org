@@ -93,6 +93,8 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-admin-env
         key: keycloakBaseUrl
+  - name: NEXT_PUBLIC_HIDE_POC_FEATURES
+    value: "${HIDE_POC_FEATURES}"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-admin-env
@@ -127,7 +129,7 @@ networkPolicy:
               - protocol: TCP
                 port: 443
               - protocol: UDP
-                port: 443                  
+                port: 443
         # Allow connect to other containers
         - to:
               - podSelector:
@@ -172,4 +174,4 @@ hostAliases:
     hostnames:
       - "${ADMIN_DOMAIN_NAME}"
       - "${UI_DOMAIN_NAME}"
-      - "${IDP_DOMAIN_NAME}"                
+      - "${IDP_DOMAIN_NAME}"

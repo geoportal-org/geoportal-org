@@ -164,9 +164,9 @@
                                         v-if="
                                             isExtendedViewEnabled &&
                                             !isWidget &&
-                                            dataSource !==
-                                                DataSources.WIKIPEDIA &&
-                                            !workflowDispatched
+                                            dataSource !== DataSources.WIKIPEDIA &&
+                                            !workflowDispatched &&
+                                            !hidePocFeatures
                                         "
                                         class="extended-view-switcher"
                                         :class="{
@@ -673,6 +673,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     get dashboardContent() {
         return UtilsService.getPropByString(this.result, 'dashboard.content')
+    }
+
+    get hidePocFeatures() {
+        return this.$config.hidePocFeatures
     }
 
     get title() {

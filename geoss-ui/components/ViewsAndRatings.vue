@@ -46,7 +46,8 @@
                 !isWidget &&
                 isEntryExtensionEnabled &&
                 dataSource !== DataSources.WIKIPEDIA &&
-                !extendedViewMode
+                !extendedViewMode &&
+                !hidePocFeatures
             "
             :class="{ disabled: !isSignedIn }"
             class="views-ratings__entry-extension"
@@ -104,6 +105,10 @@ export default class ViewsAndRatingsComponent extends Vue {
             this.views = await this.getCounter()
             this.avScore = await this.getRating()
         }
+    }
+
+    get hidePocFeatures() {
+        return this.$config.hidePocFeatures
     }
 
     get queue() {

@@ -214,6 +214,7 @@ export default {
         matomoUrl: process.env.MATOMO_URL,
         openEORedirect: process.env.OPEN_EO_REDIRECT_URL,
         proxyUrl: process.env.PROXY_URL,
+        hidePocFeatures: process.env.HIDE_POC_FEATURES,
         pdfManualUrl: '/GEOSS-InstallationGuide-041024-0821.pdf',
         auth: {
             defaultStrategy: 'keycloak',

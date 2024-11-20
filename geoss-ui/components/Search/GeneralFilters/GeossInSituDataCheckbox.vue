@@ -2,7 +2,7 @@
     <div>
         <input :value="generalFiltersGeossInSituData" @input="input($event)" id="geoss-insitu-data" type="checkbox"
             :disabled="buttonDisabled" />
-        <label for="geoss-insitu-data" :class="{ disabled: buttonDisabled }">
+        <label v-if="!hidePocFeatures" for="geoss-insitu-data" :class="{ disabled: buttonDisabled }">
             <i v-show="generalFiltersGeossInSituData" class="icomoon-checkbox--filled"></i>
             <i v-show="!generalFiltersGeossInSituData" class="icomoon-checkbox--empty"></i>
             <span>In-Situ Data</span>
@@ -18,6 +18,10 @@ import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-ge
 @Component
 export default class GeossInSituDataCheckboxComponent extends Vue {
     @Prop({ default: false, type: Boolean }) public buttonDisabled!: boolean;
+
+    get hidePocFeatures() {
+        return this.$config.hidePocFeatures
+    }
 
     get generalFiltersGeossInSituData() {
         return this.$store.getters[GeneralFiltersGetters.state].geossInSituData;

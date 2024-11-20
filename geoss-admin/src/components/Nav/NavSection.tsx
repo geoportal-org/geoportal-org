@@ -17,6 +17,7 @@ import { SiteContext } from "@/context/CurrentSiteContext";
 export const NavSection = ({ navSection, onNavClose }: NavSectionProps) => {
     const { titleId, items } = navSection;
     const { currentSiteId } = useContext(SiteContext);
+    const hidePocFeatures = process.env.NEXT_PUBLIC_HIDE_POC_FEATURES === 'true' ? true : false;
 
     return (
         <AccordionItem as={ListItem}>
@@ -29,6 +30,11 @@ export const NavSection = ({ navSection, onNavClose }: NavSectionProps) => {
             <AccordionPanel as={UnorderedList} m={0} styleType="none">
                 {items.map((item) => {
                     if (item.href === pagesRoutes.sites && currentSiteId !== 0) return null;
+                    if (hidePocFeatures) {
+                        if (item.titleId === "nav.extensions.section.entryResources" || item.titleId === "nav.extensions.section.resourceExtensions") {
+                            return null;
+                        }
+                    }
                     return <NavItem key={item.titleId} item={item} onNavClose={onNavClose} />;
                 })}
             </AccordionPanel>

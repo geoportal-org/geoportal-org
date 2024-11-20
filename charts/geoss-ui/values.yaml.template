@@ -104,6 +104,8 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-ui-env
         key: nodeOptions
+  - name: HIDE_POC_FEATURES
+    value: "${HIDE_POC_FEATURES}"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-ui-env

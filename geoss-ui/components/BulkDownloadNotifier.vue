@@ -1,5 +1,5 @@
 <template>
-    <button v-if="isBulkDownloadEnabled" class="disabled-transparent" :class="{pulsate}" @click="openBulkDownloadPopup()" :disabled="disabled || !isSignedIn">
+    <button v-if="isBulkDownloadEnabled" class="disabled-transparent" :class="{pulsate}" @click="openBulkDownloadPopup()" :disabled="disabled">
         <i class="bulk-download__icon">
             <span v-if="links.length" class="counter">{{links.length}}</span>
         </i>
