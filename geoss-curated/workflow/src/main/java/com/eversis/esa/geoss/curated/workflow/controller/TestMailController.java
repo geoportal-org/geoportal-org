@@ -48,8 +48,9 @@ public class TestMailController {
         UsersResource usersResource = keycloak.realm(REALM_NAME).users();
         List<UserRepresentation> userRepresentations = usersResource.search(principal.getName());
         for (UserRepresentation userRepresentation : userRepresentations) {
-            String email = userRepresentation.getEmail();
-            sendMail(email, "[CURATED] test message", "This is a test message");
+            if (principal.getName().equals(userRepresentation.getUsername())) {
+                sendMail(userRepresentation.getEmail(), "[CURATED] test message", "This is a test message");
+            }
         }
     }
 
