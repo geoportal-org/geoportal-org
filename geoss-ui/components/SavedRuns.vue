@@ -423,6 +423,7 @@ export default class SavedRunsComponent extends Vue {
             token = await OpenEOService.authenticateOpenEO()
         }
         const jobs = await OpenEOService.getOpenEOJobs(token)
+        jobs.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
         //spinner
         SpinnerService.hideSpinner()
         clearTimeout(longRequestInfo)

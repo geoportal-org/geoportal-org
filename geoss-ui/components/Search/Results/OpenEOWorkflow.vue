@@ -309,9 +309,9 @@ export default class OpenEOWorkflowComponent extends Vue {
                 id: 'cropmap',
                 process_graph: {
                     biopar1: {
-                        process_id: 'worldcereal_inference',
+                        process_id: 'worldcereal_crop_extent',
                         namespace:
-                            'https://github.com/ESA-APEx/apex_algorithms/raw/main/openeo_udp/worldcereal_inference.json',
+                            'https://raw.githubusercontent.com/ESA-APEx/apex_algorithms/refs/heads/main/openeo_udp/worldcereal_crop_extent.json',
                         arguments: {
                             spatial_extent: {
                                 west: this.coords.W,
@@ -327,9 +327,10 @@ export default class OpenEOWorkflowComponent extends Vue {
                 }
             },
             'driver-memory': '4g',
-            'executor-memory': '1g',
+            'executor-memory': '2g',
             'executor-memoryOverhead': '1g',
-            'python-memory': '2g',
+            'python-memory': '3g',
+            "soft-errors": "true",
             'udf-dependency-archives': [
                 'https://artifactory.vgt.vito.be/artifactory/auxdata-public/openeo/onnx_dependencies_1.16.3.zip#onnx_deps'
             ]

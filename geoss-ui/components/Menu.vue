@@ -108,7 +108,7 @@ import { SearchEngineGetters } from '@/store/searchEngine/search-engine-getters'
 import TutorialTagsService from '@/services/tutorial-tags.service';
 import CollapseTransition from '@/plugins/CollapseTransition';
 import { PopupActions } from '@/store/popup/popup-actions';
-
+import LogService from '@/services/log.service'
 import MenuAPI from '@/api/menu'
 import apiClient from '@/api/apiClient'
 import CreatorDownloadPopup from './CreatorDownloadPopup.vue';
