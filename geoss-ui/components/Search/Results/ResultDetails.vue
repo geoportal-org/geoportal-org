@@ -1580,7 +1580,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             }
 
             // WorldCereal MAPS4GPP collection
-            if (this.result.sourceId === 'worldcereal') {
+            if (this.result.sourceId === 'worldcereal' || this.result.sourceId === 'agrostac') {
                 downloads.push({ name: this.result.title, url: `${SearchEngineService.getDabBaseUrl()}/worldcereal/query?searchFields=title,keywords,abstract&reqID=6hnblre3236&si=1&ct=12&rel=OVERLAPS&viewid=&sources=worldcereal&parents=${this.result.id}`, desc: '', type: 'worldcereal-collection' });
             }
 
@@ -2439,6 +2439,16 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 concatCoordinates(selectedAreaCoordinates) !== ',,,'
                     ? concatCoordinates(selectedAreaCoordinates)
                     : null
+        }
+
+        if (params.cropConfidence.join(',') === '0,100') {
+            delete params.cropConfidence
+        }
+        if (params.landCoverConfidence.join(',') === '0,100') {
+            delete params.landCoverConfidence
+        }
+        if (params.irrigationConfidence.join(',') === '0,100') {
+            delete params.irrigationConfidence
         }
 
         for (const param in params) {

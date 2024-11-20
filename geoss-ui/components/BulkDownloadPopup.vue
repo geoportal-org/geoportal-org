@@ -149,7 +149,7 @@ export default class BulkDownloadPopupComponent extends Vue {
 	public removeLink(url: any) {
 		this.$store.dispatch(BulkDownloadActions.removeLink, url);
 		this.selectedLinks = this.selectedLinks.filter((item: any) => item.url !== url);
-		if (!this.links.length && !this.files.length) {
+		if (!this.selectedLinks.length && !this.selectedLinks.length) {
 			PopupCloseService.closePopup('bulk-download');
 		}
 	}
