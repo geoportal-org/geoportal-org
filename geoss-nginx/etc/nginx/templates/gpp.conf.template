@@ -48,6 +48,17 @@ server {
     add_header X-Cache-Status $upstream_cache_status;
   }
 
+  location /rest/data-providers {
+    resolver 8.8.8.8;
+    proxy_ssl_verify off;
+    proxy_ssl_server_name on;
+    proxy_set_header host yellowpages.unepgrid.ch;
+    proxy_pass https://yellowpages.unepgrid.ch/rest/data-providers;
+  
+    proxy_set_header Referer "https://${UI_DOMAIN_NAME}";
+    proxy_set_header Origin "https://${UI_DOMAIN_NAME}";
+}
+
   location /curated {
     include conf.d/common/maintenance_conditions.conf;
 
