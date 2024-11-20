@@ -534,6 +534,7 @@ export const en = {
         profile: {
             title: "Profile",
             section: {
+                console: "Console",
                 profile: "My profile",
                 logout: "Logout",
             },

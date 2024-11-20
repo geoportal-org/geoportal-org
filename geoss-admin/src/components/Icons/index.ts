@@ -1,5 +1,6 @@
 export { ApiIcon } from "./ApiIcon";
 export { CatalogIcon } from "./CatalogIcon";
+export { ConsoleIcon } from "./ConsoleIcon";
 export { ContentIcon } from "./ContentIcon";
 export { CrossIcon } from "./CrossIcon";
 export { DirectoryIcon } from "./DirectoryIcon";

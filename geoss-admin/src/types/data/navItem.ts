@@ -4,6 +4,7 @@ import { IconProps } from "@/types";
 export type NavItem = {
     titleId: string;
     href?: string;
+    isExternal?: boolean;
     Icon: ComponentType<IconProps>;
     action?: {
         id: string;

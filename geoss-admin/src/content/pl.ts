@@ -345,6 +345,7 @@ export const pl = {
         profile: {
             title: "Profil",
             section: {
+                console: "Konsola",
                 profile: "Mój profil",
                 logout: "Wyloguj",
             },

@@ -9,7 +9,7 @@ import { pagesRoutes } from "@/data";
 import useCustomToast from "@/utils/useCustomToast";
 
 export const NavItem = ({ item, onNavClose }: NavItemProps) => {
-    const { titleId, href, Icon, action } = item;
+    const { titleId, href, Icon, action, isExternal = false } = item;
     const router = useRouter();
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
@@ -65,6 +65,7 @@ export const NavItem = ({ item, onNavClose }: NavItemProps) => {
                     transitionDuration="slower"
                     w="95%"
                     m="0 auto"
+                    target={isExternal ? '_blank' : ''}
                     _hover={{
                         bg: "brand.dark",
                         color: "brand.mainLight",

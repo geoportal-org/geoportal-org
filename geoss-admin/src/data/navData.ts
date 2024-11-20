@@ -1,5 +1,6 @@
 import {
     ApiIcon,
+    ConsoleIcon,
     EntryIcon,
     ExtensionIcon,
     FileIcon,
@@ -8,6 +9,7 @@ import {
     LogoutIcon,
     MenuIcon,
     PageIcon,
+    ProfileIcon,
     TutorialIcon,
     WebIcon,
     WebsiteIcon,
@@ -112,11 +114,18 @@ const navExtensionsData: NavItem[] = [
 ];
 
 const navProfileData: NavItem[] = [
-    /*{
+    {
         titleId: "nav.profile.section.profile",
+        isExternal: true,
         href: pagesRoutes.myProfile,
         Icon: ProfileIcon,
-    },*/
+    },
+    {
+        titleId: "nav.profile.section.console",
+        isExternal: true,
+        href: pagesRoutes.console,
+        Icon: ConsoleIcon,
+    },
     {
         titleId: "nav.profile.section.logout",
         Icon: LogoutIcon,
