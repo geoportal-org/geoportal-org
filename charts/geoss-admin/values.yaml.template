@@ -58,6 +58,8 @@ tolerations:
         effect: "NoExecute"
 
 env:
+  - name: NEXT_PUBLIC_IDP_DOMAIN
+    value: "https://${IDP_DOMAIN_NAME}"
   - name: NEXT_PUBLIC_API
     valueFrom:
       secretKeyRef:
