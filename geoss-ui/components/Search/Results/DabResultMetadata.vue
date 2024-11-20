@@ -846,11 +846,16 @@ export default class DabResultMetadataComponent extends Vue {
         }
         let filteredData = []
         for (const item of data) {
-            const keywords = UtilsService.getArrayByString(
+            const keywords_gco = UtilsService.getArrayByString(
                 item,
                 'gmd:MD_Keywords.gmd:keyword.gco:CharacterString'
             )
-            filteredData.push(...keywords)
+            const keywords_gmx = UtilsService.getArrayByString(
+                item,
+                'gmd:MD_Keywords.gmd:keyword.gmx:Anchor'
+            )
+            filteredData.push(...keywords_gco)
+            filteredData.push(...keywords_gmx)
         }
         if (!filteredData.length) {
             filteredData = UtilsService.extractCategoriesByAttributeValue(
