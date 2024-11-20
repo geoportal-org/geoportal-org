@@ -7,8 +7,17 @@
                 <div :key="route.title + '-separator'" v-if="index === 4" class="menu__separator"></div>
                 <div class="menu__item" :class="{ active: route === activeLinksExpander }" :key="index"
                     :data-tutorial-tag="(index === 6 && isSignedIn) ? 'header-menu-item-8' : 'header-menu-item-' + (index + 1)">
-
-                    <template v-if="isMyWorkspace(route)">
+                    <template v-if="isStatistics(route)">
+                        <NuxtLink v-if="isSignedIn" class="menu__link 1" :to="scopedUrl(route.link) || ''">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </NuxtLink>
+                        <div v-else class="menu__link 2" @click="signIn()">
+                            <img :src="route.imgURL" :alt="route.title" />
+                            <span>{{ route.title.toUpperCase() }}</span>
+                        </div>
+                    </template>
+                    <template v-else-if="isMyWorkspace(route)">
                         <div v-if="isSignedIn && route.links && route.links.length" class="menu__links-expander"
                             @click="toggleMenuSublinks(route)">
                             <img :src="route.imgURL" :alt="route.title" />
@@ -31,7 +40,7 @@
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
                     </a>
-                    <NuxtLink v-if="(!route.links || !route.links.length) && !isExternal(route.link)" :to="scopedUrl(route.link) || ''"
+                    <NuxtLink v-if="((!route.links || !route.links.length) && !isStatistics(route) && !isMyWorkspace(route)) && !isExternal(route.link)" :to="scopedUrl(route.link) || ''"
                         class="menu__link">
                         <img :src="route.imgURL" :alt="route.title" />
                         <span>{{ route.title }}</span>
@@ -199,6 +208,10 @@ export default class MenuComponent extends Vue {
     public signIn() {
         $nuxt.$auth.loginWith('keycloak')
         LogService.logSignIn()
+    }
+
+    public isStatistics(route) {
+        return route.imgURL.indexOf('statistics') > 0
     }
 
     public isMyWorkspace(route) {
