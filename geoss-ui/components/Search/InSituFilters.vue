@@ -2,7 +2,7 @@
     <div class="filters insitu-filters" :class="{ 'only-advanced': onlyAdvanced }">
         <div class="insitu-filters__wrapper">
             <CustomSelect class="insitu-filters__filter cropType" @input="oncropTypesChange($event)" :value="cropTypes"
-                :options="cropTypesOptions" :multiple="false" :filterable="true" textProp="text" idProp="id"
+                :options="cropTypesOptions" :multiple="true" :filterable="true" textProp="text" idProp="id"
                 :placeholder="$tc('inSituFilters.cropTypes')" :appendToBody="appendToBody" />
             <CustomSelect class="insitu-filters__filter landCoverType" @input="onLandCoverChange($event)"
                 :value="landCoverTypes" :options="landCoverTypesOptions" :multiple="true" :filterable="true"
@@ -13,7 +13,7 @@
                 textProp="text" idProp="id" :placeholder="$tc('inSituFilters.irrigationTypes')"
                 :appendToBody="appendToBody" />
             <CustomSelect class="insitu-filters__filter quantityType" @input="onquantityTypesChange($event)"
-                :value="quantityTypes" :options="quantityTypesOptions" :multiple="false" :filterable="true"
+                :value="quantityTypes" :options="quantityTypesOptions" :multiple="true" :filterable="true"
                 textProp="text" idProp="id" :placeholder="$tc('inSituFilters.quantityTypes')"
                 :appendToBody="appendToBody" />
             <div class="slider-section-container">
