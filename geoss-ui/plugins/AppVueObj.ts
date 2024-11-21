@@ -7,7 +7,7 @@ import PortalVue from 'portal-vue'
 import Vuebar from 'vuebar'
 //import SocialSharing from 'vue-social-sharing'
 
-import VueAnalytics from 'vue-analytics'
+// import VueAnalytics from 'vue-analytics'
 import LineClamp from 'vue-line-clamp'
 // import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // import 'element-closest-polyfill'
@@ -31,15 +31,15 @@ Vue.use(LineClamp)
 Vue.use(PortalVue)
 Vue.use(Vuebar)
 //Vue.use(SocialSharing)
-Vue.use(VueAnalytics, {
-    id: () =>
-        GeneralApiService.getSiteSettings().then(
-            (response: { analytics: { googleAnalyticsId: any } }) => {
-                return response ? response.analytics.googleAnalyticsId : null
-            }
-        ),
-    checkDuplicatedScript: true
-})
+// Vue.use(VueAnalytics, {
+//     id: () =>
+//         GeneralApiService.getSiteSettings().then(
+//             (response: { analytics: { googleAnalyticsId: any } }) => {
+//                 return response ? response.analytics.googleAnalyticsId : null
+//             }
+//         ),
+//     checkDuplicatedScript: true
+// })
 
 // directives
 Vue.directive('click-outside', ClickOutside)
