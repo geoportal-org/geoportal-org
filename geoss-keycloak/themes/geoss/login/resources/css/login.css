@@ -3,3 +3,25 @@
     background-size: cover;
     height: 100%;
 }
+
+.login-pf .pf-v5-c-login__header {
+    font-size: 0;
+    background: url("../img/geoss-portal.png") 0 0 no-repeat;
+    width: 250px;
+    height: 70px;
+    background-size: 100%;
+}
+
+.login-pf .pf-v5-c-login__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-pf .pf-v5-c-login__main {
+    align-self: auto;
+}
+
+.login-pf .pf-v5-c-form-control {
+    width: 150px;
+}
