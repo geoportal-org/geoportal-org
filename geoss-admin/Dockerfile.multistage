@@ -1,4 +1,4 @@
-FROM node:16.19-alpine AS dependencies
+FROM node:18.18.2-alpine AS dependencies
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
@@ -10,7 +10,7 @@ COPY package.json package-lock.json ./
 
 RUN npm ci install --omit=dev
 
-FROM node:16.19-alpine AS builder
+FROM node:18.18.2-alpine AS builder
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
@@ -28,7 +28,7 @@ COPY tsconfig.json .
 
 RUN npm run build
 
-FROM node:16.19-alpine AS runner
+FROM node:18.18.2-alpine AS runner
 
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
