@@ -22,6 +22,6 @@
     align-self: auto;
 }
 
-.login-pf .pf-v5-c-form-control {
+.login-pf .pf-v5-c-login__main-header .pf-v5-c-form-control {
     width: 150px;
 }

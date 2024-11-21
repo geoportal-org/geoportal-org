@@ -148,7 +148,7 @@ export default class MenuComponent extends Vue {
     }
 
     get isAdmin() {
-        return this.$nuxt.$auth.loggedIn && this.$nuxt.$auth.$state.user.resource_access['geoss-admin'].roles.includes('manage_admin')
+        return this.$nuxt.$auth.loggedIn && this.$nuxt.$auth.$state.user.resource_access['geoss-admin'] && this.$nuxt.$auth.$state.user.resource_access['geoss-admin'].roles.includes('manage_admin')
     }
 
     get menuOpened() {
