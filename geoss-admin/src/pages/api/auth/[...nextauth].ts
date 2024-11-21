@@ -69,10 +69,6 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account, user }) => {
             if (account && user) {
                 const decodedToken = jwtDecode(account.id_token || "");
-                console.log("DECODED TOKEN");
-                console.log(decodedToken);
-                // token.accessToken = account.access_token;
-                // token.accessTokenExpired = account.expires_at;
                 let hasRole = false;
                 if (
                     //@ts-ignore

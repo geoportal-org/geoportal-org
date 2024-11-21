@@ -1,4 +1,4 @@
-FROM node:16.19.0-alpine
+FROM node:18.18.2-alpine
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"
