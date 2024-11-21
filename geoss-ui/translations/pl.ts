@@ -94,6 +94,10 @@ export default {
         languageToggle: 'Przełączanie języka wybierak',
         signIn: 'Zaloguj się',
         signOff: 'Wyloguj się',
+        createNewPortal: 'Utwórz nowy portal',
+        registerNewPortal: 'Zarejestruj nowy portal',
+        siteAdministration: 'Administracja witryną',
+        usersManagement: 'Zarządzanie użytkownikami'
     },
     general: {
         error: 'Błąd',

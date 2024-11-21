@@ -93,6 +93,10 @@ export default {
         languageToggle: '切换语言选择器',
         signIn: '登入',
         signOff: '搁笔',
+        createNewPortal: '创建新门户',
+        registerNewPortal: '注册新门户',
+        siteAdministration: '站点管理',
+        usersManagement: '用户管理'
     },
     general: {
         error: '错误',

@@ -101,7 +101,11 @@ export default {
         toggle: 'Basculer le menu',
         languageToggle: 'Basculer le sélecteur de langue',
         signIn: 'S`identifier',
-        signOff: 'Approuver'
+        signOff: 'Approuver',
+        createNewPortal: 'Créer un nouveau portail',
+        registerNewPortal: 'Enregistrer un nouveau portail',
+        siteAdministration: 'Administration du site',
+        usersManagement: 'Gestion des utilisateurs'
     },
     general: {
         error: 'Erreur',

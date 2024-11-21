@@ -80,10 +80,19 @@
                         <template  v-if="isCommunityPortals(route) && !siteId && isSignedIn">
                             <hr style="border-color: #fff; margin: 10px -15px;" />
                             <a class="menu__sublink" href="#" @click="showCreatorDownloadPopup()">
-                                Create new portal
+                                {{ $tc('menu.createNewPortal') }}
                             </a>
                             <a class="menu__sublink" href="#" @click="showCreatorRegisterPopup()">
-                                Register new portal
+                                {{ $tc('menu.registerNewPortal') }}
+                            </a>
+                        </template>
+                        <template  v-if="isMyWorkspace(route) && !siteId && isAdmin">
+                            <hr style="border-color: #fff; margin: 10px -15px;" />
+                            <a class="menu__sublink" :href="adminPanelLink">
+                                {{ $tc('menu.siteAdministration') }}
+                            </a>
+                            <a class="menu__sublink" :href="usersManagementLink">
+                                {{ $tc('menu.usersManagement') }}
                             </a>
                         </template>
                     </div>
@@ -126,8 +135,20 @@ export default class MenuComponent extends Vue {
     public activeLinksExpander: MenuLinksWrapper | null = null;
     public routes: any = []; // : Array<MenuLink | MenuLinksWrapper> = [];
 
+    get usersManagementLink() {
+        return `https://${this.$config.idpDomainName}/admin/geoss/console`
+    }
+
+    get adminPanelLink() {
+        return this.$config.adminUrl
+    }
+
     get isSignedIn() {
         return this.$nuxt.$auth.loggedIn;
+    }
+
+    get isAdmin() {
+        return this.$nuxt.$auth.loggedIn && this.$nuxt.$auth.$state.user.resource_access['geoss-admin'].roles.includes('manage_admin')
     }
 
     get menuOpened() {

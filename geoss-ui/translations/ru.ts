@@ -94,6 +94,10 @@ export default {
         languageToggle: 'Переключить язык выбора',
         signIn: 'Войти',
         signOff: 'выйти',
+        createNewPortal: 'Создать новый портал',
+        registerNewPortal: 'Зарегистрировать новый портал',
+        siteAdministration: 'Администрирование сайта',
+        usersManagement: 'Управление пользователями'
     },
     general: {
         error: 'ошибка',

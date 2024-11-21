@@ -207,6 +207,7 @@ export default {
     publicRuntimeConfig: {
         adminUrl: process.env.ADMIN_URL,
         baseUrl: process.env.BASE_URL,
+        idpDomainName: process.env.IDP_DOMAIN_NAME,
         curatedUrl: process.env.CURATED_URL,
         keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
         keycloakClientId: process.env.KEYCLOAK_CLIENT_ID,

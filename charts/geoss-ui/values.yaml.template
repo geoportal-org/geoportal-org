@@ -106,6 +106,8 @@ env:
         key: nodeOptions
   - name: HIDE_POC_FEATURES
     value: "${HIDE_POC_FEATURES}"
+  - name: IDP_DOMAIN_NAME
+    value: "${IDP_DOMAIN_NAME}"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-ui-env

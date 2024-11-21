@@ -97,6 +97,10 @@ export default {
         languageToggle: 'Toggle language selector',
         signIn: 'Sign in',
         signOff: 'Sign off',
+        createNewPortal: 'Create new portal',
+        registerNewPortal: 'Register new portal',
+        siteAdministration: 'Site administration',
+        usersManagement: 'Users management'
     },
     general: {
         error: 'Error',
@@ -490,7 +494,7 @@ export default {
         userContributedDelete: 'Delete',
         userContributedRemoveEntryExtensionSuccess: 'You have successfuly removed entry extension',
         userContributedRemoveUnavailable: 'Extension removal is temporary unavailable - entry is currently processed in worklow.<br/>Please try again later.',
-        
+
         //openeo
         dateRange: 'Date range',
         bbox: 'Bounding box coordinates',
