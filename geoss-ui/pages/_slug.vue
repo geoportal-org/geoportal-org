@@ -58,7 +58,8 @@ export default {
 
     watch: {
         content: {
-            handler: () => {
+            handler: async () => {
+                await window.$nuxt.$nextTick();
                 document
                     .querySelector('.my-workspace-tab')
                     .querySelectorAll('.version')
@@ -69,6 +70,7 @@ export default {
                     })
             },
             deep: true
+        }
     },
 
     async fetch() {
