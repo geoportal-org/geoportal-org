@@ -50,7 +50,7 @@ export default class SeeOtherSourcesComponent extends Vue {
             }
         }
 
-        if (this.hidePocFeatures) {
+        if (this.hidePocFeatures && alternateSources.length) {
             return [alternateSources[0]];
         }
 
