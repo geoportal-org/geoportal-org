@@ -56,15 +56,19 @@ export default {
         }
     },
 
-    mounted() {
-        document
-            .querySelector('.my-workspace-tab')
-            .querySelectorAll('.version')
-            .forEach((element) => {
-                element.addEventListener('click', () => {
-                    element.closest('.my-workspace-left').classList.toggle('changes-visible')
-                })
-            })
+    watch: {
+        content: {
+            handler: () => {
+                document
+                    .querySelector('.my-workspace-tab')
+                    .querySelectorAll('.version')
+                    .forEach((element) => {
+                        element.addEventListener('click', () => {
+                            element.closest('.my-workspace-left').classList.toggle('changes-visible')
+                        })
+                    })
+            },
+            deep: true
     },
 
     async fetch() {
