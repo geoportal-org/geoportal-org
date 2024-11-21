@@ -17,7 +17,15 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
         );
     };
 
+    const insufficientRoleRedirect = () => {
+        router.push(`${process.env.NEXT_PUBLIC_APP_URL}`);
+    }
+
     useEffect(() => {
+        //@ts-ignore
+        if(session && session.hasRole !== true){
+            insufficientRoleRedirect()
+        }
         if (Date.now() > Number(session?.expires)) {
             handleUserLogout();
         }

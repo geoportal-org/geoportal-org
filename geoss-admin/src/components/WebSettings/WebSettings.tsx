@@ -41,7 +41,6 @@ export const WebSettings = () => {
             const {
                 _embedded: { webSettings },
             } = await WebSettingsService.getWebSettings(currentSiteId);
-            console.log(webSettings)
             setWebSettingsList(webSettings);
             setSavedValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields, false));
             setInitValues(setExistingWebSettingsKeyValues(webSettings, webSettingsFormFields));

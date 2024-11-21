@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import type { JWT } from "next-auth/jwt";
 import { pagesRoutes } from "@/data";
+import { jwtDecode } from "jwt-decode";
 
 async function refreshAccessToken(token: JWT) {
     try {
@@ -67,10 +68,23 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         jwt: async ({ token, account, user }) => {
             if (account && user) {
+                const decodedToken = jwtDecode(account.id_token || "");
+                console.log("DECODED TOKEN");
+                console.log(decodedToken);
                 // token.accessToken = account.access_token;
                 // token.accessTokenExpired = account.expires_at;
+                let hasRole = false;
+                if (
+                    //@ts-ignore
+                    decodedToken.resource_access["geoss-admin"] &&
+                    //@ts-ignore
+                    decodedToken.resource_access["geoss-admin"].roles.some((e) => e === "manage_admin")
+                ) {
+                    hasRole = true;
+                }
+                token.hasRole = hasRole;
                 token.refreshToken = account.refresh_token;
-                token.tokenId = account.id_token
+                token.tokenId = account.id_token;
                 token.user = user;
                 return token;
                 //@ts-ignore
@@ -86,6 +100,8 @@ export const authOptions: NextAuthOptions = {
             session.tokenId = token.tokenId as string;
             //@ts-ignore
             session.userId = token.user.id;
+            //@ts-ignore
+            session.hasRole = token.hasRole;
             return session;
         },
     },
