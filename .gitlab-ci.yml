@@ -14,7 +14,7 @@ variables:
     - branches
 
 .yarn_lint_base:
-  image: node:16-alpine
+  image: node:18-alpine
   tags:
     - geoss-runner-1
   script:
@@ -73,7 +73,7 @@ stages: # List of stages for jobs, and their order of execution
 #                                                STATIC CODE ANALYSIS                                                  #
 ########################################################################################################################
 check_geoss-admin:
-  extends: .npm_lint_base
+  extends: .yarn_lint_base
   stage: code_analysis
   before_script:
     - cd ./geoss-admin
