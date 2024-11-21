@@ -2,7 +2,7 @@
     <div class="privacy-policy" :class="{active}">
         <div class="privacy-policy__text">
             <span>{{$tc('privacyPolicy.statement')}} </span>
-            <a href="/community/guest/cookie-notice" target="_blank">{{$tc('privacyPolicy.cookieLink')}}</a><span> {{$tc('privacyPolicy.cookieText')}}</span>
+            <a href="/cookie-notice" target="_blank">{{$tc('privacyPolicy.cookieLink')}}</a><span> {{$tc('privacyPolicy.cookieText')}}</span>
         </div>
         <div class="text-center">
             <button @click="accept()" class="blue-btn-default">{{$tc('privacyPolicy.accept')}}</button>
