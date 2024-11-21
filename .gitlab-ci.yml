@@ -3,7 +3,7 @@ variables:
   GRADLE_CLI_OPTS: "--build-cache"
 
 .npm_lint_base:
-  image: node:16-alpine
+  image: node:18-alpine
   tags:
     - geoss-runner-1
   script:
