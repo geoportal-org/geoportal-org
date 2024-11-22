@@ -77,7 +77,7 @@
                                 {{ subroute.title }}
                             </NuxtLink>
                         </template>
-                        <template  v-if="isCommunityPortals(route) && !siteId && isSignedIn">
+                        <template  v-if="isCommunityPortals(route) && !siteId && isSignedIn && !hidePocFeatures">
                             <hr style="border-color: #fff; margin: 10px -15px;" />
                             <a class="menu__sublink" href="#" @click="showCreatorDownloadPopup()">
                                 {{ $tc('menu.createNewPortal') }}
@@ -134,6 +134,10 @@ export default class MenuComponent extends Vue {
 
     public activeLinksExpander: MenuLinksWrapper | null = null;
     public routes: any = []; // : Array<MenuLink | MenuLinksWrapper> = [];
+
+    get hidePocFeatures() {
+        return this.$config.hidePocFeatures
+    }
 
     get usersManagementLink() {
         return `https://${this.$config.idpDomainName}/admin/geoss/console`
