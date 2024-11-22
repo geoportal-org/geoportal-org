@@ -28,10 +28,15 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 8443
-  targetPort: 8443
-  protocol: TCP
-  name: http
+  ports:
+    - port: 8443
+      targetPort: 8443
+      protocol: TCP
+      name: http
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+      name: liveness-port
 
 resources:
   limits:
@@ -43,6 +48,12 @@ resources:
 
 autoscaling:
   enabled: false
+
+livenessProbe:
+  httpGet:
+    path: /health/ready
+    port: liveness-port
+  initialDelaySeconds: 15
 
 pvc:
 volumes:
