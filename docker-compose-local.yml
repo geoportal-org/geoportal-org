@@ -307,6 +307,12 @@ services:
       - SPRING_PROFILES_ACTIVE=keycloak
       - SPRING_SECURITY_OAUTH2_BASE_URI=http://geoss-keycloak:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_SECRET=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      - SPRING_MAIL_HOST=geoss-maildev
+      - SPRING_MAIL_PORT=1025
+      - SPRING_MAIL_USERNAME=maildev
+      - SPRING_MAIL_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      - SPRING_MAIL_PROTOCOL=smtp
+      - SPRING_MAIL_PROPERTIES_MAIL_DEBUG=true
     hostname: geoss-personaldata
     ports:
       - "8083:8080"
@@ -531,7 +537,7 @@ services:
       - geoss-keycloak
 
   geoss-maildev:
-    image: nexus-docker.eversis.com:7443/common/maildev:1.0.0
+    image: maildev/maildev
     container_name: geoss-maildev
     deploy:
       resources:

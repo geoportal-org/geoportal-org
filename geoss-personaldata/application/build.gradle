@@ -38,6 +38,7 @@ dependencies {
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template'
     implementation project(':geoss-common')
     implementation project(':common')
+    implementation project(':feedback')
     implementation project(':profile')
     implementation project(':run')
     implementation project(':searches')
