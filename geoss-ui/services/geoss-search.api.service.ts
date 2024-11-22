@@ -403,6 +403,8 @@ const GeossSearchApiService = {
          * 3. hiddenSources - array of disabled dataSources
          * 4. theSameTab - used in pagination, single request to current dataSource, leaves other results untouched
          */
+
+
         const otherSourcesLoading =
             AppVueObj.app.$store.getters[SearchGetters.otherSourcesLoading]
         const targetId = AppVueObj.app.$store.getters[SearchGetters.targetIds]
@@ -419,6 +421,7 @@ const GeossSearchApiService = {
                 const outputDataObject = JSON.parse(
                     JSON.stringify(emptyOutputDataObject)
                 )
+
                 return GeossSearchApiService.getTargetById(
                     targetId + '',
                     dataSource[0]
@@ -2132,10 +2135,7 @@ const GeossSearchApiService = {
             })
         } else {
             return Promise.all([
-                makeRequest(
-                    'get',
-                    `${BaseUrl()}/community/guest/geoss-resources?p_p_id=geossresources_WAR_geossportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&controlPanelCategory=current_site.configuration&p_p_resource_id=BOOKMARKED_FEED&_geossresources_WAR_geossportlet_targetIds=${targetId}&_geossresources_WAR_geossportlet_dataSource=${dataOrigin}`
-                ),
+                makeRequest('get', `${SearchEngineService.getDabBaseUrl()}/opensearch/query?targetId=${targetId}`),
                 GeossSearchApiService.getDabResultsRatings(
                     targetId,
                     dataOrigin
