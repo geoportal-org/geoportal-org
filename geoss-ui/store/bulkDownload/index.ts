@@ -1,11 +1,12 @@
 import { BulkDownloadLink } from '@/interfaces/BulkDownloadLink'
+
 const state = () => ({
     links: [] as BulkDownloadLink[],
     openTrigger: false as boolean
 })
 
-const updateSessionStorage = () => {
-    sessionStorage.setItem('bulkDownload', JSON.stringify(state().links))
+const updateSessionStorage = (state: any) => {
+    sessionStorage.setItem('bulkDownload', JSON.stringify(state.links))
 }
 
 const getters = {
@@ -25,18 +26,18 @@ const mutations = {
             ) > -1
         if (!alreadyExist) {
             state.links.push(link)
-            updateSessionStorage()
+            updateSessionStorage(state)
         }
     },
     removeLink(state: any, url: number) {
         state.links = state.links.filter(
             (link: { url: number }) => link.url !== url
         )
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     removeAllLinks(state: any) {
         state.links = []
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     openTrigger(state: any, value: boolean) {
         state.openTrigger = value
@@ -48,7 +49,7 @@ const mutations = {
         if (fileIndex > -1) {
             state.links[fileIndex].assignedFileId = fileId
         }
-        updateSessionStorage()
+        updateSessionStorage(state)
     }
 }
 

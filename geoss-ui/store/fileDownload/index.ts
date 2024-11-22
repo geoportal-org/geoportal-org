@@ -6,8 +6,8 @@ const state = () => ({
     openTrigger: false as boolean
 })
 
-const updateSessionStorage = () => {
-    sessionStorage.setItem('fileDownload', JSON.stringify(state().files))
+const updateSessionStorage = (state: any) => {
+    sessionStorage.setItem('fileDownload', JSON.stringify(state.files))
 }
 
 const getters = {
@@ -22,7 +22,7 @@ const getters = {
 const mutations = {
     addFile(state: any, file: DownloadFile) {
         state.files.push(file)
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     removeFile(state: any, id: number) {
         const file: DownloadFile = state.files.find(
@@ -31,7 +31,7 @@ const mutations = {
         clearTimeout(file.progressData.timeout)
         file.progressData.timeout = 'cancel'
         state.files = state.files.filter((file: DownloadFile) => file.id !== id)
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     removeAllFiles(state: any) {
         for (const file of state.files) {
@@ -39,7 +39,7 @@ const mutations = {
             file.progressData.timeout = 'cancel'
         }
         state.files = []
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     changeFileStatus(
         state: any,
@@ -57,7 +57,7 @@ const mutations = {
             file.statusObject = statusObject
         }
         state.files = state.files.splice(0)
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     changeFileUrl(
         state: any,
@@ -70,7 +70,7 @@ const mutations = {
             file.url = url
             file.download = download
         }
-        updateSessionStorage()
+        updateSessionStorage(state)
     },
     openTrigger(state: any, value: boolean) {
         state.openTrigger = value
