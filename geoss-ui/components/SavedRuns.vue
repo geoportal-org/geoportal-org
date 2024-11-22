@@ -61,8 +61,8 @@
                             <div
                                 v-if="
                                     displayRun.outputs &&
-                                    displayRun.status === 'COMPLETED' &&
-                                    displayRun.result !== 'FAIL'
+                                    (displayRun.status === 'COMPLETED' || displayRun.status === 'FINISHED') &&
+                                    displayRun.result !== 'FAIL' 
                                 "
                                 class="service-workflow__saved-outputs"
                             >
@@ -149,7 +149,8 @@
                                     {{ $tc('popupContent.messageLog') }}
                                 </button>
                                 <button
-                                    class="service-workflow__saved-run-btn link"
+                                    class="service-workflow__saved-run-btn"
+                                    :class="displayRun.result === 'FINISHED' ? 'solo_link' : 'link'"
                                     @click="createDashboard(displayRun)"
                                     v-if="
                                         displayRun.outputs &&
@@ -166,8 +167,13 @@
                                 class="service-workflow__saved-run-status__badge"
                                 :class="{
                                     success:
-                                        displayRun.status === 'COMPLETED' &&
-                                        displayRun.result === 'SUCCESS'
+                                        displayRun.status === 'COMPLETED' || displayRun.status === 'FINISHED' &&
+                                        displayRun.result === 'SUCCESS' || displayRun.result === 'FINISHED',
+                                    error: 
+                                        displayRun.status === 'ERROR' && displayRun.result === 'ERROR',
+                                    running: 
+                                        displayRun.status === 'RUNNING' && displayRun.result === 'RUNNING',
+
                                 }"
                             >
                                 {{ displayRun.status
@@ -382,6 +388,7 @@ export default class SavedRunsComponent extends Vue {
             this.runsResultsPerPage,
             pageNum
         )
+        console.log(data)
         if (data) {
             this.savedRuns = data
             this.displayRuns = data
@@ -540,6 +547,12 @@ export default class SavedRunsComponent extends Vue {
                     background: none;
                     border-left: 1px solid #efefef;
                 }
+                
+                &.solo_link {
+                    font-weight: bold;
+                    color: $blue;
+                    background: none;
+                }
             }
         }
 
@@ -641,6 +654,14 @@ export default class SavedRunsComponent extends Vue {
 
                 &.success {
                     background: green;
+                }
+
+                &.running {
+                    background: lightskyblue;
+                }
+                
+                &.error {
+                    background: red;
                 }
             }
         }

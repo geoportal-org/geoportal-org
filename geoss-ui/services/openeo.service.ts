@@ -29,8 +29,11 @@ const OpenEOService = {
             await provider.login({}, true)
             //@ts-ignore
             let token = provider.getToken()
-            //@ts-ignore
-            AppVueObj.app.$store.dispatch(UserActions.setOpenEOTokenExpireDate, provider.user.expires_at)
+            AppVueObj.app.$store.dispatch(
+                UserActions.setOpenEOTokenExpireDate,
+                //@ts-ignore
+                provider.user.expires_at
+            )
             AppVueObj.app.$store.dispatch(UserActions.setOpenEOToken, token)
             return token
         } catch (e: any) {
@@ -50,11 +53,80 @@ const OpenEOService = {
         )
         const jsonGet = await list.json()
 
-        const parsedJobs = this.parseOpenEOJobs(jsonGet.jobs)
+        const listWithResults = await Promise.all(
+            jsonGet.jobs.map(async (element: any) => {
+                if (element.status === 'finished') {
+                    const res = await fetch(
+                        `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${element.id}/results`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    )
+                    const json = await res.json()
+                    return { ...element, ...json }
+                } else {
+                    return element
+                }
+            })
+        )
+
+        console.log(listWithResults)
+
+        const parsedJobs = this.parseOpenEOJobs(listWithResults)
         return parsedJobs
     },
 
-    async createOpenEOJob(url: string, token: string, body: any){
+    parseOpenEOJobs(data: any) {
+        if (data) {
+            return data.map((job: any) => {
+                const outputs: any[] = []
+                if (job.assets) {
+                    for (const [key] of Object.entries(job.assets)) {
+                        const value = job.assets[key]
+                        if (value.title.includes('.tif')) {
+                            outputs.push({
+                                aoi: null,
+                                createFolder: true,
+                                description: value.title,
+                                id: value.title,
+                                name: value.title,
+                                outputType: 'individual',
+                                value: value.href,
+                                valueArray: null,
+                                valueSchema: 'url',
+                                valueType: 'value'
+                            })
+                        }
+                    }
+                }
+                return {
+                    createdOn: job.created,
+                    createdBy: '',
+                    id: job.id,
+                    messageList: [],
+                    modifiedBy: '',
+                    modifiedOn: job.updated,
+                    name: job.title || 'Calculation not finished',
+                    outputs: outputs,
+                    path: '',
+                    result: job.status.toUpperCase(),
+                    runId: job.id,
+                    showLogs: false,
+                    showOutputs: false,
+                    status: job.status.toUpperCase(),
+                    user: '',
+                    workflowId: job.id
+                }
+            })
+        } else {
+            return []
+        }
+    },
+
+    async createOpenEOJob(url: string, token: string, body: any) {
         const res = await fetch(url, {
             method: 'POST',
             headers: {
@@ -67,7 +139,7 @@ const OpenEOService = {
         return res
     },
 
-    async runOpenEOJob(id: string, token: string){
+    async runOpenEOJob(id: string, token: string) {
         await fetch(
             `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${id}/results`,
             {
@@ -79,7 +151,7 @@ const OpenEOService = {
         )
     },
 
-    async getJobResults(id: string, token: string){
+    async getJobResults(id: string, token: string) {
         await fetch(
             `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${id}/results`,
             {
@@ -91,7 +163,7 @@ const OpenEOService = {
         )
     },
 
-    async getJobLogs(id: string, token: string){
+    async getJobLogs(id: string, token: string) {
         await fetch(
             `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${id}/logs`,
             {
@@ -101,34 +173,6 @@ const OpenEOService = {
                 }
             }
         )
-    },
-
-    parseOpenEOJobs(data: any) {
-        if(data){
-            return data.map((job: any) => {
-                return {
-                    createdOn: job.created,
-                    createdBy: '',
-                    id: job.id,
-                    messageList: [],
-                    modifiedBy: '',
-                    modifiedOn: job.created,
-                    name: 'Name placeholder',
-                    outputs: [],
-                    path: '',
-                    result: job.status.toUpperCase(),
-                    runId: job.id,
-                    showLogs: false,
-                    showOutputs: false,
-                    status: job.status.toUpperCase(),
-                    user: '',
-                    workflowId: job.id
-                }
-            })
-        }else {
-            return []
-        }
-
     }
 }
 
