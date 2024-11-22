@@ -17,14 +17,23 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
         );
     };
 
-    const insufficientRoleRedirect = () => {
-        router.push(`${process.env.NEXT_PUBLIC_APP_URL}`);
-    }
+    const insufficientRoleRedirect = async () => {
+        await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/auth/signOutProvider`, { method: "PUT" }).then(
+            async (res) => {
+                if (res.ok) {
+                    signOut({ redirect: false });
+                    router.push(`${process.env.NEXT_PUBLIC_APP_URL}`);
+                } else {
+                    console.error("Error with sign out.");
+                }
+            }
+        );
+    };
 
     useEffect(() => {
         //@ts-ignore
-        if(session && session.hasRole !== true){
-            insufficientRoleRedirect()
+        if (session && session.hasRole !== true) {
+            insufficientRoleRedirect();
         }
         if (Date.now() > Number(session?.expires)) {
             handleUserLogout();
