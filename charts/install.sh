@@ -48,7 +48,7 @@ fi
 
 printf "\n\n ${Green}Deploy GEOSS-els ...\n\n${NC}"
 envsubst < geoss-els/values.yaml.template > geoss-els/values.yaml
-helm -n $K8S_NAMESPACE upgrade --install \
+helm -n $K8S_NAMESPACE upgrade --install --wait --timeout 10m0s\
     --debug $RESOURCE_NAME_PREFIX-els geoss-els | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 printf "\n\n ${Green}Deploy GEOSS-db ...\n\n${NC}"
@@ -56,6 +56,10 @@ envsubst < geoss-db/values.yaml.template > geoss-db/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install --wait --timeout 10m0s \
     --debug $RESOURCE_NAME_PREFIX-db geoss-db | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
+printf "\n\n ${Green}Deploy GEOSS-keycloak ...\n\n${NC}"
+envsubst < geoss-keycloak/values.yaml.template > geoss-keycloak/values.yaml
+helm -n $K8S_NAMESPACE upgrade --install --wait --timeout 10m0s\
+    --debug $RESOURCE_NAME_PREFIX-keycloak geoss-keycloak | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 printf "\n\n ${Green}Deploy GEOSS-admin ...\n\n${NC}"
 envsubst < geoss-admin/values.yaml.template > geoss-admin/values.yaml
@@ -71,11 +75,6 @@ printf "\n\n ${Green}Deploy GEOSS-curated ...\n\n${NC}"
 envsubst < geoss-curated/values.yaml.template > geoss-curated/values.yaml
 helm -n $K8S_NAMESPACE upgrade --install \
     --debug $RESOURCE_NAME_PREFIX-curated geoss-curated | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
-
-printf "\n\n ${Green}Deploy GEOSS-keycloak ...\n\n${NC}"
-envsubst < geoss-keycloak/values.yaml.template > geoss-keycloak/values.yaml
-helm -n $K8S_NAMESPACE upgrade --install \
-    --debug $RESOURCE_NAME_PREFIX-keycloak geoss-keycloak | grep -E "(Happy\ Helming|NAME\: |LAST DEPLOYED\: |NAMESPACE\: |STATUS\: |REVISION\: | TEST SUITE\: )"  || true
 
 printf "\n\n ${Green}Deploy GEOSS-kibana ...\n\n${NC}"
 envsubst < geoss-kibana/values.yaml.template > geoss-kibana/values.yaml
