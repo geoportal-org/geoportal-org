@@ -33,6 +33,7 @@ import java.util.stream.Stream;
         basePackages = {
                 "com.eversis.esa.geoss.personaldata.survey.controller",
                 "com.eversis.esa.geoss.personaldata.survey.event",
+                "com.eversis.esa.geoss.personaldata.survey.mapper",
                 "com.eversis.esa.geoss.personaldata.survey.service.internal",
         }
 )

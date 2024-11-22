@@ -1,6 +1,7 @@
 package com.eversis.esa.geoss.personaldata.survey.domain;
 
 import com.eversis.esa.geoss.common.domain.AuditableEmbeddable;
+import com.eversis.esa.geoss.personaldata.survey.event.SurveyAuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,7 +30,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @Audited
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(SurveyAuditingEntityListener.class)
 public class Survey {
 
     @Id

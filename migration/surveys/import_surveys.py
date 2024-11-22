@@ -22,7 +22,9 @@ def main():
 
     # storage configuration
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = script_dir
+    data_dir = config.get('FS', 'data_dir', fallback=script_dir).strip('"').strip("'")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
     failed_data_dir = config.get('FS', 'failed_data_dir', fallback=script_dir).strip('"').strip("'")
     if not os.path.exists(failed_data_dir):
         os.makedirs(failed_data_dir)
@@ -36,6 +38,7 @@ def main():
     admin_access_token = get_admin_access_token(keycloak_openid, kc_conf.get('user_name'), kc_conf.get('user_pass'))
 
     surveys_api_url = config.get('personaldata', 'surveys_api_url').strip('\'\"')
+    surveys_api_url += '/hidden'
     data = load_data(data_dir, SURVEYS_FILE)
     failed_records = process_records(data, admin_access_token, surveys_api_url)
 
@@ -118,6 +121,7 @@ def create_headers(access_token):
 
 def create_payload(record):
     return {
+        "dateTime": record.get('date and time', ''),
         "from": record.get('from', ''),
         "classification": record.get('classification', ''),
         "foundLookingFor": record.get('found what looking for', ''),

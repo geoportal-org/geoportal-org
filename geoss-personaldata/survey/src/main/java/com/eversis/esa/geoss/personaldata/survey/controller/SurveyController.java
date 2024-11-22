@@ -2,10 +2,12 @@ package com.eversis.esa.geoss.personaldata.survey.controller;
 
 import com.eversis.esa.geoss.common.hateoas.PageMapper;
 import com.eversis.esa.geoss.personaldata.survey.domain.Survey;
+import com.eversis.esa.geoss.personaldata.survey.model.SurveyModel;
 import com.eversis.esa.geoss.personaldata.survey.search.SearchQuery;
 import com.eversis.esa.geoss.personaldata.survey.search.SearchQueryParser;
 import com.eversis.esa.geoss.personaldata.survey.service.SurveyService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,14 +20,19 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,6 +95,20 @@ public class SurveyController {
     public ResponseEntity<Void> deleteAllSurveys() {
         surveyService.deleteAllSurveys();
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Post survey entity model. Only for migration old surveys, with override create date.
+     *
+     * @param surveyModel the survey model
+     * @return the entity model
+     */
+    @Hidden
+    @PostMapping("/hidden")
+    @ResponseStatus(HttpStatus.CREATED)
+    EntityModel<Survey> postSurvey(@RequestBody @Valid SurveyModel surveyModel) {
+        Survey survey = surveyService.addSurvey(surveyModel);
+        return EntityModel.of(survey, surveyLinks(survey));
     }
 
     private List<Link> surveyLinks(Survey survey) {
