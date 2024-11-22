@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +32,7 @@ public class TestMailController {
 
     private static final String REALM_NAME = "geoss";
 
-    private final Keycloak keycloak;
+    private final ObjectProvider<Keycloak> keycloakProvider;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -45,13 +46,15 @@ public class TestMailController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void testSendEmail(Principal principal) {
         log.info("principal:{}", principal);
-        UsersResource usersResource = keycloak.realm(REALM_NAME).users();
-        List<UserRepresentation> userRepresentations = usersResource.search(principal.getName());
-        for (UserRepresentation userRepresentation : userRepresentations) {
-            if (principal.getName().equals(userRepresentation.getUsername())) {
-                sendMail(userRepresentation.getEmail(), "[CURATED] test message", "This is a test message");
+        keycloakProvider.ifAvailable(keycloak -> {
+            UsersResource usersResource = keycloak.realm(REALM_NAME).users();
+            List<UserRepresentation> userRepresentations = usersResource.search(principal.getName());
+            for (UserRepresentation userRepresentation : userRepresentations) {
+                if (principal.getName().equals(userRepresentation.getUsername())) {
+                    sendMail(userRepresentation.getEmail(), "[CURATED] test message", "This is a test message");
+                }
             }
-        }
+        });
     }
 
     private void sendMail(String to, String subject, String body) {

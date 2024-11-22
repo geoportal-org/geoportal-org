@@ -116,7 +116,7 @@ public class RatingController {
      * @param entryRatingDto the entry rating dto
      * @return the rate response
      */
-    @PreAuthorize("hasAnyRole('COMMENT_WRITER', 'ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/rate/withComment")
     public RateResponse rateWithComment(@RequestBody @Valid EntryRatingWithCommentModel entryRatingDto) {
