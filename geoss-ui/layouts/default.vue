@@ -783,10 +783,10 @@ export default {
                                     host: `${this.$nuxt.$config.matomoUrl}`,
                                     siteId: siteSettings.matomoSiteId,
                                     enableLinkTracking: true,
-                                    requireConsent: false,
+                                    requireConsent: true,
                                     trackInitialView: true,
                                     disableCookies: true,
-                                    requireCookieConsent: false
+                                    requireCookieConsent: true
                                 })
                                 if (
                                     siteSettings.matomoSiteId &&
