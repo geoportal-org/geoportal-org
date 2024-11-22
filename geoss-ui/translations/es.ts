@@ -718,8 +718,8 @@ export default {
         title: 'Mi espacio de trabajo / Me gusta de GEO',
     },
     privacyPolicy: {
-        statement: 'Usamos cookies para rastrear las visitas a nuestro sitio web únicamente, no se recopila información personal. Si desea restringir o bloquear nuestro uso de cookies, siga las instrucciones establecidas en nuestra Política de Cookies.',
-        cookieLink: 'Aviso de cookies',
+        statement: 'Usamos cookies para rastrear las visitas a nuestro sitio web únicamente, no se recopila información personal.<br />Si desea restringir o bloquear nuestro uso de cookies, siga las instrucciones establecidas en nuestra ',
+        cookieLink: 'Terms & Conditions',
         cookieText: 'para más información o para cambiar sus preferencias.',
         accept: 'Aceptar',
         decline: 'Rechazar'

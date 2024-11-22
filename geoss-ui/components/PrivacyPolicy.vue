@@ -1,8 +1,8 @@
 <template>
     <div class="privacy-policy" :class="{active}">
         <div class="privacy-policy__text">
-            <span>{{$tc('privacyPolicy.statement')}} </span>
-            <a href="/cookie-notice" target="_blank">{{$tc('privacyPolicy.cookieLink')}}</a><span> {{$tc('privacyPolicy.cookieText')}}</span>
+            <span v-html="$tc('privacyPolicy.statement')"></span>
+            <a href="/terms-conditions" target="_blank">{{$tc('privacyPolicy.cookieLink')}}</a><span> {{$tc('privacyPolicy.cookieText')}}</span>
         </div>
         <div class="text-center">
             <button @click="accept()" class="blue-btn-default">{{$tc('privacyPolicy.accept')}}</button>

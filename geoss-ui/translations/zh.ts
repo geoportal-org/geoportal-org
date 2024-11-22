@@ -718,8 +718,8 @@ export default {
         title: '我的工作空间/ GEO喜欢',
     },
     privacyPolicy: {
-        statement: '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。 如果您希望限製或阻止我們使用 Cookie，請按照我們的 Cookie 政策中的說明進行操作。',
-        cookieLink: '餅乾通知',
+        statement: '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。<br />如果您希望限製或阻止我們使用 Cookie，請按照我們的 ',
+        cookieLink: 'Terms & Conditions',
         cookieText: '了解更多信息或更改您的偏好。',
         accept: '接受',
         decline: '衰退'

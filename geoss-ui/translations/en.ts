@@ -738,8 +738,8 @@ export default {
         title: 'My workspace / GEO Likes',
     },
     privacyPolicy: {
-        statement: 'We use cookies to track visits to our website only, no personal information is collected. If you wish to restrict or block our use of cookies, please follow the instructions set out in our Cookies Policy.',
-        cookieLink: 'Cookie Notice',
+        statement: 'We use cookies to track visits to our website only, no personal information is collected.<br />If you wish to restrict or block our use of cookies, please follow the instructions set out in our ',
+        cookieLink: 'Terms & Conditions',
         cookieText: 'for further information or to change your preferences.',
         accept: 'Accept',
         decline: 'Decline'

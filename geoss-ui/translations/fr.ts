@@ -784,8 +784,8 @@ export default {
     },
     privacyPolicy: {
         statement:
-            'Nous utilisons des cookies pour suivre les visites sur notre site Web uniquement, aucune information personnelle n`est collectée. Si vous souhaitez restreindre ou bloquer notre utilisation des cookies, veuillez suivre les instructions énoncées dans notre Politique relative aux cookies.',
-        cookieLink: 'Avis sur les cookies',
+            'Nous utilisons des cookies pour suivre les visites sur notre site Web uniquement, aucune information personnelle n`est collectée.<br />Si vous souhaitez restreindre ou bloquer notre utilisation des cookies, veuillez suivre les instructions énoncées dans notre ',
+        cookieLink: 'Terms & Conditions',
         cookieText:
             'pour plus d`informations ou pour modifier vos préférences.',
         accept: 'Accepter',

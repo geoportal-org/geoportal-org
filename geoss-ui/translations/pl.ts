@@ -743,8 +743,8 @@ export default {
         title: 'Moja Przestrzeń Robocza / GEO Likes',
     },
     privacyPolicy: {
-        statement: 'Plików Cookies używamy wyłącznie do śledzenia wizyt na naszej stronie. Nie przechowujemy prywatnych informacji o użytkownikach. Jeśli chcesz ograniczyć lub zablokować użycie plików Cookies, zapoznaj się z instrukcjami na stronie Polityka Cookies.',
-        cookieLink: 'Polityka Cookies',
+        statement: 'Plików Cookies używamy wyłącznie do śledzenia wizyt na naszej stronie. Nie przechowujemy prywatnych informacji o użytkownikach.<br />Jeśli chcesz ograniczyć lub zablokować użycie plików Cookies, zapoznaj się z instrukcjami na stronie ',
+        cookieLink: 'Terms & Conditions',
         cookieText: 'w celu uzyskania dalszych informacji lub zmiany preferencji.',
         accept: 'Akceptuj',
         decline: 'Odmów'
