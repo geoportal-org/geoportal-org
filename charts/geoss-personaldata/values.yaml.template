@@ -93,6 +93,37 @@ env:
       secretKeyRef:
         name: geoss-${DEPLOY_ENV}-personaldata-env
         key: serverMaxHttpRequestHeaderSize
+  - name: SPRING_MAIL_HOST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-curated-env
+        key: springMailHost
+  - name: SPRING_MAIL_PORT
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-curated-env
+        key: springMailPort
+  - name: SPRING_MAIL_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-curated-env
+        key: springMailUsername
+  - name: SPRING_MAIL_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-curated-env
+        key: springMailPassword
+  - name: SPRING_MAIL_PROTOCOL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-curated-env
+        key: springMailProtocol
+  - name: GEOSS_PERSONALDATA_FEEDBACK_RECEIVER_PERSONAL
+    value: "GEOSS Portal"
+  - name: COMMON_EMAIL_SENDER_ADDRESS
+    value: "${MAILDEV_RELAY_USERNAME}"
+  - name: GEOSS_PERSONALDATA_FEEDBACK_RECEIVER_ADDRESS
+    value: "${GEOSS_PERSONALDATA_FEEDBACK_RECEIVER_ADDRESS}"
 
 secrets:
   - name: geoss-${DEPLOY_ENV}-personaldata-env
@@ -105,6 +136,11 @@ secrets:
       springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
       springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_PERSONALDATA}"
       serverMaxHttpRequestHeaderSize: "32KB"
+      springMailHost: "geoss-${DEPLOY_ENV}-maildev"
+      springMailPort: "1025"
+      springMailUsername: "maildev"
+      springMailPassword: "$MAILDEV_SMTP_PASSWORD"
+      springMailProtocol: "smtp"
 
 networkPolicy:
     egress:
@@ -143,6 +179,13 @@ networkPolicy:
           ports:
               - protocol: TCP
                 port: 8443
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1025
     ingress:
         # Allow to connect from other containers
         - from:

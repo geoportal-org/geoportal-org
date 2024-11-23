@@ -145,7 +145,7 @@ env:
         key: springMailProtocol
   - name: COMMON_EMAIL_SENDER_PERSONAL
     value: "GEOSS Portal"
-  - name: MATOMO_GENERAL_NOREPLY_EMAIL_NAME
+  - name: COMMON_EMAIL_SENDER_ADDRESS
     value: "${MAILDEV_RELAY_USERNAME}"
 
 secrets:
