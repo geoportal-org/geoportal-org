@@ -46,6 +46,7 @@ autoscaling:
 
 pvc:
   - name: $RESOURCE_NAME_PREFIX-db-data
+    volumeName: $DB_VOLUME_RESOURCE_NAME
     capacity: 10Gi
     accessMode: ReadWriteOnce
     volumeHandle: $DB_VOLUME_RESOURCE_ID
