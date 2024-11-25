@@ -49,17 +49,17 @@ resources:
 autoscaling:
   enabled: false
 
-livenessProbe:
-  httpGet:
-    path: /health/ready
-    port: liveness-port
-  initialDelaySeconds: 15
-
-readinessProbe:
-  httpGet:
-    path: /health/ready
-    port: liveness-port
-  initialDelaySeconds: 15
+#livenessProbe:
+#  httpGet:
+#    path: /health/ready
+#    port: liveness-port
+#  initialDelaySeconds: 15
+#
+#readinessProbe:
+#  httpGet:
+#    path: /health/ready
+#    port: liveness-port
+#  initialDelaySeconds: 15
 
 pvc:
 volumes:
