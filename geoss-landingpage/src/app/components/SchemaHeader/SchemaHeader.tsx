@@ -1,5 +1,6 @@
 import Script from "next/script";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
     type?: string;
@@ -14,7 +15,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
             const parsedArticleBody = data.data.toString().replace(/"/g, '\\"');
             return (
                 <Script
-                    id="schema"
+                    id={uuidv4()}
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -42,7 +43,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "articles-list":
             return (
                 <Script
-                    id="schema"
+                    id={uuidv4()}
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -79,7 +80,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "items-list":
             return (
                 <Script
-                    id="schema"
+                    id={uuidv4()}
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -107,7 +108,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "providers-list":
             return (
                 <Script
-                    id="schema"
+                    id={uuidv4()}
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -135,7 +136,7 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
         case "faq":
             return (
                 <Script
-                    id="schema"
+                    id={uuidv4()}
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: `

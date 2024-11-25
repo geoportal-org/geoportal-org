@@ -167,7 +167,7 @@ export const useCases = [
                     imageSRC="/land-degradation.webp"
                     buttonText="See the service (beta version)"
                     buttonHref={
-                        "https://geoss.uat.esaportal.eu/?m:activeLayerTileId=osm&targetId=geo_essential_sdg_15.3.1_service&f:phrase=land%20degradation&f:dataSource=services"
+                        "https://gpp.uat.esaportal.eu/?m:activeLayerTileId=osm&targetId=geo_essential_sdg_15.3.1_service&f:phrase=land%20degradation&f:dataSource=services"
                     }
                 />
                 <UCImage
@@ -177,7 +177,7 @@ export const useCases = [
                     text={`When a user searches for “Land degradation”, a number of resources that matches this search criteria are provided. The user can discover different data, services and knowledge and their relationship associated to the SDG 15.3.1 indicator. A dedicated model to compute the SDG indicator is available. The user can inspect the process workflow and search and select data as input to the service. Outputs can be visualized in a dedicated dashboard, with the possibility to share it to the community.`}
                     imageSRC="/land-degradation-geoss.webp"
                     buttonText="Explore an example of the service output"
-                    buttonHref="https://geoss.uat.esaportal.eu/?f:phrase=dashboard&m:activeLayerTileId=osm&f:dataSource=information"
+                    buttonHref="https://gpp.uat.esaportal.eu/?f:phrase=dashboard&m:activeLayerTileId=osm&f:dataSource=information"
                 />
             </div>
         ),
