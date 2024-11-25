@@ -1,45 +1,47 @@
 <template>
-	<Pagination v-if="results.length"
-		:show-summary="true"
-		:start-index="pageOffset"
-		:results-per-page="resultsPerPage"
-		:total="total"
-		@on-start-index-change="onPageOffsetChange($event)"/>
+    <Pagination
+        v-if="results.length"
+        :show-summary="true"
+        :start-index="pageOffset"
+        :results-per-page="resultsPerPage"
+        :total="total"
+        @on-start-index-change="onPageOffsetChange($event)"
+    />
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '@/components/Pagination.vue'
 
-import { BookmarksGetters } from '@/store/bookmarks/bookmarks-getters';
-import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions';
+import { BookmarksGetters } from '@/store/bookmarks/bookmarks-getters'
+import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions'
 
 @Component({
-	components: {
-		Pagination
-	}
+    components: {
+        Pagination,
+    },
 })
-export default class BookmarksPaginationComponent extends Vue {
-	get results() {
-		return this.$store.getters[BookmarksGetters.results];
-	}
+export default class BookmarksPagination extends Vue {
+    get results() {
+        return this.$store.getters[BookmarksGetters.results]
+    }
 
-	get resultsPerPage() {
-		return this.$store.getters[BookmarksGetters.perPage];
-	}
+    get resultsPerPage() {
+        return this.$store.getters[BookmarksGetters.perPage]
+    }
 
-	get pageOffset() {
-		return this.$store.getters[BookmarksGetters.pageOffset];
-	}
+    get pageOffset() {
+        return this.$store.getters[BookmarksGetters.pageOffset]
+    }
 
-	get total() {
-		return this.$store.getters[BookmarksGetters.resultsTotal];
-	}
+    get total() {
+        return this.$store.getters[BookmarksGetters.resultsTotal]
+    }
 
-	public onPageOffsetChange(pageOffset: number) {
-		this.$store.dispatch(BookmarksActions.setPageOffset, pageOffset);
-		this.$store.dispatch(BookmarksActions.getResults);
-	}
+    public onPageOffsetChange(pageOffset: number) {
+        this.$store.dispatch(BookmarksActions.setPageOffset, pageOffset)
+        this.$store.dispatch(BookmarksActions.getResults)
+    }
 }
 </script>

@@ -636,6 +636,7 @@ import OpenEOWorkflowComponent from './OpenEOWorkflow.vue'
 import OpenEOService from '@/services/openeo.service'
 import CollapseTransition from '@/plugins/CollapseTransition'
 import RatingService from '~/services/ratings.service'
+import BookmarksService from '~/services/bookmarks.service'
 
 @Component({
     components: {
@@ -2161,25 +2162,22 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.dataSource === DataSources.ZENODO
                 ? this.result.metadata.title
                 : this.result.title
-        const [err, result] = await to(
-            GeossSearchApiService.addBookmark(
-                resultTitle,
-                resultId,
-                this.$store.getters[MapGetters.activeLayerTileId],
-                DataOrigin[this.dataSource]
-            )
+
+        const success = await BookmarksService.addBookmark(
+            resultTitle,
+            resultId,
+            this.result.currMap,
+            DataOrigin[this.dataSource]
         )
-        if (result && !err) {
-            this.$store.dispatch(UserActions.addBookmark, result)
-            const props = {
-                title: this.$tc('popupTitles.bookmarkResult'),
-                subtitle: this.$tc('popupContent.bookmarkSavedSuccess')
-            }
-            this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'general',
-                component: GeneralPopup,
-                props
+
+        if (success) {
+            this.$store.dispatch(UserActions.addBookmark, {
+                name: resultTitle,
+                targetId: resultId,
+                currMap: this.result.currMap,
+                dataSource: DataOrigin[this.dataSource]
             })
+
             let organisation = null
             if (this.result.contributor && this.result.contributor.orgName) {
                 organisation = this.result.contributor.orgName
@@ -2194,16 +2192,23 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 organisation,
                 resultTitle
             )
+            NotificationService.show(
+                `${this.$tc('popupTitles.bookmarkResult')}`,
+                `${this.$tc('popupContent.bookmarkSavedSuccess')}`,
+                10000,
+                null,
+                9999,
+                'success'
+            )
         } else {
-            const props = {
-                title: this.$tc('popupTitles.bookmarkResult'),
-                subtitle: this.$tc('popupContent.bookmarkSavedFail')
-            }
-            this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'error',
-                component: ErrorPopup,
-                props
-            })
+            NotificationService.show(
+                `${this.$tc('popupTitles.bookmarkResult')}`,
+                `${this.$tc('popupContent.bookmarkSavedFail')}`,
+                10000,
+                null,
+                9999,
+                'error'
+            )
         }
     }
 
@@ -2216,28 +2221,22 @@ export default class SearchResultDabDetailsComponent extends Vue {
         const bookmarkedResult = this.bookmarks.find(
             (bookmark) => bookmark.targetId === resultId
         )
+
         const dataOrigin = DataOrigin[this.dataSource]
-        const [err, result] = await to(
-            GeossSearchApiService.removeBookmark(
-                bookmarkedResult.targetId,
-                dataOrigin
-            )
+
+        const success = await BookmarksService.removeBookmark(
+            bookmarkedResult.targetId,
+            dataOrigin
         )
-        if (result) {
+
+        if (success) {
             this.$store.dispatch(UserActions.removeBookmark, resultId)
-            const props = {
-                title: this.$tc('popupTitles.bookmarkResult'),
-                subtitle: this.$tc('popupContent.bookmarkRemovedSuccess')
-            }
-            this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'general',
-                component: GeneralPopup,
-                props
-            })
+
             let organisation = null
             if (this.result.contributor && this.result.contributor.orgName) {
                 organisation = this.result.contributor.orgName
             }
+
             LogService.logElementClick(
                 null,
                 null,
@@ -2248,16 +2247,25 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 organisation,
                 resultTitle
             )
+
+            NotificationService.show(
+                `${this.$tc('popupTitles.bookmarkResult')}`,
+                `${this.$tc('popupContent.bookmarkRemovedSuccess')}`,
+                10000,
+                null,
+                9999,
+                'success'
+            )
         } else {
-            const props = {
-                title: this.$tc('popupTitles.bookmarkResult'),
-                subtitle: this.$tc('popupContent.bookmarkRemovedFail')
-            }
-            this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'error',
-                component: ErrorPopup,
-                props
-            })
+
+            NotificationService.show(
+                `${this.$tc('popupTitles.bookmarkResult')}`,
+                `${this.$tc('popupContent.bookmarkRemovedFail')}`,
+                10000,
+                null,
+                9999,
+                'error'
+            )
         }
     }
 

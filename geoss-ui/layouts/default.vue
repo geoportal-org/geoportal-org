@@ -68,6 +68,7 @@ import search from '@/store/search'
 import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
 import MatomoPlugin from '~/plugins/MatomoPlugin'
 import VueMatomo from 'vue-matomo'
+import BookmarksService from '~/services/bookmarks.service'
 
 export default {
     computed: {
@@ -411,9 +412,10 @@ export default {
                     }
 
                     this.$store.dispatch(
-                        SearchActions.setHighlightResult,
+                        SearchActions.setTargetIds,
                         targetId
                     )
+
                     resolve(true)
                 } else if (layers) {
                     const {
@@ -689,8 +691,8 @@ export default {
                 GeneralApiService.getSiteData(this.$route.params.siteurl)
             ]
 
-            if (this.$nuxt.$auth.loggedIn) {
-                promises.push(GeossSearchApiService.getBookmarks())
+            if (window.$nuxt.$auth.loggedIn) {
+                promises.push(BookmarksService.fetchBookmarkedResults(0, 9999))
             }
 
             Promise.all(promises).then(
@@ -925,10 +927,10 @@ export default {
                         }
                     }
 
-                    if (bookmarks && bookmarks.items) {
+                    if (bookmarks && bookmarks.content) {
                         this.$store.dispatch(
                             UserActions.setBookmarks,
-                            bookmarks.items
+                            bookmarks.content
                         )
                     }
 

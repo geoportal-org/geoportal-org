@@ -3,7 +3,8 @@ const config = {
     savedRunsUrl: '/saved-runs',
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',
-    surveys: '/surveys'
+    surveys: '/surveys',
+    feedbacks: '/feedbacks'
 }
 
 export default {
@@ -16,4 +17,5 @@ export default {
         config.apiUrl + config.savedSearchesUrl + '/search/current',
     highlightedSearches: config.apiUrl + config.highlightedSeearchesUrl,
     surveys: config.apiUrl + config.surveys,
+    feedbacks: config.apiUrl + config.feedbacks,
 }

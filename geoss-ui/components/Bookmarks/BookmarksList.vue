@@ -1,84 +1,132 @@
 <template>
     <div v-bar>
         <div class="bookmark-results">
-            <div v-if="resultsLoading || !results.length" class="bookmark-results__empty"
-                :class="{ loading: resultsLoading }">
+            <div
+                v-if="resultsLoading || !results.length"
+                class="bookmark-results__empty"
+                :class="{ loading: resultsLoading }"
+            >
                 <div v-if="!resultsLoading && !results.length">
                     <img :src="`/svg/data-gray.svg`" alt="Geoss Portal" />
-                    <span v-if="!resultsLoading && !results.length">{{
-                        $tc('bookmarks.yourListIsEmpty')
-                        }}</span>
+                    <span v-if="!resultsLoading && !results.length">
+                        {{ $tc('bookmarks.yourListIsEmpty') }}
+                    </span>
                 </div>
             </div>
-            <div v-for="result of results" :key="result.id" class="bookmark-result"
-                :class="{ 'open-map': toggleMapId == result.id }" :data-id="result.id">
-                <div class="bookmark-result__wrapper" :class="{
-                    hover:
-                        toggleShare === result.id ||
-                        toggleDownloads === result.id
-                }">
+            <div
+                v-for="result of results"
+                :key="result.id"
+                class="bookmark-result"
+                :class="{ 'open-map': toggleMapId == result.id }"
+                :data-id="result.id"
+            >
+                <div
+                    class="bookmark-result__wrapper"
+                    :class="{
+                        hover:
+                            toggleShare === result.id ||
+                            toggleDownloads === result.id,
+                    }"
+                >
                     <div class="bookmark-result__checkbox">
-                        <input type="checkbox" :id="result.id" autocomplete="off" :checked="isChecked(result.id)"
-                            @change="checkboxChange(result.id)" />
+                        <input
+                            type="checkbox"
+                            :id="result.id"
+                            autocomplete="off"
+                            :checked="isChecked(result.targetId)"
+                            @change="checkboxChange(result.targetId)"
+                        />
                         <label :for="result.id"></label>
                     </div>
-                    <div class="bookmark-result__image" :class="{
-                        'bookmark-result__image--default':
-                            getImage(result.logo) !== result.logo
-                    }">
-                        <img :src="getImage(result.logo)" @error="imageLoadError(result.logo)" :alt="result.title"
-                            v-image-preview />
+                    <div
+                        class="bookmark-result__image"
+                        :class="{
+                            'bookmark-result__image--default':
+                                getImage(result.logo) !== result.logo,
+                        }"
+                    >
+                        <img
+                            :src="getImage(result.logo)"
+                            @error="imageLoadError(result.logo)"
+                            :alt="result.name"
+                            v-image-preview
+                        />
                     </div>
                     <div class="bookmark-result__content">
                         <div class="bookmark-result__text-data">
                             <div class="bookmark-result__text-data--title">
-                                <div v-if="result.title" v-line-clamp:20="2" class="bookmark-result__title">
-                                    {{ result.title }}
+                                <div
+                                    v-if="result.name"
+                                    class="bookmark-result__title"
+                                >
+                                    {{ result.name }}
                                 </div>
-                                <div v-if="
-                                    result.metadata && result.metadata.title
-                                " v-line-clamp:20="2" class="bookmark-result__title">
+                                <div
+                                    v-if="
+                                        result.metadata && result.metadata.title
+                                    "
+                                    class="bookmark-result__title"
+                                >
                                     {{ result.metadata.title }}
                                 </div>
-                                <div class="bookmark-result__text-data--datasource" :data-source="getResultsDataOrigin(
-                                    result.id,
-                                    result.title ||
-                                    result.metadata.title
-                                )
-                                    "></div>
+                                <div
+                                    class="bookmark-result__text-data--datasource"
+                                    :data-source="getResultsDataSource(result)"
+                                ></div>
                             </div>
-                            <div v-if="
-                                result.contributor &&
-                                result.contributor.orgName
-                            " class="bookmark-result__contributor" v-line-clamp:20="1">
+                            <div
+                                v-if="
+                                    result.contributor &&
+                                    result.contributor.orgName
+                                "
+                                class="bookmark-result__contributor"
+                            >
                                 ({{ $tc('dabResult.organisation') }}:
                                 {{ result.contributor.orgName }})
                             </div>
-                            <div v-if="
-                                result.metadata && result.metadata.creators
-                            " class="bookmark-result__contributor" v-line-clamp:20="1">
+                            <div
+                                v-if="
+                                    result.metadata && result.metadata.creators
+                                "
+                                class="bookmark-result__contributor"
+                            >
                                 ({{ $tc('dabResult.creators') }}:
-                                <span v-for="(creator, index) of result.metadata
-                                    .creators" :key="index">{{ creator.name }}</span>)
+                                <span
+                                    v-for="(creator, index) of result.metadata
+                                        .creators"
+                                    :key="index"
+                                >
+                                    {{ creator.name }}
+                                </span>
+                                )
                             </div>
-                            <div v-if="
-                                result.summary &&
-                                typeof result.summary === 'string'
-                            " v-line-clamp:20="2" class="bookmark-result__summary" v-html-to-text="result.summary">
-                            </div>
-                            <div v-if="
-                                result.metadata &&
-                                result.metadata.description &&
-                                typeof result.metadata.description ===
-                                'string'
-                            " v-line-clamp:20="2" class="bookmark-result__summary"
-                                v-html-to-text="result.metadata.description"></div>
+                            <div
+                                v-if="
+                                    result.summary &&
+                                    typeof result.summary === 'string'
+                                "
+                                class="bookmark-result__summary"
+                                v-html-to-text="result.summary"
+                            ></div>
+                            <div
+                                v-if="
+                                    result.metadata &&
+                                    result.metadata.description &&
+                                    typeof result.metadata.description ===
+                                        'string'
+                                "
+                                class="bookmark-result__summary"
+                                v-html-to-text="result.metadata.description"
+                            ></div>
                         </div>
                         <div>
-                            <button @click="showDetails(result)" class="bookmark-result-details__more">
-                                <span class="">{{
-                                    $tc('dabResult.seeMore')
-                                    }}</span>
+                            <button
+                                @click="showDetails(result)"
+                                class="bookmark-result-details__more"
+                            >
+                                <span class="">
+                                    {{ $tc('dabResult.seeMore') }}
+                                </span>
                                 <span class="arrow"></span>
                             </button>
                         </div>
@@ -87,137 +135,230 @@
                                 <div class="recent_views">
                                     <i class="icomoon-eye"></i>
                                     <span>{{ result.views || 0 }}</span>
-                                    <span>{{
-                                        $tc('bookmarks.recentViews')
-                                        }}</span>
+                                    <span>
+                                        {{ $tc('bookmarks.recentViews') }}
+                                    </span>
                                 </div>
-                                <div class="comments" v-if="result.rating" @click="setScore(result)">
-                                    <i v-for="score in [1, 2, 3, 4, 5]" :key="score" class="icomoon-star" :class="{
-                                        active:
-                                            Math.floor(
-                                                result.rating.averageScore
-                                            ) >= score
-                                    }" />
-                                    <span>{{
-                                        result.rating.averageScore.toFixed(1)
-                                        }}</span>
+                                <div
+                                    class="comments"
+                                    v-if="result.rating"
+                                    @click="setScore(result)"
+                                >
+                                    <i
+                                        v-for="score in [1, 2, 3, 4, 5]"
+                                        :key="score"
+                                        class="icomoon-star"
+                                        :class="{
+                                            active:
+                                                Math.floor(
+                                                    result.rating.averageScore
+                                                ) >= score,
+                                        }"
+                                    />
+                                    <span>
+                                        {{
+                                            result.rating.averageScore.toFixed(
+                                                1
+                                            )
+                                        }}
+                                    </span>
                                 </div>
                                 <div class="persons" v-if="result.rating">
-                                    <span>{{
-                                        result.rating.totalEntries
-                                        }}</span>
+                                    <span>
+                                        {{ result.rating.totalEntries }}
+                                    </span>
                                 </div>
                             </div>
                             <div class="actions">
                                 <div class="actions--main">
-                                    <a class="show-on-map" target="_blank" :disabled="!result.hasLayer" :href="createHref(result, 'show-on-map')
-                                        " :title="$tc('dabResult.showOnMap')">
+                                    <a
+                                        class="show-on-map"
+                                        target="_blank"
+                                        :href="
+                                            createHref(result, 'show-on-map')
+                                        "
+                                        :title="$tc('dabResult.showOnMap')"
+                                    >
                                         <i class="icomoon-show-on-map"></i>
                                     </a>
-                                    <a v-if="addParentRefAvailable(result)" class="drill-down" target="_blank"
-                                        :href="createHref(result, 'drill-down')" :title="$tc('dabResult.showInsideFolder')
-                                            ">
+                                    <a
+                                        v-if="addParentRefAvailable(result)"
+                                        class="drill-down"
+                                        target="_blank"
+                                        :href="createHref(result, 'drill-down')"
+                                        :title="
+                                            $tc('dabResult.showInsideFolder')
+                                        "
+                                    >
                                         <i class="icomoon-drill-down"></i>
                                     </a>
                                 </div>
                                 <div class="actions--side">
                                     <Share :url="prepareShareUrl(result)" />
-                                    <a class="toggle-downloads" @click="toggleShowDownloads(result)" :class="{
-                                        active:
-                                            toggleDownloads === result.id
-                                    }" :disabled="!result.downloads ||
+                                    <a
+                                        class="toggle-downloads"
+                                        @click="toggleShowDownloads(result)"
+                                        :class="{
+                                            active:
+                                                toggleDownloads === result.id,
+                                        }"
+                                        :disabled="
+                                            !result.downloads ||
                                             !result.downloads.length
-                                            " :title="$tc('dabResult.downloads')">
+                                        "
+                                        :title="$tc('dabResult.downloads')"
+                                    >
                                         <i class="icomoon-arrow down"></i>
                                     </a>
                                 </div>
                                 <div class="toggle-wrapper">
                                     <CollapseTransition>
-                                        <div class="downloads-wrapper" v-show="toggleDownloads === result.id
-                                            " v-if="
+                                        <div
+                                            class="downloads-wrapper"
+                                            v-show="
+                                                toggleDownloads === result.id
+                                            "
+                                            v-if="
                                                 result.downloads &&
                                                 result.downloads.length
-                                            ">
+                                            "
+                                        >
                                             <div>
-                                                <span v-for="(
+                                                <span
+                                                    v-for="(
                                                         download, index
-                                                    ) of result.downloads" :key="index">
-                                                    <a v-if="download.links" @click="
-                                                        openDownloadLinksPopup(
-                                                            result,
-                                                            download.links
-                                                        )
-                                                        " :title="download.type.toUpperCase()
-                                                            ">
-                                                        <i v-if="
-                                                            FileFormatsIcons.indexOf(
-                                                                download.type
-                                                            ) !== -1
-                                                        " :class="`icomoon-doc-${download.type}`"></i>
-                                                        <i v-else class="icomoon-doc-file"></i>
+                                                    ) of result.downloads"
+                                                    :key="index"
+                                                >
+                                                    <a
+                                                        v-if="download.links"
+                                                        @click="
+                                                            openDownloadLinksPopup(
+                                                                result,
+                                                                download.links
+                                                            )
+                                                        "
+                                                        :title="
+                                                            download.type.toUpperCase()
+                                                        "
+                                                    >
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="icomoon-doc-file"
+                                                        ></i>
                                                     </a>
-                                                    <a v-else-if="
-                                                        download.url.indexOf(
-                                                            '/dhus/odata/'
-                                                        ) !== -1
-                                                    " @click="
+                                                    <a
+                                                        v-else-if="
+                                                            download.url.indexOf(
+                                                                '/dhus/odata/'
+                                                            ) !== -1
+                                                        "
+                                                        @click="
                                                             openSentinelLoginPopup(
                                                                 download.url,
                                                                 result
                                                             )
-                                                            " :title="download.type.toUpperCase()
-                                                            ">
-                                                        <i v-if="
-                                                            FileFormatsIcons.indexOf(
-                                                                download.type
-                                                            ) !== -1
-                                                        " :class="`icomoon-doc-${download.type}`"></i>
-                                                        <i v-else class="icomoon-doc-file"></i>
+                                                        "
+                                                        :title="
+                                                            download.type.toUpperCase()
+                                                        "
+                                                    >
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="icomoon-doc-file"
+                                                        ></i>
                                                     </a>
-                                                    <a v-else-if="
-                                                        download.url.indexOf(
-                                                            '/sdg/Series/DataCSV'
-                                                        ) !== -1
-                                                    " @click="
+                                                    <a
+                                                        v-else-if="
+                                                            download.url.indexOf(
+                                                                '/sdg/Series/DataCSV'
+                                                            ) !== -1
+                                                        "
+                                                        @click="
                                                             getUnepFile(
                                                                 download.postData,
                                                                 result
                                                             )
-                                                            " :title="download.type.toUpperCase()
-                                                            ">
-                                                        <i v-if="
-                                                            FileFormatsIcons.indexOf(
-                                                                download.type
-                                                            ) !== -1
-                                                        " :class="`icomoon-doc-${download.type}`"></i>
-                                                        <i v-else class="icomoon-doc-file"></i>
+                                                        "
+                                                        :title="
+                                                            download.type.toUpperCase()
+                                                        "
+                                                    >
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="icomoon-doc-file"
+                                                        ></i>
                                                     </a>
-                                                    <a @click="
-                                                        downloadLinkClicked(
-                                                            result
-                                                        )
-                                                        " :href="download.url" target="_blank" v-else-if="
+                                                    <a
+                                                        @click="
+                                                            downloadLinkClicked(
+                                                                result
+                                                            )
+                                                        "
+                                                        :href="download.url"
+                                                        target="_blank"
+                                                        v-else-if="
                                                             download.type !==
                                                             'custom-download'
-                                                        " :title="download.type.toUpperCase()
-                                                            ">
-                                                        <i v-if="
-                                                            FileFormatsIcons.indexOf(
-                                                                download.type
-                                                            ) !== -1
-                                                        " :class="`icomoon-doc-${download.type}`"></i>
-                                                        <i v-else class="icomoon-doc-file"></i>
+                                                        "
+                                                        :title="
+                                                            download.type.toUpperCase()
+                                                        "
+                                                    >
+                                                        <i
+                                                            v-if="
+                                                                FileFormatsIcons.indexOf(
+                                                                    download.type
+                                                                ) !== -1
+                                                            "
+                                                            :class="`icomoon-doc-${download.type}`"
+                                                        ></i>
+                                                        <i
+                                                            v-else
+                                                            class="icomoon-doc-file"
+                                                        ></i>
                                                     </a>
-                                                    <a v-else @click="
-                                                        initCustomDownloadPopup(
-                                                            result,
-                                                            download.url
-                                                        )
-                                                        " :title="$tc(
-                                                            'general.customDownload'
-                                                        )
-                                                            ">
-                                                        <i class="icomoon-custom-download"></i>
+                                                    <a
+                                                        v-else
+                                                        @click="
+                                                            initCustomDownloadPopup(
+                                                                result,
+                                                                download.url
+                                                            )
+                                                        "
+                                                        :title="
+                                                            $tc(
+                                                                'general.customDownload'
+                                                            )
+                                                        "
+                                                    >
+                                                        <i
+                                                            class="icomoon-custom-download"
+                                                        ></i>
                                                     </a>
                                                 </span>
                                             </div>
@@ -230,7 +371,10 @@
                     <div class="toggle-map" @click="toggleMap(result.id)">
                         <i></i>
                     </div>
-                    <div class="bookmark-result__map" :id="`map-${result.id}`"></div>
+                    <div
+                        class="bookmark-result__map"
+                        :id="`map-${result.targetId}`"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -238,21 +382,20 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import to from '@/utils/to'
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { SearchGetters } from '@/store/search/search-getters'
 import { BookmarksActions } from '@/store/bookmarks/bookmarks-actions'
 import { BookmarksGetters } from '@/store/bookmarks/bookmarks-getters'
 import { DataSources } from '@/interfaces/DataSources'
-import { AppVueObj } from '@/data/global'
 import LayerTilesService from '@/services/map/layer-tiles.service'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
+import { GeneralApiService } from '@/services/general.api.service'
 import DabResultRating from '@/components/Search/Results/DabResultRating.vue'
 import { PopupActions } from '@/store/popup/popup-actions'
 import { Liferay } from '@/data/global'
 import LogService from '@/services/log.service'
-import SpinnerService from '@/services/spinner.service'
+import SpinnerService from '../../services/spinner.service'
 import DabResultDownloads from '@/components/Search/Results/DabResultDownloads.vue'
 import DabResultCustomDownload from '@/components/Search/Results/DabResultCustomDownload.vue'
 import CustomDownloadWCS from '@/components/Search/Results/CustomDownloadWCS.vue'
@@ -264,20 +407,27 @@ import { MyWorkspaceGetters } from '@/store/myWorkspace/my-workspace-getters'
 import SearchEngineService from '@/services/search-engine.service'
 import SentinelLogin from '@/components/Search/SentinelLogin.vue'
 import DabResultMetadata from '@/components/Search/Results/DabResultMetadata.vue'
-import { ResultService } from '@/services/result.service'
+import { SearchEngineGetters } from '~/store/searchEngine/search-engine-getters'
+import { ResultService } from '../../services/result.service'
 import MapCoordinatesUtils from '@/services/map/coordinates-utils'
-import CollapseTransition from '@/plugins/CollapseTransition'
+import { AppVueObj } from '~/data/global'
+import CollapseTransition from '~/plugins/CollapseTransition'
+import RatingService from '~/services/ratings.service'
+import { SearchActions } from '~/store/search/search-actions'
+import { PopupGetters } from '~/store/popup/popup-getters'
 
 @Component({
     components: {
-        CollapseTransition
-    }
+        CollapseTransition,
+    },
 })
-export default class ListComponent extends Vue {
+export default class BookmarksList extends Vue {
+    [x: string]: any
+
     public startIndex = 0
     public bookmarksPerPage = 10
     public bookmarksTotal = 0
-    public toggleMapId: string | number = 0
+    public toggleMapId = 0
     public mapsObject: any = {}
     public FileFormatsIcons = FileFormatsIcons
     public toggleDownloads = 0
@@ -288,6 +438,10 @@ export default class ListComponent extends Vue {
         return this.$store.getters[BookmarksGetters.results]
     }
 
+    get pageOffset() {
+        return this.$store.getters[BookmarksGetters.pageOffset]
+    }
+
     get resultsLoading() {
         return this.$store.getters[BookmarksGetters.resultsLoading]
     }
@@ -296,48 +450,53 @@ export default class ListComponent extends Vue {
         return this.$store.getters[BookmarksGetters.resultsOrigin]
     }
 
-    public isChecked(id: string) {
+    public imageLoadError(imagePath: string) {
+        return AppVueObj.imageLoadError(imagePath)
+    }
+
+    public isChecked(id: any) {
         return this.$store.getters[BookmarksGetters.checkedResults].includes(
             id.toString()
         )
     }
 
-    public checkboxChange(id: string) {
+    public checkboxChange(id: any) {
         this.$store.dispatch(BookmarksActions.checkboxChange, id.toString())
     }
 
-    public getResultsDataOrigin(id: string, name: string) {
-        const safeId = GeossSearchApiService.safeString(id)
-        const safeName = GeossSearchApiService.safeString(name)
-        if (this.resultsOrigin.byId[safeId]) {
-            return this.resultsOrigin.byId[safeId].dataOrigin
-        } else if (this.resultsOrigin.byName[safeName]) {
-            return this.resultsOrigin.byName[safeName].dataOrigin
-        }
+    // public getResultsDataOrigin(id: any, name: any) {
+    //     const safeId = GeossSearchApiService.safeString(id)
+    //     const safeName = GeossSearchApiService.safeString(name)
+    //     if (this.resultsOrigin.byId[safeId]) {
+    //         return this.resultsOrigin.byId[safeId].dataOrigin
+    //     } else if (this.resultsOrigin.byName[safeName]) {
+    //         return this.resultsOrigin.byName[safeName].dataOrigin
+    //     }
+    // }
+
+    public getResultsDataSource(result: any) {
+        return result.dataSource ? result.dataSource : ''
+        // const safeId = GeossSearchApiService.safeString(id)
+        // const safeName = GeossSearchApiService.safeString(name)
+        // if (this.resultsOrigin.byId[safeId]) {
+        //     return this.resultsOrigin.byId[safeId].dataSource
+        // } else if (this.resultsOrigin.byName[safeName]) {
+        //     return this.resultsOrigin.byName[safeName].dataSource
+        // }
     }
 
-    public getResultsDataSource(id: string, name: string) {
-        const safeId = GeossSearchApiService.safeString(id)
-        const safeName = GeossSearchApiService.safeString(name)
-        if (this.resultsOrigin.byId[safeId]) {
-            return this.resultsOrigin.byId[safeId].dataSource
-        } else if (this.resultsOrigin.byName[safeName]) {
-            return this.resultsOrigin.byName[safeName].dataSource
-        }
-    }
-
-    public getResultsCurrMap(id: string, name: string) {
+    public getResultsCurrMap(result: any) {
         return 'osm'
-        const safeId = GeossSearchApiService.safeString(id)
-        const safeName = GeossSearchApiService.safeString(name)
-        if (this.resultsOrigin.byId[safeId]) {
-            return this.resultsOrigin.byId[safeId].currMap
-        } else if (this.resultsOrigin.byName[safeName]) {
-            return this.resultsOrigin.byName[safeName].currMap
-        }
+        // const safeId = GeossSearchApiService.safeString(id)
+        // const safeName = GeossSearchApiService.safeString(name)
+        // if (this.resultsOrigin.byId[safeId]) {
+        //     return this.resultsOrigin.byId[safeId].currMap
+        // } else if (this.resultsOrigin.byName[safeName]) {
+        //     return this.resultsOrigin.byName[safeName].currMap
+        // }
     }
 
-    public toggleMap(id: string) {
+    public toggleMap(id: any) {
         if (this.toggleMapId === id.toString()) {
             this.toggleMapId = 0
         } else {
@@ -346,11 +505,11 @@ export default class ListComponent extends Vue {
     }
 
     public createHref(result: any, action: any) {
-        const targetId = result.id
-        const phrase = result.title || result.metadata.title
+        const targetId = result.targetId
+        const phrase = result.name || result.metadata.title
         const categories = result.category
-        const dataSource = this.getResultsDataSource(targetId, phrase)
-        const currMap = this.getResultsCurrMap(targetId, phrase)
+        const dataSource = this.getResultsDataSource(result)
+        const currMap = this.getResultsCurrMap(result)
         const parentRefs = encodeURIComponent(
             `[{"id":"${targetId}","dataSource":"${dataSource}"}]`
         )
@@ -385,7 +544,7 @@ export default class ListComponent extends Vue {
                     pin[0] - 10,
                     Math.max(pin[1] - 10, -90),
                     pin[0] + 10,
-                    Math.min(pin[1] + 10, 90)
+                    Math.min(pin[1] + 10, 90),
                 ])
             let geometry: any = new AppVueObj.ol.geom.Polygon(
                 coordinatesForDrawing
@@ -411,31 +570,28 @@ export default class ListComponent extends Vue {
     public buildMaps() {
         this.$nextTick(() => {
             this.results.forEach((result: any, index: number) => {
-                const currMap = this.getResultsCurrMap(
-                    result.id,
-                    result.title || result.metadata.title
-                )
+                const currMap = this.getResultsCurrMap(result)
                 const feature = ResultService.getFeature(result, index)
                 const layers = [LayerTilesService[currMap].getLayerTile()]
-
                 if (feature) {
                     layers.push(feature)
                     this.$set(result, 'hasLayer', true)
                 } else {
                     this.$set(result, 'hasLayer', false)
                 }
+                console.log(this.mapsObject[result.targetId])
 
-                if (!this.mapsObject[result.id]) {
-                    this.mapsObject[result.id] = new AppVueObj.ol.Map({
+                if (!this.mapsObject[result.targetId]) {
+                    this.mapsObject[result.targetId] = new AppVueObj.ol.Map({
                         layers,
-                        target: `map-${result.id}`,
+                        target: `map-${result.targetId}`,
                         view: new AppVueObj.ol.View({
                             center: [0, 0],
                             zoom: 0,
-                            maxZoom: 10
+                            maxZoom: 10,
                         }),
                         controls: [],
-                        interactions: []
+                        interactions: [],
                     })
 
                     if (feature) {
@@ -447,27 +603,24 @@ export default class ListComponent extends Vue {
     }
 
     public async setScore(result: any) {
-        const dataOrigin = this.getResultsDataOrigin(
-            result.id,
-            result.title || result.metadata.title
-        )
+        const dataOrigin = this.getResultsDataSource(result)
         const [, comments] = await to(
             GeossSearchApiService.getComments(result.id, dataOrigin)
         )
         const props = {
             id: result.id,
-            title: result.title || result.metadata.title,
+            title: result.name || result.metadata.title,
             comments,
             userScore: 5,
             userComment: result.rating.comment,
             dataSource: dataOrigin,
-            referer: 'bookmarks'
+            referer: 'bookmarks',
         }
         this.$store.dispatch(PopupActions.openPopup, {
             contentId: 'rating',
             title: this.$tc('popupTitles.rateResouce'),
             component: DabResultRating,
-            props
+            props,
         })
     }
 
@@ -489,12 +642,9 @@ export default class ListComponent extends Vue {
             let resultDownloads = []
             const timeSeriesArray = []
 
-            const downloads = []
-            const dataOrigin = this.getResultsDataOrigin(
-                result.id,
-                result.title || result.metadata.title
-            )
-            if (dataOrigin === DataSources.NEXTGEOSS) {
+            const downloads: any = []
+            const dataSource = this.getResultsDataSource(result)
+            if (dataSource === DataSources.NEXTGEOSS) {
                 const data: any = UtilsService.getArrayByString(result, 'link')
                 for (const item of data) {
                     if (
@@ -508,7 +658,7 @@ export default class ListComponent extends Vue {
                         )
                         const linkTitle = item._attributes.title
                         const linkDescription = ''
-                        const titleBox = result.title
+                        const titleBox = result.name
                         const linkScore = -1
 
                         /* Simple resources aggregation */
@@ -520,7 +670,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'html',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             } else if (
                                 item._attributes.type.indexOf('image') > -1
@@ -531,7 +681,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'img',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             } else if (item._attributes.type === 'text/xml') {
                                 downloads.push({
@@ -540,7 +690,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'xml',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             } else {
                                 downloads.push({
@@ -549,14 +699,14 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'other',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             }
                         }
                     }
                 }
                 resultDownloads = downloads
-            } else if (dataOrigin === DataSources.ZENODO) {
+            } else if (dataSource === DataSources.ZENODO) {
                 // TODO: Verify if it works
                 if (result.files) {
                     for (const file of result.files) {
@@ -565,7 +715,7 @@ export default class ListComponent extends Vue {
                             'png',
                             'jpg',
                             'xml',
-                            'txt'
+                            'txt',
                         ]
                         const linkTitle = file.key
                         const linkText = file.links.self
@@ -577,14 +727,14 @@ export default class ListComponent extends Vue {
                             name: linkTitle,
                             url: linkText,
                             desc: linkDescription,
-                            type: linkType
+                            type: linkType,
                         })
                     }
                     downloads.push({
                         name: result.metadata.title,
                         url: result.links.doi,
                         desc: result.metadata.description,
-                        type: 'html'
+                        type: 'html',
                     })
                 }
                 resultDownloads = downloads
@@ -615,7 +765,7 @@ export default class ListComponent extends Vue {
                         if (!linkScore || linkScore > 100 || linkScore < 0) {
                             linkScore = -1
                         }
-                        const wmsAllLayerName = result.title
+                        const wmsAllLayerName = result.name
                         let anchor =
                             UtilsService.getPropByString(
                                 item,
@@ -660,8 +810,10 @@ export default class ListComponent extends Vue {
                             url.length
                         )
                         const extension =
-                            url.indexOf('.') > -1
-                                ? url.split('.').pop().toLowerCase()
+                            url !== undefined && url.indexOf('.') > -1
+                                ? //@ts-ignore
+
+                                  url?.split('.')?.pop().toLowerCase()
                                 : ''
 
                         const complex = anchor.indexOf('complex') > 0
@@ -702,7 +854,7 @@ export default class ListComponent extends Vue {
                                 desc: linkDescription,
                                 type: 'pdf',
                                 title: titleBox,
-                                score: linkScore
+                                score: linkScore,
                             })
                         } else if (extension === 'txt' && !complex) {
                             downloads.push({
@@ -711,7 +863,7 @@ export default class ListComponent extends Vue {
                                 desc: linkDescription,
                                 type: 'txt',
                                 title: titleBox,
-                                score: linkScore
+                                score: linkScore,
                             })
                         } else if (
                             (extension === 'htm' ||
@@ -726,7 +878,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'link',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             } else {
                                 downloads.push({
@@ -735,7 +887,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'html',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             }
                         } else if (
@@ -750,7 +902,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'jpg',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             }
                         } else if (
@@ -765,7 +917,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'png',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             }
                         } else if (extension === 'xml' && !complex) {
@@ -775,7 +927,7 @@ export default class ListComponent extends Vue {
                                 desc: linkDescription,
                                 type: 'xml',
                                 title: titleBox,
-                                score: linkScore
+                                score: linkScore,
                             })
                         } else if (
                             protocol.indexOf('information-html') > -1 &&
@@ -787,7 +939,7 @@ export default class ListComponent extends Vue {
                                 desc: linkDescription,
                                 type: 'html',
                                 title: titleBox,
-                                score: linkScore
+                                score: linkScore,
                             })
                         } else if (
                             protocol.indexOf('WebMapService') > -1 &&
@@ -862,7 +1014,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'wcs',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             } else if (wcsAnchor === 'complex') {
                                 wcsUrl = `${wcsUrl}&version=${wcsVersion}&coverageId=${wcsId}`
@@ -872,7 +1024,7 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'custom-download',
                                     boxTitle: titleBox,
-                                    score: 0
+                                    score: 0,
                                 })
                             }
                         } else if (
@@ -891,7 +1043,7 @@ export default class ListComponent extends Vue {
                                 desc: linkDescription,
                                 type: 'link',
                                 title: titleBox,
-                                score: linkScore
+                                score: linkScore,
                             })
                         } else if (
                             linkText &&
@@ -914,7 +1066,7 @@ export default class ListComponent extends Vue {
                                         desc: linkDescription,
                                         type: 'link',
                                         title: titleBox,
-                                        score: linkScore
+                                        score: linkScore,
                                     })
                                 } else if (linkTitle.indexOf('VIEW') > -1) {
                                     downloads.push({
@@ -923,7 +1075,7 @@ export default class ListComponent extends Vue {
                                         desc: linkDescription,
                                         type: 'other',
                                         title: titleBox,
-                                        score: linkScore
+                                        score: linkScore,
                                     })
                                 }
                             } else {
@@ -933,13 +1085,13 @@ export default class ListComponent extends Vue {
                                     desc: linkDescription,
                                     type: 'other',
                                     title: titleBox,
-                                    score: linkScore
+                                    score: linkScore,
                                 })
                             }
                         }
 
                         if (protocol === 'gwp_un_sd_/v1/sdg') {
-                            const wordsArray = result.title.split(' ')
+                            const wordsArray = result.name.split(' ')
                             if (
                                 wordsArray.length === 3 &&
                                 wordsArray[0] === 'SDG' &&
@@ -964,18 +1116,18 @@ export default class ListComponent extends Vue {
                                 }
                                 timeSeriesArray.push({
                                     id: seriesId,
-                                    text: seriesDesc
+                                    text: seriesDesc,
                                 })
                                 const postData = {
                                     indicator: wordsArray[1],
-                                    series: [seriesId]
+                                    series: [seriesId],
                                 }
                                 downloads.push({
                                     name: `SDG-${wordsArray[1]}-${seriesId}.csv`,
                                     url: 'https://unstats.un.org/SDGAPI/v1/sdg/Series/DataCSV',
                                     postData,
                                     desc: `${wordsArray[1]}, ${seriesDesc}`,
-                                    type: 'csv'
+                                    type: 'csv',
                                 })
                             }
                         }
@@ -1007,7 +1159,7 @@ export default class ListComponent extends Vue {
                                 desc: '',
                                 type: 'wcs',
                                 boxTitle: '',
-                                score: linkScore
+                                score: linkScore,
                             })
                         }
                     }
@@ -1029,7 +1181,7 @@ export default class ListComponent extends Vue {
                                 desc: '',
                                 type: 'Advanced access link',
                                 boxTitle: '',
-                                score: 0
+                                score: 0,
                             })
                         } else {
                             downloads.push({
@@ -1038,7 +1190,7 @@ export default class ListComponent extends Vue {
                                 desc: '',
                                 type: 'custom-download',
                                 boxTitle: '',
-                                score: 0
+                                score: 0,
                             })
                         }
                     }
@@ -1066,10 +1218,10 @@ export default class ListComponent extends Vue {
                         )[0]
                         resultDownloads.push({
                             type: download.type,
-                            links: [download, file]
+                            links: [download, file],
                         })
                     } else if (downloadFileSameFormatIndex !== -1) {
-                        const downloadFileSameFormat: any =
+                        const downloadFileSameFormat =
                             resultDownloads[downloadFileSameFormatIndex]
                         downloadFileSameFormat.links.push(download)
                     } else {
@@ -1081,7 +1233,7 @@ export default class ListComponent extends Vue {
         }
     }
 
-    public getDownloadLinkStatus(score: number) {
+    public getDownloadLinkStatus(score: any) {
         let scoreText
         let scoreClass
 
@@ -1116,14 +1268,14 @@ export default class ListComponent extends Vue {
         }
         return {
             scoreText,
-            scoreClass
+            scoreClass,
         }
     }
 
     public openDownloadLinksPopup(result: any, links: any) {
         const props = {
             result,
-            links
+            links,
         }
 
         this.$store
@@ -1131,7 +1283,7 @@ export default class ListComponent extends Vue {
                 contentId: 'download-links',
                 title: this.$tc('popupTitles.downloadLinks'),
                 component: DabResultDownloads,
-                props
+                props,
             })
             .then((sentinelUrl: string) => {
                 if (sentinelUrl) {
@@ -1153,14 +1305,14 @@ export default class ListComponent extends Vue {
         ) {
             const props = {
                 url,
-                result
+                result,
             }
 
             this.$store.dispatch(PopupActions.openPopup, {
                 contentId: 'sentinel-login',
                 title: this.$tc('popupTitles.sentinelDataAccess'),
                 component: SentinelLogin,
-                props
+                props,
             })
         } else {
             window.open(SearchEngineService.getDhusProxyUrl(url))
@@ -1187,12 +1339,12 @@ export default class ListComponent extends Vue {
             'Direct download',
             null,
             result.contributor.orgName,
-            result.title
+            result.name
         )
     }
 
     public downloadLinkClicked(result: any) {
-        const dataSource = this.getResultsDataSource(result.id, '')
+        const dataSource = this.getResultsDataSource(result)
         const id = result.id
         let orgName = ''
         let title = ''
@@ -1204,7 +1356,7 @@ export default class ListComponent extends Vue {
             orgName = result['dc:publisher']
         } else {
             orgName = result.contributor.orgName
-            title = result.title
+            title = result.name
         }
 
         LogService.logElementClick(
@@ -1220,7 +1372,7 @@ export default class ListComponent extends Vue {
         MouseLeaveService.initSurvey()
     }
 
-    public async initCustomDownloadPopup(result: any, baseUrl: any) {
+    public async initCustomDownloadPopup(result: any, baseUrl: string) {
         if (baseUrl.startsWith('http:')) {
             baseUrl = baseUrl.replace('http:', 'https:')
         }
@@ -1233,12 +1385,12 @@ export default class ListComponent extends Vue {
                 if (err) {
                     const props = {
                         title: this.$tc('general.error'),
-                        subtitle: err
+                        subtitle: err,
                     }
                     return this.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
                         component: ErrorPopup,
-                        props
+                        props,
                     })
                 }
 
@@ -1248,7 +1400,7 @@ export default class ListComponent extends Vue {
                 )
                 formatOptions = formatOptions.map((option) => ({
                     id: option,
-                    text: option
+                    text: option,
                 }))
 
                 const nativeFormat = UtilsService.getPropByString(
@@ -1262,7 +1414,7 @@ export default class ListComponent extends Vue {
                 )
                 rangeSubset = rangeSubset.map((option) => ({
                     id: option,
-                    text: option
+                    text: option,
                 }))
 
                 const outputCRS = []
@@ -1272,8 +1424,9 @@ export default class ListComponent extends Vue {
                 )
                 for (const option of outputCRSRaw) {
                     const arrayCRS = option.split('/')
-                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${arrayCRS[arrayCRS.length - 1]
-                        }`
+                    const nameCRS = `${arrayCRS[arrayCRS.length - 3]}:${
+                        arrayCRS[arrayCRS.length - 1]
+                    }`
                     outputCRS.push({ id: option, text: nameCRS })
                 }
 
@@ -1295,7 +1448,7 @@ export default class ListComponent extends Vue {
                     outputCRS,
                     lowerCorner,
                     upperCorner,
-                    baseUrl
+                    baseUrl,
                 }
             } else {
                 const [err, data] = await to(
@@ -1304,12 +1457,12 @@ export default class ListComponent extends Vue {
                 if (err) {
                     const props = {
                         title: this.$tc('general.error'),
-                        subtitle: err
+                        subtitle: err,
                     }
                     return this.$store.dispatch(PopupActions.openPopup, {
                         contentId: 'error',
                         component: ErrorPopup,
-                        props
+                        props,
                     })
                 }
                 let formatOptions = UtilsService.getArrayByString(
@@ -1318,7 +1471,7 @@ export default class ListComponent extends Vue {
                 )
                 formatOptions = formatOptions.map((option) => ({
                     id: option,
-                    text: option
+                    text: option,
                 }))
 
                 const options = UtilsService.getArrayByString(
@@ -1347,7 +1500,7 @@ export default class ListComponent extends Vue {
                     )
                     subsetCRSOptions.push({
                         id: subsetCRSOption,
-                        text: subsetCRSOption
+                        text: subsetCRSOption,
                     })
 
                     let subsetLowerCoordinatesVal: string | number[] =
@@ -1377,7 +1530,7 @@ export default class ListComponent extends Vue {
                     subsetLowerCoordinates,
                     subsetUpperCoordinates,
                     crs: subsetCRSOptions[1].id,
-                    baseUrl
+                    baseUrl,
                 }
             }
 
@@ -1388,8 +1541,8 @@ export default class ListComponent extends Vue {
             options: customDownloadOptions,
             resultId: result.id,
             resultOrgName: result.contributor.orgName,
-            resultTitle: result.title,
-            bookmarksMode: true
+            resultTitle: result.name,
+            bookmarksMode: true,
         }
 
         if (baseUrl.includes('service=WCS&version=2.0.1')) {
@@ -1397,24 +1550,24 @@ export default class ListComponent extends Vue {
                 contentId: 'custom-download',
                 title: this.$tc('popupTitles.customizeDownload'),
                 component: CustomDownloadWCS,
-                props
+                props,
             })
         } else {
             this.$store.dispatch(PopupActions.openPopup, {
                 contentId: 'custom-download',
                 title: this.$tc('popupTitles.customizeDownload'),
                 component: DabResultCustomDownload,
-                props
+                props,
             })
         }
     }
 
     public async showDetails(result: any) {
-        const dataSource = this.getResultsDataSource(result.id, '')
+        const dataSource = this.getResultsDataSource(result)
         const title =
             dataSource === 'zenodo'
                 ? UtilsService.getPropByString(result, 'metadata.title')
-                : UtilsService.getPropByString(result, 'title')
+                : result.name
         let metadata = null
 
         LogService.logElementClick(
@@ -1427,8 +1580,7 @@ export default class ListComponent extends Vue {
             null,
             title
         )
-
-        MouseLeaveService.initSurvey()
+        // MouseLeaveService.initSurvey()
 
         let isSatellite = false
 
@@ -1440,9 +1592,9 @@ export default class ListComponent extends Vue {
                     data: {
                         ...result,
                         acquisition: {
-                            platform: 'ZENODO'
-                        }
-                    }
+                            platform: 'ZENODO',
+                        },
+                    },
                 }
             } else if (dataSource === DataSources.WIKIPEDIA) {
                 isSatellite = false
@@ -1451,9 +1603,9 @@ export default class ListComponent extends Vue {
                     data: {
                         ...result,
                         acquisition: {
-                            platform: 'WIKIPEDIA'
-                        }
-                    }
+                            platform: 'WIKIPEDIA',
+                        },
+                    },
                 }
             } else if (dataSource === DataSources.NEXTGEOSS) {
                 isSatellite = false
@@ -1462,9 +1614,9 @@ export default class ListComponent extends Vue {
                     data: {
                         ...result,
                         acquisition: {
-                            platform: 'NEXTGEOSS'
-                        }
-                    }
+                            platform: 'NEXTGEOSS',
+                        },
+                    },
                 }
             } else if (
                 result.acquisition &&
@@ -1478,60 +1630,75 @@ export default class ListComponent extends Vue {
                 metadata = {
                     title: this.$tc('popupTitles.resourceDetails'),
                     data: {
-                        ...result
-                    }
+                        ...result,
+                    },
                 }
             } else {
                 const [, data] = await to(
-                    GeossSearchApiService.getDabResultMetadata(result.id)
+                    GeossSearchApiService.getDabResultMetadata(result.targetId)
                 )
                 if (data) {
                     metadata = {
                         title: `<div class="d-flex flex--justify-between flex--align-center padding-right-30">
 									<span>${this.$tc('popupTitles.resourceDetails')}</span>
 									<a class="link-white" target="_blank" href="${SearchEngineService.getMetaDataUrl(
-                            result.id
-                        )}">${this.$tc(
+                                        result.targetId
+                                    )}">${this.$tc(
                             'popupTitles.rawMetadata'
                         )}</a>
 								</div>`,
-                        data
+                        data,
                     }
                 }
             }
             Object.freeze(metadata)
         }
-
         if (metadata) {
+            const comments = await this.getComments(result.targetId)
             const props = {
                 data: metadata.data,
                 isSatellite,
                 resultTitle: title,
-                resultImage: typeof result.logo === 'string' ? result.logo : ''
+                resultImage: typeof result.logo === 'string' ? result.logo : '',
+                popupTitle: metadata.title,
+                comments,
             }
-
             this.$store.dispatch(PopupActions.openPopup, {
-                contentId: 'metadata',
+                contentId: 'metadata-bookmarks',
                 title: metadata.title,
                 component: DabResultMetadata,
-                props
+                props,
             })
+            setTimeout(() => {
+                console.log(this.$store.getters[PopupGetters.queue])
+            }, 2)
+        }
+    }
+
+    public async getComments(id: string) {
+        const res = await RatingService.fetchComments(id)
+        if (res) {
+            return res
+        } else {
+            return 0
         }
     }
 
     public async mounted() {
         SpinnerService.showSpinner()
-        const promises = [
-            LogService.createElasticSearchClient(),
-            this.$store.dispatch(BookmarksActions.getResults)
-        ]
-        Promise.all(promises).then(() => SpinnerService.hideSpinner())
+        await this.$store.dispatch(BookmarksActions.getResults)
+        SpinnerService.hideSpinner()
     }
 
     @Watch('results')
-    private onResultsChange() {
-        this.initResultDownloads(this.results)
+    public onResultsChange() {
+        // this.initResultDownloads(this.results)
         this.buildMaps()
+    }
+
+    @Watch('pageOffset')
+    public clearMaps() {
+        this.mapsObject = {}
     }
 }
 </script>
@@ -1588,7 +1755,7 @@ export default class ListComponent extends Vue {
         input {
             display: none;
 
-            &:checked+label:before {
+            &:checked + label:before {
                 content: '✖';
             }
         }
@@ -1631,20 +1798,22 @@ export default class ListComponent extends Vue {
             transition: background-color 0s ease-in-out;
 
             .bookmark-result__tools {
-                background: -moz-linear-gradient(top,
-                        rgba(255, 255, 255, 0.25) 0%,
-                        rgba(255, 255, 255, 1) 12%);
-                /* FF3.6-15 */
-                background: -webkit-linear-gradient(top,
-                        rgba(255, 255, 255, 0.25) 0%,
-                        rgba(255, 255, 255, 1) 12%);
-                /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to bottom,
-                        rgba(255, 255, 255, 0.25) 0%,
-                        rgba(255, 255, 255, 1) 12%);
-                /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#40ffffff', endColorstr='#ffffff', GradientType=0);
-                /* IE6-9 */
+                background: -moz-linear-gradient(
+                    top,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 1) 12%
+                ); /* FF3.6-15 */
+                background: -webkit-linear-gradient(
+                    top,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 1) 12%
+                ); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(
+                    to bottom,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 1) 12%
+                ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
             }
         }
     }
@@ -1689,7 +1858,6 @@ export default class ListComponent extends Vue {
         @media (max-width: $breakpoint-md) {
             width: calc(100% - 240px);
         }
-
         @media (max-width: $breakpoint-sm) {
             width: calc(100% - 90px);
             padding-left: 0;
@@ -1710,11 +1878,10 @@ export default class ListComponent extends Vue {
             font-size: 0.85em;
             margin-top: 5px;
 
-            >div {
+            > div {
                 display: flex;
                 align-items: center;
                 margin-right: 15px;
-
                 &:before {
                     width: 25px;
                     height: 25px;
@@ -1724,7 +1891,6 @@ export default class ListComponent extends Vue {
                     margin-right: 5px;
                     display: none;
                 }
-
                 i {
                     font-size: 1.4em;
                     color: $green;
@@ -1736,7 +1902,6 @@ export default class ListComponent extends Vue {
                 &:before {
                     background: url('/img/review.svg') center center no-repeat;
                 }
-
                 span {
                     &:nth-child(2) {
                         margin-right: 3px;
@@ -1751,18 +1916,16 @@ export default class ListComponent extends Vue {
                     }
                 }
             }
-
             .comments {
                 cursor: pointer;
 
                 &:before {
-                    background: url('/img/rating-comment.svg') center center no-repeat;
+                    background: url('/img/rating-comment.svg') center center
+                        no-repeat;
                 }
-
                 span {
                     margin-left: 3px;
                 }
-
                 i {
                     font-style: normal;
                     font-size: 1em;
@@ -1775,7 +1938,6 @@ export default class ListComponent extends Vue {
                     }
                 }
             }
-
             .persons {
                 display: flex;
                 align-items: center;
@@ -1793,7 +1955,6 @@ export default class ListComponent extends Vue {
                 }
             }
         }
-
         .actions {
             align-items: center;
             display: flex;
@@ -1802,7 +1963,7 @@ export default class ListComponent extends Vue {
             justify-content: space-between;
             margin-top: 10px;
 
-            &>div {
+            & > div {
                 display: flex;
             }
 
@@ -1814,10 +1975,10 @@ export default class ListComponent extends Vue {
             .toggle-wrapper {
                 width: 100%;
 
-                >div {
+                > div {
                     width: 100%;
 
-                    >div {
+                    > div {
                         border-top: 1px solid #ddd;
                         display: flex;
                         justify-content: flex-end;
@@ -1878,7 +2039,6 @@ export default class ListComponent extends Vue {
 
                 &.drill-down {
                     text-indent: 2px;
-
                     i:before {
                         font-weight: bold;
                     }
@@ -1959,9 +2119,11 @@ export default class ListComponent extends Vue {
         font-weight: bold;
         max-width: calc(100% - 110px);
         cursor: pointer;
-
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         @media (max-width: $breakpoint-md) {
-            line-clamp: 1 !important;
             -webkit-line-clamp: 1 !important;
         }
     }
@@ -2017,7 +2179,6 @@ export default class ListComponent extends Vue {
                 border-radius: 50%;
                 display: inline-block;
                 margin-left: 3px;
-
                 &:before,
                 &::after {
                     content: '';

@@ -1,6 +1,7 @@
 <template>
 	<div v-bar>
-		<form class="form" @submit.prevent="verifyCaptcha()" id="simpleForm">
+		<!-- <form class="form" @submit.prevent="verifyCaptcha()" id="simpleForm"> -->
+        <form class="form" @submit.prevent="submitForm()" id="simpleForm">
 			<div class="form__wrapper">
 				<img
 					:src="`/img/geoss-logo-blue.png`"
@@ -21,6 +22,8 @@
 							:placeholder="$tc('feedback.placeholder')"
 							required
 						/>
+
+                        <input type="text" name="phone" style="display:none !important" tabindex="-1" autocomplete="off">
 
 						<label for="firstName" class="form__controls-label vertical">
 							{{ $tc('feedback.simpleForm.firstName') }}:
@@ -120,10 +123,11 @@
 							<label for="severity" class="form__controls-label vertical">
 								{{ $tc('feedback.simpleForm.severity.label') }}:
 							</label>
+
 							<div>
 								<label
 									class="form__controls-label"
-									v-for="option in $tc('feedback.simpleForm.severity.options')"
+									v-for="option of $tc('feedback.simpleForm.severity.options')"
 									:key="option.value"
 								>
 									<input
@@ -133,13 +137,12 @@
 										:value="option.value"
 										required
 									/>
-
 									{{ option.label }}
 								</label>
 							</div>
 						</template>
 
-						<label for="captcha" class="form__controls-label vertical">
+						<!-- <label for="captcha" class="form__controls-label vertical">
 							{{ $tc('feedback.simpleForm.enterText') }}:
 						</label>
 						<div class="form__controls-captcha">
@@ -161,7 +164,7 @@
 								required
 							/>
 							<span class="form__controls-captcha-error">Please try again</span>
-						</div>
+						</div> -->
 					</div>
 
 					<div class="divider" />
@@ -199,14 +202,16 @@ import { FeedbackActions } from '@/store/feedback/feedback-actions';
 import { FeedbackGetters } from '@/store/feedback/feedback-getters';
 import {
 	getFeedbackQuestionsAndAnswers,
-	createJiraIssue,
+	// createJiraIssue,
+    postFeedback,
 	findLabelForEachInput,
-	generateCaptcha,
-	verifyCaptcha,
-	reloadCaptcha
+	// generateCaptcha,
+	// verifyCaptcha,
+	// reloadCaptcha
 } from '@/services/feedback.service';
 import ReloadIcon from './ReloadIcon.vue';
 import Loader from './Loader.vue';
+import { $tc, $tm } from '~/plugins/i18n'
 
 @Component({
 	components: {
@@ -251,7 +256,14 @@ export default class SimpleFormComponent extends Vue {
 	public submitForm() {
 		const formData = {};
 		const allInputsArr = Array.from(this.inputs);
-		const inputs: any = allInputsArr.filter((input: any) => input.name !== 'captcha');
+
+        if (allInputsArr.find(input => input.name === 'phone').value) {
+            return false
+        }
+
+		const inputs: any = allInputsArr.filter((input: any) => input.name !== 'phone');
+        let fromName = '';
+        let fromMail = '';
 		let issueTitle: string;
 
 		inputs.forEach(input => {
@@ -266,18 +278,36 @@ export default class SimpleFormComponent extends Vue {
 					break;
 			}
 
+            if (input.name === 'firstName') {
+                fromName = input.value
+            }
+
+            if (input.name === 'email') {
+                fromMail = input.value
+            }
+
 			if (input.type === 'radio' || input.type === 'checkbox') {
 				if (input.checked) {
 					formData[question] = input.value;
 				}
 			} else {
-				formData[question] = input.value;
+                formData[question] = input.value;
 			}
 		});
 
 		const issueDescription = getFeedbackQuestionsAndAnswers(formData);
-		createJiraIssue(issueTitle, issueDescription);
+
+        const feedbackData = {
+            fromName,
+            fromMail,
+            subject: issueTitle,
+            body: issueDescription
+        }
+
+        postFeedback(JSON.stringify(feedbackData))
 		this.$store.dispatch(FeedbackActions.setQuestionnaireSubmitted, true);
+
+        return false;
 	}
 
 	@Watch('simpleFormAction')
@@ -298,13 +328,13 @@ export default class SimpleFormComponent extends Vue {
 		});
 	}
 
-	private verifyCaptcha() {
-		verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
-	}
+	// private verifyCaptcha() {
+	// 	verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
+	// }
 
-	private reloadCaptcha() {
-		reloadCaptcha('captcha');
-	}
+	// private reloadCaptcha() {
+	// 	reloadCaptcha('captcha');
+	// }
 
 	private mounted() {
 		this.getFormElements();
@@ -312,7 +342,7 @@ export default class SimpleFormComponent extends Vue {
 		this.addRequiredMark({
 			class: 'required-mark',
 		});
-		generateCaptcha('captcha', '.loader-container');
+		// generateCaptcha('captcha', '.loader-container');
 	}
 }
 </script>

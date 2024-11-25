@@ -1,6 +1,7 @@
 <template>
 	<div v-bar>
-		<form class="form" @submit.prevent="verifyCaptcha()" id="enhanced-form">
+		<!-- <form class="form" @submit.prevent="verifyCaptcha()" id="enhanced-form"> -->
+        <form class="form" id="enhanced-form">
 			<div class="form__wrapper">
 				<div class="form__header">
 					<img
@@ -1253,7 +1254,7 @@
 									:placeholder="$tc('feedback.placeholder')"
 								/>
 
-								<label for="captcha" class="form__controls-question">
+								<!-- <label for="captcha" class="form__controls-question">
 									{{ $tc('feedback.simpleForm.enterText') }}:
 								</label>
 								<div class="form__controls-captcha">
@@ -1277,7 +1278,7 @@
 									<span class="form__controls-captcha-error">
 										Please try again
 									</span>
-							</div>
+							    </div> -->
 							</div>
 						</slide>
 						<!-- for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to) -->
@@ -1341,11 +1342,11 @@ import { Liferay } from '@/data/global';
 import { Carousel, Slide } from 'vue-carousel';
 import {
 	getFeedbackQuestionsAndAnswers,
-	createJiraIssue,
+	// createJiraIssue,
 	findLabelForEachInput,
-	generateCaptcha,
-	verifyCaptcha,
-	reloadCaptcha
+	// generateCaptcha,
+	// verifyCaptcha,
+	// reloadCaptcha
 } from '@/services/feedback.service';
 import ReloadIcon from './ReloadIcon.vue';
 import Loader from './Loader.vue';
@@ -1610,13 +1611,13 @@ export default class EnhancedFormComponent extends Vue {
 		window.addEventListener('resize', this.fixSlideHeight);
 	}
 
-	private verifyCaptcha() {
-		verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
-	}
+	// private verifyCaptcha() {
+	// 	verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
+	// }
 
-	private reloadCaptcha() {
-		reloadCaptcha('captcha');
-	}
+	// private reloadCaptcha() {
+	// 	reloadCaptcha('captcha');
+	// }
 
 	private setGeossPortalLinkTarget() {
 		const link = document.querySelector('.header__middle a');
@@ -1633,13 +1634,13 @@ export default class EnhancedFormComponent extends Vue {
 		this.fixSlideHeight();
 		this.handleDots();
 		this.fixSlideHeightOnWindowResize();
-		generateCaptcha('captcha', '.loader-container');
+		// gener<form class="form" @submit.prevent="verifyCaptcha()" id="enhanced-form">ateCaptcha('captcha', '.loader-container');
 	}
 }
 </script>
 
 <style lang="scss">
-@import "~/assets/scss/feedback.scss";
+@import "@/assets/scss/feedback.scss";
 
 .VueCarousel {
 	&.enhanced-form {

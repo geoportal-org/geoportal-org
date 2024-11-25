@@ -3,6 +3,7 @@ export enum BookmarksActions {
     setPageOffset = 'bookmarks/setPageOffset',
     getResults = 'bookmarks/getResults',
     setResults = 'bookmarks/setResults',
+    getAllResults = 'bookmarks/getAllResults',
     setCheckAll = 'bookmarks/setCheckAll',
     setCheckedResults = 'bookmarks/setCheckedResults',
     checkboxChange = 'bookmarks/checkboxChange',

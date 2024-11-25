@@ -1,19 +1,21 @@
 import to from '@/utils/to'
 import GeossSearchApiService from '@/services/geoss-search.api.service'
-import { bookmarksTestIds } from '@/data/bookmarks-test'
+import { bookmarksTestIds } from '~/data/bookmarks-test'
 import { DataSources } from '@/interfaces/DataSources'
+import BookmarksService from '~/services/bookmarks.service'
 
 const state = () => ({
     perPage: 10,
     pageOffset: 0,
     results: [],
+    allResults: [],
     resultsLoading: true,
     resultsTotal: 0,
     checkAll: false,
     checkedResults: [],
     resultsOrigin: {},
     checkedOrigins: [],
-    mode: 'bookmarks'
+    mode: 'bookmarks',
 })
 
 const getters = {
@@ -25,6 +27,9 @@ const getters = {
     },
     results: (state: any) => {
         return state.results
+    },
+    allResults: (state: any) => {
+        return state.allResults
     },
     resultsLoading: (state: any) => {
         return state.resultsLoading
@@ -46,7 +51,7 @@ const getters = {
     },
     mode: (state: any) => {
         return state.mode
-    }
+    },
 }
 
 const mutations = {
@@ -66,7 +71,7 @@ const mutations = {
                 result.rating = rating
             }
         }
-    }
+    },
 }
 
 const actions = {
@@ -89,11 +94,11 @@ const actions = {
         if (value) {
             const checkedResults = []
             for (const result of state.results) {
-                checkedResults.push(result.id.toString())
+                checkedResults.push(result.targetId.toString())
             }
             commit('setStateProp', {
                 prop: 'checkedResults',
-                value: checkedResults
+                value: checkedResults,
             })
         } else {
             commit('setStateProp', { prop: 'checkedResults', value: [] })
@@ -115,8 +120,29 @@ const actions = {
         }
         commit('setStateProp', {
             prop: 'checkedResults',
-            value: checkedResults
+            value: checkedResults,
         })
+    },
+    async getAllResults({ state, commit }: any) {
+        try {
+            let data = [] as any
+            //@ts-ignore
+            const isLoggedIn = window.$nuxt.$auth.loggedIn
+            if (isLoggedIn) {
+                data = await BookmarksService.fetchBookmarkedResults(
+                    0,
+                    999999
+                )
+                if (data) {
+                    commit('setStateProp', {
+                        prop: 'allResults',
+                        value: data.content,
+                    })
+                }
+            }
+        } catch (e: any) {
+            console.log(e)
+        }
     },
     async getResults({ state, commit }: any) {
         let data = [] as any
@@ -127,146 +153,154 @@ const actions = {
             commit('setStateProp', { prop: 'mode', value: 'bookmarks' })
         }
 
-        if (state.mode === 'geo-likes') {
-            ;[, data] = await to(
-                GeossSearchApiService.getGeoLikes(
-                    state.pageOffset,
-                    state.pageOffset + state.perPage
+        // if (state.mode === 'geo-likes') {
+        //     ;[, data] = await to(
+        //         GeossSearchApiService.getGeoLikes(
+        //             state.pageOffset,
+        //             state.pageOffset + state.perPage
+        //         )
+        //     )
+        // } else {
+            //@ts-ignore
+            const isLoggedIn = window.$nuxt.$auth.loggedIn
+            if (isLoggedIn) {
+                data = await BookmarksService.fetchBookmarkedResults(
+                    Number((state.pageOffset / state.perPage).toFixed(0)),
+                    state.perPage
                 )
-            )
-        } else {
-            ;[, data] = await to(
-                GeossSearchApiService.getBookmarks(
-                    state.pageOffset,
-                    state.pageOffset + state.perPage
-                )
-            )
-        }
+            }
+            // ;[, data] = await to(
+            //     GeossSearchApiService.getBookmarks(
+            //         state.pageOffset,
+            //         state.pageOffset + state.perPage
+            //     )
+            // )
+        // }
 
         // test data
         // data = bookmarksTestIds;
         //
 
         if (data) {
-            const dataTypes = data.items
-                .map((item: { dataSource: any }) => item.dataSource)
-                .filter(
-                    (value: any, index: any, self: string | any[]) =>
-                        self.indexOf(value) === index
-                )
-            const resultsOrigin: { [key: string]: any } = {
-                byType: {},
-                byId: {},
-                byName: {} // dab occasionaly changes ID so we should try to compare names
-            }
-            let bookmarks: Array<any> | string[] = []
-            for (const dataType of dataTypes) {
-                const idsOfAType = []
-                for (const item of data.items) {
-                    if (item.dataSource === dataType) {
-                        idsOfAType.push(item.targetId)
-                    }
-                }
-                resultsOrigin.byType[dataType] = idsOfAType
-                const [, results] = await to(
-                    GeossSearchApiService.getTargetById(
-                        idsOfAType.join(','),
-                        dataType
-                    )
-                )
-                if (results && results.entry) {
-                    bookmarks = bookmarks.concat(results.entry)
-                }
-            }
-            let cleanResults = bookmarks
-            for (const item of data.items) {
-                resultsOrigin.byId[
-                    GeossSearchApiService.safeString(item.targetId)
-                ] = {
-                    dataOrigin: item.dataSource,
-                    dataSource: actions.extractDataSource(
-                        item,
-                        cleanResults.find(
-                            (result) => result.id === item.targetId + ''
-                        )
-                    ),
-                    currMap: item.currMap || 'addsat'
-                }
-                if (item.name) {
-                    resultsOrigin.byName[
-                        GeossSearchApiService.safeString(item.name)
-                    ] = {
-                        dataOrigin: item.dataSource,
-                        dataSource: actions.extractDataSource(
-                            item,
-                            cleanResults.find(
-                                (result) => result.title === item.name
-                            )
-                        ),
-                        currMap: item.currMap || 'addsat'
-                    }
-                }
-            }
+            // const dataTypes = data.content
+            //     .map((item: { dataSource: any }) => item.dataSource)
+            //     .filter(
+            //         (value: any, index: any, self: string | any[]) =>
+            //             self.indexOf(value) === index
+            //     )
+            // const resultsOrigin: { [key: string]: any } = {
+            //     byType: {},
+            //     byId: {},
+            //     byName: {}, // dab occasionaly changes ID so we should try to compare names
+            // }
+            // let bookmarks: Array<any> | string[] = []
+            // for (const dataType of dataTypes) {
+            //     const idsOfAType = []
+            //     for (const item of data.items) {
+            //         if (item.dataSource === dataType) {
+            //             idsOfAType.push(item.targetId)
+            //         }
+            //     }
+            //     resultsOrigin.byType[dataType] = idsOfAType
+            //     const [, results] = await to(
+            //         GeossSearchApiService.getTargetById(
+            //             idsOfAType.join(','),
+            //             dataType
+            //         )
+            //     )
+            //     if (results && results.entry) {
+            //         bookmarks = bookmarks.concat(results.entry)
+            //     }
+            // }
+            // let cleanResults = bookmarks
+            // for (const item of data.items) {
+            //     resultsOrigin.byId[
+            //         GeossSearchApiService.safeString(item.targetId)
+            //     ] = {
+            //         dataOrigin: item.dataSource,
+            //         dataSource: actions.extractDataSource(
+            //             item,
+            //             cleanResults.find(
+            //                 (result) => result.id === item.targetId + ''
+            //             )
+            //         ),
+            //         currMap: item.currMap || 'addsat',
+            //     }
+            //     if (item.name) {
+            //         resultsOrigin.byName[
+            //             GeossSearchApiService.safeString(item.name)
+            //         ] = {
+            //             dataOrigin: item.dataSource,
+            //             dataSource: actions.extractDataSource(
+            //                 item,
+            //                 cleanResults.find(
+            //                     (result) => result.title === item.name
+            //                 )
+            //             ),
+            //             currMap: item.currMap || 'addsat',
+            //         }
+            //     }
+            // }
 
-            const resultsOriginIds = Object.keys(resultsOrigin.byId).map(
-                (key) => key
-            )
-            const resultsOriginNames = Object.keys(resultsOrigin.byName).map(
-                (key) => key
-            )
-            const resultsIds = Object.keys(bookmarks).map((key: any) =>
-                GeossSearchApiService.safeString(bookmarks[key].id)
-            )
-            // find all id's that changed in DAB
-            let idsToRemove = resultsIds.filter(
-                (id) => !resultsOriginIds.includes(id)
-            )
+            // const resultsOriginIds = Object.keys(resultsOrigin.byId).map(
+            //     (key) => key
+            // )
+            // const resultsOriginNames = Object.keys(resultsOrigin.byName).map(
+            //     (key) => key
+            // )
+            // const resultsIds = Object.keys(bookmarks).map((key: any) =>
+            //     GeossSearchApiService.safeString(bookmarks[key].id)
+            // )
+            // // find all id's that changed in DAB
+            // let idsToRemove = resultsIds.filter(
+            //     (id) => !resultsOriginIds.includes(id)
+            // )
 
-            // if id was changed, check if we can compare it by name
-            for (const item of bookmarks) {
-                const safeId = GeossSearchApiService.safeString(item.id)
-                const safeName = GeossSearchApiService.safeString(
-                    item.title || item.metadata.title
-                )
-                if (
-                    resultsOriginIds.includes(safeId) ||
-                    resultsOriginNames.includes(safeName)
-                ) {
-                    idsToRemove = idsToRemove.filter((id) => id !== safeId)
-                }
-            }
+            // // if id was changed, check if we can compare it by name
+            // for (const item of bookmarks) {
+            //     const safeId = GeossSearchApiService.safeString(item.id)
+            //     const safeName = GeossSearchApiService.safeString(
+            //         item.title || item.metadata.title
+            //     )
+            //     if (
+            //         resultsOriginIds.includes(safeId) ||
+            //         resultsOriginNames.includes(safeName)
+            //     ) {
+            //         idsToRemove = idsToRemove.filter((id) => id !== safeId)
+            //     }
+            // }
 
-            // clear entries that id's changed and can't be compared by name
-            if (idsToRemove.length) {
-                cleanResults = bookmarks.filter(
-                    (item) =>
-                        !idsToRemove.includes(
-                            GeossSearchApiService.safeString(item.id)
-                        )
-                )
-                console.warn(`Entries ${idsToRemove} were ommited.`)
-            }
+            // // clear entries that id's changed and can't be compared by name
+            // if (idsToRemove.length) {
+            //     cleanResults = bookmarks.filter(
+            //         (item) =>
+            //             !idsToRemove.includes(
+            //                 GeossSearchApiService.safeString(item.id)
+            //             )
+            //     )
+            //     console.warn(`Entries ${idsToRemove} were ommited.`)
+            // }
 
-            // clear duplicated entries
-            const duplicates = new Set()
-            cleanResults = cleanResults.filter((item) => {
-                const duplicate = duplicates.has(item.id)
-                duplicates.add(item.id)
-                return !duplicate
-            })
+            // // clear duplicated entries
+            // const duplicates = new Set()
+            // cleanResults = cleanResults.filter((item) => {
+            //     const duplicate = duplicates.has(item.id)
+            //     duplicates.add(item.id)
+            //     return !duplicate
+            // })
 
-            commit('setStateProp', { prop: 'results', value: cleanResults })
-            commit('setStateProp', {
-                prop: 'resultsOrigin',
-                value: resultsOrigin
-            })
+            commit('setStateProp', { prop: 'results', value: data.content })
+            // commit('setStateProp', {
+            //     prop: 'resultsOrigin',
+            //     value: resultsOrigin,
+            // })
             commit('setStateProp', { prop: 'checkedResults', value: [] })
             commit('setStateProp', { prop: 'checkAll', value: false })
 
             if (!state.pageOffset) {
                 commit('setStateProp', {
                     prop: 'resultsTotal',
-                    value: data.totalCount
+                    value: data.totalElements,
                 })
             }
             commit('setStateProp', { prop: 'resultsLoading', value: false })
@@ -331,7 +365,7 @@ const actions = {
     },
     updateResultRating({ commit }: any, data: { id: string; rating: any }) {
         commit('updateResultRating', data)
-    }
+    },
 }
 
 export default {
@@ -339,5 +373,5 @@ export default {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }
