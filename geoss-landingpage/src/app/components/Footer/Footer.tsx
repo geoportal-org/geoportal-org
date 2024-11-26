@@ -7,6 +7,7 @@ import Eversis from "@/public/eversis.webp";
 import Image from "next/image";
 
 const Footer = () => {
+  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
   return (
     <div className="relative flex flex-col w-full text-black px-6 lg:px-48 bg-[#01685B1A] divide-y-2 divide-[#01685B]">
       <section className="grid max-lg:grid-rows-2 lg:grid-cols-2 w-full py-10 gap-4">
@@ -83,7 +84,7 @@ const Footer = () => {
         </p>
         <Link
           className="lg:ml-auto text-[#01685B] underline lg:text-end"
-          href="https://www.geoportal.org/terms-conditions"
+          href={`${portalUrl}/terms-conditions`}
         >
           Terms and Conditions
         </Link>

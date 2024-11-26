@@ -8,6 +8,8 @@ import uniFlagImage from "@/public/UE.webp";
 import Image from "next/image";
 
 const NavDesktop = () => {
+  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
+
   return (
     <div className="max-lg:hidden flex w-full items-center justify-between">
       <nav>
@@ -30,7 +32,7 @@ const NavDesktop = () => {
             <Link href="/news">News</Link>
           </li>
           <li>
-            <Link target="_blank" href="https://www.geoportal.org/">Data Access</Link>
+            <Link target="_blank" href={`${portalUrl}`}>Data Access</Link>
           </li>
         </ul>
       </nav>

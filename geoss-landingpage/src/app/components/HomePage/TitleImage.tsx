@@ -8,6 +8,7 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 const TitleImage = () => {
     const isMobile = useMediaQuery("(max-width: 1024px)");
+    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
 
     return (
         <section className={`relative w-full h-[70vh] flex items-center justify-center md:block text-white`}>
@@ -35,7 +36,7 @@ const TitleImage = () => {
                     <GeneralButton className="w-full md:w-auto" href="/about">
                         Read about GEOSS
                     </GeneralButton>
-                    <GeneralButton className="w-full md:w-auto bg-white text-black" href="https://www.geoportal.org/">
+                    <GeneralButton className="w-full md:w-auto bg-white text-black" href={portalUrl}>
                         Browse Data
                     </GeneralButton>
                 </div>

@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 const NavMobile = () => {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
     const pathname = usePathname();
+    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
 
     useEffect(() => {
         setBurgerMenuOpen(false);
@@ -55,7 +56,7 @@ const NavMobile = () => {
                                 <Link href="/news">News</Link>
                             </li>
                             <li className="w-full py-4">
-                                <Link target="_blank" href="https://www.geoportal.org/">
+                                <Link target="_blank" href={`${portalUrl}`}>
                                     Data Access
                                 </Link>
                             </li>

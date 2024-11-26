@@ -2,6 +2,8 @@ import Link from "next/link";
 import React from "react";
 
 const LearnMore = () => {
+  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
+
   return (
     <section className="w-full bg-[#F9FAFB] px-6 lg:px-48 py-20 lg:py-24">
       <h2 className="text-4xl mb-16 lg:mb-20">Learn more about GEOSS Portal</h2>
@@ -9,7 +11,7 @@ const LearnMore = () => {
         <span className="flex flex-col gap-4 text-xl py-8 border-t border-[#DBDEE0]">
           <p>Explore GEOSS Platform with Tutorial Mode</p>
           <Link
-            href={"https://www.geoportal.org/community/guest/tutorials  "}
+            href={`${portalUrl}/tutorials`}
             className="text-[#01685B] underline"
           >
             Access Tutorial Mode

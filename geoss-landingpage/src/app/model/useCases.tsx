@@ -3,6 +3,7 @@ import UCTitle from "../components/UseCaseSections/UCTitle";
 import UCList from "../components/UseCaseSections/UCList";
 import UCText from "../components/UseCaseSections/UCText";
 import UCFrame from "../components/UseCaseSections/UCFrame";
+const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
 
 export const useCases = [
     {
@@ -58,7 +59,7 @@ export const useCases = [
                     text="The GEOSS Yellow pages service implements the simplified registration process for new Data Providers. In this way, the provider can easily publish the data on GEOSS platform and users can be confident that the data available on GEOSS portal come from accredited providers."
                     imageSRC="/yp.webp"
                     buttonText="Discover our data provider"
-                    buttonHref={"https://www.geoportal.org/community/guest/yellow-pages"}
+                    buttonHref={`${portalUrl}/yellow-pages`}
                 />
                 <UCList
                     isDarkBg
