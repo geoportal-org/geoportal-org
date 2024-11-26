@@ -16,10 +16,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
   return (
     <html lang="en">
       <body className="scrollbar font-esa">
-        <NavHeader />
+        <NavHeader portalUrl={portalUrl}/>
         <main>{children}</main>
         <Footer />
       </body>

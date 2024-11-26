@@ -6,10 +6,8 @@ import titleImage from "@/public/title.webp";
 import titleImageMobile from "@/public/title-mobile.webp";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 
-const TitleImage = () => {
+const TitleImage = ({portalUrl} : any) => {
     const isMobile = useMediaQuery("(max-width: 1024px)");
-    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
-
     return (
         <section className={`relative w-full h-[70vh] flex items-center justify-center md:block text-white`}>
             <Image

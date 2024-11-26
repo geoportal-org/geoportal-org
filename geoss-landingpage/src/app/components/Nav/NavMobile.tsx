@@ -10,10 +10,9 @@ import GOEAImage from "@/public/GOEA.webp";
 import uniFlagImage from "@/public/UE.webp";
 import { usePathname } from "next/navigation";
 
-const NavMobile = () => {
+const NavMobile = ({portalUrl}: any) => {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
     const pathname = usePathname();
-    const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
 
     useEffect(() => {
         setBurgerMenuOpen(false);

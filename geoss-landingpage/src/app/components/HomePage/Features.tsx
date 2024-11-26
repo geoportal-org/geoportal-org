@@ -11,14 +11,14 @@ import SchemaHeader from "../SchemaHeader/SchemaHeader";
 const CustomCarousel = dynamic(() => import("../Carousel/CustomCarousel"), {
     ssr: true,
 });
-const Features = () => {
+const Features = ({portalUrl} : any) => {
     const isMobile = useMediaQuery("(max-width: 1023px)");
 
     return (
         <section
             className={`relative w-full bg-white min-h-[50vh] flex flex-col items-center justify-center px-6 lg:px-48 py-20 text-black gap-20`}
         >
-            <SchemaHeader type="items-list" data={featuresOptions} internalUrl={true}/>
+            <SchemaHeader type="items-list" data={featuresOptions} internalUrl={true} portalUrl={portalUrl}/>
             <h1 className="text-5xl">Explore GEOSS main features and use cases</h1>
             {isMobile ? (
                 <CustomCarousel itemsArray={featuresOptions} isFeature={true} />

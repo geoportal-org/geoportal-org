@@ -7,9 +7,7 @@ import GOEAImage from "@/public/GOEA.webp";
 import uniFlagImage from "@/public/UE.webp";
 import Image from "next/image";
 
-const NavDesktop = () => {
-  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL
-
+const NavDesktop = ({portalUrl} : any) => {
   return (
     <div className="max-lg:hidden flex w-full items-center justify-between">
       <nav>

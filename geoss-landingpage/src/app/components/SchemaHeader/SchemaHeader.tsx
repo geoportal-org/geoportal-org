@@ -6,10 +6,11 @@ type Props = {
     type?: string;
     data?: any;
     internalUrl?: boolean;
+    portalUrl?: string;
 };
 
-const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
-    const pageUrl = process.env.NEXT_PUBLIC_PAGE_URL;
+const SchemaHeader = ({ type, data, internalUrl = false, portalUrl }: Props) => {
+    const pageUrl = process.env.NEXT_PUBLIC_PAGE_URL || portalUrl || '';
     switch (type) {
         case "article":
             const parsedArticleBody = data.data.toString().replace(/"/g, '\\"');
