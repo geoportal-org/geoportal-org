@@ -89,14 +89,25 @@ const SchemaHeader = ({ type, data, internalUrl = false }: Props) => {
                                 "@type": "ItemList",
                                 "itemListElement": [
                                     ${data.map((el: any, index: number) => {
-                                        return `                                
+                                        if (internalUrl) {
+                                            return `                                
                                             {
                                             "@type": "ListItem",
                                             "position": ${index + 1},
                                             "name": "${el.text}",
-                                            "url": "${internalUrl ? pageUrl + el.href : el.href}"
+                                            "url": "${pageUrl + el.href}"
                                             }
                                         `;
+                                        } else {
+                                            return `                                
+                                            {
+                                            "@type": "ListItem",
+                                            "position": ${index + 1},
+                                            "name": "${el.text}",
+                                            "url": "${el.href}"
+                                            }
+                                        `;
+                                        }
                                     })}
                                 ]
                             }
