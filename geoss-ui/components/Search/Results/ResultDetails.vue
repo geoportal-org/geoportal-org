@@ -2553,13 +2553,16 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 title: this.result.title
             }
 
-            this.$store.dispatch(PopupActions.openPopup, {
+            if(this.$store.getters[UserGetters.openEOToken] && this.$store.getters[UserGetters.openEOToken] !== ''){
+                this.$store.dispatch(PopupActions.openPopup, {
                 contentId: "openEOWorkflow",
                 title: this.$tc('popupTitles.workflowandruns'),
                 noCloseOutside: true,
                 component: OpenEOWorkflowComponent,
                 props
             })
+            }
+
         }
 
         if (this.workflow) {

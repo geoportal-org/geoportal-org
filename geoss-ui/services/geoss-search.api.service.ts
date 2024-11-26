@@ -1666,7 +1666,7 @@ const GeossSearchApiService = {
             SpinnerService.setLongRequestInfo(true)
         }, 10000)
 
-        const url = `${geossPersonaldata.savedRuns}?page=${pageNumber}&size=${resultsPerPage}`
+        const url = `${geossPersonaldata.savedRuns}/search/current?page=${pageNumber}&size=${resultsPerPage}`
         const res = await apiClient.$get(url)
         const pageInfo = res.page
         const savedRuns = res._embedded.savedRuns
