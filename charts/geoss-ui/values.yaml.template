@@ -43,6 +43,17 @@ resources:
 autoscaling:
   enabled: false
 
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - $RESOURCE_NAME_PREFIX-ui
+        topologyKey: "topology.kubernetes.io/zone"
+
 pvc:
 volumes:
 volumeMounts:
