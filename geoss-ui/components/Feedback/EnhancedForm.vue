@@ -1,7 +1,6 @@
 <template>
 	<div v-bar>
-		<!-- <form class="form" @submit.prevent="verifyCaptcha()" id="enhanced-form"> -->
-        <form class="form" id="enhanced-form">
+        <form class="form" @submit.prevent="submitForm()" id="enhanced-form">
 			<div class="form__wrapper">
 				<div class="form__header">
 					<img
@@ -98,6 +97,8 @@
 										required
 									/>
 
+                                    <input type="text" name="phone" style="display:none !important" tabindex="-1" autocomplete="off">
+
 									<label for="firstName" class="form__controls-question">
 										{{ $tc('feedback.simpleForm.firstName') }}:
 									</label>
@@ -129,9 +130,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page2.interest.options',
-									)"
+									v-for="option in feedbackConfig.page2.interest.options"
 									:key="option.value"
 								>
 									<input
@@ -171,9 +170,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page2.classify.options',
-									)"
+									v-for="option in feedbackConfig.page2.classify.options"
 									:key="option.value"
 								>
 									<input
@@ -227,9 +224,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page2.applicationInterests.options',
-									)"
+									v-for="option in feedbackConfig.page2.applicationInterests.options"
 									:key="option.value"
 								>
 									<input
@@ -269,9 +264,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page2.visited.options',
-									)"
+									v-for="option in feedbackConfig.page2.visited.options"
 									:key="option.value"
 								>
 									<input
@@ -292,9 +285,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page2.used.options',
-									)"
+									v-for="option in feedbackConfig.page2.used.options"
 									:key="option.label"
 								>
 									<input
@@ -350,9 +341,7 @@
 
 								<label
 									class="form__controls-label"
-									v-for="option in $tc(
-										'feedback.enhancedForm.page3.tryToLocate.options',
-									)"
+									v-for="option in feedbackConfig.page3.tryToLocate.options"
 									:key="option.value"
 								>
 									<input
@@ -374,9 +363,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.ifYouHaveTime.options',
-										)"
+										v-for="option in feedbackConfig.page3.ifYouHaveTime.options"
 										:key="option.value"
 									>
 										<input
@@ -398,9 +385,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.didYouFind.options',
-										)"
+										v-for="option in feedbackConfig.page3.didYouFind.options"
 										:key="option.value"
 									>
 										<input
@@ -458,9 +443,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.succedInDownloading.options',
-										)"
+										v-for="option in feedbackConfig.page3.succedInDownloading.options"
 										:key="option.value"
 									>
 										<input
@@ -503,9 +486,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.tryToSignIn.options',
-										)"
+										v-for="option in feedbackConfig.page3.tryToSignIn.options"
 										:key="option.value"
 									>
 										<input
@@ -527,9 +508,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.multiSearch.options',
-										)"
+										v-for="option in feedbackConfig.page3.multiSearch.options"
 										:key="option.value"
 									>
 										<input
@@ -551,9 +530,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.tryToBookmark.options',
-										)"
+										v-for="option in feedbackConfig.page3.tryToBookmark.options"
 										:key="option.value"
 									>
 										<input
@@ -574,9 +551,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page3.lookToWorkspace.options',
-										)"
+										v-for="option in feedbackConfig.page3.lookToWorkspace.options"
 										:key="option.value"
 									>
 										<input
@@ -606,9 +581,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.informationEasyToFind.options',
-											)"
+											v-for="option in feedbackConfig.page3.informationEasyToFind.options"
 											:key="option.value"
 										>
 											<input
@@ -641,9 +614,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.searchToolsDetailed.options',
-											)"
+											v-for="option in feedbackConfig.page3.searchToolsDetailed.options"
 											:key="option.value"
 										>
 											<input
@@ -676,9 +647,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.iDoNotNeedVideoTut.options',
-											)"
+											v-for="option in feedbackConfig.page3.iDoNotNeedVideoTut.options"
 											:key="option.value"
 										>
 											<input
@@ -713,9 +682,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.contentLogicallyOrganized.options',
-											)"
+											v-for="option in feedbackConfig.page3.contentLogicallyOrganized.options"
 											:key="option.value"
 										>
 											<input
@@ -750,9 +717,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.adequatelyDescribed.options',
-											)"
+											v-for="option in feedbackConfig.page3.adequatelyDescribed.options"
 											:key="option.value"
 										>
 											<input
@@ -797,9 +762,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page3.portalSpeed.options',
-											)"
+											v-for="option in feedbackConfig.page3.portalSpeed.options"
 											:key="option.value"
 										>
 											<input
@@ -859,9 +822,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.usePortalFrequently.options',
-											)"
+											v-for="option in feedbackConfig.page4.usePortalFrequently.options"
 											:key="option.value"
 										>
 											<input
@@ -894,9 +855,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.unnecessarilyComplex.options',
-											)"
+											v-for="option in feedbackConfig.page4.unnecessarilyComplex.options"
 											:key="option.value"
 										>
 											<input
@@ -927,9 +886,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.easyToUse.options',
-											)"
+											v-for="option in feedbackConfig.page4.easyToUse.options"
 											:key="option.value"
 										>
 											<input
@@ -960,9 +917,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.needSupport.options',
-											)"
+											v-for="option in feedbackConfig.page4.needSupport.options"
 											:key="option.value"
 										>
 											<input
@@ -997,9 +952,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.wellIntegratedFunctions.options',
-											)"
+											v-for="option in feedbackConfig.page4.wellIntegratedFunctions.options"
 											:key="option.value"
 										>
 											<input
@@ -1032,9 +985,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.tooMuchInconsistency.options',
-											)"
+											v-for="option in feedbackConfig.page4.tooMuchInconsistency.options"
 											:key="option.value"
 										>
 											<input
@@ -1065,9 +1016,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.learnQuickly.options',
-											)"
+											v-for="option in feedbackConfig.page4.learnQuickly.options"
 											:key="option.value"
 										>
 											<input
@@ -1098,9 +1047,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.cumbersomeToUse.options',
-											)"
+											v-for="option in feedbackConfig.page4.cumbersomeToUse.options"
 											:key="option.value"
 										>
 											<input
@@ -1131,9 +1078,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.feltConfident.options',
-											)"
+											v-for="option in feedbackConfig.page4.feltConfident.options"
 											:key="option.value"
 										>
 											<input
@@ -1164,9 +1109,7 @@
 									<div class="form__controls-horizontal-radios-options">
 										<label
 											class="form__controls-label"
-											v-for="option in $tc(
-												'feedback.enhancedForm.page4.neededToLearn.options',
-											)"
+											v-for="option in feedbackConfig.page4.neededToLearn.options"
 											:key="option.value"
 										>
 											<input
@@ -1226,9 +1169,7 @@
 								<div>
 									<label
 										class="form__controls-label"
-										v-for="option in $tc(
-											'feedback.enhancedForm.page5.wouldReturn.options',
-										)"
+										v-for="option in feedbackConfig.page5.wouldReturn.options"
 										:key="option.value"
 									>
 										<input
@@ -1253,32 +1194,6 @@
 									name="leaveQuote"
 									:placeholder="$tc('feedback.placeholder')"
 								/>
-
-								<!-- <label for="captcha" class="form__controls-question">
-									{{ $tc('feedback.simpleForm.enterText') }}:
-								</label>
-								<div class="form__controls-captcha">
-									<div class="form__controls-captcha-img-container">
-										<Loader />
-										<img src="" alt="Captcha" id="captcha" />
-									</div>
-
-									<button class="reload-btn" type="button" @click="reloadCaptcha" title="Reload">
-										<ReloadIcon />
-									</button>
-
-									<input
-										class="form__controls-text-input"
-										name="captcha"
-										id="captchaInput"
-										type="text"
-										:placeholder="$tc('feedback.placeholder')"
-										required
-									/>
-									<span class="form__controls-captcha-error">
-										Please try again
-									</span>
-							    </div> -->
 							</div>
 						</slide>
 						<!-- for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to) -->
@@ -1338,15 +1253,12 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import { FeedbackActions } from '@/store/feedback/feedback-actions';
 import { FeedbackGetters } from '@/store/feedback/feedback-getters';
+import en from '@/translations/en'
 import { Liferay } from '@/data/global';
 import { Carousel, Slide } from 'vue-carousel';
 import {
 	getFeedbackQuestionsAndAnswers,
-	// createJiraIssue,
 	findLabelForEachInput,
-	// generateCaptcha,
-	// verifyCaptcha,
-	// reloadCaptcha
 } from '@/services/feedback.service';
 import ReloadIcon from './ReloadIcon.vue';
 import Loader from './Loader.vue';
@@ -1382,6 +1294,10 @@ export default class EnhancedFormComponent extends Vue {
 	private vueCarouselInner = null;
 	private formFooter = null;
 	private activeSlideContent = null;
+
+    get feedbackConfig() {
+        return en.feedback.enhancedForm
+    }
 
 	get questionnaireSubmitted() {
 		return this.$store.getters[FeedbackGetters.questionnaireSubmitted];
@@ -1505,11 +1421,25 @@ export default class EnhancedFormComponent extends Vue {
 	public submitForm() {
 		const formData = {};
 		const allInputsArr = Array.from(this.inputs);
-		const inputs: any = allInputsArr.filter((input: any) => input.name !== 'captcha');
+
+        if (allInputsArr.find(input => input.name === 'phone').value) {
+            return false
+        }
+		const inputs: any = allInputsArr.filter((input: any) => input.name !== 'phone');
+        let fromName = '';
+        let fromMail = '';
 		const issueTitle: string = 'Enhanced Form';
 
 		inputs.forEach(input => {
 			const question = findLabelForEachInput(input);
+
+            if (input.name === 'firstName') {
+                fromName = input.value
+            }
+
+            if (input.name === 'email') {
+                fromMail = input.value
+            }
 
 			if ((input.type === 'radio' || input.type === 'checkbox') && input.name !== '') {
 				if (input.checked) {
@@ -1526,8 +1456,18 @@ export default class EnhancedFormComponent extends Vue {
 		});
 
 		const issueDescription = getFeedbackQuestionsAndAnswers(formData);
-		createJiraIssue(issueTitle, issueDescription);
+
+        const feedbackData = {
+            fromName,
+            fromMail,
+            subject: issueTitle,
+            body: issueDescription
+        }
+
+        postFeedback(JSON.stringify(feedbackData))
 		this.$store.dispatch(FeedbackActions.setQuestionnaireSubmitted, true);
+
+        return false;
 	}
 
 	public checkInputsInActiveSlide() {
@@ -1611,14 +1551,6 @@ export default class EnhancedFormComponent extends Vue {
 		window.addEventListener('resize', this.fixSlideHeight);
 	}
 
-	// private verifyCaptcha() {
-	// 	verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
-	// }
-
-	// private reloadCaptcha() {
-	// 	reloadCaptcha('captcha');
-	// }
-
 	private setGeossPortalLinkTarget() {
 		const link = document.querySelector('.header__middle a');
 		link.setAttribute('target', '_blank');
@@ -1634,7 +1566,6 @@ export default class EnhancedFormComponent extends Vue {
 		this.fixSlideHeight();
 		this.handleDots();
 		this.fixSlideHeightOnWindowResize();
-		// gener<form class="form" @submit.prevent="verifyCaptcha()" id="enhanced-form">ateCaptcha('captcha', '.loader-container');
 	}
 }
 </script>

@@ -290,7 +290,6 @@ export default class BookmarksHeader extends Vue {
         justify-content: space-between;
         font-size: 14px;
         padding: 15px 25px;
-        margin: 5px 0 0;
 
         .actions {
             display: flex;

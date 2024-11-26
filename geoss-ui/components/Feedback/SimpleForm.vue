@@ -1,6 +1,5 @@
 <template>
 	<div v-bar>
-		<!-- <form class="form" @submit.prevent="verifyCaptcha()" id="simpleForm"> -->
         <form class="form" @submit.prevent="submitForm()" id="simpleForm">
 			<div class="form__wrapper">
 				<img
@@ -127,7 +126,7 @@
 							<div>
 								<label
 									class="form__controls-label"
-									v-for="option of $tc('feedback.simpleForm.severity.options')"
+									v-for="option of feedbackConfig.severity.options"
 									:key="option.value"
 								>
 									<input
@@ -141,30 +140,6 @@
 								</label>
 							</div>
 						</template>
-
-						<!-- <label for="captcha" class="form__controls-label vertical">
-							{{ $tc('feedback.simpleForm.enterText') }}:
-						</label>
-						<div class="form__controls-captcha">
-							<div class="form__controls-captcha-img-container">
-								<Loader />
-								<img src="" alt="Captcha" id="captcha" />
-							</div>
-
-							<button class="reload-btn" type="button" @click="reloadCaptcha" title="Reload">
-								<ReloadIcon />
-							</button>
-
-							<input
-								class="form__controls-text-input"
-								name="captcha"
-								id="captchaInput"
-								type="text"
-								:placeholder="$tc('feedback.placeholder')"
-								required
-							/>
-							<span class="form__controls-captcha-error">Please try again</span>
-						</div> -->
 					</div>
 
 					<div class="divider" />
@@ -200,18 +175,16 @@
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
 import { FeedbackActions } from '@/store/feedback/feedback-actions';
 import { FeedbackGetters } from '@/store/feedback/feedback-getters';
+import en from '@/translations/en'
 import {
 	getFeedbackQuestionsAndAnswers,
-	// createJiraIssue,
     postFeedback,
 	findLabelForEachInput,
-	// generateCaptcha,
-	// verifyCaptcha,
-	// reloadCaptcha
 } from '@/services/feedback.service';
 import ReloadIcon from './ReloadIcon.vue';
 import Loader from './Loader.vue';
 import { $tc, $tm } from '~/plugins/i18n'
+import feedback from '~/store/feedback';
 
 @Component({
 	components: {
@@ -224,6 +197,10 @@ export default class SimpleFormComponent extends Vue {
 	private inputs = null;
 	private simpleFormAction = 'suggest';
 	private labels = null;
+
+    get feedbackConfig() {
+        return en.feedback.simpleForm
+    }
 
 	get questionnaireSubmitted() {
 		return this.$store.getters[FeedbackGetters.questionnaireSubmitted];
@@ -328,21 +305,12 @@ export default class SimpleFormComponent extends Vue {
 		});
 	}
 
-	// private verifyCaptcha() {
-	// 	verifyCaptcha('captcha', 'captchaInput', '.form__controls-captcha-error', this.submitForm, 'captcha-error', 'block');
-	// }
-
-	// private reloadCaptcha() {
-	// 	reloadCaptcha('captcha');
-	// }
-
 	private mounted() {
 		this.getFormElements();
 		this.simpleFormAction = 'suggest';
 		this.addRequiredMark({
 			class: 'required-mark',
 		});
-		// generateCaptcha('captcha', '.loader-container');
 	}
 }
 </script>

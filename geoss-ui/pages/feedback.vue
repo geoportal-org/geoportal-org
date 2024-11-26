@@ -39,7 +39,8 @@ export default {
     justify-content: center;
 
     &__sub {
-        // height: calc(100% - 100px)
+        max-height: calc(100% - 100px);
+        overflow: scroll;
     }
 }
 </style>

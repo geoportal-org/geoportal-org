@@ -124,7 +124,6 @@ export default class PaginationComponent extends Vue {
 <style lang="scss" scoped>
 .pagination {
     flex: 0 0 auto;
-    flex-grow: 1;
     flex-basis: 0;
     background-color: $green-transparent;
     display: flex;
@@ -133,7 +132,6 @@ export default class PaginationComponent extends Vue {
     justify-content: flex-end;
     font-size: 14px;
     padding: 10px 20px;
-    margin: 5px 0 0;
 
     @media (max-width: $breakpoint-md) {
         padding-left: 10px;

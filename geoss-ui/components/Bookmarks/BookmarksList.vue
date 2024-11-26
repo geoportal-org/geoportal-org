@@ -1,5 +1,5 @@
 <template>
-    <div v-bar>
+    <div v-bar class="bookmark-results__wrapper">
         <div class="bookmark-results">
             <div
                 v-if="resultsLoading || !results.length"
@@ -1705,10 +1705,14 @@ export default class BookmarksList extends Vue {
 
 <style lang="scss" scoped>
 .bookmark-results {
-    display: flex;
+    display: flex !important;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-content: center;
+    align-content: flex-start;
+
+    &__wrapper {
+        height: 100%;
+    }
 
     &__empty {
         display: flex;
