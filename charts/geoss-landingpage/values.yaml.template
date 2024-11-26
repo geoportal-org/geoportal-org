@@ -62,6 +62,8 @@ env:
     value: "https://${ADMIN_DOMAIN_NAME}/"
   - name: NEXT_PUBLIC_PAGE_URL
     value: "https://${LANDING_PAGE_DOMAIN_NAME}"
+  - name: NEXT_PUBLIC_PORTAL_URL
+    value: "https://${UI_DOMAIN_NAME}"
   - name: NODE_TLS_REJECT_UNAUTHORIZED
     value: "0"
 

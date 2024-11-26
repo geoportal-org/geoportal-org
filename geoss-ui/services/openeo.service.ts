@@ -127,7 +127,7 @@ const OpenEOService = {
     },
 
     async createOpenEOJob(url: string, token: string, body: any) {
-        const res = await fetch(url, {
+        const res = await fetch('https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

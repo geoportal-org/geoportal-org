@@ -2539,10 +2539,10 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
 
         if(this.isEoWorkflow) {
-            if(!this.$store.getters[UserGetters.openEOToken] || this.$store.getters[UserGetters.openEOToken] === ''){
-                await this.handleOpenEOAuth()
+            const currDateTime = Math.floor(Date.now() / 1000)
+            if (!this.$store.getters[UserGetters.openEOToken] || this.$store.getters[UserGetters.openEOTokenExpireDate] <= currDateTime) {
+                await OpenEOService.authenticateOpenEO()
             }
-            console.log('authenticated - open popup')
             const data = UtilsService.getArrayByString(
                 this.result,
                 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine'
@@ -2553,7 +2553,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 title: this.result.title
             }
 
-            if(this.$store.getters[UserGetters.openEOToken] && this.$store.getters[UserGetters.openEOToken] !== ''){
+            if(this.$store.getters[UserGetters.openEOToken] && this.$store.getters[UserGetters.openEOTokenExpireDate] > currDateTime){
                 this.$store.dispatch(PopupActions.openPopup, {
                 contentId: "openEOWorkflow",
                 title: this.$tc('popupTitles.workflowandruns'),

@@ -304,7 +304,7 @@ export default class OpenEOWorkflowComponent extends Vue {
             await OpenEOService.authenticateOpenEO()
         }
         const body = {
-            'title': this.workflowRunName,
+            'title': 'WorldCereal [cropland] job GEOSS - ' + this.workflowRunName,
             'process': {
                 id: 'cropmap',
                 process_graph: {
@@ -335,9 +335,11 @@ export default class OpenEOWorkflowComponent extends Vue {
                 'https://artifactory.vgt.vito.be/artifactory/auxdata-public/openeo/onnx_dependencies_1.16.3.zip#onnx_deps'
             ]
         }
+        console.log(this.workflowUrl)
 
         const response = await OpenEOService.createOpenEOJob(this.workflowUrl, token, body)
         const id = response.headers.get('openeo-identifier')
+        console.log(id)
         await OpenEOService.runOpenEOJob(id, token)
         //spinner
         SpinnerService.hideSpinner()
