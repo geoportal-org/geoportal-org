@@ -41,13 +41,13 @@ public class ApiSecurityConfiguration {
                             .requestMatchers(basePath + "/comments/**")
                             .hasAnyRole("COMMENT_WRITER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(HttpMethod.GET, basePath + "/feedback/**")
+                            .requestMatchers(HttpMethod.GET, basePath + "/feedbacks/**")
                             .hasAnyRole("FEEDBACK_READER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(HttpMethod.DELETE, basePath + "/feedback/**")
+                            .requestMatchers(HttpMethod.DELETE, basePath + "/feedbacks/**")
                             .hasAnyRole("FEEDBACK_REMOVER", "ADMIN");
                     authorizationManagerRequestMatcherRegistry
-                            .requestMatchers(HttpMethod.POST, basePath + "/feedback/**")
+                            .requestMatchers(HttpMethod.POST, basePath + "/feedbacks/**")
                             .permitAll();
                     authorizationManagerRequestMatcherRegistry
                             .requestMatchers(HttpMethod.GET, basePath + "/highlighted-searches/search/enabled")
