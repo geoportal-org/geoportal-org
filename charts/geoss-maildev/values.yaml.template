@@ -172,4 +172,11 @@ networkPolicy:
                         app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
           ports:
               - protocol: TCP
-                port: 1080                
+                port: 1080           
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 1025                         
