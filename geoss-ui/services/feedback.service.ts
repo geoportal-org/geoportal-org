@@ -37,6 +37,8 @@ export const postFeedback = (
     const url = `${geossPersonaldata.feedbacks}`
     return apiClient.$post(url, feedbackData, {
         headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
             Authorization: '',
         },
     })
