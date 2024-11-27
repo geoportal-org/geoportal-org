@@ -1196,9 +1196,6 @@
 								/>
 							</div>
 						</slide>
-						<!-- for some reason carousel don't see last 2 slides (they exists in the HTML structure but can not be scrolled to) -->
-						<slide></slide>
-						<slide></slide>
 					</carousel>
 				</template>
 				<template v-else>
@@ -1258,6 +1255,7 @@ import { Liferay } from '@/data/global';
 import { Carousel, Slide } from 'vue-carousel';
 import {
 	getFeedbackQuestionsAndAnswers,
+    postFeedback,
 	findLabelForEachInput,
 } from '@/services/feedback.service';
 import ReloadIcon from './ReloadIcon.vue';
