@@ -1,4 +1,4 @@
-import { portalOptions, providersOptions } from "@/src/app/model/navOptions";
+import { providersOptions } from "@/src/app/model/navOptions";
 import Link from "next/link";
 import React from "react";
 import Dropdown from "../Dropdown";
@@ -7,7 +7,7 @@ import GOEAImage from "@/public/GOEA.webp";
 import uniFlagImage from "@/public/UE.webp";
 import Image from "next/image";
 
-const NavDesktop = ({portalUrl} : any) => {
+const NavDesktop = ({portalUrl, portalOptions} : any) => {
   return (
     <div className="max-lg:hidden flex w-full items-center justify-between">
       <nav>

@@ -1,4 +1,4 @@
-import { portalOptions, providersOptions } from "@/src/app/model/navOptions";
+import { providersOptions } from "@/src/app/model/navOptions";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Accordion from "../Accordion";
@@ -10,7 +10,7 @@ import GOEAImage from "@/public/GOEA.webp";
 import uniFlagImage from "@/public/UE.webp";
 import { usePathname } from "next/navigation";
 
-const NavMobile = ({portalUrl}: any) => {
+const NavMobile = ({portalUrl, portalOptions}: any) => {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
     const pathname = usePathname();
 
