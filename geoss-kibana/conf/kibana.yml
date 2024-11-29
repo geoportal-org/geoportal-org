@@ -183,3 +183,5 @@ xpack.security.authc:
   providers:
     basic.basic1: 
       order: 0 
+
+xpack.fleet.enabled: false
