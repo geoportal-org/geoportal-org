@@ -285,7 +285,7 @@ const LayersUtils = {
         })
     },
 
-    createWMS(name: string, url: string) {
+    createWMS(name: string, url: string, time?: string) {
         let LAYERS = null
         let VERSION = null
         let TILED = null
@@ -347,7 +347,13 @@ const LayersUtils = {
                 crossOrigin: 'Anonymous',
                 projection: 'EPSG:4326',
                 url: urlLayer,
-                params: {
+                params: time ? {
+                    LAYERS,
+                    VERSION,
+                    TILED,
+                    SRS: 'EPSG:4326',
+                    TIME: time
+                } : {
                     LAYERS,
                     VERSION,
                     TILED,
@@ -478,8 +484,7 @@ const LayersUtils = {
         }
         AppVueObj.app.$store.dispatch(MapActions.setProgressBarEnable, false)
     },
-
-    async toggleLayer(layer: any, coordinates: any, layerImage: any) {
+    async toggleLayer(layer: any, coordinates: any, layerImage: any, time?: string) {
         const layerData: LayerData | undefined = AppVueObj.app.$store.getters[
             MapGetters.layers
         ].find((layerData: LayerData) => layerData.id === layer.url)
@@ -503,7 +508,11 @@ const LayersUtils = {
             }
             let mapLayer: any = null
             if (layer.type === LayerTypes.WMS) {
-                mapLayer = LayersUtils.createWMS(layer.title, layer.url)
+                if(time){
+                    mapLayer = LayersUtils.createWMS(layer.title, layer.url, time)
+                }else {
+                    mapLayer = LayersUtils.createWMS(layer.title, layer.url)
+                }
             } else if (layer.type === LayerTypes.TMS) {
                 mapLayer = LayersUtils.createTMS(layer.url)
             } else if (layer.type === LayerTypes.KML) {

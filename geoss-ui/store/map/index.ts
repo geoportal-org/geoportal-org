@@ -54,7 +54,10 @@ const state = () => ({
     progressBarLoading: 0,
     progressBarLoaded: 0,
     progressBarPercentage: 0,
-    progressBarEnable: false
+    progressBarEnable: false,
+    dimensions: [],
+    currentTime: '',
+    showTimeline: false
 })
 
 const initialState = JSON.parse(JSON.stringify(state()))
@@ -167,6 +170,15 @@ const getters = {
     },
     progressBarEnable: (state: any) => {
         return state.progressBarEnable
+    },
+    dimensions: (state: any) => {
+        return state.dimensions
+    },
+    currentTime: (state: any) => {
+        return state.currentTime
+    },
+    showTimeline: (state: any) => {
+        return state.showTimeline
     }
 }
 
@@ -315,6 +327,14 @@ const mutations = {
             if (layer.value && layer.visible) {
                 layer.value.setOpacity(value / 100)
             }
+        }
+    },
+    changeLayerTime(state: any, { value, id }: { value: string; id: string }) {
+        const layer = state.layers.find(
+            (layer: { id: string }) => layer.id === id
+        )
+        if (layer && value) {
+            layer.value.getSource().updateParams({ time: value })
         }
     },
     removeLayer(state: any, id: string) {
@@ -524,6 +544,12 @@ const actions = {
             commit('changeLayerVisibility', { id, value: layerData.visible })
         }
     },
+    changeLayerTime(
+        { commit, getters }: any,
+        { id, value }: { id: string; value: boolean }
+    ) {
+        commit('changeLayerTime', { id, value })
+    },
     changeLayerVisibility(
         { commit, getters }: any,
         { id, value }: { id: string; value: boolean }
@@ -636,6 +662,15 @@ const actions = {
     },
     setProgressBarEnable({ commit }: any, value: boolean) {
         commit('setStateProp', { prop: 'progressBarEnable', value })
+    },
+    setDimensions({ commit }: any, value: string[]) {
+        commit('setStateProp', { prop: 'dimensions', value })
+    },
+    setCurrentTime({ commit }: any, value: string) {
+        commit('setStateProp', { prop: 'currentTime', value })
+    },
+    setShowTimeline({ commit }: any, value: boolean) {
+        commit('setStateProp', { prop: 'showTimeline', value })
     }
 }
 

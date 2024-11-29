@@ -68,13 +68,20 @@ const OpenEOService = {
                     const json = await res.json()
                     return { ...element, ...json }
                 } else {
-                    return element
+                    const res = await fetch(
+                        `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${element.id}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    )
+                    const json = await res.json()
+                    return {...element, title: json.title}
                 }
             })
         )
-
-        console.log(listWithResults)
-
         const parsedJobs = this.parseOpenEOJobs(listWithResults)
         return parsedJobs
     },
@@ -164,8 +171,8 @@ const OpenEOService = {
     },
 
     async getJobLogs(id: string, token: string) {
-        await fetch(
-            `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${id}/logs`,
+        const res = await fetch(
+            `https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/${id}/logs?level=error`,
             {
                 method: 'GET',
                 headers: {
@@ -173,6 +180,7 @@ const OpenEOService = {
                 }
             }
         )
+        return await res.json()
     }
 }
 

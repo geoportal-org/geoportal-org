@@ -11,6 +11,7 @@ export enum MapActions {
     addLayer = 'map/addLayer',
     changeLayerVisibility = 'map/changeLayerVisibility',
     changeLayerTransparency = 'map/changeLayerTransparency',
+    changeLayerTime = 'map/changeLayerTime',
     removeLayer = 'map/removeLayer',
     removeBoundingLayers = 'map/removeBoundingLayers',
     repaintBoudingLayers = 'map/repaintBoudingLayers',
@@ -27,5 +28,8 @@ export enum MapActions {
     setProgressBarLoading = 'map/setProgressBarLoading',
     setProgressBarLoaded = 'map/setProgressBarLoaded',
     setProgressBarPercentage = 'map/setProgressBarPercentage',
-    setProgressBarEnable = 'map/setProgressBarEnable'
+    setProgressBarEnable = 'map/setProgressBarEnable',
+    setDimensions = 'map/setDimensions',
+    setCurrentTime = 'map/setCurrentTime',
+    setShowTimeline = 'map/setShowTimeline'
 }

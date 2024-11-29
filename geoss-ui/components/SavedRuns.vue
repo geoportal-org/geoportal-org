@@ -61,8 +61,9 @@
                             <div
                                 v-if="
                                     displayRun.outputs &&
-                                    (displayRun.status === 'COMPLETED' || displayRun.status === 'FINISHED') &&
-                                    displayRun.result !== 'FAIL' 
+                                    (displayRun.status === 'COMPLETED' ||
+                                        displayRun.status === 'FINISHED') &&
+                                    displayRun.result !== 'FAIL'
                                 "
                                 class="service-workflow__saved-outputs"
                             >
@@ -142,15 +143,21 @@
                                     :class="{ active: displayRun.showLogs }"
                                     @click="toggleLogs(displayRun)"
                                     v-if="
-                                        displayRun.messageList &&
-                                        displayRun.messageList.length
+                                        (displayRun.messageList &&
+                                            displayRun.messageList.length) ||
+                                        (showOpenEOJobs &&
+                                            displayRun.status === 'ERROR')
                                     "
                                 >
                                     {{ $tc('popupContent.messageLog') }}
                                 </button>
                                 <button
                                     class="service-workflow__saved-run-btn"
-                                    :class="displayRun.result === 'FINISHED' ? 'solo_link' : 'link'"
+                                    :class="
+                                        displayRun.result === 'FINISHED'
+                                            ? 'solo_link'
+                                            : 'link'
+                                    "
                                     @click="createDashboard(displayRun)"
                                     v-if="
                                         displayRun.outputs &&
@@ -167,13 +174,16 @@
                                 class="service-workflow__saved-run-status__badge"
                                 :class="{
                                     success:
-                                        displayRun.status === 'COMPLETED' || displayRun.status === 'FINISHED' &&
-                                        displayRun.result === 'SUCCESS' || displayRun.result === 'FINISHED',
-                                    error: 
-                                        displayRun.status === 'ERROR' && displayRun.result === 'ERROR',
-                                    running: 
-                                        displayRun.status === 'RUNNING' && displayRun.result === 'RUNNING',
-
+                                        displayRun.status === 'COMPLETED' ||
+                                        (displayRun.status === 'FINISHED' &&
+                                            displayRun.result === 'SUCCESS') ||
+                                        displayRun.result === 'FINISHED',
+                                    error:
+                                        displayRun.status === 'ERROR' &&
+                                        displayRun.result === 'ERROR',
+                                    running:
+                                        displayRun.status === 'RUNNING' &&
+                                        displayRun.result === 'RUNNING'
                                 }"
                             >
                                 {{ displayRun.status
@@ -367,9 +377,28 @@ export default class SavedRunsComponent extends Vue {
         )
     }
 
-    public toggleLogs(run: any) {
-        run.showLogs = !run.showLogs
-        run.showOutputs = false
+    public async toggleLogs(run: any) {
+        if (run.status === 'ERROR' && this.showOpenEOJobs) {
+            if (run.messageList.length === 0) {
+                const logs = await OpenEOService.getJobLogs(
+                    run.id,
+                    this.$store.getters[UserGetters.openEOToken]
+                )
+                run.messageList = logs.logs.map((log) => {
+                    return (
+                        `[${log.time.toString()}]` +
+                        ' ' +
+                        log.message.toString()
+                    )
+                })
+                console.log(logs)
+            }
+            run.showLogs = !run.showLogs
+            run.showOutputs = false
+        } else {
+            run.showLogs = !run.showLogs
+            run.showOutputs = false
+        }
     }
 
     public toggleOutputs(run: any) {
@@ -402,8 +431,7 @@ export default class SavedRunsComponent extends Vue {
             if (jobs) {
                 this.displayRuns = jobs
                 this.openEOJobs = jobs
-                this.showOpenEOJobs = true;
-
+                this.showOpenEOJobs = true
             }
         } else {
             if (this.showOpenEOJobs) {
@@ -430,7 +458,7 @@ export default class SavedRunsComponent extends Vue {
             token = await OpenEOService.authenticateOpenEO()
         }
         const jobs = await OpenEOService.getOpenEOJobs(token)
-        jobs.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+        jobs.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
         //spinner
         SpinnerService.hideSpinner()
         clearTimeout(longRequestInfo)
@@ -547,7 +575,7 @@ export default class SavedRunsComponent extends Vue {
                     background: none;
                     border-left: 1px solid #efefef;
                 }
-                
+
                 &.solo_link {
                     font-weight: bold;
                     color: $blue;
@@ -659,7 +687,7 @@ export default class SavedRunsComponent extends Vue {
                 &.running {
                     background: lightskyblue;
                 }
-                
+
                 &.error {
                     background: red;
                 }

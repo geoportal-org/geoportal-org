@@ -5,6 +5,7 @@
             <MapControls />
             <SearchContainer />
             <MapAttribution />
+            <MapTimeseries />
         </div>
     </client-only>
 </template>

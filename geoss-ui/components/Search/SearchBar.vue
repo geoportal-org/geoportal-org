@@ -117,6 +117,7 @@ import { Timers } from '@/data/timers'
 import { InSituFiltersActions } from '~/store/inSituFilters/inSitu-filters.actions'
 import { InSituFiltersGetters } from '~/store/inSituFilters/inSitu-filters.getters'
 import { OidcProvider } from '@openeo/js-client'
+import { MapActions } from '~/store/map/map-actions'
 
 @Component
 export default class SearchBarComponent extends Vue {
@@ -184,6 +185,9 @@ export default class SearchBarComponent extends Vue {
         await this.$store.dispatch(GranulaFiltersActions.reset)
         await this.$store.dispatch(IrisFiltersActions.reset)
         await this.$store.dispatch(InSituFiltersActions.reset)
+        await this.$store.dispatch(MapActions.setCurrentTime, '')
+        await this.$store.dispatch(MapActions.setDimensions, [])
+        await this.$store.dispatch(MapActions.setShowTimeline, false)
 
         await this.$store.dispatch(SearchActions.reset)
         await this.$nextTick()
@@ -218,13 +222,17 @@ export default class SearchBarComponent extends Vue {
         this.replaceQuotes()
     }
 
-    public search(event?: KeyboardEvent) {
+    public async search(event?: KeyboardEvent) {
         if ((this.generalFiltersNotEmpty || this.phrase) && this.dataSource) {
             this.cancelSuggestions = true
             this.replaceQuotes()
             if (event) {
                 ;(event.currentTarget as HTMLInputElement).blur()
             }
+
+            await this.$store.dispatch(MapActions.setCurrentTime, '')
+            await this.$store.dispatch(MapActions.setDimensions, [])
+            await this.$store.dispatch(MapActions.setShowTimeline, false)
 
             this.resetSuggestions()
 

@@ -24,5 +24,8 @@ export enum MapGetters {
     progressBarLoading = 'map/progressBarLoading',
     progressBarLoaded = 'map/progressBarLoaded',
     progressBarPercentage = 'map/progressBarPercentage',
-    progressBarEnable = 'map/progressBarEnable'
+    progressBarEnable = 'map/progressBarEnable',
+    dimensions = 'map/dimensions',
+    currentTime = 'map/currentTime',
+    showTimeline = 'map/showTimeline'
 }

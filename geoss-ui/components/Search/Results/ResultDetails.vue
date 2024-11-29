@@ -637,6 +637,7 @@ import OpenEOService from '@/services/openeo.service'
 import CollapseTransition from '@/plugins/CollapseTransition'
 import RatingService from '~/services/ratings.service'
 import BookmarksService from '~/services/bookmarks.service'
+import { parseXMLToJSON } from '@/services/general.api.service'
 
 @Component({
     components: {
@@ -664,6 +665,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public customDownloadOptions = null
     public showShare = false
     public expandedDownloadIndex = null
+    public isTimeSeries = false
 
     public score = 0
 
@@ -859,6 +861,37 @@ export default class SearchResultDabDetailsComponent extends Vue {
         return this.$store.getters[SearchGetters.workflow]
     }
 
+    get dimensions() {
+        return this.$store.getters[MapGetters.dimensions]
+    }
+    
+    get currentTime() {
+        return this.$store.getters[MapGetters.currentTime]
+    }
+    
+    get showTimeline() {
+        return this.$store.getters[MapGetters.showTimeline]
+    }
+
+    public setDimensions(value: string[]) {
+        this.$store.dispatch(MapActions.setDimensions, value);
+    }
+    
+    public setCurrentTime(value: string) {
+        this.$store.dispatch(MapActions.setCurrentTime, value);
+    }
+    
+    public setShowTimeline(value: boolean) {
+        this.$store.dispatch(MapActions.setShowTimeline, value);
+    }
+
+
+
+    public async checkTimeSeries() {
+        const attributes: any = UtilsService.getArrayByString(this.result, 'category._attributes')
+        this.isTimeSeries = attributes.some(e => e.label === 'timeseries' || e.label === 'ImageMosaic');
+    }
+
     public async handleOpenEOAuth() {
         await OpenEOService.authenticateOpenEO()
     }
@@ -894,7 +927,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
             TutorialTagsService.refreshTagsGroup('result', true, 450)
         }
     }
-    public initResultLayersAndDownloads() {
+    public async initResultLayersAndDownloads() {
         this.layers = []
         this.downloads = []
         this.timeSeriesArray = []
@@ -1249,6 +1282,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                     ) {
                         const urlName = linkText
                         const allName = wmsAllLayerName
+
                         const wmsName = UtilsService.getPropByString(
                             item,
                             'gmd:CI_OnlineResource.gmd:name.gco:CharacterString'
@@ -1324,6 +1358,24 @@ export default class SearchResultDabDetailsComponent extends Vue {
                                     const LAYERS = wmsName
                                     url = `${linkText}&&&LAYERS=${LAYERS}&VERSION=${wmsVersion}&ANCHOR=${wmsAnchor}`
                                     legendUrl = `${linkText}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`
+                                }
+                                if(this.isTimeSeries){
+                                    let wmsUrl = ''
+                                    UtilsService.getArrayByString(this.result, 'gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions').forEach((element: any) => {
+                                        const val = UtilsService.getPropByString(element, 'gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString')
+                                        if(val.includes('WebMapService')){
+                                            wmsUrl = UtilsService.getPropByString(element, 'gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL')
+                                        }
+                                    })
+                                    const res = await fetch(`${wmsUrl}service=wms&version=1.3.0&request=GetCapabilities`)
+                                    const resTxt = await res.text()
+                                    const resJson = JSON.parse(parseXMLToJSON(resTxt))
+                                    const dimensions = resJson.WMS_Capabilities.Capability.Layer.Layer.find((element: any) => {
+                                        return element.Name === wmsName
+                                    }).Dimension.split(',')
+                                    this.setDimensions(dimensions.map(date => date.slice(0, 10)))
+                                    this.setCurrentTime(dimensions[0].slice(0, 10))
+
                                 }
                                 layers.push({
                                     name: wmsName,
@@ -2633,7 +2685,13 @@ export default class SearchResultDabDetailsComponent extends Vue {
             this.result.box && typeof this.result.box === 'string'
                 ? this.result.box
                 : null
-        LayersUtils.toggleLayer(this.layers[0], coordinates, this.image)
+        if(this.isTimeSeries){
+            const currVal = this.showTimeline
+            this.setShowTimeline(!currVal)
+            LayersUtils.toggleLayer(this.layers[0], coordinates, this.image, this.dimensions[0])
+        }else {
+            LayersUtils.toggleLayer(this.layers[0], coordinates, this.image)
+        }
     }
 
     private toggleLayersPopup() {
@@ -2769,8 +2827,8 @@ export default class SearchResultDabDetailsComponent extends Vue {
                 console.log(error)
             }
         }
-
-        this.initResultLayersAndDownloads()
+        await this.checkTimeSeries()
+        await this.initResultLayersAndDownloads()
         const resultToHighlight =
             this.$store.getters[SearchGetters.highlightResult]
 
@@ -2824,6 +2882,14 @@ export default class SearchResultDabDetailsComponent extends Vue {
             }
         )
         this.prepareShareUrl()
+    }
+
+    @Watch('currentTime')
+    private updateLayerForTimeseries(){
+        this.$store.dispatch(MapActions.changeLayerTime, {
+            id: this.layers[0].url,
+            value: this.currentTime
+        })    
     }
 
     @Watch('dataSource')
