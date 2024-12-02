@@ -1,4 +1,8 @@
 export default {
+    timeseries: {
+        from: '从',
+        to: '到'
+    },
     statistics: {
         statistics: '统计',
         chartOptions: '图表选项:',

@@ -1,11 +1,12 @@
 <template>
     <div class="map-timeseries" v-if="showTimeline">
-        <p class="timeseries-label">Timeseries</p>
+        <p class="timeseries-label">{{ $tc('timeseries.from') }}</p>
         <vue-slider
             v-model="currentTime"
             :data="dimensions"
             :tooltip="'active'"
         ></vue-slider>
+        <p class="timeseries-label">{{ $tc('timeseries.to') }}</p>
     </div>
 </template>
 
@@ -45,7 +46,8 @@ export default class MapTimeseriesComponent extends Vue {
 .timeseries-label {
     color:black;
     align-self: center;
-    margin-right: 30px;
+    margin-right: 15px;
+    margin-left: 15px;
     font-size: 20px;
 
 }
@@ -55,8 +57,9 @@ export default class MapTimeseriesComponent extends Vue {
     width: 600px !important;
 }
 
-.vue-slider-dot-tooltip-inner {
-    min-width: 82px;
+.vue-slider-dot-tooltip {
+    min-width: 82px !important;
+    position:relative !important;
 }
 
 .map-timeseries {

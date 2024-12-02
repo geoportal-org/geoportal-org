@@ -1,4 +1,8 @@
 export default {
+    timeseries: {
+        from: 'Od',
+        to: 'Do'
+    },
     statistics: {
         statistics: 'Statystyki',
         chartOptions: 'OPCJE WYKRESU:',

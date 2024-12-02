@@ -287,6 +287,7 @@ export default class DateSliderComponent extends Vue {
     background: $blue;
     padding: 5px 10px;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .vue-slider-process,

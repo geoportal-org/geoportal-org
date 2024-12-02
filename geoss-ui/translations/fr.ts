@@ -1,4 +1,8 @@
 export default {
+    timeseries: {
+        from: 'De',
+        to: 'À'
+    },
     statistics: {
         statistics: 'Statistiques',
         chartOptions: 'OPTIONS DE GRAPHIQUE:',

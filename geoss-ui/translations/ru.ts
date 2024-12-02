@@ -1,4 +1,8 @@
 export default {
+    timeseries: {
+        from: 'С',
+        to: 'До'
+    },
     statistics: {
         statistics: 'Статистика',
         chartOptions: 'ВАРИАНТЫ ГРАФИКА:',
