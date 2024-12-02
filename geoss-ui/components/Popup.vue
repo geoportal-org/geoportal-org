@@ -2,10 +2,10 @@
     <div
         class="popup"
         :class="{
-            visible: visible,
+            'visible': visible,
             'on-top':
                 currentQueueItem &&
-                currentQueueItem.contentId === 'dab-request-too-long',
+                currentQueueItem.contentId === 'dab-request-too-long'
         }"
     >
         <div
@@ -13,7 +13,7 @@
             v-click-outside="{
                 fn: closePopupOnClickOutside,
                 excludeSelectors:
-                    '.custom-select__container, .spinner, .tutorial-tag, .tutorial-mode, .tutorial-off',
+                    '.custom-select__container, .spinner, .tutorial-tag, .tutorial-mode, .tutorial-off'
             }"
             :class="`${
                 currentQueueItem ? currentQueueItem.contentId + '-popup' : ''
@@ -48,6 +48,7 @@ import { PopupActions } from '@/store/popup/popup-actions'
 import { Timers } from '@/data/timers'
 import PopupCloseService from '@/services/popup-close.service'
 import TutorialTagsService from '@/services/tutorial-tags.service'
+import { GeneralFiltersGetters } from '~/store/generalFilters/general-filters-getters';
 
 @Component
 export default class PopupComponent extends Vue {
@@ -56,10 +57,12 @@ export default class PopupComponent extends Vue {
         contentId: string
         title: string
         errorInfo?: any
+        props?: any
+        noCloseOutside?: boolean
     } | null = null
 
     public closePopupOnClickOutside() {
-        if (this.currentQueueItem && !this.currentQueueItem.errorInfo) {
+        if (this.currentQueueItem && !this.currentQueueItem.errorInfo && !this.currentQueueItem.noCloseOutside) {
             this.closePopup()
         }
     }
@@ -72,7 +75,7 @@ export default class PopupComponent extends Vue {
                 if (response) {
                     this.$store.dispatch(PopupActions.closePopupWithResponse, {
                         contentId: this.currentQueueItem.contentId,
-                        response,
+                        response
                     })
                 } else {
                     this.$store.dispatch(
@@ -88,12 +91,23 @@ export default class PopupComponent extends Vue {
         return this.$store.getters[PopupGetters.queue]
     }
 
+    private get openEoVisible() {
+        return this.$store.getters[GeneralFiltersGetters.openEoPopupVisible]
+    }
+
+
     private escEventListener(event: KeyboardEvent) {
         const key = event.which || event.keyCode
         if (key === 27) {
             this.closePopup()
         }
     }
+
+    @Watch('openEoVisible')
+    private onOpenEoVisibleChange(val: boolean) {
+        this.visible = val
+    }
+
 
     @Watch('queue')
     onQueueChanged() {
@@ -106,7 +120,7 @@ export default class PopupComponent extends Vue {
             const instance = new item.component({
                 propsData: item.props,
                 store: this.$store,
-                i18n: this.$i18n,
+                i18n: this.$i18n
             })
 
             instance.$mount()
@@ -137,7 +151,7 @@ export default class PopupComponent extends Vue {
             'close',
             ({
                 contentId,
-                response,
+                response
             }: {
                 contentId: string
                 response?: any
