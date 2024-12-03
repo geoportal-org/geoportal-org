@@ -352,7 +352,7 @@ const LayersUtils = {
                     VERSION,
                     TILED,
                     SRS: 'EPSG:4326',
-                    TIME: time
+                    time: time
                 } : {
                     LAYERS,
                     VERSION,
