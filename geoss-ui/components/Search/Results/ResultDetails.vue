@@ -864,11 +864,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
     get dimensions() {
         return this.$store.getters[MapGetters.dimensions]
     }
-    
+
     get currentTime() {
         return this.$store.getters[MapGetters.currentTime]
     }
-    
+
     get showTimeline() {
         return this.$store.getters[MapGetters.showTimeline]
     }
@@ -876,11 +876,11 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public setDimensions(value: string[]) {
         this.$store.dispatch(MapActions.setDimensions, value);
     }
-    
+
     public setCurrentTime(value: string) {
         this.$store.dispatch(MapActions.setCurrentTime, value);
     }
-    
+
     public setShowTimeline(value: boolean) {
         this.$store.dispatch(MapActions.setShowTimeline, value);
     }
@@ -1357,7 +1357,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                                             : wmsName
                                     const LAYERS = wmsName
                                     url = `${linkText}&&&LAYERS=${LAYERS}&VERSION=${wmsVersion}&ANCHOR=${wmsAnchor}`
-                                    legendUrl = `${linkText}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`
+                                    legendUrl = `${linkText}&SERVICE=WMS&VERSION=${wmsVersion}&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=${wmsName}`
                                 }
                                 if(this.isTimeSeries){
                                     let wmsUrl = ''
@@ -1367,7 +1367,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
                                             wmsUrl = UtilsService.getPropByString(element, 'gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL')
                                         }
                                     })
-                                    const res = await fetch(`${wmsUrl}service=wms&version=1.3.0&request=GetCapabilities`)
+                                    const res = await fetch(`${wmsUrl}service=wms&version=${wmsVersion}&request=GetCapabilities`)
                                     const resTxt = await res.text()
                                     const resJson = JSON.parse(parseXMLToJSON(resTxt))
                                     const dimensions = resJson.WMS_Capabilities.Capability.Layer.Layer.find((element: any) => {
@@ -2889,10 +2889,12 @@ export default class SearchResultDabDetailsComponent extends Vue {
 
     @Watch('currentTime')
     private updateLayerForTimeseries(){
-        this.$store.dispatch(MapActions.changeLayerTime, {
-            id: this.layers[0].url,
-            value: this.currentTime
-        })    
+        if (this.layers[0]) {
+            this.$store.dispatch(MapActions.changeLayerTime, {
+                id: this.layers[0].url,
+                value: this.currentTime
+            })
+        }
     }
 
     @Watch('dataSource')

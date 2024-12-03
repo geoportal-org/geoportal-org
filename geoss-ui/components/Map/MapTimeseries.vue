@@ -1,12 +1,12 @@
 <template>
     <div class="map-timeseries" v-if="showTimeline">
-        <p class="timeseries-label">{{ $tc('timeseries.from') }}</p>
+        <p class="timeseries-label">{{ dimensions[0] }}</p>
         <vue-slider
             v-model="currentTime"
             :data="dimensions"
             :tooltip="'active'"
         ></vue-slider>
-        <p class="timeseries-label">{{ $tc('timeseries.to') }}</p>
+        <p class="timeseries-label">{{ dimensions[dimensions.length -1 ] }}</p>
     </div>
 </template>
 
@@ -22,8 +22,6 @@ import { MapGetters } from '~/store/map/map-getters'
     }
 })
 export default class MapTimeseriesComponent extends Vue {
-    public data = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-
     get dimensions() {
         return this.$store.getters[MapGetters.dimensions]
     }
@@ -44,17 +42,15 @@ export default class MapTimeseriesComponent extends Vue {
 
 <style lang="scss" scoped>
 .timeseries-label {
-    color:black;
+    color:white;
     align-self: center;
     margin-right: 15px;
     margin-left: 15px;
-    font-size: 20px;
-
 }
 
 .vue-slider {
     margin-left: 0px !important;
-    width: 600px !important;
+    width: 500px !important;
 }
 
 .vue-slider-dot-tooltip {
@@ -64,15 +60,16 @@ export default class MapTimeseriesComponent extends Vue {
 
 .map-timeseries {
     position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: 50px;
-    right: 10px;
-    min-width: 700px;
+    white-space: nowrap;
     z-index: 10;
-    background-color: rgba(140, 140, 140, 0.2);
+    background-color: $blue-transparent;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 10px;
+    padding: 10px 5px;
     font-size: 13px;
     text-decoration: none;
     flex-direction: row;
