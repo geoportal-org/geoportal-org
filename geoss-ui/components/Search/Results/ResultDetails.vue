@@ -672,7 +672,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public FileFormatsIcons = FileFormatsIcons
     public DataSources = DataSources
     public logo = typeof this.result.logo === 'string' ? this.result.logo : ''
-    public isEoWorkflow = this.result.id.toLowerCase().includes('maps4gpp')
+    public isEoWorkflow = this.result.id.toLowerCase().includes('worldcereal cropland')
 
     get dashboardContent() {
         return UtilsService.getPropByString(this.result, 'dashboard.content')
@@ -1669,38 +1669,41 @@ export default class SearchResultDabDetailsComponent extends Vue {
         }
 
         this.layers = layers
-        for (const download of downloads) {
-            const downloadFileSameFormatIndex = this.downloads.findIndex(
-                (file) => file.type === download.type
-            )
+        if(!this.isEoWorkflow){
+            for (const download of downloads) {
+                const downloadFileSameFormatIndex = this.downloads.findIndex(
+                    (file) => file.type === download.type
+                )
 
-            const { scoreText, scoreClass } = this.getDownloadLinkStatus(
-                download.score
-            )
+                const { scoreText, scoreClass } = this.getDownloadLinkStatus(
+                    download.score
+                )
 
-            download.scoreText = scoreText
-            download.scoreClass = scoreClass
+                download.scoreText = scoreText
+                download.scoreClass = scoreClass
 
-            if (
-                downloadFileSameFormatIndex !== -1 &&
-                !this.downloads[downloadFileSameFormatIndex].links
-            ) {
-                const file = this.downloads.splice(
-                    downloadFileSameFormatIndex,
-                    1
-                )[0]
-                this.downloads.push({
-                    type: download.type,
-                    links: [download, file]
-                })
-            } else if (downloadFileSameFormatIndex !== -1) {
-                const downloadFileSameFormat =
-                    this.downloads[downloadFileSameFormatIndex]
-                downloadFileSameFormat.links.push(download)
-            } else {
-                this.downloads.push(download)
+                if (
+                    downloadFileSameFormatIndex !== -1 &&
+                    !this.downloads[downloadFileSameFormatIndex].links
+                ) {
+                    const file = this.downloads.splice(
+                        downloadFileSameFormatIndex,
+                        1
+                    )[0]
+                    this.downloads.push({
+                        type: download.type,
+                        links: [download, file]
+                    })
+                } else if (downloadFileSameFormatIndex !== -1) {
+                    const downloadFileSameFormat =
+                        this.downloads[downloadFileSameFormatIndex]
+                    downloadFileSameFormat.links.push(download)
+                } else {
+                    this.downloads.push(download)
+                }
             }
         }
+
     }
 
     public showOnMap() {

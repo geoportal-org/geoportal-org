@@ -97,7 +97,7 @@ const OpenEOService = {
                             outputs.push({
                                 aoi: null,
                                 createFolder: true,
-                                description: value.title,
+                                description: null,
                                 id: value.title,
                                 name: value.title,
                                 outputType: 'individual',
