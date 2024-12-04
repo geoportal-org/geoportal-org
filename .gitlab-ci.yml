@@ -635,6 +635,24 @@ dev_deploy:
     - echo "$AZURE_DEV_REDIRECT_CERT_KEY" > charts/redirect.key
     - cd charts
     - ./install.sh
+    - kubectl rollout restart deployment geoss-dev-admin
+    - kubectl rollout restart deployment geoss-dev-contents
+    - kubectl rollout restart deployment geoss-dev-curated
+    - kubectl rollout restart deployment geoss-dev-db
+    - kubectl rollout restart deployment geoss-dev-keycloak
+    - kubectl rollout restart deployment geoss-dev-kibana
+    - kubectl rollout restart deployment geoss-dev-landingpage
+    - kubectl rollout restart deployment geoss-dev-matomo
+    - kubectl rollout restart deployment geoss-dev-nginx
+    - kubectl rollout restart deployment geoss-dev-personaldata
+    - kubectl rollout restart deployment geoss-dev-proxy
+    - kubectl rollout restart deployment geoss-dev-search
+    - kubectl rollout restart deployment geoss-dev-settings
+    - kubectl rollout restart deployment geoss-dev-ui
+    - kubectl rollout restart deployment geoss-dev-worker-geodab-worker
+    - kubectl rollout restart deployment geoss-dev-worker-sdg-worker
+    - kubectl rollout restart deployment geoss-dev-worker-thesaurus-worker
+    - kubectl rollout restart deployment geoss-dev-worker-wikipedia-worker
   when: manual
   only:
     - develop
