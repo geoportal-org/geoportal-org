@@ -672,7 +672,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     public FileFormatsIcons = FileFormatsIcons
     public DataSources = DataSources
     public logo = typeof this.result.logo === 'string' ? this.result.logo : ''
-    public isEoWorkflow = this.result.id.toLowerCase().includes('worldcereal cropland')
+    public isEoWorkflow = this.result.id.toLowerCase().includes('cropland')
 
     get dashboardContent() {
         return UtilsService.getPropByString(this.result, 'dashboard.content')
@@ -2822,6 +2822,7 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     private async mounted() {
+        console.log(this.result)
         if (this.$route.query.code) {
             try {
                 // Check whether the page contains the authentication information and make them available to the openEO client
