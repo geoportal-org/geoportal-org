@@ -10,6 +10,8 @@ server {
   listen *:8080;
   server_name ${UI_DOMAIN_NAME};
 
+  resolver kube-dns.kube-system.svc.cluster.local:53 valid=30s;
+
   #ssl_certificate /etc/nginx/certs/server.crt;
   #ssl_certificate_key /etc/nginx/certs/server.key;
   #ssl_session_cache builtin:1000 shared:SSL:10m;
@@ -32,6 +34,7 @@ server {
   #include conf.d/cms_conf/location_static.conf;
 
   location / {
+    set $ui_upstream http://geoss-${DEPLOY_ENV}-ui.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -39,7 +42,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-ui:3000/;
+    proxy_pass $ui_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -49,7 +52,7 @@ server {
   }
 
   location /rest/data-providers {
-    resolver 8.8.8.8;
+    #resolver 8.8.8.8;
     proxy_ssl_verify off;
     proxy_ssl_server_name on;
     proxy_set_header host yellowpages.unepgrid.ch;
@@ -60,6 +63,7 @@ server {
 }
 
   location /curated {
+    set $curated_upstream http://geoss-${DEPLOY_ENV}-curated.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -67,7 +71,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /curated;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-curated:8080/;
+    rewrite ^/curated/?(.*)$ /$1 break;
+    proxy_pass $curated_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -77,6 +82,7 @@ server {
   }
 
   location /settings {
+    set $settings_upstream http://geoss-${DEPLOY_ENV}-settings.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -84,7 +90,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /settings;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080/;
+    rewrite ^/settings/?(.*)$ /$1 break;
+    proxy_pass $settings_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -94,6 +101,7 @@ server {
   }
 
   location /personaldata {
+    set $personaldata_upstream http://geoss-${DEPLOY_ENV}-personaldata.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -101,7 +109,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /personaldata;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080/;
+    rewrite ^/personaldata/?(.*)$ /$1 break;
+    proxy_pass $personaldata_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -111,6 +120,7 @@ server {
   }
 
   location /contents {
+    set $contents_upstream http://geoss-${DEPLOY_ENV}-contents.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -118,7 +128,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /contents;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080/;
+    rewrite ^/contents/?(.*)$ /$1 break;
+    proxy_pass $contents_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -128,6 +139,7 @@ server {
   }
 
   location /proxy {
+    set $proxy_upstream http://geoss-${DEPLOY_ENV}-proxy.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -135,7 +147,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /proxy;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8080/;
+    rewrite ^/proxy/?(.*)$ /$1 break;
+    proxy_pass $proxy_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -145,6 +158,7 @@ server {
   }
 
   location /search {
+    set $search_upstream http://geoss-${DEPLOY_ENV}-search.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -152,7 +166,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /search;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080/;
+    rewrite ^/search/?(.*)$ /$1 break;
+    proxy_pass $search_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -167,6 +182,7 @@ server {
   }
 
   location /matomo/ {
+    set $matomo_upstream http://geoss-${DEPLOY_ENV}-matomo.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #check if parameter "module=API" exist for matomo
@@ -179,7 +195,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Uri /matomo;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080/;
+    rewrite ^/matomo/?(.*)$ /$1 break;
+    proxy_pass $matomo_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -190,6 +207,7 @@ server {
 
   #Configuration for matomo tracking
   location ~ /matomo/(matomo\.js|matomo\.php|js/container_.*\.js) {
+    set $matomo_upstream http://geoss-${DEPLOY_ENV}-matomo.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -198,7 +216,7 @@ server {
     proxy_set_header X-Forwarded-Uri /matomo;
 
     rewrite ^/matomo/(.*)$ /$1 break;
-    proxy_pass    http://geoss-${DEPLOY_ENV}-matomo:8080;
+    proxy_pass $matomo_upstream;
     proxy_no_cache 1;
 
     #response headers

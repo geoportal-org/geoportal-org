@@ -10,6 +10,8 @@ server {
   listen *:8080;
   server_name ${ADMIN_DOMAIN_NAME};
 
+  resolver kube-dns.kube-system.svc.cluster.local:53 valid=30s;
+
   #ssl_certificate /etc/nginx/certs/server.crt;
   #ssl_certificate_key /etc/nginx/certs/server.key;
   #ssl_session_cache builtin:1000 shared:SSL:10m;
@@ -35,6 +37,7 @@ server {
   include conf.d/cms_conf/location_static.conf;
 
   location / {
+    set $admin_upstream http://geoss-${DEPLOY_ENV}-admin.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -42,7 +45,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-admin:3000/;
+    proxy_pass $admin_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -52,6 +55,7 @@ server {
   }
 
   location /settings {
+    set $settings_upstream http://geoss-${DEPLOY_ENV}-settings.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -59,7 +63,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /settings;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-settings:8080/;
+    rewrite ^/settings/?(.*)$ /$1 break;
+    proxy_pass $settings_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -69,6 +74,7 @@ server {
   }
 
   location /personaldata {
+    set $personaldata_upstream http://geoss-${DEPLOY_ENV}-personaldata.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -76,7 +82,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /personaldata;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-personaldata:8080/;
+    rewrite ^/personaldata/?(.*)$ /$1 break;
+    proxy_pass $personaldata_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -86,6 +93,7 @@ server {
   }
 
   location /contents {
+    set $contents_upstream http://geoss-${DEPLOY_ENV}-contents.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -93,7 +101,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /contents;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-contents:8080/;
+    rewrite ^/contents/?(.*)$ /$1 break;
+    proxy_pass $contents_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -103,6 +112,7 @@ server {
   }
 
   location /proxy {
+    set $proxy_upstream http://geoss-${DEPLOY_ENV}-proxy.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -110,7 +120,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /proxy;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-proxy:8080/;
+    rewrite ^/proxy/?(.*)$ /$1 break;
+    proxy_pass $proxy_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -120,6 +131,7 @@ server {
   }
 
   location /curated {
+    set $curated_upstream http://geoss-${DEPLOY_ENV}-curated.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -127,7 +139,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /curated;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-curated:8080/;
+    rewrite ^/curated/?(.*)$ /$1 break;
+    proxy_pass $curated_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -137,6 +150,7 @@ server {
   }
 
   location /search {
+    set $search_upstream http://geoss-${DEPLOY_ENV}-search.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -144,7 +158,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /search;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-search:8080/;
+    rewrite ^/search/?(.*)$ /$1 break;
+    proxy_pass $search_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -154,6 +169,7 @@ server {
   }
 
 #MAILDEV#  location /maildev {
+#MAILDEV#    set $maildev_upstream http://geoss-${DEPLOY_ENV}-maildev.${K8S_NAMESPACE}.svc.cluster.local:3000;
 #MAILDEV#    include conf.d/common/maintenance_conditions.conf;
 #MAILDEV#
 #MAILDEV#    #request headers
@@ -161,7 +177,8 @@ server {
 #MAILDEV#    include conf.d/utils/proxy_request_headers_x.conf;
 #MAILDEV#    proxy_set_header X-Forwarded-Prefix /maildev;
 #MAILDEV#
-#MAILDEV#    proxy_pass    http://geoss-${DEPLOY_ENV}-maildev:1080/maildev;
+#MAILDEV#    rewrite ^/maildev/?(.*)$ /$1 break;
+#MAILDEV#    proxy_pass $maildev_upstream;
 #MAILDEV#    proxy_no_cache 1;
 #MAILDEV#
 #MAILDEV#    #response headers
@@ -171,6 +188,7 @@ server {
 #MAILDEV#  }
 
   location /workers/geodab {
+    set $worker-geodab-worker_upstream http://geoss-${DEPLOY_ENV}-worker-geodab-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -178,7 +196,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/geodab;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-geodab-worker:8080/;
+    rewrite ^/workers/geodab/?(.*)$ /$1 break;
+    proxy_pass $worker-geodab-worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -188,6 +207,7 @@ server {
   }
 
   location /workers/sdg {
+    set $worker-sdg-worker_upstream http://geoss-${DEPLOY_ENV}-worker-sdg-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -195,7 +215,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/sdg;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-sdg-worker:8080/;
+    rewrite ^/workers/sdg/?(.*)$ /$1 break;
+    proxy_pass $worker-sdg-worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -205,6 +226,7 @@ server {
   }
 
   location /workers/wikipedia {
+    set $worker-wikipedia-worker_upstream http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -212,7 +234,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/wikipedia;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker:8080/;
+    rewrite ^/workers/wikipedia/?(.*)$ /$1 break;
+    proxy_pass $worker-wikipedia-worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -222,6 +245,7 @@ server {
   }
 
   location /workers/thesaurus {
+    set $worker-thesaurus-worker_upstream http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -229,7 +253,8 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /workers/thesaurus;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker:8080/;
+    rewrite ^/workers/thesaurus/?(.*)$ /$1 break;
+    proxy_pass $worker-thesaurus-worker_upstream;
     proxy_no_cache 1;
 
     #response headers

@@ -1,4 +1,4 @@
-FROM nginx:1.27.2 as runner
+FROM nginx:1.27.3 as runner
 
 LABEL vendor="Eversis"
 LABEL maintainer="Eversis"

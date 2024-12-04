@@ -8,6 +8,8 @@ server {
   listen *:8080;
   server_name ${LANDING_PAGE_DOMAIN_NAME};
 
+  resolver kube-dns.kube-system.svc.cluster.local:53 valid=30s;
+
   #ssl_certificate /etc/nginx/certs/server.crt;
   #ssl_certificate_key /etc/nginx/certs/server.key;
   #ssl_session_cache builtin:1000 shared:SSL:10m;
@@ -27,6 +29,7 @@ server {
   include conf.d/common/location_maintenance.conf;
 
   location / {
+    set $landingpage_upstream http://geoss-${DEPLOY_ENV}-landingpage.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -34,7 +37,7 @@ server {
     include conf.d/utils/proxy_request_headers_x.conf;
     proxy_set_header X-Forwarded-Prefix /;
 
-    proxy_pass    http://geoss-${DEPLOY_ENV}-landingpage:3000/;
+    proxy_pass $landingpage_upstream;
     proxy_no_cache 1;
 
     #response headers
