@@ -635,24 +635,24 @@ dev_deploy:
     - echo "$AZURE_DEV_REDIRECT_CERT_KEY" > charts/redirect.key
     - cd charts
     - ./install.sh
-    - kubectl rollout restart deployment geoss-dev-admin
-    - kubectl rollout restart deployment geoss-dev-contents
-    - kubectl rollout restart deployment geoss-dev-curated
-    - kubectl rollout restart deployment geoss-dev-db
-    - kubectl rollout restart deployment geoss-dev-keycloak
-    - kubectl rollout restart deployment geoss-dev-kibana
-    - kubectl rollout restart deployment geoss-dev-landingpage
-    - kubectl rollout restart deployment geoss-dev-matomo
-    - kubectl rollout restart deployment geoss-dev-nginx
-    - kubectl rollout restart deployment geoss-dev-personaldata
-    - kubectl rollout restart deployment geoss-dev-proxy
-    - kubectl rollout restart deployment geoss-dev-search
-    - kubectl rollout restart deployment geoss-dev-settings
-    - kubectl rollout restart deployment geoss-dev-ui
-    - kubectl rollout restart deployment geoss-dev-worker-geodab-worker
-    - kubectl rollout restart deployment geoss-dev-worker-sdg-worker
-    - kubectl rollout restart deployment geoss-dev-worker-thesaurus-worker
-    - kubectl rollout restart deployment geoss-dev-worker-wikipedia-worker
+    - kubectl rollout restart deployment geoss-dev-admin -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-contents -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-curated -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-db -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-keycloak -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-kibana -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-landingpage -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-matomo -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-nginx -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-personaldata -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-proxy -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-search -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-settings -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-ui -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-worker-geodab-worker -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-worker-sdg-worker -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-worker-thesaurus-worker -n $K8S_NAMESPACE
+    - kubectl rollout restart deployment geoss-dev-worker-wikipedia-worker -n $K8S_NAMESPACE
   when: manual
   only:
     - develop
