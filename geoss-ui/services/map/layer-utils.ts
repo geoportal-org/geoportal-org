@@ -345,19 +345,19 @@ const LayersUtils = {
         const wms = new AppVueObj.ol.layer.Tile({
             source: new AppVueObj.ol.source.TileWMS({
                 crossOrigin: 'Anonymous',
-                projection: 'EPSG:4326',
+                projection: 'EPSG:3857',
                 url: urlLayer,
                 params: time ? {
                     LAYERS,
                     VERSION,
                     TILED,
-                    SRS: 'EPSG:4326',
+                    SRS: 'EPSG:3857',
                     time: time
                 } : {
                     LAYERS,
                     VERSION,
                     TILED,
-                    SRS: 'EPSG:4326'
+                    SRS: 'EPSG:3857'
                 }
             })
         })
