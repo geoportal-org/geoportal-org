@@ -13,9 +13,11 @@ type Props = {
 
 const WorkerRow = ({ worker, fetchWorker, runWorker }: Props) => {
     const { translate } = useFormatMsg();
+    //@ts-ignore
+    const workerName = worker?.type ? worker.type : worker?.jobInstance?.jobName
 
     const getWorkerType = () => {
-        return (worker?.type as WorkerType) || WorkerType.ESA;
+        return (workerName as WorkerType);
     };
     const checkIfWorkerIsRunning = () => {
         return worker?.status === STATUS.STARTING ||
@@ -53,7 +55,7 @@ const WorkerRow = ({ worker, fetchWorker, runWorker }: Props) => {
         >
             <Flex direction={"column"} width={{ base: "100%", md: "15%" }}>
                 <Text fontSize="lg" color="blue.700" textTransform="uppercase">
-                    {worker?.type}
+                    {workerName}
                 </Text>
                 <Text fontSize="sm" color={getStatusColor()}>
                     <Text as={"span"} color="blue.700">

@@ -16,4 +16,6 @@ export enum WorkerType {
     ESA = "esa",
     EOSTERM = "eosterm",
     EARTH = "earth",
+    GEODAB = "geodab",
+    SDG = "sdg"
 }

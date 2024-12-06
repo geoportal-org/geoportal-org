@@ -24,6 +24,9 @@ export const Workers = () => {
     const [esaWorker, setEsaWorker] = useState<WorkerData>();
     const [eostermWorker, setEostermWorker] = useState<WorkerData>();
     const [earthWorker, setEarthWorker] = useState<WorkerData>();
+    const [geoDabWorker, setGeoDabWorker] = useState<WorkerData>();
+    const [sdgWorker, setSdgWorker] = useState<WorkerData>();
+
     const { translate } = useFormatMsg();
     const { showToast } = useCustomToast();
 
@@ -44,9 +47,11 @@ export const Workers = () => {
             await fetchEsaWorker();
             await fetchEostermWorker();
             await fetchEarthWorker();
+            await fetchGeoDabWorker();
+            await fetchSdgWorker();
         } catch (e: any) {
-            console.error(e)
-            const msg = generateGenericErrorMessage(e)
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -61,8 +66,8 @@ export const Workers = () => {
             const resEsa = await WorkersService.getWorker(WorkerType.ESA);
             setEsaWorker(resEsa);
         } catch (e: any) {
-            console.error(e)
-            const msg = generateGenericErrorMessage(e)
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -77,8 +82,8 @@ export const Workers = () => {
             const resEosterm = await WorkersService.getWorker(WorkerType.EOSTERM);
             setEostermWorker(resEosterm);
         } catch (e: any) {
-            console.error(e)
-            const msg = generateGenericErrorMessage(e)
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -93,8 +98,40 @@ export const Workers = () => {
             const resEarth = await WorkersService.getWorker(WorkerType.EARTH);
             setEarthWorker(resEarth);
         } catch (e: any) {
-            console.error(e)
-            const msg = generateGenericErrorMessage(e)
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
+
+    const fetchGeoDabWorker = async () => {
+        try {
+            const resGeoDab = await WorkersService.getGeoDabWorker();
+            setGeoDabWorker(resGeoDab);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
+
+            showToast({
+                title: translate("general.error"),
+                description: `${msg || ""}`,
+                status: ToastStatus.ERROR,
+            });
+        }
+    };
+
+    const fetchSdgWorker = async () => {
+        try {
+            const resSdg = await WorkersService.getSDGWorker();
+            setSdgWorker(resSdg);
+        } catch (e: any) {
+            console.error(e);
+            const msg = generateGenericErrorMessage(e);
 
             showToast({
                 title: translate("general.error"),
@@ -105,13 +142,21 @@ export const Workers = () => {
     };
 
     const runWorker = async (type: WorkerType) => {
-        const res = await WorkersService.runWorker(type);
-        if (type === WorkerType.ESA) {
-            setEsaWorker(res);
-        } else if (type === WorkerType.EOSTERM) {
-            setEostermWorker(res);
+        if (type === WorkerType.GEODAB) {
+            const res = await WorkersService.runGeoDabWorker();
+            setGeoDabWorker(res);
+        } else if (type === WorkerType.SDG) {
+            const res = await WorkersService.runSDGWorker();
+            setSdgWorker(res);
         } else {
-            setEarthWorker(res);
+            const res = await WorkersService.runWorker(type);
+            if (type === WorkerType.ESA) {
+                setEsaWorker(res);
+            } else if (type === WorkerType.EOSTERM) {
+                setEostermWorker(res);
+            } else {
+                setEarthWorker(res);
+            }
         }
     };
 
@@ -122,6 +167,8 @@ export const Workers = () => {
                 <WorkerRow worker={esaWorker} fetchWorker={fetchEsaWorker} runWorker={runWorker} />
                 <WorkerRow worker={eostermWorker} fetchWorker={fetchEostermWorker} runWorker={runWorker} />
                 <WorkerRow worker={earthWorker} fetchWorker={fetchEarthWorker} runWorker={runWorker} />
+                <WorkerRow worker={geoDabWorker} fetchWorker={fetchGeoDabWorker} runWorker={runWorker} />
+                <WorkerRow worker={sdgWorker} fetchWorker={fetchSdgWorker} runWorker={runWorker} />
             </Flex>
         </Flex>
     );
