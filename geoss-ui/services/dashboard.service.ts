@@ -64,7 +64,7 @@ const DashboardService = {
                 summary: summary,
                 logo: '',
                 coverage: '[-180,90],[180,-90]',
-                type: 'service_resource',
+                type: 'information_resource',
                 dashboardContents: {
                     content: JSON.stringify(dashboardData).replace(/\"/g, "'")
                 },
@@ -93,8 +93,15 @@ const DashboardService = {
             }
         }
         const url = `${window.$nuxt.$config.curatedUrl}userDashboards`
+        const userResourceUrl = `${window.$nuxt.$config.curatedUrl}userResources`
 
         try {
+            await apiClient.$post(userResourceUrl, body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': '*/*'
+                }
+            })
             await apiClient.$post(url, body, {
                 headers: {
                     'Content-Type': 'application/json',
