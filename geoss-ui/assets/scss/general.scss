@@ -596,7 +596,7 @@ code {
 }
 
 .red-btn-default {
-    background-color: $red;
+    background-color: $red !important;
 
     &:hover,
     &:active {
@@ -619,7 +619,7 @@ code {
 }
 
 .blue-btn-default {
-    background-color: $blue;
+    background-color: $blue !important;
 
     &:hover,
     &:active {
