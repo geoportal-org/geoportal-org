@@ -207,7 +207,7 @@ server {
   }
 
   location /workers/sdg {
-    set $worker-sdg-worker_upstream http://geoss-${DEPLOY_ENV}-worker-sdg-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_sdg_worker_upstream http://geoss-${DEPLOY_ENV}-worker-sdg-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -226,7 +226,7 @@ server {
   }
 
   location /workers/wikipedia {
-    set $worker-wikipedia-worker_upstream http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_wikipedia_worker_upstream http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -245,7 +245,7 @@ server {
   }
 
   location /workers/thesaurus {
-    set $worker-thesaurus-worker_upstream http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_thesaurus_worker_upstream http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
