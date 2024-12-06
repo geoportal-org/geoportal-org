@@ -188,7 +188,7 @@ server {
 #MAILDEV#  }
 
   location /workers/geodab {
-    set $worker-geodab-worker_upstream http://geoss-${DEPLOY_ENV}-worker-geodab-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_geodab_worker_upstream http://geoss-${DEPLOY_ENV}-worker-geodab-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -197,7 +197,7 @@ server {
     proxy_set_header X-Forwarded-Prefix /workers/geodab;
 
     rewrite ^/workers/geodab/?(.*)$ /$1 break;
-    proxy_pass $worker-geodab-worker_upstream;
+    proxy_pass $worker_geodab_worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -216,7 +216,7 @@ server {
     proxy_set_header X-Forwarded-Prefix /workers/sdg;
 
     rewrite ^/workers/sdg/?(.*)$ /$1 break;
-    proxy_pass $worker-sdg-worker_upstream;
+    proxy_pass $worker_sdg_worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -235,7 +235,7 @@ server {
     proxy_set_header X-Forwarded-Prefix /workers/wikipedia;
 
     rewrite ^/workers/wikipedia/?(.*)$ /$1 break;
-    proxy_pass $worker-wikipedia-worker_upstream;
+    proxy_pass $worker_wikipedia_worker_upstream;
     proxy_no_cache 1;
 
     #response headers
@@ -254,7 +254,7 @@ server {
     proxy_set_header X-Forwarded-Prefix /workers/thesaurus;
 
     rewrite ^/workers/thesaurus/?(.*)$ /$1 break;
-    proxy_pass $worker-thesaurus-worker_upstream;
+    proxy_pass $worker_thesaurus_worker_upstream;
     proxy_no_cache 1;
 
     #response headers
