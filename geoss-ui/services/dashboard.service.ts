@@ -94,7 +94,6 @@ const DashboardService = {
         }
         const url = `${window.$nuxt.$config.curatedUrl}userDashboards`
         const userResourceUrl = `${window.$nuxt.$config.curatedUrl}userResources`
-
         try {
             await apiClient.$post(userResourceUrl, body, {
                 headers: {
