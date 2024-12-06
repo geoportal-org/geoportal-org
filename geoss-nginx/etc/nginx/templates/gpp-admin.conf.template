@@ -55,7 +55,7 @@ server {
   }
 
   location /settings {
-    set $settings_upstream http://geoss-${DEPLOY_ENV}-settings.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $settings_upstream http://geoss-${DEPLOY_ENV}-settings.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -74,7 +74,7 @@ server {
   }
 
   location /personaldata {
-    set $personaldata_upstream http://geoss-${DEPLOY_ENV}-personaldata.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $personaldata_upstream http://geoss-${DEPLOY_ENV}-personaldata.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -93,7 +93,7 @@ server {
   }
 
   location /contents {
-    set $contents_upstream http://geoss-${DEPLOY_ENV}-contents.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $contents_upstream http://geoss-${DEPLOY_ENV}-contents.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -112,7 +112,7 @@ server {
   }
 
   location /proxy {
-    set $proxy_upstream http://geoss-${DEPLOY_ENV}-proxy.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $proxy_upstream http://geoss-${DEPLOY_ENV}-proxy.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -131,7 +131,7 @@ server {
   }
 
   location /curated {
-    set $curated_upstream http://geoss-${DEPLOY_ENV}-curated.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $curated_upstream http://geoss-${DEPLOY_ENV}-curated.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -150,7 +150,7 @@ server {
   }
 
   location /search {
-    set $search_upstream http://geoss-${DEPLOY_ENV}-search.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $search_upstream http://geoss-${DEPLOY_ENV}-search.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -169,7 +169,7 @@ server {
   }
 
 #MAILDEV#  location /maildev {
-#MAILDEV#    set $maildev_upstream http://geoss-${DEPLOY_ENV}-maildev.${K8S_NAMESPACE}.svc.cluster.local:3000;
+#MAILDEV#    set $maildev_upstream http://geoss-${DEPLOY_ENV}-maildev.${K8S_NAMESPACE}.svc.cluster.local:1080;
 #MAILDEV#    include conf.d/common/maintenance_conditions.conf;
 #MAILDEV#
 #MAILDEV#    #request headers
@@ -188,7 +188,7 @@ server {
 #MAILDEV#  }
 
   location /workers/geodab {
-    set $worker_geodab_worker_upstream http://geoss-${DEPLOY_ENV}-worker-geodab-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_geodab_worker_upstream http://geoss-${DEPLOY_ENV}-worker-geodab-worker.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -207,7 +207,7 @@ server {
   }
 
   location /workers/sdg {
-    set $worker_sdg_worker_upstream http://geoss-${DEPLOY_ENV}-worker-sdg-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_sdg_worker_upstream http://geoss-${DEPLOY_ENV}-worker-sdg-worker.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -226,7 +226,7 @@ server {
   }
 
   location /workers/wikipedia {
-    set $worker_wikipedia_worker_upstream http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_wikipedia_worker_upstream http://geoss-${DEPLOY_ENV}-worker-wikipedia-worker.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
@@ -245,7 +245,7 @@ server {
   }
 
   location /workers/thesaurus {
-    set $worker_thesaurus_worker_upstream http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker.${K8S_NAMESPACE}.svc.cluster.local:3000;
+    set $worker_thesaurus_worker_upstream http://geoss-${DEPLOY_ENV}-worker-thesaurus-worker.${K8S_NAMESPACE}.svc.cluster.local:8080;
     include conf.d/common/maintenance_conditions.conf;
 
     #request headers
