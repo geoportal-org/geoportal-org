@@ -197,6 +197,8 @@ env:
     value: $DEPLOY_ENV
   - name: KEYCLOAK_DOMAIN_NAME
     value: "$IDP_DOMAIN_NAME"
+  - name: K8S_NAMESPACE
+    value: "${K8S_NAMESPACE}"
   - name: LANDING_PAGE_DOMAIN_NAME
     value: "$LANDING_PAGE_DOMAIN_NAME"
   - name: MAILDEV_ENABLED
