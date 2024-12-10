@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8083/rest' : '/personaldata/rest',
+    apiUrl: window.location.port === '3000' ? 'https://gpp.devel.esaportal.eu/personaldata/rest' : '/personaldata/rest',
     savedRunsUrl: '/saved-runs',
     savedSearchesUrl: '/saved-searches',
     highlightedSeearchesUrl: '/highlighted-searches',

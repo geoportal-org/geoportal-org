@@ -497,9 +497,10 @@ const MapUtils = {
             const feature = map.forEachFeatureAtPixel(e.pixel, (feature: any) => feature);
             if (feature) {
                 const values = feature.values_;
-                if (values && values.Country && values.Source) {
+                if (values) {
                     const coords = feature.getGeometry().getCoordinates();
-                    const geometry = new AppVueObj.ol.geom.Polygon(coords);
+                    const geometryType = feature.getGeometry().getType();
+                    const geometry = new AppVueObj.ol.geom[geometryType](coords);
                     const extent = geometry.transform('EPSG:3857', 'EPSG:4326').getExtent();
                     const coordsWSEN = MapCoordinatesUtils.parseCoordinates(extent);
 
@@ -515,8 +516,14 @@ const MapUtils = {
                     AppVueObj.app.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, {W, S, E, N});
                     AppVueObj.app.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
 
-                    const tooltipMessage = `${values.name}<hr />${values.Country}`;
-                    AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
+                    if (values.name) {
+                        let tooltipMessage = values.name;
+                        if (values.Country) {
+                            tooltipMessage += `<hr />${values.Country}`;
+                        }
+                        AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
+                    }
+
                     popupOverlay.setPosition(e.coordinate);
                     AppVueObj.app.$store.dispatch(MapActions.setShowFull, true);
                 } else if (feature.poi) {

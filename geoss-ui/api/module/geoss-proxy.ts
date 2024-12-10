@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8084/rest' : '/proxy/rest',
+    apiUrl: window.location.port === '3000' ? 'https://gpp.devel.esaportal.eu/proxy/rest' : '/proxy/rest',
     popularUrl: '/popular',
     logSearchUrl: '/log/logSearchResult',
     logElementClickUrl: '/log/logElementClick',

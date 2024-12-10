@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: window.location.port === '3000' ? 'http://10.254.7.59:8080/rest' : '/settings/rest',
+    apiUrl: window.location.port === '3000' ? 'https://gpp.devel.esaportal.eu/settings/rest' : '/settings/rest',
     apiSettingsUrl: '/api-settings',
     webSettingsUrl: '/web-settings',
     catalogsUrl: '/catalogs',
