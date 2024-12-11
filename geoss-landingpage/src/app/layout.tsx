@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer/Footer";
 import NavHeader from "./components/Nav/NavHeader";
+import Matomo from "./components/Matomo/Matomo";
 
 export const metadata: Metadata = {
   title: "Geoss landing page",
@@ -58,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="scrollbar font-esa">
+        <Matomo />
         <NavHeader portalUrl={portalUrl} portalOptions={portalOptions}/>
         <main>{children}</main>
         <Footer />

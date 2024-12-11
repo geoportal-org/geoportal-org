@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import NewsTile from "../NewsTile";
 import { v4 as uuidv4 } from "uuid";
-import { getNewsPagesWithImages } from "../../api/newsApi";
+import { getNewsPagesWithImages } from "../../api/newsApi/newsApi";
 import SchemaHeader from "../SchemaHeader/SchemaHeader";
 
 async function getServerSideProps() {

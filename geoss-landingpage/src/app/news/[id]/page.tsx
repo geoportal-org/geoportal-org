@@ -3,7 +3,7 @@ import parse from "html-react-parser";
 import Link from "next/link";
 import GeneralButton from "@/src/app/components/GeneralButton";
 import Image from "next/image";
-import { getNewsPageContent } from "../../api/newsApi";
+import { getNewsPageContent } from "../../api/newsApi/newsApi";
 import SchemaHeader from "../../components/SchemaHeader/SchemaHeader";
 
 const getServerSideProps = async (slug: string) => {

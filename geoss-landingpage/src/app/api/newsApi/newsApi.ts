@@ -1,5 +1,5 @@
-import { NewsPage, PaginationData } from "../model/types";
-import { fetchSettings } from "./settingsApi";
+import { NewsPage, PaginationData } from "../../model/types";
+import { fetchSettings } from "../settingsApi/settingsApi";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 

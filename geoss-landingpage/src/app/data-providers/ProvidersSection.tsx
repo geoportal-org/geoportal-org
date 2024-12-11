@@ -1,5 +1,5 @@
 import ProvidersList from "./ProvidersList";
-import { fetchSettings } from "../api/settingsApi";
+import { fetchSettings } from "../api/settingsApi/settingsApi";
 
 const getServerSideProps = async () => {
     try {

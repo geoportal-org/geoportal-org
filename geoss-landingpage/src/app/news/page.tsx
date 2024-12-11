@@ -4,7 +4,7 @@ import FindMore from "../components/FindMore";
 import NewsGrid from "./NewsGrid";
 import { NewsTileData } from "../model/types";
 import { findMoreLinksNewsPage } from "../model/findMoreLinks";
-import { getNewsPagesWithImages } from "../api/newsApi";
+import { getNewsPagesWithImages } from "../api/newsApi/newsApi";
 import SchemaHeader from "../components/SchemaHeader/SchemaHeader";
 import { Metadata } from "next";
 
