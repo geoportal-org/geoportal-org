@@ -60,6 +60,8 @@ tolerations:
 env:
   - name: NEXT_PUBLIC_API_URL
     value: "https://${ADMIN_DOMAIN_NAME}/"
+  - name: NEXT_PUBLIC_MATOMO_URL
+    value: "https://${ADMIN_DOMAIN_NAME}/matomo/"
   - name: NEXT_PUBLIC_PAGE_URL
     value: "https://${LANDING_PAGE_DOMAIN_NAME}"
   - name: NEXT_PUBLIC_PORTAL_URL
