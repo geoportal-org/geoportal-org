@@ -1,4 +1,4 @@
-import { fetchSettings } from "../api/settingsApi/route";
+import { fetchSettings } from "../utils/utils";
 import ProvidersList from "./ProvidersList";
 
 const getServerSideProps = async () => {

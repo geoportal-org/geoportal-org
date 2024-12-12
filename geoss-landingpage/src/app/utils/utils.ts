@@ -1,7 +1,13 @@
-import { NextResponse } from 'next/server';
-import { SettingsType } from '../../utils/utils';
+export interface SettingsType {
+    siteId: number;
+    providersUrl: string;
+    providersLogin: string;
+    providersPass: string;
+    matomoId: number | string;
+    error?: any;
+}
 
-export async function GET() {
+export async function fetchSettings() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     let result: SettingsType = {
@@ -53,6 +59,6 @@ export async function GET() {
             error: e,
         };
     }
-    return NextResponse.json(result);
-}
 
+    return result;
+}
