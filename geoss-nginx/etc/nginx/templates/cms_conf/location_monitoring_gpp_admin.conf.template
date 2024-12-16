@@ -21,11 +21,12 @@ location /kibana/ {
   add_header X-Cache-Status $upstream_cache_status;
 }
 
-location ~ /matomo/?$ {
-  return 307 https://${ADMIN_DOMAIN_NAME}/matomo/index.php?module=CoreHome;
+location = /matomo {
+  return 301 https://${ADMIN_DOMAIN_NAME}/matomo/;
 }
 
-location /matomo {
+location /matomo/ {
+  set $matomo_upstream http://geoss-${DEPLOY_ENV}-matomo.${K8S_NAMESPACE}.svc.cluster.local:8080;
   include conf.d/common/maintenance_conditions.conf;
 
   #request headers
@@ -33,7 +34,8 @@ location /matomo {
   include conf.d/utils/proxy_request_headers_x.conf;
   proxy_set_header X-Forwarded-Uri /matomo;
 
-  proxy_pass http://geoss-${DEPLOY_ENV}-matomo:8080/;
+  rewrite ^/matomo/?(.*)$ /$1 break;
+  proxy_pass $matomo_upstream;
   proxy_no_cache 1;
 
   #response headers
@@ -41,5 +43,3 @@ location /matomo {
 
   add_header X-Cache-Status $upstream_cache_status;
 }
-
-

@@ -244,6 +244,7 @@ services:
       - MATOMO_SMTP_PORT_NUMBER=1025
       - MATOMO_SMTP_USER=maildev
       - MATOMO_SMTP_PASSWORD=uTUIINx6U7qe6lcTcrRUdgYqVKo08dXs
+      - MATOMO_SMTP_AUTH=Login
       - MATOMO_USERNAME=admin
       - MATOMO_PASSWORD=qaz123
       - MATOMO_EMAIL=admin@gpp.com
