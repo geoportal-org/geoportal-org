@@ -175,9 +175,7 @@ server {
 #MAILDEV#    #request headers
 #MAILDEV#    include conf.d/utils/proxy_request_headers.conf;
 #MAILDEV#    include conf.d/utils/proxy_request_headers_x.conf;
-#MAILDEV#    proxy_set_header X-Forwarded-Prefix /maildev;
 #MAILDEV#
-#MAILDEV#    rewrite ^/maildev/?(.*)$ /$1 break;
 #MAILDEV#    proxy_pass $maildev_upstream;
 #MAILDEV#    proxy_no_cache 1;
 #MAILDEV#

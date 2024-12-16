@@ -9,7 +9,7 @@ LABEL image="geoss-nginx"
 ENV TZ=UTC
 ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y logrotate
+RUN apt-get update && apt-get upgrade -y && apt-get install -y logrotate nano
 # Cleanup
 RUN rm -rf /var/lib/apt
 
