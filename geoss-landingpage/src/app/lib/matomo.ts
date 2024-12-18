@@ -44,6 +44,8 @@ export function push(
 
 export function initMatomo({url, siteId} : InitSettings){
   const _paq = (window._paq = window._paq || []);
+  _paq.push(['requireConsent']);
+  _paq.push(['requireCookieConsent']);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   _paq.push(['setTrackerUrl', `${url}/matomo.php`]);
