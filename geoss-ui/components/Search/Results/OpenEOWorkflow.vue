@@ -320,7 +320,8 @@ export default class OpenEOWorkflowComponent extends Vue {
                                 north: this.coords.N,
                                 crs: 'EPSG:4326'
                             },
-                            temporal_extent: [this.dateFrom, this.dateTo]
+                            temporal_extent: [this.dateFrom, this.dateTo],
+                            projection: "EPSG:4326"
                         },
                         result: true
                     }

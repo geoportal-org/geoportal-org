@@ -45,7 +45,7 @@ export default class SearchResultsServicesComponent extends Vue {
     }
 
     get servicesResultsPlaceholders() {
-        return (this.serviceResults.length % 2);
+        return (this.serviceResults?.length % 2);
     }
 
     get checkboxActive() {
