@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "geoss-landingpage.fullname" . }}-test-connection"
+  labels:
+    {{- include "geoss-landingpage.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "geoss-landingpage.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

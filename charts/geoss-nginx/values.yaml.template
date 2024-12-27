@@ -1,0 +1,366 @@
+replicaCount: $NGINX_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-nginx
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_nginx
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+   capabilities:
+     drop:
+     - ALL
+     add:
+     - SETGID
+     - SETUID
+     - DAC_OVERRIDE
+   readOnlyRootFilesystem: false
+   runAsNonRoot: true
+   runAsUser: 1500
+   runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+ingressUI:
+  enabled: true
+  name: $RESOURCE_NAME_PREFIX-ui
+  className: "azure-application-gateway"
+  annotations:
+      appgw.ingress.kubernetes.io/hostname: $UI_DOMAIN_NAME
+      appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+      appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
+  hosts:
+    - host: $UI_DOMAIN_NAME
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-ui"
+      hosts:
+        - $UI_DOMAIN_NAME
+ingressRedirect:
+  enabled: $REDIRECT_ENABLED
+  name: $RESOURCE_NAME_PREFIX-redirect
+  className: "azure-application-gateway"
+  annotations:
+      appgw.ingress.kubernetes.io/hostname: $REDIRECT_FROM
+      appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+      appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
+  hosts:
+    - host: $REDIRECT_FROM
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-redirect"
+      hosts:
+        - $REDIRECT_FROM
+ingressAdmin:
+  enabled: true
+  name: $RESOURCE_NAME_PREFIX-admin
+  className: "azure-application-gateway"
+  annotations:
+      appgw.ingress.kubernetes.io/hostname: $ADMIN_DOMAIN_NAME
+      appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+      appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
+  hosts:
+    - host: $ADMIN_DOMAIN_NAME
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-admin"
+      hosts:
+        - $ADMIN_DOMAIN_NAME
+ingressIDP:
+  enabled: true
+  name: $RESOURCE_NAME_PREFIX-idp
+  className: "azure-application-gateway"
+  annotations:
+      appgw.ingress.kubernetes.io/hostname: $IDP_DOMAIN_NAME
+      appgw.ingress.kubernetes.io/health-probe-hostname: $RESOURCE_NAME_PREFIX-nginx
+      appgw.ingress.kubernetes.io/ssl-redirect: "true"
+      appgw.ingress.kubernetes.io/rewrite-rule-set: "common-rewrite-rules"
+      appgw.ingress.kubernetes.io/request-timeout: "300"
+      appgw.ingress.kubernetes.io/appgw-ssl-profile: "common-ssl-profile"
+  hosts:
+    - host: $IDP_DOMAIN_NAME
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: "$RESOURCE_NAME_PREFIX-tls-cert-idp"
+      hosts:
+        - $IDP_DOMAIN_NAME
+
+resources:
+  limits:
+    cpu: $NGINX_CPU_LIMIT
+    memory: $NGINX_MEMORY_LIMIT
+  requests:
+    cpu: $NGINX_CPU_REQUEST
+    memory: $NGINX_MEMORY_REQUEST
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+
+autoscaling:
+  enabled: false
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - $RESOURCE_NAME_PREFIX-nginx
+        topologyKey: "topology.kubernetes.io/zone"
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: ADMIN_DOMAIN_NAME
+    value: "$ADMIN_DOMAIN_NAME"
+  - name: BLOCK_ACCESS
+    value: "$BLOCK_ACCESS"
+  - name: BLOCK_ACCESS_WHITELIST
+    value: "$BLOCK_ACCESS_WHITELIST"
+  - name: CSP_DOMAINS
+    value: "${CSP_DOMAINS}"
+  - name: DEPLOY_ENV
+    value: $DEPLOY_ENV
+  - name: KEYCLOAK_DOMAIN_NAME
+    value: "$IDP_DOMAIN_NAME"
+  - name: LANDING_PAGE_DOMAIN_NAME
+    value: "langingpage.local"
+  - name: MAILDEV_ENABLED
+    value: "$MAILDEV_ENABLED"
+  - name: MAINTENANCE_ON
+    value: "$MAINTENANCE_ON"
+  - name: MAINTENANCE_WHITELIST
+    value: "$MAINTENANCE_WHITELIST"
+  - name: UI_DOMAIN_NAME
+    value: "$UI_DOMAIN_NAME"
+  - name: UI_DOMAIN_NAME_REDIRECT
+    value: "$UI_DOMAIN_NAME_REDIRECT"
+  - name: UI_SERVICES_PROVIDERS
+    value: "$SERVICES_PROVIDERS"
+  - name: REDIRECT_ENABLED
+    value: "$REDIRECT_ENABLED"
+  - name: REDIRECT_FROM
+    value: "$REDIRECT_FROM"
+  - name: REDIRECT_TO
+    value: "$REDIRECT_TO"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    # Allow external HTTP/HTTPS connections
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-admin
+          ports:
+              - protocol: TCP
+                port: 3000
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-kibana
+          ports:
+              - protocol: TCP
+                port: 5601
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-landingpage
+          ports:
+              - protocol: TCP
+                port: 3000
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-matomo
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
+          ports:
+              - protocol: TCP
+                port: 3000
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-geodab-worker
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-sdg-worker
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-wikipedia-worker
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
+          ports:
+              - protocol: TCP
+                port: 8080
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - ipBlock:
+                    cidr: "$INGRESS_ALLOWED_CIDR"
+          ports:
+              - protocol: TCP
+                port: 8080
+
+certificates:
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-ui"
+    certFile: "ui.crt"
+    certKey:  "ui.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-admin"
+    certFile: "admin.crt"
+    certKey:  "admin.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-idp"
+    certFile: "idp.crt"
+    certKey:  "idp.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-lp"
+    certFile: "lp.crt"
+    certKey:  "lp.key"
+  - name: "$RESOURCE_NAME_PREFIX-tls-cert-redirect"
+    certFile: "redirect.crt"
+    certKey:  "redirect.key"

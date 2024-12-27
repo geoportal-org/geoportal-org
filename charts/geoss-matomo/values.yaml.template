@@ -1,0 +1,244 @@
+replicaCount: $MATOMO_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-matomo
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_matomo
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1001
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    cpu: $MATOMO_CPU_LIMIT
+    memory: $MATOMO_MEMORY_LIMIT
+  requests:
+    cpu: $MATOMO_CPU_REQUEST
+    memory: $MATOMO_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    storageClassName: azurefile-csi
+    folderName: matomo
+    capacity: 10Gi
+volumes:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    persistentVolumeClaim:
+      claimName: geoss-${DEPLOY_ENV}-matomo-storage
+
+volumeMounts:
+  - name: geoss-${DEPLOY_ENV}-matomo-storage
+    mountPath: "/bitnami/matomo"
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: MATOMO_DATA_TO_PERSIST
+    value: "matomo.js piwik.js config/config.ini.php misc/user js"
+  - name: MATOMO_SMTP_AUTH
+    value: Login  
+  - name: MATOMO_DATABASE_HOST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbhost
+  - name: MATOMO_DATABASE_PORT_NUMBER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbport
+  - name: MATOMO_DATABASE_NAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbname
+  - name: MATOMO_DATABASE_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbuser
+  - name: MATOMO_DATABASE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbpassword
+  - name: MATOMO_DATABASE_TABLE_PREFIX
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: dbtableprefix
+  - name: MATOMO_SMTP_HOST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpHost
+  - name: MATOMO_SMTP_PORT_NUMBER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpPort
+  - name: MATOMO_SMTP_USER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpUser
+  - name: MATOMO_SMTP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomoSmtpPassword
+  - name: MATOMO_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomouser
+  - name: MATOMO_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: matomopass
+  - name: MATOMO_WEBSITE_NAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: websitename
+  - name: MATOMO_WEBSITE_HOST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: websitehost
+  - name: MATOMO_ENABLE_PROXY_URI_HEADER
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: enableproxyuriheader
+  - name: MATOMO_ENABLE_ASSUME_SECURE_PROTOCOL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-matomo-env
+        key: assumesecureprotocol
+  - name: MATOMO_GENERAL_NOREPLY_EMAIL_ADDRESS
+    value: ${MAILDEV_RELAY_USERNAME}
+  - name: MATOMO_GENERAL_NOREPLY_EMAIL_NAME
+    value: "GEOSS Portal"
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-matomo-env
+    type: Opaque
+    data:
+      dbhost: "geoss-${DEPLOY_ENV}-db"
+      dbport: "3306"
+      dbname: "$MATOMO_DATABASE_NAME"
+      dbuser: "$DATABASE_USERNAME_MATOMO"
+      dbpassword: "$DATABASE_PASSWORD_MATOMO"
+      dbtableprefix: "matomo_"
+      matomoSmtpHost: "${SMTP_HOST}"
+      matomoSmtpPort: "${SMTP_PORT}"
+      matomoSmtpUser: "${SMTP_USER}"
+      matomoSmtpPassword: "${SMTP_PASSWORD}"
+      matomouser: "$MATOMO_USERNAME"
+      matomopass: "$MATOMO_PASSWORD"
+      websitename: "Geoss-UI Website"
+      websitehost: "https://$UI_DOMAIN_NAME"
+      enableproxyuriheader: "yes"
+      assumesecureprotocol: "yes"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow external HTTP/HTTPS connections
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-db
+          ports:
+              - protocol: TCP
+                port: 3306
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-maildev
+          ports:
+              - protocol: TCP
+                port: 1025                   
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
+          ports:
+              - protocol: TCP
+                port: 8080
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}"                 

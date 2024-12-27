@@ -1,0 +1,184 @@
+replicaCount: $WORKER_GEODAB_WORKER_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-worker-geodab-worker
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_worker_geodab_worker
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1500
+  runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    memory: $WORKER_GEODAB_WORKER_MEMORY_LIMIT
+  requests:
+    cpu: $WORKER_GEODAB_WORKER_CPU_REQUEST
+    memory: $WORKER_GEODAB_WORKER_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: SPRING_DATASOURCE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springDatasourceUrl
+  - name: SPRING_DATASOURCE_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springDatasourceUsername
+  - name: SPRING_DATASOURCE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springDatasourcePassword
+  - name: SPRING_PROFILES_ACTIVE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springProfilesActive
+  - name: SPRING_SECURITY_OAUTH2_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springSecurityOauth2BaseUri
+  - name: SPRING_SECURITY_OAUTH2_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: springSecurityOauth2ClientSecret
+  - name: CONFIG_DAB_VLAB_BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: configDabVlabBaseUrl
+  - name: CONFIG_DAB_VLAB_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: configDabVlabApiToken
+  - name: CONFIG_DAB_VLAB_WORKFLOWS_INCLUDE_UNDER_TEST
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: configDabVlabWorkflowsIncludeUnderTest
+  - name: SERVER_MAX_HTTP_REQUEST_HEADER_SIZE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+        key: serverMaxHttpRequestHeaderSize
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-worker-geodab-worker-env
+    type: Opaque
+    data:
+      springDatasourceUrl: "jdbc:mariadb://geoss-${DEPLOY_ENV}-db:3306/geoss_curated_db?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+      springDatasourceUsername: "${DATABASE_USERNAME_APP}"
+      springDatasourcePassword: "${DATABASE_PASSWORD_APP}"
+      springProfilesActive: "keycloak"
+      springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
+      springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_GEODAB}"
+      configDabVlabBaseUrl: "${WORKER_DAB_VLAB_BASE_URL}"
+      configDabVlabApiToken: "${WORKER_DAB_VLAB_API_TOKEN}"
+      configDabVlabWorkflowsIncludeUnderTest: "true"
+      serverMaxHttpRequestHeaderSize: "32KB"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow external HTTPS connections
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 3306
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-db
+          ports:
+              - protocol: TCP
+                port: 3306
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443
+    ingress:
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080    
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}" 

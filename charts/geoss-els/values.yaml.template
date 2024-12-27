@@ -1,0 +1,151 @@
+secrets:
+  - name: geoss-${DEPLOY_ENV}-els-env
+    type: Opaque
+    data:
+      esJavaOpts: "$ELS_JAVA_OPTS"
+      elasticPassword: "$ELS_ELASTIC_PASSWORD"
+      kibanaPassword: "$ELS_KIBANA_PASSWORD"
+      geossPassword: "$ELS_GEOSS_PASSWORD"
+  - name: geoss-${DEPLOY_ENV}-els-user
+    type: kubernetes.io/basic-auth
+    data:
+      username: "elastic"
+      password: "$ELS_ELASTIC_PASSWORD"
+      roles: "superuser"
+  - name: geoss-${DEPLOY_ENV}-els-kibana-user
+    type: kubernetes.io/basic-auth
+    data:
+      username: "kibana_system"
+      password: "$ELS_KIBANA_PASSWORD"
+      roles: "kibana_system"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-kibana
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-proxy
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-search
+          ports:
+              - protocol: TCP
+                port: 9200
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
+          ports:
+              - protocol: TCP
+                port: 9200
+
+eck-elasticsearch:
+    version: 8.13.4
+    nameOverride: eck-elasticsearch
+    annotations:
+        eck.k8s.elastic.co/license: basic
+    operator:
+        namespace: elastic-system
+        name: elastic-operator
+    http:
+        tls:
+            selfSignedCertificate:
+                disabled: true
+    auth:
+      fileRealm:
+        - secretName: geoss-${DEPLOY_ENV}-els-user
+        - secretName: geoss-${DEPLOY_ENV}-els-kibana-user
+    volumeClaimDeletePolicy: DeleteOnScaledownOnly
+    nodeSets:
+        -   name: default
+            count: $ELS_INSTANCES
+            podTemplate:
+                spec:
+                    securityContext:
+                        runAsUser: 1000
+                        fsGroup: 1000
+                    initContainers:
+                        -   command:
+                                - sh
+                                - "-c"
+                                - sysctl -w vm.max_map_count=262144
+                            name: sysctl
+                            image: $DOCKER_REPOSITORY_ADDRESS/geoss_els:$DOCKER_IMAGE_TAG
+                            securityContext:
+                                privileged: true
+                                runAsUser: 0
+                    containers:
+                        -   name: elasticsearch
+                            image: $DOCKER_REPOSITORY_ADDRESS/geoss_els:$DOCKER_IMAGE_TAG
+                            resources:
+                                limits:
+                                    memory: $ELS_MEMORY_LIMIT
+                                    cpu: $ELS_CPU_LIMIT
+                                requests:
+                                    memory: $ELS_MEMORY_REQUEST
+                                    cpu: $ELS_CPU_REQUEST
+                            env:
+                              - name: ES_JAVA_OPTS
+                                valueFrom:
+                                  secretKeyRef:
+                                    name: geoss-${DEPLOY_ENV}-els-env
+                                    key: esJavaOpts
+                              - name: ELASTIC_PASSWORD
+                                valueFrom:
+                                  secretKeyRef:
+                                    name: geoss-${DEPLOY_ENV}-els-env
+                                    key: elasticPassword
+                              - name: KIBANA_PASSWORD
+                                valueFrom:
+                                  secretKeyRef:
+                                    name: geoss-${DEPLOY_ENV}-els-env
+                                    key: kibanaPassword
+                              - name: GEOSS_PASSWORD
+                                valueFrom:
+                                  secretKeyRef:
+                                    name: geoss-${DEPLOY_ENV}-els-env
+                                    key: geossPassword
+                    tolerations:
+                        -   key: "project"
+                            operator: "Equal"
+                            value: "geoss"
+                            effect: "NoExecute"
+                    nodeSelector:
+                        node-pool: geoss
+            volumeClaimTemplates:
+              - metadata:
+                    name: elasticsearch-data
+                spec:
+                    accessModes:
+                        - ReadWriteOnce
+                    resources:
+                        requests:
+                            storage: 10Gi
+                    storageClassName: elasticsearch-storage-class

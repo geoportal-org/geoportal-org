@@ -1,0 +1,168 @@
+replicaCount: $PROXY_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-proxy
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_proxy
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1500
+  runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    cpu: $PROXY_CPU_LIMIT
+    memory: $PROXY_MEMORY_LIMIT
+  requests:
+    cpu: $PROXY_CPU_REQUEST
+    memory: $PROXY_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: SPRING_ELASTICSEARCH_URIS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springElasticsearchUris
+  - name: SPRING_ELASTICSEARCH_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springElasticsearchUsername
+  - name: SPRING_ELASTICSEARCH_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springElasticsearchPassword
+  - name: SPRING_PROFILES_ACTIVE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springProfilesActive
+  - name: SPRING_SECURITY_OAUTH2_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springSecurityOauth2BaseUri
+  - name: SPRING_SECURITY_OAUTH2_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: springSecurityOauth2ClientSecret
+  - name: SERVER_MAX_HTTP_REQUEST_HEADER_SIZE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-proxy-env
+        key: serverMaxHttpRequestHeaderSize
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-proxy-env
+    type: Opaque
+    data:
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http:9200"
+      springElasticsearchUsername: "elastic"
+      springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
+      springProfilesActive: "keycloak"
+      springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
+      springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_PROXY}"
+      serverMaxHttpRequestHeaderSize: "32KB"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: ${INGRESS_EXTERNAL_IP}/32
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+            - podSelector:
+                matchLabels:
+                    elasticsearch.k8s.elastic.co/cluster-name: $RESOURCE_NAME_PREFIX-els-eck-elasticsearch
+          ports:
+              - protocol: TCP
+                port: 9200
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-ui
+          ports:
+              - protocol: TCP
+                port: 8080
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}" 

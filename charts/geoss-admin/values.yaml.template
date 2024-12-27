@@ -1,0 +1,179 @@
+replicaCount: $ADMIN_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-admin
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_admin
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    cpu: $ADMIN_CPU_LIMIT
+    memory: $ADMIN_MEMORY_LIMIT
+  requests:
+    cpu: $ADMIN_CPU_REQUEST
+    memory: $ADMIN_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: NEXT_PUBLIC_IDP_DOMAIN
+    value: "https://${IDP_DOMAIN_NAME}"
+  - name: NEXT_PUBLIC_API
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextPublicApi
+  - name: NEXT_PUBLIC_APP_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextPublicAppUrl
+  - name: NEXTAUTH_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextAuthUrl
+  - name: NEXTAUTH_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: nextAuthSecret
+  - name: KEYCLOAK_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakClientId
+  - name: KEYCLOAK_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakClientSecret
+  - name: KEYCLOAK_BASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-admin-env
+        key: keycloakBaseUrl
+  - name: NEXT_PUBLIC_HIDE_POC_FEATURES
+    value: "${HIDE_POC_FEATURES}"
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-admin-env
+    type: Opaque
+    data:
+      nextPublicApi: "https://${ADMIN_DOMAIN_NAME}"
+      nextPublicAppUrl: "https://${UI_DOMAIN_NAME}"
+      nextAuthUrl: "https://${ADMIN_DOMAIN_NAME}"
+      nextAuthSecret: "${NEXT_AUTH_SECRET}"
+      keycloakClientId: "geoss-admin"
+      keycloakClientSecret: "${KEYCLOAK_CLIENT_SECRET_ADMIN}"
+      keycloakBaseUrl: "https://${IDP_DOMAIN_NAME}/realms/geoss"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: ${INGRESS_EXTERNAL_IP}/32
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-contents
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-curated
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-personaldata
+          ports:
+              - protocol: TCP
+                port: 8080
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-settings
+          ports:
+              - protocol: TCP
+                port: 8080
+    ingress:
+        # Allow to connect from DMZ
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 3000
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}"

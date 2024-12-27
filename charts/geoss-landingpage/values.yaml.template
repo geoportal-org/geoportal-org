@@ -1,0 +1,109 @@
+replicaCount: 0
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-landingpage
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_landingpage
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1500
+  runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    cpu: $LANDINGPAGE_CPU_LIMIT
+    memory: $LANDINGPAGE_MEMORY_LIMIT
+  requests:
+    cpu: $LANDINGPAGE_CPU_REQUEST
+    memory: $LANDINGPAGE_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: NEXT_PUBLIC_API_URL
+    value: "https://${ADMIN_DOMAIN_NAME}/"
+  - name: NODE_TLS_REJECT_UNAUTHORIZED
+    value: "0"
+
+secrets:
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow connections to k8s ingress
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 80
+              - protocol: UDP
+                port: 80
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443                
+    ingress:
+        # Allow to connect from other containers
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 3000
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}"                

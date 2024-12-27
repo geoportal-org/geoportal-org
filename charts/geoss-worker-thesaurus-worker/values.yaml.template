@@ -1,0 +1,184 @@
+replicaCount: $WORKER_THESAURUS_WORKER_INSTANCES
+maxSurge: 1
+maxUnavailable: 0
+nameOverride: $RESOURCE_NAME_PREFIX-worker-thesaurus-worker
+image:
+  repository: $DOCKER_REPOSITORY_ADDRESS/geoss_worker_thesaurus_worker
+  pullPolicy: Always
+  tag: "$DOCKER_IMAGE_TAG"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1500
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+    add:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1500
+  runAsGroup: 1500
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  name: http
+
+resources:
+  limits:
+    cpu: $WORKER_THESAURUS_WORKER_CPU_LIMIT
+    memory: $WORKER_THESAURUS_WORKER_MEMORY_LIMIT
+  requests:
+    cpu: $WORKER_THESAURUS_WORKER_CPU_REQUEST
+    memory: $WORKER_THESAURUS_WORKER_MEMORY_REQUEST
+
+autoscaling:
+  enabled: false
+
+pvc:
+volumes:
+volumeMounts:
+
+nodeSelector:
+  node-pool: geoss
+
+tolerations:
+    -   key: "project"
+        operator: "Equal"
+        value: "geoss"
+        effect: "NoExecute"
+
+env:
+  - name: SPRING_ELASTICSEARCH_URIS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchUris
+  - name: SPRING_ELASTICSEARCH_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchUsername
+  - name: SPRING_ELASTICSEARCH_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springElasticsearchPassword
+  - name: SPRING_PROFILES_ACTIVE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springProfilesActive
+  - name: SPRING_SECURITY_OAUTH2_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springSecurityOauth2BaseUri
+  - name: SPRING_SECURITY_OAUTH2_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: springSecurityOauth2ClientSecret
+  - name: THESAURUS_ESA_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEsaBaseUri
+  - name: THESAURUS_ESA_TOP_CONCEPTS_URIS
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEsaTopConceptUris
+  - name: THESAURUS_EOSTERM_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEostermBaseUri
+  - name: THESAURUS_EARTH_BASE_URI
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: thesaurusEarthBaseUri
+  - name: SERVER_MAX_HTTP_REQUEST_HEADER_SIZE
+    valueFrom:
+      secretKeyRef:
+        name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+        key: serverMaxHttpRequestHeaderSize
+
+secrets:
+  - name: geoss-${DEPLOY_ENV}-worker-thesaurus-worker-env
+    type: Opaque
+    data:
+      springElasticsearchUris: "http://geoss-${DEPLOY_ENV}-els-eck-elasticsearch-es-http:9200"
+      springElasticsearchUsername: "elastic"
+      springElasticsearchPassword: "${ELS_ELASTIC_PASSWORD}"
+      springProfilesActive: "keycloak"
+      springSecurityOauth2BaseUri: "https://${IDP_DOMAIN_NAME}"
+      springSecurityOauth2ClientSecret: "${KEYCLOAK_CLIENT_SECRET_WORKER_THESAURUS}"
+      thesaurusEsaBaseUri: "${WORKER_THESAURUS_ESA_BASE_URI}"
+      thesaurusEsaTopConceptUris: "${WORKER_THESAURUS_ESA_TOP_CONCEPTS_URIS}"
+      thesaurusEostermBaseUri: "${WORKER_THESAURUS_EOSTERM_BASE_URI}"
+      thesaurusEarthBaseUri: "${WORKER_THESAURUS_EARTH_BASE_URI}"
+      serverMaxHttpRequestHeaderSize: "32KB"
+
+networkPolicy:
+    egress:
+        # Allow connect to DNS
+        - to:
+          ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
+        # Allow external HTTPS connections
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 10.0.0.0/8
+                  - 192.168.0.0/16
+                  - 172.16.0.0/20
+          ports:
+              - protocol: TCP
+                port: 443
+              - protocol: UDP
+                port: 443
+        # Allow connect to other containers
+        - to:
+            - podSelector:
+                matchLabels:
+                    elasticsearch.k8s.elastic.co/cluster-name: $RESOURCE_NAME_PREFIX-els-eck-elasticsearch
+          ports:
+              - protocol: TCP
+                port: 9200
+        - to:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-keycloak
+          ports:
+              - protocol: TCP
+                port: 8443
+    ingress:
+        - from:
+              - podSelector:
+                    matchLabels:
+                        app.kubernetes.io/instance: $RESOURCE_NAME_PREFIX-nginx
+          ports:
+              - protocol: TCP
+                port: 8080
+
+hostAliases:
+  - ip: "$INGRESS_EXTERNAL_IP"
+    hostnames:
+      - "${ADMIN_DOMAIN_NAME}"
+      - "${UI_DOMAIN_NAME}"
+      - "${IDP_DOMAIN_NAME}"                 
