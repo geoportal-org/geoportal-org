@@ -893,6 +893,13 @@ export default {
                                                 LayersUtils.createKMZ(
                                                     layer.url
                                                 )
+                                        } else if (
+                                            layer.type === LayerTypes.GEOTIFF || layer.type.indexOf(LayerTypes.GEOTIFF > -1)
+                                        ) {
+                                            mapLayer =
+                                                await LayersUtils.createGeoTIFF(
+                                                    layer.url
+                                                )
                                         } else {
                                             continue
                                         }
@@ -904,8 +911,10 @@ export default {
                                             id: layer.url,
                                             type: layer.type,
                                             title: layer.name,
-                                            visible: layer.visible
+                                            visible: layer.visible,
+                                            coordinate: mapLayer.coordinate
                                         }
+
                                         this.$store.dispatch(
                                             MapActions.addLayer,
                                             layerData

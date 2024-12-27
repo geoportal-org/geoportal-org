@@ -1,5 +1,5 @@
 <template>
-	<div v-if="mapData" class="dashboard-map">
+	<div v-if="mapData" class="dashboard-map" :class="{loading}">
 		<div :id="`map-${uuid}`" />
 		<p class="dashboard-map__title">{{ mapData.outputName }}</p>
 		<img v-if="mapData.legend && mapData.legend !== ''" class="dashboard-map__legend" :src="mapData.legend" />
@@ -14,6 +14,7 @@ import LayersUtils from '@/services/map/layer-utils';
 import MapCoordinatesUtils from '@/services/map/coordinates-utils';
 import { AppVueObj } from '~/data/global'
 import { v4 as uuidv4 } from "uuid";
+import { LayerTypes } from '@/interfaces/LayerTypes'
 
 interface MapData {
 	id: string;
@@ -29,6 +30,7 @@ interface MapData {
 @Component({})
 export default class DashboardChartComponent extends Vue {
 	@Prop({default: null, type: Object}) public mapData!: MapData;
+    private loading = true;
 
 	get uuid() {
 		return uuidv4();
@@ -42,19 +44,28 @@ export default class DashboardChartComponent extends Vue {
 		}
 		await this.$nextTick();
 
-		const {outputName, url, name, protocol, id, runId, legend} = this.mapData;
-		let version = '1.1.1';
-		if(protocol) {
-			if(protocol.indexOf('WebMapService') > -1) {
-				const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(protocol);
-				if (match) {
-					version = match[0];
-				}
-			}
-		}
+		const {type, outputName, url, name, protocol, id, runId, legend} = this.mapData;
+        let layer = null;
 
-		const layerUrl = `${url}VERSION=${version}&LAYERS=${name}&TILED=true&`;
-		const layer = LayersUtils.createWMS(name, layerUrl);
+        if (type === 'wms') {
+            let version = '1.1.1';
+            if(protocol) {
+                if(protocol.indexOf('WebMapService') > -1) {
+                    const match = /((\d)+\.(\d)+(\.(\d)+)?)/g.exec(protocol);
+                    if (match) {
+                        version = match[0];
+                    }
+                }
+            }
+
+            const layerUrl = `${url}VERSION=${version}&LAYERS=${name}&TILED=true&`;
+            layer = LayersUtils.createWMS(name, layerUrl);
+        }
+
+		if (type === LayerTypes.GEOTIFF) {
+            layer = await LayersUtils.createGeoTIFF(url);
+        }
+
 		const currMap = 'osm';
 		const layers = [
 			layer,
@@ -71,13 +82,13 @@ export default class DashboardChartComponent extends Vue {
 			controls: []
 		});
 
-		if (this.mapData.bbox) {
-			const coordinates = {
+		if (this.mapData.bbox || layer.coordinate) {
+			const coordinates = this.mapData.bbox ? {
 				W: this.mapData.bbox[0] * 1,
 				S: this.mapData.bbox[1] * 1,
 				E: this.mapData.bbox[2] * 1,
 				N: this.mapData.bbox[3] * 1
-			};
+			} : layer.coordinate
 			const {W, E} = coordinates;
 			let {S, N} = coordinates;
 			const longitudes = MapCoordinatesUtils.denormalizeLongitude(W, E);
@@ -96,6 +107,8 @@ export default class DashboardChartComponent extends Vue {
 			extent = AppVueObj.ol.extent.applyTransform(extent, AppVueObj.ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));
 			this.map.getView().fit(extent);
 		}
+
+        this.loading = false;
 	}
 }
 </script>
@@ -106,6 +119,11 @@ export default class DashboardChartComponent extends Vue {
 	width: 100%;
 	height: 100%;
 	min-height: 400px;
+
+    &.loading {
+        background: url('/img/loading-buffering.gif') center center no-repeat;
+        background-size: 50px;
+    }
 
 	> div {
 		width: 100%;

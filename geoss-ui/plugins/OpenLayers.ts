@@ -13,12 +13,13 @@ import { createStringXY } from 'ol/coordinate.js'
 
 import { GeoJSON, GPX, IGC, KML, TopoJSON } from 'ol/format'
 
-import { Vector, XYZ, TileArcGISRest, TileWMS, WMTS } from 'ol/source'
+import { Vector, XYZ, TileArcGISRest, TileWMS, WMTS, ImageStatic } from 'ol/source'
 
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
 
 import VectorLayer from 'ol/layer/Vector'
 import Tile from 'ol/layer/Tile'
+import Image from 'ol/layer/Image'
 
 import Feature from 'ol/Feature'
 
@@ -76,10 +77,12 @@ export const ol = {
         TileArcGISRest,
         TileWMS,
         WMTS,
+        ImageStatic
     },
     layer: {
         Vector: VectorLayer,
         Tile,
+        Image
     },
     Feature,
     control: {

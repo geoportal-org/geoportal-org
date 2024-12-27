@@ -18,7 +18,11 @@ import Layer from 'ol/layer/Layer'
 import VectorLayer from 'ol/layer/Vector'
 import TileLayer from 'ol/layer/Tile'
 import { $tc } from '~/plugins/i18n'
-import UtilsService from '@/services/utils.service';
+import UtilsService from '@/services/utils.service'
+// @ts-ignore
+import * as GeoTIFF from 'geotiff'
+// @ts-ignore
+import * as plotty from 'plotty'
 
 // @ts-ignore
 const ol = Vue.ol
@@ -414,6 +418,57 @@ const LayersUtils = {
         kmz.set('name', url)
         kmz.setVisible(true)
         return kmz
+    },
+
+    async createGeoTIFF(url: string) {
+        return await fetch(url)
+            .then(response => response.arrayBuffer())
+            .then(data => LayersUtils.onGeotiffLoaded(data, url))
+
+        // Test cases
+        // Example
+        // fetch('https://pbabik.github.io/webraster/data/srtm.tif').then(response => response.arrayBuffer()).then(onGeotiffLoaded);
+        // SDG 11.7
+        // fetch('https://s3.amazonaws.com/bpengineoutputs/7da4d96d-81a2-4335-b8ab-3e0c81e703ab/travel_time_wgs84.tif').then(response => response.arrayBuffer()).then(onGeotiffLoaded);
+        // Maps4GPP usecase4
+        // fetch('https://openeo.dataspace.copernicus.eu/openeo/1.2/jobs/j-241220affcb2421c9b952bbf5d283da2/results/assets/NDM0M2ExMjAtMmI2Yy00N2UxLTk1ZjctOWVjNTk1NWE2ODA3/29787416340777e567ce6768e030fdd2/worldcereal-cropland-extent-postprocessed.tif?expires=1735304912').then(response => response.arrayBuffer()).then(onGeotiffLoaded);
+    },
+
+    onGeotiffLoaded(data: ArrayBuffer, url: string) {
+        const tiff = GeoTIFF.parse(data)
+        const image = tiff.getImage()
+        const rawBox = image.getBoundingBox()
+        const box = [rawBox[0],rawBox[1] - (rawBox[3] - rawBox[1]), rawBox[2], rawBox[1]]
+        const bands = image.readRasters()
+
+        const bandDefaultIndex = 0
+        const minValue = bands[bandDefaultIndex].reduce((cur: number, val: number, i: any) => !i ?  false : Math.min(cur, val), NaN)
+        const maxValueRaw = bands[bandDefaultIndex].reduce((cur: number, val: number, i: any) => !i ?  false : Math.max(cur, val), NaN)
+        const maxValue = bands[bandDefaultIndex].reduce((cur: number, val: number, i: any) => !i ?  false : val === maxValueRaw ? cur : Math.max(cur, val), NaN)
+        let canvasHelper = document.createElement('canvas')
+
+        plotty.addColorScale("veridis_inverted", ["#fce51e", "#d4e115", "#abdb20", "#84d432", "#65ca44", "#49be54", "#34b262", "#26a26c", "#209473", "#1e8678", "#1f787a", "#216a7b", "#245d7b", "#27507b", "#2c4179", "#003b74", "#35256e", "#371764", "#370855", "#340042", "#340042"], [0, 0.05, 0.1, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1])
+
+        const plot = new plotty.plot({
+            canvas: canvasHelper,
+            data: bands[bandDefaultIndex], width: image.getWidth(), height: image.getHeight(),
+            domain: [minValue, maxValue], colorScale: 'veridis_inverted', clampLow: false, clampHigh: false
+        })
+        plot.render()
+
+        const imgSource = new AppVueObj.ol.source.ImageStatic({
+            url: canvasHelper.toDataURL("image/png"),
+            imageExtent: box,
+            projection: 'EPSG:4326'
+        })
+
+        const geotiff = new AppVueObj.ol.layer.Image()
+        geotiff.setSource(imgSource)
+        geotiff.setZIndex(8)
+        geotiff.set('name', url)
+        geotiff.setVisible(true)
+        geotiff.coordinate = {W: box[0], S: box[1], E: box[2], N: box[3]}
+        return geotiff
     },
 
     isLayerDisplayed(id: string) {

@@ -227,6 +227,10 @@ export default class PopupComponent extends Vue {
         transform: scale(0.8);
         transition: transform 200ms ease-in-out, opacity 200ms ease-in-out;
 
+        &.dashboard-creator-popup {
+            max-width: 80%;
+        }
+
         @media (max-width: $breakpoint-lg) {
             width: 90%;
             max-width: 370px;

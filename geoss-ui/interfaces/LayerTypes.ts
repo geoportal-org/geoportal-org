@@ -10,4 +10,5 @@ export enum LayerTypes {
     KMZ = 'kmz',
     SELECTEDAREA = 'selectedArea',
     CUSTOM = 'custom',
+    GEOTIFF = 'tif',
 }

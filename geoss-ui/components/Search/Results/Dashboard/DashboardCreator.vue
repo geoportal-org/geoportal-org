@@ -186,6 +186,7 @@ import DashboardDisplay from './DashboardDisplay.vue';
 import DashboardService from '@/services/dashboard.service';
 import NotificationService from '@/services/notification.service';
 import * as XLSX from 'xlsx';
+import { LayerTypes } from '@/interfaces/LayerTypes';
 
 @Component({
 	components: {
@@ -394,6 +395,7 @@ export default class DashboardCreatorComponent extends Vue {
 		for (const output of this.savedRun.outputs) {
 			if (output.valueSchema === 'wms') {
 				const map = {
+                    type: 'wms',
 					runId: this.savedRun.runId,
 					id: output.id,
 					outputName: output.name,
@@ -404,10 +406,21 @@ export default class DashboardCreatorComponent extends Vue {
 					bbox
 				};
 				this.mapData.push(map);
-				if (this.selectedMap === '') {
-					this.selectedMap = output.name;
-				}
-			}
+            // TODO: add support for SDG 11.7
+			} else if (output.valueSchema === 'url' && output.name.indexOf(LayerTypes.GEOTIFF) > -1) {
+                const map = {
+                    type: LayerTypes.GEOTIFF,
+					runId: this.savedRun.runId,
+					id: output.id,
+					outputName: output.name,
+					name: output.name,
+					url: output.value
+				};
+                this.mapData.push(map);
+            }
+            if (this.selectedMap === '') {
+                this.selectedMap = output.name;
+            }
 		}
 	}
 
@@ -465,7 +478,7 @@ export default class DashboardCreatorComponent extends Vue {
 
 				const labels = [];
 				const datasets = [];
-				
+
 				// Split the CSV data by lines
 				const rows = csvData.split("\n");
 				const headers = rows[0].split(",");
@@ -482,11 +495,11 @@ export default class DashboardCreatorComponent extends Vue {
 					});
 				});
 				for (let i = 1; i < rows.length; i++) {
-					const row = rows[i].split(",");					
+					const row = rows[i].split(",");
 					// Ensure the row is not empty
 					if (row.length > 1) {
 						labels.push(row[1]); // First column is the label (e.g., time)
-						
+
 						// Fill data for each dataset
 						for (let j = 2; j < row.length; j++) {
 							datasets[j - 2].data.push(parseFloat(row[j]));
@@ -503,7 +516,7 @@ export default class DashboardCreatorComponent extends Vue {
 					values: datasets,
 					mode: '%',
 				});
-				
+
 
 			}
 		}

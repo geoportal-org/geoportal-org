@@ -187,7 +187,7 @@
                                 }"
                             >
                                 {{ displayRun.status
-                                }}<span v-if="displayRun.result">
+                                }}<span v-if="displayRun.result && displayRun.result !== displayRun.status">
                                     - {{ displayRun.result }}</span
                                 >
                             </span>
