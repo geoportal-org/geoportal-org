@@ -6,9 +6,11 @@ ENV LANG=en_GB.UTF-8 LANGUAGE=en_GB:en
 
 WORKDIR /opt/app
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
+COPY package.json ./
 
-RUN yarn install --frozen-lockfile --non-interactive
+# RUN yarn install --frozen-lockfile --non-interactive
+RUN yarn install --non-interactive
 
 FROM node:18.12-alpine AS builder
 
@@ -77,7 +79,7 @@ RUN apt update && apt upgrade -y && apt clean
 
 RUN adduser -u 1500 --disabled-password --gecos "" docker_noroot
 RUN chown -R docker_noroot:docker_noroot /opt/app
-USER docker_noroot 
+USER docker_noroot
 
 EXPOSE 3000
 
