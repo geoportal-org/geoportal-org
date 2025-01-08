@@ -19,7 +19,7 @@ const CookieNotice = ({ portalUrl, acceptCookies, rejectCookies }: Props) => {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.2, ease: "easeIn" }}
-            className="fixed flex flex-row items-center bottom-2 mx-auto inset-x-0 w-[70%] rounded-md z-[3000] bg-[#209d90] min-h-[150px] bg-opacity-90 p-4 gap-8 text-justify"
+            className="fixed flex flex-row items-center bottom-2 mx-auto inset-x-0 w-[70%] rounded-md z-[3000] bg-[#1e3344] min-h-[150px] p-4 gap-8 text-justify"
         >
             <CookieIcon width="4em" height="4em" />
             <div className="w-full flex flex-col gap-6 text-white">
@@ -27,7 +27,7 @@ const CookieNotice = ({ portalUrl, acceptCookies, rejectCookies }: Props) => {
                     We only use Cookies to track visits to our site. We do not store any personal information about
                     users. If you wish to restrict or block the use of Cookies, please refer to the instructions on the{" "}
                     <Link
-                        className="lg:ml-auto text-[#0661A9] underline lg:text-end"
+                        className="lg:ml-auto text-[#4fada7] underline lg:text-end"
                         href={`${portalUrl}/terms-conditions`}
                     >
                         Terms and Conditions

@@ -51,6 +51,7 @@ const Matomo = ({ portalUrl }: Props) => {
     };
 
     useEffect(() => {
+        console.log(pathname)
         push(["setCustomUrl", window.location.href]);
         push(["trackPageView"]);
     }, [pathname]);
