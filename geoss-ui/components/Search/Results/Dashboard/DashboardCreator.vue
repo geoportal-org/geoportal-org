@@ -406,8 +406,7 @@ export default class DashboardCreatorComponent extends Vue {
 					bbox
 				};
 				this.mapData.push(map);
-            // TODO: add support for SDG 11.7
-			} else if (output.valueSchema === 'url' && output.name.indexOf(LayerTypes.GEOTIFF) > -1) {
+			} else if (output.valueSchema === 'url' && (output.name.indexOf(LayerTypes.GEOTIFF) > -1 || output.id.indexOf(LayerTypes.GEOTIFF) > -1)) {
                 const map = {
                     type: LayerTypes.GEOTIFF,
 					runId: this.savedRun.runId,
