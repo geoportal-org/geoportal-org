@@ -85,7 +85,8 @@ export default {
         dashboardSavedSuccessfully: 'Dashboard saved successfully! You can find it in MY WORKSPACE -> Your Dashboards.',
         errorDuringDashboardSaving: 'Error during dashboard saving. Please try again.',
         dashboardLoadedSuccessfully: 'Dashboard loaded successfully!',
-        errorDuringDashboardLoading: 'Error during dashboard loading.'
+        errorDuringDashboardLoading: 'Error during dashboard loading.',
+        dashboardDeletedSuccessfully: 'Dashboard deleted successfully!',
     },
     welcomePopup: {
         newVersionTitle: 'THE GEOSS PORTAL 3.7 IS AVAILABLE',
@@ -323,6 +324,7 @@ export default {
         entryRelationsSrcSet2: 'Please choose <b>destination resources</b>.',
         entryRelationsNoDest: 'There are no destination resources selected. Choose at least one resource related to the source entry.',
         entryRelationsRedirecting: 'Entry relations data has been successfuly sent. Redirecting...',
+        delete: 'Delete',
 
         // SDG dashboards
         createDashboard: 'Create dashboard',
@@ -361,6 +363,8 @@ export default {
         labels: 'Labels',
         datasetNames: 'Dataset names',
         colors: 'Dataset colors',
+        deleteDashboardTitle: 'Remove dashboard',
+        deleteDashboardConfirmation: 'Do you want to remove dashboard?',
 
         // metadata
         generalInfo: 'General info',

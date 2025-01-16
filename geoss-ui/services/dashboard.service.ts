@@ -114,6 +114,19 @@ const DashboardService = {
         }
     },
 
+    async deleteDashboard(id: string | number) {
+        if (id) {
+            const url = `${window.$nuxt.$config.curatedUrl}userDashboards/delete/${id}`
+            try {
+                await apiClient.$delete(url)
+                return 'ok'
+            } catch (e: any) {
+                console.error(e)
+                return 'fail'
+            }
+        }
+    },
+
     async showDashboard(dashboardContent: any = null, title: string) {
         let data = null
         try {

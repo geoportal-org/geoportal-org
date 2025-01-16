@@ -2822,7 +2822,6 @@ export default class SearchResultDabDetailsComponent extends Vue {
     }
 
     private async mounted() {
-        console.log(this.result)
         if (this.$route.query.code) {
             try {
                 // Check whether the page contains the authentication information and make them available to the openEO client

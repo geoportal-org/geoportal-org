@@ -91,9 +91,6 @@ export default {
                     ])
                 }
             }
-
-            console.log(searchSettings)
-
             if (searchSettings) {
                 this.$store.dispatch(
                     SearchEngineActions.setDabBaseUrl,

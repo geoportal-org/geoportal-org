@@ -30,7 +30,7 @@ export default {
             popularKeywords: '最受欢迎的关键字',
             popularCatalogs: '最受欢迎的目录',
             popularOrganizations: '最受欢迎的组织',
-            popularAreas: '最受欢迎的区域',
+            popularAreas: '最受欢迎的区域'
         },
         siteTypeOptions: {
             numberOfUsers: '用户数量',
@@ -38,13 +38,13 @@ export default {
             bounceRate: '跳出率',
             returningUsers: '返回用户',
             usersCountries: '用户所在国家/地区',
-            popularBrowsers: '最受欢迎的浏览器',
+            popularBrowsers: '最受欢迎的浏览器'
         },
         timeUnits: {
             day: '日',
             week: '周',
             month: '月份',
-            year: '年份',
+            year: '年份'
         },
         bounceRateLabel: '离开网站的访问百分比',
         dateLabel: '日期',
@@ -56,7 +56,7 @@ export default {
         numberOfVisits: '访问次数',
         numberOfSearches: '搜索次数',
         unspecifiedLabel: '未指定',
-        noDataToDisplay: '没有要显示的数据',
+        noDataToDisplay: '没有要显示的数据'
     },
     placeholders: {
         searchBar: '输入搜索词',
@@ -76,12 +76,15 @@ export default {
         newVersionPart4: '造访',
         newVersionPart5: '发行说明',
         newVersionPart6: '查看详细的更改。',
-        basemapUnavailable: '默认底图暂时不可用。该门户网站正在将地图更改为另一个。',
+        basemapUnavailable:
+            '默认底图暂时不可用。该门户网站正在将地图更改为另一个。',
         basemapUnavailableTitle: '无法使用底图',
-        dashboardSavedSuccessfully: '仪表盘保存成功！您可以在“我的工作区”->“仪表板”中找到它。',
+        dashboardSavedSuccessfully:
+            '仪表盘保存成功！您可以在“我的工作区”->“仪表板”中找到它。',
         errorDuringDashboardSaving: '仪表板保存期间出错。 请再试一次。',
         dashboardLoadedSuccessfully: '仪表板加载成功！',
         errorDuringDashboardLoading: '仪表板加载期间出错。',
+        dashboardDeletedSuccessfully: '仪表板已成功删除！'
     },
     welcomePopup: {
         newVersionTitle: '提供GEOSS门户3.7',
@@ -114,7 +117,8 @@ export default {
         unableToFindAnyResources: '我们找不到任何资源。',
         loadingResourcesIsTakingTooLong: '资源加载比平时花费更多时间。',
         noResourcesFound: '找不到资源',
-        noResourcesFoundChooseAnotherSource: '找不到此类数据的资源。请选择查看其他类型的资源或返回以前的结果',
+        noResourcesFoundChooseAnotherSource:
+            '找不到此类数据的资源。请选择查看其他类型的资源或返回以前的结果',
         showDetails: '显示详细资料',
         hideDetails: '隐藏细节',
         hi: '你好',
@@ -142,7 +146,8 @@ export default {
     errors: {
         noMetadata: '获取资源的元数据时出现问题',
         google: {
-            OVER_QUERY_LIMIT: '抱歉，我们现在无法将您的请求翻译成地理术语。 明天试试。'
+            OVER_QUERY_LIMIT:
+                '抱歉，我们现在无法将您的请求翻译成地理术语。 明天试试。'
         }
     },
     map: {
@@ -204,8 +209,10 @@ export default {
         outputDownloadFormat: '输出下载格式',
         imageResolutionInPixels: '图像分辨率（以像素为单位）（250、500）',
         coordinateReferenceSystemOfSubset: '子集的坐标参考系',
-        subsetLowerCoordinateInSpecifiedCRSFormat: '以指定的CRS格式将左下坐标子集',
-        subsetUpperCoordinateInSpecifiedCRSFormat: '以指定的CRS格式将右上角坐标子集',
+        subsetLowerCoordinateInSpecifiedCRSFormat:
+            '以指定的CRS格式将左下坐标子集',
+        subsetUpperCoordinateInSpecifiedCRSFormat:
+            '以指定的CRS格式将右上角坐标子集',
         latLongRule: '允许的纬度值：-90至90之间；经度：-180至180之间',
         xYRule: '允许的X值：在-20037508.3427892和20037508.3427892之间，对于Y：在-20037508.3427892和20037508.3427892之间',
         scaleFactor: '比例因子',
@@ -214,7 +221,7 @@ export default {
         default: '默认',
         crs: 'CRS',
         coordinatesLowerCorner: '坐标（下角）',
-        coordinatesUpperCorner: '坐标（上角）',
+        coordinatesUpperCorner: '坐标（上角）'
     },
     unitedNationsStatisticsPopup: {
         title: '选择首选选项',
@@ -289,8 +296,10 @@ export default {
         boundingBox: '边界框'
     },
     popupContent: {
-        addedToDownloadList: '该资源已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
-        addedCustomToDownloadList: '下载请求已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
+        addedToDownloadList:
+            '该资源已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
+        addedCustomToDownloadList:
+            '下载请求已添加到您的下载列表中。 <a href="" class="openBulkDownloadPopup"><b>查看列表</b></a>',
         bookmarkSavedSuccess: '结果已保存在“我的工作区”->“已标记结果”中。',
         bookmarkSavedFail: '无法为结果添加书签。',
         bookmarkRemovedSuccess: '结果已从书签中删除。',
@@ -313,11 +322,14 @@ export default {
         cloudPlatformSelection: '云平台选择',
         optimal: '最佳',
         fetchingPlatformsData: '获取平台数据',
-        entryRelationsStart: '您现在处于ENTRY RELATIONS设置模式。<br />首先，请选择所需的条目作为<b>关系源</ b>。',
+        entryRelationsStart:
+            '您现在处于ENTRY RELATIONS设置模式。<br />首先，请选择所需的条目作为<b>关系源</ b>。',
         entryRelationsSrcSet1: '关系源已设置为',
         entryRelationsSrcSet2: '请选择<b>目标资源</ b>。',
-        entryRelationsNoDest: '没有选择目标资源。 选择至少一个与源条目相关的资源。',
+        entryRelationsNoDest:
+            '没有选择目标资源。 选择至少一个与源条目相关的资源。',
         entryRelationsRedirecting: '输入关系数据已成功发送。重定向...',
+        delete: '删除',
 
         // SDG dashboards
         createDashboard: '创建仪表板',
@@ -351,6 +363,8 @@ export default {
         page: '页',
         of: '的',
         save: '节省',
+        deleteDashboardTitle: '删除仪表板',
+        deleteDashboardConfirmation: '您确定要删除仪表板吗？',
 
         // metadata
         generalInfo: '一般资讯',
@@ -406,12 +420,11 @@ export default {
         mapDetails: '地图详情',
         authors: '作者',
         license: '许可证',
-		citation: '引文',
+        citation: '引文',
         confidence: '置信度',
         crop: '作物',
         irrigation: '灌溉',
         landCover: '土地覆盖',
-
 
         // rating
         comment: '评论',
@@ -428,7 +441,8 @@ export default {
         wouldYouLikeToContinue: '你想继续吗？',
 
         // layer not available
-        mapLayerUnavailable: '目前不提供地图服务。门户维护团队已获悉。\ n您要禁用此层的显示吗？',
+        mapLayerUnavailable:
+            '目前不提供地图服务。门户维护团队已获悉。 n您要禁用此层的显示吗？',
 
         // workflow
         saveRunSuccess: '结果已保存在我的工作区->保存的运行中。',
@@ -488,7 +502,8 @@ export default {
         userContributedCancel: '取消',
         userContributedDelete: '删除',
         userContributedRemoveEntryExtensionSuccess: '您已成功删除条目扩展',
-        userContributedRemoveUnavailable: '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。',
+        userContributedRemoveUnavailable:
+            '扩展名删除功能暂时无法使用-当前正在工作流中处理该条目。<br/>，请稍后再试。',
 
         //openeo
         dateRange: '日期范围',
@@ -630,21 +645,22 @@ export default {
         organized: {
             title: '您对以下陈述的赞同程度如何？',
             question: '我发现逻辑上组织门户网站的内容',
-            stronglyAgree: '强烈\反对',
-            stronglyDisagree: '强烈\不同意'
+            stronglyAgree: '强烈反对',
+            stronglyDisagree: '强烈不同意'
         },
         adequately: {
             title: '您对以下陈述的赞同程度如何？',
             question: '我认为网站上提供的信息已得到充分描述',
-            stronglyAgree: '强烈\反对',
-            stronglyDisagree: '强烈\不同意'
+            stronglyAgree: '强烈反对',
+            stronglyDisagree: '强烈不同意'
         },
         search_criteria: {
             question: '还有其他搜索条件对您有帮助吗？',
             placeholder: '请在这里写'
         },
         visualization: {
-            question: '是否有任何可视化的数据可以帮助您更好地理解可以从门户网站获得的数据？',
+            question:
+                '是否有任何可视化的数据可以帮助您更好地理解可以从门户网站获得的数据？',
             placeholder: '请在这里描述'
         },
         thankYouForCompleting: '感谢您完成这项调查！',
@@ -694,7 +710,8 @@ export default {
         life_on_land: '陆地生活',
         peace_justice_and_strong_institutions: '和平，正义与强大的机构',
         partnerships_for_the_goals: '实现目标的伙伴关系',
-        biodiversity_and_ecosystem_sustainability: '生物多样性与生态系统可持续性',
+        biodiversity_and_ecosystem_sustainability:
+            '生物多样性与生态系统可持续性',
         disaster_resilience: '防灾能力',
         energy_and_mineral_resource_management: '能源和矿产资源管理',
         food_security_and_sustainable_agriculture: '粮食安全与可持续农业',
@@ -719,10 +736,11 @@ export default {
         checked: '已检查'
     },
     geoLikes: {
-        title: '我的工作空间/ GEO喜欢',
+        title: '我的工作空间/ GEO喜欢'
     },
     privacyPolicy: {
-        statement: '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。<br />如果您希望限製或阻止我們使用 Cookie，請按照我們的 ',
+        statement:
+            '我們僅使用 cookie 來跟踪對我們網站的訪問，不收集任何個人信息。<br />如果您希望限製或阻止我們使用 Cookie，請按照我們的 ',
         cookieLink: 'Terms & Conditions',
         cookieText: '了解更多信息或更改您的偏好。',
         accept: '接受',
@@ -747,4 +765,4 @@ export default {
         sources: '资料来源'
     },
     poweredBy: '供电'
-};
+}

@@ -88,7 +88,8 @@ export default {
             'Erreur lors de l`enregistrement du tableau de bord. Veuillez réessayer.',
         dashboardLoadedSuccessfully: 'Tableau de bord chargé avec succès !',
         errorDuringDashboardLoading:
-            'Erreur lors du chargement du tableau de bord.'
+            'Erreur lors du chargement du tableau de bord.',
+        dashboardDeletedSuccessfully: 'Tableau supprimé avec succès !'
     },
     welcomePopup: {
         newVersionTitle: 'LE PORTAIL GEOSS 3.7 EST DISPONIBLE',
@@ -349,6 +350,7 @@ export default {
             'Il n`y a pas de ressources de destination sélectionnées. Choisissez au moins une ressource associée à l`entrée source.',
         entryRelationsRedirecting:
             'Les données de relations d`entrée ont été envoyées avec succès. Redirigeant ...',
+        delete: 'Supprimer',
 
         // SDG dashboards
         createDashboard: 'Créer un tableau de bord',
@@ -386,6 +388,9 @@ export default {
         page: 'Page',
         of: 'de',
         save: 'Sauvegarder',
+        deleteDashboardTitle: 'Supprimer le tableau de bord',
+        deleteDashboardConfirmation:
+            'Voulez-vous supprimer le tableau de bord ?',
 
         // metadata
         generalInfo: 'Infos générales',
@@ -540,7 +545,8 @@ export default {
         //openeo
         dateRange: 'Plage de dates',
         bbox: 'Coordonnées de la boîte englobante',
-        areaTooBig: 'La zone sélectionnée dépasse 2500 kilomètres carrés. Veuillez sélectionner une zone plus petite.',
+        areaTooBig:
+            'La zone sélectionnée dépasse 2500 kilomètres carrés. Veuillez sélectionner une zone plus petite.',
         draw: 'Dessiner',
         clear: 'Effacer'
     },

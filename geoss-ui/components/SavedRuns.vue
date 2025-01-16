@@ -391,7 +391,6 @@ export default class SavedRunsComponent extends Vue {
                         log.message.toString()
                     )
                 })
-                console.log(logs)
             }
             run.showLogs = !run.showLogs
             run.showOutputs = false
@@ -417,7 +416,6 @@ export default class SavedRunsComponent extends Vue {
             this.runsResultsPerPage,
             pageNum
         )
-        console.log(data)
         if (data) {
             this.savedRuns = data
             this.displayRuns = data
