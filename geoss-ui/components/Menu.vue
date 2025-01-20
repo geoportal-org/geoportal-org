@@ -34,6 +34,46 @@
                             <img :src="route.imgURL" :alt="route.title" />
                             <span>{{ route.title.toUpperCase() }}</span>
                         </div>
+                        <div v-show="route === activeLinksExpander" class="menu__inner-wrapper md-hidden-up">
+                                <CollapseTransition v-if="route.links">
+                                    <div class="menu__links-expanded">
+                                        <template  v-if="isCommunityPortals(route) && siteId">
+                                            <NuxtLink class="menu__sublink" key="global-scope" to="/" @click.native="setGlobalSiteId()">Back to GEOSS</NuxtLink>
+                                            <span class="menu__horizontal-separator"></span>
+                                        </template>
+                                        <template v-for="(subroute, subindex) of route.links">
+                                            <a v-if="isExternal(subroute.link)" class="menu__sublink" :key="subindex" :href="subroute.link"
+                                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`" target="_blank">
+                                                {{ subroute.title }}
+                                            </a>
+                                            <NuxtLink v-else-if="!(isCommunityPortals(route) && subroute.link === '/community/' + siteUrl)" class="menu__sublink" :key="subroute.link" :to="scopedUrl(subroute.link, isCommunityPortals(route))"
+                                                :data-tutorial-tag="`header-menu-subitem-${index + 1}-${subindex + 1}`">
+                                                {{ subroute.title }}
+                                            </NuxtLink>
+                                        </template>
+                                        <template  v-if="isCommunityPortals(route) && !siteId && isSignedIn && !hidePocFeatures">
+                                            <hr style="border-color: #fff; margin: 10px -15px;" />
+                                            <a class="menu__sublink" href="#" @click="showCreatorDownloadPopup()">
+                                                {{ $tc('menu.createNewPortal') }}
+                                            </a>
+                                            <a class="menu__sublink" href="#" @click="showCreatorRegisterPopup()">
+                                                {{ $tc('menu.registerNewPortal') }}
+                                            </a>
+                                        </template>
+                                        <template  v-if="isMyWorkspace(route) && !siteId && isAdmin">
+                                            <hr style="border-color: #fff; margin: 10px -15px;" />
+                                            <a class="menu__sublink" :href="adminPanelLink">
+                                                {{ $tc('menu.siteAdministration') }}
+                                            </a>
+                                            <a class="menu__sublink" :href="usersManagementLink">
+                                                {{ $tc('menu.usersManagement') }}
+                                            </a>
+                                        </template>
+                                    </div>
+                                </CollapseTransition>
+                            <!-- Sign-in sub-menu expander -->
+                            <div class="menu__item"></div>
+                        </div>
                     </template>
                     <a v-if="(!route.links || !route.links.length) && isExternal(route.link)" :href="route.link"
                         class="menu__link" target="_blank">
