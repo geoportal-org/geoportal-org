@@ -19,6 +19,7 @@ import VectorLayer from 'ol/layer/Vector'
 import TileLayer from 'ol/layer/Tile'
 import { $tc } from '~/plugins/i18n'
 import UtilsService from '@/services/utils.service'
+import { GeneralFiltersGetters } from '@/store/generalFilters/general-filters-getters'
 // @ts-ignore
 import * as GeoTIFF from 'geotiff'
 // @ts-ignore
@@ -773,6 +774,10 @@ const LayersUtils = {
         layer.getSource().on('tileloaderror', () => {
             LayersUtils.progressBarAddLoaded()
         })
+        const sources = AppVueObj.app.$store.getters[GeneralFiltersGetters.state].sources
+        if (sources && sources.length && sources.includes('agame')) {
+            return new Promise((resolve) => resolve)
+        }
         return new Promise((resolve, reject) => {
             if (!layer.getSource) {
                 return resolve
