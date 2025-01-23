@@ -119,10 +119,14 @@ const LayersUtils = {
                     url: linkUrl
                 });
             }
+            let elevation = '-'
+            if (item.verticalextent && item.verticalextent.minimum) {
+                elevation = item.verticalextent.minimum === item.verticalextent.maximum ? item.verticalextent.minimum : `${item.verticalextent.minimum} - ${item.verticalextent.maximum}`;
+            }
             const poiData = {
                 title: item.title,
                 links: poiLinks,
-                elevation: item.verticalextent.minimum === item.verticalextent.maximum ? item.verticalextent.minimum : `${item.verticalextent.minimum} - ${item.verticalextent.maximum}`,
+                elevation,
                 cateogry: item['poi-category'],
                 country: item['poi-country'],
                 id: item['poi-id'],

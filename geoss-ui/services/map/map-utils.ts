@@ -496,37 +496,7 @@ const MapUtils = {
 
             const feature = map.forEachFeatureAtPixel(e.pixel, (feature: any) => feature);
             if (feature) {
-                const values = feature.values_;
-                if (values) {
-                    const coords = feature.getGeometry().getCoordinates();
-                    const geometryType = feature.getGeometry().getType();
-                    const geometry = new AppVueObj.ol.geom[geometryType](coords);
-                    const extent = geometry.transform('EPSG:3857', 'EPSG:4326').getExtent();
-                    const coordsWSEN = MapCoordinatesUtils.parseCoordinates(extent);
-
-                    let W = coordsWSEN[0];
-                    const S = coordsWSEN[1];
-                    let E = coordsWSEN[2];
-                    const N = coordsWSEN[3];
-
-                    const normalizedLongitude = MapCoordinatesUtils.normalizeLongitude(W, E);
-                    W = normalizedLongitude[0];
-                    E = normalizedLongitude[1];
-
-                    AppVueObj.app.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, {W, S, E, N});
-                    AppVueObj.app.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
-
-                    if (values.name) {
-                        let tooltipMessage = values.name;
-                        if (values.Country) {
-                            tooltipMessage += `<hr />${values.Country}`;
-                        }
-                        AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
-                    }
-
-                    popupOverlay.setPosition(e.coordinate);
-                    AppVueObj.app.$store.dispatch(MapActions.setShowFull, true);
-                } else if (feature.poi) {
+                if (feature.poi) {
                     const poi = feature.poi;
                     let tooltipMessage = '<table><tbody>';
                     tooltipMessage += poi.id ? `<tr><td class="poi-param__name">GEO Mountains ID:</td><td>${poi.id}</td></tr>` : '';
@@ -546,6 +516,38 @@ const MapUtils = {
 
                     AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
                     popupOverlay.setPosition(e.coordinate);
+                } else {
+                    const values = feature.values_;
+                    if (values) {
+                        const coords = feature.getGeometry().getCoordinates();
+                        const geometryType = feature.getGeometry().getType();
+                        const geometry = new AppVueObj.ol.geom[geometryType](coords);
+                        const extent = geometry.transform('EPSG:3857', 'EPSG:4326').getExtent();
+                        const coordsWSEN = MapCoordinatesUtils.parseCoordinates(extent);
+
+                        let W = coordsWSEN[0];
+                        const S = coordsWSEN[1];
+                        let E = coordsWSEN[2];
+                        const N = coordsWSEN[3];
+
+                        const normalizedLongitude = MapCoordinatesUtils.normalizeLongitude(W, E);
+                        W = normalizedLongitude[0];
+                        E = normalizedLongitude[1];
+
+                        AppVueObj.app.$store.dispatch(GeneralFiltersActions.setSelectedAreaCoordinates, {W, S, E, N});
+                        AppVueObj.app.$store.dispatch(GeneralFiltersActions.setLocationType, 'coordinates');
+
+                        if (values.name) {
+                            let tooltipMessage = values.name;
+                            if (values.Country) {
+                                tooltipMessage += `<hr />${values.Country}`;
+                            }
+                            AppVueObj.app.$store.dispatch(MapActions.setMapTooltipMessage, tooltipMessage);
+                        }
+
+                        popupOverlay.setPosition(e.coordinate);
+                        AppVueObj.app.$store.dispatch(MapActions.setShowFull, true);
+                    }
                 }
             } else {
                 clearAOI();

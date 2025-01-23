@@ -166,7 +166,7 @@ export default {
                     const formData = new FormData();
                     formData.append("model", JSON.stringify({
                         name: this.$refs.site_name.value,
-                        url: this.newSiteUrl,
+                        url: this.newSiteUrl === "" ? this.$refs.site_name.value.toLowerCase() : this.newSiteUrl,
                         logoDocumentId: 0
                     }))
                     const file = this.$refs.site_logo.files[0];
