@@ -37,6 +37,7 @@ location /matomo/ {
   rewrite ^/matomo/?(.*)$ /$1 break;
   proxy_pass $matomo_upstream;
   proxy_no_cache 1;
+  proxy_intercept_errors off;
 
   #response headers
   include conf.d/utils/proxy_response_headers.conf;
