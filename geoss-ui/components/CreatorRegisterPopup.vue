@@ -16,17 +16,21 @@
 
                 <div class="creator__field required">
                     <label>Mirror Site URL address: <span>*</span></label>
-                    <input v-model="username" placeholder="Type here..." type="text" ref="login" />
+                    <input v-model="address" placeholder="Type here..." type="text" ref="address" />
                 </div>
                 <div class="creator__field required">
-                    <label>Display name: <span>*</span></label>
-                    <input v-model="password" placeholder="Type here..." type="password" ref="password" />
+                    <label>Name and surname: <span>*</span></label>
+                    <input v-model="name" placeholder="Type here..." type="text" ref="name" />
+                </div>
+                <div class="creator__field required">
+                    <label>E-mail: <span>*</span></label>
+                    <input v-model="email" placeholder="Type here..." type="email" ref="email" />
                 </div>
                 <div class="creator__field">
                     <label>Why do you want to register you Community Portal?</label>
                     <textarea />
                 </div>
-                <button class="green-btn-default">Submit</button>
+                <button class="green-btn-default" @click="close()">Submit</button>
             </div>
         </div>
     </div>
@@ -34,9 +38,14 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator';
+import PopupCloseService from '@/services/popup-close.service'
 
 @Component
-export default class CreatorRegisterPopupComponent extends Vue { }
+export default class CreatorRegisterPopupComponent extends Vue {
+    close() {
+        PopupCloseService.closePopup('creator')
+    }
+}
 
 </script>
 

@@ -21,9 +21,8 @@
                 <p>
                     Later, you will have the possibility to decide to publish you site in the GEOSS Community Portal section.
                 </p>
-                <button class="green-btn-default" @click="">Download</button>
-                <p>Any additional questions can be asked on our <a href="/tutorials" target="_blank">Contact Page</a></p>
-
+                <a class="green-btn-default" href="https://github.com/orgs/geoportal-org/packages?repo_name=geoportal-org" target="_blank">Download</a>
+                <p>See more details and instruction in the <a href="/tutorials" target="_blank">Tutorials</a> section.</p>
             </div>
         </div>
     </div>
@@ -33,7 +32,9 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component
-export default class CreatorDownloadPopupComponent extends Vue { }
+export default class CreatorDownloadPopupComponent extends Vue {
+
+}
 
 </script>
 
@@ -125,6 +126,10 @@ export default class CreatorDownloadPopupComponent extends Vue { }
             background: white;
             border: 1px solid #209d90;
             color: #209d90;
+        }
+
+        &:hover {
+            text-decoration: none;
         }
     }
 
