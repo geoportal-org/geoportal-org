@@ -10,7 +10,7 @@
         <Spinner />
         <Popup />
         <IrisLegend />
-		<LayerLegend />
+        <LayerLegend />
         <ImagePreview />
         <PrivacyPolicy />
         <SendFeedback />
@@ -411,10 +411,7 @@ export default {
                         )
                     }
 
-                    this.$store.dispatch(
-                        SearchActions.setTargetIds,
-                        targetId
-                    )
+                    this.$store.dispatch(SearchActions.setTargetIds, targetId)
 
                     resolve(true)
                 } else if (layers) {
@@ -506,7 +503,6 @@ export default {
                             const storeParamName =
                                 cuttedParamName.charAt(0).toUpperCase() +
                                 cuttedParamName.substr(1)
-
                             if (
                                 (GeneralFiltersActions as any)[
                                     'set' + storeParamName
@@ -641,12 +637,20 @@ export default {
                                 } else if (storeParamName === 'DataSource') {
                                     promises.push(
                                         this.$store.dispatch(
-                                            (SearchActions as any)[
-                                                'set' + storeParamName
-                                            ],
-                                            { value: param.value }
+                                            SearchActions.setDataSource,
+                                            {
+                                                value: param.value
+                                            }
                                         )
                                     )
+                                    // promises.push(
+                                    //     this.$store.dispatch(
+                                    //         (SearchActions as any)[
+                                    //             'set' + storeParamName
+                                    //         ],
+                                    //         { value: param.value }
+                                    //     )
+                                    // )
                                 } else {
                                     promises.push(
                                         this.$store.dispatch(
@@ -739,13 +743,13 @@ export default {
 
                             if (siteSettings) {
                                 if (
-                                    siteSettings.defaultDataSource &&
-                                    siteSettings.defaultDataSource !== ''
+                                    !this.$store.getters[
+                                        SearchGetters.dataSource
+                                    ]
                                 ) {
                                     if (
-                                        !this.$store.getters[
-                                            SearchGetters.dataSource
-                                        ]
+                                        siteSettings.defaultDataSource &&
+                                        siteSettings.defaultDataSource !== ''
                                     ) {
                                         this.$store.dispatch(
                                             SearchEngineActions.setDefaultSourceName,
@@ -758,13 +762,14 @@ export default {
                                                 checkDefault: true
                                             }
                                         )
+                                    } else {
+                                        this.$store.dispatch(
+                                            SearchActions.setDataSource,
+                                            { value: DataSources.DAB }
+                                        )
                                     }
-                                } else {
-                                    this.$store.dispatch(
-                                        SearchActions.setDataSource,
-                                        { value: DataSources.DAB }
-                                    )
                                 }
+
                                 if (siteSettings.mapZoom) {
                                     this.$store.dispatch(
                                         MapActions.setInitialZoom,
@@ -854,47 +859,52 @@ export default {
                                     searchSettings['googleMapsApiKey']
                                 )
 
-                                const defaultLayers = await GeneralApiService.getDefaultLayers(
-                                    siteId
-                                )
+                                const defaultLayers =
+                                    await GeneralApiService.getDefaultLayers(
+                                        siteId
+                                    )
 
-                                if (
-                                    defaultLayers &&
-                                    defaultLayers.length
-                                ) {
-                                    for (const [index, layer] of defaultLayers.entries()) {
+                                if (defaultLayers && defaultLayers.length) {
+                                    for (const [
+                                        index,
+                                        layer
+                                    ] of defaultLayers.entries()) {
                                         let mapLayer = null
                                         layer.zIndex = index + 1
-                                        layer.type = layer.type || layer.url.split('.').pop().toLowerCase()
+                                        layer.type =
+                                            layer.type ||
+                                            layer.url
+                                                .split('.')
+                                                .pop()
+                                                .toLowerCase()
                                         if (layer.type === LayerTypes.WMS) {
-                                            mapLayer =
-                                                LayersUtils.createWMS(
-                                                    layer.title,
-                                                    layer.url
-                                                )
+                                            mapLayer = LayersUtils.createWMS(
+                                                layer.title,
+                                                layer.url
+                                            )
                                         } else if (
                                             layer.type === LayerTypes.TMS
                                         ) {
-                                            mapLayer =
-                                                LayersUtils.createTMS(
-                                                    layer.url
-                                                )
+                                            mapLayer = LayersUtils.createTMS(
+                                                layer.url
+                                            )
                                         } else if (
                                             layer.type === LayerTypes.KML
                                         ) {
-                                            mapLayer =
-                                                LayersUtils.createKML(
-                                                    layer.url
-                                                )
+                                            mapLayer = LayersUtils.createKML(
+                                                layer.url
+                                            )
                                         } else if (
                                             layer.type === LayerTypes.KMZ
                                         ) {
-                                            mapLayer =
-                                                LayersUtils.createKMZ(
-                                                    layer.url
-                                                )
+                                            mapLayer = LayersUtils.createKMZ(
+                                                layer.url
+                                            )
                                         } else if (
-                                            layer.type === LayerTypes.GEOTIFF || layer.type.indexOf(LayerTypes.GEOTIFF > -1)
+                                            layer.type === LayerTypes.GEOTIFF ||
+                                            layer.type.indexOf(
+                                                LayerTypes.GEOTIFF > -1
+                                            )
                                         ) {
                                             mapLayer =
                                                 await LayersUtils.createGeoTIFF(
@@ -1014,7 +1024,9 @@ export default {
                         !siteData.logoUrl ||
                         siteData.logoUrl === ''
                     ) {
-                        this.$router.push('/creator?siteUrl='+this.$route.params.siteurl)
+                        this.$router.push(
+                            '/creator?siteUrl=' + this.$route.params.siteurl
+                        )
                     }
                 }
             )
@@ -1079,7 +1091,15 @@ export default {
             this.getSettings()
 
             if (this.hidePocFeatures) {
-                this.$store.dispatch(SearchActions.setHiddenDataSources, ['data', 'amerigeoss', 'nextgeoss', 'information', 'zenodo', 'wikipedia', 'services'])
+                this.$store.dispatch(SearchActions.setHiddenDataSources, [
+                    'data',
+                    'amerigeoss',
+                    'nextgeoss',
+                    'information',
+                    'zenodo',
+                    'wikipedia',
+                    'services'
+                ])
             }
         }
     }
