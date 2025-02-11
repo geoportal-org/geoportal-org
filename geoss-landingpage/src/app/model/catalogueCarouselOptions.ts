@@ -38,7 +38,7 @@ export const catalogueCarouselOptions = [
   },
   {
     text: `Global Mercury Observing system (GMOS)`,
-    href: `${portalUrl}/?f:sources=atlantosid`,
+    href: `${portalUrl}/?f%3Asources=UUID-f0becf8d-fc72-4968-8bf3-ed52b53e6a01`,
     img: `/global-mercury-observing-system-database.webp`,
   },
   {
@@ -47,13 +47,8 @@ export const catalogueCarouselOptions = [
     img: `/join-research-centre-data-catalog.webp`,
   },
   {
-    text: `NASA Earth Observations (NEO) WMS`,
-    href: `${portalUrl}/?f:sources=FROMREGISTRY--regprefseparator--registrytestid1--regprefseparator--47a896d3-a332-46a3-ad25-518ce1c374da`,
-    img: `/nasa-earth-observations.webp`,
-  },
-  {
     text: `Sentinel`,
-    href: `${portalUrl}/?f:sources=sentinelscihudtest`,
+    href: `${portalUrl}/?f%3Asources=copernicus-dataspace`,
     img: `/sentinel.webp`,
   },
   {

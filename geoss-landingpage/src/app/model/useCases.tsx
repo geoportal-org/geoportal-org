@@ -21,7 +21,8 @@ export const useCases = [
                     text={`The Community Portal of the GEOSS Portal is a specialized feature designed to serve the needs of specific Earth Observation communities. It allows these groups to customize the portals tailoring it to their interests, such as a specific region, theme, or application area.\n\nThe Community Portal is designed to enhance the usability and relevance of the GEOSS Portal for specific user groups by allowing them to access and interact with the data in a way that is most meaningful to them. It supports a more focused and effective use of Earth observation data, tailored to the specific goals and requirements of different user communities.`}
                     imageSRC="/community-data-access.webp"
                     buttonText="Browse our Community Portals"
-                    buttonHref={"/"}
+                    buttonHref={"https://gpp.uat.esaportal.eu/"}
+                    isExternal={true}
                 />
                 <UCList
                     isDarkBg
@@ -60,6 +61,7 @@ export const useCases = [
                     imageSRC="/yp.webp"
                     buttonText="Discover our data provider"
                     buttonHref={`${portalUrl}/yellow-pages`}
+                    isExternal={true}
                 />
                 <UCList
                     isDarkBg
@@ -77,7 +79,8 @@ export const useCases = [
                     text={`In order to register as GEOSS Data Provider, a link is provided to a website where registration can be done.  The Data Provider provides the information needed for the registration in the form presented on the website and submits the registration request.`}
                     imageSRC="/data-provider-geoss.webp"
                     buttonText="Register"
-                    buttonHref="/data-providers"
+                    buttonHref="https://yellowpages.unepgrid.ch/"
+                    isExternal={true}
                 />
             </div>
         ),
@@ -168,8 +171,9 @@ export const useCases = [
                     imageSRC="/land-degradation.webp"
                     buttonText="See the service (beta version)"
                     buttonHref={
-                        "https://gpp.uat.esaportal.eu/?m:activeLayerTileId=osm&targetId=geo_essential_sdg_15.3.1_service&f:phrase=land%20degradation&f:dataSource=services"
+                        "https://gpp.uat.esaportal.eu/?m%3AactiveLayerTileId=osm&f%3Aphrase=land%20degradation&f%3AdataSource=services "
                     }
+                    isExternal={true}
                 />
                 <UCImage
                     isDarkBg
@@ -179,6 +183,7 @@ export const useCases = [
                     imageSRC="/land-degradation-geoss.webp"
                     buttonText="Explore an example of the service output"
                     buttonHref="https://gpp.uat.esaportal.eu/?f:phrase=dashboard&m:activeLayerTileId=osm&f:dataSource=information"
+                    isExternal={true}
                 />
             </div>
         ),
@@ -197,8 +202,9 @@ export const useCases = [
                     title="Accessibility to Urban Green Spaces (SDG11.7) Use Case Description"
                     text={`More than half of the global population lives in cities, a figure expected to rise to 66% by 2050. In Europe, 75% of the population is urban, projected to reach 80% by the same year. This rapid urbanization leads to challenges like urban sprawl and inefficient land use, affecting green spaces and infrastructure. Efficient land management is needed to promote sustainable urban growth.\n\nThe EU SDG indicator "Share of urban population without green urban areas in their neighbourhood" emphasizes the importance of accessible green spaces. However, this indicator is currently on hold due to data and methodological issues.\n\nThis Use Case provides the possibility to calculate the accessibility to urban green spaces (SDG11.7) at the city scale using the GEOSS platform.`}
                     imageSRC="/sdg11.webp"
-                    buttonText=""
-                    buttonHref={""}
+                    buttonText="SDG 11.7"
+                    buttonHref={"https://gpp.uat.esaportal.eu/?f%3Aphrase=sdg%2011.7&f%3AdataSource=services"}
+                    isExternal={true}
                 />
                 <UCText
                     isDarkBg
@@ -224,6 +230,7 @@ export const useCases = [
                     imageSRC="/green.webp"
                     buttonText="GREEN Web App"
                     buttonHref={"https://green.geodab.org/"}
+                    isExternal={true}
                 />
                 <UCImage
                     isDarkBg
@@ -233,6 +240,7 @@ export const useCases = [
                     imageSRC="/nutrient-pollution.webp"
                     buttonText="GREEN Web App"
                     buttonHref="https://green.geodab.org/"
+                    isExternal={true}
                 />
             </div>
         ),
@@ -253,6 +261,7 @@ export const useCases = [
                     imageSRC="/newlife4drylands.webp"
                     buttonText="NewLife4DryLands Web App"
                     buttonHref={"https://nl4dl.geodab.org/"}
+                    isExternal={true}
                 />
                 <UCFrame title={"Check the application below!"} href={"https://nl4dl.geodab.org/"} />
             </div>
@@ -298,8 +307,9 @@ export const useCases = [
                     title="Gross Primary Production for Monitoring Ecosystem Health within GEOSS (AGAME)” Use Case Description"
                     text={`This use case focuses on enhancing the capabilities to monitor and assess ecosystem health for targeted regions in Europe. Different user communities are involved to develop tailored and downscaled Gross Primary Production (GPP) data products, which helps scientists and decision-makers understand how much carbon ecosystems take in. This information is important for creating environmental policies and making smart decisions about managing our planet's resources. This data is especially useful for people working in biodiversity, from researchers to environmental planners.\n\nAGAME makes available through the GEOSS Platform explicit time series data on gross primary production (GPP). This information is crucial to investigate declines in carbon uptake due to global warming and to predict future biosphere conditions influenced by changing climate and land use.\n\nAGAME uses data from a variety of sources, including the <strong>Copernicus Program</strong> (Sentinel-2), and combines it with advanced modelling to provide a full picture of what’s happening on the ground.\n\nThe GEOSS platform offers tools to discover and visualize relevant data. This use case highlights the role of the platform in supporting ecosystem assessment and enabling further scientific analysis.`}
                     imageSRC="/agame.webp"
-                    buttonText=""
-                    buttonHref={""}
+                    buttonText="AGAME"
+                    buttonHref={"https://gpp.uat.esaportal.eu/?f%3Asources=agame"}
+                    isExternal={true}
                 />
                 <UCText
                     title={"How the AGAME project works within GEOSS?"}
@@ -324,8 +334,11 @@ export const useCases = [
                     title="Harmonized Agronomy In-Situ Data for crop mapping (MAPS4GPP)” Use Case description"
                     text={`There are many agronomy related in-situ data sets published but not ready for proper re-use. Recently, initiatives such as WorldCereal and AGROSTAC, are inventorying, curating and annotating many published data sets to make the data ready for certain applications like training algorithms to classify crops, assess planting dates, simulate crop development and growth. The harmonized agronomy in-situ data are made available in GEOSS portal to explore and select using filters for years, regions, preferred crop types, indicators and quality. The harmonized in situ reference data, available through the GEOSS platform, can be used to train crop classification algorithms and produce a crop map based on all available reference data shared by the community.`}
                     imageSRC="/maps4gpp.webp"
-                    buttonText=""
-                    buttonHref={""}
+                    buttonText="In-situ data"
+                    buttonHref={"https://gpp.uat.esaportal.eu/?f%3AviewId=worldcereal"}
+                    button2Text="Worldcereal service"
+                    button2Href="https://gpp.uat.esaportal.eu/?f%3Aphrase=worldcereal%20cropland&f%3AdataSource=services"
+                    isExternal={true}
                 />
                 <UCText
                     title={`How to exploring WorldCereal data and generate crop maps using GEOSS Platform`}

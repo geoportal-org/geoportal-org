@@ -6,9 +6,10 @@ type ButtonProps = {
     onClick?: () => void;
     className?: string;
     href?: string;
+    isExternal?: boolean;
 };
 
-const GeneralButton = ({ children, onClick, className, href }: ButtonProps) => {
+const GeneralButton = ({ children, onClick, className, href, isExternal }: ButtonProps) => {
     return (
         <>
             {href ? (
@@ -21,6 +22,7 @@ const GeneralButton = ({ children, onClick, className, href }: ButtonProps) => {
                     </a>
                 ) : (
                     <Link
+                        target={isExternal ? "_blank" : "_self"}
                         href={href}
                         className={`bg-[#0661A9] px-8 py-3 text-base text-center flex items-center justify-center hover:scale-105 ${className}`}
                     >

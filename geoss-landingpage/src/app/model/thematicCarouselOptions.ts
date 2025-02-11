@@ -26,11 +26,6 @@ export const thematicCarouselOptions = [
     img: `/dbar-focal-area.webp`,
   },
   {
-    text: `Disaster resilience`,
-    href: `${portalUrl}/?f:viewId=vdd9a0064a20442bd8cb0fc031cfd9e19	`,
-    img: `/disaster-resillance.webp`,
-  },
-  {
     text: `EnviDat Community`,
     href: `${portalUrl}/?f:viewId=v6621194704b2a49b38e4494dfe0cf5e`,
     img: `/envidat-community.webp`,
@@ -47,7 +42,7 @@ export const thematicCarouselOptions = [
   },
   {
     text: `GEO-Gnome Community`,
-    href: `${portalUrl}/?f:viewId=`,
+    href: `${portalUrl}/?f%3AviewId=v6bd09285c0784c1fa54e164fb59989c2`,
     img: `/geo-gnome-community.webp`,
   },
   {
@@ -59,11 +54,6 @@ export const thematicCarouselOptions = [
     text: `GTN-H Community`,
     href: `${portalUrl}/?f:viewId=v6f058cebcac4093ac324a5165e1d2ba`,
     img: `/gtn-h-community.webp`,
-  },
-  {
-    text: `Sustainable Caucasus`,
-    href: `${portalUrl}/?f:viewId=v675ea24d7f44575a775187b92d28854`,
-    img: `/sustainable-caucasus.webp`,
   },
   {
     text: `Water Resources Management`,
